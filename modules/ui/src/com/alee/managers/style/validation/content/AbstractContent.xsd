@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="../ext/BoundsType.xsd" />
+    <xs:include schemaLocation="../ext/Rotation.xsd" />
+
+    <!-- com.alee.painter.decoration.content.AbstractContent -->
+    <xs:complexType name="AbstractContent">
+
+        <!-- Content identifier -->
+        <xs:attribute name="id" type="xs:string" />
+
+        <!-- Whether or not this content should overwrite previous one when merged -->
+        <xs:attribute name="overwrite" type="xs:boolean" />
+
+        <!-- Bounds this content should be restricted with -->
+        <xs:attribute name="bounds" type="BoundsType" />
+
+        <!-- Content constraints within layout -->
+        <xs:attribute name="constraints" type="xs:string" />
+
+        <!-- Content padding -->
+        <xs:attribute name="padding" type="java.awt:Insets" />
+
+        <!-- Preferred content size -->
+        <xs:attribute name="size" type="java.awt:Dimension" />
+
+        <!-- Content rotation -->
+        <xs:attribute name="rotation" type="Rotation" />
+
+        <!-- Content opacity -->
+        <xs:attribute name="opacity" type="xs:float" />
+
+    </xs:complexType>
+
+</xs:schema>

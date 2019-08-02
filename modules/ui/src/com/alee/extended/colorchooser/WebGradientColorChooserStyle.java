@@ -17,21 +17,19 @@
 
 package com.alee.extended.colorchooser;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 23.11.12 Time: 19:10
+ * @author Mikle Garin
  */
-
 public final class WebGradientColorChooserStyle
 {
     /**
      * Decoration shade width
      */
-    public static int shadeWidth = StyleConstants.shadeWidth;
+    public static int shadeWidth = 2;
 
     /**
      * Default chooser line width
@@ -46,7 +44,7 @@ public final class WebGradientColorChooserStyle
     /**
      * Default chooser margin
      */
-    public static Insets margin = StyleConstants.emptyMargin;
+    public static Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
      * Should draw labels by default

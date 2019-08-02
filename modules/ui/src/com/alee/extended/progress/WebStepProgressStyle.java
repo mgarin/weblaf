@@ -17,8 +17,6 @@
 
 package com.alee.extended.progress;
 
-import com.alee.global.StyleConstants;
-
 import java.awt.*;
 
 /**
@@ -28,7 +26,6 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStepProgress">How to use WebStepProgress</a>
  * @see com.alee.extended.progress.WebStepProgress
  */
-
 public final class WebStepProgressStyle
 {
     /**
@@ -39,7 +36,7 @@ public final class WebStepProgressStyle
     /**
      * Decoration shade width.
      */
-    public static int shadeWidth = StyleConstants.shadeWidth;
+    public static int shadeWidth = 2;
 
     /**
      * Step control size.

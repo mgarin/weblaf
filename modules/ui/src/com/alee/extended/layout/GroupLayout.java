@@ -17,6 +17,9 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -28,7 +31,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class GroupLayout extends AbstractLayoutManager implements SwingConstants
 {
     public static final String PREFERRED = "PREFERRED";
@@ -76,52 +78,37 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         this.gap = gap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         this.constraints.put ( component, ( String ) constraints );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         this.constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
-        return getLayoutSize ( parent, false );
+        return getLayoutSize ( container, false );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension minimumLayoutSize ( final Container parent )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
-        return getLayoutSize ( parent, true );
+        return getLayoutSize ( container, true );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( @NotNull final Container container )
     {
         // Gathering component sizes
         int fillCount = 0;
         int preferred = 0;
-        for ( final Component component : parent.getComponents () )
+        for ( final Component component : container.getComponents () )
         {
             final boolean fill = isFill ( component );
             if ( fill )
@@ -137,24 +124,24 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
                 preferred += fill ? 0 : component.getPreferredSize ().height;
             }
         }
-        if ( parent.getComponentCount () > 0 )
+        if ( container.getComponentCount () > 0 )
         {
-            preferred += gap * ( parent.getComponentCount () - 1 );
+            preferred += gap * ( container.getComponentCount () - 1 );
         }
 
         // Calculating required sizes
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
-        final Insets insets = parent.getInsets ();
-        final Dimension size = parent.getSize ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
+        final Insets insets = container.getInsets ();
+        final Dimension size = container.getSize ();
         final int width = size.width - insets.left - insets.right;
         final int height = size.height - insets.top - insets.bottom;
-        final int fillSize = orientation == HORIZONTAL ? ( fillCount > 0 && width > preferred ? ( width - preferred ) / fillCount : 0 ) :
-                ( fillCount > 0 && height > preferred ? ( height - preferred ) / fillCount : 0 );
+        final int fillSize = orientation == HORIZONTAL ? fillCount > 0 && width > preferred ? ( width - preferred ) / fillCount : 0 :
+                fillCount > 0 && height > preferred ? ( height - preferred ) / fillCount : 0;
         int x = ltr || orientation == VERTICAL ? insets.left : size.width - insets.right;
         int y = insets.top;
 
         // Placing components
-        for ( final Component component : parent.getComponents () )
+        for ( final Component component : container.getComponents () )
         {
             final Dimension cps = component.getPreferredSize ();
             final boolean fill = isFill ( component );
@@ -173,34 +160,34 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         }
     }
 
-    protected Dimension getLayoutSize ( final Container parent, final boolean minimum )
+    protected Dimension getLayoutSize ( final Container container, final boolean minimum )
     {
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         final Dimension ps = new Dimension ();
-        for ( final Component component : parent.getComponents () )
+        for ( final Component component : container.getComponents () )
         {
             final Dimension cps = minimum ? component.getMinimumSize () : component.getPreferredSize ();
             final boolean ignoreSize = minimum && isFill ( component );
             if ( orientation == HORIZONTAL )
             {
-                ps.width += ( ignoreSize ? 1 : cps.width );
+                ps.width += ignoreSize ? 1 : cps.width;
                 ps.height = Math.max ( ps.height, cps.height );
             }
             else
             {
                 ps.width = Math.max ( ps.width, cps.width );
-                ps.height += ( ignoreSize ? 1 : cps.height );
+                ps.height += ignoreSize ? 1 : cps.height;
             }
         }
-        if ( parent.getComponentCount () > 0 )
+        if ( container.getComponentCount () > 0 )
         {
             if ( orientation == HORIZONTAL )
             {
-                ps.width += gap * ( parent.getComponentCount () - 1 );
+                ps.width += gap * ( container.getComponentCount () - 1 );
             }
             else
             {
-                ps.height += gap * ( parent.getComponentCount () - 1 );
+                ps.height += gap * ( container.getComponentCount () - 1 );
             }
         }
         ps.width += insets.left + insets.right;

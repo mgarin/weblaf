@@ -1,0 +1,27 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.toolbar.WebToolBarSeparator -->
+
+    <!-- Separator -->
+    <style type="toolbarseparator">
+        <painter>
+            <decorations>
+                <decoration>
+                    <SeparatorStripes>
+                        <Stripe>
+                            <color fraction="0.0">10,10,10,5</color>
+                            <color fraction="0.5">10,10,10</color>
+                            <color fraction="1.0">10,10,10,5</color>
+                        </Stripe>
+                        <Stripe>
+                            <color fraction="0.0">68,72,74,5</color>
+                            <color fraction="0.5">68,72,74</color>
+                            <color fraction="1.0">68,72,74,5</color>
+                        </Stripe>
+                    </SeparatorStripes>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

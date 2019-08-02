@@ -17,6 +17,8 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.extended.pathfield.WebPathField;
+
 import java.io.File;
 import java.util.EventListener;
 
@@ -26,7 +28,6 @@ import java.util.EventListener;
  * @author Mikle Garin
  * @see WebPathField
  */
-
 public interface PathFieldListener extends EventListener
 {
     /**

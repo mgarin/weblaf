@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.painter.decoration.background.TextureType -->
+    <xs:simpleType name="TextureType">
+        <xs:restriction base="xs:string">
+
+            <!-- Empty texture -->
+            <xs:enumeration value="none" />
+
+            <!-- Linen cloth texture -->
+            <xs:enumeration value="linen" />
+
+            <!-- Dark linen cloth texture -->
+            <xs:enumeration value="darkLinen" />
+
+            <!-- Graphy texture -->
+            <xs:enumeration value="graphy" />
+
+            <!-- Illusion texture -->
+            <xs:enumeration value="illusion" />
+
+            <!-- Escheresque texture -->
+            <xs:enumeration value="escheresque" />
+
+            <!-- Wild oliva texture -->
+            <xs:enumeration value="wildOliva" />
+
+            <!-- Dark maze texture -->
+            <xs:enumeration value="darkMaze" />
+
+            <!-- Light maze texture -->
+            <xs:enumeration value="lightMaze" />
+
+            <!-- Washed wall texture -->
+            <xs:enumeration value="lightWashedWall" />
+
+            <!-- Washed wall texture -->
+            <xs:enumeration value="darkWashedWall" />
+
+            <!-- Alpha layer texture -->
+            <xs:enumeration value="alpha" />
+
+            <!-- Blue grid texture -->
+            <xs:enumeration value="blueGrid" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

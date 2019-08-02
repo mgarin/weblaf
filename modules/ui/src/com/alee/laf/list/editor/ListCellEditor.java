@@ -24,12 +24,11 @@ import java.awt.*;
  * This interface provides base methods for list cell editor creation.
  * Cell editor is not available in Swing for JList, this a custom WebLaF-exclusive editor.
  *
- * @param <E> Editor component type
+ * @param <C> Editor component type
  * @param <T> Editor value type
  * @author Mikle Garin
  */
-
-public interface ListCellEditor<E extends Component, T>
+public interface ListCellEditor<C extends Component, T>
 {
     /**
      * Installs cell editor in the list.
@@ -65,7 +64,7 @@ public interface ListCellEditor<E extends Component, T>
      * @param value cell value
      * @return list cell editor created for the cell under specified index
      */
-    public E getCellEditor ( JList list, int index, T value );
+    public C getCellEditor ( JList list, int index, T value );
 
     /**
      * Starts specified list cell editing.

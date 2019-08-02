@@ -17,42 +17,23 @@
 
 package com.alee.managers.language;
 
-import com.alee.managers.language.data.Dictionary;
-
 import java.util.EventListener;
 
 /**
- * This listener is used to determine language and dictionary changes in LanguageManager.
+ * This listener can be used to track {@link Language} changes in {@link LanguageManager}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see LanguageManager
+ * @see Language
  */
-
 public interface LanguageListener extends EventListener
 {
     /**
-     * Notifies when language changed.
+     * Notifies when current {@link Language} was changed within {@link LanguageManager}.
      *
-     * @param oldLang old language
-     * @param newLang new language
+     * @param oldLanguage old {@link Language}
+     * @param newLanguage new {@link Language}
      */
-    public void languageChanged ( String oldLang, String newLang );
-
-    /**
-     * Notifies when new dictionary added.
-     *
-     * @param dictionary added dictionary
-     */
-    public void dictionaryAdded ( Dictionary dictionary );
-
-    /**
-     * Notifies when new dictionary removed.
-     *
-     * @param dictionary removed dictionary
-     */
-    public void dictionaryRemoved ( Dictionary dictionary );
-
-    /**
-     * Notifies when dictionaries cleared.
-     */
-    public void dictionariesCleared ();
+    public void languageChanged ( Language oldLanguage, Language newLanguage );
 }

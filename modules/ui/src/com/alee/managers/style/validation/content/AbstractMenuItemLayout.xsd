@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContentLayout.xsd" />
+    <xs:include schemaLocation="../ext/BoxOrientation.xsd" />
+
+    <!-- com.alee.laf.menu.AbstractMenuItemLayout -->
+    <xs:complexType name="AbstractMenuItemLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractContentLayout">
+
+                <!-- Gap between icon and text contents -->
+                <xs:attribute name="iconTextGap" type="xs:integer" />
+
+                <!-- Gap between text and accelerator contents -->
+                <xs:attribute name="textAcceleratorGap" type="xs:integer" />
+
+                <!-- Gap between text and arrow contents -->
+                <xs:attribute name="textArrowGap" type="xs:integer" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

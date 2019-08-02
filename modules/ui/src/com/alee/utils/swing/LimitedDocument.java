@@ -20,13 +20,13 @@ package com.alee.utils.swing;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+import java.util.Locale;
 
 /**
  * Plain document limited by characters number.
  *
  * @author Mikle Garin
  */
-
 public class LimitedDocument extends PlainDocument
 {
     /**
@@ -94,9 +94,6 @@ public class LimitedDocument extends PlainDocument
         return toUppercase;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void insertString ( final int offset, String str, final AttributeSet attr ) throws BadLocationException
     {
@@ -109,7 +106,7 @@ public class LimitedDocument extends PlainDocument
         {
             if ( isToUppercase () )
             {
-                str = str.toUpperCase ();
+                str = str.toUpperCase ( Locale.ROOT );
             }
             super.insertString ( offset, str, attr );
         }

@@ -18,12 +18,10 @@
 package com.alee.extended.progress;
 
 import com.alee.extended.panel.WebOverlay;
-import com.alee.global.StyleConstants;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProducer;
-import com.alee.utils.laf.WebShapeProducer;
-import com.alee.utils.swing.EmptyMouseAdapter;
+import com.alee.utils.swing.NoOpMouseListener;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -35,13 +33,11 @@ import java.awt.geom.GeneralPath;
 /**
  * @author Mikle Garin
  */
-
 public class WebProgressOverlay extends WebOverlay
 {
     public static final String ANIMATOR_ID = "WebProgressOverlay.animator";
     public static final String OPACITY_ANIMATOR_ID = "WebProgressOverlay.opacityAnimator";
 
-    private ShapeProducer clipShapeProducer = null;
     private int progressWidth = 15;
     private int speed = 1;
     private Color progressColor = Color.GRAY;
@@ -54,7 +50,7 @@ public class WebProgressOverlay extends WebOverlay
         initializeProgressLayer ();
     }
 
-    public WebProgressOverlay ( final Component component )
+    public WebProgressOverlay ( final JComponent component )
     {
         super ( component );
         initializeProgressLayer ();
@@ -65,25 +61,6 @@ public class WebProgressOverlay extends WebOverlay
         progressLayer = new ProgressLayer ();
         progressLayer.setVisible ( false );
         addOverlay ( progressLayer );
-    }
-
-    @Override
-    public void setComponent ( final Component component )
-    {
-        super.setComponent ( component );
-
-        // Default Web clip shape producer
-        setClipShapeProducer ( component != null ? new WebShapeProducer ( component ) : null );
-    }
-
-    public void setClipShapeProducer ( final ShapeProducer clipShapeProducer )
-    {
-        this.clipShapeProducer = clipShapeProducer;
-    }
-
-    public ShapeProducer getClipShapeProducer ()
-    {
-        return clipShapeProducer;
     }
 
     public boolean isShowLoad ()
@@ -150,7 +127,7 @@ public class WebProgressOverlay extends WebOverlay
         {
             super ();
             SwingUtils.setOrientation ( this );
-            EmptyMouseAdapter.install ( this );
+            NoOpMouseListener.install ( this );
         }
 
         @Override
@@ -182,7 +159,7 @@ public class WebProgressOverlay extends WebOverlay
                 ProgressLayer.this.setVisible ( true );
 
                 stopOpacityAnimator ();
-                opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.animationDelay, new ActionListener ()
+                opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -201,7 +178,7 @@ public class WebProgressOverlay extends WebOverlay
                 opacityAnimator.start ();
 
                 stopAnimator ();
-                animator = new WebTimer ( ANIMATOR_ID, StyleConstants.avgAnimationDelay, new ActionListener ()
+                animator = new WebTimer ( ANIMATOR_ID, SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -226,7 +203,7 @@ public class WebProgressOverlay extends WebOverlay
             else
             {
                 stopOpacityAnimator ();
-                opacityAnimator = new WebTimer ( OPACITY_ANIMATOR_ID, StyleConstants.avgAnimationDelay, new ActionListener ()
+                opacityAnimator = new WebTimer ( OPACITY_ANIMATOR_ID, SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -283,7 +260,7 @@ public class WebProgressOverlay extends WebOverlay
                     final Graphics2D g2d = ( Graphics2D ) g;
                     final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
-                    final Shape clip = getClipShape ();
+                    final Shape clip = LafUtils.getShape ( WebProgressOverlay.this.getComponent () );
                     final Shape oldClip = GraphicsUtils.intersectClip ( g2d, clip, clip != null );
 
                     // todo Draw correctly when width is less than height
@@ -320,18 +297,6 @@ public class WebProgressOverlay extends WebOverlay
                     GraphicsUtils.restoreClip ( g, oldClip, clip != null );
                     GraphicsUtils.restoreAntialias ( g2d, aa );
                 }
-            }
-        }
-
-        private Shape getClipShape ()
-        {
-            if ( clipShapeProducer != null )
-            {
-                return clipShapeProducer.produce ();
-            }
-            else
-            {
-                return null;
             }
         }
     }

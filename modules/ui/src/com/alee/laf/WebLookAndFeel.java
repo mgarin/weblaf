@@ -17,85 +17,52 @@
 
 package com.alee.laf;
 
-import com.alee.extended.button.WebSplitButtonUI;
-import com.alee.extended.checkbox.WebTristateCheckBoxUI;
-import com.alee.extended.colorchooser.GradientColorData;
-import com.alee.extended.colorchooser.GradientData;
-import com.alee.extended.label.WebMultiLineLabelUI;
-import com.alee.extended.label.WebStyledLabelUI;
-import com.alee.extended.label.WebVerticalLabelUI;
-import com.alee.extended.tab.DocumentPaneState;
-import com.alee.global.StyleConstants;
-import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.button.WebToggleButtonUI;
-import com.alee.laf.checkbox.WebCheckBoxUI;
-import com.alee.laf.colorchooser.HSBColor;
-import com.alee.laf.colorchooser.WebColorChooserUI;
-import com.alee.laf.combobox.WebComboBoxUI;
-import com.alee.laf.desktoppane.WebDesktopIconUI;
-import com.alee.laf.desktoppane.WebDesktopPaneUI;
-import com.alee.laf.desktoppane.WebInternalFrameUI;
-import com.alee.laf.filechooser.WebFileChooserUI;
-import com.alee.laf.label.WebLabelUI;
+import com.alee.api.jdk.BiConsumer;
+import com.alee.extended.svg.SvgIcon;
+import com.alee.graphics.image.gif.GifIcon;
+import com.alee.laf.edt.ExceptionNonEventThreadHandler;
+import com.alee.laf.edt.NonEventThreadHandler;
+import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.list.WebListStyle;
-import com.alee.laf.list.WebListUI;
-import com.alee.laf.menu.*;
-import com.alee.laf.optionpane.WebOptionPaneUI;
-import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.progressbar.WebProgressBarUI;
-import com.alee.laf.radiobutton.WebRadioButtonUI;
-import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.laf.scroll.WebScrollBarStyle;
-import com.alee.laf.scroll.WebScrollBarUI;
-import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.laf.separator.WebSeparatorUI;
-import com.alee.laf.slider.WebSliderUI;
-import com.alee.laf.spinner.WebSpinnerUI;
-import com.alee.laf.splitpane.WebSplitPaneUI;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableStyle;
-import com.alee.laf.table.WebTableUI;
-import com.alee.laf.text.*;
-import com.alee.laf.toolbar.WebToolBarSeparatorUI;
-import com.alee.laf.toolbar.WebToolBarUI;
-import com.alee.laf.tooltip.WebToolTipUI;
-import com.alee.laf.tree.NodeState;
-import com.alee.laf.tree.TreeState;
-import com.alee.laf.tree.WebTreeUI;
-import com.alee.laf.viewport.WebViewportStyle;
-import com.alee.laf.viewport.WebViewportUI;
-import com.alee.managers.WebLafManagers;
+import com.alee.managers.UIManagers;
+import com.alee.managers.icon.Icons;
+import com.alee.managers.icon.LazyIcon;
+import com.alee.managers.style.ComponentDescriptor;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleManager;
+import com.alee.painter.Painter;
+import com.alee.skin.web.WebSkin;
 import com.alee.utils.*;
+import com.alee.utils.laf.WebBorder;
+import com.alee.utils.reflection.LazyInstance;
 import com.alee.utils.swing.SwingLazyValue;
+import com.alee.utils.swing.WeakComponentDataList;
 
 import javax.swing.*;
-import javax.swing.plaf.InsetsUIResource;
+import javax.swing.event.EventListenerList;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.image.BufferedImage;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
- * This core class contains methods to install, configure and uninstall WebLookAndFeel.
+ * LaF class containing methods to conveniently install, configure and uninstall WebLaF.
+ * Most of the configurations are provided by {@link StyleManager} as it contains actual list of supported components.
  *
  * @author Mikle Garin
+ * @see <a href="http://weblookandfeel.com/">WebLaF site</a>
+ * @see <a href="https://github.com/mgarin/weblaf">GitHub project</a>
+ * @see <a href="https://github.com/mgarin/weblaf/issues">Issues tracker</a>
+ * @see <a href="https://github.com/mgarin/weblaf/wiki">Project wiki</a>
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-build-WebLaF-from-sources">How to build WebLaF from sources</a>
  */
-
 public class WebLookAndFeel extends BasicLookAndFeel
 {
-    /**
-     * todo 1. Install default UI classes automatically (not manually) using SupportedComponent enumeration
-     */
-
     /**
      * If this client property is set to {@link Boolean#TRUE} on a component, UI delegates should follow the typical Swing behavior of not
      * overriding a user-defined border on it.
@@ -109,66 +76,175 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String PROPERTY_HONOR_USER_BORDERS = "WebLookAndFeel.honorUserBorders";
 
     /**
-     * Some known UI constants.
+     * Common Swing component properties.
      */
     public static final String LOOK_AND_FEEL_PROPERTY = "lookAndFeel";
-    public static final String ORIENTATION_PROPERTY = "componentOrientation";
+    public static final String UI_PROPERTY = "UI";
+    public static final String LAF_MARGIN_PROPERTY = "lafMargin";
+    public static final String LAF_PADDING_PROPERTY = "lafPadding";
+    public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
+    public static final String FOCUSABLE_PROPERTY = "focusable";
+    public static final String EDITABLE_PROPERTY = "editable";
     public static final String MODEL_PROPERTY = "model";
-    public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
-    public static final String TOOLBAR_ORIENTATION_PROPERTY = "orientation";
+    public static final String VIEWPORT_PROPERTY = "viewport";
+    public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
+    public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
+    public static final String TABLE_HEADER_PROPERTY = "tableHeader";
+    public static final String FLOATABLE_PROPERTY = "floatable";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
-    public static final String WINDOW_RESIZABLE_PROPERTY = "resizable";
-    public static final String WINDOW_ICON_PROPERTY = "iconImage";
-    public static final String WINDOW_TITLE_PROPERTY = "title";
+    public static final String RESIZABLE_PROPERTY = "resizable";
+    public static final String ICON_IMAGE_PROPERTY = "iconImage";
+    public static final String TITLE_PROPERTY = "title";
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
     public static final String OPAQUE_PROPERTY = "opaque";
+    public static final String OPACITY_PROPERTY = "opacity";
+    public static final String BORDER_PROPERTY = "border";
+    public static final String ICON_TEXT_GAP_PROPERTY = "iconTextGap";
+    public static final String MINIMUM_PROPERTY = "minimum";
+    public static final String MAXIMUM_PROPERTY = "maximum";
+    public static final String MINOR_TICK_SPACING_PROPERTY = "minorTickSpacing";
+    public static final String MAJOR_TICK_SPACING_PROPERTY = "majorTickSpacing";
     public static final String PAINTER_PROPERTY = "painter";
     public static final String RENDERER_PROPERTY = "renderer";
+    public static final String TEXT_PROPERTY = "text";
+    public static final String TIP_TEXT_PROPERTY = "tiptext";
+    public static final String FONT_PROPERTY = "font";
+    public static final String BACKGROUND_PROPERTY = "background";
+    public static final String FOREGROUND_PROPERTY = "foreground";
+    public static final String INDETERMINATE_PROPERTY = "indeterminate";
     public static final String DROP_LOCATION = "dropLocation";
+    public static final String ORIENTATION_PROPERTY = "orientation";
+    public static final String HORIZONTAL_ALIGNMENT_PROPERTY = "horizontalAlignment";
+    public static final String VERTICAL_ALIGNMENT_PROPERTY = "verticalAlignment";
+    public static final String LEADING_COMPONENT_PROPERTY = "leadingComponent";
+    public static final String TRAILING_COMPONENT_PROPERTY = "trailingComponent";
+    public static final String TABBED_PANE_STYLE_PROPERTY = "tabbedPaneStyle";
+    public static final String EDITOR_PROPERTY = "editor";
+    public static final String TRANSFER_HANDLER_PROPERTY = "transferHandler";
 
     /**
-     * List of WebLookAndFeel icons.
+     * Bound property name for tree data provider.
+     * Data provider is not supported by WebTree, but it is a base for various extensions so property is located here.
      */
-    private static List<ImageIcon> icons = null;
+    public final static String TREE_DATA_PROVIDER_PROPERTY = "dataProvider";
+
+    /**
+     * Bound property name for tree filter.
+     * Filtering is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_FILTER_PROPERTY = "filter";
+
+    /**
+     * Bound property name for tree comparator.
+     * Sorting is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_COMPARATOR_PROPERTY = "comparator";
+
+    /**
+     * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
+     * Enabling this might allow you to find out places where you try to interact with UI elements outside of the EDT.
+     * By default it is disabled to avoid issues this might cause in different applications not following proper Swing design patterns.
+     *
+     * JavaFX has a similar check enabled by default which would cause an exception whenever you try to access UI elements outside of the
+     * JavaFX thread which you can ask to execute any code through Platform class.
+     */
+    protected static boolean forceSingleEventsThread = false;
+
+    /**
+     * Whether or not library should also enforce Event Dispatch Thread usage for {@link Component} events.
+     * Enabling this might allow you to find out places where you are firing {@link Component} events outside of EDT.
+     * By default it is disabled to avoid affecting application performance.
+     */
+    protected static boolean useStrictEventThreadListeners = false;
+
+    /**
+     * Forced Event Dispatch Thread lsiteners mix.
+     */
+    protected static final StrictEventThreadListeners STRICT_EDT_LISTENERS = new StrictEventThreadListeners ();
+
+    /**
+     * Special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     */
+    protected static NonEventThreadHandler nonEventThreadHandler = new ExceptionNonEventThreadHandler ();
+
+    /**
+     * {@link WebLookAndFeel} icons.
+     */
+    protected static List<ImageIcon> icons = null;
 
     /**
      * Disabled icons cache.
      */
-    private static final Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
+    protected static final Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
 
     /**
      * Alt hotkey processor for application windows with menu.
      */
-    public static final AltProcessor altProcessor = new AltProcessor ();
+    protected static final AltProcessor altProcessor = new AltProcessor ();
 
     /**
      * Whether to hide component mnemonics by default or not.
      */
-    private static boolean isMnemonicHidden = true;
+    protected static boolean isMnemonicHidden = true;
 
     /**
-     * Whether all frames should be decorated using WebLaF styling by default or not.
+     * Whether or not component's custom {@link Shape}s should be used for better mouse events detection.
+     * This option basically enhances {@link JComponent#contains(int, int)} method to be able to detect component {@link Shape}s.
+     *
+     * Downside of this enhancement is a slightly reduced overall mouse events performance, although it shouldn't be noticeable on the UI.
+     * Actual difference is between 0.5 and 2-4 microseconds per {@link JComponent#contains(int, int)} call.
+     * This might seem to be a lot and mouse movement over UI indeed generates a lot of mouse events which in turn do multiple calls to
+     * {@link JComponent#contains(int, int)}, but those are still far from hitting the point where it will affect UI responsiveness.
+     *
+     * Best solution overall - if you want to both keep performance and have neat shapes detection - is to enable this settings only
+     * for certain components while leaving this feature disabled for others. It is possible to do just that using
+     * {@link com.alee.managers.style.ShapeSupport} API available in all WebLaF components and providing the setting through component
+     * style - that way you will ensure that it is enabled only for components that actually use some sort of complex shape.
+     *
+     * @see com.alee.painter.PainterSupport#contains(JComponent, ComponentUI, Painter, int, int)
+     * @see com.alee.managers.style.ShapeSupport
      */
-    private static boolean decorateFrames = false;
+    protected static boolean shapeDetectionEnabled = true;
 
     /**
-     * Whether all dialogs should be decorated using WebLaF styling by default or not.
+     * Global {@link EventListenerList} for various listeners that can be registered for some global events.
+     *
+     * @see #visibleWindowListeners
+     * @see #addVisibleWindowListener(VisibleWindowListener)
+     * @see #removeVisibleWindowListener(VisibleWindowListener)
      */
-    private static boolean decorateDialogs = false;
+    protected static final EventListenerList globalListeners = new EventListenerList ();
 
     /**
-     * Default scroll mode used by JViewportUI to handle scrolling repaints.
-     * It is different in WebLaF by default due to issues in other scroll mode on some OS.
-     * <p/>
-     * Some information about scroll modes:
-     * BLIT_SCROLL_MODE - handles all cases pretty well, but has some issues on Win 8 earlier versions
-     * BACKINGSTORE_SCROLL_MODE - doesn't allow viewport transparency
-     * SIMPLE_SCROLL_MODE - pretty slow since it fully repaints scrolled area with each move
+     * Special per-{@link JComponent} listeners for tracking visibility changes of any Swing windows within application.
+     * Since there is no good way to track Swing {@link Window}s creation and destruction {@link com.alee.laf.rootpane.WebRootPaneUI}
+     * has the tracking implementation instead as the closest element to almost any common {@link Window} being opened.
+     *
+     * Due to specifics of the implementation it only tracks next types of components:
+     * - {@link JDialog}
+     * - {@link JFrame}
+     * - {@link JWindow}
+     * - {@link JPopupMenu} all of its use cases
+     *
+     * Next types of components are not tracked (basically raw AWT types):
+     * - {@link Window}
+     * - {@link Dialog}
+     * - {@link Frame}
+     *
+     * @see #addVisibleWindowListener(JComponent, VisibleWindowListener)
+     * @see #removeVisibleWindowListener(JComponent, VisibleWindowListener)
      */
-    private static int scrollMode = JViewport.BLIT_SCROLL_MODE;
+    protected static final WeakComponentDataList<JComponent, VisibleWindowListener> visibleWindowListeners =
+            new WeakComponentDataList<JComponent, VisibleWindowListener> ( "WebLookAndFeel.VisibleWindowListener", 50 );
+
+    /**
+     * Previously installed {@link LookAndFeel}.
+     * Used within {@link #uninstall()} call to restore previous LaF.
+     */
+    protected static Class<? extends LookAndFeel> previousLookAndFeelClass;
 
     /**
      * Globally applied orientation.
@@ -178,127 +254,38 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @see #setOrientation(java.awt.ComponentOrientation)
      * @see #setOrientation(boolean)
      */
-    private static ComponentOrientation orientation;
-
-    /**
-     * Reassignable LookAndFeel UI class names.
-     */
-
-    /**
-     * Label-related components.
-     */
-    public static String labelUI = WebLabelUI.class.getCanonicalName ();
-    // public static String linkLabelUI = WebLabelUI.class.getCanonicalName ();
-    public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
-    public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
-    public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
-    public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
-
-    /**
-     * Button-related components.
-     */
-    public static String buttonUI = WebButtonUI.class.getCanonicalName ();
-    public static String splitButtonUI = WebSplitButtonUI.class.getCanonicalName ();
-    public static String toggleButtonUI = WebToggleButtonUI.class.getCanonicalName ();
-    public static String checkBoxUI = WebCheckBoxUI.class.getCanonicalName ();
-    public static String tristateCheckBoxUI = WebTristateCheckBoxUI.class.getCanonicalName ();
-    public static String radioButtonUI = WebRadioButtonUI.class.getCanonicalName ();
-
-    /**
-     * Menu-related components.
-     */
-    public static String menuBarUI = WebMenuBarUI.class.getCanonicalName ();
-    public static String menuUI = WebMenuUI.class.getCanonicalName ();
-    public static String popupMenuUI = WebPopupMenuUI.class.getCanonicalName ();
-    public static String menuItemUI = WebMenuItemUI.class.getCanonicalName ();
-    public static String checkBoxMenuItemUI = WebCheckBoxMenuItemUI.class.getCanonicalName ();
-    public static String radioButtonMenuItemUI = WebRadioButtonMenuItemUI.class.getCanonicalName ();
-    public static String popupMenuSeparatorUI = WebPopupMenuSeparatorUI.class.getCanonicalName ();
-
-    /**
-     * Separator component.
-     */
-    public static String separatorUI = WebSeparatorUI.class.getCanonicalName ();
-
-    /**
-     * Scroll-related components.
-     */
-    public static String scrollBarUI = WebScrollBarUI.class.getCanonicalName ();
-    public static String scrollPaneUI = WebScrollPaneUI.class.getCanonicalName ();
-    public static String viewportUI = WebViewportUI.class.getCanonicalName ();
-
-    /**
-     * Text-related components.
-     */
-    public static String textFieldUI = WebTextFieldUI.class.getCanonicalName ();
-    public static String passwordFieldUI = WebPasswordFieldUI.class.getCanonicalName ();
-    public static String formattedTextFieldUI = WebFormattedTextFieldUI.class.getCanonicalName ();
-    public static String textAreaUI = WebTextAreaUI.class.getCanonicalName ();
-    public static String editorPaneUI = WebEditorPaneUI.class.getCanonicalName ();
-    public static String textPaneUI = WebTextPaneUI.class.getCanonicalName ();
-
-    /**
-     * Toolbar-related components.
-     */
-    public static String toolBarUI = WebToolBarUI.class.getCanonicalName ();
-    public static String toolBarSeparatorUI = WebToolBarSeparatorUI.class.getCanonicalName ();
-
-    /**
-     * Table-related components.
-     */
-    public static String tableUI = WebTableUI.class.getCanonicalName ();
-    public static String tableHeaderUI = WebTableHeaderUI.class.getCanonicalName ();
-
-    /**
-     * Chooser components.
-     */
-    public static String colorChooserUI = WebColorChooserUI.class.getCanonicalName ();
-    public static String fileChooserUI = WebFileChooserUI.class.getCanonicalName ();
-
-    /**
-     * Container-related components.
-     */
-    public static String panelUI = WebPanelUI.class.getCanonicalName ();
-    public static String rootPaneUI = WebRootPaneUI.class.getCanonicalName ();
-    public static String tabbedPaneUI = WebTabbedPaneUI.class.getCanonicalName ();
-    public static String splitPaneUI = WebSplitPaneUI.class.getCanonicalName ();
-
-    /**
-     * Other data-related components.
-     */
-    public static String progressBarUI = WebProgressBarUI.class.getCanonicalName ();
-    public static String sliderUI = WebSliderUI.class.getCanonicalName ();
-    public static String spinnerUI = WebSpinnerUI.class.getCanonicalName ();
-    public static String treeUI = WebTreeUI.class.getCanonicalName ();
-    public static String listUI = WebListUI.class.getCanonicalName ();
-    public static String comboBoxUI = WebComboBoxUI.class.getCanonicalName ();
-
-    /**
-     * Desktop-pane-related components.
-     */
-    public static String desktopPaneUI = WebDesktopPaneUI.class.getCanonicalName ();
-    public static String desktopIconUI = WebDesktopIconUI.class.getCanonicalName ();
-    public static String internalFrameUI = WebInternalFrameUI.class.getCanonicalName ();
-
-    /**
-     * Option pane component.
-     */
-    public static String optionPaneUI = WebOptionPaneUI.class.getCanonicalName ();
+    protected static ComponentOrientation orientation;
 
     /**
      * Reassignable LookAndFeel fonts.
+     * @see NativeFonts
      */
 
-    // Text components fonts
-    public static Font globalControlFont = WebFonts.getSystemControlFont ();
+    /**
+     * @see ControlType#CONTROL
+     */
+    public static Font globalControlFont = NativeFonts.get ( ControlType.CONTROL );
+    public static Font canvasFont;
+    public static Font imageFont;
     public static Font buttonFont;
+    public static Font splitButtonFont;
     public static Font toggleButtonFont;
-    public static Font radioButtonFont;
     public static Font checkBoxFont;
+    public static Font tristateCheckBoxFont;
+    public static Font radioButtonFont;
+    public static Font comboBoxFont;
+    public static Font spinnerFont;
+    public static Font textFieldFont;
+    public static Font formattedTextFieldFont;
+    public static Font passwordFieldFont;
     public static Font colorChooserFont;
+    public static Font fileChooserFont;
     public static Font labelFont;
+    public static Font styledLabelFont;
+    public static Font linkFont;
     public static Font listFont;
     public static Font panelFont;
+    public static Font popupFont;
     public static Font progressBarFont;
     public static Font scrollPaneFont;
     public static Font viewportFont;
@@ -307,84 +294,92 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static Font tableFont;
     public static Font tableHeaderFont;
     public static Font titledBorderFont;
-    public static Font toolBarFont;
     public static Font treeFont;
 
-    public static Font globalTooltipFont = WebFonts.getSystemTooltipFont ();
+    /**
+     * @see ControlType#TEXT
+     */
+    public static Font globalTextFont = NativeFonts.get ( ControlType.TEXT );
+    public static Font textAreaFont;
+    public static Font textPaneFont;
+    public static Font editorPaneFont;
+
+    /**
+     * @see ControlType#TOOLTIP
+     */
+    public static Font globalTooltipFont = NativeFonts.get ( ControlType.TOOLTIP );
     public static Font toolTipFont;
 
-    // Option pane font
-    public static Font globalAlertFont = WebFonts.getSystemAlertFont ();
-    public static Font optionPaneFont;
-
-    // Menu font
-    public static Font globalMenuFont = WebFonts.getSystemMenuFont ();
+    /**
+     * @see ControlType#MENU
+     */
+    public static Font globalMenuFont = NativeFonts.get ( ControlType.MENU );
     public static Font menuBarFont;
     public static Font menuFont;
     public static Font menuItemFont;
     public static Font radioButtonMenuItemFont;
     public static Font checkBoxMenuItemFont;
     public static Font popupMenuFont;
+    public static Font toolBarFont;
 
-    // Component's accelerators fonts
-    public static Font globalAcceleratorFont = WebFonts.getSystemAcceleratorFont ();
+    /**
+     * @see ControlType#MENU_SMALL
+     */
+    public static Font globalMenuSmallFont = NativeFonts.get ( ControlType.MENU_SMALL );
+    public static Font menuAcceleratorFont;
     public static Font menuItemAcceleratorFont;
     public static Font radioButtonMenuItemAcceleratorFont;
     public static Font checkBoxMenuItemAcceleratorFont;
-    public static Font menuAcceleratorFont;
-
-    // Title components fonts
-    public static Font globalTitleFont = WebFonts.getSystemTitleFont ();
-    public static Font internalFrameFont;
-
-    // Editor components fonts
-    public static Font globalTextFont = WebFonts.getSystemTextFont ();
-    public static Font comboBoxFont;
-    public static Font spinnerFont;
-    public static Font textFieldFont;
-    public static Font formattedTextFieldFont;
-    public static Font passwordFieldFont;
-    public static Font textAreaFont;
-    public static Font textPaneFont;
-    public static Font editorPaneFont;
 
     /**
-     * Returns WebLookAndFeel name.
+     * @see ControlType#WINDOW
+     */
+    public static Font globalWindowFont = NativeFonts.get ( ControlType.WINDOW );
+    public static Font internalFrameFont;
+
+    /**
+     * @see ControlType#MESSAGE
+     */
+    public static Font globalMessageFont = NativeFonts.get ( ControlType.MESSAGE );
+    public static Font optionPaneFont;
+
+    /**
+     * Returns {@link WebLookAndFeel} name.
      *
-     * @return WebLookAndFeel name
+     * @return {@link WebLookAndFeel} name
      */
     @Override
     public String getName ()
     {
-        return "WebLookAndFeel";
+        return "WebLaF";
     }
 
     /**
-     * Returns unique WebLookAndFeel ID.
+     * Returns unique {@link WebLookAndFeel} identifier.
      *
-     * @return unique WebLookAndFeel ID
+     * @return unique {@link WebLookAndFeel} identifier
      */
     @Override
     public String getID ()
     {
-        return "WebLookAndFeel";
+        return "weblaf";
     }
 
     /**
-     * Returns short WebLookAndFeel description.
+     * Returns short {@link WebLookAndFeel} description.
      *
-     * @return short WebLookAndFeel description
+     * @return short {@link WebLookAndFeel} description
      */
     @Override
     public String getDescription ()
     {
-        return "Cross-platform stylish Look and Feel";
+        return "Styleable cross-platform Look and Feel for Swing applications";
     }
 
     /**
-     * Always returns false since WebLookAndFeel is not native for any platform.
+     * Always returns {@code false} since {@link WebLookAndFeel} is not native for any platform.
      *
-     * @return false
+     * @return {@code false}
      */
     @Override
     public boolean isNativeLookAndFeel ()
@@ -393,9 +388,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Always returns true since WebLookAndFeel supports any platform which can run Java applications.
+     * Always returns {@code true} since {@link WebLookAndFeel} supports any platform which can run Java applications.
      *
-     * @return true
+     * @return {@code true}
      */
     @Override
     public boolean isSupportedLookAndFeel ()
@@ -404,9 +399,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns whether window decorations are supported for undelying system.
+     * Always returns {@code true} since {@link WebLookAndFeel} supports window decorations under all platforms.
      *
-     * @return true if window decorations are supported for undelying system, false otherwise
+     * @return {@code true} since {@link WebLookAndFeel} supports window decorations under all platforms
      */
     @Override
     public boolean getSupportsWindowDecorations ()
@@ -415,87 +410,48 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Initializes WebLookAndFeel UI classes.
+     * Initializes custom WebLookAndFeel features.
+     */
+    @Override
+    public void initialize ()
+    {
+        // Initializing WebLaF managers
+        initializeManagers ();
+
+        // Inititalizes default LaF settings
+        super.initialize ();
+
+        // Listening to ALT key for menubar quick focusing
+        KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
+    }
+
+    /**
+     * Uninititalizes custom WebLookAndFeel features.
+     */
+    @Override
+    public void uninitialize ()
+    {
+        // Uninititalizes default LaF settings
+        super.uninitialize ();
+
+        // Removing alt processor
+        KeyboardFocusManager.getCurrentKeyboardFocusManager ().removeKeyEventPostProcessor ( altProcessor );
+    }
+
+    /**
+     * Initializes {@link WebLookAndFeel} UI classes.
      *
-     * @param table UIDefaults table
+     * @param table {@link UIDefaults} table
      */
     @Override
     protected void initClassDefaults ( final UIDefaults table )
     {
-        // Label
-        table.put ( "LabelUI", labelUI );
-        // table.put ( "LinkLabelUI", linkLabelUI );
-        table.put ( "VerticalLabelUI", verticalLabelUI );
-        table.put ( "MultiLineLabelUI", multiLineLabelUI );
-        table.put ( "StyledLabelUI", styledLabelUI );
-        table.put ( "ToolTipUI", toolTipUI );
-
-        // Button
-        table.put ( "ButtonUI", buttonUI );
-        table.put ( "SplitButtonUI", splitButtonUI );
-        table.put ( "ToggleButtonUI", toggleButtonUI );
-        table.put ( "CheckBoxUI", checkBoxUI );
-        table.put ( "TristateCheckBoxUI", tristateCheckBoxUI );
-        table.put ( "RadioButtonUI", radioButtonUI );
-
-        // Menu
-        table.put ( "MenuBarUI", menuBarUI );
-        table.put ( "MenuUI", menuUI );
-        table.put ( "PopupMenuUI", popupMenuUI );
-        table.put ( "MenuItemUI", menuItemUI );
-        table.put ( "CheckBoxMenuItemUI", checkBoxMenuItemUI );
-        table.put ( "RadioButtonMenuItemUI", radioButtonMenuItemUI );
-        table.put ( "PopupMenuSeparatorUI", popupMenuSeparatorUI );
-
-        // Separator
-        table.put ( "SeparatorUI", separatorUI );
-
-        // Scroll
-        table.put ( "ScrollBarUI", scrollBarUI );
-        table.put ( "ScrollPaneUI", scrollPaneUI );
-        table.put ( "ViewportUI", viewportUI );
-
-        // Text
-        table.put ( "TextFieldUI", textFieldUI );
-        table.put ( "PasswordFieldUI", passwordFieldUI );
-        table.put ( "FormattedTextFieldUI", formattedTextFieldUI );
-        table.put ( "TextAreaUI", textAreaUI );
-        table.put ( "EditorPaneUI", editorPaneUI );
-        table.put ( "TextPaneUI", textPaneUI );
-
-        // Toolbar
-        table.put ( "ToolBarUI", toolBarUI );
-        table.put ( "ToolBarSeparatorUI", toolBarSeparatorUI );
-
-        // Table
-        table.put ( "TableUI", tableUI );
-        table.put ( "TableHeaderUI", tableHeaderUI );
-
-        // Chooser
-        table.put ( "ColorChooserUI", colorChooserUI );
-        table.put ( "FileChooserUI", fileChooserUI );
-
-        // Container
-        table.put ( "PanelUI", panelUI );
-        table.put ( "RootPaneUI", rootPaneUI );
-        table.put ( "TabbedPaneUI", tabbedPaneUI );
-        table.put ( "SplitPaneUI", splitPaneUI );
-
-        // Complex components
-        table.put ( "ProgressBarUI", progressBarUI );
-        table.put ( "SliderUI", sliderUI );
-        table.put ( "SpinnerUI", spinnerUI );
-        table.put ( "TreeUI", treeUI );
-        table.put ( "ListUI", listUI );
-        table.put ( "ComboBoxUI", comboBoxUI );
-
-        // Desktop pane
-        table.put ( "DesktopPaneUI", desktopPaneUI );
-        table.put ( "DesktopIconUI", desktopIconUI );
-        table.put ( "InternalFrameUI", internalFrameUI );
-
-        // Option pane
-        table.put ( "OptionPaneUI", optionPaneUI );
+        // Dynamically provided UI classes
+        for ( final ComponentDescriptor descriptor : StyleManager.getDescriptors () )
+        {
+            // Asking each descriptor to perform an update
+            descriptor.updateDefaults ( table );
+        }
     }
 
     /**
@@ -509,13 +465,19 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initSystemColorDefaults ( table );
 
-        final String textColor = ColorUtils.getHexColor ( StyleConstants.textColor );
-        final String textHighlightColor = ColorUtils.getHexColor ( StyleConstants.textSelectionColor );
-        final String inactiveTextColor = ColorUtils.getHexColor ( StyleConstants.disabledTextColor );
+        final String menuColor = ColorUtils.toHex ( Color.WHITE );
+        final String textColor = ColorUtils.toHex ( Color.BLACK );
+        final String textHighlightColor = ColorUtils.toHex ( new Color ( 210, 210, 210 ) );
+        final String inactiveTextColor = ColorUtils.toHex ( new Color ( 160, 160, 160 ) );
 
-        final String[] defaultSystemColors =
-                { "menu", "#ffffff", "menuText", textColor, "textHighlight", textHighlightColor, "textHighlightText", textColor,
-                        "textInactiveText", inactiveTextColor, "controlText", textColor, };
+        final String[] defaultSystemColors = {
+                "menu", menuColor,
+                "menuText", textColor,
+                "textHighlight", textHighlightColor,
+                "textHighlightText", textColor,
+                "textInactiveText", inactiveTextColor,
+                "controlText", textColor,
+        };
 
         loadSystemColors ( table, defaultSystemColors, isNativeLookAndFeel () );
     }
@@ -526,102 +488,88 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ("UnnecessaryBoxing")
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
         super.initComponentDefaults ( table );
 
         // Global text antialiasing
-        ProprietaryUtils.setupUIDefaults ( table );
+        ProprietaryUtils.setupAATextInfo ( table );
 
         // Fonts
         initializeFonts ( table );
 
-        // Mnemonics
+        // Button mnemonics display
         table.put ( "Button.showMnemonics", Boolean.TRUE );
-
-        // Whether focused button should become default in frame or not
+        // Button should become default in frame
         table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
 
-        // JLabels
-        final Color controlText = table.getColor ( "controlText" );
-        table.put ( "Label.foreground", controlText );
-        table.put ( "Label.disabledForeground", StyleConstants.disabledTextColor );
+        // Split button
+        table.put ( "SplitButton.defaultButtonFollowsFocus", Boolean.FALSE );
+        table.put ( "SplitButton.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", "pressed",
+                "released SPACE", "released",
+                "ENTER", "pressed",
+                "released ENTER", "released"
+        } ) );
 
-        // JTextFields
-        final Object textComponentBorder =
-                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource", new Object[]{ StyleConstants.shadeColor } );
-        table.put ( "TextField.border", textComponentBorder );
+        // Tristate checkbox
+        table.put ( "TristateCheckBox.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", "pressed",
+                "released SPACE", "released"
+        } ) );
 
-        // JTextAreas
-        table.put ( "TextArea.border", textComponentBorder );
-
-        // JEditorPanes
-        table.put ( "EditorPane.border", textComponentBorder );
-
-        // JTextPanes
-        table.put ( "TextPane.border", textComponentBorder );
+        // Split pane
+        table.put ( "SplitPane.dividerSize", 2 );
 
         // Option pane
-        table.put ( "OptionPane.messageAreaBorder",
-                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource", new Object[]{ 0, 0, 5, 0 } ) );
         table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );
 
         // HTML image icons
-        table.put ( "html.pendingImage", StyleConstants.htmlPendingIcon );
-        table.put ( "html.missingImage", StyleConstants.htmlMissingIcon );
-
-        // Scroll bars minimum size
-        table.put ( "ScrollBar.minimumThumbSize", new Dimension ( WebScrollBarStyle.minThumbWidth, WebScrollBarStyle.minThumbHeight ) );
-        table.put ( "ScrollBar.width", new Integer ( 10 ) );
+        table.put ( "html.pendingImage", Icons.hourglass );
+        table.put ( "html.missingImage", Icons.broken );
 
         // Tree icons
-        table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );
-        table.put ( "Tree.closedIcon", WebTreeUI.CLOSED_ICON );
-        table.put ( "Tree.leafIcon", WebTreeUI.LEAF_ICON );
-        table.put ( "Tree.collapsedIcon", WebTreeUI.EXPAND_ICON );
-        table.put ( "Tree.expandedIcon", WebTreeUI.COLLAPSE_ICON );
+        table.put ( "Tree.closedIcon", Icons.folder );
+        table.put ( "Tree.openIcon", Icons.folderOpen );
+        table.put ( "Tree.leafIcon", Icons.leaf );
+        table.put ( "Tree.collapsedIcon", Icons.squarePlus );
+        table.put ( "Tree.expandedIcon", Icons.squareMinus );
         // Tree default selection style
-        table.put ( "Tree.textForeground", Color.BLACK );
-        table.put ( "Tree.textBackground", StyleConstants.transparent );
-        table.put ( "Tree.selectionForeground", Color.BLACK );
-        table.put ( "Tree.selectionBackground", StyleConstants.transparent );
-        table.put ( "Tree.selectionBorderColor", StyleConstants.transparent );
-        table.put ( "Tree.dropCellBackground", StyleConstants.transparent );
+        table.put ( "Tree.textForeground", new ColorUIResource ( Color.BLACK ) );
+        table.put ( "Tree.textBackground", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.selectionForeground", new ColorUIResource ( Color.BLACK ) );
+        table.put ( "Tree.selectionBackground", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.selectionBorderColor", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
+        table.put ( "Tree.dropCellBackground", new ColorUIResource ( new Color ( 255, 255, 255, 0 ) ) );
         // Tree default renderer content margins
-        table.put ( "Tree.rendererMargins", new InsetsUIResource ( 4, 4, 4, 6 ) );
         table.put ( "Tree.rendererFillBackground", Boolean.FALSE );
         table.put ( "Tree.drawsFocusBorderAroundIcon", Boolean.FALSE );
         table.put ( "Tree.drawDashedFocusIndicator", Boolean.FALSE );
         // Tree lines indent
-        table.put ( "Tree.leftChildIndent", new Integer ( 12 ) );
-        table.put ( "Tree.rightChildIndent", new Integer ( 12 ) );
+        table.put ( "Tree.leftChildIndent", 12 );
+        table.put ( "Tree.rightChildIndent", 12 );
         table.put ( "Tree.lineTypeDashed", Boolean.TRUE );
 
-        // JMenu expand spacing
+        // Menu expand spacing
         // Up-down menu expand
-        table.put ( "Menu.menuPopupOffsetX", new Integer ( 0 ) );
-        table.put ( "Menu.menuPopupOffsetY", new Integer ( 0 ) );
+        table.put ( "Menu.menuPopupOffsetX", 0 );
+        table.put ( "Menu.menuPopupOffsetY", 0 );
         // Left-right menu expand
-        table.put ( "Menu.submenuPopupOffsetX", new Integer ( 0 ) );
-        table.put ( "Menu.submenuPopupOffsetY", new Integer ( 0 ) );
+        table.put ( "Menu.submenuPopupOffsetX", 0 );
+        table.put ( "Menu.submenuPopupOffsetY", 0 );
 
-        // JViewport
-        table.put ( "Viewport.background", WebViewportStyle.background );
+        // OptionPane
+        table.put ( "OptionPane.buttonClickThreshold", 500 );
 
         // Table defaults
-        table.put ( "Table.cellNoFocusBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.focusSelectedCellHighlightBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.focusCellHighlightBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.foreground", WebTableStyle.foreground );
-        table.put ( "Table.background", WebTableStyle.background );
-        table.put ( "Table.selectionForeground", WebTableStyle.selectionForeground );
-        table.put ( "Table.selectionBackground", WebTableStyle.selectionBackground );
+        table.put ( "Table.cellNoFocusBorder", new WebBorder ( 1, 1, 1, 1 ) );
+        table.put ( "Table.focusSelectedCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
+        table.put ( "Table.focusCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
         table.put ( "Table.scrollPaneBorder", null );
         // Table header defaults
-        table.put ( "TableHeader.cellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
-        table.put ( "TableHeader.focusCellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
+        table.put ( "TableHeader.cellBorder", new WebBorder ( 0, 10, 1, 10 ) );
+        table.put ( "TableHeader.focusCellBorder", new WebBorder ( 0, 10, 1, 10 ) );
 
         // Default list renderer
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()
@@ -629,127 +577,245 @@ public class WebLookAndFeel extends BasicLookAndFeel
             @Override
             public Object createValue ( final UIDefaults table )
             {
-                return new WebListCellRenderer.UIResource ();
+                return new WebListCellRenderer.UIResource<Object, JList, ListCellParameters<Object, JList>> ();
             }
         } );
-        // List selection foreground
-        table.put ( "List.selectionForeground", WebListStyle.foreground );
 
-        // Combobox selection foregrounds
-        table.put ( "ComboBox.selectionForeground", Color.BLACK );
-        // Combobox non-square arrow
+        // ComboBox selection foregrounds
+        table.put ( "ComboBox.selectionForeground", new ColorUIResource ( Color.BLACK ) );
+        // ComboBox non-square arrow
         table.put ( "ComboBox.squareButton", false );
-        // Combobox empty padding
-        table.put ( "ComboBox.padding", new InsetsUIResource ( 0, 0, 0, 0 ) );
+        // ComboBox empty padding
+        table.put ( "ComboBox.padding", null );
 
         // Default components borders
-        table.put ( "ProgressBar.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getProgressBarBorder" ) );
-        table.put ( "Button.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getButtonBorder" ) );
+        table.put ( "ProgressBar.border", null );
+        table.put ( "Button.border", null );
 
-        // WebTextField actions
-        table.put ( "TextField.focusInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "control C", DefaultEditorKit.copyAction, "control V", DefaultEditorKit.pasteAction, "control X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "control A",
-                        DefaultEditorKit.selectAllAction, "control BACK_SLASH", "unselect"
-                        /*DefaultEditorKit.unselectAction*/, "shift LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
-                        DefaultEditorKit.selectionForwardAction, "control LEFT", DefaultEditorKit.previousWordAction, "control RIGHT",
-                        DefaultEditorKit.nextWordAction, "control shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
-                        "control shift RIGHT", DefaultEditorKit.selectionNextWordAction, "HOME", DefaultEditorKit.beginLineAction, "END",
-                        DefaultEditorKit.endLineAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
-                        DefaultEditorKit.selectionEndLineAction, "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE",
-                        DefaultEditorKit.deletePrevCharAction, "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE",
-                        DefaultEditorKit.deleteNextCharAction, "ctrl DELETE", DefaultEditorKit.deleteNextWordAction, "ctrl BACK_SPACE",
-                        DefaultEditorKit.deletePrevWordAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
-                        DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
-                        DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
+        // TextField actions
+        table.put ( "TextField.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "control C", DefaultEditorKit.copyAction,
+                "control V", DefaultEditorKit.pasteAction,
+                "control X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "control A", DefaultEditorKit.selectAllAction,
+                "control BACK_SLASH", "unselect" /*DefaultEditorKit.unselectAction*/,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "control LEFT", DefaultEditorKit.previousWordAction,
+                "control RIGHT", DefaultEditorKit.nextWordAction,
+                "control shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "control shift RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "HOME", DefaultEditorKit.beginAction,
+                "END", DefaultEditorKit.endAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "ctrl DELETE", DefaultEditorKit.deleteNextWordAction,
+                "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "ENTER", JTextField.notifyAction,
+                "control shift O", "toggle-componentOrientation" /*DefaultEditorKit.toggleComponentOrientation*/
+        } ) );
 
-        // WebPasswordField actions
-        table.put ( "PasswordField.focusInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "control C", DefaultEditorKit.copyAction, "control V", DefaultEditorKit.pasteAction, "control X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "control A",
-                        DefaultEditorKit.selectAllAction, "control BACK_SLASH", "unselect"
-                        /*DefaultEditorKit.unselectAction*/, "shift LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
-                        DefaultEditorKit.selectionForwardAction, "control LEFT", DefaultEditorKit.beginLineAction, "control RIGHT",
-                        DefaultEditorKit.endLineAction, "control shift LEFT", DefaultEditorKit.selectionBeginLineAction,
-                        "control shift RIGHT", DefaultEditorKit.selectionEndLineAction, "HOME", DefaultEditorKit.beginLineAction, "END",
-                        DefaultEditorKit.endLineAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
-                        DefaultEditorKit.selectionEndLineAction, "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE",
-                        DefaultEditorKit.deletePrevCharAction, "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE",
-                        DefaultEditorKit.deleteNextCharAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
-                        DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
-                        DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
+        // PasswordField actions
+        table.put ( "PasswordField.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "control C", DefaultEditorKit.copyAction,
+                "control V", DefaultEditorKit.pasteAction,
+                "control X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "control A", DefaultEditorKit.selectAllAction,
+                "control BACK_SLASH", "unselect" /*DefaultEditorKit.unselectAction*/,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "control LEFT", DefaultEditorKit.beginLineAction,
+                "control RIGHT", DefaultEditorKit.endLineAction,
+                "control shift LEFT", DefaultEditorKit.selectionBeginLineAction,
+                "control shift RIGHT", DefaultEditorKit.selectionEndLineAction,
+                "HOME", DefaultEditorKit.beginAction,
+                "END", DefaultEditorKit.endAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "ENTER", JTextField.notifyAction,
+                "control shift O", "toggle-componentOrientation" /*DefaultEditorKit.toggleComponentOrientation*/
+        } ) );
 
-        // WebFormattedTextField actions
-        table.put ( "FormattedTextField.focusInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "ctrl C", DefaultEditorKit.copyAction, "ctrl V", DefaultEditorKit.pasteAction, "ctrl X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "shift LEFT",
-                        DefaultEditorKit.selectionBackwardAction, "shift KP_LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
-                        DefaultEditorKit.selectionForwardAction, "shift KP_RIGHT", DefaultEditorKit.selectionForwardAction, "ctrl LEFT",
-                        DefaultEditorKit.previousWordAction, "ctrl KP_LEFT", DefaultEditorKit.previousWordAction, "ctrl RIGHT",
-                        DefaultEditorKit.nextWordAction, "ctrl KP_RIGHT", DefaultEditorKit.nextWordAction, "ctrl shift LEFT",
-                        DefaultEditorKit.selectionPreviousWordAction, "ctrl shift KP_LEFT", DefaultEditorKit.selectionPreviousWordAction,
-                        "ctrl shift RIGHT", DefaultEditorKit.selectionNextWordAction, "ctrl shift KP_RIGHT",
-                        DefaultEditorKit.selectionNextWordAction, "ctrl A", DefaultEditorKit.selectAllAction, "HOME",
-                        DefaultEditorKit.beginLineAction, "END", DefaultEditorKit.endLineAction, "shift HOME",
-                        DefaultEditorKit.selectionBeginLineAction, "shift END", DefaultEditorKit.selectionEndLineAction, "BACK_SPACE",
-                        DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "ctrl H",
-                        DefaultEditorKit.deletePrevCharAction, "DELETE", DefaultEditorKit.deleteNextCharAction, "ctrl DELETE",
-                        DefaultEditorKit.deleteNextWordAction, "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction, "RIGHT",
-                        DefaultEditorKit.forwardAction, "LEFT", DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction,
-                        "KP_LEFT", DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "ctrl BACK_SLASH", "unselect",
-                        "control shift O", "toggle-componentOrientation", "ESCAPE", "reset-field-edit", "UP", "increment", "KP_UP",
-                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", } ) );
+        // FormattedTextField actions
+        table.put ( "FormattedTextField.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "ctrl C", DefaultEditorKit.copyAction,
+                "ctrl V", DefaultEditorKit.pasteAction,
+                "ctrl X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift KP_LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "shift KP_RIGHT", DefaultEditorKit.selectionForwardAction,
+                "ctrl LEFT", DefaultEditorKit.previousWordAction,
+                "ctrl KP_LEFT", DefaultEditorKit.previousWordAction,
+                "ctrl RIGHT", DefaultEditorKit.nextWordAction,
+                "ctrl KP_RIGHT", DefaultEditorKit.nextWordAction,
+                "ctrl shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "ctrl shift KP_LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "ctrl shift RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "ctrl shift KP_RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "ctrl A", DefaultEditorKit.selectAllAction,
+                "HOME", DefaultEditorKit.beginAction,
+                "END", DefaultEditorKit.endAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "ctrl DELETE", DefaultEditorKit.deleteNextWordAction,
+                "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "ENTER", JTextField.notifyAction,
+                "ctrl BACK_SLASH", "unselect",
+                "control shift O", "toggle-componentOrientation",
+                "ESCAPE", "reset-field-edit",
+                "UP", "increment",
+                "KP_UP", "increment",
+                "DOWN", "decrement",
+                "KP_DOWN", "decrement",
+        } ) );
 
-        // Multiline areas actions
-        final Object multilineInputMap = new UIDefaults.LazyInputMap (
-                new Object[]{ "control C", DefaultEditorKit.copyAction, "control V", DefaultEditorKit.pasteAction, "control X",
-                        DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
-                        DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
-                        DefaultEditorKit.pasteAction, "shift DELETE", DefaultEditorKit.cutAction, "shift LEFT",
-                        DefaultEditorKit.selectionBackwardAction, "shift RIGHT", DefaultEditorKit.selectionForwardAction, "control LEFT",
-                        DefaultEditorKit.previousWordAction, "control RIGHT", DefaultEditorKit.nextWordAction, "control shift LEFT",
-                        DefaultEditorKit.selectionPreviousWordAction, "control shift RIGHT", DefaultEditorKit.selectionNextWordAction,
-                        "control A", DefaultEditorKit.selectAllAction, "control BACK_SLASH", "unselect"
-                        /*DefaultEditorKit.unselectAction*/, "HOME", DefaultEditorKit.beginLineAction, "END",
-                        DefaultEditorKit.endLineAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
-                        DefaultEditorKit.selectionEndLineAction, "control HOME", DefaultEditorKit.beginAction, "control END",
-                        DefaultEditorKit.endAction, "control shift HOME", DefaultEditorKit.selectionBeginAction, "control shift END",
-                        DefaultEditorKit.selectionEndAction, "UP", DefaultEditorKit.upAction, "DOWN", DefaultEditorKit.downAction,
-                        "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
-                        "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE", DefaultEditorKit.deleteNextCharAction, "ctrl DELETE",
-                        DefaultEditorKit.deleteNextWordAction, "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction, "RIGHT",
-                        DefaultEditorKit.forwardAction, "LEFT", DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction,
-                        "KP_LEFT", DefaultEditorKit.backwardAction, "PAGE_UP", DefaultEditorKit.pageUpAction, "PAGE_DOWN",
-                        DefaultEditorKit.pageDownAction, "shift PAGE_UP", "selection-page-up", "shift PAGE_DOWN", "selection-page-down",
-                        "ctrl shift PAGE_UP", "selection-page-left", "ctrl shift PAGE_DOWN", "selection-page-right", "shift UP",
-                        DefaultEditorKit.selectionUpAction, "shift DOWN", DefaultEditorKit.selectionDownAction, "ENTER",
-                        DefaultEditorKit.insertBreakAction, "TAB", DefaultEditorKit.insertTabAction, "control T", "next-link-action",
-                        "control shift T", "previous-link-action", "control SPACE", "activate-link-action", "control shift O",
-                        "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } );
+        // TextAreas actions
+        final Object multilineInputMap = new UIDefaults.LazyInputMap ( new Object[]{
+                "control C", DefaultEditorKit.copyAction,
+                "control V", DefaultEditorKit.pasteAction,
+                "control X", DefaultEditorKit.cutAction,
+                "COPY", DefaultEditorKit.copyAction,
+                "PASTE", DefaultEditorKit.pasteAction,
+                "CUT", DefaultEditorKit.cutAction,
+                "control INSERT", DefaultEditorKit.copyAction,
+                "shift INSERT", DefaultEditorKit.pasteAction,
+                "shift DELETE", DefaultEditorKit.cutAction,
+                "shift LEFT", DefaultEditorKit.selectionBackwardAction,
+                "shift RIGHT", DefaultEditorKit.selectionForwardAction,
+                "control LEFT", DefaultEditorKit.previousWordAction,
+                "control RIGHT", DefaultEditorKit.nextWordAction,
+                "control shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
+                "control shift RIGHT", DefaultEditorKit.selectionNextWordAction,
+                "control A", DefaultEditorKit.selectAllAction,
+                "control BACK_SLASH", "unselect" /*DefaultEditorKit.unselectAction*/,
+                "HOME", DefaultEditorKit.beginLineAction,
+                "END", DefaultEditorKit.endLineAction,
+                "shift HOME", DefaultEditorKit.selectionBeginLineAction,
+                "shift END", DefaultEditorKit.selectionEndLineAction,
+                "control HOME", DefaultEditorKit.beginAction,
+                "control END", DefaultEditorKit.endAction,
+                "control shift HOME", DefaultEditorKit.selectionBeginAction,
+                "control shift END", DefaultEditorKit.selectionEndAction,
+                "UP", DefaultEditorKit.upAction,
+                "DOWN", DefaultEditorKit.downAction,
+                "BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction,
+                "ctrl H", DefaultEditorKit.deletePrevCharAction,
+                "DELETE", DefaultEditorKit.deleteNextCharAction,
+                "ctrl DELETE", DefaultEditorKit.deleteNextWordAction,
+                "ctrl BACK_SPACE", DefaultEditorKit.deletePrevWordAction,
+                "RIGHT", DefaultEditorKit.forwardAction,
+                "LEFT", DefaultEditorKit.backwardAction,
+                "KP_RIGHT", DefaultEditorKit.forwardAction,
+                "KP_LEFT", DefaultEditorKit.backwardAction,
+                "PAGE_UP", DefaultEditorKit.pageUpAction,
+                "PAGE_DOWN", DefaultEditorKit.pageDownAction,
+                "shift PAGE_UP", "selection-page-up",
+                "shift PAGE_DOWN", "selection-page-down",
+                "ctrl shift PAGE_UP", "selection-page-left",
+                "ctrl shift PAGE_DOWN", "selection-page-right",
+                "shift UP", DefaultEditorKit.selectionUpAction,
+                "shift DOWN", DefaultEditorKit.selectionDownAction,
+                "ENTER", DefaultEditorKit.insertBreakAction,
+                "TAB", DefaultEditorKit.insertTabAction,
+                "control T", "next-link-action",
+                "control shift T", "previous-link-action",
+                "control SPACE", "activate-link-action",
+                "control shift O", "toggle-componentOrientation" /*DefaultEditorKit.toggleComponentOrientation*/
+        } );
         table.put ( "TextArea.focusInputMap", multilineInputMap );
         table.put ( "TextPane.focusInputMap", multilineInputMap );
         table.put ( "EditorPane.focusInputMap", multilineInputMap );
 
-        // WebComboBox actions
-        table.put ( "ComboBox.ancestorInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "ESCAPE", "hidePopup", "PAGE_UP", "pageUpPassThrough", "PAGE_DOWN", "pageDownPassThrough", "HOME",
-                        "homePassThrough", "END", "endPassThrough", "DOWN", "selectNext", "KP_DOWN", "selectNext", "alt DOWN",
-                        "togglePopup", "alt KP_DOWN", "togglePopup", "alt UP", "togglePopup", "alt KP_UP", "togglePopup", "SPACE",
-                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" } ) );
+        // Slider on-focus actions
+        table.put ( "Slider.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "RIGHT", "positiveUnitIncrement",
+                "KP_RIGHT", "positiveUnitIncrement",
+                "DOWN", "negativeUnitIncrement",
+                "KP_DOWN", "negativeUnitIncrement",
+                "PAGE_DOWN", "negativeBlockIncrement",
+                "ctrl PAGE_DOWN", "negativeBlockIncrement",
+                "LEFT", "negativeUnitIncrement",
+                "KP_LEFT", "negativeUnitIncrement",
+                "UP", "positiveUnitIncrement",
+                "KP_UP", "positiveUnitIncrement",
+                "PAGE_UP", "positiveBlockIncrement",
+                "ctrl PAGE_UP", "positiveBlockIncrement",
+                "HOME", "minScroll",
+                "END", "maxScroll"
+        } ) );
 
-        // WebFileChooser actions
-        table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap (
-                new Object[]{ "ESCAPE", "cancelSelection", "F2", "editFileName", "F5", "refresh", "BACK_SPACE", "Go Up", "ENTER",
-                        "approveSelection", "ctrl ENTER", "approveSelection" } ) );
+        // ComboBox actions
+        table.put ( "ComboBox.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "ESCAPE", "hidePopup",
+                "PAGE_UP", "pageUpPassThrough",
+                "PAGE_DOWN", "pageDownPassThrough",
+                "HOME", "homePassThrough",
+                "END", "endPassThrough",
+                "DOWN", "selectNext",
+                "KP_DOWN", "selectNext",
+                "alt DOWN", "togglePopup",
+                "alt KP_DOWN", "togglePopup",
+                "alt UP", "togglePopup",
+                "alt KP_UP", "togglePopup",
+                "SPACE", "spacePopup",
+                "ENTER", "enterPressed",
+                "UP", "selectPrevious",
+                "KP_UP", "selectPrevious"
+        } ) );
+
+        // FileChooser actions
+        table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "ESCAPE", "cancelSelection",
+                "F2", "editFileName",
+                "F5", "refresh",
+                "BACK_SPACE", "Go Up",
+                "ENTER", "approveSelection",
+                "ctrl ENTER", "approveSelection"
+        } ) );
     }
 
     /**
@@ -757,47 +823,82 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UIDefaults table
      */
-    private static void initializeFonts ( final UIDefaults table )
+    protected static void initializeFonts ( final UIDefaults table )
     {
+        /**
+         * @see ControlType#CONTROL
+         */
+        initializeFont ( table, "Canvas.font", canvasFont, globalControlFont );
+        initializeFont ( table, "Image.font", imageFont, globalControlFont );
         initializeFont ( table, "Button.font", buttonFont, globalControlFont );
+        initializeFont ( table, "SplitButton.font", splitButtonFont, globalControlFont );
         initializeFont ( table, "ToggleButton.font", toggleButtonFont, globalControlFont );
-        initializeFont ( table, "RadioButton.font", radioButtonFont, globalControlFont );
         initializeFont ( table, "CheckBox.font", checkBoxFont, globalControlFont );
+        initializeFont ( table, "TristateCheckBox.font", tristateCheckBoxFont, globalControlFont );
+        initializeFont ( table, "RadioButton.font", radioButtonFont, globalControlFont );
+        initializeFont ( table, "ComboBox.font", comboBoxFont, globalControlFont );
+        initializeFont ( table, "Spinner.font", spinnerFont, globalControlFont );
+        initializeFont ( table, "TextField.font", textFieldFont, globalControlFont );
+        initializeFont ( table, "FormattedTextField.font", formattedTextFieldFont, globalControlFont );
+        initializeFont ( table, "PasswordField.font", passwordFieldFont, globalControlFont );
         initializeFont ( table, "ColorChooser.font", colorChooserFont, globalControlFont );
-        initializeFont ( table, "ComboBox.font", comboBoxFont, globalTextFont );
-        initializeFont ( table, "InternalFrame.titleFont", internalFrameFont, globalTitleFont );
+        initializeFont ( table, "FileChooser.font", fileChooserFont, globalControlFont );
         initializeFont ( table, "Label.font", labelFont, globalControlFont );
+        initializeFont ( table, "StyledLabel.font", styledLabelFont, globalControlFont );
+        initializeFont ( table, "Link.font", linkFont, globalControlFont );
         initializeFont ( table, "List.font", listFont, globalControlFont );
-        initializeFont ( table, "MenuBar.font", menuBarFont, globalMenuFont );
-        initializeFont ( table, "MenuItem.font", menuItemFont, globalMenuFont );
-        initializeFont ( table, "MenuItem.acceleratorFont", menuItemAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "RadioButtonMenuItem.font", radioButtonMenuItemFont, globalMenuFont );
-        initializeFont ( table, "RadioButtonMenuItem.acceleratorFont", radioButtonMenuItemAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "CheckBoxMenuItem.font", checkBoxMenuItemFont, globalMenuFont );
-        initializeFont ( table, "CheckBoxMenuItem.acceleratorFont", checkBoxMenuItemAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "Menu.font", menuFont, globalMenuFont );
-        initializeFont ( table, "Menu.acceleratorFont", menuAcceleratorFont, globalAcceleratorFont );
-        initializeFont ( table, "PopupMenu.font", popupMenuFont, globalMenuFont );
-        initializeFont ( table, "OptionPane.font", optionPaneFont, globalAlertFont );
         initializeFont ( table, "Panel.font", panelFont, globalControlFont );
+        initializeFont ( table, "Popup.font", popupFont, globalControlFont );
         initializeFont ( table, "ProgressBar.font", progressBarFont, globalControlFont );
         initializeFont ( table, "ScrollPane.font", scrollPaneFont, globalControlFont );
         initializeFont ( table, "Viewport.font", viewportFont, globalControlFont );
         initializeFont ( table, "Slider.font", sliderFont, globalControlFont );
-        initializeFont ( table, "Spinner.font", spinnerFont, globalTextFont );
         initializeFont ( table, "TabbedPane.font", tabbedPaneFont, globalControlFont );
         initializeFont ( table, "Table.font", tableFont, globalControlFont );
         initializeFont ( table, "TableHeader.font", tableHeaderFont, globalControlFont );
-        initializeFont ( table, "TextField.font", textFieldFont, globalTextFont );
-        initializeFont ( table, "FormattedTextField.font", formattedTextFieldFont, globalTextFont );
-        initializeFont ( table, "PasswordField.font", passwordFieldFont, globalTextFont );
+        initializeFont ( table, "TitledBorder.font", titledBorderFont, globalControlFont );
+        initializeFont ( table, "Tree.font", treeFont, globalControlFont );
+
+        /**
+         * @see ControlType#TEXT
+         */
         initializeFont ( table, "TextArea.font", textAreaFont, globalTextFont );
         initializeFont ( table, "TextPane.font", textPaneFont, globalTextFont );
         initializeFont ( table, "EditorPane.font", editorPaneFont, globalTextFont );
-        initializeFont ( table, "TitledBorder.font", titledBorderFont, globalControlFont );
-        initializeFont ( table, "ToolBar.font", toolBarFont, globalControlFont );
+
+        /**
+         * @see ControlType#TOOLTIP
+         */
         initializeFont ( table, "ToolTip.font", toolTipFont, globalTooltipFont );
-        initializeFont ( table, "Tree.font", treeFont, globalControlFont );
+
+        /**
+         * @see ControlType#MENU
+         */
+        initializeFont ( table, "PopupMenu.font", popupMenuFont, globalMenuFont );
+        initializeFont ( table, "MenuBar.font", menuBarFont, globalMenuFont );
+        initializeFont ( table, "Menu.font", menuFont, globalMenuFont );
+        initializeFont ( table, "MenuItem.font", menuItemFont, globalMenuFont );
+        initializeFont ( table, "RadioButtonMenuItem.font", radioButtonMenuItemFont, globalMenuFont );
+        initializeFont ( table, "CheckBoxMenuItem.font", checkBoxMenuItemFont, globalMenuFont );
+        initializeFont ( table, "ToolBar.font", toolBarFont, globalMenuFont );
+
+        /**
+         * @see ControlType#MENU_SMALL
+         */
+        initializeFont ( table, "Menu.acceleratorFont", menuAcceleratorFont, globalMenuSmallFont );
+        initializeFont ( table, "MenuItem.acceleratorFont", menuItemAcceleratorFont, globalMenuSmallFont );
+        initializeFont ( table, "RadioButtonMenuItem.acceleratorFont", radioButtonMenuItemAcceleratorFont, globalMenuSmallFont );
+        initializeFont ( table, "CheckBoxMenuItem.acceleratorFont", checkBoxMenuItemAcceleratorFont, globalMenuSmallFont );
+
+        /**
+         * @see ControlType#WINDOW
+         */
+        initializeFont ( table, "InternalFrame.titleFont", internalFrameFont, globalWindowFont );
+
+        /**
+         * @see ControlType#MESSAGE
+         */
+        initializeFont ( table, "OptionPane.font", optionPaneFont, globalMessageFont );
     }
 
     /**
@@ -821,75 +922,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     protected static SwingLazyValue createLazyFont ( final Font font )
     {
-        return new SwingLazyValue ( "javax.swing.plaf.FontUIResource", null,
-                new Object[]{ font.getName (), font.getStyle (), font.getSize () } );
-    }
-
-    /**
-     * Initializes custom WebLookAndFeel features.
-     */
-    @Override
-    public void initialize ()
-    {
-        super.initialize ();
-
-        // Listening to ALT key for menubar quick focusing
-        KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
-
-        // Initialize managers only when L&F was changed
-        UIManager.addPropertyChangeListener ( new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                if ( evt.getPropertyName ().equals ( LOOK_AND_FEEL_PROPERTY ) )
-                {
-                    // Initializing managers if WebLaF was installed
-                    if ( evt.getNewValue () instanceof WebLookAndFeel )
-                    {
-                        // Web decoration for frames and dialogs
-                        JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
-                        JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
-
-                        // Custom WebLaF data aliases
-                        XmlUtils.processAnnotations ( DocumentPaneState.class );
-                        XmlUtils.processAnnotations ( TreeState.class );
-                        XmlUtils.processAnnotations ( NodeState.class );
-                        XmlUtils.processAnnotations ( GradientData.class );
-                        XmlUtils.processAnnotations ( GradientColorData.class );
-                        XmlUtils.processAnnotations ( HSBColor.class );
-
-                        // Initializing WebLaF managers
-                        initializeManagers ();
-
-                        try
-                        {
-                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
-                            new JSpinner ();
-                        }
-                        catch ( final Throwable e )
-                        {
-                            // Ignore exceptions caused by this workaround
-                        }
-                    }
-
-                    // Remove listener in any case
-                    UIManager.removePropertyChangeListener ( this );
-                }
-            }
-        } );
-    }
-
-    /**
-     * Uninitializes custom WebLookAndFeel features.
-     */
-    @Override
-    public void uninitialize ()
-    {
-        super.uninitialize ();
-
-        // Removing alt processor
-        KeyboardFocusManager.getCurrentKeyboardFocusManager ().removeKeyEventPostProcessor ( altProcessor );
+        return new SwingLazyValue ( "javax.swing.plaf.FontUIResource", null, new Object[]{ font } );
     }
 
     /**
@@ -917,59 +950,236 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Installs WebLookAndFeel in one simple call.
+     * Returns whether or not component's custom {@link Shape}s are used for better mouse events detection.
      *
-     * @return true if WebLookAndFeel was successfuly installed, false otherwise
+     * @return {@code true} if component's custom {@link Shape}s are used for better mouse events detection, {@code false} otherwise
      */
-    public static boolean install ()
+    public static boolean isShapeDetectionEnabled ()
     {
-        return install ( false );
+        return shapeDetectionEnabled;
     }
 
     /**
-     * Installs WebLookAndFeel in one simple call and updates all existing components if requested.
+     * Sets whether or not component's custom {@link Shape}s should be used for better mouse events detection.
      *
-     * @param updateExistingComponents whether update all existing components or not
-     * @return true if WebLookAndFeel was successfuly installed, false otherwise
+     * @param enabled whether or not component's custom {@link Shape}s should be used for better mouse events detection
      */
-    public static boolean install ( final boolean updateExistingComponents )
+    public static void setShapeDetectionEnabled ( final boolean enabled )
     {
-        // Installing LookAndFeel
-        if ( LafUtils.setupLookAndFeelSafely ( WebLookAndFeel.class ) )
-        {
-            // Updating already created components tree
-            if ( updateExistingComponents )
-            {
-                updateAllComponentUIs ();
-            }
-
-            // LookAndFeel installed sucessfully
-            return true;
-        }
-        else
-        {
-            // LookAndFeel installation failed
-            return false;
-        }
+        WebLookAndFeel.shapeDetectionEnabled = enabled;
     }
 
     /**
-     * Returns whether WebLookAndFeel is installed or not.
-     *
-     * @return true if WebLookAndFeel is installed, false otherwise
-     */
-    public static boolean isInstalled ()
-    {
-        return UIManager.getLookAndFeel ().getClass ().getCanonicalName ().equals ( WebLookAndFeel.class.getCanonicalName () );
-    }
-
-    /**
-     * Initializes library managers.
-     * Initialization order is strict since some managers require other managers to be loaded.
+     * Initializes library managers separately.
      */
     public static void initializeManagers ()
     {
-        WebLafManagers.initialize ();
+        UIManagers.initialize ();
+    }
+
+    /**
+     * Installs {@link WebLookAndFeel} in one call.
+     *
+     * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
+     */
+    public static void install () throws LookAndFeelException
+    {
+        install ( WebSkin.class );
+    }
+
+    /**
+     * Installs {@link WebLookAndFeel} in one call.
+     *
+     * @param skin      {@link Skin} class
+     * @param arguments {@link Skin} constructor arguments
+     * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
+     */
+    public static void install ( final Class<? extends Skin> skin, final Object... arguments ) throws LookAndFeelException
+    {
+        install ( new LazyInstance<Skin> ( skin, arguments ) );
+    }
+
+    /**
+     * Installs {@link WebLookAndFeel} in one call.
+     *
+     * @param skin {@link LazyInstance} for {@link Skin}
+     * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
+     */
+    public static void install ( final LazyInstance<? extends Skin> skin ) throws LookAndFeelException
+    {
+        // Event Dispatch Thread check
+        checkEventDispatchThread ();
+
+        // Saving previous installed LaF class
+        previousLookAndFeelClass = UIManager.getLookAndFeel ().getClass ();
+
+        // Preparing initial skin
+        StyleManager.setDefaultSkin ( skin );
+
+        // Installing LookAndFeel
+        LafUtils.setupLookAndFeel ( WebLookAndFeel.class );
+    }
+
+    /**
+     * Returns whether {@link WebLookAndFeel} is installed or not.
+     *
+     * @return {@code true} if WebLookAndFeel is installed, {@code false} otherwise
+     */
+    public static boolean isInstalled ()
+    {
+        return WebLookAndFeel.class.isInstance ( UIManager.getLookAndFeel () );
+    }
+
+    /**
+     * Restores previously installed {@link LookAndFeel}.
+     *
+     * @throws LookAndFeelException if {@link WebLookAndFeel} is not installed or there was no previously installed {@link LookAndFeel}
+     */
+    public static void uninstall () throws LookAndFeelException
+    {
+        // Event Dispatch Thread check
+        checkEventDispatchThread ();
+
+        // Trying to perform uninstall
+        if ( isInstalled () )
+        {
+            if ( previousLookAndFeelClass != null )
+            {
+                // Installing previous LookAndFeel
+                LafUtils.setupLookAndFeel ( previousLookAndFeelClass );
+
+                // Cleaning up previous LaF whatever the result is
+                previousLookAndFeelClass = null;
+            }
+            else
+            {
+                // Wrong order of calls, we need to inform about it
+                throw new LookAndFeelException ( "There was no previously installed LaF" );
+            }
+        }
+        else
+        {
+            // Wrong order of calls, we need to inform about it
+            throw new LookAndFeelException ( "WebLookAndFeel was not installed yet" );
+        }
+    }
+
+    /**
+     * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
+     *
+     * @return {@code true} if library should force Event Dispatch Thread usage for all UI-related operations, {@code false} otherwise
+     */
+    public static boolean isForceSingleEventsThread ()
+    {
+        return forceSingleEventsThread;
+    }
+
+    /**
+     * Sets whether or not library should force Event Dispatch Thread usage for all UI-related operations.
+     *
+     * @param enforce whether or not library should force Event Dispatch Thread usage for all UI-related operations
+     */
+    public static void setForceSingleEventsThread ( final boolean enforce )
+    {
+        WebLookAndFeel.forceSingleEventsThread = enforce;
+    }
+
+    /**
+     * Returns whether or not library should enforce Event Dispatch Thread usage for {@link Component} events.
+     *
+     * @return {@code true} if library should enforce Event Dispatch Thread usage for {@link Component} events, {@code false} otherwise
+     */
+    public static boolean isUseStrictEventThreadListeners ()
+    {
+        return useStrictEventThreadListeners;
+    }
+
+    /**
+     * Sets whether or not library should enforce Event Dispatch Thread usage for {@link Component} events.
+     *
+     * @param strict hether or not library should enforce Event Dispatch Thread usage for {@link Component} events
+     */
+    public static void setUseStrictEventThreadListeners ( final boolean strict )
+    {
+        WebLookAndFeel.useStrictEventThreadListeners = strict;
+    }
+
+    /**
+     * Returns special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     *
+     * @return special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     */
+    public static NonEventThreadHandler getNonEventThreadHandler ()
+    {
+        return nonEventThreadHandler;
+    }
+
+    /**
+     * Sets special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread..
+     *
+     * @param handler special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
+     */
+    public static void setNonEventThreadHandler ( final NonEventThreadHandler handler )
+    {
+        WebLookAndFeel.nonEventThreadHandler = handler;
+    }
+
+    /**
+     * Perform Event Dispatch Thread usage check if required.
+     */
+    public static void checkEventDispatchThread ()
+    {
+        if ( isForceSingleEventsThread () && !CoreSwingUtils.isEventDispatchThread () )
+        {
+            final NonEventThreadHandler handler = getNonEventThreadHandler ();
+            if ( handler != null )
+            {
+                final String msg = "This operation is only permitted on the Event Dispatch Thread. Current thread is: %s";
+                handler.handle ( new LookAndFeelException ( String.format ( msg, Thread.currentThread ().getName () ) ) );
+            }
+        }
+    }
+
+    /**
+     * Installs listeners checking Event Dispatch Thread into the specified {@link Component}.
+     *
+     * @param component {@link Component}
+     */
+    public static void installEventDispatchThreadCheckers ( final Component component )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        if ( isForceSingleEventsThread () && isUseStrictEventThreadListeners () )
+        {
+            component.addHierarchyListener ( STRICT_EDT_LISTENERS );
+            component.addPropertyChangeListener ( STRICT_EDT_LISTENERS );
+            component.addComponentListener ( STRICT_EDT_LISTENERS );
+            component.addMouseListener ( STRICT_EDT_LISTENERS );
+            component.addMouseWheelListener ( STRICT_EDT_LISTENERS );
+            component.addMouseMotionListener ( STRICT_EDT_LISTENERS );
+            component.addKeyListener ( STRICT_EDT_LISTENERS );
+            component.addFocusListener ( STRICT_EDT_LISTENERS );
+        }
+    }
+
+    /**
+     * Uninstalls listeners checking Event Dispatch Thread from the specified {@link Component}.
+     *
+     * @param component {@link Component}
+     */
+    public static void uninstallEventDispatchThreadCheckers ( final Component component )
+    {
+        WebLookAndFeel.checkEventDispatchThread ();
+        if ( isForceSingleEventsThread () && isUseStrictEventThreadListeners () )
+        {
+            component.removeFocusListener ( STRICT_EDT_LISTENERS );
+            component.removeKeyListener ( STRICT_EDT_LISTENERS );
+            component.removeMouseMotionListener ( STRICT_EDT_LISTENERS );
+            component.removeMouseWheelListener ( STRICT_EDT_LISTENERS );
+            component.removeMouseListener ( STRICT_EDT_LISTENERS );
+            component.removeComponentListener ( STRICT_EDT_LISTENERS );
+            component.removePropertyChangeListener ( STRICT_EDT_LISTENERS );
+            component.removeHierarchyListener ( STRICT_EDT_LISTENERS );
+        }
     }
 
     /**
@@ -1032,12 +1242,17 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         if ( icons == null )
         {
-            icons = XmlUtils.loadImagesList ( WebLookAndFeel.class.getResource ( "resources/icons.xml" ) );
+            final int[] sizes = { 16, 24, 32, 48, 64, 128, 256, 512 };
+            icons = new ArrayList<ImageIcon> ( sizes.length );
+            for ( final int size : sizes )
+            {
+                icons.add ( new ImageIcon ( WebLookAndFeel.class.getResource ( "icons/icon" + size + ".png" ) ) );
+            }
         }
     }
 
     /**
-     * Returns a beter disabled icon than BasicLookAndFeel offers.
+     * Returns a better disabled icon than BasicLookAndFeel offers.
      * Generated disabled icons are cached within a weak hash map under icon key.
      *
      * @param component component that requests disabled icon
@@ -1047,15 +1262,34 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public Icon getDisabledIcon ( final JComponent component, final Icon icon )
     {
-        if ( disabledIcons.containsKey ( icon ) )
+        if ( icon != null && icon.getIconWidth () > 0 && icon.getIconHeight () > 0 )
         {
-            return disabledIcons.get ( icon );
+            if ( disabledIcons.containsKey ( icon ) )
+            {
+                return disabledIcons.get ( icon );
+            }
+            else
+            {
+                final ImageIcon disabledIcon;
+                if ( icon instanceof ImageIcon || icon instanceof SvgIcon || icon instanceof GifIcon || icon instanceof LazyIcon )
+                {
+                    // todo Different disabled implementation for different icon types?
+                    // todo For example ImageIcon, SvgIcon, GifIcon etc.
+                    final BufferedImage image = ImageUtils.getBufferedImage ( icon );
+                    final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
+                    disabledIcon = new ImageIcon ( disabled );
+                }
+                else
+                {
+                    disabledIcon = null;
+                }
+                disabledIcons.put ( icon, disabledIcon );
+                return disabledIcon;
+            }
         }
         else
         {
-            final ImageIcon disabledIcon = icon instanceof ImageIcon ? ImageUtils.createDisabledCopy ( ( ImageIcon ) icon ) : null;
-            disabledIcons.put ( icon, disabledIcon );
-            return disabledIcon;
+            return icon;
         }
     }
 
@@ -1064,6 +1298,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void updateAllComponentUIs ()
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Updating component UIs
         for ( final Window window : Window.getWindows () )
         {
             SwingUtilities.updateComponentTreeUI ( window );
@@ -1079,48 +1317,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public LayoutStyle getLayoutStyle ()
     {
         return WebLayoutStyle.getInstance ();
-    }
-
-    /**
-     * Returns whether look and feel uses custom decoration for newly created frames or not.
-     *
-     * @return true if look and feel uses custom decoration for newly created frames, false otherwise
-     */
-    public static boolean isDecorateFrames ()
-    {
-        return decorateFrames;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created frames or not.
-     *
-     * @param decorateFrames whether look and feel should use custom decoration for newly created frames or not
-     */
-    public static void setDecorateFrames ( final boolean decorateFrames )
-    {
-        WebLookAndFeel.decorateFrames = decorateFrames;
-        JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
-    }
-
-    /**
-     * Returns whether look and feel uses custom decoration for newly created dialogs or not.
-     *
-     * @return true if look and feel uses custom decoration for newly created dialogs, false otherwise
-     */
-    public static boolean isDecorateDialogs ()
-    {
-        return decorateDialogs;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created dialogs or not.
-     *
-     * @param decorateDialogs whether look and feel should use custom decoration for newly created dialogs or not
-     */
-    public static void setDecorateDialogs ( final boolean decorateDialogs )
-    {
-        WebLookAndFeel.decorateDialogs = decorateDialogs;
-        JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
     }
 
     /**
@@ -1142,37 +1338,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setAllowLinuxTransparency ( final boolean allow )
     {
         ProprietaryUtils.setAllowLinuxTransparency ( allow );
-    }
-
-    /**
-     * Returns default scroll mode used by JViewportUI to handle scrolling repaints.
-     *
-     * @return default scroll mode used by JViewportUI to handle scrolling repaints
-     */
-    public static int getScrollMode ()
-    {
-        return scrollMode;
-    }
-
-    /**
-     * Sets default scroll mode used by JViewportUI to handle scrolling repaints.
-     *
-     * @param scrollMode new default scroll mode
-     */
-    public static void setScrollMode ( final int scrollMode )
-    {
-        WebLookAndFeel.scrollMode = scrollMode;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created frames and dialogs or not.
-     *
-     * @param decorateAllWindows whether look and feel should use custom decoration for newly created frames and dialogs or not
-     */
-    public static void setDecorateAllWindows ( final boolean decorateAllWindows )
-    {
-        setDecorateFrames ( decorateAllWindows );
-        setDecorateDialogs ( decorateAllWindows );
     }
 
     /**
@@ -1230,7 +1395,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setOrientation ( final ComponentOrientation orientation )
     {
         WebLookAndFeel.orientation = orientation;
-        SwingUtils.updateGlobalOrientations ();
+        SwingUtils.updateGlobalOrientation ();
     }
 
     /**
@@ -1239,5 +1404,89 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void changeOrientation ()
     {
         setOrientation ( !getOrientation ().isLeftToRight () );
+    }
+
+    /**
+     * Adds global {@link VisibleWindowListener}.
+     *
+     * @param listener {@link VisibleWindowListener}
+     */
+    public static void addVisibleWindowListener ( final VisibleWindowListener listener )
+    {
+        globalListeners.add ( VisibleWindowListener.class, listener );
+    }
+
+    /**
+     * Removes global {@link VisibleWindowListener}.
+     *
+     * @param listener {@link VisibleWindowListener}
+     */
+    public static void removeVisibleWindowListener ( final VisibleWindowListener listener )
+    {
+        globalListeners.remove ( VisibleWindowListener.class, listener );
+    }
+
+    /**
+     * Adds global {@link VisibleWindowListener}.
+     *
+     * @param component {@link JComponent} using the listener
+     * @param listener  {@link VisibleWindowListener}
+     */
+    public static void addVisibleWindowListener ( final JComponent component, final VisibleWindowListener listener )
+    {
+        visibleWindowListeners.add ( component, listener );
+    }
+
+    /**
+     * Removes global {@link VisibleWindowListener}.
+     *
+     * @param component {@link JComponent} using the listener
+     * @param listener  {@link VisibleWindowListener}
+     */
+    public static void removeVisibleWindowListener ( final JComponent component, final VisibleWindowListener listener )
+    {
+        visibleWindowListeners.remove ( component, listener );
+    }
+
+    /**
+     * Inform about {@link Window} becoming visible.
+     *
+     * @param window {@link Window}
+     */
+    public static void fireWindowDisplayed ( final Window window )
+    {
+        for ( final VisibleWindowListener listener : globalListeners.getListeners ( VisibleWindowListener.class ) )
+        {
+            listener.windowDisplayed ( window );
+        }
+        visibleWindowListeners.forEachData ( new BiConsumer<JComponent, VisibleWindowListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final VisibleWindowListener listener )
+            {
+                listener.windowDisplayed ( window );
+            }
+        } );
+    }
+
+    /**
+     * Inform about {@link Window} becoming hidden or disposed.
+     *
+     * @param window {@link Window}
+     */
+    public static void fireWindowHidden ( final Window window )
+    {
+        for ( final VisibleWindowListener listener : globalListeners.getListeners ( VisibleWindowListener.class ) )
+        {
+            listener.windowHidden ( window );
+        }
+        visibleWindowListeners.forEachData ( new BiConsumer<JComponent, VisibleWindowListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final VisibleWindowListener listener )
+            {
+                listener.windowHidden ( window );
+            }
+        } );
     }
 }

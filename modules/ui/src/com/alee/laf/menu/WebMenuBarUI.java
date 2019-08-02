@@ -17,36 +17,43 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.layout.ToolbarLayout;
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 import java.awt.*;
-import java.awt.geom.Line2D;
 
 /**
- * User: mgarin Date: 15.08.11 Time: 20:24
+ * Custom UI for {@link JMenuBar} component.
+ *
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
-
-public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, BorderMethods
+public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    private Color topBgColor = WebMenuBarStyle.topBgColor;
-    private Color bottomBgColor = WebMenuBarStyle.bottomBgColor;
-    private boolean undecorated = WebMenuBarStyle.undecorated;
-    private int round = WebMenuBarStyle.round;
-    private int shadeWidth = WebMenuBarStyle.shadeWidth;
-    private MenuBarStyle menuBarStyle = WebMenuBarStyle.menuBarStyle;
-    private Color borderColor = WebMenuBarStyle.borderColor;
+    /**
+     * Component painter.
+     */
+    @DefaultPainter ( MenuBarPainter.class )
+    protected IMenuBarPainter painter;
 
-    @SuppressWarnings ("UnusedParameters")
+    /**
+     * Preserved old layout.
+     */
+    protected transient LayoutManager oldLayout;
+
+    /**
+     * Returns an instance of the {@link WebMenuBarUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the {@link WebMenuBarUI}
+     */
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuBarUI ();
@@ -55,151 +62,164 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, Borde
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( menuBar );
-        LookAndFeel.installProperty ( menuBar, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        menuBar.setLayout ( new ToolbarLayout ( 0 ) );
+        // Installing custom layout
+        installLayout ();
 
-        // Updating border
-        updateBorder ();
+        // Applying skin
+        StyleManager.installSkin ( menuBar );
     }
 
     @Override
-    public Shape provideShape ()
+    public void uninstallUI ( final JComponent c )
     {
-        return LafUtils.getWebBorderShape ( menuBar, getShadeWidth (), getRound () );
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( menuBar );
+
+        // Uninstalling custom layout
+        uninstallLayout ();
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
     /**
-     * {@inheritDoc}
+     * Installs custom {@link LayoutManager} into {@link JMenuBar}.
      */
+    protected void installLayout ()
+    {
+        oldLayout = menuBar.getLayout ();
+        menuBar.setLayout ( createLayout () );
+    }
+
+    /**
+     * Uninstalls custom {@link LayoutManager} from {@link JMenuBar}.
+     */
+    protected void uninstallLayout ()
+    {
+        menuBar.setLayout ( oldLayout );
+        oldLayout = null;
+    }
+
+    /**
+     * Returns custom {@link LayoutManager} for the menubar.
+     *
+     * @return custom {@link LayoutManager} for the menubar
+     */
+    protected LayoutManager createLayout ()
+    {
+        return new MenuBarLayout ();
+    }
+
     @Override
-    public void updateBorder ()
+    public Shape getShape ()
     {
-        // Preserve old borders
-        if ( SwingUtils.isPreserveBorders ( menuBar ) )
-        {
-            return;
-        }
+        return PainterSupport.getShape ( menuBar, painter );
+    }
 
-        final Insets insets;
-        if ( !undecorated )
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( menuBar, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( menuBar, painter, enabled );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( menuBar );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        PainterSupport.setMargin ( menuBar, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( menuBar );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PainterSupport.setPadding ( menuBar, padding );
+    }
+
+    /**
+     * Returns menu item painter.
+     *
+     * @return menu item painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getPainter ( painter );
+    }
+
+    /**
+     * Sets menu item painter.
+     * Pass null to remove menu item painter.
+     *
+     * @param painter new menu item painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( menuBar, new Consumer<IMenuBarPainter> ()
         {
-            if ( menuBarStyle.equals ( MenuBarStyle.attached ) )
+            @Override
+            public void accept ( final IMenuBarPainter newPainter )
             {
-                insets = new Insets ( 0, 0, 1 + shadeWidth, 0 );
+                WebMenuBarUI.this.painter = newPainter;
             }
-            else
-            {
-                insets = new Insets ( 1 + shadeWidth, 1 + shadeWidth, 1 + shadeWidth, 1 + shadeWidth );
-            }
-        }
-        else
-        {
-            insets = new Insets ( 0, 0, 0, 0 );
-        }
-        menuBar.setBorder ( LafUtils.createWebBorder ( insets ) );
+        }, this.painter, painter, IMenuBarPainter.class, AdaptiveMenuBarPainter.class );
     }
 
-    public Color getTopBgColor ()
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
     {
-        return topBgColor;
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
-    public void setTopBgColor ( final Color topBgColor )
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
     {
-        this.topBgColor = topBgColor;
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
     }
 
-    public Color getBottomBgColor ()
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
     {
-        return bottomBgColor;
-    }
-
-    public void setBottomBgColor ( final Color bottomBgColor )
-    {
-        this.bottomBgColor = bottomBgColor;
-    }
-
-    public boolean isUndecorated ()
-    {
-        return undecorated;
-    }
-
-    public void setUndecorated ( final boolean undecorated )
-    {
-        this.undecorated = undecorated;
-        updateBorder ();
-    }
-
-    public MenuBarStyle getMenuBarStyle ()
-    {
-        return menuBarStyle;
-    }
-
-    public void setMenuBarStyle ( final MenuBarStyle menuBarStyle )
-    {
-        this.menuBarStyle = menuBarStyle;
-        updateBorder ();
-    }
-
-    public Color getBorderColor ()
-    {
-        return borderColor;
-    }
-
-    public void setBorderColor ( final Color borderColor )
-    {
-        this.borderColor = borderColor;
-    }
-
-    public int getRound ()
-    {
-        return round;
-    }
-
-    public void setRound ( final int round )
-    {
-        this.round = round;
-    }
-
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        this.shadeWidth = shadeWidth;
-        updateBorder ();
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
     }
 
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        if ( !undecorated )
+        if ( painter != null )
         {
-            final Graphics2D g2d = ( Graphics2D ) g;
-
-            if ( menuBarStyle == MenuBarStyle.attached )
-            {
-                final Shape border =
-                        new Line2D.Double ( 0, c.getHeight () - 1 - shadeWidth, c.getWidth () - 1, c.getHeight () - 1 - shadeWidth );
-
-                GraphicsUtils.drawShade ( g2d, border, StyleConstants.shadeColor, shadeWidth );
-
-                g2d.setPaint ( new GradientPaint ( 0, 0, topBgColor, 0, c.getHeight (), bottomBgColor ) );
-                g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () - shadeWidth );
-
-                g2d.setPaint ( borderColor );
-                g2d.draw ( border );
-            }
-            else
-            {
-                LafUtils.drawWebStyle ( g2d, c, StyleConstants.shadeColor, shadeWidth, round, true, true, borderColor );
-            }
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
+    }
+
+    /**
+     * Returns menu bar preferred size.
+     *
+     * @param c menu bar component
+     * @return menu bar preferred size
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

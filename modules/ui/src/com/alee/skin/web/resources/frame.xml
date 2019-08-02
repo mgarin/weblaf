@@ -1,0 +1,133 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.window.WebFrame -->
+
+    <!-- Native-decorated frame -->
+    <style type="rootpane" id="frame" />
+
+    <!-- WebLaF-decorated frame -->
+    <style type="rootpane" id="frame-decorated" extends="frame">
+        <ui>
+            <installComponents>true</installComponents>
+        </ui>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="4,4,2,2" />
+                    <WebShadow type="outer" opacity="0.3" width="40" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="237,237,237" />
+                </decoration>
+                <decoration states="focused">
+                    <WebShadow type="outer" opacity="0.5" />
+                </decoration>
+                <decoration states="maximized">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                    <LineBorder opacity="0" />
+                </decoration>
+                <decoration states="fullscreen">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                    <LineBorder opacity="0" />
+                </decoration>
+                <decoration states="unix">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Title panel -->
+        <style type="panel" id="title" extends="transparent" padding="4,5,4,10">
+
+            <!-- Title icon -->
+            <style type="image" id="icon" />
+
+            <!-- Title label -->
+            <style type="label" id="title" extends="shadow" padding="0,5,0,0">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <maximumWidth>100</maximumWidth>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Buttons panel -->
+        <style type="panel" id="buttons" extends="grouppane">
+
+            <!-- Custom window decoration control buttons -->
+            <style type="button" id="control" padding="3,5,3,5">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape round="2" />
+                            <WebShadow type="outer" width="5" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+            <style type="button" id="minimize" extends="control" />
+            <style type="button" id="maximize" extends="control" />
+            <style type="button" id="close" extends="control" />
+
+        </style>
+
+        <!-- Glass dialog -->
+        <style type="rootpane" id="glass-dialog" extends="dialog">
+            <ui>
+                <installComponents>false</installComponents>
+            </ui>
+            <painter>
+                <decorations overwrite="true">
+                    <decoration states="win">
+                        <WebShape round="0" />
+                        <WebShadow type="outer" opacity="0.8" width="10" />
+                        <LineBorder color="black" opacity="0.6" />
+                        <ColorBackground color="255,255,255" opacity="0.2" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Content pane -->
+            <style type="panel" id="content" extends="transparent" />
+
+        </style>
+
+    </style>
+
+    <!-- Undecorated control-less frame -->
+    <style type="rootpane" id="frame-undecorated" extends="frame">
+        <ui>
+            <installComponents>false</installComponents>
+        </ui>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape />
+                    <ColorBackground color="237,237,237" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent control-less frame -->
+    <style type="rootpane" id="frame-transparent" extends="frame">
+        <ui>
+            <installComponents>false</installComponents>
+        </ui>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape />
+                </decoration>
+            </decorations>
+        </painter>
+        <style type="panel" id="content" extends="transparent" />
+    </style>
+
+</skin>

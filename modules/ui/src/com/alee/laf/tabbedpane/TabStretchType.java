@@ -18,9 +18,8 @@
 package com.alee.laf.tabbedpane;
 
 /**
- * User: mgarin Date: 26.07.12 Time: 18:20
+ * @author Mikle Garin
  */
-
 public enum TabStretchType
 {
     never,

@@ -19,16 +19,17 @@ package com.alee.managers.notification;
 
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.AlignPanel;
+import com.alee.extended.window.PopupAdapter;
+import com.alee.extended.window.WebPopup;
+import com.alee.extended.window.WebPopupWindow;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.popup.PopupAdapter;
-import com.alee.managers.popup.PopupStyle;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.WebHeavyWeightPopup;
+import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -38,21 +39,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Custom popup used to display notifications in separate windows.
  *
+ * @param <T> {@link WebNotification} type
  * @author Mikle Garin
  * @see com.alee.managers.notification.NotificationManager
- * @see com.alee.managers.notification.NotificationStyle
  * @see com.alee.managers.notification.NotificationIcon
  * @see com.alee.managers.notification.NotificationOption
- * @see com.alee.utils.swing.WebHeavyWeightPopup
+ * @see com.alee.extended.window.WebPopup
  */
-
-public class WebNotification extends WebHeavyWeightPopup
+public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
 {
     /**
      * Notification popup listeners.
@@ -69,6 +68,11 @@ public class WebNotification extends WebHeavyWeightPopup
      * You can disable this and provide your own behavior for options selection through NotificationListener.
      */
     protected boolean closeOnOptionSelection = true;
+
+    /**
+     * Whether or not notification option button widths should be equalized.
+     */
+    protected boolean equalizeButtonWidths = true;
 
     /**
      * Notification display duration.
@@ -116,38 +120,7 @@ public class WebNotification extends WebHeavyWeightPopup
      */
     public WebNotification ()
     {
-        this ( NotificationStyle.web );
-    }
-
-    /**
-     * Constructs new notification popup with the specified notification style.
-     *
-     * @param notificationStyle notification style
-     */
-    public WebNotification ( final NotificationStyle notificationStyle )
-    {
-        this ( notificationStyle.getPainter () );
-    }
-
-    /**
-     * Constructs new notification popup with the specified style.
-     *
-     * @param popupStyle popup style
-     */
-    public WebNotification ( final PopupStyle popupStyle )
-    {
-        this ( popupStyle.getPainter () );
-    }
-
-    /**
-     * Constructs new notification popup with the specified painter.
-     *
-     * @param stylePainter popup style painter
-     */
-    public WebNotification ( final Painter stylePainter )
-    {
-        super ( stylePainter );
-        initializeNotificationPopup ();
+        this ( StyleId.notification );
     }
 
     /**
@@ -155,19 +128,11 @@ public class WebNotification extends WebHeavyWeightPopup
      *
      * @param styleId style ID
      */
-    public WebNotification ( final String styleId )
+    public WebNotification ( final StyleId styleId )
     {
         super ( styleId );
-        initializeNotificationPopup ();
-    }
 
-    /**
-     * Initializes various notification popup settings.
-     */
-    protected void initializeNotificationPopup ()
-    {
         setAlwaysOnTop ( true );
-        setWindowOpaque ( false );
         setCloseOnOuterAction ( false );
         setLayout ( new BorderLayout ( 15, 5 ) );
 
@@ -175,15 +140,13 @@ public class WebNotification extends WebHeavyWeightPopup
         westPanel = new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER );
         updateIcon ();
 
-        contentPanel = new WebPanel ();
-        contentPanel.setOpaque ( false );
+        contentPanel = new WebPanel ( StyleId.panelTransparent );
         centerPanel = new AlignPanel ( contentPanel, SwingConstants.CENTER, SwingConstants.CENTER );
         updateContent ();
 
-        optionsPanel = new WebPanel ( new HorizontalFlowLayout ( 4, false ) );
-        optionsPanel.setOpaque ( false );
+        optionsPanel = new WebPanel ( StyleId.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
         southPanel = new AlignPanel ( optionsPanel, SwingConstants.RIGHT, SwingConstants.CENTER );
-        updateOptions ();
+        updateOptionButtons ();
 
         addMouseListener ( new MouseAdapter ()
         {
@@ -297,7 +260,7 @@ public class WebNotification extends WebHeavyWeightPopup
      */
     protected void updateIcon ()
     {
-        iconImage.setIcon ( icon );
+        iconImage.setImage ( icon );
         if ( icon != null )
         {
             if ( !contains ( westPanel ) )
@@ -388,7 +351,7 @@ public class WebNotification extends WebHeavyWeightPopup
      */
     public void setOptions ( final NotificationOption... options )
     {
-        setOptions ( Arrays.asList ( options ) );
+        setOptions ( CollectionUtils.asList ( options ) );
     }
 
     /**
@@ -399,21 +362,21 @@ public class WebNotification extends WebHeavyWeightPopup
     public void setOptions ( final List<NotificationOption> options )
     {
         this.options = options;
-        updateOptions ();
+        updateOptionButtons ();
     }
 
     /**
      * Updates visible notification options.
      */
-    protected void updateOptions ()
+    protected void updateOptionButtons ()
     {
-        if ( options != null && options.size () > 0 )
+        optionsPanel.removeAll ();
+        if ( CollectionUtils.notEmpty ( options ) )
         {
             for ( final NotificationOption option : options )
             {
-                final WebButton optionButton = new WebButton ( "" );
-                optionButton.setLanguage ( option.getLanguageKey () );
-                optionButton.addActionListener ( new ActionListener ()
+                final StyleId id = StyleId.notificationOption.at ( WebNotification.this );
+                final WebButton optionButton = new WebButton ( id, option.getLanguageKey (), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -427,6 +390,11 @@ public class WebNotification extends WebHeavyWeightPopup
                 } );
                 optionsPanel.add ( optionButton );
             }
+            if ( equalizeButtonWidths )
+            {
+                final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+                SwingUtils.equalizeComponentsWidth ( properties, optionsPanel.getComponents () );
+            }
             if ( !contains ( southPanel ) )
             {
                 add ( southPanel, BorderLayout.SOUTH );
@@ -434,13 +402,13 @@ public class WebNotification extends WebHeavyWeightPopup
         }
         else
         {
-            optionsPanel.removeAll ();
             if ( contains ( southPanel ) )
             {
                 remove ( southPanel );
             }
         }
         revalidate ();
+        pack ();
     }
 
     /**
@@ -493,6 +461,27 @@ public class WebNotification extends WebHeavyWeightPopup
     }
 
     /**
+     * Returns whether or not notification option button widths should be equalized.
+     *
+     * @return true if notification option button widths should be equalized, false otherwise
+     */
+    public boolean isEqualizeButtonWidths ()
+    {
+        return equalizeButtonWidths;
+    }
+
+    /**
+     * Sets whether or not notification option button widths should be equalized.
+     *
+     * @param equalizeButtonWidths whether or not notification option button widths should be equalized
+     */
+    public void setEqualizeButtonWidths ( final boolean equalizeButtonWidths )
+    {
+        this.equalizeButtonWidths = equalizeButtonWidths;
+        updateOptionButtons ();
+    }
+
+    /**
      * Returns notification display time.
      *
      * @return notification display time
@@ -523,6 +512,17 @@ public class WebNotification extends WebHeavyWeightPopup
         }
     }
 
+    @Override
+    public WebPopupWindow pack ()
+    {
+        if ( window != null )
+        {
+            window.pack ();
+            NotificationManager.updateNotificationLayouts ();
+        }
+        return window;
+    }
+
     /**
      * Adds directory chooser listener.
      *
@@ -545,6 +545,8 @@ public class WebNotification extends WebHeavyWeightPopup
 
     /**
      * Fires when notification options is selected.
+     *
+     * @param option selected option
      */
     public void fireOptionSelected ( final NotificationOption option )
     {

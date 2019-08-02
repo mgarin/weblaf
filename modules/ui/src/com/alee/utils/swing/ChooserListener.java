@@ -25,7 +25,6 @@ import java.util.EventListener;
  * @param <T> chooser data type
  * @author Mikle Garin
  */
-
 public interface ChooserListener<T> extends EventListener
 {
     /**

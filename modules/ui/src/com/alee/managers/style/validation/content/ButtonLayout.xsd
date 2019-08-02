@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="IconTextLayout.xsd" />
+
+    <!-- com.alee.laf.button.ButtonLayout -->
+    <xs:complexType name="ButtonLayout">
+        <xs:complexContent>
+            <xs:extension base="IconTextLayout">
+
+                <!-- No extra settings -->
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

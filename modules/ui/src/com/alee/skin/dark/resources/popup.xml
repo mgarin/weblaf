@@ -1,0 +1,48 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.window.WebPopup -->
+
+    <!-- Popup -->
+    <style type="popup">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="unix">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent popup -->
+    <style type="popup" id="transparent">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- Undecorated popup -->
+    <style type="popup" id="undecorated">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape round="0" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

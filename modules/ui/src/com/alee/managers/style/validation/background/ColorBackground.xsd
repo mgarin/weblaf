@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBackground.xsd" />
+
+    <!-- com.alee.painter.decoration.background.ColorBackground -->
+    <xs:complexType name="ColorBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractBackground">
+
+                <!-- Background color -->
+                <xs:attribute name="color" type="java.awt:Color" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

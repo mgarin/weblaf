@@ -17,38 +17,33 @@
 
 package com.alee.laf.table.editors;
 
-import com.alee.extended.date.DateSelectionListener;
+import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
-import com.alee.laf.button.WebButton;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Date;
 
 /**
  * @author Mikle Garin
  */
-
 public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
 {
     public WebDateEditor ()
     {
         super ();
 
-        editorComponent = new WebDateField ( false );
-        editorComponent.setFireSelectionWithoutChanges ( true );
-        editorComponent.addDateSelectionListener ( new DateSelectionListener ()
+        editorComponent = new WebDateField ();
+        editorComponent.addDateListener ( new DateListener ()
         {
             @Override
-            public void dateSelected ( final Date date )
+            public void dateChanged ( final Date date )
             {
                 stopCellEditing ();
             }
         } );
-
-        final WebButton popupButton = editorComponent.getPopupButton ();
-        popupButton.setRound ( 0 );
-        popupButton.setLeftRightSpacing ( 0 );
-        popupButton.setDrawSides ( false, true, false, false );
 
         delegate = new EditorDelegate ()
         {
@@ -61,10 +56,20 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
             @Override
             public Object getCellEditorValue ()
             {
-                // Updating value from field to make sure it is up-to-date
-                editorComponent.updateDateFromField ( false );
+                //                // Updating value from field to make sure it is up-to-date
+                //                editorComponent.updateDateFromField ( false );
                 return editorComponent.getDate ();
             }
         };
+    }
+
+
+    @Override
+    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
+                                                   final int column )
+    {
+        editorComponent.setStyleId ( StyleId.tableCellEditorDate.at ( table ) );
+
+        return super.getTableCellEditorComponent ( table, value, isSelected, row, column );
     }
 }

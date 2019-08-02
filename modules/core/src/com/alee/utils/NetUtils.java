@@ -27,9 +27,16 @@ import java.net.URL;
  *
  * @author Mikle Garin
  */
-
 public final class NetUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private NetUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Returns address represented by the specified URL object.
      *
@@ -51,7 +58,7 @@ public final class NetUtils
     /**
      * Returns URL for the specified address.
      *
-     * @param address adress to process
+     * @param address address to process
      * @return URL for the specified address
      */
     public static URL getURL ( final String address )
@@ -69,7 +76,7 @@ public final class NetUtils
     /**
      * Returns URI for the specified address.
      *
-     * @param address adress to process
+     * @param address address to process
      * @return URI for the specified address
      */
     public static URI getURI ( final String address )
@@ -99,7 +106,7 @@ public final class NetUtils
     /**
      * Returns host for the specified address.
      *
-     * @param address adress to process
+     * @param address address to process
      * @return host for the specified address
      */
     public static String getHost ( final String address )
@@ -111,7 +118,7 @@ public final class NetUtils
     /**
      * Returns port for the specified address.
      *
-     * @param address adress to process
+     * @param address address to process
      * @return port for the specified address
      */
     public static int getPort ( final String address )
@@ -123,13 +130,13 @@ public final class NetUtils
     /**
      * Returns base address for the specified complete address.
      *
-     * @param address complete adress to process
+     * @param address complete address to process
      * @return base address for the specified complete address
      */
     public static String getBaseAddress ( final String address )
     {
         final URL url = getURL ( address );
-        return url != null ? ( url.getHost () + ( url.getPort () != 80 && url.getPort () != -1 ? ":" + url.getPort () : "" ) ) : null;
+        return url != null ? url.getHost () + ( url.getPort () != 80 && url.getPort () != -1 ? ":" + url.getPort () : "" ) : null;
     }
 
     /**

@@ -57,7 +57,6 @@ package com.alee.extended.layout;
  * @author Daniel E. Barbalace
  * @version 3.0 February 15, 2004
  */
-
 public interface TableLayoutConstants
 {
     /**

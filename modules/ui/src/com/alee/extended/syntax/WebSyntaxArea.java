@@ -17,10 +17,11 @@
 
 package com.alee.extended.syntax;
 
+import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.utils.EventUtils;
-import com.alee.utils.general.Pair;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.swing.extensions.*;
 import com.alee.utils.swing.*;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RUndoManager;
@@ -29,19 +30,17 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
- * Easily customizable RSyntaxTextArea extension.
- * This class is basically the same as RSyntaxTextArea but additionally accepts SyntaxPresets for fast configuration.
+ * Easily customizable {@link RSyntaxTextArea} extension.
+ * This class is basically the same as RSyntaxTextArea but additionally accepts {@link SyntaxPreset}s for fast configuration.
  *
  * @author Mikle Garin
  * @see com.alee.extended.syntax.SyntaxPreset
  * @see com.alee.extended.syntax.SyntaxTheme
  */
-
-public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMethods, EventMethods
+public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMethods<WebSyntaxArea>, EventMethods
 {
     /**
      * Document history manager.
@@ -62,9 +61,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final SyntaxPreset... presets )
     {
         super ();
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -76,10 +73,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final String text, final SyntaxPreset... presets )
     {
         super ( text );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        clearHistory ();
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -92,9 +86,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final int rows, final int cols, final SyntaxPreset... presets )
     {
         super ( rows, cols );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -108,10 +100,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final String text, final int rows, final int cols, final SyntaxPreset... presets )
     {
         super ( text, rows, cols );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        clearHistory ();
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -123,16 +112,38 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final int textMode, final SyntaxPreset... presets )
     {
         super ( textMode );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        initialize ();
+        initialize ( presets );
     }
 
     /**
      * Initializes additional custom settings.
+     *
+     * @param presets presets to apply
      */
-    protected void initialize ()
+    protected void initialize ( final SyntaxPreset... presets )
     {
+        // Applying provided presets
+        applyPresets ( presets );
+
+        // Applying default theme if it wasn't provided
+        boolean themeProvided = false;
+        for ( final SyntaxPreset preset : presets )
+        {
+            if ( preset.getType () == PresetType.theme )
+            {
+                themeProvided = true;
+                break;
+            }
+        }
+        if ( !themeProvided )
+        {
+            applyPresets ( SyntaxPreset.ideaTheme );
+        }
+
+        // Clearing history to avoid initial text removal on undo
+        clearHistory ();
+
+        // Adding redo action
         onKeyPress ( Hotkey.CTRL_SHIFT_Z, new KeyEventRunnable ()
         {
             @Override
@@ -180,33 +191,21 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      */
     public WebSyntaxScrollPane createScroll ()
     {
-        return createScroll ( true, true );
+        return createScroll ( StyleId.syntaxareaScroll );
     }
 
     /**
      * Returns properly styled and configured scroll.
      *
-     * @param drawBorder whether should draw outer scrollpane border or not
+     * @param id style ID
      * @return properly styled and configured scroll
      */
-    public WebSyntaxScrollPane createScroll ( final boolean drawBorder )
-    {
-        return createScroll ( drawBorder, true );
-    }
-
-    /**
-     * Returns properly styled and configured scroll.
-     *
-     * @param drawBorder      whether should draw outer scrollpane border or not
-     * @param drawInnerBorder whether should draw inner scrollpane border or not
-     * @return properly styled and configured scroll
-     */
-    public WebSyntaxScrollPane createScroll ( final boolean drawBorder, final boolean drawInnerBorder )
+    public WebSyntaxScrollPane createScroll ( final StyleId id )
     {
         // Creating editor scroll with preferred settings
-        final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( this, drawBorder, drawInnerBorder );
+        final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( id, this );
 
-        // Applying theme
+        // Applying syntax area theme
         if ( themePreset != null )
         {
             themePreset.apply ( this );
@@ -265,174 +264,129 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
+    public DocumentChangeBehavior<WebSyntaxArea> onChange ( final DocumentEventRunnable<WebSyntaxArea> runnable )
     {
-        return EventUtils.onChange ( this, runnable );
+        return DocumentEventMethodsImpl.onChange ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMousePress ( this, runnable );
+        return EventMethodsImpl.onMousePress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMousePress ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseEnter ( this, runnable );
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseExit ( this, runnable );
+        return EventMethodsImpl.onMouseExit ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseDrag ( this, runnable );
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseClick ( this, runnable );
+        return EventMethodsImpl.onMouseClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onDoubleClick ( this, runnable );
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMenuTrigger ( this, runnable );
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyType ( this, runnable );
+        return EventMethodsImpl.onKeyType ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyType ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyPress ( this, runnable );
+        return EventMethodsImpl.onKeyPress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyPress ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyRelease ( this, runnable );
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
-        return EventUtils.onFocusGain ( this, runnable );
+        return EventMethodsImpl.onFocusGain ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
-        return EventUtils.onFocusLoss ( this, runnable );
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
 }

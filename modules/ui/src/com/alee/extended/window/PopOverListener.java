@@ -17,39 +17,51 @@
 
 package com.alee.extended.window;
 
+import java.util.EventListener;
+
 /**
- * Custom listener for WebPopOver state listening.
+ * {@link WebPopOver} state change listening.
  *
  * @author Mikle Garin
  */
-
-public interface PopOverListener
+public interface PopOverListener extends EventListener
 {
     /**
-     * Informs that WebPopOver was opened.
-     *
-     * @param popOver event source
+     * todo 1. Add reattach event when it is available in {@link WebPopOver}
      */
-    public void opened ( final WebPopOver popOver );
 
     /**
-     * Informs that WebPopOver.show was called while it was opened forcing it to update location.
+     * Informs that {@link WebPopOver} is being opened.
      *
-     * @param popOver event source
+     * @param popOver {@link WebPopOver}
      */
-    public void reopened ( final WebPopOver popOver );
+    public void opening ( WebPopOver popOver );
 
     /**
-     * Informs that user dragged WebPopOver so that it became unattached from invoker component.
+     * Informs that {@link WebPopOver} was opened.
      *
-     * @param popOver event source
+     * @param popOver {@link WebPopOver}
+     */
+    public void opened ( WebPopOver popOver );
+
+    /**
+     * Informs that {@link WebPopOver#show} was called while it was already opened forcing it to update location.
+     *
+     * @param popOver {@link WebPopOver}
+     */
+    public void reopened ( WebPopOver popOver );
+
+    /**
+     * Informs that user dragged {@link WebPopOver} so that it became unattached from invoker component.
+     *
+     * @param popOver {@link WebPopOver}
      */
     public void detached ( WebPopOver popOver );
 
     /**
-     * Informs that WebPopOver was closed due to losing focus or some other cause.
+     * Informs that {@link WebPopOver} was closed due to losing focus or some other cause.
      *
-     * @param popOver event source
+     * @param popOver {@link WebPopOver}
      */
-    public void closedWebPopOver ( WebPopOver popOver );
+    public void closed ( WebPopOver popOver );
 }

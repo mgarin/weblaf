@@ -1,51 +1,18 @@
 /*
- * This file is part of WebLookAndFeel library.
+ * Copyright 2006 Jerry Huxtable
  *
- * WebLookAndFeel library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * WebLookAndFeel library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ *  Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-/*
-Copyright 2006 Jerry Huxtable
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
-/*
-Copyright 2006 Jerry Huxtable
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 
 package com.alee.graphics.filters;
 
@@ -54,15 +21,19 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
+/**
+ *
+ * @author Jerry Huxtable
+ */
 public class MiscCompositeContext implements CompositeContext
 {
 
-    private int rule;
-    private float alpha;
-    private ColorModel srcColorModel;
-    private ColorModel dstColorModel;
+    private final int rule;
+    private final float alpha;
+    private final ColorModel srcColorModel;
+    private final ColorModel dstColorModel;
 
-    public MiscCompositeContext ( int rule, float alpha, ColorModel srcColorModel, ColorModel dstColorModel )
+    public MiscCompositeContext ( final int rule, final float alpha, final ColorModel srcColorModel, final ColorModel dstColorModel )
     {
         this.rule = rule;
         this.alpha = alpha;
@@ -76,23 +47,23 @@ public class MiscCompositeContext implements CompositeContext
     }
 
     // Multiply two numbers in the range 0..255 such that 255*255=255
-    static int multiply255 ( int a, int b )
+    static int multiply255 ( final int a, final int b )
     {
-        int t = a * b + 0x80;
+        final int t = a * b + 0x80;
         return ( ( t >> 8 ) + t ) >> 8;
     }
 
-    static int clamp ( int a )
+    static int clamp ( final int a )
     {
         return a < 0 ? 0 : a > 255 ? 255 : a;
     }
 
     @Override
-    public void compose ( Raster src, Raster dstIn, WritableRaster dstOut )
+    public void compose ( final Raster src, final Raster dstIn, final WritableRaster dstOut )
     {
         float a;
         float ac;
-        float alpha = this.alpha;
+        final float alpha = this.alpha;
         int t;
 
         float[] sHsv = null, diHsv = null, doHsv = null;
@@ -111,29 +82,29 @@ public class MiscCompositeContext implements CompositeContext
         int[] srcPix = null;
         int[] dstPix = null;
 
-        int x = dstOut.getMinX ();
-        int w = dstOut.getWidth ();
+        final int x = dstOut.getMinX ();
+        final int w = dstOut.getWidth ();
 
-        int y0 = dstOut.getMinY ();
-        int y1 = y0 + dstOut.getHeight ();
+        final int y0 = dstOut.getMinY ();
+        final int y1 = y0 + dstOut.getHeight ();
 
         for ( int y = y0; y < y1; y++ )
         {
             srcPix = src.getPixels ( x, y, w, 1, srcPix );
             dstPix = dstIn.getPixels ( x, y, w, 1, dstPix );
             int i = 0;
-            int end = w * 4;
+            final int end = w * 4;
 
             while ( i < end )
             {
-                int sr = srcPix[ i ];
-                int dir = dstPix[ i ];
-                int sg = srcPix[ i + 1 ];
-                int dig = dstPix[ i + 1 ];
-                int sb = srcPix[ i + 2 ];
-                int dib = dstPix[ i + 2 ];
-                int sa = srcPix[ i + 3 ];
-                int dia = dstPix[ i + 3 ];
+                final int sr = srcPix[ i ];
+                final int dir = dstPix[ i ];
+                final int sg = srcPix[ i + 1 ];
+                final int dig = dstPix[ i + 1 ];
+                final int sb = srcPix[ i + 2 ];
+                final int dib = dstPix[ i + 2 ];
+                final int sa = srcPix[ i + 3 ];
+                final int dia = dstPix[ i + 3 ];
                 int dor;
                 int dog;
                 int dob;
@@ -295,7 +266,7 @@ public class MiscCompositeContext implements CompositeContext
                                 break;
                         }
 
-                        int doRGB = Color.HSBtoRGB ( doHsv[ 0 ], doHsv[ 1 ], doHsv[ 2 ] );
+                        final int doRGB = Color.HSBtoRGB ( doHsv[ 0 ], doHsv[ 1 ], doHsv[ 2 ] );
                         dor = ( doRGB & 0xff0000 ) >> 16;
                         dog = ( doRGB & 0xff00 ) >> 8;
                         dob = ( doRGB & 0xff );

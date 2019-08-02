@@ -1,0 +1,102 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.date.WebDateField -->
+
+    <!-- Date field -->
+    <style type="datefield">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Date text field -->
+        <style type="formattedtextfield" id="field" padding="2" extends="transparent" />
+
+        <!-- Choose button -->
+        <style type="button" id="button" extends="icon-hover">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,1,0,0" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Popup -->
+        <style type="rootpane" id="popup" extends="popover">
+
+            <!-- Calendar -->
+            <style type="panel" id="calendar" extends="calendar">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape round="3" />
+                            <WebShadow type="outer" width="0" />
+                            <LineBorder opacity="0" />
+                        </decoration>
+                        <decoration states="focused">
+                            <LineBorder opacity="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+        </style>
+
+    </style>
+
+    <!-- Non-opaque date field -->
+    <style type="datefield" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent date field -->
+    <style type="datefield" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- Date field without focus decoration -->
+    <style type="datefield" id="nofocus">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

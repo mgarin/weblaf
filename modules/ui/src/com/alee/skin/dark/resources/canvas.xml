@@ -1,0 +1,108 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.canvas.WebCanvas -->
+
+    <!-- Canvas -->
+    <style type="canvas">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter />
+    </style>
+
+    <!-- Gripper -->
+    <style type="canvas" id="gripper" padding="2">
+        <painter>
+            <decorations>
+                <decoration cursor="hand">
+                    <Gripper part="2,2" spacing="1" color="111,115,117" shadow="20,20,20" />
+                </decoration>
+                <decoration states="hover">
+                    <Gripper color="151,155,157" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-nw" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="northWest" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-n" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="north" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-ne" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="northEast" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-w" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="west" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-c" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="center" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-e" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="east" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-sw" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="southWest" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-s" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="south" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-se" extends="gripper">
+        <painter>
+            <decorations>
+                <decoration>
+                    <Gripper direction="southEast" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

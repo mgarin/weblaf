@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBackground.xsd" />
+    <xs:include schemaLocation="../ext/GradientColor.xsd" />
+    <xs:include schemaLocation="../ext/GradientType.xsd" />
+
+    <!-- com.alee.painter.decoration.background.GradientBackground -->
+    <xs:complexType name="GradientBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractBackground">
+
+                <!-- Gradient colors -->
+                <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                    <xs:element name="color" type="GradientColor" />
+                </xs:sequence>
+
+                <!-- Gradient type -->
+                <xs:attribute name="type" type="GradientType" />
+
+                <!-- Bounds width/height percentage representing gradient start point -->
+                <xs:attribute name="from" type="java.awt:Point2D" />
+
+                <!-- Bounds width/height percentage representing gradient end point -->
+                <xs:attribute name="to" type="java.awt:Point2D" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

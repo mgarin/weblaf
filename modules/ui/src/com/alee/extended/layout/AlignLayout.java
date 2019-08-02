@@ -17,11 +17,13 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +33,22 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class AlignLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**
      * todo 1. Take orientation into account
+     * todo 2. Center element doesn't take side ones into account when placed
      */
+
+    /**
+     * Horizontal alignment constraints.
+     */
+    public static final List<Integer> horizontals = new ImmutableList<Integer> ( LEFT, CENTER, RIGHT );
+
+    /**
+     * Vertical alignment constraints.
+     */
+    public static final List<Integer> verticals = new ImmutableList<Integer> ( TOP, CENTER, BOTTOM );
 
     /**
      * Layout constraints separator.
@@ -44,46 +56,64 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     public static final String SEPARATOR = ",";
 
     /**
-     * Horizontal alignment constraints.
-     */
-    public static final List<Integer> horizontals = Arrays.asList ( LEFT, CENTER, RIGHT );
-
-    /**
-     * Vertical alignment constraints.
-     */
-    public static final List<Integer> verticals = Arrays.asList ( TOP, CENTER, BOTTOM );
-
-    /**
      * Constraints cache for added components.
      */
-    protected final Map<Component, String> constraints = new HashMap<Component, String> ();
+    protected final Map<Component, String> constraints;
 
     /**
      * Horizontal gap between components.
      */
-    protected int hgap = 0;
+    protected int hgap;
 
     /**
      * Vertical gap between components.
      */
-    protected int vgap = 0;
+    protected int vgap;
 
     /**
-     * Whether components should fill all available horizontal space or not.
+     * Whether or not components should fill all available horizontal space.
      */
-    protected boolean hfill = false;
+    protected boolean hfill;
 
     /**
-     * Whether components should fill all available vertical space or not.
+     * Whether or not components should fill all available vertical space.
      */
-    protected boolean vfill = false;
+    protected boolean vfill;
 
     /**
-     * Constructs new align layout.
+     * Constructs new {@link AlignLayout}.
      */
     public AlignLayout ()
     {
-        super ();
+        this ( 0, 0, false, false );
+    }
+
+    /**
+     * Constructs new align layout.
+     *
+     * @param hgap horizontal gap between components
+     * @param vgap vertical gap between components
+     */
+    public AlignLayout ( final int hgap, final int vgap )
+    {
+        this ( hgap, vgap, false, false );
+    }
+
+    /**
+     * Constructs new align layout.
+     *
+     * @param hgap  horizontal gap between components
+     * @param vgap  vertical gap between components
+     * @param hfill whether or not components should fill all available horizontal space
+     * @param vfill whether or not components should fill all available vertical space
+     */
+    public AlignLayout ( final int hgap, final int vgap, final boolean hfill, final boolean vfill )
+    {
+        this.constraints = new HashMap<Component, String> ();
+        this.hgap = 0;
+        this.vgap = 0;
+        this.hfill = false;
+        this.vfill = false;
     }
 
     /**
@@ -129,7 +159,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Returns whether components should fill all available horizontal space or not.
      *
-     * @return true if components should fill all available horizontal space, false otherwise
+     * @return {@code true} if components should fill all available horizontal space, {@code false} otherwise
      */
     public boolean isHfill ()
     {
@@ -149,7 +179,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Returns whether components should fill all available vertical space or not.
      *
-     * @return true if components should fill all available vertical space, false otherwise
+     * @return {@code true} if components should fill all available vertical space, {@code false} otherwise
      */
     public boolean isVfill ()
     {
@@ -166,32 +196,29 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         this.vfill = vfill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
-        String name = ( String ) constraints;
-        if ( name != null && !name.trim ().equals ( "" ) )
+        String align = ( String ) constraints;
+        if ( align != null && !align.trim ().equals ( "" ) )
         {
             try
             {
                 // Checking halign for validity
-                final int halign = getHalign ( name );
+                final int halign = getHalign ( align );
                 if ( !horizontals.contains ( halign ) )
                 {
                     illegalArgument ();
                 }
 
                 // Checking valign for validity
-                final int valign = getValign ( name );
+                final int valign = getValign ( align );
                 if ( !verticals.contains ( valign ) )
                 {
                     illegalArgument ();
                 }
             }
-            catch ( Throwable ex )
+            catch ( final Exception ex )
             {
                 illegalArgument ();
             }
@@ -199,78 +226,124 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         else
         {
             // Default position
-            name = CENTER + SEPARATOR + CENTER;
+            align = CENTER + SEPARATOR + CENTER;
         }
-        this.constraints.put ( component, name );
+        this.constraints.put ( component, align );
     }
 
-    /**
-     * Throws illegal argument (constraint) exception.
-     */
-    protected void illegalArgument ()
-    {
-        throw new IllegalArgumentException ( "Cannot add to layout: please specify proper alignment constraints" );
-    }
-
-    /**
-     * Returns horizontal alignment for the specified constraint.
-     *
-     * @param name constraint
-     * @return horizontal alignment
-     */
-    protected int getHalign ( final String name )
-    {
-        return name == null ? CENTER : Integer.parseInt ( name.substring ( 0, name.indexOf ( SEPARATOR ) ) );
-    }
-
-    /**
-     * Returns vertical alignment for the specified constraint.
-     *
-     * @param name constraint
-     * @return vertical alignment
-     */
-    protected int getValign ( final String name )
-    {
-        return name == null ? CENTER : Integer.parseInt ( name.substring ( name.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public void layoutContainer ( @NotNull final Container container )
+    {
+        final Insets insets = container.getInsets ();
+        final int cw = container.getWidth () - insets.left - insets.right;
+        final int ch = container.getHeight () - insets.top - insets.bottom;
+        for ( final Component component : container.getComponents () )
+        {
+            // Component constraints
+            final String align = constraints.get ( component );
+            final int halign = getHalign ( align );
+            final int valign = getValign ( align );
+
+            // Component size
+            final Dimension ps = component.getPreferredSize ();
+            ps.width = Math.min ( ps.width, cw );
+            ps.height = Math.min ( ps.height, ch );
+
+            // Determining x coordinate
+            final int x;
+            if ( isHfill () )
+            {
+                x = insets.left;
+            }
+            else
+            {
+                if ( halign == LEFT )
+                {
+                    x = insets.left;
+                }
+                else if ( halign == CENTER )
+                {
+                    x = insets.left + cw / 2 - Math.min ( ps.width / 2, cw / 2 );
+                }
+                else if ( halign == RIGHT )
+                {
+                    x = container.getWidth () - Math.min ( ps.width, cw ) - insets.right;
+                }
+                else
+                {
+                    throw new IllegalArgumentException ( "Unknown horizontal alignment: " + halign );
+                }
+            }
+
+            // Determining y coordinate
+            final int y;
+            if ( isVfill () )
+            {
+                y = insets.top;
+            }
+            else
+            {
+                if ( valign == TOP )
+                {
+                    y = insets.top;
+                }
+                else if ( valign == CENTER )
+                {
+                    y = insets.top + ch / 2 - Math.min ( ps.width / 2, ch / 2 );
+                }
+                else if ( valign == BOTTOM )
+                {
+                    y = container.getHeight () - Math.min ( ps.height, ch ) - insets.bottom;
+                }
+                else
+                {
+                    throw new IllegalArgumentException ( "Unknown vertical alignment: " + valign );
+                }
+            }
+
+            // Determining width and height
+            final int width = isHfill () ? cw : Math.min ( ps.width, cw );
+            final int height = isVfill () ? ch : Math.min ( ps.height, ch );
+
+            // Placing component
+            component.setBounds ( x, y, width, height );
+        }
+    }
+
+    @Override
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final Dimension ps;
-        if ( parent.getComponentCount () > 1 )
+        if ( container.getComponentCount () > 1 )
         {
             // Counting size for each block
             final Map<Integer, Integer> widths = new HashMap<Integer, Integer> ();
             final Map<Integer, Integer> heights = new HashMap<Integer, Integer> ();
-            for ( final int halign : horizontals )
+            if ( !isHfill () || !isVfill () )
             {
-                for ( final int valign : verticals )
+                for ( final int halign : horizontals )
                 {
-                    final Dimension size = getSideSize ( parent, halign, valign );
-                    if ( size != null )
+                    for ( final int valign : verticals )
                     {
-                        if ( !hfill )
+                        final Dimension size = getAreaSize ( container, halign, valign );
+                        if ( size != null )
                         {
-                            final int width = widths.containsKey ( halign ) ? widths.get ( halign ) : 0;
-                            widths.put ( halign, Math.max ( width, size.width ) );
-                        }
-                        if ( !vfill )
-                        {
-                            final int height = widths.containsKey ( valign ) ? widths.get ( valign ) : 0;
-                            heights.put ( valign, Math.max ( height, size.height ) );
+                            if ( !isHfill () )
+                            {
+                                final int width = widths.containsKey ( halign ) ? widths.get ( halign ) : 0;
+                                widths.put ( halign, Math.max ( width, size.width ) );
+                            }
+                            if ( !isVfill () )
+                            {
+                                final int height = widths.containsKey ( valign ) ? widths.get ( valign ) : 0;
+                                heights.put ( valign, Math.max ( height, size.height ) );
+                            }
                         }
                     }
                 }
@@ -278,33 +351,33 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
 
             // Summing up blocks
             ps = new Dimension ( 0, 0 );
-            if ( hfill )
+            if ( isHfill () )
             {
-                ps.width = SwingUtils.maxWidth ( parent.getComponents () );
+                ps.width = SwingUtils.maxWidth ( container.getComponents () );
             }
             else
             {
                 for ( final Integer width : widths.values () )
                 {
-                    ps.width += ps.width > 0 ? hgap + width : width;
+                    ps.width += ps.width > 0 ? getHgap () + width : width;
                 }
             }
-            if ( vfill )
+            if ( isVfill () )
             {
-                ps.height = SwingUtils.maxHeight ( parent.getComponents () );
+                ps.height = SwingUtils.maxHeight ( container.getComponents () );
             }
             else
             {
                 for ( final Integer height : heights.values () )
                 {
-                    ps.height += ps.height > 0 ? vgap + height : height;
+                    ps.height += ps.height > 0 ? getVgap () + height : height;
                 }
             }
         }
-        else if ( parent.getComponentCount () == 1 )
+        else if ( container.getComponentCount () == 1 )
         {
             // Separate case for single component
-            ps = parent.getComponent ( 0 ).getPreferredSize ();
+            ps = container.getComponent ( 0 ).getPreferredSize ();
         }
         else
         {
@@ -313,7 +386,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         }
 
         // Adding insets
-        final Insets insets = parent.getInsets ();
+        final Insets insets = container.getInsets ();
         ps.width += insets.left + insets.right;
         ps.height += insets.top + insets.bottom;
 
@@ -321,103 +394,58 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     /**
-     * Returns size for the side specified by horizontal and vertical alignments.
+     * Returns size for the area specified by horizontal and vertical alignments.
      *
-     * @param parent container
-     * @param halign horizontal alignment
-     * @param valign vertical alignment
-     * @return size for the side specified by horizontal and vertical alignments
+     * @param container container
+     * @param halign    horizontal alignment
+     * @param valign    vertical alignment
+     * @return size for the area specified by horizontal and vertical alignments
      */
-    protected Dimension getSideSize ( final Container parent, final int halign, final int valign )
+    protected Dimension getAreaSize ( final Container container, final int halign, final int valign )
     {
-        Dimension size = new Dimension ( 0, 0 );
-        for ( final Component component : parent.getComponents () )
+        final Dimension size = new Dimension ( 0, 0 );
+        for ( final Component component : container.getComponents () )
         {
-            // Component constraints and size
             final String align = constraints.get ( component );
             if ( getHalign ( align ) == halign && getValign ( align ) == valign )
             {
-                size = SwingUtils.max ( size, component.getPreferredSize () );
+                final Dimension preferredSize = component.getPreferredSize ();
+                size.width = Math.max ( size.width, preferredSize.width );
+                size.height = Math.max ( size.height, preferredSize.height );
             }
         }
         return size.width > 0 || size.height > 0 ? size : null;
     }
 
     /**
-     * {@inheritDoc}
+     * Returns horizontal alignment for the specified constraint.
+     *
+     * @param constraints constraints
+     * @return horizontal alignment
      */
-    @Override
-    public void layoutContainer ( final Container parent )
+    protected int getHalign ( final String constraints )
     {
-        final Insets insets = parent.getInsets ();
-        final int cw = parent.getWidth () - insets.left - insets.right;
-        final int ch = parent.getHeight () - insets.top - insets.bottom;
-        for ( final Component component : parent.getComponents () )
-        {
-            // Component constraints and size
-            final String align = constraints.get ( component );
-            final int halign = getHalign ( align );
-            final int valign = getValign ( align );
-            final Dimension ps = component.getPreferredSize ();
+        return constraints == null ? CENTER :
+                Integer.parseInt ( constraints.substring ( 0, constraints.indexOf ( SEPARATOR ) ) );
+    }
 
-            // Determining x coordinate
-            int x = 0;
-            if ( hfill )
-            {
-                x = insets.left;
-            }
-            else
-            {
-                switch ( halign )
-                {
-                    case LEFT:
-                    {
-                        x = insets.left;
-                        break;
-                    }
-                    case CENTER:
-                    {
-                        x = parent.getWidth () / 2 - ps.width / 2;
-                        break;
-                    }
-                    case RIGHT:
-                    {
-                        x = parent.getWidth () - ps.width - insets.right;
-                        break;
-                    }
-                }
-            }
+    /**
+     * Returns vertical alignment for the specified constraint.
+     *
+     * @param constraints constraints
+     * @return vertical alignment
+     */
+    protected int getValign ( final String constraints )
+    {
+        return constraints == null ? CENTER :
+                Integer.parseInt ( constraints.substring ( constraints.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
+    }
 
-            // Determining y coordinate
-            int y = 0;
-            if ( vfill )
-            {
-                y = insets.top;
-            }
-            else
-            {
-                switch ( valign )
-                {
-                    case TOP:
-                    {
-                        y = insets.top;
-                        break;
-                    }
-                    case CENTER:
-                    {
-                        y = parent.getHeight () / 2 - ps.height / 2;
-                        break;
-                    }
-                    case BOTTOM:
-                    {
-                        y = parent.getHeight () - ps.height - insets.bottom;
-                        break;
-                    }
-                }
-            }
-
-            // Placing component
-            component.setBounds ( x, y, hfill ? cw : ps.width, vfill ? ch : ps.height );
-        }
+    /**
+     * Throws illegal argument (constraint) exception.
+     */
+    protected void illegalArgument ()
+    {
+        throw new IllegalArgumentException ( "Cannot add to layout: please specify proper alignment constraints" );
     }
 }

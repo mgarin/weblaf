@@ -17,15 +17,17 @@
 
 package com.alee.extended.menu;
 
-import com.alee.laf.rootpane.WebWindow;
-import com.alee.managers.focus.GlobalFocusListener;
+import com.alee.extended.window.WebPopup;
+import com.alee.laf.window.WebWindow;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.GeometryUtils;
-import com.alee.utils.swing.WebHeavyWeightPopup;
-import com.alee.utils.swing.WindowFollowAdapter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +36,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
-public class WebDynamicMenu extends WebHeavyWeightPopup
+public class WebDynamicMenu extends WebPopup
 {
     /**
      * todo 1. Add sliding down vertical menu (with text and selection background)
@@ -54,7 +55,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
 
     /**
      * Angle which is available for menu elements.
-     * It is 360 degress by default (whole circle available).
+     * It is 360 degrees by default (whole circle available).
      */
     protected double angleRange;
 
@@ -79,36 +80,21 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     protected List<WebDynamicMenuItem> items = new ArrayList<WebDynamicMenuItem> ();
 
     /**
-     * Invoker window follow adapter.
-     */
-    protected WindowFollowAdapter followAdapter;
-
-    /**
      * Index of menu item that caused menu to close.
      * This might affect the hiding animation.
      */
     protected int hidingCause = -1;
 
     /**
-     * Custom global mouse listener that closes menu.
-     */
-    protected AWTEventListener mouseListener;
-
-    /**
-     * Custom global focus listener that closes menu.
-     */
-    protected GlobalFocusListener focusListener;
-
-    /**
      * Constructs new dynamic menu.
      */
     public WebDynamicMenu ()
     {
-        super ( "transparent", new DynamicMenuLayout () );
+        super ( StyleId.panelTransparent, new DynamicMenuLayout () );
 
         // Popup settings
         setAnimate ( true );
-        setStepProgress ( 0.04f );
+        setFadeStepSize ( 0.04f );
         setWindowOpaque ( false );
         setWindowOpacity ( 0f );
         setFollowInvoker ( true );
@@ -219,7 +205,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         //                    g2d.setPaint ( isEnabled () ? item.getBorderColor () : item.getDisabledBorderColor () );
         //                    g2d.fill ( outer );
         //
-        //                    g2d.setColor ( Color.WHITE );
+        //                    g2d.setPaint ( Color.WHITE );
         //                    g2d.fill ( inner );
         //
         //                    GraphicsUtils.restoreAntialias ( g2d, aa );
@@ -259,9 +245,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         return hidingCause;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDynamicMenu showPopup ( final Component invoker, final int x, final int y )
     {
@@ -289,28 +272,19 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
      */
     public void showMenu ( final Component invoker, final int x, final int y )
     {
-        synchronized ( sync )
-        {
-            // Displaying menu
-            final Point displayPoint = getActualLayout ().getDisplayPoint ( this, x, y );
-            super.showPopup ( invoker, displayPoint.x, displayPoint.y );
-        }
+        // Displaying menu
+        final Point displayPoint = getActualLayout ().getDisplayPoint ( this, x, y );
+        super.showPopup ( invoker, displayPoint.x, displayPoint.y );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void showAnimationStepPerformed ()
     {
         revalidate ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public WebHeavyWeightPopup hidePopup ()
+    public WebPopup hidePopup ()
     {
         hideMenu ();
         return this;
@@ -338,13 +312,10 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         super.hidePopup ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void hideAnimationStepPerformed ()
     {
-        if ( displayProgress > 0f )
+        if ( visibilityProgress > 0f )
         {
             revalidate ();
         }
@@ -352,7 +323,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         {
             hidingCause = -1;
             revalidate ();
-            fullyHidden ();
         }
     }
 

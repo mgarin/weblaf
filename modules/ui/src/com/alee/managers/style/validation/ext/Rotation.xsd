@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.api.data.Rotation -->
+    <xs:simpleType name="Rotation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="none" />
+            <xs:enumeration value="clockwise" />
+            <xs:enumeration value="counterClockwise" />
+            <xs:enumeration value="upsideDown" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

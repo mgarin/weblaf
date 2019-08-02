@@ -29,9 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 07.07.2010 Time: 17:30:17
+ * @author Mikle Garin
  */
-
 public class LineColorChooserPaint implements Paint
 {
     private boolean webSafe = false;
@@ -41,7 +40,7 @@ public class LineColorChooserPaint implements Paint
     private int y;
     private int height;
 
-    public LineColorChooserPaint ( int y, int height )
+    public LineColorChooserPaint ( final int y, final int height )
     {
         super ();
         this.y = y;
@@ -49,8 +48,8 @@ public class LineColorChooserPaint implements Paint
     }
 
     @Override
-    public PaintContext createContext ( ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds, final AffineTransform xform,
-                                        RenderingHints hints )
+    public PaintContext createContext ( final ColorModel cm, final Rectangle deviceBounds, final Rectangle2D userBounds,
+                                        final AffineTransform xform, final RenderingHints hints )
     {
         return new PaintContext ()
         {
@@ -69,28 +68,29 @@ public class LineColorChooserPaint implements Paint
             }
 
             @Override
-            public Raster getRaster ( int x, int y, int w, int h )
+            public Raster getRaster ( final int x, int y, final int w, final int h )
             {
-                Rectangle r = new Rectangle ( x, y, w, h );
+                final Rectangle r = new Rectangle ( x, y, w, h );
                 if ( rastersCache.containsKey ( r ) )
                 {
                     return rastersCache.get ( r );
                 }
                 else
                 {
-                    WritableRaster raster = model.createCompatibleWritableRaster ( w, h );
+                    final WritableRaster raster = model.createCompatibleWritableRaster ( w, h );
 
                     y -= Math.round ( xform.getTranslateY () );
 
-                    int[] data = new int[ w * h * 4 ];
+                    final int[] data = new int[ w * h * 4 ];
                     for ( int j = 0; j < h; j++ )
                     {
                         for ( int i = 0; i < w; i++ )
                         {
-                            Color color = new HSBColor ( 1f - ( float ) ( y + j ) / ( LineColorChooserPaint.this.y * 2 + height ), 1f, 1f )
-                                    .getColor ();
+                            final Color color =
+                                    new HSBColor ( 1f - ( float ) ( y + j ) / ( LineColorChooserPaint.this.y * 2 + height ), 1f, 1f )
+                                            .getColor ();
 
-                            int base = ( j * w + i ) * 4;
+                            final int base = ( j * w + i ) * 4;
                             data[ base ] = getWebSafe ( color.getRed () );
                             data[ base + 1 ] = getWebSafe ( color.getGreen () );
                             data[ base + 2 ] = getWebSafe ( color.getBlue () );
@@ -106,7 +106,7 @@ public class LineColorChooserPaint implements Paint
         };
     }
 
-    public Color getColor ( int yCoord )
+    public Color getColor ( final int yCoord )
     {
         return new HSBColor ( 1f - Math.max ( 0, Math.min ( ( float ) ( yCoord - y ) / height, 1f ) ), 1f, 1f ).getColor ();
     }
@@ -115,7 +115,7 @@ public class LineColorChooserPaint implements Paint
     {
         if ( webSafe )
         {
-            color = ColorUtils.getWebSafeValue ( color );
+            color = ColorUtils.webSafe ( color );
         }
         if ( color < 0 )
         {
@@ -139,7 +139,7 @@ public class LineColorChooserPaint implements Paint
         return webSafe;
     }
 
-    public void setWebSafe ( boolean webSafe )
+    public void setWebSafe ( final boolean webSafe )
     {
         this.webSafe = webSafe;
     }

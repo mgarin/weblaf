@@ -20,10 +20,15 @@ package com.alee.utils.swing;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 23.04.12 Time: 13:50
+ * Custom listener for {@link com.alee.utils.swing.UnselectableButtonGroup}.
+ *
+ * @author Mikle Garin
+ * @see com.alee.utils.swing.UnselectableButtonGroup
  */
-
 public interface ButtonGroupListener extends EventListener
 {
+    /**
+     * Informs about button group selection change.
+     */
     public void selectionChanged ();
 }

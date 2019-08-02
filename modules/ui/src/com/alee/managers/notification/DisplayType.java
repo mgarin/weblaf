@@ -22,7 +22,6 @@ package com.alee.managers.notification;
  *
  * @author Mikle Garin
  */
-
 public enum DisplayType
 {
     /**

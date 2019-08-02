@@ -17,23 +17,23 @@
 
 package com.alee.laf.label;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 
 /**
- * Base interface for JLabel component painters.
+ * Basic painter for {@link JLabel} component.
+ * It is used as {@link WLabelUI} default painter.
  *
+ * @param <C> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
-
-public interface LabelPainter<E extends JLabel> extends Painter<E>, SpecificPainter
+public class LabelPainter<C extends JLabel, U extends WLabelUI<C>, D extends IDecoration<C, D>>
+        extends AbstractLabelPainter<C, U, D> implements ILabelPainter<C, U>
 {
     /**
-     * Sets whether text shade should be displayed or not.
-     *
-     * @param drawShade whether text shade should be displayed or not
+     * Implementation is used completely from {@link AbstractLabelPainter}.
      */
-    public void setDrawShade ( final boolean drawShade );
 }

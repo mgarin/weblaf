@@ -22,7 +22,6 @@ package com.alee.utils.file;
  *
  * @author Mikle Garin
  */
-
 public class FileDescription
 {
     /**
@@ -46,7 +45,7 @@ public class FileDescription
     private String date;
 
     /**
-     * Constructs empty file decription.
+     * Constructs empty file description.
      */
     public FileDescription ()
     {
@@ -61,7 +60,7 @@ public class FileDescription
      * @param description file description
      * @param date        file modification date
      */
-    public FileDescription ( String name, String size, String description, String date )
+    public FileDescription ( final String name, final String size, final String description, final String date )
     {
         super ();
         this.name = name;
@@ -85,7 +84,7 @@ public class FileDescription
      *
      * @param name new file name
      */
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
     }
@@ -105,7 +104,7 @@ public class FileDescription
      *
      * @param size new file size
      */
-    public void setSize ( String size )
+    public void setSize ( final String size )
     {
         this.size = size;
     }
@@ -125,7 +124,7 @@ public class FileDescription
      *
      * @param description new file description
      */
-    public void setDescription ( String description )
+    public void setDescription ( final String description )
     {
         this.description = description;
     }
@@ -145,7 +144,7 @@ public class FileDescription
      *
      * @param date new modification date
      */
-    public void setDate ( String date )
+    public void setDate ( final String date )
     {
         this.date = date;
     }

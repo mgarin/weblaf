@@ -17,18 +17,20 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.global.GlobalConstants;
+import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.filefilter.AllFilesFilter;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.FileChooserUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,77 +41,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom UI for JFileChooser component.
+ * Custom UI for {@link JFileChooser} component.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
-
-public class WebFileChooserUI extends FileChooserUI
+public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * File chooser which is decorated by this UI class.
+     * Component painter.
      */
-    private JFileChooser fileChooser;
+    @DefaultPainter ( FileChooserPainter.class )
+    protected IFileChooserPainter painter;
 
     /**
-     * Special FileView for file chooser.
+     * Runtime variables.
      */
-    private WebFileView fileView;
+    protected transient JFileChooser fileChooser;
+    protected transient WebFileView fileView;
+    protected transient WebFileChooserPanel fileChooserPanel;
+    protected transient boolean ignoreFileSelectionChanges = false;
 
     /**
-     * File chooser panel that contains al UI elements.
+     * Listeners.
      */
-    private WebFileChooserPanel fileChooserPanel;
+    protected transient PropertyChangeListener propertyChangeListener;
 
     /**
-     * FilChooser listeners.
-     */
-    private PropertyChangeListener propertyChangeListener;
-
-    /**
-     * Mark to ignore file selection property events.
-     */
-    private boolean ignoreFileSelectionChanges = false;
-
-    /**
-     * Returns an instance of the WebFileChooserUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebFileChooserUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebFileChooserUI
+     * @return instance of the {@link WebFileChooserUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFileChooserUI ();
     }
 
-    /**
-     * Constructs new WebFileChooserUI.
-     */
-    public WebFileChooserUI ()
-    {
-        super ();
-    }
-
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Saving file chooser reference
         fileChooser = ( JFileChooser ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( fileChooser );
+
         fileView = new WebFileView ();
-
         fileChooser.setLayout ( new BorderLayout () );
-        fileChooser.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
 
-        fileChooserPanel = new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
+        fileChooserPanel = createPanel ( fileChooser );
+        fileChooserPanel.setFileSelectionMode ( FileSelectionMode.get ( fileChooser.getFileSelectionMode () ) );
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
-        fileChooserPanel.setApproveListener ( new ActionListener ()
+        fileChooserPanel.setAcceptListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
@@ -118,7 +104,6 @@ public class WebFileChooserUI extends FileChooserUI
                 final List<File> selectedFiles = fileChooserPanel.getSelectedFiles ();
                 fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
                 ignoreFileSelectionChanges = false;
-
                 fileChooser.approveSelection ();
             }
         } );
@@ -130,22 +115,32 @@ public class WebFileChooserUI extends FileChooserUI
                 fileChooser.cancelSelection ();
             }
         } );
-        //        fileChooserPanel.addFileChooserListener ( new FileChooserListener ()
-        //        {
-        //            public void directoryChanged ( File newDirectory )
-        //            {
-        //                ignoreFileSelectionChanges = true;
-        //                fileChooser.setCurrentDirectory ( newDirectory );
-        //                ignoreFileSelectionChanges = false;
-        //            }
-        //
-        //            public void selectionChanged ( List<File> selectedFiles )
-        //            {
-        //                ignoreFileSelectionChanges = true;
-        //                fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
-        //                ignoreFileSelectionChanges = false;
-        //            }
-        //        } );
+        fileChooserPanel.addFileChooserListener ( new FileChooserListener ()
+        {
+            @Override
+            public void directoryChanged ( final File newDirectory )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setCurrentDirectory ( newDirectory );
+                ignoreFileSelectionChanges = false;
+            }
+
+            @Override
+            public void selectionChanged ( final List<File> selectedFiles )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
+                ignoreFileSelectionChanges = false;
+            }
+
+            @Override
+            public void fileFilterChanged ( final FileFilter oldFilter, final FileFilter newFilter )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setFileFilter ( FileUtils.getSwingFileFilter ( fileChooserPanel.getActiveFileFilter () ) );
+                ignoreFileSelectionChanges = false;
+            }
+        } );
         fileChooser.add ( fileChooserPanel, BorderLayout.CENTER );
 
         propertyChangeListener = new PropertyChangeListener ()
@@ -159,92 +154,23 @@ public class WebFileChooserUI extends FileChooserUI
         fileChooser.addPropertyChangeListener ( propertyChangeListener );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( fileChooser );
+
+        // Removing content
         fileChooser.removePropertyChangeListener ( propertyChangeListener );
         fileChooserPanel = null;
-        fileChooser = null;
         fileView = null;
+
+        // Removing file chooser reference
+        fileChooser = null;
     }
 
     /**
-     * Returns file chooser panel.
-     *
-     * @return file chooser panel
-     */
-    public WebFileChooserPanel getFileChooserPanel ()
-    {
-        return fileChooserPanel;
-    }
-
-    /**
-     * Returns list of available file filters.
-     *
-     * @return list of available file filters
-     */
-    public List<AbstractFileFilter> getAvailableFilters ()
-    {
-        return fileChooserPanel.getAvailableFilters ();
-    }
-
-    /**
-     * Returns currenly active file filter.
-     *
-     * @return currenly active file filter
-     */
-    public AbstractFileFilter getActiveFileFilter ()
-    {
-        return fileChooserPanel.getActiveFileFilter ();
-    }
-
-    /**
-     * Returns whether file thumbnails are generated or not.
-     *
-     * @return true if file thumbnails are generated, false otherwise
-     */
-    public boolean isGenerateThumbnails ()
-    {
-        return fileChooserPanel.isGenerateThumbnails ();
-    }
-
-    /**
-     * Sets whether file thumbnails should be generated or not.
-     *
-     * @param generate whether file thumbnails should be generated or not
-     */
-    public void setGenerateThumbnails ( final boolean generate )
-    {
-        fileChooserPanel.setGenerateThumbnails ( generate );
-    }
-
-    /**
-     * Sets approve button text type.
-     *
-     * @param approveText approve button text type
-     */
-    public void setApproveButtonText ( final FileApproveText approveText )
-    {
-        fileChooserPanel.setApproveButtonText ( approveText );
-    }
-
-    /**
-     * Sets approve button language key.
-     *
-     * @param key approve button language key
-     */
-    public void setApproveButtonLanguage ( final String key )
-    {
-        fileChooserPanel.setApproveButtonLanguage ( key );
-    }
-
-    /**
-     * Fired when some of JFileChooser properties changes.
+     * Fired when some of {@link JFileChooser} properties changes.
      *
      * @param event property change event
      */
@@ -257,7 +183,7 @@ public class WebFileChooserUI extends FileChooserUI
         }
         else if ( prop.equals ( JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY ) )
         {
-            fileChooserPanel.setApproveButtonText ( fileChooser.getApproveButtonText () );
+            fileChooserPanel.setAcceptButtonText ( fileChooser.getApproveButtonText () );
         }
         else if ( prop.equals ( JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY ) )
         {
@@ -271,36 +197,44 @@ public class WebFileChooserUI extends FileChooserUI
                 prop.equals ( JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY ) ||
                 prop.equals ( JFileChooser.ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY ) )
         {
-            final FileFilter filter = fileChooser.getFileFilter ();
-            final FileFilter[] filters = fileChooser.getChoosableFileFilters ();
+            if ( !ignoreFileSelectionChanges )
+            {
+                final FileFilter filter = fileChooser.getFileFilter ();
+                final FileFilter[] filters = fileChooser.getChoosableFileFilters ();
 
-            // Collecting all filters
-            final int initialCapacity = ( filters != null ? filters.length : 0 ) + ( filter != null ? 1 : 0 );
-            final List<FileFilter> collected = new ArrayList<FileFilter> ( initialCapacity );
-            if ( filter != null )
-            {
-                collected.add ( filter );
-            }
-            if ( filters != null && filters.length > 0 )
-            {
-                for ( final FileFilter fileFilter : filters )
+                // Collecting all filters
+                final int initialCapacity = ( filters != null ? filters.length : 0 ) + ( filter != null ? 1 : 0 );
+                final List<FileFilter> collected = new ArrayList<FileFilter> ( initialCapacity );
+                if ( filter != null )
                 {
-                    if ( !collected.contains ( fileFilter ) )
+                    collected.add ( filter );
+                }
+                if ( filters != null && filters.length > 0 )
+                {
+                    for ( final FileFilter fileFilter : filters )
                     {
-                        collected.add ( fileFilter );
+                        if ( !collected.contains ( fileFilter ) )
+                        {
+                            collected.add ( fileFilter );
+                        }
                     }
                 }
-            }
 
-            // Applying filters
-            if ( collected.size () > 0 )
-            {
-                fileChooserPanel.setFileFilters ( collected.toArray ( new FileFilter[ collected.size () ] ) );
+                // Applying filters
+                if ( collected.size () > 0 )
+                {
+                    fileChooserPanel.setFileFilters ( collected.toArray ( new FileFilter[ collected.size () ] ) );
+                }
+                else
+                {
+                    fileChooserPanel.setFileFilter ( new AllFilesFilter () );
+                }
             }
-            else
-            {
-                fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
-            }
+        }
+        else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )
+        {
+            final int mode = fileChooser.getFileSelectionMode ();
+            fileChooserPanel.setFileSelectionMode ( FileSelectionMode.get ( mode ) );
         }
         else if ( prop.equals ( JFileChooser.DIRECTORY_CHANGED_PROPERTY ) )
         {
@@ -311,22 +245,21 @@ public class WebFileChooserUI extends FileChooserUI
         }
         else if ( prop.equals ( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) )
         {
+            /**
+             * We are not listening to {@link JFileChooser#SELECTED_FILES_CHANGED_PROPERTY} as it will only generate unnecessary event.
+             * Property {@link JFileChooser#SELECTED_FILE_CHANGED_PROPERTY} event is always triggered so it is sufficient.
+             */
             if ( !ignoreFileSelectionChanges )
             {
-                final File[] selectedFiles = fileChooser.getSelectedFiles ();
-                if ( selectedFiles.length > 0 )
+                if ( event.getNewValue () instanceof File )
                 {
-                    // Update displayed directory and select all files
-                    // fileChooserPanel.setCurrentFolder ( selectedFiles[ 0 ].getParentFile () );
-                    // fileChooserPanel.setSelectedFiles ( selectedFiles );
-                    fileChooserPanel.setSelectedFiles ( selectedFiles );
-
+                    // Simply pass the file, it will be selected when directory is opened
+                    fileChooserPanel.setSelectedFile ( fileChooser.getSelectedFile () );
                 }
                 else
                 {
-                    // Simply pass the file, it will be selected when directory is opened
-                    // fileChooserPanel.setCurrentFolder ( fileChooser.getSelectedFile () );
-                    fileChooserPanel.setSelectedFile ( fileChooser.getSelectedFile () );
+                    // Update displayed directory and select all files
+                    fileChooserPanel.setSelectedFiles ( fileChooser.getSelectedFiles () );
                 }
             }
         }
@@ -338,75 +271,134 @@ public class WebFileChooserUI extends FileChooserUI
         {
             fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
         }
-        else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )
+        else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
         {
             fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         }
-        else if ( prop.equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        else if ( prop.equals ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
         {
             fileChooserPanel.applyComponentOrientation ( fileChooser.getComponentOrientation () );
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Returns main file chooser panel.
+     *
+     * @param fileChooser {@link JFileChooser}
+     * @return main file chooser panel
      */
-    @Override
-    public FileFilter getAcceptAllFileFilter ( final JFileChooser fc )
+    protected WebFileChooserPanel createPanel ( final JFileChooser fileChooser )
     {
-        return GlobalConstants.ALL_FILES_FILTER;
+        return new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
+    }
+
+    @Override
+    public Shape getShape ()
+    {
+        return PainterSupport.getShape ( fileChooser, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( fileChooser, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( fileChooser, painter, enabled );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( fileChooser );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        PainterSupport.setMargin ( fileChooser, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( fileChooser );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PainterSupport.setPadding ( fileChooser, padding );
     }
 
     /**
-     * {@inheritDoc}
+     * Returns file chooser painter.
+     *
+     * @return file chooser painter
      */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getPainter ( painter );
+    }
+
+    /**
+     * Sets file chooser painter.
+     * Pass null to remove file chooser painter.
+     *
+     * @param painter new file chooser painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( fileChooser, new Consumer<IFileChooserPainter> ()
+        {
+            @Override
+            public void accept ( final IFileChooserPainter newPainter )
+            {
+                WebFileChooserUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IFileChooserPainter.class, AdaptiveFileChooserPainter.class );
+    }
+
+    @Override
+    public WebFileChooserPanel getFileChooserPanel ()
+    {
+        return fileChooserPanel;
+    }
+
+    @Override
+    public FileFilter getAcceptAllFileFilter ( final JFileChooser fc )
+    {
+        return new AllFilesFilter ();
+    }
+
     @Override
     public FileView getFileView ( final JFileChooser fc )
     {
         return fileView;
     }
 
-    /**
-     * Sets file view.
-     *
-     * @param fileView new file view
-     */
-    public void setFileView ( final WebFileView fileView )
-    {
-        this.fileView = fileView;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getApproveButtonText ( final JFileChooser fc )
     {
-        return fileChooserPanel.getApproveButtonText ();
+        return fileChooserPanel.getAcceptButtonText ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDialogTitle ( final JFileChooser fc )
     {
         final String dialogTitle = fc.getDialogTitle ();
-        return dialogTitle != null ? dialogTitle : LanguageManager.get ( "weblaf.filechooser.title" );
+        return dialogTitle != null ? dialogTitle : LM.get ( "weblaf.filechooser.title" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void rescanCurrentDirectory ( final JFileChooser fc )
     {
         fileChooserPanel.reloadCurrentFolder ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ensureFileIsVisible ( final JFileChooser fc, final File f )
     {
@@ -437,49 +429,59 @@ public class WebFileChooserUI extends FileChooserUI
         }
     }
 
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
+    }
+
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
+        }
+    }
+
     /**
      * Special FileView for file chooser.
+     *
+     * todo 1. Make caching optional?
+     * todo 2. Make multiple default implementations?
      */
     protected class WebFileView extends FileView
     {
-        /**
-         * Constructs new WebFileView instance.
-         */
-        public WebFileView ()
-        {
-            super ();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getName ( final File f )
         {
             return FileUtils.getDisplayFileName ( f );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getDescription ( final File f )
         {
             return getTypeDescription ( f );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getTypeDescription ( final File f )
         {
             return FileUtils.getFileTypeDescription ( f );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Icon getIcon ( final File f )
         {

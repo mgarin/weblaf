@@ -1,0 +1,176 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkinExtension">
+
+    <!-- Extension settings -->
+    <id>weblaf.demo.dark.extension</id>
+    <class>com.alee.demo.skin.DarkSkinExtension</class>
+    <extends>weblaf.dark.skin</extends>
+
+    <!-- Icon sets -->
+    <iconSet>com.alee.demo.skin.DarkIconSet</iconSet>
+
+    <!-- Empty central area panel -->
+    <style type="panel" id="emptycontent" padding="10">
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <PresetTextureBackground preset="darkWashedWall" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Empty content labels -->
+        <style type="styledlabel" id="emptycontent">
+            <component>
+                <iconTextGap>10</iconTextGap>
+            </component>
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LabelLayout>
+                            <StyledLabelText shadow="true" shadowColor="50,50,50" />
+                        </LabelLayout>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+        <style type="styledlabel" id="emptycontent-info" extends="emptycontent">
+            <component>
+                <foreground>240,240,240</foreground>
+            </component>
+        </style>
+        <style type="styledlabel" id="emptycontent-warn" extends="emptycontent">
+            <component>
+                <foreground>255,150,150</foreground>
+            </component>
+        </style>
+
+    </style>
+
+    <!-- Tree -->
+    <style type="tree" id="examples" extends="extree-non-opaque">
+        <painter>
+
+            <!-- Row background painter -->
+            <rowPainter>
+                <decorations>
+                    <decoration states="even">
+                        <BoundsShape />
+                        <ColorBackground color="111,115,112" />
+                    </decoration>
+                </decorations>
+            </rowPainter>
+
+        </painter>
+
+        <!-- Example nodes renderer -->
+        <style type="styledlabel" id="renderer" padding="4,4,4,6">
+            <painter>
+                <decorations>
+                    <decoration states="beta">
+                        <LabelLayout>
+                            <StyledLabelText constraints="text" color="245,190,190" />
+                        </LabelLayout>
+                    </decoration>
+                    <decoration states="release">
+                        <LabelLayout>
+                            <StyledLabelText constraints="text" color="190,245,190" />
+                        </LabelLayout>
+                    </decoration>
+                    <decoration states="common">
+                        <LabelLayout>
+                            <StyledLabelText constraints="text" color="245,245,245" />
+                        </LabelLayout>
+                    </decoration>
+                    <decoration states="updated">
+                        <LabelLayout>
+                            <StyledLabelText constraints="text" color="190,190,245" />
+                        </LabelLayout>
+                    </decoration>
+                    <decoration states="deprecated">
+                        <LabelLayout>
+                            <StyledLabelText constraints="text" color="80,80,80" />
+                        </LabelLayout>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Panel with all previews -->
+    <style type="panel" id="previews">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="inner" width="10" />
+                    <PresetTextureBackground preset="darkWashedWall" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Dark preview panel -->
+    <style type="panel" id="preview" extends="preview-base">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ColorBackground color="77,81,83" />
+                </decoration>
+                <decoration states="beta">
+                    <FeatureStateBackground color="245,190,190" />
+                </decoration>
+                <decoration states="release">
+                    <FeatureStateBackground color="190,245,190" />
+                </decoration>
+                <decoration states="common">
+                    <FeatureStateBackground color="245,245,245" />
+                </decoration>
+                <decoration states="updated">
+                    <FeatureStateBackground color="190,190,245" />
+                </decoration>
+                <decoration states="deprecated">
+                    <FeatureStateBackground color="80,80,80" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Preview title label -->
+        <style type="styledlabel" id="title" padding="15,25,15,15">
+            <component>
+                <foreground>245,245,245</foreground>
+            </component>
+        </style>
+
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <SeparatorStripes>
+                            <Stripe>
+                                <color>160,160,160</color>
+                            </Stripe>
+                        </SeparatorStripes>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Placeholder label -->
+    <style type="label" id="placeholder" padding="10,15,10,15">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <LineBorder color="darkGray" stroke="basic;1;round;round;0;4,5" />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

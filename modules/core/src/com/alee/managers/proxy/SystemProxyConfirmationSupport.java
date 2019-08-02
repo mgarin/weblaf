@@ -22,22 +22,21 @@ package com.alee.managers.proxy;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
- * @see com.alee.managers.proxy.ProxyManager
+ * @see ProxyManager
  */
-
 public interface SystemProxyConfirmationSupport
 {
     /**
      * Returns whether should use system proxy or not.
      *
-     * @return true if should use system proxy, false otherwise
+     * @return {@code true} if should use system proxy, {@code false} otherwise
      */
     public boolean shouldUseSystemProxy ();
 
     /**
      * Returns whether should remember the choice or not.
      *
-     * @return true if should remember the choice, false otherwise
+     * @return {@code true} if should remember the choice, {@code false} otherwise
      */
     public boolean alwaysDoTheSame ();
 }

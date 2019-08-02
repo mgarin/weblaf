@@ -17,17 +17,18 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
  * @author Mikle Garin
+ * @see com.alee.extended.layout.HorizontalFlowLayout
  */
-
 public class VerticalFlowLayout extends AbstractLayoutManager
 {
     /**
-     * todo 1. Return possibility to wrap columns?
-     * todo 2. Vertical alignment (in column)?
+     * todo 1. Vertical alignment (in column)
      */
 
     /**
@@ -38,6 +39,7 @@ public class VerticalFlowLayout extends AbstractLayoutManager
     public final static int BOTTOM = 2;
 
     protected int align;
+    @Deprecated
     protected int hgap;
     protected int vgap;
     protected boolean hfill;
@@ -112,18 +114,22 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         this.vfill = vfill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setHgap ( final int hgap )
+    public int getHorizontalGap ()
+    {
+        return hgap;
+    }
+
+    public void setHorizontalGap ( final int hgap )
     {
         this.hgap = hgap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setVgap ( final int vgap )
+    public int getVgap ()
+    {
+        return vgap;
+    }
+
+    public void setVerticalGap ( final int vgap )
     {
         this.vgap = vgap;
     }
@@ -145,22 +151,6 @@ public class VerticalFlowLayout extends AbstractLayoutManager
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public int getHgap ()
-    {
-        return hgap;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int getVgap ()
-    {
-        return vgap;
-    }
-
-    /**
      * Gets the VerticalFill attribute of the VerticalLayout object
      */
     public boolean getVerticalFill ()
@@ -176,86 +166,30 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         return hfill;
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( final Container target )
+    public void layoutContainer ( @NotNull final Container container )
     {
-        final Dimension tarsiz = new Dimension ( 0, 0 );
-        for ( int i = 0; i < target.getComponentCount (); i++ )
-        {
-            final Component m = target.getComponent ( i );
-            if ( m.isVisible () )
-            {
-                final Dimension d = m.getPreferredSize ();
-                tarsiz.width = Math.max ( tarsiz.width, d.width );
-                if ( i > 0 )
-                {
-                    tarsiz.height += vgap;
-                }
-                tarsiz.height += d.height;
-            }
-        }
-        final Insets insets = target.getInsets ();
-        tarsiz.width += insets.left + insets.right;
-        tarsiz.height += insets.top + insets.bottom;
-        return tarsiz;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension minimumLayoutSize ( final Container target )
-    {
-        final Dimension tarsiz = new Dimension ( 0, 0 );
-        for ( int i = 0; i < target.getComponentCount (); i++ )
-        {
-            final Component m = target.getComponent ( i );
-            if ( m.isVisible () )
-            {
-                final Dimension d = m.getMinimumSize ();
-                tarsiz.width = Math.max ( tarsiz.width, d.width );
-                if ( i > 0 )
-                {
-                    tarsiz.height += vgap;
-                }
-                tarsiz.height += d.height;
-            }
-        }
-        final Insets insets = target.getInsets ();
-        tarsiz.width += insets.left + insets.right;
-        tarsiz.height += insets.top + insets.bottom;
-        return tarsiz;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void layoutContainer ( final Container target )
-    {
-        final Insets insets = target.getInsets ();
-        final Dimension size = target.getSize ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
+        final Insets insets = container.getInsets ();
+        final Dimension size = container.getSize ();
         final int maxwidth = size.width - ( insets.left + insets.right );
         final int maxheight = size.height - ( insets.top + insets.bottom );
-        final int numcomp = target.getComponentCount ();
-        final int pheight = !vfill && align != TOP ? calculatePreferredHeight ( target ) : 0;
+        final int numcomp = container.getComponentCount ();
+        final int pheight = !vfill && align != TOP ? calculatePreferredHeight ( container ) : 0;
 
         int y = 0;
         for ( int i = 0; i < numcomp; i++ )
         {
-            final Component component = target.getComponent ( i );
+            final Component component = container.getComponent ( i );
             if ( component.isVisible () )
             {
                 final Dimension ps = component.getPreferredSize ();
                 final int w = hfill ? maxwidth : Math.min ( maxwidth, ps.width );
                 final int h = vfill && i == numcomp - 1 ? maxheight - y : ps.height;
+                final int x = ltr || hfill ? insets.left : insets.left + maxwidth - w;
                 if ( vfill )
                 {
-                    component.setBounds ( insets.left, insets.top + y, w, h );
+                    component.setBounds ( x, insets.top + y, w, h );
                 }
                 else
                 {
@@ -263,41 +197,79 @@ public class VerticalFlowLayout extends AbstractLayoutManager
                     {
                         case MIDDLE:
                         {
-                            component.setBounds ( insets.left, insets.top + maxheight / 2 - pheight / 2 + y, w, ps.height );
+                            component.setBounds ( x, insets.top + maxheight / 2 - pheight / 2 + y, w, ps.height );
                             break;
                         }
                         case BOTTOM:
                         {
-                            component.setBounds ( insets.left, size.height - insets.bottom - pheight + y, w, ps.height );
+                            component.setBounds ( x, size.height - insets.bottom - pheight + y, w, ps.height );
                             break;
                         }
                         default:
                         {
-                            component.setBounds ( insets.left, insets.top + y, w, ps.height );
+                            component.setBounds ( x, insets.top + y, w, ps.height );
                             break;
                         }
                     }
                 }
-                y += h + vgap;
+                y += h + getVgap ();
             }
         }
+    }
+
+    @Override
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
+    {
+        return getLayoutSize ( container, false );
+    }
+
+    @Override
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
+    {
+        return getLayoutSize ( container, true );
+    }
+
+    protected Dimension getLayoutSize ( final Container container, final boolean minimum )
+    {
+        final Dimension size = new Dimension ( 0, 0 );
+
+        for ( int i = 0; i < container.getComponentCount (); i++ )
+        {
+            final Component component = container.getComponent ( i );
+            if ( component.isVisible () )
+            {
+                final Dimension componentSize = minimum ? component.getMinimumSize () : component.getPreferredSize ();
+                size.width = Math.max ( size.width, componentSize.width );
+                if ( i > 0 )
+                {
+                    size.height += getVgap ();
+                }
+                size.height += componentSize.height;
+            }
+        }
+
+        final Insets insets = container.getInsets ();
+        size.width += insets.left + insets.right;
+        size.height += insets.top + insets.bottom;
+
+        return size;
     }
 
     /**
      * Calculates preferred height required for components within this layout.
      *
-     * @param target container to calculate components preferred height for
+     * @param container container to calculate components preferred height for
      * @return preferred height required for components within this layout
      */
-    protected int calculatePreferredHeight ( final Container target )
+    protected int calculatePreferredHeight ( final Container container )
     {
         int ph = 0;
-        for ( int i = 0; i < target.getComponentCount (); i++ )
+        for ( int i = 0; i < container.getComponentCount (); i++ )
         {
-            ph += target.getComponent ( i ).getPreferredSize ().height;
-            if ( i < target.getComponentCount () - 1 )
+            ph += container.getComponent ( i ).getPreferredSize ().height;
+            if ( i < container.getComponentCount () - 1 )
             {
-                ph += vgap;
+                ph += getVgap ();
             }
         }
         return ph;

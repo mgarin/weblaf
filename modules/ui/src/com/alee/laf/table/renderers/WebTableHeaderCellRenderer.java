@@ -18,7 +18,7 @@
 package com.alee.laf.table.renderers;
 
 import com.alee.laf.label.WebLabel;
-import com.alee.laf.table.WebTableStyle;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -30,18 +30,13 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRenderer, UIResource
 {
-    private boolean horizontalTextPositionSet;
+    /**
+     * todo 1. Requires a complete revamp and appropriate usage of extra content for sorting icon
+     */
 
-    public WebTableHeaderCellRenderer ()
-    {
-        super ();
-        setDrawShade ( true );
-        setShadeColor ( new Color ( 230, 230, 230 ) );
-        setHorizontalAlignment ( JLabel.CENTER );
-    }
+    private boolean horizontalTextPositionSet;
 
     @Override
     public void setHorizontalTextPosition ( final int textPosition )
@@ -56,6 +51,12 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
     {
         // Whether we are printing the result or not
         boolean isPaintingForPrint = false;
+
+        // Updating custom style ID
+        if ( table != null )
+        {
+            setStyleId ( StyleId.tableHeaderCellRenderer.at ( table.getTableHeader () ) );
+        }
 
         // Title icon
         Icon sortIcon = null;
@@ -103,9 +104,11 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
                         case ASCENDING:
                             sortIcon = UIManager.getIcon ( "Table.ascendingSortIcon" );
                             break;
+
                         case DESCENDING:
                             sortIcon = UIManager.getIcon ( "Table.descendingSortIcon" );
                             break;
+
                         case UNSORTED:
                             sortIcon = UIManager.getIcon ( "Table.naturalSortIcon" );
                             break;
@@ -118,13 +121,17 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
         // Title text
         setText ( value == null ? "" : value.toString () );
 
-        // Title margin
-        setMargin ( WebTableStyle.headerMargin );
-
         return this;
     }
 
-    public static class UIResource extends WebTableHeaderCellRenderer implements javax.swing.plaf.UIResource
+    /**
+     * A subclass of {@link WebTableHeaderCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     */
+    public static final class UIResource extends WebTableHeaderCellRenderer implements javax.swing.plaf.UIResource
     {
+        /**
+         * Implementation is used completely from {@link WebTableHeaderCellRenderer}.
+         */
     }
 }

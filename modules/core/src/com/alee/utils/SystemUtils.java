@@ -17,8 +17,10 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
+import com.alee.api.jdk.Objects;
 import com.alee.utils.system.JavaVersion;
+import com.alee.utils.system.SystemType;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,34 +36,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * This class provides a set of utilities to retrieve various operating system information.
- * Futher on operating system called shortly - OS.
+ * This class provides a set of utilities to retrieve various operating system (shortly OS) information.
  *
  * @author Mikle Garin
  */
-
 public final class SystemUtils
 {
-    /**
-     * Windows short name.
-     */
-    public static final String WINDOWS = "win";
-
-    /**
-     * Mac OS short name.
-     */
-    public static final String MAC = "mac";
-
-    /**
-     * Unix short name.
-     */
-    public static final String UNIX = "unix";
-
-    /**
-     * Solaris short name.
-     */
-    public static final String SOLARIS = "solaris";
-
     /**
      * Java version application is running on.
      */
@@ -73,15 +53,16 @@ public final class SystemUtils
     private static final String osName;
 
     /**
-     * Cached shor OS name.
+     * Cached OS type.
      */
-    private static final String shortOsName;
+    private static final SystemType osType;
 
     /**
      * Cached OS variables initialization.
      */
     static
     {
+        // Retrieving OS name
         osName = AccessController.doPrivileged ( new PrivilegedAction<String> ()
         {
             @Override
@@ -90,26 +71,28 @@ public final class SystemUtils
                 return System.getProperty ( "os.name" );
             }
         } );
-        final String lc = osName.toLowerCase ( Locale.ENGLISH );
+
+        // Resolving OS type based on name
+        final String lc = osName.toLowerCase ( Locale.ROOT );
         if ( lc.contains ( "win" ) )
         {
-            shortOsName = WINDOWS;
+            osType = SystemType.WINDOWS;
         }
         else if ( lc.contains ( "mac" ) || lc.contains ( "darwin" ) )
         {
-            shortOsName = MAC;
+            osType = SystemType.MAC;
         }
         else if ( lc.contains ( "nix" ) || lc.contains ( "nux" ) )
         {
-            shortOsName = UNIX;
+            osType = SystemType.UNIX;
         }
         else if ( lc.contains ( "sunos" ) )
         {
-            shortOsName = SOLARIS;
+            osType = SystemType.SOLARIS;
         }
         else
         {
-            shortOsName = null;
+            osType = SystemType.UNKNOWN;
         }
     }
 
@@ -117,6 +100,14 @@ public final class SystemUtils
      * Transparent cursor.
      */
     private static Cursor transparentCursor;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private SystemUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Copies text to system clipboard.
@@ -130,9 +121,9 @@ public final class SystemUtils
             final Clipboard clipboard = Toolkit.getDefaultToolkit ().getSystemClipboard ();
             clipboard.setContents ( new StringSelection ( text ), null );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.error ( SystemUtils.class, e );
+            LoggerFactory.getLogger ( SystemUtils.class ).error ( e.toString (), e );
         }
     }
 
@@ -181,59 +172,95 @@ public final class SystemUtils
     {
         if ( javaVersion == null )
         {
-            javaVersion = new JavaVersion ( getJavaVersionString () );
+            javaVersion = new JavaVersion ();
         }
         return javaVersion;
     }
 
     /**
-     * Returns whether applicaton is running on the specified java version and above or not.
+     * Returns whether application is running on the specified java version and above or not.
      *
-     * @return true if the application is running on the specified java version and above, false otherwise
+     * @param version version number
+     * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
      */
-    public static boolean isJavaVersion ( final double version, final int update )
+    public static boolean isJavaVersionOrAbove ( final double version )
     {
-        return getJavaVersion ().compareVersion ( version, 0, update ) >= 0;
+        return isJavaVersionOrAbove ( version, 0, 0 );
     }
 
     /**
-     * Returns whether applicaton is running on the specified java version and above or not.
+     * Returns whether application is running on the specified java version and above or not.
      *
-     * @return true if the application is running on the specified java version and above, false otherwise
+     * @param version version number
+     * @param update  update number
+     * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
      */
-    public static boolean isJavaVersion ( final double major, final int minor, final int update )
+    public static boolean isJavaVersionOrAbove ( final double version, final int update )
     {
-        return getJavaVersion ().compareVersion ( major, minor, update ) >= 0;
+        return isJavaVersionOrAbove ( version, 0, update );
     }
 
     /**
-     * Returns whether applicaton is running on java 6 version and above or not.
+     * Returns whether application is running on the specified java version and above or not.
      *
-     * @return true if the application is running on java 6 version and above, false otherwise
+     * @param major  major version
+     * @param minor  minor version
+     * @param update update number
+     * @return {@code true} if the application is running on the specified java version and above, {@code false} otherwise
+     */
+    public static boolean isJavaVersionOrAbove ( final double major, final int minor, final int update )
+    {
+        return getJavaVersion ().compareTo ( major, minor, update ) >= 0;
+    }
+
+    /**
+     * Returns whether application is running on java 6 version and above or not.
+     *
+     * @return {@code true} if the application is running on java 6 version and above, {@code false} otherwise
      */
     public static boolean isJava6orAbove ()
     {
-        return getJavaVersion ().compareVersion ( 1.6, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 1.6 );
     }
 
     /**
-     * Returns whether applicaton is running on java 7 version and above or not.
+     * Returns whether application is running on java 7 version and above or not.
      *
-     * @return true if the application is running on java 7 version and above, false otherwise
+     * @return {@code true} if the application is running on java 7 version and above, {@code false} otherwise
      */
     public static boolean isJava7orAbove ()
     {
-        return getJavaVersion ().compareVersion ( 1.7, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 1.7 );
     }
 
     /**
-     * Returns whether applicaton is running on java 8 version and above or not.
+     * Returns whether application is running on java 8 version and above or not.
      *
-     * @return true if the application is running on java 8 version and above, false otherwise
+     * @return {@code true} if the application is running on java 8 version and above, {@code false} otherwise
      */
     public static boolean isJava8orAbove ()
     {
-        return getJavaVersion ().compareVersion ( 1.8, 0, 0 ) >= 0;
+        return isJavaVersionOrAbove ( 1.8 );
+    }
+
+    /**
+     * Returns whether application is running on java 9 version and above or not.
+     *
+     * @return {@code true} if the application is running on java 9 version and above, {@code false} otherwise
+     */
+    public static boolean isJava9orAbove ()
+    {
+        return isJavaVersionOrAbove ( 9.0 );
+    }
+
+    /**
+     * Returns whether application is running on java 10 version and above or not.
+     *
+     * @return {@code true} if the application is running on java 10 version and above, {@code false} otherwise
+     */
+    public static boolean isJava10orAbove ()
+    {
+        return isJavaVersionOrAbove ( 10.0 );
     }
 
     /**
@@ -254,16 +281,6 @@ public final class SystemUtils
     public static String getJavaVendor ()
     {
         return System.getProperty ( "java.vm.vendor" );
-    }
-
-    /**
-     * Returns short OS name.
-     *
-     * @return short OS name
-     */
-    public static String getShortOsName ()
-    {
-        return shortOsName;
     }
 
     /**
@@ -305,59 +322,72 @@ public final class SystemUtils
      * @param color whether return colored icon or not
      * @return OS icon
      */
-    public static ImageIcon getOsIcon ( int size, final boolean color )
+    public static ImageIcon getOsIcon ( final int size, final boolean color )
     {
-        if ( size != 16 && size != 32 )
-        {
-            size = 16;
-        }
+        final ImageIcon icon;
         final String os = getShortOsName ();
-        final String mark = color ? "_colored" : "";
-        return os != null ? new ImageIcon ( SystemUtils.class.getResource ( "icons/os/" + size + "/" + os + mark + ".png" ) ) : null;
+        if ( os != null )
+        {
+            final int iconSize = Objects.equals ( size, 16, 32 ) ? size : 16;
+            final String mark = color ? "_colored" : "";
+            final String path = "icons/os/" + iconSize + "/" + os + mark + ".png";
+            icon = new ImageIcon ( SystemUtils.class.getResource ( path ) );
+        }
+        else
+        {
+            icon = null;
+        }
+        return icon;
+    }
+
+    /**
+     * Returns OS type.
+     *
+     * @return OS type
+     */
+    public static SystemType getOsType ()
+    {
+        return osType;
     }
 
     /**
      * Returns whether current OS is windows or not.
      *
-     * @return true if current OS is windows, false otherwise
+     * @return {@code true} if current OS is windows, {@code false} otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
     public static boolean isWindows ()
     {
-        return shortOsName == WINDOWS;
+        return osType == SystemType.WINDOWS;
     }
 
     /**
      * Returns whether current OS is mac or not.
      *
-     * @return true if current OS is mac, false otherwise
+     * @return {@code true} if current OS is mac, {@code false} otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
     public static boolean isMac ()
     {
-        return shortOsName == MAC;
+        return osType == SystemType.MAC;
     }
 
     /**
      * Returns whether current OS is unix or not.
      *
-     * @return true if current OS is unix, false otherwise
+     * @return {@code true} if current OS is unix, {@code false} otherwise
      */
-    @SuppressWarnings ("StringEquality")
     public static boolean isUnix ()
     {
-        return shortOsName == UNIX;
+        return osType == SystemType.UNIX;
     }
 
     /**
      * Returns whether current OS is solaris or not.
      *
-     * @return true if current OS is solaris, false otherwise
+     * @return {@code true} if current OS is solaris, {@code false} otherwise
      */
-    @SuppressWarnings ("StringEquality")
     public static boolean isSolaris ()
     {
-        return shortOsName == SOLARIS;
+        return osType == SystemType.SOLARIS;
     }
 
     /**
@@ -378,6 +408,16 @@ public final class SystemUtils
     public static String getOsName ()
     {
         return osName;
+    }
+
+    /**
+     * Returns short OS name.
+     *
+     * @return short OS name
+     */
+    public static String getShortOsName ()
+    {
+        return osType.shortName ();
     }
 
     /**
@@ -452,7 +492,7 @@ public final class SystemUtils
     /**
      * Returns whether Caps Lock is on or not.
      *
-     * @return true if Caps Lock is on, false otherwise
+     * @return {@code true} if Caps Lock is on, {@code false} otherwise
      */
     public static boolean isCapsLock ()
     {
@@ -462,7 +502,7 @@ public final class SystemUtils
     /**
      * Returns whether Num Lock is on or not.
      *
-     * @return true if Num Lock is on, false otherwise
+     * @return {@code true} if Num Lock is on, {@code false} otherwise
      */
     public static boolean isNumLock ()
     {
@@ -472,7 +512,7 @@ public final class SystemUtils
     /**
      * Returns whether Scroll Lock is on or not.
      *
-     * @return true if Scroll Lock is on, false otherwise
+     * @return {@code true} if Scroll Lock is on, {@code false} otherwise
      */
     public static boolean isScrollLock ()
     {
@@ -480,23 +520,43 @@ public final class SystemUtils
     }
 
     /**
-     * Returns default GraphicsConfiguration for main screen.
-     *
-     * @return mail scren GraphicsConfiguration
-     */
-    public static GraphicsConfiguration getGraphicsConfiguration ()
-    {
-        return getGraphicsEnvironment ().getDefaultScreenDevice ().getDefaultConfiguration ();
-    }
-
-    /**
      * Returns default GraphicsEnvironment.
      *
      * @return default GraphicsEnvironment
      */
-    private static GraphicsEnvironment getGraphicsEnvironment ()
+    public static GraphicsEnvironment getGraphicsEnvironment ()
     {
         return GraphicsEnvironment.getLocalGraphicsEnvironment ();
+    }
+
+    /**
+     * Returns whether or not a display, keyboard, and mouse can be supported in this environment.
+     *
+     * @return {@code true} if display, keyboard, and mouse can be supported in this environment, {@code false} otherwise
+     */
+    public static boolean isHeadlessEnvironment ()
+    {
+        return GraphicsEnvironment.isHeadless ();
+    }
+
+    /**
+     * Returns default screen device.
+     *
+     * @return default screen device
+     */
+    public static GraphicsDevice getDefaultScreenDevice ()
+    {
+        return getGraphicsEnvironment ().getDefaultScreenDevice ();
+    }
+
+    /**
+     * Returns default screen GraphicsConfiguration.
+     *
+     * @return default screen GraphicsConfiguration
+     */
+    public static GraphicsConfiguration getGraphicsConfiguration ()
+    {
+        return getDefaultScreenDevice ().getDefaultConfiguration ();
     }
 
     /**
@@ -507,9 +567,8 @@ public final class SystemUtils
     public static List<GraphicsDevice> getGraphicsDevices ()
     {
         // Retrieving system devices
-        final GraphicsEnvironment graphicsEnvironment = getGraphicsEnvironment ();
-        final GraphicsDevice[] screenDevices = graphicsEnvironment.getScreenDevices ();
-        final GraphicsDevice defaultScreenDevice = graphicsEnvironment.getDefaultScreenDevice ();
+        final GraphicsDevice[] screenDevices = getGraphicsEnvironment ().getScreenDevices ();
+        final GraphicsDevice defaultScreenDevice = getDefaultScreenDevice ();
 
         // Collecting devices into list
         final List<GraphicsDevice> devices = new ArrayList<GraphicsDevice> ();
@@ -532,43 +591,39 @@ public final class SystemUtils
     }
 
     /**
-     * Returns maximum window bounds for the specified graphics configuration.
+     * Returns screen device for the specified window.
      *
-     * @param gc                graphics configuration
-     * @param applyScreenInsets whether or not should extract screen insets from max bounds
-     * @return maximum window bounds for the specified graphics configuration
+     * @param window window to find screen device for
+     * @return screen device for the specified window
      */
-    public static Rectangle getMaxWindowBounds ( final GraphicsConfiguration gc, final boolean applyScreenInsets )
+    public static GraphicsDevice getGraphicsDevice ( final Window window )
     {
-        if ( gc != null )
-        {
-            // Note that we don't have to specify x/y offset of the screen here
-            // It seems that maximized bounds require only bounds inside of the screen bounds, not bettween the screens overall
-            final Rectangle b = gc.getBounds ();
-            if ( applyScreenInsets )
-            {
-                // Taking screen insets into account
-                final Insets si = Toolkit.getDefaultToolkit ().getScreenInsets ( gc );
-                return new Rectangle ( si.left, si.top, b.width - si.left - si.right, b.height - si.top - si.bottom );
-            }
-            else
-            {
-                // Using full screen
-                return new Rectangle ( 0, 0, b.width, b.height );
-            }
-        }
-        else
-        {
-            // Default GE bounds
-            return GraphicsEnvironment.getLocalGraphicsEnvironment ().getMaximumWindowBounds ();
-        }
+        return window != null ? window.getGraphicsConfiguration ().getDevice () : getDefaultScreenDevice ();
     }
 
     /**
-     * Returns graphics device where most part of specified bounds is placed.
+     * Returns screen device for the specified location.
      *
-     * @param bounds bounds to find graphics device for
-     * @return graphics device where most part of specified bounds is placed
+     * @param location location to find screen device for
+     * @return screen device for the specified location
+     */
+    public static GraphicsDevice getGraphicsDevice ( final Point location )
+    {
+        for ( final GraphicsDevice device : getGraphicsDevices () )
+        {
+            if ( device.getDefaultConfiguration ().getBounds ().contains ( location ) )
+            {
+                return device;
+            }
+        }
+        return getDefaultScreenDevice ();
+    }
+
+    /**
+     * Returns screen device where most part of specified bounds is placed.
+     *
+     * @param bounds bounds to find screen device for
+     * @return screen device where most part of specified bounds is placed
      */
     public static GraphicsDevice getGraphicsDevice ( final Rectangle bounds )
     {
@@ -591,7 +646,158 @@ public final class SystemUtils
                 }
             }
         }
-        return device != null ? device : GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice ();
+        return device != null ? device : getDefaultScreenDevice ();
+    }
+
+    /**
+     * Returns screen device bounds.
+     *
+     * @param device            screen device to return bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return screen device bounds
+     */
+    public static Rectangle getDeviceBounds ( final GraphicsDevice device, final boolean applyScreenInsets )
+    {
+        return getDeviceBounds ( device != null ? device.getDefaultConfiguration () : getGraphicsConfiguration (), applyScreenInsets );
+    }
+
+    /**
+     * Returns screen device bounds.
+     *
+     * @param gc                screen device graphics configuration
+     * @param applyScreenInsets whether or not should extract screen insets from screen device bounds
+     * @return screen device bounds
+     */
+    public static Rectangle getDeviceBounds ( final GraphicsConfiguration gc, final boolean applyScreenInsets )
+    {
+        // Ensure we have some configuration
+        final GraphicsConfiguration conf = gc != null ? gc : getGraphicsConfiguration ();
+
+        // Graphics bounds
+        final Rectangle bounds = conf.getBounds ();
+
+        // Taking screen insets into account
+        if ( applyScreenInsets )
+        {
+            final Insets insets = Toolkit.getDefaultToolkit ().getScreenInsets ( conf );
+            bounds.x += insets.left;
+            bounds.y += insets.top;
+            bounds.width -= insets.left + insets.right;
+            bounds.height -= insets.top + insets.bottom;
+        }
+
+        return bounds;
+    }
+
+    /**
+     * Returns screen device bounds for all screen devices available.
+     *
+     * @param applyScreenInsets whether or not should extract screen insets from screen device bounds
+     * @return screen device bounds
+     */
+    public static List<Rectangle> getDevicesBounds ( final boolean applyScreenInsets )
+    {
+        final List<GraphicsDevice> devices = getGraphicsDevices ();
+        final List<Rectangle> bounds = new ArrayList<Rectangle> ( devices.size () );
+        for ( final GraphicsDevice device : devices )
+        {
+            bounds.add ( getDeviceBounds ( device, applyScreenInsets ) );
+        }
+        return bounds;
+    }
+
+    /**
+     * Returns screen bounds for the specified location.
+     *
+     * @param location          location to find screen bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return screen bounds for the specified location
+     */
+    public static Rectangle getDeviceBounds ( final Point location, final boolean applyScreenInsets )
+    {
+        final GraphicsDevice device = getGraphicsDevice ( location );
+        return getDeviceBounds ( device, applyScreenInsets );
+    }
+
+    /**
+     * Returns screen bounds within which most part of the specified bounds is placed.
+     *
+     * @param bounds            bounds to find screen bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return screen bounds within which most part of the specified bounds is placed
+     */
+    public static Rectangle getDeviceBounds ( final Rectangle bounds, final boolean applyScreenInsets )
+    {
+        final GraphicsDevice device = getGraphicsDevice ( bounds );
+        return getDeviceBounds ( device, applyScreenInsets );
+    }
+
+    /**
+     * Returns screen bounds within which most part of the specified component is placed.
+     *
+     * @param component         component to find screen bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return screen bounds within which most part of the specified component is placed
+     */
+    public static Rectangle getDeviceBounds ( final Component component, final boolean applyScreenInsets )
+    {
+        final Rectangle bounds = CoreSwingUtils.getBoundsOnScreen ( component, true );
+        return getDeviceBounds ( bounds, applyScreenInsets );
+    }
+
+    /**
+     * Returns maximized bounds for the screen where specified frame is displayed.
+     * Note that we don't need to provide x/y offset of the screen here.
+     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
+     *
+     * @param frame frame to provide maximized bounds for
+     * @return maximized bounds for the screen where specified frame is displayed
+     */
+    public static Rectangle getMaximizedBounds ( final Frame frame )
+    {
+        final GraphicsConfiguration gc = frame.getGraphicsConfiguration ();
+        final Rectangle max = getDeviceBounds ( gc, true );
+        final Rectangle b = getDeviceBounds ( gc, false );
+        return new Rectangle ( max.x - b.x, max.y - b.y, max.width, max.height );
+    }
+
+    /**
+     * Returns maximized bounds for the west half of the screen where specified frame is displayed.
+     * Note that we don't need to provide x/y offset of the screen here.
+     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
+     *
+     * @param frame frame to provide maximized bounds for
+     * @return maximized bounds for the west half of the screen where specified frame is displayed
+     */
+    public static Rectangle getMaximizedWestBounds ( final Frame frame )
+    {
+        final Rectangle b = getMaximizedBounds ( frame );
+        return new Rectangle ( b.x, b.y, b.width / 2, b.height );
+    }
+
+    /**
+     * Returns maximized bounds for the east half of the screen where specified frame is displayed.
+     * Note that we don't need to provide x/y offset of the screen here.
+     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
+     *
+     * @param frame frame to provide maximized bounds for
+     * @return maximized bounds for the east half of the screen where specified frame is displayed
+     */
+    public static Rectangle getMaximizedEastBounds ( final Frame frame )
+    {
+        final Rectangle b = getMaximizedBounds ( frame );
+        return new Rectangle ( b.x + b.width - b.width / 2, b.y, b.width / 2, b.height );
+    }
+
+    /**
+     * Returns whether or not specified frame state is supported by the OS.
+     *
+     * @param state frame state
+     * @return {@code true} if the specified frame state is supported by the OS, {@code false} otherwise
+     */
+    public static boolean isFrameStateSupported ( final int state )
+    {
+        return Toolkit.getDefaultToolkit ().isFrameStateSupported ( state );
     }
 
     /**

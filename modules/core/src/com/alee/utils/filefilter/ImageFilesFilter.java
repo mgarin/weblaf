@@ -17,19 +17,20 @@
 
 package com.alee.utils.filefilter;
 
-import com.alee.global.GlobalConstants;
-import com.alee.managers.language.LanguageManager;
+import com.alee.api.ui.RenderingParameters;
+import com.alee.managers.language.LM;
 import com.alee.utils.FileUtils;
+import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Custom file filter that accepts only image files.
  *
  * @author Mikle Garin
  */
-
 public class ImageFilesFilter extends AbstractFileFilter
 {
     /**
@@ -37,30 +38,21 @@ public class ImageFilesFilter extends AbstractFileFilter
      */
     public static final ImageIcon ICON = new ImageIcon ( ImageFilesFilter.class.getResource ( "icons/image.png" ) );
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public ImageIcon getIcon ()
+    public Icon getIcon ( final RenderingParameters parameters )
     {
         return ICON;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription ()
     {
-        return LanguageManager.get ( "weblaf.file.filter.images" );
+        return LM.get ( "weblaf.file.filter.images" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept ( final File file )
     {
-        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase (), false ) );
+        return ImageUtils.VIEWABLE_IMAGES.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase ( Locale.ROOT ), false ) );
     }
 }

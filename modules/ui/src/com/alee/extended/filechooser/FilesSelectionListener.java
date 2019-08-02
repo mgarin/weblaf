@@ -22,10 +22,16 @@ import java.util.EventListener;
 import java.util.List;
 
 /**
- * User: mgarin Date: 07.10.11 Time: 18:17
+ * Custom event listener for any component that provides files selection.
+ *
+ * @author Mikle Garin
  */
-
 public interface FilesSelectionListener extends EventListener
 {
+    /**
+     * Informs about files selection change.
+     *
+     * @param files selected files
+     */
     public void selectionChanged ( List<File> files );
 }

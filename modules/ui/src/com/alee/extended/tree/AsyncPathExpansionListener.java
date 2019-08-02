@@ -20,34 +20,18 @@ package com.alee.extended.tree;
 /**
  * This custom listener is used to track async tree path expansion action.
  *
- * @param <E> node type
+ * @param <N> {@link AsyncUniqueNode} type
  * @author Mikle Garin
  */
-
-public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
+public interface AsyncPathExpansionListener<N extends AsyncUniqueNode>
 {
-    /**
-     * Notifies that path expansion has failed and did not find even a single node.
-     * This might happen in case there is no loaded nodes with an ID from the path in the moment when expansion is invoked.
-     */
-    public void pathFailedToExpand ();
-
     /**
      * Notifies that one of path nodes was just expanded.
      * This might be called a few times per single path expansion depending on the length of the path and some other factors.
      *
      * @param expandedNode recently expanded node from the specified path
      */
-    public void pathNodeExpanded ( final E expandedNode );
-
-    /**
-     * Notifies that path expansion was not fully finished and cannot be continued.
-     * Last node that could be expanded from the specified path is returned.
-     * There might be a lot of reasons why this happened - failed node childs loading, unexisting node ID etc.
-     *
-     * @param lastFoundNode last reached path node
-     */
-    public void pathPartiallyExpanded ( final E lastFoundNode );
+    public void pathNodeExpanded ( N expandedNode );
 
     /**
      * Notifies that path expansion has finished succesfully.
@@ -55,5 +39,20 @@ public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
      *
      * @param lastNode last path node
      */
-    public void pathExpanded ( final E lastNode );
+    public void pathExpanded ( N lastNode );
+
+    /**
+     * Notifies that path expansion was not fully finished and cannot be continued.
+     * Last node that could be expanded from the specified path is returned.
+     * There might be a lot of reasons why this happened - failed node children loading, unexisting node ID etc.
+     *
+     * @param lastFoundNode last reached path node
+     */
+    public void pathPartiallyExpanded ( N lastFoundNode );
+
+    /**
+     * Notifies that path expansion has failed and did not find even a single node.
+     * This might happen in case there is no loaded nodes with an ID from the path in the moment when expansion is invoked.
+     */
+    public void pathFailedToExpand ();
 }

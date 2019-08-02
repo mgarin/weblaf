@@ -20,37 +20,34 @@ package com.alee.extended.tree;
 import java.util.List;
 
 /**
- * AsyncTreeModelListener adapter class.
+ * Adapter for {@link AsyncTreeModelListener}.
  *
+ * @param <N> {@link AsyncUniqueNode} type
  * @author Mikle Garin
  */
-
-public abstract class AsyncTreeModelAdapter<E extends AsyncUniqueNode> implements AsyncTreeModelListener<E>
+public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implements AsyncTreeModelListener<N>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void childsLoadStarted ( final E parent )
+    public void loadStarted ( final N parent )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
+    public void loadCompleted ( final N parent, final List<N> children )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void childsLoadFailed ( final E parent, final Throwable cause )
+    public void loadFailed ( final N parent, final Throwable cause )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="../AbstractIconData.xsd" />
+    <xs:include schemaLocation="SvgFill.xsd" />
+    <xs:include schemaLocation="SvgStroke.xsd" />
+    <xs:include schemaLocation="SvgTransform.xsd" />
+
+    <!-- com.alee.extended.svg.SvgIcon -->
+    <!-- com.alee.extended.svg.SvgIconData -->
+    <xs:complexType name="SvgIconData">
+        <xs:complexContent>
+            <xs:extension base="AbstractIconData">
+
+                <!-- Adjustments -->
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+                    <!-- Basic supported shadows -->
+                    <xs:element name="SvgFill" type="SvgFill" />
+                    <xs:element name="SvgStroke" type="SvgStroke" />
+                    <xs:element name="SvgTransform" type="SvgTransform" />
+
+                </xs:choice>
+
+                <!-- Preferred icon size -->
+                <xs:attribute name="size" type="java.awt:Dimension" use="optional" />
+
+                <!-- Custom SVG universe key -->
+                <xs:attribute name="universe" type="xs:string" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

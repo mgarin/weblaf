@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContentLayout.xsd" />
+
+    <!-- com.alee.painter.decoration.layout.OverflowLineLayout -->
+    <xs:complexType name="OverflowLineLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractContentLayout">
+
+                <!-- Gap between elements in the line -->
+                <xs:attribute name="gap" type="xs:integer" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

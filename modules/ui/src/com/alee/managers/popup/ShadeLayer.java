@@ -18,8 +18,8 @@
 package com.alee.managers.popup;
 
 import com.alee.extended.layout.AlignLayout;
-import com.alee.global.StyleConstants;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -36,14 +36,13 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  * @see PopupManager
  */
-
 public class ShadeLayer extends PopupLayer
 {
     /**
      * Whether modal shade should be animated or not.
      * It might cause serious lags in case it is used in a large window with lots of UI elements.
      */
-    protected boolean animate = ShadeLayerStyle.animate;
+    protected boolean animate = true;
 
     /**
      * Layer current opacity.
@@ -82,11 +81,8 @@ public class ShadeLayer extends PopupLayer
         addMouseMotionListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void showPopup ( final WebPopup popup )
+    public void showPopup ( final WebInnerPopup popup )
     {
         showPopup ( popup, false, false );
     }
@@ -98,7 +94,7 @@ public class ShadeLayer extends PopupLayer
      * @param hfill whether popup should fill the whole available window width or not
      * @param vfill whether popup should fill the whole available window height or not
      */
-    public void showPopup ( final WebPopup popup, final boolean hfill, final boolean vfill )
+    public void showPopup ( final WebInnerPopup popup, final boolean hfill, final boolean vfill )
     {
         // Informing that popup will now become visible
         popup.firePopupWillBeOpened ();
@@ -163,9 +159,6 @@ public class ShadeLayer extends PopupLayer
         this.blockClose = blockClose;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics g )
     {
@@ -174,9 +167,6 @@ public class ShadeLayer extends PopupLayer
         super.paint ( g );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintComponent ( final Graphics g )
     {
@@ -193,9 +183,6 @@ public class ShadeLayer extends PopupLayer
         GraphicsUtils.restoreAntialias ( g2d, old );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setVisible ( final boolean visible )
     {
@@ -209,7 +196,7 @@ public class ShadeLayer extends PopupLayer
             if ( animate )
             {
                 opacity = 0;
-                animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.animationDelay, new ActionListener ()
+                animator = new WebTimer ( "ShadeLayer.fadeIn", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

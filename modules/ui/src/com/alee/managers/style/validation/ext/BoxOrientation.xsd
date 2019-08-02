@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.api.data.BoxOrientation -->
+    <xs:simpleType name="BoxOrientation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="center" />
+            <xs:enumeration value="top" />
+            <xs:enumeration value="left" />
+            <xs:enumeration value="bottom" />
+            <xs:enumeration value="right" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

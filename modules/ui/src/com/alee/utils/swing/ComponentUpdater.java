@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing;
 
-import com.alee.global.StyleConstants;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -31,14 +31,13 @@ import java.awt.event.ActionListener;
  *
  * @author Mikle Garin
  */
-
 public class ComponentUpdater extends WebTimer implements AncestorListener
 {
     private JComponent component;
 
     public ComponentUpdater ( final JComponent component )
     {
-        super ( StyleConstants.avgAnimationDelay );
+        super ( SwingUtils.frameRateDelay ( 36 ) );
         initialize ( component );
     }
 
@@ -95,6 +94,7 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
     {
         this.component = component;
         setUseDaemonThread ( true );
+        setUseEventDispatchThread ( true );
         component.addAncestorListener ( this );
     }
 
@@ -125,10 +125,6 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
     {
         //
     }
-
-    /**
-     * Installs component updater and ensures that it is the only installed
-     */
 
     public static ComponentUpdater install ( final JComponent component )
     {
@@ -187,10 +183,6 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
         return new ComponentUpdater ( component, name, delay, initialDelay, listener );
     }
 
-    /**
-     * Uninstalls any existing component updater from component
-     */
-
     public static void uninstall ( final JComponent component )
     {
         for ( final AncestorListener listener : component.getAncestorListeners () )
@@ -201,10 +193,6 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
             }
         }
     }
-
-    /**
-     * Checks if component has any component updater installed
-     */
 
     public static boolean isInstalled ( final JComponent component )
     {

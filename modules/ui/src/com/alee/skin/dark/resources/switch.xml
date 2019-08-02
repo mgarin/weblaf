@@ -1,0 +1,50 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.button.WebSwitch -->
+
+    <!-- Switch -->
+    <style type="panel" id="switch" extends="decorated">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Switch gripper -->
+        <style type="panel" id="gripper" extends="decorated">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="1" />
+                        <WebShadow type="outer" width="1" />
+                        <GradientBackground>
+                            <color>111,115,117</color>
+                            <color>77,81,83</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Switch state label -->
+        <style type="label" id="option" extends="shadow" />
+        <style type="label" id="selected" extends="option" padding="2,5,2,5" />
+        <style type="label" id="deselected" extends="option" padding="2,5,2,5" />
+        <style type="label" id="icon-selected" extends="option" padding="2,2,2,2" />
+        <style type="label" id="icon-deselected" extends="option" padding="2,2,2,2" />
+
+    </style>
+
+</skin>

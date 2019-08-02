@@ -26,7 +26,6 @@ import java.util.EventListener;
  *
  * @author Mikle Garin
  */
-
 public interface FileDownloadListener extends EventListener
 {
     /**
@@ -59,7 +58,7 @@ public interface FileDownloadListener extends EventListener
 
     /**
      * Returns whether download operation should stop or not.
-     * This method is getting called before and after each time-consuming opearation (for example file part download).
+     * This method is getting called before and after each time-consuming operation (for example file part download).
      *
      * @return true if you want to stop download, false otherwise
      */

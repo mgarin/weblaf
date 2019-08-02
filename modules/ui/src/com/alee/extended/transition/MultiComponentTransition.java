@@ -18,9 +18,8 @@
 package com.alee.extended.transition;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 13:57
+ * @author Mikle Garin
  */
-
 public class MultiComponentTransition extends ComponentTransition
 {
     public MultiComponentTransition ()

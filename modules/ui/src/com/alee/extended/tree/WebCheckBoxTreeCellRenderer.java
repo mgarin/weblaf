@@ -17,26 +17,47 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.Nullable;
+import com.alee.api.ui.ChildStyleIdBridge;
+import com.alee.api.ui.StyleIdBridge;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.tree.WTreeUI;
+import com.alee.managers.style.ChildStyleId;
+import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.painter.decoration.Stateful;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.plaf.TreeUI;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Custom default cell renderer for WebCheckBoxTree.
+ * Default {@link CheckBoxTreeCellRenderer} implementation for {@link WebCheckBoxTree}.
+ * It is based on {@link WebPanel} and uses {@link WebTristateCheckBox} and actual {@link TreeCellRenderer} to create complete view.
  *
+ * @param <N> {@link MutableTreeNode} type
+ * @param <C> {@link WebCheckBoxTree} type
+ * @param <P> {@link CheckBoxTreeNodeParameters} type
  * @author Mikle Garin
+ * @see CheckBoxTreeNodeParameters
  */
-
-public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTreeCellRenderer
+public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends WebCheckBoxTree<N>, P extends CheckBoxTreeNodeParameters<N, C>>
+        extends WebPanel implements CheckBoxTreeCellRenderer, Stateful
 {
     /**
-     * Checkbox tree.
+     * todo 1. Optimize to update only on actual renderer changes, checkbox should simply change visibility
      */
-    protected WebCheckBoxTree checkBoxTree;
+
+    /**
+     * Current renderer states.
+     */
+    protected List<String> states;
 
     /**
      * Checkbox component used to renderer checkbox on the tree.
@@ -45,52 +66,22 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
 
     /**
      * Constructs new checkbox tree cell renderer.
-     *
-     * @param checkBoxTree checkbox tree to process
      */
-    public WebCheckBoxTreeCellRenderer ( final WebCheckBoxTree checkBoxTree )
+    public WebCheckBoxTreeCellRenderer ()
     {
-        super ();
-        this.checkBoxTree = checkBoxTree;
-
-        setOpaque ( false );
-
+        super ( ( LayoutManager ) null );
+        setName ( "Tree.cellRenderer" );
+        states = new ArrayList<String> ( 3 );
         checkBox = new WebTristateCheckBox ();
-        checkBox.setAnimated ( false );
-        checkBox.setMargin ( 0, 4, 0, WebCheckBoxTreeStyle.checkBoxRendererGap );
-        add ( checkBox, BorderLayout.LINE_START );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Nullable
     @Override
-    public int getCheckBoxRendererGap ()
+    public List<String> getStates ()
     {
-        return checkBox.getMargin ().right;
+        return states;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setCheckBoxRendererGap ( final int checkBoxRendererGap )
-    {
-        checkBox.getMargin ().right = checkBoxRendererGap;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getCheckBoxWidth ()
-    {
-        return checkBox.getPreferredSize ().width;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTristateCheckBox getCheckBox ()
     {
@@ -98,39 +89,217 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
     }
 
     /**
+     * Updates custom renderer states based on render cycle settings.
+     *
+     * @param parameters {@link CheckBoxTreeNodeParameters}
+     */
+    protected void updateStates ( final P parameters )
+    {
+        states.clear ();
+
+        // Selection state
+        states.add ( parameters.isSelected () ? DecorationState.selected : DecorationState.unselected );
+
+        // Expansion state
+        states.add ( parameters.isExpanded () ? DecorationState.expanded : DecorationState.collapsed );
+
+        // Focus state
+        if ( parameters.isFocused () )
+        {
+            states.add ( DecorationState.focused );
+        }
+
+        // Leaf state
+        if ( parameters.isLeaf () )
+        {
+            states.add ( DecorationState.leaf );
+        }
+
+        // Hover state
+        final TreeUI ui = parameters.tree ().getUI ();
+        if ( ui instanceof WTreeUI )
+        {
+            if ( ( ( WTreeUI ) ui ).getHoverRow () == parameters.row () )
+            {
+                states.add ( DecorationState.hover );
+            }
+        }
+
+        // Checkbox check state
+        states.add ( parameters.tree ().getCheckState ( parameters.node () ).name () );
+
+        // Checkbox visibility
+        states.add ( parameters.isCheckBoxVisible () ? DecorationState.checkVisible : DecorationState.checkHidden );
+
+        // Extra states provided by node
+        states.addAll ( DecorationUtils.getExtraStates ( parameters.node () ) );
+    }
+
+    /**
+     * Updates tree cell renderer component style ID.
+     *
+     * @param parameters {@link CheckBoxTreeNodeParameters}
+     */
+    protected void updateStyleId ( final P parameters )
+    {
+        // Renderer style identifier
+        StyleId id = null;
+        if ( parameters.node () instanceof ChildStyleIdBridge )
+        {
+            final ChildStyleIdBridge childStyleIdBridge = ( ChildStyleIdBridge ) parameters.node ();
+            final ChildStyleId childStyleId = childStyleIdBridge.getChildStyleId ( parameters );
+            if ( childStyleId != null )
+            {
+                id = childStyleId.at ( parameters.tree () );
+            }
+        }
+        else if ( parameters.node () instanceof StyleIdBridge )
+        {
+            final StyleIdBridge styleIdBridge = ( StyleIdBridge ) parameters.node ();
+            final StyleId styleId = styleIdBridge.getStyleId ( parameters );
+            if ( styleId != null )
+            {
+                id = styleId;
+            }
+        }
+        if ( id == null )
+        {
+            id = StyleId.checkboxtreeCellRenderer.at ( parameters.tree () );
+        }
+        setStyleId ( id );
+
+        // Checkbox style identifier
+        checkBox.setStyleId ( StyleId.checkboxtreeCheckBox.at ( this ) );
+    }
+
+    /**
+     * Updating renderer based on the provided settings.
+     *
+     * @param parameters {@link CheckBoxTreeNodeParameters}
+     */
+    protected void updateView ( final P parameters )
+    {
+        // Updating renderer
+        removeAll ();
+        setLayout ( new BorderLayout ( parameters.tree ().getCheckBoxRendererGap (), 0 ) );
+        setEnabled ( parameters.isCheckBoxEnabled () );
+        setComponentOrientation ( orientationForValue ( parameters ) );
+
+        // Configuring check box
+        if ( parameters.isCheckBoxVisible () )
+        {
+            checkBox.setEnabled ( parameters.isCheckBoxEnabled () );
+            checkBox.setState ( parameters.tree ().getCheckState ( parameters.node () ) );
+            add ( checkBox, BorderLayout.LINE_START );
+        }
+
+        // Updating actual cell renderer
+        final TreeCellRenderer actual = parameters.tree ().getActualRenderer ();
+        final Component renderer = actual.getTreeCellRendererComponent ( parameters.tree (), parameters.node (), parameters.isSelected (),
+                parameters.isExpanded (), parameters.isLeaf (), parameters.row (), parameters.isFocused () );
+        add ( renderer, BorderLayout.CENTER );
+    }
+
+    /**
+     * Returns renderer {@link ComponentOrientation} for the specified {@link MutableTreeNode}.
+     *
+     * @param parameters {@link CheckBoxTreeNodeParameters}
+     * @return renderer {@link ComponentOrientation} for the specified {@link MutableTreeNode}
+     */
+    protected ComponentOrientation orientationForValue ( final P parameters )
+    {
+        return parameters.tree ().getComponentOrientation ();
+    }
+
+    /**
      * Returns tree cell renderer component.
      *
-     * @param tree     tree
-     * @param value    cell value
-     * @param selected whether cell is selected or not
-     * @param expanded whether cell is expanded or not
-     * @param leaf     whether cell is leaf or not
-     * @param row      cell row number
-     * @param hasFocus whether cell has focus or not
+     * @param tree       {@link WebCheckBoxTree}
+     * @param node       {@link MutableTreeNode}
+     * @param isSelected whether or not {@link MutableTreeNode} is selected
+     * @param expanded   whether or not {@link MutableTreeNode} is expanded
+     * @param leaf       whether or not {@link MutableTreeNode} is leaf
+     * @param row        {@link MutableTreeNode} row number
+     * @param hasFocus   whether or not {@link MutableTreeNode} has focus
      * @return cell renderer component
      */
     @Override
-    public Component getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean selected, final boolean expanded,
-                                                    final boolean leaf, final int row, final boolean hasFocus )
+    public Component getTreeCellRendererComponent ( final JTree tree, final Object node, final boolean isSelected,
+                                                    final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        final DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) value;
-        if ( checkBoxTree.isCheckBoxVisible () && checkBoxTree.isCheckBoxVisible ( node ) )
-        {
-            // Updating check state
-            checkBox.setEnabled ( checkBoxTree.isCheckingByUserEnabled () && checkBoxTree.isCheckBoxEnabled ( node ) );
-            checkBox.setState ( checkBoxTree.getCheckState ( node ) );
+        // Forming rendering parameters
+        final P parameters = getRenderingParameters ( ( C ) tree, ( N ) node, isSelected, expanded, leaf, row, hasFocus );
 
-            // Updating actual cell renderer
-            final TreeCellRenderer renderer = checkBoxTree.getActualRenderer ();
-            add ( renderer.getTreeCellRendererComponent ( tree, value, selected, expanded, leaf, row, hasFocus ), BorderLayout.CENTER );
+        // Updating custom states
+        updateStates ( parameters );
 
-            return this;
-        }
-        else
-        {
-            // Returning actual cell renderer
-            final TreeCellRenderer renderer = checkBoxTree.getActualRenderer ();
-            return renderer.getTreeCellRendererComponent ( tree, value, selected, expanded, leaf, row, hasFocus );
-        }
+        // Updating style ID
+        updateStyleId ( parameters );
+
+        // Updating renderer view
+        updateView ( parameters );
+
+        // Updating decoration states for this render cycle
+        DecorationUtils.fireStatesChanged ( this );
+
+        return this;
+    }
+
+    /**
+     * Returns {@link CheckBoxTreeNodeParameters}.
+     *
+     * @param tree       {@link WebCheckBoxTree}
+     * @param node       {@link MutableTreeNode}
+     * @param isSelected whether or not {@link MutableTreeNode} is selected
+     * @param expanded   whether or not {@link MutableTreeNode} is expanded
+     * @param leaf       whether or not {@link MutableTreeNode} is leaf
+     * @param row        {@link MutableTreeNode} row number
+     * @param hasFocus   whether or not {@link MutableTreeNode} has focus
+     * @return {@link CheckBoxTreeNodeParameters}
+     */
+    protected P getRenderingParameters ( final C tree, final N node, final boolean isSelected,
+                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    {
+        return ( P ) new CheckBoxTreeNodeParameters<N, C> ( tree, node, row, leaf, isSelected, expanded, hasFocus );
+    }
+
+    @Override
+    public final void repaint ( final long tm, final int x, final int y, final int width, final int height )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public final void repaint ( final Rectangle r )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public final void repaint ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    /**
+     * A subclass of {@link WebCheckBoxTreeCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * It is used to determine renderer provided by the UI class to properly uninstall it on UI uninstall.
+     *
+     * @param <N> {@link MutableTreeNode} type
+     * @param <C> {@link WebCheckBoxTree} type
+     * @param <P> {@link CheckBoxTreeNodeParameters} type
+     */
+    public static final class UIResource<N extends MutableTreeNode, C extends WebCheckBoxTree<N>, P extends CheckBoxTreeNodeParameters<N, C>>
+            extends WebCheckBoxTreeCellRenderer<N, C, P> implements javax.swing.plaf.UIResource
+    {
+        /**
+         * Implementation is used completely from {@link WebCheckBoxTreeCellRenderer}.
+         */
     }
 }

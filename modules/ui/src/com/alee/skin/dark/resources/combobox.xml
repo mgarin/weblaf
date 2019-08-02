@@ -1,0 +1,171 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.combobox.WebComboBox -->
+
+    <!-- Combobox -->
+    <style type="combobox">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <GradientBackground>
+                        <color>111,115,117</color>
+                        <color>77,81,83</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+                <decoration states="expanded">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="57,61,63" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Default editor -->
+        <style type="textfield" id="editor">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <WebShape round="2,0,0,2" sides="0,0,0,1" />
+                        <LineBorder color="20,20,20" />
+                        <ColorBackground color="106,110,112" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                    <decoration states="disabled">
+                        <WebShadow type="outer" opacity="0" />
+                        <LineBorder color="68,72,74" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Separator -->
+        <style type="separator" id="separator" extends="vertical">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <SeparatorStripes padding="2,2,2,0">
+                            <Stripe>
+                                <color>10,10,10</color>
+                            </Stripe>
+                        </SeparatorStripes>
+                    </decoration>
+                    <decoration states="editable">
+                        <SeparatorStripes padding="0" overwrite="true" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Arrow button -->
+        <style type="button" id="arrow" padding="2">
+            <painter>
+                <decorations>
+                    <decoration visible="false">
+                        <SetIcon icon="down-small" />
+                    </decoration>
+                    <decoration states="expanded">
+                        <SetIcon icon="up-small" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Popup menu -->
+        <style type="popupmenu" id="popup">
+
+            <!-- Popup list scrollpane -->
+            <style type="scrollpane" id="scrollpane" extends="popup">
+
+                <!-- Popup list -->
+                <style type="list" id="list" extends="transparent">
+                    <component class="com.alee.laf.list.WebList">
+
+                        <!-- Solves problems with long list elements -->
+                        <preferredWidth>0</preferredWidth>
+
+                    </component>
+                    <painter>
+
+                        <!-- Hide item background painter -->
+                        <itemPainter overwrite="true" />
+
+                    </painter>
+
+                    <!-- Default cell renderer label -->
+                    <style type="styledlabel" id="renderer" />
+
+                    <!-- Selected value renderer label -->
+                    <style type="styledlabel" id="box-renderer" extends="renderer" padding="2,4,2,4" />
+
+                    <!-- Popup list cell renderer label -->
+                    <style type="styledlabel" id="list-renderer" extends="renderer" padding="4,6,4,6" />
+
+                </style>
+
+            </style>
+
+        </style>
+
+    </style>
+
+    <!-- Hover-decorated-only combobox -->
+    <style type="combobox" id="hover">
+        <painter>
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="focused">
+                    <LineBorder color="20,20,20" />
+                </decoration>
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="enabled,expanded" opacity="1" />
+            </decorations>
+        </painter>
+
+        <!-- Separator -->
+        <style type="separator" id="separator" extends="vertical">
+            <painter>
+                <!-- todo Make it visible when "in-hovered-parent" -->
+                <decorations overwrite="true">
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Default editor -->
+        <style type="textfield" id="editor">
+            <painter>
+                <!-- todo Make it visible when "in-hovered-parent" -->
+                <decorations overwrite="true">
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Undecorated combobox -->
+    <style type="combobox" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

@@ -19,35 +19,34 @@ package com.alee.extended.tree;
 
 /**
  * This enumeration represents possible async tree node states.
- * <p/>
+ * <p>
  * Usually node might change in one of these directions:
- * 1. waiting -> (2)
- * 2. loading -> (3) or (4)
- * 3. loaded -> when reload called (2)
- * 4. failed -> when reload called (2)
+ * 1. waiting -&gt; (2)
+ * 2. loading -&gt; (3) or (4)
+ * 3. loaded -&gt; when reload called (2)
+ * 4. failed -&gt; when reload called (2)
  *
  * @author Mikle Garin
  */
-
 public enum AsyncNodeState
 {
     /**
-     * Waiting for node expansion to load childs.
+     * Waiting for node expansion to load children.
      */
     waiting,
 
     /**
-     * Loading childs.
+     * Loading children.
      */
     loading,
 
     /**
-     * Childs loaded.
+     * Children loaded.
      */
     loaded,
 
     /**
-     * Childs load failed.
+     * Children load failed.
      */
     failed
 }

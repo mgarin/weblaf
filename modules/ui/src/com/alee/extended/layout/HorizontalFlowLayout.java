@@ -17,19 +17,21 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
  * @author Mikle Garin
+ * @see com.alee.extended.layout.VerticalFlowLayout
  */
-
 public class HorizontalFlowLayout extends AbstractLayoutManager
 {
     /**
-     * todo 1. Alignment
+     * todo 1. Add horizontal alignment setting
      */
 
-    protected int gap;
+    protected int hgap;
     protected boolean fillLast;
 
     public HorizontalFlowLayout ()
@@ -37,25 +39,25 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         this ( 2 );
     }
 
-    public HorizontalFlowLayout ( final int gap )
+    public HorizontalFlowLayout ( final int hgap )
     {
-        this ( gap, false );
+        this ( hgap, false );
     }
 
-    public HorizontalFlowLayout ( final int gap, final boolean fillLast )
+    public HorizontalFlowLayout ( final int hgap, final boolean fillLast )
     {
-        this.gap = gap;
+        this.hgap = hgap;
         this.fillLast = fillLast;
     }
 
     public int getHorizontalGap ()
     {
-        return gap;
+        return hgap;
     }
 
-    public void setHorizGap ( final int gap )
+    public void setHorizontalGap ( final int hgap )
     {
-        this.gap = gap;
+        this.hgap = hgap;
     }
 
     public boolean isFillLast ()
@@ -68,39 +70,18 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         this.fillLast = fill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
-    {
-        return getLayoutSize ( parent, false );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension minimumLayoutSize ( final Container parent )
-    {
-        return getLayoutSize ( parent, true );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( @NotNull final Container container )
     {
         // Required size
-        final Dimension required = preferredLayoutSize ( parent );
+        final Dimension required = preferredLayoutSize ( container );
 
         // Available size (limiting width to required)
-        final Dimension available = new Dimension ( required.width, parent.getSize ().height );
+        final Dimension available = new Dimension ( required.width, container.getSize ().height );
 
         // Additional variables
-        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
-        final Insets insets = parent.getInsets ();
+        final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
+        final Insets insets = container.getInsets ();
         final int ls = ltr ? insets.left : insets.right;
         final int rs = ltr ? insets.right : insets.left;
         final boolean min = required.width < available.width;
@@ -110,52 +91,68 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         final int xsWidth = available.width - required.width;
 
         // Layouting components
-        final int count = parent.getComponentCount ();
+        final int count = container.getComponentCount ();
         for ( int i = 0; i < count; i++ )
         {
-            final Component c = parent.getComponent ( i );
+            final Component c = container.getComponent ( i );
             if ( c.isVisible () )
             {
-                int w = ( min ) ? c.getMinimumSize ().width : c.getPreferredSize ().width;
+                int w = min ? c.getMinimumSize ().width : c.getPreferredSize ().width;
                 if ( xsWidth > 0 )
                 {
                     w += w * xsWidth / required.width;
                 }
 
                 final int width = fillLast && i == count - 1 &&
-                        parent.getWidth () - x - rs > 0 ? parent.getWidth () - x - rs : w;
+                        container.getWidth () - x - rs > 0 ? container.getWidth () - x - rs : w;
                 if ( ltr )
                 {
                     c.setBounds ( x, y, width, height );
                 }
                 else
                 {
-                    c.setBounds ( parent.getWidth () - x - width, y, width, height );
+                    c.setBounds ( container.getWidth () - x - width, y, width, height );
                 }
                 x += w + getHorizontalGap ();
             }
         }
     }
 
-    protected Dimension getLayoutSize ( final Container parent, final boolean min )
+    @Override
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
-        final int count = parent.getComponentCount ();
-        final Dimension size = new Dimension ( 0, 0 );
-        for ( int i = 0; i < count; i++ )
-        {
-            final Component c = parent.getComponent ( i );
-            final Dimension tmp = ( min ) ? c.getMinimumSize () : c.getPreferredSize ();
-            size.height = Math.max ( tmp.height, size.height );
-            size.width += tmp.width;
+        return getLayoutSize ( container, false );
+    }
 
-            if ( i != 0 )
+    @Override
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
+    {
+        return getLayoutSize ( container, true );
+    }
+
+    protected Dimension getLayoutSize ( final Container container, final boolean minimum )
+    {
+        final Dimension size = new Dimension ( 0, 0 );
+
+        for ( int i = 0; i < container.getComponentCount (); i++ )
+        {
+            final Component c = container.getComponent ( i );
+            if ( c.isVisible () )
             {
-                size.width += getHorizontalGap ();
+                final Dimension tmp = minimum ? c.getMinimumSize () : c.getPreferredSize ();
+                size.width += tmp.width;
+                if ( i > 0 )
+                {
+                    size.width += getHorizontalGap ();
+                }
+                size.height = Math.max ( tmp.height, size.height );
             }
         }
-        final Insets border = parent.getInsets ();
+
+        final Insets border = container.getInsets ();
         size.width += border.left + border.right;
         size.height += border.top + border.bottom;
+
         return size;
     }
 }

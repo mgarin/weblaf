@@ -30,13 +30,12 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
+@Deprecated
 public class NeoTabbedPaneUI extends BasicTabbedPaneUI
 {
     private final Color borderColor = new Color ( 165, 165, 165 );
     private final Color innerBorderColor = new Color ( 248, 248, 248 );
 
-    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new NeoTabbedPaneUI ();
@@ -61,8 +60,8 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         {
             int col = 0;
             final int start = tabRuns[ i ];
-            final int next = tabRuns[ ( i == runCount - 1 ) ? 0 : i + 1 ];
-            final int end = ( next != 0 ? next - 1 : tabCount - 1 );
+            final int next = tabRuns[ i == runCount - 1 ? 0 : i + 1 ];
+            final int end = next != 0 ? next - 1 : tabCount - 1;
             final int colsInRow = end - start + 1;
             for ( int j = start; j <= end; j++ )
             {
@@ -151,7 +150,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
             if ( tabPane.isEnabled () && tabPane.isEnabledAt ( tabIndex ) )
             {
                 Color fg = tabPane.getForegroundAt ( tabIndex );
-                if ( isSelected && ( fg instanceof UIResource ) )
+                if ( isSelected && fg instanceof UIResource )
                 {
                     final Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
                     if ( selectedFG != null )
@@ -210,12 +209,11 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     //                    h = tabRect.height - 4;
     //            }
     //
-    //            g2d.setColor ( focus );
+    //            g2d.setPaint ( focus );
     //            LafUtils.drawDashedRect ( g2d, x, y, x + w, y + h, 4, 4 );
     //        }
     //    }
 
-    @SuppressWarnings ("UnusedParameters")
     protected void paintTabBackground ( final Graphics2D g2d, final int tabPlacement, final int row, final int col, final int colsInRow,
                                         final int tabIndex, final int x, final int y, final int w, final int h, final boolean isSelected )
     {
@@ -238,7 +236,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         if ( isSelected )
         {
             // Border
-            g2d.setColor ( borderColor );
+            g2d.setPaint ( borderColor );
             if ( topBorder )
             {
                 g2d.drawLine ( x, y, x + w - 1, y );
@@ -249,7 +247,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
             }
 
             // Inner border
-            g2d.setColor ( innerBorderColor );
+            g2d.setPaint ( innerBorderColor );
             g2d.drawLine ( x, y + 1, x, y + h - 1 );
             g2d.drawLine ( x + 1, y + ( topBorder ? 1 : 0 ), x + w - ( trailingBorder ? 2 : 1 ), y + ( topBorder ? 1 : 0 ) );
             g2d.drawLine ( x + w - ( trailingBorder ? 2 : 1 ), y + 1, x + w - ( trailingBorder ? 2 : 1 ), y + h - 1 );
@@ -270,7 +268,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
             g2d.drawLine ( x, y + h - 2, x + w - 1, y + h - 2 );
 
             // Border
-            g2d.setColor ( borderColor );
+            g2d.setPaint ( borderColor );
             if ( topBorder )
             {
                 g2d.drawLine ( x, y, x + w - 1, y );
@@ -305,7 +303,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         {
             case LEFT:
                 x += calculateTabAreaWidth ( tabPlacement, runCount, maxTabWidth );
-                w -= ( x - insets.left );
+                w -= x - insets.left;
                 break;
             case RIGHT:
                 w -= calculateTabAreaWidth ( tabPlacement, runCount, maxTabWidth );

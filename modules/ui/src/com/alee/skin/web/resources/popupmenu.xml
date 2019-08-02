@@ -1,0 +1,19 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.menu.WebPopupMenu -->
+
+    <!-- Popup menu -->
+    <style type="popupmenu">
+        <painter>
+            <popupStyle>dropdown</popupStyle>
+            <background>white</background>
+            <borderColor>128,128,128,128</borderColor>
+            <round>4</round>
+            <shadeWidth>12</shadeWidth>
+            <shadeOpacity>0.75</shadeOpacity>
+            <cornerWidth>6</cornerWidth>
+            <opacity>0.95</opacity>
+        </painter>
+    </style>
+
+</skin>

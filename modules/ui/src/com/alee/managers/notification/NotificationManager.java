@@ -17,85 +17,95 @@
 
 package com.alee.managers.notification;
 
-import com.alee.laf.label.WebLabel;
-import com.alee.managers.popup.PopupAdapter;
+import com.alee.api.jdk.BiConsumer;
+import com.alee.api.jdk.Function;
+import com.alee.extended.label.WebStyledLabel;
+import com.alee.extended.window.PopupAdapter;
 import com.alee.managers.popup.PopupLayer;
 import com.alee.managers.popup.PopupManager;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
+import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This manager allows you to display custom notification popups within the application.
  * You can also add custom actions, set their duration, modify popup styling and use some other advanced features.
  *
  * @author Mikle Garin
+ * @see PopupManager
+ * @see WebNotification
  * @see WebInnerNotification
  * @see DisplayType
  */
-
 public final class NotificationManager implements SwingConstants
 {
     /**
      * Notifications display location.
      */
-    protected static int location = -1;
+    private static int location = -1;
 
     /**
      * Notifications display type.
      */
-    protected static DisplayType displayType = DisplayType.stack;
+    private static DisplayType displayType = DisplayType.stack;
 
     /**
      * Notifications side margin.
      */
-    protected static Insets margin = new Insets ( 0, 0, 0, 0 );
+    private static Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
      * Gap between notifications.
      */
-    protected static int gap = 10;
+    private static int gap = 10;
 
     /**
      * Whether popups should be cascaded or not.
      */
-    protected static boolean cascade = true;
+    private static boolean cascade = true;
 
     /**
      * Amount of cascaded in a row popups.
      */
-    protected static int cascadeAmount = 4;
+    private static int cascadeAmount = 4;
 
     /**
      * Whether notifications displayed in separate windows should avoid overlapping system toolbar or not.
      */
-    protected static boolean avoidOverlappingSystemToolbar = true;
+    private static boolean avoidOverlappingSystemToolbar = true;
 
     /**
      * Cached notification layouts.
      */
-    protected static final Map<PopupLayer, NotificationsLayout> notificationsLayouts = new WeakHashMap<PopupLayer, NotificationsLayout> ();
+    private static final WeakComponentData<PopupLayer, NotificationsLayout> notificationsLayouts =
+            new WeakComponentData<PopupLayer, NotificationsLayout> ( "NotificationManager.NotificationsLayout", 2 );
 
     /**
      * Cached notification popups.
      */
-    protected static final Map<WebInnerNotification, PopupLayer> notificationPopups = new WeakHashMap<WebInnerNotification, PopupLayer> ();
+    private static final WeakComponentData<WebInnerNotification, PopupLayer> notificationPopups =
+            new WeakComponentData<WebInnerNotification, PopupLayer> ( "NotificationManager.PopupLayer", 5 );
 
     /**
      * Special layouts for notification windows.
      * Each layout is cached under according graphics device it is used with.
      */
-    protected static final Map<GraphicsDevice, NotificationsScreenLayout> screenLayouts =
+    private static final Map<GraphicsDevice, NotificationsScreenLayout> screenLayouts =
             new HashMap<GraphicsDevice, NotificationsScreenLayout> ( 1 );
 
     /**
      * Cached notification windows.
      */
-    protected static final Map<WebNotification, Window> notificationWindows = new WeakHashMap<WebNotification, Window> ();
+    private static final WeakComponentData<WebNotification, Window> notificationWindows =
+            new WeakComponentData<WebNotification, Window> ( "NotificationManager.Window", 5 );
 
     /**
      * Returns notifications display location.
@@ -276,15 +286,18 @@ public final class NotificationManager implements SwingConstants
     {
         // Updating popup notifications layouts
         final List<PopupLayer> layers = new ArrayList<PopupLayer> ();
-        for ( final Map.Entry<WebInnerNotification, PopupLayer> entry : notificationPopups.entrySet () )
+        notificationPopups.forEach ( new BiConsumer<WebInnerNotification, PopupLayer> ()
         {
-            final PopupLayer popupLayer = entry.getValue ();
-            if ( !layers.contains ( popupLayer ) )
+            @Override
+            public void accept ( final WebInnerNotification webInnerNotification, final PopupLayer popupLayer )
             {
-                layers.add ( popupLayer );
-                popupLayer.revalidate ();
+                if ( !layers.contains ( popupLayer ) )
+                {
+                    layers.add ( popupLayer );
+                    popupLayer.revalidate ();
+                }
             }
-        }
+        } );
 
         // Updating window notification layouts
         for ( final Map.Entry<GraphicsDevice, NotificationsScreenLayout> entry : screenLayouts.entrySet () )
@@ -299,14 +312,22 @@ public final class NotificationManager implements SwingConstants
      */
     public static void hideAllNotifications ()
     {
-        for ( final Map.Entry<WebInnerNotification, PopupLayer> entry : notificationPopups.entrySet () )
+        notificationPopups.forEach ( new BiConsumer<WebInnerNotification, PopupLayer> ()
         {
-            entry.getKey ().hidePopup ();
-        }
-        for ( final Map.Entry<WebNotification, Window> entry : notificationWindows.entrySet () )
+            @Override
+            public void accept ( final WebInnerNotification webInnerNotification, final PopupLayer popupLayer )
+            {
+                webInnerNotification.hidePopup ();
+            }
+        } );
+        notificationWindows.forEach ( new BiConsumer<WebNotification, Window> ()
         {
-            entry.getKey ().hidePopup ();
-        }
+            @Override
+            public void accept ( final WebNotification webNotification, final Window window )
+            {
+                webNotification.hidePopup ();
+            }
+        } );
     }
 
     /**
@@ -317,7 +338,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content )
     {
-        return showNotification ( null, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showNotification ( null, new WebStyledLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -329,7 +350,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content, final Icon icon )
     {
-        return showNotification ( null, new WebLabel ( content ), icon );
+        return showNotification ( null, new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -341,7 +362,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final Component showFor, final String content )
     {
-        return showNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -354,7 +375,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final Component showFor, final String content, final Icon icon )
     {
-        return showNotification ( showFor, new WebLabel ( content ), icon );
+        return showNotification ( showFor, new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -417,7 +438,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content, final NotificationOption... options )
     {
-        return showNotification ( null, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+        return showNotification ( null, new WebStyledLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -430,7 +451,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content, final Icon icon, final NotificationOption... options )
     {
-        return showNotification ( null, new WebLabel ( content ), icon, options );
+        return showNotification ( null, new WebStyledLabel ( content ), icon, options );
     }
 
     /**
@@ -443,7 +464,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final Component showFor, final String content, final NotificationOption... options )
     {
-        return showNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+        return showNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -458,7 +479,7 @@ public final class NotificationManager implements SwingConstants
     public static WebNotification showNotification ( final Component showFor, final String content, final Icon icon,
                                                      final NotificationOption... options )
     {
-        return showNotification ( showFor, new WebLabel ( content ), icon, options );
+        return showNotification ( showFor, new WebStyledLabel ( content ), icon, options );
     }
 
     /**
@@ -522,6 +543,7 @@ public final class NotificationManager implements SwingConstants
      * Displays notification in window.
      *
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebNotification showNotification ( final WebNotification notification )
     {
@@ -533,6 +555,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param showFor      component used to determine notification parent window
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebNotification showNotification ( final Component showFor, final WebNotification notification )
     {
@@ -540,13 +563,13 @@ public final class NotificationManager implements SwingConstants
         final NotificationsScreenLayout layout = getLayout ( showFor );
 
         // Notifications caching
-        notificationWindows.put ( notification, SwingUtils.getWindowAncestor ( showFor ) );
+        notificationWindows.set ( notification, CoreSwingUtils.getWindowAncestor ( showFor ) );
         notification.addPopupListener ( new PopupAdapter ()
         {
             @Override
             public void popupWillBeClosed ()
             {
-                notificationWindows.remove ( notification );
+                notificationWindows.clear ( notification );
                 layout.removeWindow ( notification.getWindow () );
                 notification.removePopupListener ( this );
             }
@@ -569,9 +592,8 @@ public final class NotificationManager implements SwingConstants
      */
     private static NotificationsScreenLayout getLayout ( final Component showFor )
     {
-        final Window window = showFor != null && showFor.isShowing () ? SwingUtils.getWindowAncestor ( showFor ) : null;
-        final GraphicsDevice gd = window != null ? window.getGraphicsConfiguration ().getDevice () :
-                GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice ();
+        final Window window = showFor != null && showFor.isShowing () ? CoreSwingUtils.getWindowAncestor ( showFor ) : null;
+        final GraphicsDevice gd = SystemUtils.getGraphicsDevice ( window );
         if ( !screenLayouts.containsKey ( gd ) )
         {
             screenLayouts.put ( gd, new NotificationsScreenLayout ( gd ) );
@@ -587,7 +609,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ),
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ),
                 NotificationIcon.information.getIcon () );
     }
 
@@ -600,7 +622,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final Icon icon )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -612,7 +634,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -625,7 +647,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content, final Icon icon )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), icon );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), icon );
     }
 
     /**
@@ -688,8 +710,8 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final NotificationOption... options )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (),
-                options );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ),
+                NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -702,7 +724,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final Icon icon, final NotificationOption... options )
     {
-        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon, options );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebStyledLabel ( content ), icon, options );
     }
 
     /**
@@ -716,7 +738,7 @@ public final class NotificationManager implements SwingConstants
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content,
                                                                final NotificationOption... options )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -731,7 +753,7 @@ public final class NotificationManager implements SwingConstants
     public static WebInnerNotification showInnerNotification ( final Component showFor, final String content, final Icon icon,
                                                                final NotificationOption... options )
     {
-        return showInnerNotification ( showFor, new WebLabel ( content ), icon, options );
+        return showInnerNotification ( showFor, new WebStyledLabel ( content ), icon, options );
     }
 
     /**
@@ -797,6 +819,7 @@ public final class NotificationManager implements SwingConstants
      * Displays notification on popup layer.
      *
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebInnerNotification showInnerNotification ( final WebInnerNotification notification )
     {
@@ -808,6 +831,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param showFor      component used to determine window where notification should be displayed
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebInnerNotification showInnerNotification ( final Component showFor, final WebInnerNotification notification )
     {
@@ -819,21 +843,26 @@ public final class NotificationManager implements SwingConstants
 
         // Adding custom layout into notifications
         final PopupLayer popupLayer = PopupManager.getPopupLayer ( showFor );
-        if ( !notificationsLayouts.containsKey ( popupLayer ) )
+        notificationsLayouts.get ( popupLayer, new Function<PopupLayer, NotificationsLayout> ()
         {
-            final NotificationsLayout layout = new NotificationsLayout ();
-            popupLayer.addLayoutManager ( layout );
-            notificationsLayouts.put ( popupLayer, layout );
-        }
+            @Override
+            public NotificationsLayout apply ( final PopupLayer popupLayer )
+            {
+                final NotificationsLayout layout = new NotificationsLayout ();
+                popupLayer.addLayoutManager ( layout );
+                return layout;
+            }
+        } );
 
         // Notifications caching
-        notificationPopups.put ( notification, popupLayer );
+        notificationPopups.set ( notification, popupLayer );
         notification.addPopupListener ( new PopupAdapter ()
         {
             @Override
             public void popupWillBeClosed ()
             {
-                notificationPopups.remove ( notification );
+                notificationPopups.clear ( notification );
+                notification.removePopupListener ( this );
             }
         } );
 

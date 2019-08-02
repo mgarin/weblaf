@@ -17,51 +17,58 @@
 
 package com.alee.utils;
 
+import com.alee.api.jdk.Objects;
+import com.alee.extended.collapsible.WebCollapsiblePane;
 import com.alee.extended.date.WebCalendar;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.filechooser.WebFileChooserField;
-import com.alee.extended.filechooser.WebPathField;
-import com.alee.extended.panel.WebCollapsiblePane;
-import com.alee.global.StyleConstants;
+import com.alee.extended.pathfield.WebPathField;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.utils.laf.WeblafBorder;
-import com.alee.utils.swing.EventPump;
-import com.alee.utils.swing.SizeMethods;
-import com.alee.utils.swing.WebTimer;
+import com.alee.painter.decoration.content.TextRasterization;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.swing.extensions.SizeMethods;
+import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import javax.swing.FocusManager;
-import javax.swing.border.Border;
+import javax.swing.*;
 import javax.swing.event.AncestorListener;
-import javax.swing.plaf.RootPaneUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.font.LineBreakMeasurer;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.ref.SoftReference;
-import java.util.*;
+import java.lang.reflect.InvocationTargetException;
+import java.text.AttributedString;
 import java.util.List;
+import java.util.*;
 
 /**
  * This class provides a set of utilities to work with Swing components, their settings and events.
  *
  * @author Mikle Garin
  */
-public final class SwingUtils extends CoreSwingUtils
+public final class SwingUtils
 {
     /**
      * Client property key that identifies that component can handle enabled state changes.
      */
     public static final String HANDLES_ENABLE_STATE = "HANDLES_ENABLE_STATE";
+
+    /**
+     * Constant transparent color used for text rendering fix.
+     */
+    public static final Color RENDERING_FIX_COLOR = new Color ( 231, 157, 94, 0 );
 
     /**
      * System shortcut modifier.
@@ -84,10 +91,17 @@ public final class SwingUtils extends CoreSwingUtils
     private static Font[] fonts;
 
     /**
-     * Threads for smooth component scrolling.
+     * Thread used for smooth component scrolling.
      */
-    private static Thread scrollThread1;
-    private static Thread scrollThread2;
+    private static Thread scrollThread;
+
+    /**
+     * Access to  charsBuffer is to be synchronized on charsBufferLock.
+     */
+    private static final int CHAR_BUFFER_SIZE = 100;
+    private static final Object charsBufferLock = new Object ();
+    private static char[] charsBuffer = new char[ CHAR_BUFFER_SIZE ];
+    public static final FontRenderContext DEFAULT_FRC = new FontRenderContext ( null, false, false );
 
     /**
      * Most of applications use 10 or less fonts simultaneously.
@@ -110,6 +124,96 @@ public final class SwingUtils extends CoreSwingUtils
     private static final Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
 
     /**
+     * Private constructor to avoid instantiation.
+     */
+    private SwingUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
+     * Returns whether or not specified component is opaque.
+     *
+     * @param component component to check opacity for
+     * @return {@code true} if specified component is opaque, {@code false} otherwise
+     */
+    public static boolean isOpaque ( final Component component )
+    {
+        if ( component instanceof Window )
+        {
+            return ProprietaryUtils.isWindowOpaque ( ( Window ) component );
+        }
+        else
+        {
+            return component.isOpaque ();
+        }
+    }
+
+    /**
+     * Performs full component view update.
+     *
+     * @param component component to update
+     */
+    public static void update ( final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            ( ( JComponent ) component ).revalidate ();
+        }
+        else
+        {
+            component.invalidate ();
+        }
+        component.repaint ();
+    }
+
+    /**
+     * Removes {@link Component} from its current parent if it has one.
+     *
+     * @param component {@link Component} to remove from its parent
+     * @param update    whether or not should update parent {@link Container} layout and size
+     */
+    public static void removeFromParent ( final Component component, final boolean update )
+    {
+        if ( component != null )
+        {
+            final Container parent = component.getParent ();
+            if ( parent != null )
+            {
+                parent.remove ( component );
+                if ( update )
+                {
+                    update ( parent );
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns whether or not specified {@link JTextComponent} content is empty.
+     *
+     * @param component {@link JTextComponent} to check
+     * @return {@code true} if specified {@link JTextComponent} content is empty, {@code false} otherwise
+     */
+    public static boolean isEmpty ( final JTextComponent component )
+    {
+        final Document document = component.getDocument ();
+        return document == null || document.getLength () == 0;
+    }
+
+    /**
+     * Returns whether or not provided insets are empty.
+     * {@code null} insets are considered as empty as well.
+     *
+     * @param insets insets to process
+     * @return true if provided insets are empty, false otherwise
+     */
+    public static boolean isEmpty ( final Insets insets )
+    {
+        return insets == null || insets.top == 0 && insets.left == 0 && insets.bottom == 0 && insets.right == 0;
+    }
+
+    /**
      * Returns whether UI delegate should preserve current border on this component or not.
      *
      * @param component component to process
@@ -117,12 +221,18 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static boolean isPreserveBorders ( final JComponent component )
     {
-        if ( getHonorUserBorders ( component ) )
-        {
-            final Border border = component.getBorder ();
-            return border != null && !( border instanceof UIResource ) && !( border instanceof WeblafBorder );
-        }
-        return false;
+        return getHonorUserBorders ( component ) && !isUIResource ( component.getBorder () );
+    }
+
+    /**
+     * Returns whether or not specified value is a UI resource.
+     *
+     * @param value value {@link Object} to process
+     * @return {@code true} if specified value is a UI resource, {@code false} otherwise
+     */
+    public static boolean isUIResource ( final Object value )
+    {
+        return value == null || value instanceof UIResource;
     }
 
     /**
@@ -138,23 +248,21 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether window in which specified component located is decorated by L&amp;F or not.
+     * Sets whether UI delegate should honor a user-specified border on this component or not.
      *
-     * @param component component used to determine window decoration state
-     * @return true if window in which specified component located is decorated by L&amp;F, false otherwise
+     * @param component component to set property for
+     * @param honor     whether UI delegate should honor a user-specified border on this component or not
      */
-    public static boolean isLafDecorated ( final Component component )
+    public static void setHonorUserBorders ( final JComponent component, final boolean honor )
     {
-        final JRootPane rootPane = getRootPane ( component );
-        if ( rootPane != null )
+        if ( honor )
         {
-            final RootPaneUI ui = rootPane.getUI ();
-            if ( ui instanceof WebRootPaneUI )
-            {
-                return ( ( WebRootPaneUI ) ui ).isStyled ();
-            }
+            component.putClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER, Boolean.TRUE );
         }
-        return false;
+        else
+        {
+            component.putClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER, null );
+        }
     }
 
     /**
@@ -191,6 +299,29 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns whether or not event represents most common double click event.
+     *
+     * @param e mouse event
+     * @return true if event represents most common double click event, false otherwise
+     */
+    public static boolean isDoubleClick ( final MouseEvent e )
+    {
+        return isDoubleClick ( e, true );
+    }
+
+    /**
+     * Returns whether or not event represents most common double click event.
+     *
+     * @param e          mouse event
+     * @param repeatable whether or not double click condition can be accepted more than once within a single click sequence
+     * @return true if event represents most common double click event, false otherwise
+     */
+    public static boolean isDoubleClick ( final MouseEvent e, final boolean repeatable )
+    {
+        return isLeftMouseButton ( e ) && ( repeatable ? e.getClickCount () % 2 == 0 : e.getClickCount () == 2 );
+    }
+
+    /**
      * Packs all table rows to their preferred height.
      *
      * @param table table to process
@@ -219,7 +350,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static void packColumnWidths ( final JTable table )
     {
-        packColumnWidths ( table, StyleConstants.spacing );
+        packColumnWidths ( table, 2 );
     }
 
     /**
@@ -244,7 +375,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static void packColumnWidth ( final JTable table, final int col )
     {
-        packColumnWidth ( table, col, StyleConstants.spacing );
+        packColumnWidth ( table, col, 2 );
     }
 
     /**
@@ -268,15 +399,15 @@ public final class SwingUtils extends CoreSwingUtils
         }
 
         // Header width
-        Component comp = renderer.getTableCellRendererComponent ( table, column.getHeaderValue (), false, false, 0, 0 );
-        width = comp.getPreferredSize ().width;
+        Component rendererComponent = renderer.getTableCellRendererComponent ( table, column.getHeaderValue (), false, false, 0, 0 );
+        width = rendererComponent.getPreferredSize ().width;
 
         // Cells width
         for ( int r = 0; r < table.getRowCount (); r++ )
         {
             renderer = table.getCellRenderer ( r, col );
-            comp = renderer.getTableCellRendererComponent ( table, table.getValueAt ( r, col ), false, false, r, col );
-            width = Math.max ( width, comp.getPreferredSize ().width );
+            rendererComponent = renderer.getTableCellRendererComponent ( table, table.getValueAt ( r, col ), false, false, r, col );
+            width = Math.max ( width, rendererComponent.getPreferredSize ().width );
         }
 
         // Margin
@@ -288,11 +419,11 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether the specifid mouse events triggers popup menu or not.
+     * Returns whether the specific mouse events triggers popup menu or not.
      * This method might act differently on different operating systems.
      *
      * @param e mouse event
-     * @return true if the specifid mouse events triggers popup menu, false otherwise
+     * @return true if the specific mouse events triggers popup menu, false otherwise
      */
     public static boolean isPopupTrigger ( final MouseEvent e )
     {
@@ -300,7 +431,7 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Destroys container by destroying its childs structure and removing all listeners.
+     * Destroys container by destroying its children structure and removing all listeners.
      *
      * @param container container to destroy
      */
@@ -381,77 +512,44 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns top component inside the specified container component at the specified point.
      *
      * @param component container component to process
-     * @param x         X coordinate
-     * @param y         Y coordinate
+     * @param point     point on the component
+     * @return top component inside the specified container component at the specified point
+     */
+    public static Component getTopComponentAt ( final Component component, final Point point )
+    {
+        return getTopComponentAt ( component, point.x, point.y );
+    }
+
+    /**
+     * Returns top component inside the specified container component at the specified point.
+     *
+     * @param component container component to process
+     * @param x         X coordinate on the component
+     * @param y         Y coordinate on the component
      * @return top component inside the specified container component at the specified point
      */
     public static Component getTopComponentAt ( final Component component, final int x, final int y )
     {
-        final Component child = component.getComponentAt ( x, y );
-        if ( child == component || !( child instanceof Container ) )
+        if ( component != null && component.isVisible () )
         {
-            return component;
+            if ( component instanceof Container )
+            {
+                final Container container = ( Container ) component;
+                for ( int i = 0; i < container.getComponentCount (); i++ )
+                {
+                    final Component child = container.getComponent ( i );
+                    final Component topInChild = getTopComponentAt ( child, x - child.getX (), y - child.getY () );
+                    if ( topInChild != null )
+                    {
+                        return topInChild;
+                    }
+                }
+            }
+            return component.contains ( x, y ) ? component : null;
         }
         else
         {
-            final Rectangle b = child.getBounds ();
-            return getTopComponentAt ( child, x - b.x, y - b.y );
-        }
-    }
-
-    /**
-     * Displays the specified frame as modal to the owner frame.
-     * Note that this method returns only after the modal frame is closed.
-     * <p/>
-     * This method is a Swing hack and not recommended for real use.
-     * Still it might be useful for some specific cases.
-     *
-     * @param frame frame to display as modal
-     * @param owner owner frame
-     */
-    public static void showAsModal ( final Frame frame, final Frame owner )
-    {
-        frame.addWindowListener ( new WindowAdapter ()
-        {
-            @Override
-            public void windowOpened ( final WindowEvent e )
-            {
-                owner.setEnabled ( false );
-            }
-
-            @Override
-            public void windowClosed ( final WindowEvent e )
-            {
-                owner.setEnabled ( true );
-                frame.removeWindowListener ( this );
-            }
-        } );
-
-        owner.addWindowListener ( new WindowAdapter ()
-        {
-            @Override
-            public void windowActivated ( final WindowEvent e )
-            {
-                if ( frame.isShowing () )
-                {
-                    frame.setExtendedState ( JFrame.NORMAL );
-                    frame.toFront ();
-                }
-                else
-                {
-                    owner.removeWindowListener ( this );
-                }
-            }
-        } );
-
-        frame.setVisible ( true );
-        try
-        {
-            new EventPump ( frame ).start ();
-        }
-        catch ( final Throwable throwable )
-        {
-            throw new RuntimeException ( throwable );
+            return null;
         }
     }
 
@@ -467,10 +565,10 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Groups all buttons inside this container and all subcontainers if requested and returns created button group.
+     * Groups all buttons inside this container and all sub-containers if requested and returns created button group.
      *
      * @param container container to process
-     * @param recursive whether to check all subcontainers or not
+     * @param recursive whether to check all sub-containers or not
      * @return created button group
      */
     public static ButtonGroup groupButtons ( final Container container, final boolean recursive )
@@ -481,10 +579,10 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Groups all buttons inside this container and all subcontainers if requested and returns created button group.
+     * Groups all buttons inside this container and all sub-containers if requested and returns created button group.
      *
      * @param container   container to process
-     * @param recursive   whether to check all subcontainers or not
+     * @param recursive   whether to check all sub-containers or not
      * @param buttonGroup button group
      */
     public static void groupButtons ( final Container container, final boolean recursive, final ButtonGroup buttonGroup )
@@ -548,11 +646,22 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Applies opposite component orientation to the specified component and all of its children.
+     *
+     * @param component component to change orientation for
+     */
+    public static void changeOrientation ( final Component component )
+    {
+        final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+        component.applyComponentOrientation ( ltr ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT );
+    }
+
+    /**
      * Updates component orientation for all existing components.
      */
-    public static void updateGlobalOrientations ()
+    public static void updateGlobalOrientation ()
     {
-        updateGlobalOrientations ( WebLookAndFeel.getOrientation () );
+        updateGlobalOrientation ( WebLookAndFeel.getOrientation () );
     }
 
     /**
@@ -560,7 +669,7 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param orientation component orientation to set
      */
-    public static void updateGlobalOrientations ( final ComponentOrientation orientation )
+    public static void updateGlobalOrientation ( final ComponentOrientation orientation )
     {
         for ( final Window window : Window.getWindows () )
         {
@@ -568,16 +677,14 @@ public final class SwingUtils extends CoreSwingUtils
             window.applyComponentOrientation ( orientation );
 
             // Updating root pane
-            final JRootPane rootPane = getRootPane ( window );
+            final JRootPane rootPane = CoreSwingUtils.getRootPane ( window );
             if ( rootPane != null )
             {
-                rootPane.revalidate ();
-                rootPane.repaint ();
+                update ( rootPane );
             }
             else
             {
-                window.invalidate ();
-                window.repaint ();
+                update ( window );
             }
         }
     }
@@ -608,28 +715,21 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Applies component orientation to specified component.
+     * Returns maximum component width.
      *
-     * @param component component to modify
+     * @param components components to process
+     * @return maximum component width
      */
-    public static void applyOrientation ( final Component component )
+    public static Dimension maxSize ( final Component... components )
     {
-        applyOrientation ( component, false );
-    }
-
-    /**
-     * Applies component orientation to specified component if needed or if forced.
-     *
-     * @param component component to modify
-     * @param forced    force orientation change
-     */
-    public static void applyOrientation ( final Component component, final boolean forced )
-    {
-        final ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
-        if ( forced || orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
+        final Dimension max = new Dimension ( 0, 0 );
+        for ( final Component component : components )
         {
-            component.applyComponentOrientation ( orientation );
+            final Dimension ps = component.getPreferredSize ();
+            max.width = Math.max ( max.width, ps.width );
+            max.height = Math.max ( max.height, ps.height );
         }
+        return max;
     }
 
     /**
@@ -685,17 +785,17 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param component   component to look parent for
      * @param parentClass parent component class
-     * @param <T>         parent component class type
+     * @param <C>         parent component class type
      * @return first parent which is instance of specified class type or null if none found
      */
-    public static <T extends Container> T getFirstParent ( final Component component, final Class<T> parentClass )
+    public static <C extends Container> C getFirstParent ( final Component component, final Class<C> parentClass )
     {
         Component parent = component.getParent ();
         while ( !parentClass.isInstance ( parent ) && parent != null )
         {
             parent = parent.getParent ();
         }
-        return ( T ) parent;
+        return ( C ) parent;
     }
 
     /**
@@ -703,10 +803,10 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param container      container to look for component in
      * @param componentClass component class
-     * @param <T>            component class type
+     * @param <C>            component class type
      * @return first component placed in the specified container which is instance of specified class type or null if none found
      */
-    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass )
+    public static <C extends Component> C getFirst ( final Container container, final Class<C> componentClass )
     {
         return getFirst ( container, componentClass, false );
     }
@@ -716,24 +816,24 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param container      container to look for component in
      * @param componentClass component class
-     * @param recursive      whether to check all subcontainers or not
-     * @param <T>            component class type
+     * @param recursive      whether to check all sub-containers or not
+     * @param <C>            component class type
      * @return first component placed in the specified container which is instance of specified class type or null if none found
      */
-    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass, final boolean recursive )
+    public static <C extends Component> C getFirst ( final Container container, final Class<C> componentClass, final boolean recursive )
     {
         for ( int i = 0; i < container.getComponentCount (); i++ )
         {
             final Component component = container.getComponent ( i );
             if ( componentClass.isInstance ( component ) )
             {
-                return ( T ) component;
+                return ( C ) component;
             }
             if ( recursive )
             {
                 if ( component instanceof Container )
                 {
-                    final T first = getFirst ( ( Container ) component, componentClass, recursive );
+                    final C first = getFirst ( ( Container ) component, componentClass, recursive );
                     if ( first != null )
                     {
                         return first;
@@ -745,13 +845,13 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns first parent component which supports dran and drop actions.
+     * Returns first parent component which supports drag and drop actions.
      *
      * @param component component to look parent supporting drop for
-     * @param <T>       parent supporting drop component class type
-     * @return first parent component which supports dran and drop actions
+     * @param <C>       parent supporting drop component class type
+     * @return first parent component which supports drag and drop actions
      */
-    public static <T extends JComponent> T getFirstParentSupportingDrop ( final Component component )
+    public static <C extends JComponent> C getFirstParentSupportingDrop ( final Component component )
     {
         final Container parent = component.getParent ();
         if ( parent instanceof JComponent )
@@ -759,48 +859,10 @@ public final class SwingUtils extends CoreSwingUtils
             final JComponent c = ( JComponent ) parent;
             if ( c.getTransferHandler () != null )
             {
-                return ( T ) c;
+                return ( C ) c;
             }
         }
         return getFirstParentSupportingDrop ( parent );
-    }
-
-    /**
-     * Returns root pane for the specified component or null if it doesn't exist.
-     *
-     * @param component component to look under
-     * @return root pane for the specified component or null if it doesn't exist
-     */
-    public static JRootPane getRootPane ( final Component component )
-    {
-        if ( component == null )
-        {
-            return null;
-        }
-        else if ( component instanceof JFrame )
-        {
-            return ( ( JFrame ) component ).getRootPane ();
-        }
-        else if ( component instanceof JDialog )
-        {
-            return ( ( JDialog ) component ).getRootPane ();
-        }
-        else if ( component instanceof JWindow )
-        {
-            return ( ( JWindow ) component ).getRootPane ();
-        }
-        else if ( component instanceof JApplet )
-        {
-            return ( ( JApplet ) component ).getRootPane ();
-        }
-        else if ( component instanceof JRootPane )
-        {
-            return ( JRootPane ) component;
-        }
-        else
-        {
-            return getRootPane ( component.getParent () );
-        }
     }
 
     /**
@@ -845,7 +907,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Container getContentPane ( final Component component )
     {
-        final JRootPane rootPane = getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         return rootPane != null ? rootPane.getContentPane () : null;
     }
 
@@ -857,7 +919,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static JLayeredPane getLayeredPane ( final Component component )
     {
-        final JRootPane rootPane = getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         return rootPane != null ? rootPane.getLayeredPane () : null;
     }
 
@@ -869,406 +931,75 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Component getGlassPane ( final Component component )
     {
-        final JRootPane rootPane = getRootPane ( component );
+        final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         return rootPane != null ? rootPane.getGlassPane () : null;
     }
 
     /**
-     * Sets an empty border for the specified component.
+     * Returns {@code insets} increased by amount specified in {@code amount}.
      *
-     * @param component component to modify
-     * @param border    component border
-     * @param <C>       component type
-     * @return modified component
+     * @param insets insets to increased
+     * @param amount increase amount
+     * @return {@code insets} increased by amount specified in {@code amount}
      */
-    public static <C extends JComponent> C setBorder ( final C component, final int border )
+    public static Insets increase ( final Insets insets, final Insets amount )
     {
-        return setBorder ( component, LafUtils.createWebBorder ( border ) );
-    }
-
-    /**
-     * Sets an empty border for the specified component.
-     *
-     * @param component component to modify
-     * @param top       component top border
-     * @param left      component left border
-     * @param bottom    component bottom border
-     * @param right     component right border
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends JComponent> C setBorder ( final C component, final int top, final int left, final int bottom, final int right )
-    {
-        return setBorder ( component, LafUtils.createWebBorder ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets border for the specified component.
-     *
-     * @param component component to modify
-     * @param border    component border
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends JComponent> C setBorder ( final C component, final Border border )
-    {
-        component.setBorder ( border );
-        return component;
-    }
-
-    /**
-     * Returns whether component font is plain or not.
-     *
-     * @param component component to process
-     * @return true if component font is plain, false otherwise
-     */
-    public static boolean isPlainFont ( final Component component )
-    {
-        return !( component != null && component.getFont () != null ) || component.getFont ().isPlain ();
-    }
-
-    /**
-     * Changes font to plain for the specified component.
-     *
-     * @param component component to modify
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setPlainFont ( final C component )
-    {
-        return setPlainFont ( component, true );
-    }
-
-    /**
-     * Changes font to plain for the specified component.
-     *
-     * @param component component to modify
-     * @param apply     whether to apply font changes or not
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setPlainFont ( final C component, final boolean apply )
-    {
-        if ( apply && component != null && component.getFont () != null )
+        if ( insets == null )
         {
-            component.setFont ( component.getFont ().deriveFont ( Font.PLAIN ) );
+            throw new NullPointerException ( "Insets cannot be null" );
         }
-        return component;
-    }
-
-    /**
-     * Returns whether component font is bold or not.
-     *
-     * @param component component to process
-     * @return true if component font is bold, false otherwise
-     */
-    public static boolean isBoldFont ( final Component component )
-    {
-        return component != null && component.getFont () != null && component.getFont ().isBold ();
-    }
-
-    /**
-     * Changes font to bold for the specified component.
-     *
-     * @param component component to modify
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setBoldFont ( final C component )
-    {
-        return setBoldFont ( component, true );
-    }
-
-    /**
-     * Changes font to bold for the specified component.
-     *
-     * @param component component to modify
-     * @param apply     whether to apply font changes or not
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setBoldFont ( final C component, final boolean apply )
-    {
-        if ( apply && component != null && component.getFont () != null )
+        if ( amount != null )
         {
-            component.setFont ( component.getFont ().deriveFont ( Font.BOLD ) );
+            insets.top += amount.top;
+            insets.left += amount.left;
+            insets.bottom += amount.bottom;
+            insets.right += amount.right;
         }
-        return component;
+        return insets;
     }
 
     /**
-     * Returns whether component font is italic or not.
+     * Returns {@code dimension} increased by amount specified in {@code amount}.
      *
-     * @param component component to process
-     * @return true if component font is italic, false otherwise
+     * @param dimension dimension to increased
+     * @param amount    increase amount
+     * @return {@code dimension} increased by amount specified in {@code amount}
      */
-    public static boolean isItalicFont ( final Component component )
+    public static Dimension increase ( final Dimension dimension, final Insets amount )
     {
-        return component != null && component.getFont () != null && component.getFont ().isItalic ();
-    }
-
-    /**
-     * Changes font to italic for the specified component.
-     *
-     * @param component component to modify
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setItalicFont ( final C component )
-    {
-        return setItalicFont ( component, true );
-    }
-
-    /**
-     * Changes font to italic for the specified component.
-     *
-     * @param component component to modify
-     * @param apply     whether to apply font changes or not
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setItalicFont ( final C component, final boolean apply )
-    {
-        if ( apply && component != null && component.getFont () != null )
+        if ( dimension == null )
         {
-            component.setFont ( component.getFont ().deriveFont ( Font.ITALIC ) );
+            throw new NullPointerException ( "Dimension cannot be null" );
         }
-        return component;
-    }
-
-    /**
-     * Sets font size of the specified component.
-     *
-     * @param component component to modify
-     * @param fontSize  new font size
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setFontSize ( final C component, final int fontSize )
-    {
-        if ( component != null && component.getFont () != null )
+        if ( amount != null )
         {
-            component.setFont ( component.getFont ().deriveFont ( ( float ) fontSize ) );
+            dimension.width += amount.left + amount.right;
+            dimension.height += amount.top + amount.bottom;
         }
-        return component;
+        return dimension;
     }
 
     /**
-     * Changes font size of the specified component.
+     * Returns {@code insets} decreased by amount specified in {@code amount}.
      *
-     * @param component component to modify
-     * @param change    font size change amount
-     * @param <C>       component type
-     * @return modified component
+     * @param insets insets to decreased
+     * @param amount decrease amount
+     * @return {@code insets} decreased by amount specified in {@code amount}
      */
-    public static <C extends Component> C changeFontSize ( final C component, final int change )
+    public static Insets decrease ( final Insets insets, final Insets amount )
     {
-        if ( component != null && component.getFont () != null )
+        if ( insets == null )
         {
-            final Font font = component.getFont ();
-            component.setFont ( font.deriveFont ( ( float ) font.getSize () + change ) );
+            throw new NullPointerException ( "Insets cannot be null" );
         }
-        return component;
-    }
-
-    /**
-     * Returns font size of the specified component.
-     *
-     * @param component component to process
-     * @return font size of the specified component
-     */
-    public static int getFontSize ( final Component component )
-    {
-        if ( component != null && component.getFont () != null )
+        if ( amount != null )
         {
-            return component.getFont ().getSize ();
+            insets.top -= amount.top;
+            insets.left -= amount.left;
+            insets.bottom -= amount.bottom;
+            insets.right -= amount.right;
         }
-        return -1;
-    }
-
-    /**
-     * Sets font  style for the specified component.
-     *
-     * @param component component to modify
-     * @param bold      whether should set bold font or not
-     * @param italic    whether should set italic font or not
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setFontStyle ( final C component, final boolean bold, final boolean italic )
-    {
-        final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
-        return setFontStyle ( component, style );
-    }
-
-    /**
-     * Sets font  style for the specified component.
-     *
-     * @param component component to modify
-     * @param style     new style
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setFontStyle ( final C component, final int style )
-    {
-        if ( component != null && component.getFont () != null )
-        {
-            component.setFont ( component.getFont ().deriveFont ( style ) );
-        }
-        return component;
-    }
-
-    /**
-     * Sets font size and style for the specified component.
-     *
-     * @param component component to modify
-     * @param fontSize  new font size
-     * @param bold      whether should set bold font or not
-     * @param italic    whether should set italic font or not
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setFontSizeAndStyle ( final C component, final int fontSize, final boolean bold,
-                                                                final boolean italic )
-    {
-        final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
-        return setFontSizeAndStyle ( component, fontSize, style );
-    }
-
-    /**
-     * Sets font size and style for the specified component.
-     *
-     * @param component component to modify
-     * @param fontSize  new font size
-     * @param style     new style
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setFontSizeAndStyle ( final C component, final int fontSize, final int style )
-    {
-        if ( component != null && component.getFont () != null )
-        {
-            component.setFont ( component.getFont ().deriveFont ( style, ( float ) fontSize ) );
-        }
-        return component;
-    }
-
-    /**
-     * Sets component font name.
-     *
-     * @param component component font name
-     * @param fontName  new font name
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setFontName ( final C component, final String fontName )
-    {
-        if ( component != null && component.getFont () != null )
-        {
-            final Font oldFont = component.getFont ();
-            component.setFont ( new Font ( fontName, oldFont.getStyle (), oldFont.getSize () ) );
-        }
-        return component;
-    }
-
-    /**
-     * Returns component font name.
-     *
-     * @param component component to process
-     * @return component font name
-     */
-    public static String getFontName ( final Component component )
-    {
-        if ( component != null && component.getFont () != null )
-        {
-            return component.getFont ().getFontName ();
-        }
-        return null;
-    }
-
-    /**
-     * Returns dimension copy.
-     *
-     * @param dimension dimension to copy
-     * @return dimension copy
-     */
-    public static Dimension copy ( final Dimension dimension )
-    {
-        return new Dimension ( dimension );
-    }
-
-    /**
-     * Returns point copy.
-     *
-     * @param point point to copy
-     * @return point copy
-     */
-    public static Point copy ( final Point point )
-    {
-        return new Point ( point );
-    }
-
-    /**
-     * Returns rectangle copy.
-     *
-     * @param rectangle rectangle to copy
-     * @return rectangle copy
-     */
-    public static Rectangle copy ( final Rectangle rectangle )
-    {
-        return new Rectangle ( rectangle );
-    }
-
-    /**
-     * Returns insets copy.
-     *
-     * @param insets insets to copy
-     * @return insets copy
-     */
-    public static Insets copy ( final Insets insets )
-    {
-        return new Insets ( insets.top, insets.left, insets.bottom, insets.right );
-    }
-
-    /**
-     * Returns color copy.
-     *
-     * @param color color to copy
-     * @return color copy
-     */
-    public static Color copy ( final Color color )
-    {
-        return new Color ( color.getRed (), color.getGreen (), color.getBlue (), color.getAlpha () );
-    }
-
-    /**
-     * Returns component size represented as a rectangle with zero X and Y coordinates.
-     *
-     * @param component component to process
-     * @return component size rectangle
-     */
-    public static Rectangle size ( final Component component )
-    {
-        return new Rectangle ( 0, 0, component.getWidth (), component.getHeight () );
-    }
-
-    /**
-     * Returns component content size limited by component border.
-     *
-     * @param component component to process
-     * @return component content size rectangle
-     */
-    public static Rectangle contentSize ( final Component component )
-    {
-        if ( component instanceof JComponent )
-        {
-            final Insets i = ( ( JComponent ) component ).getInsets ();
-            return new Rectangle ( i.left, i.top, component.getWidth () - i.left - i.right, component.getHeight () - i.top - i.bottom );
-        }
-        else
-        {
-            return size ( component );
-        }
+        return insets;
     }
 
     /**
@@ -1278,6 +1009,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param insets2 second insets
      * @return maximum insets
      */
+    @SuppressWarnings ( "RedundantIfStatement" )
     public static Insets max ( final Insets insets1, final Insets insets2 )
     {
         if ( insets1 != null && insets2 != null )
@@ -1306,6 +1038,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param insets2 second insets
      * @return minimum insets
      */
+    @SuppressWarnings ( "RedundantIfStatement" )
     public static Insets min ( final Insets insets1, final Insets insets2 )
     {
         if ( insets1 != null && insets2 != null )
@@ -1414,6 +1147,43 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns rectange shrunk by provided insets.
+     *
+     * @param r rectange to shrink
+     * @param i insets used to shrink bounds
+     * @return rectange shrunk by provided insets
+     */
+    public static Rectangle shrink ( final Rectangle r, final Insets i )
+    {
+        return i != null ? new Rectangle ( r.x + i.left, r.y + i.top, r.width - i.left - i.right, r.height - i.top - i.bottom ) :
+                new Rectangle ( r );
+    }
+
+    /**
+     * Returns dimension shrunk by provided insets.
+     *
+     * @param d dimension to shrink
+     * @param i insets used to shrink dimension
+     * @return dimension shrunk by provided insets
+     */
+    public static Dimension shrink ( final Dimension d, final Insets i )
+    {
+        return i != null ? new Dimension ( d.width - i.left - i.right, d.height - i.top - i.bottom ) : new Dimension ( d );
+    }
+
+    /**
+     * Returns dimension stretched by provided insets.
+     *
+     * @param d dimension to stretch
+     * @param i insets used to stretch dimension
+     * @return dimension stretched by provided insets
+     */
+    public static Dimension stretch ( final Dimension d, final Insets i )
+    {
+        return i != null ? new Dimension ( d.width + i.left + i.right, d.height + i.top + i.bottom ) : new Dimension ( d );
+    }
+
+    /**
      * Sets opaque state of component and all of its children.
      *
      * @param component component to modify
@@ -1427,16 +1197,16 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets opaque state of component and all of its children.
      *
-     * @param component  component to modify
-     * @param opaque     whether opaque state or not
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param opaque       whether opaque state or not
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setOpaqueRecursively ( final Component component, final boolean opaque, final boolean childsOnly )
+    public static void setOpaqueRecursively ( final Component component, final boolean opaque, final boolean childrenOnly )
     {
         if ( component instanceof JComponent )
         {
             final JComponent jComponent = ( JComponent ) component;
-            if ( !childsOnly )
+            if ( !childrenOnly )
             {
                 jComponent.setOpaque ( opaque );
             }
@@ -1466,14 +1236,14 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param component      component to modify
      * @param doubleBuffered whether use double buffering or not
-     * @param childsOnly     whether exclude component from changes or not
+     * @param childrenOnly   whether exclude component from changes or not
      */
-    public static void setDoubleBufferedRecursively ( final Component component, final boolean doubleBuffered, final boolean childsOnly )
+    public static void setDoubleBufferedRecursively ( final Component component, final boolean doubleBuffered, final boolean childrenOnly )
     {
         if ( component instanceof JComponent )
         {
             final JComponent jComponent = ( JComponent ) component;
-            if ( !childsOnly )
+            if ( !childrenOnly )
             {
                 jComponent.setDoubleBuffered ( doubleBuffered );
             }
@@ -1488,9 +1258,9 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Adds HANDLES_ENABLE_STATE mark into component client properties.
+     * Adds {@link #HANDLES_ENABLE_STATE} client property into the specified {@link JComponent}.
      *
-     * @param component component to process
+     * @param component {@link JComponent} to set client property for
      */
     public static void setHandlesEnableStateMark ( final JComponent component )
     {
@@ -1498,9 +1268,9 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Removes HANDLES_ENABLE_STATE mark from component client properties.
+     * Removes {@link #HANDLES_ENABLE_STATE} client property from the specified {@link JComponent}.
      *
-     * @param component component to process
+     * @param component {@link JComponent} to remove client property from
      */
     public static void removeHandlesEnableStateMark ( final JComponent component )
     {
@@ -1508,22 +1278,24 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether HANDLES_ENABLE_STATE mark is set in this component to true or not.
+     * Returns whether or not {@link #HANDLES_ENABLE_STATE} client property is set to {@code true} in the specified {@link Component}.
      *
-     * @param component component to process
-     * @return true if HANDLES_ENABLE_STATE mark is set in this component to true, false otherwise
+     * @param component {@link Component} to check client property in
+     * @return {@code true} if {@link #HANDLES_ENABLE_STATE} client property is set to {@code true}, {@code false} otherwise
      */
     public static boolean isHandlesEnableState ( final Component component )
     {
+        final boolean handlesEnabledState;
         if ( component instanceof JComponent )
         {
-            final Object handlesEnabledState = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
-            if ( handlesEnabledState != null && handlesEnabledState instanceof Boolean && ( Boolean ) handlesEnabledState )
-            {
-                return true;
-            }
+            final Object property = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
+            handlesEnabledState = property instanceof Boolean && ( Boolean ) property;
         }
-        return false;
+        else
+        {
+            handlesEnabledState = false;
+        }
+        return handlesEnabledState;
     }
 
     /**
@@ -1540,23 +1312,23 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets enabled state of component and all of its children.
      *
-     * @param component       component to modify
-     * @param enabled         whether component is enabled or not
-     * @param startFromChilds whether exclude component from changes or not
+     * @param component         component to modify
+     * @param enabled           whether component is enabled or not
+     * @param startFromChildren whether exclude component from changes or not
      */
-    public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean startFromChilds )
+    public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean startFromChildren )
     {
         if ( component == null )
         {
             return;
         }
-        if ( !startFromChilds )
+        if ( !startFromChildren )
         {
             component.setEnabled ( enabled );
         }
         if ( component instanceof Container )
         {
-            if ( !startFromChilds && isHandlesEnableState ( component ) )
+            if ( !startFromChildren && isHandlesEnableState ( component ) )
             {
                 return;
             }
@@ -1570,48 +1342,48 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Disables component and all of its children recursively.
      *
-     * @param component       component to disable
-     * @param startFromChilds whether should disable only component childs or not
-     * @param excludePanels   whether should exclude panels from disabling or not
-     * @param excluded        components to exclude from disabling
+     * @param component         component to disable
+     * @param startFromChildren whether should disable only component children or not
+     * @param excludePanels     whether should exclude panels from disabling or not
+     * @param excluded          components to exclude from disabling
      * @return list of actually disabled components
      */
-    public static List<Component> disableRecursively ( final Component component, final boolean startFromChilds,
+    public static List<Component> disableRecursively ( final Component component, final boolean startFromChildren,
                                                        final boolean excludePanels, final Component... excluded )
     {
-        return disableRecursively ( component, startFromChilds, excludePanels, Arrays.asList ( excluded ) );
+        return disableRecursively ( component, startFromChildren, excludePanels, new ImmutableList<Component> ( excluded ) );
     }
 
     /**
      * Disables component and all of its children recursively.
      *
-     * @param component       component to disable
-     * @param startFromChilds whether should disable only component childs or not
-     * @param excludePanels   whether should exclude panels from disabling or not
-     * @param excluded        components to exclude from disabling
+     * @param component         component to disable
+     * @param startFromChildren whether should disable only component children or not
+     * @param excludePanels     whether should exclude panels from disabling or not
+     * @param excluded          components to exclude from disabling
      * @return list of actually disabled components
      */
-    public static List<Component> disableRecursively ( final Component component, final boolean startFromChilds,
+    public static List<Component> disableRecursively ( final Component component, final boolean startFromChildren,
                                                        final boolean excludePanels, final List<Component> excluded )
     {
         final List<Component> disabled = new ArrayList<Component> ();
-        disableRecursively ( component, startFromChilds, excludePanels, excluded, disabled );
+        disableRecursively ( component, startFromChildren, excludePanels, excluded, disabled );
         return disabled;
     }
 
     /**
      * Disables component and all of its children recursively.
      *
-     * @param component       component to disable
-     * @param startFromChilds whether should disable only component childs or not
-     * @param excludePanels   whether should exclude panels from disabling or not
-     * @param excluded        components to exclude from disabling
-     * @param disabled        list of actually disabled components
+     * @param component         component to disable
+     * @param startFromChildren whether should disable only component children or not
+     * @param excludePanels     whether should exclude panels from disabling or not
+     * @param excluded          components to exclude from disabling
+     * @param disabled          list of actually disabled components
      */
-    private static void disableRecursively ( final Component component, final boolean startFromChilds, final boolean excludePanels,
+    private static void disableRecursively ( final Component component, final boolean startFromChildren, final boolean excludePanels,
                                              final List<Component> excluded, final List<Component> disabled )
     {
-        final boolean b = !startFromChilds && !excluded.contains ( component ) && !( component instanceof JPanel && excludePanels );
+        final boolean b = !startFromChildren && !excluded.contains ( component ) && !( component instanceof JPanel && excludePanels );
         if ( b && component.isEnabled () )
         {
             component.setEnabled ( false );
@@ -1658,13 +1430,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets focusable state of component and all of its children.
      *
-     * @param component  component to modify
-     * @param focusable  whether component is focusable or not
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param focusable    whether component is focusable or not
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setFocusableRecursively ( final JComponent component, final boolean focusable, final boolean childsOnly )
+    public static void setFocusableRecursively ( final JComponent component, final boolean focusable, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setFocusable ( focusable );
         }
@@ -1691,13 +1463,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets background color of component and all of its children.
      *
-     * @param component  component to modify
-     * @param bg         new background color
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param bg           new background color
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setBackgroundRecursively ( final Component component, final Color bg, final boolean childsOnly )
+    public static void setBackgroundRecursively ( final Component component, final Color bg, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setBackground ( bg );
         }
@@ -1724,13 +1496,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets foreground color of component and all of its children.
      *
-     * @param component  component to modify
-     * @param foreground new foreground color
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param foreground   new foreground color
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setForegroundRecursively ( final JComponent component, final Color foreground, final boolean childsOnly )
+    public static void setForegroundRecursively ( final JComponent component, final Color foreground, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setForeground ( foreground );
         }
@@ -1757,13 +1529,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets font of component and all of its children.
      *
-     * @param component  component to modify
-     * @param font       new font
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param font         new font
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setFontRecursively ( final JComponent component, final Font font, final boolean childsOnly )
+    public static void setFontRecursively ( final JComponent component, final Font font, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setFont ( font );
         }
@@ -1792,13 +1564,13 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns component snapshot image.
      * Component must be showing to render properly using this method.
      *
-     * @param content      component for snapshot
-     * @param transparency snapshot transparency
+     * @param content component for snapshot
+     * @param opacity snapshot opacity
      * @return component snapshot image
      */
-    public static BufferedImage createComponentSnapshot ( final Component content, final float transparency )
+    public static BufferedImage createComponentSnapshot ( final Component content, final float opacity )
     {
-        return createComponentSnapshot ( content, content.getWidth (), content.getHeight (), transparency );
+        return createComponentSnapshot ( content, content.getWidth (), content.getHeight (), opacity );
     }
 
     /**
@@ -1819,31 +1591,40 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns component snapshot image of specified size.
      * Component must be showing to render properly using this method.
      *
-     * @param content      component for snapshot
-     * @param width        snapshot image width
-     * @param height       snapshot image height
-     * @param transparency snapshot transparency
+     * @param content component for snapshot
+     * @param width   snapshot image width
+     * @param height  snapshot image height
+     * @param opacity snapshot opacity
      * @return component snapshot image
      */
-    public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height,
-                                                          final float transparency )
+    public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height, final float opacity )
     {
         // Creating snapshot
         final BufferedImage bi = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
         if ( content != null )
         {
             final Graphics2D g2d = bi.createGraphics ();
+            final Dimension size = content.getSize ();
             content.setSize ( width, height );
             content.paintAll ( g2d );
+            content.setSize ( size );
             g2d.dispose ();
+
+            // Required to restore any damage caused by size change
+            if ( content instanceof JComponent )
+            {
+                ( ( JComponent ) content ).revalidate ();
+                content.repaint ();
+            }
         }
 
         // Making it transparent if needed
-        if ( transparency < 1f )
+        // Transparency is applied separately to avoid components from being transparent between each other when painted
+        if ( opacity < 1f )
         {
             final BufferedImage transparent = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
             final Graphics2D g2d = transparent.createGraphics ();
-            GraphicsUtils.setupAlphaComposite ( g2d, transparency );
+            GraphicsUtils.setupAlphaComposite ( g2d, opacity );
             g2d.drawImage ( bi, 0, 0, null );
             g2d.dispose ();
             return transparent;
@@ -1855,19 +1636,72 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Sets menu item accelerator using the specified hotkey data.
+     * Returns menu item accelerator for the specified hotkey.
      *
-     * @param menuItem menu item
-     * @param hotkey   hotkey data
+     * @param hotkey hotkey to provide accelerator based on
+     * @return menu item accelerator for the specified hotkey
      */
-    public static void setAccelerator ( final JMenuItem menuItem, final HotkeyData hotkey )
+    public static KeyStroke getAccelerator ( final HotkeyData hotkey )
     {
-        if ( hotkey != null && hotkey.isHotkeySet () )
+        return hotkey != null && hotkey.isHotkeySet () ? hotkey.getKeyStroke () : null;
+    }
+
+    /**
+     * Returns focus accelerator key mask.
+     *
+     * @return focus accelerator key mask
+     */
+    public static int getFocusAcceleratorKeyMask ()
+    {
+        if ( SystemUtils.isJava7orAbove () )
         {
-            final int ctrl = hotkey.isCtrl () ? getSystemShortcutModifier () : 0;
-            final int alt = hotkey.isAlt () ? KeyEvent.ALT_MASK : 0;
-            final int shift = hotkey.isShift () ? KeyEvent.SHIFT_MASK : 0;
-            menuItem.setAccelerator ( KeyStroke.getKeyStroke ( hotkey.getKeyCode (), ctrl | alt | shift ) );
+            // This toolkit method was added in JDK 7 and later ones
+            // It is recommended to use instead of the hardcoded accelerator mask
+            final Toolkit toolkit = Toolkit.getDefaultToolkit ();
+            if ( Objects.equals ( toolkit.getClass ().getCanonicalName (), "sun.awt.SunToolkit" ) )
+            {
+                final Object mask = ReflectUtils.callMethodSafely ( toolkit, "getFocusAcceleratorKeyMask" );
+                if ( mask != null )
+                {
+                    return ( Integer ) mask;
+                }
+            }
+        }
+        return ActionEvent.ALT_MASK;
+    }
+
+    /**
+     * Returns index of the first occurrence of {@code mnemonic} within string {@code text}.
+     * Matching algorithm is not case-sensitive.
+     *
+     * @param text     text to search through, may be {@code null}
+     * @param mnemonic mnemonic to find the character for
+     * @return index into the string if exists, otherwise -1
+     */
+    public static int getMnemonicIndex ( final String text, final int mnemonic )
+    {
+        if ( text == null || mnemonic == '\0' )
+        {
+            return -1;
+        }
+
+        final char uc = Character.toUpperCase ( ( char ) mnemonic );
+        final char lc = Character.toLowerCase ( ( char ) mnemonic );
+
+        final int uci = text.indexOf ( uc );
+        final int lci = text.indexOf ( lc );
+
+        if ( uci == -1 )
+        {
+            return lci;
+        }
+        else if ( lci == -1 )
+        {
+            return uci;
+        }
+        else
+        {
+            return lci < uci ? lci : uci;
         }
     }
 
@@ -2048,7 +1882,7 @@ public final class SwingUtils extends CoreSwingUtils
 
     /**
      * Returns default label font.
-     * This method might be used as a hack with other L&amp;Fs to retrieve system default font for simple text.
+     * This method might be used as a hack with other LaFs to retrieve system default font for simple text.
      *
      * @return default label font
      */
@@ -2063,7 +1897,7 @@ public final class SwingUtils extends CoreSwingUtils
 
     /**
      * Returns default label font metrics.
-     * This method might be used as a hack with other L&amp;Fs to retrieve system default font metrics for simple text.
+     * This method might be used as a hack with other LaFs to retrieve system default font metrics for simple text.
      *
      * @return default label font metrics
      */
@@ -2088,6 +1922,52 @@ public final class SwingUtils extends CoreSwingUtils
                 component.getParent ().getParent () != null && component.getParent ().getParent () instanceof JScrollPane )
         {
             return ( JScrollPane ) component.getParent ().getParent ();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Performs composite focus request and returns {@link Component} that requested focus.
+     *
+     * @param component {@link Component} to perform composite focus request for
+     * @return {@link Component} that requested focus
+     */
+    public static Component compositeRequestFocus ( final Component component )
+    {
+        if ( component instanceof Container )
+        {
+            final Container container = ( Container ) component;
+            if ( container.isFocusCycleRoot () )
+            {
+                final FocusTraversalPolicy policy = container.getFocusTraversalPolicy ();
+                final Component defaultComponent = policy.getDefaultComponent ( container );
+                if ( defaultComponent != null )
+                {
+                    defaultComponent.requestFocus ();
+                    return defaultComponent;
+                }
+            }
+
+            final Container focusCycleRootAncestor = container.getFocusCycleRootAncestor ();
+            if ( focusCycleRootAncestor != null )
+            {
+                final FocusTraversalPolicy policy = focusCycleRootAncestor.getFocusTraversalPolicy ();
+                final Component after = policy.getComponentAfter ( focusCycleRootAncestor, container );
+                if ( after != null && SwingUtilities.isDescendingFrom ( after, container ) )
+                {
+                    after.requestFocus ();
+                    return after;
+                }
+            }
+        }
+
+        if ( component.isFocusable () )
+        {
+            component.requestFocus ();
+            return component;
         }
         else
         {
@@ -2160,7 +2040,7 @@ public final class SwingUtils extends CoreSwingUtils
             if ( component instanceof WebPathField || component instanceof WebFileChooserField ||
                     component instanceof WebDateField || component instanceof WebCalendar )
             {
-                // Check childs for text in composite components
+                // Check children for text in composite components
                 for ( final Component child : ( ( Container ) component ).getComponents () )
                 {
                     if ( findComponentsWithText ( text, child ).size () > 0 )
@@ -2173,7 +2053,8 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof WebCollapsiblePane )
             {
                 // Check header panel for text
-                if ( findComponentsWithText ( text, ( ( WebCollapsiblePane ) component ).getHeaderPanel () ).size () > 0 )
+                final WebCollapsiblePane collapsiblePane = ( WebCollapsiblePane ) component;
+                if ( findComponentsWithText ( text, collapsiblePane.getTitleComponent () ).size () > 0 )
                 {
                     components.add ( component );
                 }
@@ -2182,26 +2063,30 @@ public final class SwingUtils extends CoreSwingUtils
             {
                 // todo Check each renderer for text
                 final JComboBox comboBox = ( JComboBox ) component;
-                if ( comboBox.getSelectedItem ().toString ().toLowerCase ().contains ( text.toLowerCase () ) )
+                final Object selectedItem = comboBox.getSelectedItem ();
+                if ( selectedItem != null )
                 {
-                    components.add ( component );
-                }
-                else
-                {
-                    if ( comboBox.isEditable () )
+                    if ( selectedItem.toString ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                     {
-                        if ( findComponentsWithText ( text, comboBox.getEditor ().getEditorComponent () ).size () > 0 )
-                        {
-                            components.add ( component );
-                        }
+                        components.add ( component );
                     }
                     else
                     {
-                        if ( findComponentsWithText ( text,
-                                comboBox.getRenderer ().getListCellRendererComponent ( null, comboBox.getSelectedItem (), -1, true, true ) )
-                                .size () > 0 )
+                        if ( comboBox.isEditable () )
                         {
-                            components.add ( component );
+                            if ( findComponentsWithText ( text, comboBox.getEditor ().getEditorComponent () ).size () > 0 )
+                            {
+                                components.add ( component );
+                            }
+                        }
+                        else
+                        {
+                            if ( findComponentsWithText ( text,
+                                    comboBox.getRenderer ().getListCellRendererComponent ( null, selectedItem, -1, true, true ) )
+                                    .size () > 0 )
+                            {
+                                components.add ( component );
+                            }
                         }
                     }
                 }
@@ -2209,7 +2094,8 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof JSpinner )
             {
                 // Check value for text
-                if ( ( ( JSpinner ) component ).getValue ().toString ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( JSpinner ) component ).getValue ().toString ().toLowerCase ( Locale.ROOT )
+                        .contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     components.add ( component );
                 }
@@ -2217,7 +2103,7 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof JLabel )
             {
                 // Check value for text
-                if ( ( ( JLabel ) component ).getText ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( JLabel ) component ).getText ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     components.add ( component );
                 }
@@ -2225,7 +2111,7 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof AbstractButton )
             {
                 // Check value for text
-                if ( ( ( AbstractButton ) component ).getText ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( AbstractButton ) component ).getText ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     components.add ( component );
                 }
@@ -2233,7 +2119,7 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof JTextComponent )
             {
                 // Check value for text
-                if ( ( ( JTextComponent ) component ).getText ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( JTextComponent ) component ).getText ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     // Return scroll instead of the text component
                     if ( component.getParent () != null &&
@@ -2266,7 +2152,7 @@ public final class SwingUtils extends CoreSwingUtils
                 //                for ( int i = 0; i < tp.getTabCount (); i++ )
                 //                {
                 //                    // Checking tab title
-                //                    if ( tp.getTitleAt ( i ).toLowerCase ().contains ( text.toLowerCase () ) )
+                //                    if ( tp.getTitleAt ( i ).toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 //                    {
                 //                        components.add ( component );
                 //                        found = true;
@@ -2294,7 +2180,7 @@ public final class SwingUtils extends CoreSwingUtils
                 checkContent ( text, ( Container ) component, components );
             }
         }
-        catch ( final Throwable e )
+        catch ( final Exception ignored )
         {
             //
         }
@@ -2310,7 +2196,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     private static void checkContent ( final String text, final Container container, final List<Component> components )
     {
-        // Check childs for text
+        // Check children for text
         for ( final Component child : container.getComponents () )
         {
             findComponentsWithText ( text, child, components );
@@ -2318,65 +2204,22 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns component bounds on screen.
+     * Returns component index within the specified parent container.
      *
-     * @param component component to process
-     * @return component bounds on screen
+     * @param container container
+     * @param child     child component
+     * @return component index within the specified parent container
      */
-    public static Rectangle getBoundsOnScreen ( final Component component )
+    public static int indexOf ( final Container container, final Component child )
     {
-        return new Rectangle ( component.getLocationOnScreen (), component.getSize () );
-    }
-
-    /**
-     * Returns component bounds inside its window.
-     * This will return component bounds relative to window root pane location, not the window location.
-     *
-     * @param component component to process
-     * @return component bounds inside its window
-     */
-    public static Rectangle getBoundsInWindow ( final Component component )
-    {
-        return component instanceof Window || component instanceof JApplet ? getRootPane ( component ).getBounds () :
-                getRelativeBounds ( component, getRootPane ( component ) );
-    }
-
-    /**
-     * Returns component bounds relative to another component.
-     *
-     * @param component  component to process
-     * @param relativeTo component relative to which bounds will be returned
-     * @return component bounds relative to another component
-     */
-    public static Rectangle getRelativeBounds ( final Component component, final Component relativeTo )
-    {
-        return new Rectangle ( getRelativeLocation ( component, relativeTo ), component.getSize () );
-    }
-
-    /**
-     * Returns component location relative to another component.
-     *
-     * @param component  component to process
-     * @param relativeTo component relative to which location will be returned
-     * @return component location relative to another component
-     */
-    public static Point getRelativeLocation ( final Component component, final Component relativeTo )
-    {
-        final Point los = component.getLocationOnScreen ();
-        final Point rt = relativeTo.getLocationOnScreen ();
-        return new Point ( los.x - rt.x, los.y - rt.y );
-    }
-
-    /**
-     * Returns whether specified components have the same ancestor or not.
-     *
-     * @param component1 first component
-     * @param component2 second component
-     * @return true if specified components have the same ancestor, false otherwise
-     */
-    public static boolean isSameAncestor ( final Component component1, final Component component2 )
-    {
-        return getWindowAncestor ( component1 ) == getWindowAncestor ( component2 );
+        for ( int i = 0; i < container.getComponentCount (); i++ )
+        {
+            if ( container.getComponent ( i ) == child )
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -2404,23 +2247,39 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static void equalizeComponentsSize ( final Component... components )
     {
-        final Dimension maxSize = new Dimension ( 0, 0 );
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                final Dimension ps = c.getPreferredSize ();
-                maxSize.width = Math.max ( maxSize.width, ps.width );
-                maxSize.height = Math.max ( maxSize.height, ps.height );
-            }
-        }
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                c.setPreferredSize ( maxSize );
-            }
-        }
+        equalizeComponentsSize ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsSize ( final List<String> properties, final Component... components )
+    {
+        equalizeComponentsSizeImpl ( true, true, properties, components );
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     *
+     * @param components components to modify
+     */
+    public static void equalizeComponentsSize ( final List<? extends Component> components )
+    {
+        equalizeComponentsSize ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsSize ( final List<String> properties, final List<? extends Component> components )
+    {
+        equalizeComponentsSizeImpl ( true, true, properties, components.toArray ( new Component[ components.size () ] ) );
     }
 
     /**
@@ -2428,30 +2287,41 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param components components to modify
      */
-    public static void equalizeComponentsWidths ( final Component... components )
+    public static void equalizeComponentsWidth ( final Component... components )
     {
-        int maxWidth = 0;
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                maxWidth = Math.max ( maxWidth, c.getPreferredSize ().width );
-            }
-        }
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                if ( c instanceof SizeMethods )
-                {
-                    ( ( SizeMethods ) c ).setPreferredWidth ( maxWidth );
-                }
-                else
-                {
-                    c.setPreferredSize ( new Dimension ( maxWidth, c.getPreferredSize ().height ) );
-                }
-            }
-        }
+        equalizeComponentsWidth ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component widths equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsWidth ( final List<String> properties, final Component... components )
+    {
+        equalizeComponentsSizeImpl ( true, false, properties, components );
+    }
+
+    /**
+     * Makes all specified component widths equal.
+     *
+     * @param components components to modify
+     */
+    public static void equalizeComponentsWidth ( final List<? extends Component> components )
+    {
+        equalizeComponentsWidth ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component widths equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsWidth ( final List<String> properties, final List<? extends Component> components )
+    {
+        equalizeComponentsSizeImpl ( true, false, properties, components.toArray ( new Component[ components.size () ] ) );
     }
 
     /**
@@ -2459,27 +2329,160 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param components components to modify
      */
-    public static void equalizeComponentsHeights ( final Component... components )
+    public static void equalizeComponentsHeight ( final Component... components )
     {
-        int maxHeight = 0;
-        for ( final Component c : components )
+        equalizeComponentsHeight ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component heights equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsHeight ( final List<String> properties, final Component... components )
+    {
+        equalizeComponentsSizeImpl ( false, true, properties, components );
+    }
+
+    /**
+     * Makes all specified component heights equal.
+     *
+     * @param components components to modify
+     */
+    public static void equalizeComponentsHeight ( final List<? extends Component> components )
+    {
+        equalizeComponentsHeight ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component heights equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsHeight ( final List<String> properties, final List<? extends Component> components )
+    {
+        equalizeComponentsSizeImpl ( false, true, properties, components.toArray ( new Component[ components.size () ] ) );
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     * Also provides appropriate property listeners to update sizes when needed.
+     *
+     * @param width      whether or not should equalize widths
+     * @param height     whether or not should equalize heights
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    private static void equalizeComponentsSizeImpl ( final boolean width, final boolean height, final List<String> properties,
+                                                     final Component... components )
+    {
+        equalizeComponentsSizeImpl ( width, height, components );
+        if ( CollectionUtils.notEmpty ( properties ) )
         {
-            if ( c != null )
+            final PropertyChangeListener listener = new PropertyChangeListener ()
             {
-                maxHeight = Math.max ( maxHeight, c.getPreferredSize ().height );
+                @Override
+                public void propertyChange ( final PropertyChangeEvent e )
+                {
+                    resetComponentsSizeImpl ( width, height, components );
+                    equalizeComponentsSizeImpl ( width, height, components );
+                }
+            };
+            for ( final Component component : components )
+            {
+                for ( final String property : properties )
+                {
+                    component.addPropertyChangeListener ( property, listener );
+                }
             }
         }
-        for ( final Component c : components )
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     *
+     * @param width      whether or not should equalize widths
+     * @param height     whether or not should equalize heights
+     * @param components components to modify
+     */
+    private static void equalizeComponentsSizeImpl ( final boolean width, final boolean height, final Component... components )
+    {
+        final Dimension maxSize = new Dimension ( 0, 0 );
+        for ( final Component component : components )
         {
-            if ( c != null )
+            if ( component != null )
             {
-                if ( c instanceof SizeMethods )
+                final Dimension ps = component.getPreferredSize ();
+                maxSize.width = Math.max ( maxSize.width, ps.width );
+                maxSize.height = Math.max ( maxSize.height, ps.height );
+            }
+        }
+        for ( final Component component : components )
+        {
+            if ( component != null )
+            {
+                if ( component instanceof SizeMethods )
                 {
-                    ( ( SizeMethods ) c ).setPreferredHeight ( maxHeight );
+                    final SizeMethods sizeMethods = ( SizeMethods ) component;
+                    if ( width )
+                    {
+                        sizeMethods.setPreferredWidth ( maxSize.width );
+                    }
+                    if ( height )
+                    {
+                        sizeMethods.setPreferredHeight ( maxSize.height );
+                    }
                 }
                 else
                 {
-                    c.setPreferredSize ( new Dimension ( c.getPreferredSize ().width, maxHeight ) );
+                    final Dimension ps = component.getPreferredSize ();
+                    if ( width && height )
+                    {
+                        component.setPreferredSize ( maxSize );
+                    }
+                    else if ( width )
+                    {
+                        component.setPreferredSize ( new Dimension ( maxSize.width, ps.height ) );
+                    }
+                    else if ( height )
+                    {
+                        component.setPreferredSize ( new Dimension ( ps.width, maxSize.height ) );
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns default preferred sizes for all specified components.
+     *
+     * @param width      whether or not should restore widths
+     * @param height     whether or not should restore heights
+     * @param components components to reset
+     */
+    private static void resetComponentsSizeImpl ( final boolean width, final boolean height, final Component... components )
+    {
+        for ( final Component component : components )
+        {
+            if ( component != null )
+            {
+                if ( component instanceof SizeMethods )
+                {
+                    final SizeMethods sizeMethods = ( SizeMethods ) component;
+                    if ( width )
+                    {
+                        sizeMethods.setPreferredWidth ( SizeMethods.UNDEFINED );
+                    }
+                    if ( height )
+                    {
+                        sizeMethods.setPreferredHeight ( SizeMethods.UNDEFINED );
+                    }
+                }
+                else
+                {
+                    component.setPreferredSize ( null );
                 }
             }
         }
@@ -2488,37 +2491,34 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Returns whether the first component or any of its children are equal to second component or not.
      *
-     * @param component1 first component to compare
-     * @param component2 second component to compare
-     * @return true if the first component or any of its children are equal to second component, false otherwise
+     * @param component first component to compare
+     * @param child     second component to compare
+     * @return {@code true} if the first component or any of its children are equal to second component, {@code false} otherwise
      */
-    public static boolean isEqualOrChild ( final Component component1, final Component component2 )
+    public static boolean isEqualOrChild ( final Component component, final Component child )
     {
-        if ( component1 == component2 )
+        if ( component == child )
         {
             return true;
         }
-        else if ( component1 == null && component2 != null || component1 != null && component2 == null )
+        else if ( component == null || child == null )
         {
+            return false;
+        }
+        else if ( component instanceof Container )
+        {
+            for ( final Component c : ( ( Container ) component ).getComponents () )
+            {
+                if ( isEqualOrChild ( c, child ) )
+                {
+                    return true;
+                }
+            }
             return false;
         }
         else
         {
-            if ( component1 instanceof Container )
-            {
-                for ( final Component c : ( ( Container ) component1 ).getComponents () )
-                {
-                    if ( isEqualOrChild ( c, component2 ) )
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 
@@ -2535,10 +2535,10 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether atleast one of child components within the specified container is focusable or not.
+     * Returns whether at least one of child components within the specified container is focusable or not.
      *
      * @param container container to process
-     * @return true if atleast one of child components within the specified container is focusable, false otherwise
+     * @return true if at least one of child components within the specified container is focusable, false otherwise
      */
     public static boolean hasFocusableComponent ( final Container container )
     {
@@ -2608,50 +2608,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Will perform an "invokeLater" call when the specified delay time passes.
-     *
-     * @param delay    delay time in milliseconds
-     * @param runnable runnable
-     */
-    public static void delayInvokeLater ( final long delay, final Runnable runnable )
-    {
-        WebTimer.delay ( "delayInvokeLater", delay, false, new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                invokeLater ( runnable );
-            }
-        } );
-    }
-
-    /**
-     * Will invoke the specified action later in EDT in case it is called from non-EDT thread.
-     * Otherwise action will be performed immediately.
-     *
-     * @param runnable hotkey runnable
-     * @param e        key event
-     */
-    public static void invokeLater ( final HotkeyRunnable runnable, final KeyEvent e )
-    {
-        if ( SwingUtilities.isEventDispatchThread () )
-        {
-            runnable.run ( e );
-        }
-        else
-        {
-            SwingUtilities.invokeLater ( new Runnable ()
-            {
-                @Override
-                public void run ()
-                {
-                    runnable.run ( e );
-                }
-            } );
-        }
-    }
-
-    /**
      * Returns insets converted into RTL orientation.
      *
      * @param insets insets to convert
@@ -2663,30 +2619,18 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns mouse point relative to specified component.
-     *
-     * @param component component to process
-     * @return mouse point relative to specified component
-     */
-    public static Point getMousePoint ( final Component component )
-    {
-        final Point p = MouseInfo.getPointerInfo ().getLocation ();
-        final Point los = component.getLocationOnScreen ();
-        return new Point ( p.x - los.x, p.y - los.y );
-    }
-
-    /**
      * Scrolls scroll pane visible area smoothly to destination values.
      *
      * @param scrollPane scroll pane to scroll through
-     * @param xValue     horiontal scroll bar value
+     * @param xValue     horizontal scroll bar value
      * @param yValue     vertical scroll bar value
+     * @deprecated replace this implementation with a separate feature
      */
+    @Deprecated
     public static void scrollSmoothly ( final JScrollPane scrollPane, int xValue, int yValue )
     {
-        // todo 1. Use single thread to scroll through
-        // todo 2. Make this method multiply usage possible
-        // todo 3. Use timer instead of thread
+        // todo 1. Replace this method with a separate behavior or class to allow its parallel usage on multiple components
+        // todo 2. Use timer instead of thread
 
         final JScrollBar hor = scrollPane.getHorizontalScrollBar ();
         final JScrollBar ver = scrollPane.getVerticalScrollBar ();
@@ -2697,28 +2641,28 @@ public final class SwingUtils extends CoreSwingUtils
         final int x = xValue < 0 ? 0 : xValue;
         final int y = yValue < 0 ? 0 : yValue;
 
-
         final int xSign = hor.getValue () > x ? -1 : 1;
         final int ySign = ver.getValue () > y ? -1 : 1;
 
-        final Thread scroller1 = new Thread ( new Runnable ()
+        final Thread scroller = new Thread ( new Runnable ()
         {
             @Override
             public void run ()
             {
-                scrollThread1 = Thread.currentThread ();
-                int lastValue = hor.getValue ();
-                while ( lastValue != x )
+                scrollThread = Thread.currentThread ();
+                int lastHorValue = hor.getValue ();
+                int lastVerValue = ver.getValue ();
+                while ( lastHorValue != x )
                 {
-                    if ( scrollThread1 != Thread.currentThread () )
+                    if ( scrollThread != Thread.currentThread () )
                     {
                         Thread.currentThread ().interrupt ();
                     }
-                    if ( lastValue != x )
+                    if ( lastHorValue != x )
                     {
-                        final int value = lastValue + xSign * Math.max ( Math.abs ( lastValue - x ) / 4, 1 );
-                        lastValue = value;
-                        SwingUtilities.invokeLater ( new Runnable ()
+                        final int value = lastHorValue + xSign * Math.max ( Math.abs ( lastHorValue - x ) / 4, 1 );
+                        lastHorValue = value;
+                        CoreSwingUtils.invokeLater ( new Runnable ()
                         {
                             @Override
                             public void run ()
@@ -2731,30 +2675,11 @@ public final class SwingUtils extends CoreSwingUtils
                             break;
                         }
                     }
-                    ThreadUtils.sleepSafely ( 25 );
-                }
-            }
-        } );
-        scroller1.setDaemon ( true );
-
-        final Thread scroller2 = new Thread ( new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                scrollThread2 = Thread.currentThread ();
-                int lastValue = ver.getValue ();
-                while ( lastValue != y )
-                {
-                    if ( scrollThread2 != Thread.currentThread () )
+                    if ( lastVerValue != y )
                     {
-                        Thread.currentThread ().interrupt ();
-                    }
-                    if ( lastValue != y )
-                    {
-                        final int value = lastValue + ySign * Math.max ( Math.abs ( lastValue - y ) / 4, 1 );
-                        lastValue = value;
-                        SwingUtilities.invokeLater ( new Runnable ()
+                        final int value = lastVerValue + ySign * Math.max ( Math.abs ( lastVerValue - y ) / 4, 1 );
+                        lastVerValue = value;
+                        CoreSwingUtils.invokeLater ( new Runnable ()
                         {
                             @Override
                             public void run ()
@@ -2771,10 +2696,8 @@ public final class SwingUtils extends CoreSwingUtils
                 }
             }
         } );
-        scroller2.setDaemon ( true );
-
-        scroller1.start ();
-        scroller2.start ();
+        scroller.setDaemon ( true );
+        scroller.start ();
     }
 
     /**
@@ -2785,12 +2708,14 @@ public final class SwingUtils extends CoreSwingUtils
      * @param underlinedIndex underlined character index
      * @param x               text X coordinate
      * @param y               text Y coordinate
+     * @deprecated usages should be replaced with any of {@link com.alee.painter.decoration.content.AbstractTextContent} implementations
      */
+    @Deprecated
     public static void drawStringUnderlineCharAt ( final Graphics g, final String text, final int underlinedIndex, final int x,
                                                    final int y )
     {
         // Painting string
-        drawString ( g, text, x, y );
+        g.drawString ( text, x, y );
 
         // Painting character underline
         if ( underlinedIndex >= 0 && underlinedIndex < text.length () )
@@ -2799,19 +2724,6 @@ public final class SwingUtils extends CoreSwingUtils
             g.fillRect ( x + fm.stringWidth ( text.substring ( 0, underlinedIndex ) ), y + fm.getDescent () - 1,
                     fm.charWidth ( text.charAt ( underlinedIndex ) ), 1 );
         }
-    }
-
-    /**
-     * Paints string.
-     *
-     * @param g    graphics context
-     * @param text painted text
-     * @param x    text X coordinate
-     * @param y    text Y coordinate
-     */
-    public static void drawString ( final Graphics g, final String text, final int x, final int y )
-    {
-        g.drawString ( text, x, y );
     }
 
     /**
@@ -2833,19 +2745,31 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static Map setupTextAntialias ( final Graphics2D g2d )
     {
-        return setupTextAntialias ( g2d, StyleConstants.textRenderingHints );
+        return setupTextAntialias ( g2d, TextRasterization.subpixel.getRenderingHints () );
     }
 
     /**
      * Installs text antialiasing hints into specified graphics context.
      *
-     * @param g     graphics context
-     * @param hints text antialiasing hints
+     * @param g             graphics context
+     * @param rasterization text rasterization option
      * @return old text antialiasing hints
      */
-    public static Map setupTextAntialias ( final Graphics g, final Map hints )
+    public static Map setupTextAntialias ( final Graphics g, final TextRasterization rasterization )
     {
-        return setupTextAntialias ( ( Graphics2D ) g, hints );
+        return setupTextAntialias ( ( Graphics2D ) g, rasterization );
+    }
+
+    /**
+     * Installs text antialiasing hints into specified graphics context.
+     *
+     * @param g2d           graphics context
+     * @param rasterization text rasterization option
+     * @return old text antialiasing hints
+     */
+    public static Map setupTextAntialias ( final Graphics2D g2d, final TextRasterization rasterization )
+    {
+        return setupTextAntialias ( g2d, rasterization.getRenderingHints () );
     }
 
     /**
@@ -2855,10 +2779,19 @@ public final class SwingUtils extends CoreSwingUtils
      * @param hints text antialiasing hints
      * @return old text antialiasing hints
      */
-    public static Map setupTextAntialias ( final Graphics2D g2d, final Map hints )
+    private static Map setupTextAntialias ( final Graphics2D g2d, final Map hints )
     {
         if ( hints != null )
         {
+            // This is a workaround for native text rendering issue
+            // Issue appears for some components with preset text rendering color like buttons
+            // If the graphics doesn't recieve new instance of paint before the text is rendered it will ignore native rendering hints
+            // This bug appears on all JDK versions and can only be avoided by graphics paint update
+            final Paint paint = g2d.getPaint ();
+            g2d.setPaint ( RENDERING_FIX_COLOR );
+            g2d.setPaint ( paint );
+
+            // Updating rendering hints
             final Map oldHints = getRenderingHints ( g2d, hints, null );
             g2d.addRenderingHints ( hints );
             return oldHints;
@@ -2933,11 +2866,12 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns the FontMetrics for the current Font of the passed in Graphics.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p/>
+     * <p>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c JComponent requesting FontMetrics, may be null
      * @param g Graphics Graphics
+     * @return FontMetrics for the current Font of the passed in Graphics
      */
     public static FontMetrics getFontMetrics ( final JComponent c, final Graphics g )
     {
@@ -2948,12 +2882,13 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns the FontMetrics for the specified Font.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p/>
+     * <p>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c    JComponent requesting FontMetrics, may be null
      * @param g    Graphics Graphics
      * @param font Font to get FontMetrics for
+     * @return FontMetrics for the specified Font
      */
     public static FontMetrics getFontMetrics ( final JComponent c, final Graphics g, final Font font )
     {
@@ -2968,11 +2903,53 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Fires painter property change event.
+     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
+     *
+     * @param component component to fire property change to
+     * @param property  changed property
+     * @param oldValue  old value
+     * @param newValue  new value
+     */
+    public static void firePropertyChanged ( final Component component, final String property, final Object oldValue,
+                                             final Object newValue )
+    {
+        try
+        {
+            ReflectUtils.callMethod ( component, "firePropertyChange", property, oldValue, newValue );
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+        }
+    }
+
+    /**
+     * Returns delay in milliseconds for the preferred frame rate.
+     *
+     * @param frameRate frame rate per second (FPS)
+     * @return delay in milliseconds for the preferred frame rate
+     */
+    public static long frameRateDelay ( final int frameRate )
+    {
+        return Math.min ( 10L, 1000L / frameRate );
+    }
+
+    /**
      * Returns the width of the passed in String.
      * If the passed String is null, returns zero.
      *
      * @param fm     FontMetrics used to measure the String width
      * @param string String to get the width of
+     * @return width of the passed in String
      */
     public static int stringWidth ( final FontMetrics fm, final String string )
     {
@@ -2984,16 +2961,117 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Clips the passed in String to the space provided.
+     *
+     * @param c              JComponent that will display the string, may be null
+     * @param fm             FontMetrics used to measure the String width
+     * @param string         String to display
+     * @param availTextWidth Amount of space that the string can be drawn in
+     * @return Clipped string that can fit in the provided space.
+     */
+    public static String clipStringIfNecessary ( final JComponent c, final FontMetrics fm, final String string, final int availTextWidth )
+    {
+        if ( string == null || string.equals ( "" ) )
+        {
+            return "";
+        }
+        final int textWidth = stringWidth ( fm, string );
+        if ( textWidth > availTextWidth )
+        {
+            return clipString ( c, fm, string, availTextWidth );
+        }
+        return string;
+    }
+
+    /**
+     * Clips the passed in String to the space provided.  NOTE: this assumes
+     * the string does not fit in the available space.
+     *
+     * @param c              JComponent that will display the string, may be null
+     * @param fm             FontMetrics used to measure the String width
+     * @param string         String to display
+     * @param availTextWidth Amount of space that the string can be drawn in
+     * @return Clipped string that can fit in the provided space.
+     */
+    public static String clipString ( final JComponent c, final FontMetrics fm, String string, int availTextWidth )
+    {
+        // c may be null here.
+        final String clipString = "...";
+        final int stringLength = string.length ();
+        availTextWidth -= stringWidth ( fm, clipString );
+        if ( availTextWidth <= 0 )
+        {
+            //can not fit any characters
+            return clipString;
+        }
+
+        final boolean needsTextLayout;
+        synchronized ( charsBufferLock )
+        {
+            if ( charsBuffer == null || charsBuffer.length < stringLength )
+            {
+                charsBuffer = string.toCharArray ();
+            }
+            else
+            {
+                string.getChars ( 0, stringLength, charsBuffer, 0 );
+            }
+            needsTextLayout = FontUtils.isComplexLayout ( charsBuffer, 0, stringLength );
+            if ( !needsTextLayout )
+            {
+                int width = 0;
+                for ( int nChars = 0; nChars < stringLength; nChars++ )
+                {
+                    width += fm.charWidth ( charsBuffer[ nChars ] );
+                    if ( width > availTextWidth )
+                    {
+                        string = string.substring ( 0, nChars );
+                        break;
+                    }
+                }
+            }
+        }
+        if ( needsTextLayout )
+        {
+            final FontRenderContext frc = getFontRenderContext ( c, fm );
+            final AttributedString aString = new AttributedString ( string );
+            final LineBreakMeasurer measurer = new LineBreakMeasurer ( aString.getIterator (), frc );
+            final int nChars = measurer.nextOffset ( availTextWidth );
+            string = string.substring ( 0, nChars );
+
+        }
+        return string + clipString;
+    }
+
+    /**
+     * Returns FontRenderContext associated with Component.
+     * FontRenderContext from Component.getFontMetrics is associated
+     * with the component.
+     * <p>
+     * Uses Component.getFontMetrics to get the FontRenderContext from.
+     * see JComponent.getFontMetrics and TextLayoutStrategy.java
+     *
+     * @param c  Component
+     * @param fm font metrics
+     * @return FontRenderContext associated with Component
+     */
+    public static FontRenderContext getFontRenderContext ( final Component c, final FontMetrics fm )
+    {
+        return c == null ? DEFAULT_FRC : fm.getFontRenderContext ();
+    }
+
+    /**
      * Returns the left side bearing of the first character of string.
      * The left side bearing is calculated from the passed in FontMetrics.
      *
      * @param c      JComponent that will display the string
      * @param fm     FontMetrics used to measure the String width
      * @param string String to get the left side bearing for
+     * @return left side bearing of the first character of string
      */
     public static int getLeftSideBearing ( final JComponent c, final FontMetrics fm, final String string )
     {
-        if ( ( string == null ) || ( string.length () == 0 ) )
+        if ( string == null || string.length () == 0 )
         {
             return 0;
         }
@@ -3007,6 +3085,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c         JComponent that will display the string
      * @param fm        FontMetrics used to measure the String width
      * @param firstChar Character to get the left side bearing for
+     * @return left side bearing of the specified character
      */
     public static int getLeftSideBearing ( final JComponent c, final FontMetrics fm, final char firstChar )
     {
@@ -3020,10 +3099,11 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c      JComponent that will display the string
      * @param fm     FontMetrics used to measure the String width
      * @param string String to get the right side bearing for
+     * @return right side bearing of the last character of string
      */
     public static int getRightSideBearing ( final JComponent c, final FontMetrics fm, final String string )
     {
-        if ( ( string == null ) || ( string.length () == 0 ) )
+        if ( string == null || string.length () == 0 )
         {
             return 0;
         }
@@ -3037,6 +3117,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c        JComponent that will display the string
      * @param fm       FontMetrics used to measure the String width
      * @param lastChar Character to get the right side bearing for
+     * @return right side bearing of the specified character
      */
     public static int getRightSideBearing ( final JComponent c, final FontMetrics fm, final char lastChar )
     {
@@ -3082,14 +3163,14 @@ public final class SwingUtils extends CoreSwingUtils
             // See if we already have an entry in the soft cache
             if ( entry == null )
             {
-                final Iterator<SoftReference<BearingCacheEntry>> iter = softBearingCache.iterator ();
-                while ( iter.hasNext () )
+                final Iterator<SoftReference<BearingCacheEntry>> iterator = softBearingCache.iterator ();
+                while ( iterator.hasNext () )
                 {
-                    final BearingCacheEntry cacheEntry = iter.next ().get ();
+                    final BearingCacheEntry cacheEntry = iterator.next ().get ();
                     if ( cacheEntry == null )
                     {
                         // Remove discarded soft reference from the cache
-                        iter.remove ();
+                        iterator.remove ();
                         continue;
                     }
                     if ( searchKey.equals ( cacheEntry ) )
@@ -3106,12 +3187,12 @@ public final class SwingUtils extends CoreSwingUtils
                 entry = searchKey;
                 cacheEntry ( entry );
             }
-            return ( isLeftBearing ) ? entry.getLeftSideBearing ( c ) : entry.getRightSideBearing ( c );
+            return isLeftBearing ? entry.getLeftSideBearing ( c ) : entry.getRightSideBearing ( c );
         }
     }
 
     /**
-     * Adds enty into cache.
+     * Adds entry into cache.
      *
      * @param entry bearing cache entry
      */
@@ -3128,7 +3209,7 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Adds enty into strong cache.
+     * Adds entry into strong cache.
      *
      * @param entry bearing cache entry
      */
@@ -3149,6 +3230,11 @@ public final class SwingUtils extends CoreSwingUtils
         private final Map<Character, Short> cache;
         private static final char[] oneChar = new char[ 1 ];
 
+        /**
+         * Constructs new BearingCacheEntry.
+         *
+         * @param fontMetrics font metrics
+         */
         public BearingCacheEntry ( final FontMetrics fontMetrics )
         {
             this.fontMetrics = fontMetrics;
@@ -3158,6 +3244,12 @@ public final class SwingUtils extends CoreSwingUtils
             assert font != null && frc != null;
         }
 
+        /**
+         * Returns left side bearing for the specified character.
+         *
+         * @param aChar character to calculate left side bearings for
+         * @return left side bearing for the specified character
+         */
         public int getLeftSideBearing ( final char aChar )
         {
             Short bearing = cache.get ( aChar );
@@ -3169,6 +3261,12 @@ public final class SwingUtils extends CoreSwingUtils
             return ( ( 0xFF00 & bearing ) >>> 8 ) - 127;
         }
 
+        /**
+         * Returns right side bearing for the specified character.
+         *
+         * @param aChar character to calculate right side bearings for
+         * @return right side bearing for the specified character
+         */
         public int getRightSideBearing ( final char aChar )
         {
             Short bearing = cache.get ( aChar );
@@ -3180,10 +3278,13 @@ public final class SwingUtils extends CoreSwingUtils
             return ( 0xFF & bearing ) - 127;
         }
 
-        /* Calculates left and right side bearings for a character.
+        /**
+         * Calculates and returns left and right side bearings for a character.
          * Makes an assumption that bearing is a value between -127 and +127.
-         * Stores LSB and RSB as single two-byte number (short):
-         * LSB is the high byte, RSB is the low byte.
+         * Stores LSB and RSB as single two-byte number (short): LSB is the high byte, RSB is the low byte.
+         *
+         * @param aChar character to calculate left and right side bearings for
+         * @return left and right side bearings for the specified character
          */
         private short calcBearing ( final char aChar )
         {
@@ -3195,14 +3296,8 @@ public final class SwingUtils extends CoreSwingUtils
             int lsb = pixelBounds.x;
             int rsb = pixelBounds.width - fontMetrics.charWidth ( aChar );
 
-            /*
-             * HRGB/HBGR LCD glyph images will always have a pixel
-             * on the left and a pixel on the right
-             * used in colour fringe reduction.
-             * Text rendering positions this correctly but here
-             * we are using the glyph image to adjust that position
-             * so must account for it.
-             */
+            // HRGB/HBGR LCD glyph images will always have a pixel on the left and a pixel on the right used in colour fringe reduction
+            // Text rendering positions this correctly but here we are using the glyph image to adjust that position so must account for it
             if ( lsb < 0 )
             {
                 final Object aaHint = frc.getAntiAliasingHint ();
@@ -3230,13 +3325,10 @@ public final class SwingUtils extends CoreSwingUtils
                 rsb = 0;
             }
 
-            final int bearing = ( ( lsb + 127 ) << 8 ) + rsb + 127;
+            final int bearing = ( lsb + 127 << 8 ) + rsb + 127;
             return ( short ) bearing;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean equals ( final Object entry )
         {
@@ -3252,9 +3344,6 @@ public final class SwingUtils extends CoreSwingUtils
             return font.equals ( oEntry.font ) && frc.equals ( oEntry.frc );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int hashCode ()
         {

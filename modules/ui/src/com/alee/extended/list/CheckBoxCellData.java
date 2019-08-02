@@ -22,65 +22,65 @@ import com.alee.utils.TextUtils;
 /**
  * This class contains minimum data for single checkbox list cell.
  *
+ * @param <T> data type
  * @author Mikle Garin
  */
-
-public class CheckBoxCellData
+public class CheckBoxCellData<T>
 {
     /**
      * Checkbox cell data ID prefix.
      */
-    private static final String ID_PREFIX = "CBCD";
+    protected static final String ID_PREFIX = "CBCD";
 
     /**
      * Checkbox cell data ID.
      */
-    private String id = null;
+    protected String id;
 
     /**
      * Whether checkbox is selected or not.
      */
-    private boolean selected = false;
+    protected boolean selected;
 
     /**
      * Whether checkbox is enabled or not.
      */
-    private boolean enabled = true;
+    protected boolean enabled;
 
     /**
      * User object for cell rendering.
      */
-    private Object userObject = null;
+    protected T userObject;
 
     /**
-     * Constructs default checkbox cell data with null user object.
+     * Constructs new {@link CheckBoxCellData} with {@code null} user object.
      */
     public CheckBoxCellData ()
     {
-        super ();
+        this ( null, false );
     }
 
     /**
-     * Constructs default checkbox cell data with specified user object.
+     * Constructs new {@link CheckBoxCellData} with specified user object.
      *
      * @param userObject user object
      */
-    public CheckBoxCellData ( Object userObject )
+    public CheckBoxCellData ( final T userObject )
     {
-        super ();
-        this.userObject = userObject;
+        this ( userObject, false );
     }
 
     /**
-     * Constructs default checkbox cell data with specified user object and checkbox selection state.
+     * Constructs new {@link CheckBoxCellData} with specified user object and selection state.
      *
      * @param userObject user object
      * @param selected   whether checkbox is selected or not
      */
-    public CheckBoxCellData ( Object userObject, boolean selected )
+    public CheckBoxCellData ( final T userObject, final boolean selected )
     {
-        super ();
+        this.id = null;
         this.selected = selected;
+        this.enabled = true;
         this.userObject = userObject;
     }
 
@@ -103,7 +103,7 @@ public class CheckBoxCellData
      *
      * @param id new checkbox cell data ID
      */
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -113,7 +113,7 @@ public class CheckBoxCellData
      *
      * @return user object
      */
-    public Object getUserObject ()
+    public T getUserObject ()
     {
         return userObject;
     }
@@ -123,7 +123,7 @@ public class CheckBoxCellData
      *
      * @param userObject new user object
      */
-    public void setUserObject ( Object userObject )
+    public void setUserObject ( final T userObject )
     {
         this.userObject = userObject;
     }
@@ -143,7 +143,7 @@ public class CheckBoxCellData
      *
      * @param selected whether checkbox is selected or not
      */
-    public void setSelected ( boolean selected )
+    public void setSelected ( final boolean selected )
     {
         this.selected = selected;
     }
@@ -171,7 +171,7 @@ public class CheckBoxCellData
      *
      * @param enabled whether checkbox is enabled or not
      */
-    public void setEnabled ( boolean enabled )
+    public void setEnabled ( final boolean enabled )
     {
         this.enabled = enabled;
     }

@@ -17,37 +17,42 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.panel.WebButtonGroup;
-import com.alee.extended.window.ComponentMoveAdapter;
-import com.alee.global.StyleConstants;
+import com.alee.api.data.CompassDirection;
+import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Function;
+import com.alee.api.jdk.Objects;
+import com.alee.extended.behavior.ComponentResizeBehavior;
+import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.language.LM;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.*;
-import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicRootPaneUI;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
- * Custom UI for JRootPane component.
- * This UI also includes custom frame and dialog decorations.
+ * Custom UI for {@link JRootPane} component.
+ * This UI also includes custom frame and dialog decoration elements.
  *
  * @author Mikle Garin
  */
-
-public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
+public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
-     * todo 1. Resizable using sides when decorated
+     * todo 1. Probably track content pane change and update its style in future
      */
 
     /**
@@ -65,59 +70,59 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     /**
      * Style settings.
      */
-    protected Color topBg = WebRootPaneStyle.topBg;
-    protected Color middleBg = WebRootPaneStyle.middleBg;
-    protected Color borderColor = WebRootPaneStyle.borderColor;
-    protected Color innerBorderColor = WebRootPaneStyle.innerBorderColor;
-    protected int shadeWidth = WebRootPaneStyle.shadeWidth;
-    protected int inactiveShadeWidth = WebRootPaneStyle.inactiveShadeWidth;
-    protected int round = WebRootPaneStyle.round;
-    protected Insets margin = WebRootPaneStyle.margin;
-    protected boolean drawWatermark = WebRootPaneStyle.drawWatermark;
-    protected ImageIcon watermark = WebRootPaneStyle.watermark;
-    protected int maxTitleWidth = WebRootPaneStyle.maxTitleWidth;
-    protected String emptyTitleText = "   ";
+    protected boolean installComponents;
+    protected int iconSize;
+    protected String emptyTitleText;
+    protected boolean setupButtonIcons;
+    protected boolean displayTitleComponent;
+    protected boolean displayWindowButtons;
+    protected boolean displayMinimizeButton;
+    protected boolean displayMaximizeButton;
+    protected boolean displayCloseButton;
+    protected boolean displayMenuBar;
 
     /**
-     * Displayed window elements.
+     * Component painter.
      */
-    protected boolean showTitleComponent = WebRootPaneStyle.showTitleComponent;
-    protected boolean showMenuBar = WebRootPaneStyle.showMenuBar;
-    protected boolean showWindowButtons = WebRootPaneStyle.showWindowButtons;
-    protected boolean showMinimizeButton = WebRootPaneStyle.showMinimizeButton;
-    protected boolean showMaximizeButton = WebRootPaneStyle.showMaximizeButton;
-    protected boolean showCloseButton = WebRootPaneStyle.showCloseButton;
-    protected boolean groupButtons = WebRootPaneStyle.groupButtons;
-    protected boolean attachButtons = WebRootPaneStyle.attachButtons;
-    protected boolean showResizeCorner = WebRootPaneStyle.showResizeCorner;
+    @DefaultPainter ( RootPanePainter.class )
+    protected IRootPanePainter painter;
+
+    /**
+     * Listeners.
+     */
+    protected transient PropertyChangeListener resizableChangeListener;
+    protected transient ComponentResizeBehavior resizeBehavior;
+    protected transient PropertyChangeListener windowTitleListener;
+
+    /**
+     * Additional components used be the UI.
+     */
+    protected transient JComponent titleComponent;
+    protected transient WindowDecorationBehavior decorationBehavior;
+    protected transient WebImage titleIcon;
+    protected transient WebLabel titleLabel;
+    protected transient GroupPane buttonsPanel;
+    protected transient WebButton minimizeButton;
+    protected transient WebButton maximizeButton;
+    protected transient WebButton closeButton;
 
     /**
      * Runtime variables
      */
-    protected boolean styled = false;
-    protected JRootPane root;
-    protected Window window;
-    protected Frame frame;
-    protected Dialog dialog;
-    protected int state;
-    protected LayoutManager layoutManager;
-    protected LayoutManager savedOldLayout;
-    protected WindowFocusListener windowFocusListener;
-    protected PropertyChangeListener titleChangeListener;
-    protected PropertyChangeListener resizableChangeListener;
-    protected WindowStateListener windowStateListener;
-    protected JComponent titleComponent;
-    protected WebButtonGroup windowButtons;
-    protected WebResizeCorner resizeCorner;
+    protected transient JRootPane root;
+    protected transient Window window;
+    protected transient Frame frame;
+    protected transient Dialog dialog;
+    protected transient LayoutManager previousLayoutManager;
+    protected transient LayoutManager layoutManager;
 
     /**
-     * Returns an instance of the WebRootPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebRootPaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebRootPaneUI
+     * @return instance of the {@link WebRootPaneUI}
      */
-    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRootPaneUI ();
@@ -128,463 +133,288 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     {
         super.installUI ( c );
 
+        // Saving root pane reference
         root = ( JRootPane ) c;
 
-        // Default settings
-        SwingUtils.setOrientation ( root );
-        root.setBackground ( StyleConstants.backgroundColor );
+        // Applying skin
+        StyleManager.installSkin ( root );
 
-        // Decoration
-        installWindowDecorations ();
+        // Installing content pane style ID
+        // We are not listening for its changes since the only way is to track layered pane contents
+        // In that case we would also need to track root pane contents for layered pane changes which is excessive
+        // Content pane is usually not changed or provided by the root pane override and this style will be applied then
+        final Container contentPane = root.getContentPane ();
+        if ( contentPane instanceof JComponent )
+        {
+            final JComponent jContentPane = ( JComponent ) contentPane;
+            if ( LafUtils.hasWebLafUI ( jContentPane ) )
+            {
+                StyleId.rootpaneContent.at ( root ).set ( jContentPane );
+            }
+        }
     }
 
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        super.uninstallUI ( c );
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( root );
 
-        // Decoration
-        uninstallWindowDecorations ();
-
-        // Variables
-        layoutManager = null;
+        // Cleaning up runtime variables
         root = null;
+
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public Shape getShape ()
+    {
+        return PainterSupport.getShape ( root, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( root, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( root, painter, enabled );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( root );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        PainterSupport.setMargin ( root, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( root );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PainterSupport.setPadding ( root, padding );
     }
 
     /**
-     * UI parameters
+     * Returns root pane painter.
+     *
+     * @return root pane painter
      */
-
-    public boolean isStyled ()
+    public Painter getPainter ()
     {
-        return styled;
+        return PainterSupport.getPainter ( painter );
     }
 
-    public Color getTopBg ()
+    /**
+     * Sets root pane painter.
+     * Pass null to remove root pane painter.
+     *
+     * @param painter new root pane painter
+     */
+    public void setPainter ( final Painter painter )
     {
-        return topBg;
-    }
-
-    public void setTopBg ( final Color topBg )
-    {
-        this.topBg = topBg;
-        root.repaint ();
-    }
-
-    public Color getMiddleBg ()
-    {
-        return middleBg;
-    }
-
-    public void setMiddleBg ( final Color middleBg )
-    {
-        this.middleBg = middleBg;
-        root.repaint ();
-    }
-
-    public Color getBorderColor ()
-    {
-        return borderColor;
-    }
-
-    public void setBorderColor ( final Color borderColor )
-    {
-        this.borderColor = borderColor;
-        root.repaint ();
-    }
-
-    public Color getInnerBorderColor ()
-    {
-        return innerBorderColor;
-    }
-
-    public void setInnerBorderColor ( final Color innerBorderColor )
-    {
-        this.innerBorderColor = innerBorderColor;
-        root.repaint ();
-    }
-
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        final int diff = shadeWidth - this.shadeWidth;
-        this.shadeWidth = shadeWidth;
-        if ( styled && window != null )
+        PainterSupport.setPainter ( root, new Consumer<IRootPanePainter> ()
         {
-            final Rectangle b = window.getBounds ();
-            window.setBounds ( b.x - diff, b.y - diff, b.width + diff * 2, b.height + diff * 2 );
-            installBorder ();
-            root.revalidate ();
-            root.repaint ();
+            @Override
+            public void accept ( final IRootPanePainter newPainter )
+            {
+                WebRootPaneUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IRootPanePainter.class, AdaptiveRootPanePainter.class );
+    }
+
+    /**
+     * Returns whether or not this {@link WRootPaneUI} provides custom window decoration.
+     *
+     * @return {@code true} if this {@link WRootPaneUI} provides custom window decoration, {@code false} otherwise
+     */
+    public boolean isDecorated ()
+    {
+        return painter != null && painter.isDecorated ();
+    }
+
+    @Override
+    public void installWindowDecorations ()
+    {
+        if ( root.getWindowDecorationStyle () != JRootPane.NONE && isDecorated () )
+        {
+            window = getWindow ();
+            frame = window instanceof Frame ? ( Frame ) window : null;
+            dialog = window instanceof Dialog ? ( Dialog ) window : null;
+            installSettings ();
+            installListeners ();
+            installLayout ();
+            installDecorationComponents ();
         }
     }
 
-    public int getInactiveShadeWidth ()
+    @Override
+    public void uninstallWindowDecorations ()
     {
-        return inactiveShadeWidth;
-    }
-
-    public void setInactiveShadeWidth ( final int inactiveShadeWidth )
-    {
-        this.inactiveShadeWidth = inactiveShadeWidth;
-        if ( styled )
+        if ( window != null )
         {
-            installBorder ();
-            root.revalidate ();
-            root.repaint ();
+            uninstallDecorationComponents ();
+            uninstallLayout ();
+            uninstallListeners ();
+            uninstallSettings ();
+            dialog = null;
+            frame = null;
+            window = null;
         }
     }
 
-    public int getRound ()
+    @Override
+    public boolean isDisplayTitleComponent ()
     {
-        return round;
+        return displayTitleComponent;
     }
 
-    public void setRound ( final int round )
+    @Override
+    public void setDisplayTitleComponent ( final boolean display )
     {
-        this.round = round;
-        if ( styled )
-        {
-            updateWindowButtonsStyle ();
-            root.revalidate ();
-            root.repaint ();
-        }
+        this.displayTitleComponent = display;
+        root.revalidate ();
     }
 
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        if ( styled )
-        {
-            installBorder ();
-            root.revalidate ();
-            root.repaint ();
-        }
-    }
-
-    public boolean isDrawWatermark ()
-    {
-        return drawWatermark;
-    }
-
-    public void setDrawWatermark ( final boolean drawWatermark )
-    {
-        this.drawWatermark = drawWatermark;
-        if ( styled )
-        {
-            root.repaint ();
-        }
-    }
-
-    public ImageIcon getWatermark ()
-    {
-        if ( watermark == null && drawWatermark )
-        {
-            watermark = new ImageIcon ( WebRootPaneUI.class.getResource ( "icons/watermark.png" ) );
-        }
-        return watermark;
-    }
-
-    public void setWatermark ( final ImageIcon watermark )
-    {
-        this.watermark = watermark;
-    }
-
-    public int getMaxTitleWidth ()
-    {
-        return maxTitleWidth;
-    }
-
-    public void setMaxTitleWidth ( final int maxTitleWidth )
-    {
-        this.maxTitleWidth = maxTitleWidth;
-        if ( isStyled () && titleComponent != null )
-        {
-            titleComponent.revalidate ();
-            titleComponent.repaint ();
-        }
-    }
-
-    public String getEmptyTitleText ()
-    {
-        return emptyTitleText;
-    }
-
-    public void setEmptyTitleText ( final String emptyTitleText )
-    {
-        this.emptyTitleText = emptyTitleText;
-        if ( isStyled () && titleComponent != null )
-        {
-            titleComponent.revalidate ();
-            titleComponent.repaint ();
-        }
-    }
-
+    @Override
     public JComponent getTitleComponent ()
     {
         return titleComponent;
     }
 
-    public void setTitleComponent ( final JComponent titleComponent )
+    @Override
+    public void setTitleComponent ( final JComponent title )
     {
-        // todo Mark as custom title component
-        this.titleComponent = titleComponent;
-        root.revalidate ();
+        final boolean decorated = titleComponent != null;
+        if ( decorated )
+        {
+            root.remove ( titleComponent );
+        }
+        titleComponent = title;
+        if ( decorated )
+        {
+            root.add ( titleComponent );
+            root.revalidate ();
+        }
     }
-
-    public WebButtonGroup getWindowButtons ()
-    {
-        return windowButtons;
-    }
-
-    public WebResizeCorner getResizeCorner ()
-    {
-        return resizeCorner;
-    }
-
-    /**
-     * Window elements settings
-     */
-
-    public boolean isShowResizeCorner ()
-    {
-        return showResizeCorner;
-    }
-
-    public void setShowResizeCorner ( final boolean showResizeCorner )
-    {
-        this.showResizeCorner = showResizeCorner;
-        root.revalidate ();
-    }
-
-    public boolean isShowTitleComponent ()
-    {
-        return showTitleComponent;
-    }
-
-    public void setShowTitleComponent ( final boolean showTitleComponent )
-    {
-        this.showTitleComponent = showTitleComponent;
-        root.revalidate ();
-    }
-
-    public boolean isShowWindowButtons ()
-    {
-        return showWindowButtons;
-    }
-
-    public void setShowWindowButtons ( final boolean showWindowButtons )
-    {
-        this.showWindowButtons = showWindowButtons;
-        root.revalidate ();
-    }
-
-    public boolean isShowMinimizeButton ()
-    {
-        return showMinimizeButton;
-    }
-
-    public void setShowMinimizeButton ( final boolean showMinimizeButton )
-    {
-        this.showMinimizeButton = showMinimizeButton;
-        updateButtons ();
-        root.revalidate ();
-    }
-
-    public boolean isShowMaximizeButton ()
-    {
-        return showMaximizeButton;
-    }
-
-    public void setShowMaximizeButton ( final boolean showMaximizeButton )
-    {
-        this.showMaximizeButton = showMaximizeButton;
-        updateButtons ();
-        root.revalidate ();
-    }
-
-    public boolean isShowCloseButton ()
-    {
-        return showCloseButton;
-    }
-
-    public void setShowCloseButton ( final boolean showCloseButton )
-    {
-        this.showCloseButton = showCloseButton;
-        updateButtons ();
-        root.revalidate ();
-    }
-
-    public boolean isGroupButtons ()
-    {
-        return groupButtons;
-    }
-
-    public void setGroupButtons ( final boolean groupButtons )
-    {
-        this.groupButtons = groupButtons;
-        updateButtons ();
-        root.revalidate ();
-        root.repaint ();
-    }
-
-    public boolean isAttachButtons ()
-    {
-        return attachButtons;
-    }
-
-    public void setAttachButtons ( final boolean attachButtons )
-    {
-        this.attachButtons = attachButtons;
-        updateButtons ();
-        root.revalidate ();
-        root.repaint ();
-    }
-
-    public boolean isShowMenuBar ()
-    {
-        return showMenuBar;
-    }
-
-    public void setShowMenuBar ( final boolean showMenuBar )
-    {
-        this.showMenuBar = showMenuBar;
-        root.revalidate ();
-    }
-
-    /**
-     * Listening to decoration changes
-     */
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent e )
+    public boolean isDisplayWindowButtons ()
     {
-        super.propertyChange ( e );
+        return displayWindowButtons;
+    }
 
-        final String propertyName = e.getPropertyName ();
-        if ( propertyName == null )
-        {
-            return;
-        }
+    @Override
+    public void setDisplayWindowButtons ( final boolean display )
+    {
+        this.displayWindowButtons = display;
+        root.revalidate ();
+    }
 
-        // Install decorations
-        if ( propertyName.equals ( WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
-        {
-            final JRootPane root = ( JRootPane ) e.getSource ();
-            final int style = root.getWindowDecorationStyle ();
+    @Override
+    public boolean isDisplayMinimizeButton ()
+    {
+        return displayMinimizeButton;
+    }
 
-            // Removing old decoration
-            uninstallWindowDecorations ();
+    @Override
+    public void setDisplayMinimizeButton ( final boolean display )
+    {
+        this.displayMinimizeButton = display;
+        updateButtons ();
+        root.revalidate ();
+    }
 
-            // Adding new decoration if needed
-            if ( style != JRootPane.NONE )
-            {
-                installWindowDecorations ();
-            }
-        }
+    @Override
+    public boolean isDisplayMaximizeButton ()
+    {
+        return displayMaximizeButton;
+    }
+
+    @Override
+    public void setDisplayMaximizeButton ( final boolean display )
+    {
+        this.displayMaximizeButton = display;
+        updateButtons ();
+        root.revalidate ();
+    }
+
+    @Override
+    public boolean isDisplayCloseButton ()
+    {
+        return displayCloseButton;
+    }
+
+    @Override
+    public void setDisplayCloseButton ( final boolean display )
+    {
+        this.displayCloseButton = display;
+        updateButtons ();
+        root.revalidate ();
+    }
+
+    @Override
+    public JComponent getButtonsPanel ()
+    {
+        return buttonsPanel;
+    }
+
+    @Override
+    public boolean isDisplayMenuBar ()
+    {
+        return displayMenuBar;
+    }
+
+    @Override
+    public void setDisplayMenuBar ( final boolean display )
+    {
+        this.displayMenuBar = display;
+        root.revalidate ();
     }
 
     /**
-     * Decoration install and uninstall methods
+     * Installs settings used in runtime.
      */
-
-    protected void installWindowDecorations ()
-    {
-        if ( root.getWindowDecorationStyle () != JRootPane.NONE )
-        {
-            window = root != null ? SwingUtils.getWindowAncestor ( root ) : null;
-            frame = window instanceof Frame ? ( Frame ) window : null;
-            dialog = window instanceof Dialog ? ( Dialog ) window : null;
-            installProperties ();
-            installListeners ();
-            installTransparency ();
-            installBorder ();
-            installLayout ();
-            installDecorationComponents ();
-            styled = true;
-        }
-    }
-
-    protected void uninstallWindowDecorations ()
-    {
-        if ( styled )
-        {
-            uninstallProperties ();
-            uninstallListeners ();
-            uninstallTransparency ();
-            uninstallBorder ();
-            uninstallLayout ();
-            uninstallDecorationComponents ();
-            window = null;
-            frame = null;
-            dialog = null;
-            styled = false;
-        }
-    }
-
-    /**
-     * Specific properties
-     */
-
-    protected void installProperties ()
-    {
-        //
-    }
-
-    protected void uninstallProperties ()
+    protected void installSettings ()
     {
         if ( isFrame () )
         {
-            // Maximum frame size
+            // Installing maximized frame bounds
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedBounds ( frame ) );
+        }
+    }
+
+    /**
+     * Uninstalls settings used in runtime.
+     */
+    protected void uninstallSettings ()
+    {
+        if ( isFrame () )
+        {
+            // Uninstalling maximized frame bounds
             frame.setMaximizedBounds ( null );
         }
     }
 
     /**
-     * Listeners
+     * Installs listeners.
      */
-
     protected void installListeners ()
     {
-        windowFocusListener = new WindowFocusListener ()
-        {
-            @Override
-            public void windowGainedFocus ( final WindowEvent e )
-            {
-                root.repaint ();
-            }
-
-            @Override
-            public void windowLostFocus ( final WindowEvent e )
-            {
-                root.repaint ();
-            }
-        };
-        window.addWindowFocusListener ( windowFocusListener );
-
-        // Listen to window icon and title changes
-        titleChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                titleComponent.revalidate ();
-                titleComponent.repaint ();
-            }
-        };
-        window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_ICON_PROPERTY, titleChangeListener );
-        window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_TITLE_PROPERTY, titleChangeListener );
-
-        // Listen to window resizability changes
+        // Listen to window resizeability changes
         resizableChangeListener = new PropertyChangeListener ()
         {
             @Override
@@ -593,384 +423,455 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                 updateButtons ();
             }
         };
-        window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_RESIZABLE_PROPERTY, resizableChangeListener );
+        window.addPropertyChangeListener ( WebLookAndFeel.RESIZABLE_PROPERTY, resizableChangeListener );
 
-        if ( isFrame () )
+        // Window resize behavior
+        // todo Should this be tied to painter instead?
+        resizeBehavior = new ComponentResizeBehavior ( root, new Function<Point, CompassDirection> ()
         {
-            state = frame.getState ();
-            windowStateListener = new WindowStateListener ()
+            @Override
+            public CompassDirection apply ( final Point p )
             {
-                @Override
-                public void windowStateChanged ( final WindowEvent e )
+                // Ensure dialog or frame is resizable
+                if ( dialog != null && dialog.isResizable () || frame != null && frame.isResizable () )
                 {
-                    state = e.getNewState ();
-                    installBorder ();
+                    // Ensure that point is outside of inner bounds
+                    final Rectangle bounds = BoundsType.padding.bounds ( root );
+                    final Rectangle inner = GeometryUtils.expand ( bounds, -5, -5, -10, -10 );
+                    if ( !inner.contains ( p ) )
+                    {
+                        // Ensure that point is inside the outer bounds
+                        final Rectangle outer = GeometryUtils.expand ( inner, 10, 10, 20, 20 );
+                        if ( outer.contains ( p ) )
+                        {
+                            // Return appropriate resize direction
+                            if ( p.y < inner.y )
+                            {
+                                if ( p.x < inner.x )
+                                {
+                                    return CompassDirection.northWest;
+                                }
+                                else if ( p.x > inner.x + inner.width )
+                                {
+                                    return CompassDirection.northEast;
+                                }
+                                else
+                                {
+                                    return CompassDirection.north;
+                                }
+                            }
+                            else if ( p.y > inner.y + inner.height )
+                            {
+                                if ( p.x < inner.x )
+                                {
+                                    return CompassDirection.southWest;
+                                }
+                                else if ( p.x > inner.x + inner.width )
+                                {
+                                    return CompassDirection.southEast;
+                                }
+                                else
+                                {
+                                    return CompassDirection.south;
+                                }
+                            }
+                            else if ( p.x < inner.x )
+                            {
+                                return CompassDirection.west;
+                            }
+                            else if ( p.x > inner.x + inner.width )
+                            {
+                                return CompassDirection.east;
+                            }
+                        }
+                    }
                 }
-            };
-            window.addWindowStateListener ( windowStateListener );
-        }
+                return null;
+            }
+        } );
+        resizeBehavior.install ();
     }
 
+    /**
+     * Uninstalls listeners.
+     */
     protected void uninstallListeners ()
     {
-        window.removeWindowFocusListener ( windowFocusListener );
-        window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_ICON_PROPERTY, titleChangeListener );
-        window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_TITLE_PROPERTY, titleChangeListener );
-        window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_RESIZABLE_PROPERTY, resizableChangeListener );
-        if ( isFrame () )
-        {
-            window.removeWindowStateListener ( windowStateListener );
-        }
+        resizeBehavior.uninstall ();
+        resizeBehavior = null;
+        window.removePropertyChangeListener ( WebLookAndFeel.RESIZABLE_PROPERTY, resizableChangeListener );
+        resizableChangeListener = null;
     }
 
     /**
-     * Window transparency
+     * Installs appropriate layout manager.
      */
-
-    protected void installTransparency ()
-    {
-        if ( ProprietaryUtils.isWindowTransparencyAllowed () )
-        {
-            root.setOpaque ( false );
-            ProprietaryUtils.setWindowOpaque ( window, false );
-        }
-    }
-
-    protected void uninstallTransparency ()
-    {
-        if ( ProprietaryUtils.isWindowTransparencyAllowed () )
-        {
-            root.setOpaque ( true );
-            ProprietaryUtils.setWindowOpaque ( window, true );
-        }
-    }
-
-    /**
-     * Decoration border install and uninstall methods
-     */
-
-    protected void installBorder ()
-    {
-        if ( !isFrameMaximized () )
-        {
-            root.setBorder ( BorderFactory
-                    .createEmptyBorder ( shadeWidth + 1 + margin.top, shadeWidth + 1 + margin.left, shadeWidth + 1 + margin.bottom,
-                            shadeWidth + 1 + margin.right ) );
-        }
-        else
-        {
-            root.setBorder ( BorderFactory.createEmptyBorder ( 1 + margin.top, 1 + margin.left, 1 + margin.bottom, 1 + margin.right ) );
-        }
-    }
-
-    protected void uninstallBorder ()
-    {
-        root.setBorder ( null );
-    }
-
-    /**
-     * Appropriate LayoutManager for the window decorations install and uninstall methods
-     */
-
     protected void installLayout ()
     {
         if ( layoutManager == null )
         {
             layoutManager = new WebRootPaneLayout ();
         }
-        savedOldLayout = root.getLayout ();
+        previousLayoutManager = root.getLayout ();
         root.setLayout ( layoutManager );
     }
 
+    /**
+     * Uninstalls layout manager.
+     */
     protected void uninstallLayout ()
     {
-        if ( savedOldLayout != null )
+        if ( previousLayoutManager != null )
         {
-            root.setLayout ( savedOldLayout );
-            savedOldLayout = null;
+            root.setLayout ( previousLayoutManager );
+            previousLayoutManager = null;
+            layoutManager = null;
         }
     }
 
     /**
-     * Resize corner
+     * Returns whether or not custom decoration components can be installed.
+     *
+     * @return true if custom decoration components can be installed, false otherwise
      */
+    protected boolean isComponentInstallAllowed ()
+    {
+        return installComponents && ( isFrame () || isDialog () );
+    }
 
+    /**
+     * Installs decoration components.
+     */
     protected void installDecorationComponents ()
     {
-        // Title
-        titleComponent = createDefaultTitleComponent ();
-        root.add ( titleComponent );
-
-        // Buttons
-        updateButtons ();
-
-        // Resize corner
-        resizeCorner = new WebResizeCorner ();
-        root.add ( resizeCorner );
-    }
-
-    protected JComponent createDefaultTitleComponent ()
-    {
-        final WebLabel titleIcon = new WebLabel ()
+        if ( isComponentInstallAllowed () )
         {
-            @Override
-            public Icon getIcon ()
-            {
-                return getWindowIcon ();
-            }
-        };
+            // Title
+            createTitleComponent ();
 
-        final TitleLabel titleLabel = new TitleLabel ();
-        titleLabel.setDrawShade ( true );
-        titleLabel.setHorizontalAlignment ( WebLabel.CENTER );
-        titleLabel.addComponentListener ( new ComponentAdapter ()
-        {
-            @Override
-            public void componentResized ( final ComponentEvent e )
-            {
-                titleLabel.setHorizontalAlignment ( titleLabel.getRequiredSize ().width > titleLabel.getWidth () ? LEADING : CENTER );
-            }
-        } );
-        SwingUtils.setFontSize ( titleLabel, 13 );
-
-        final WebPanel titlePanel = new WebPanel ( new BorderLayout ( 5, 0 ) );
-        titlePanel.setOpaque ( false );
-        titlePanel.setMargin ( 4, 5, 4, 10 );
-        titlePanel.add ( titleIcon, BorderLayout.LINE_START );
-        titlePanel.add ( titleLabel, BorderLayout.CENTER );
-
-        // Window move and max/restore listener
-        final ComponentMoveAdapter cma = new ComponentMoveAdapter ()
-        {
-            @Override
-            public void mouseClicked ( final MouseEvent e )
-            {
-                if ( isFrame () && isShowMaximizeButton () && SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
-                {
-                    if ( isFrameMaximized () )
-                    {
-                        restore ();
-                    }
-                    else
-                    {
-                        maximize ();
-                    }
-                }
-            }
-
-            @Override
-            public void mouseDragged ( final MouseEvent e )
-            {
-                if ( dragging && isFrameMaximized () )
-                {
-                    initialPoint = new Point ( initialPoint.x + shadeWidth, initialPoint.y + shadeWidth );
-                    restore ();
-                }
-                super.mouseDragged ( e );
-            }
-        };
-        titlePanel.addMouseListener ( cma );
-        titlePanel.addMouseMotionListener ( cma );
-
-        return titlePanel;
+            // Buttons
+            updateButtons ();
+        }
     }
 
     /**
-     *
+     * Uninstalls decoration components.
      */
-    public class TitleLabel extends WebLabel
-    {
-        /**
-         * Returns window title text.
-         * There is a small workaround to show window title even when it is empty.
-         * That workaround allows window dragging even when title is not set.
-         *
-         * @return window title text
-         */
-        @Override
-        public String getText ()
-        {
-            final String title = getWindowTitle ();
-            return title != null && !title.equals ( "" ) ? title : emptyTitleText;
-        }
-
-        /**
-         * Returns preferred title size.
-         * There is also a predefined title width limit to force it shrink.
-         *
-         * @return preferred title size
-         */
-        @Override
-        public Dimension getPreferredSize ()
-        {
-            final Dimension ps = super.getPreferredSize ();
-            ps.width = Math.min ( ps.width, maxTitleWidth );
-            return ps;
-        }
-
-        /**
-         * Returns actual preferred size of the title label.
-         *
-         * @return actual preferred size of the title label
-         */
-        public Dimension getRequiredSize ()
-        {
-            return super.getPreferredSize ();
-        }
-    }
-
-    protected void updateButtons ()
-    {
-        // Removing old buttons
-        if ( windowButtons != null )
-        {
-            root.remove ( windowButtons );
-        }
-
-        // Creating new buttons
-        final boolean isFrame = isFrame ();
-        final JComponent[] buttons = new JComponent[ 3 ];
-        if ( showMinimizeButton && isFrame )
-        {
-            final WebButton minimize = new WebButton ( minimizeIcon );
-            minimize.setName ( "minimize" );
-            minimize.setRolloverIcon ( minimizeActiveIcon );
-            minimize.setFocusable ( false );
-            minimize.addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    iconify ();
-                }
-            } );
-            buttons[ 0 ] = minimize;
-        }
-        if ( showMaximizeButton && isResizable () && isFrame )
-        {
-            final WebButton maximize = new WebButton ( maximizeIcon )
-            {
-                @Override
-                public Icon getIcon ()
-                {
-                    return isFrameMaximized () ? restoreIcon : maximizeIcon;
-                }
-
-                @Override
-                public Icon getRolloverIcon ()
-                {
-                    return isFrameMaximized () ? restoreActiveIcon : maximizeActiveIcon;
-                }
-            };
-            maximize.setName ( "maximize" );
-            maximize.setRolloverIcon ( maximizeActiveIcon );
-            maximize.setFocusable ( false );
-            maximize.addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    if ( isFrame () )
-                    {
-                        if ( isFrameMaximized () )
-                        {
-                            restore ();
-                        }
-                        else
-                        {
-                            maximize ();
-                        }
-                    }
-                }
-            } );
-            buttons[ 1 ] = maximize;
-        }
-        if ( showCloseButton )
-        {
-            final WebButton close = new WebButton ( closeIcon );
-            close.setName ( "close" );
-            close.setRolloverIcon ( closeActiveIcon );
-            close.setFocusable ( false );
-            close.addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    close ();
-                }
-            } );
-            buttons[ 2 ] = close;
-        }
-
-        windowButtons = new WebButtonGroup ( buttons )
-        {
-            @Override
-            public void updateButtonsStyling ()
-            {
-                if ( groupButtons )
-                {
-                    super.updateButtonsStyling ();
-                }
-            }
-        };
-        updateWindowButtonsStyle ();
-
-        root.add ( windowButtons );
-    }
-
-    protected void updateWindowButtonsStyle ()
-    {
-        if ( windowButtons != null )
-        {
-            windowButtons.setButtonsDrawFocus ( false );
-            windowButtons.setButtonsShadeWidth ( WebRootPaneStyle.buttonsShadeWidth );
-            windowButtons.setButtonsRound ( round );
-            windowButtons.setButtonsMargin ( WebRootPaneStyle.buttonsMargin );
-            if ( attachButtons )
-            {
-                windowButtons.setButtonsDrawTop ( false );
-                windowButtons.setButtonsDrawRight ( round > 0 );
-            }
-        }
-    }
-
     protected void uninstallDecorationComponents ()
     {
-        // Title
-        if ( titleComponent != null )
+        if ( isComponentInstallAllowed () )
         {
-            root.remove ( titleComponent );
-            titleComponent = null;
-        }
+            // Title
+            destroyTitleComponent ();
 
-        // Buttons
-        if ( windowButtons != null )
-        {
-            root.remove ( windowButtons );
-            windowButtons = null;
-        }
-
-        // Resize corner
-        if ( resizeCorner != null )
-        {
-            root.remove ( resizeCorner );
-            resizeCorner = null;
+            // Buttons
+            destroyButtons ();
         }
     }
 
     /**
-     * Returns window title
+     * Creates window title component.
      */
+    protected void createTitleComponent ()
+    {
+        if ( titleComponent == null )
+        {
+            // Title panel
+            final StyleId titlePanelId = StyleId.rootpaneTitlePanel.at ( root );
+            titleComponent = new WebPanel ( titlePanelId, new BorderLayout ( 0, 0 ) );
 
+            // Window icon
+            titleIcon = new WebImage ( StyleId.rootpaneTitleIcon.at ( titleComponent ), getWindowImage () );
+            titleComponent.add ( titleIcon, BorderLayout.LINE_START );
+
+            // Window title
+            titleLabel = new WebLabel ( StyleId.rootpaneTitleLabel.at ( titleComponent ), getWindowTitle () );
+            titleLabel.setFont ( WebLookAndFeel.globalWindowFont );
+            titleLabel.setFontSize ( 13 );
+            titleLabel.addComponentListener ( new ComponentAdapter ()
+            {
+                /**
+                 * Saving initial alignment to avoid overwriting provided by the style.
+                 */
+                private final int initialAlignment = titleLabel.getHorizontalAlignment ();
+
+                @Override
+                public void componentResized ( final ComponentEvent e )
+                {
+                    // Changing title horizontal alignment to avoid title jumping left/right
+                    final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
+                    final boolean ltr = titleLabel.getComponentOrientation ().isLeftToRight ();
+                    final int alignment = trimmed ? ltr ? LEADING : TRAILING : initialAlignment;
+                    titleLabel.setHorizontalAlignment ( alignment );
+                }
+            } );
+            titleComponent.add ( titleLabel, BorderLayout.CENTER );
+
+            // Listen to window icon and title changes
+            windowTitleListener = new PropertyChangeListener ()
+            {
+                @Override
+                public void propertyChange ( final PropertyChangeEvent evt )
+                {
+                    final String property = evt.getPropertyName ();
+                    if ( Objects.equals ( property, WebLookAndFeel.ICON_IMAGE_PROPERTY ) )
+                    {
+                        titleIcon.setImage ( getWindowImage () );
+                    }
+                    else if ( Objects.equals ( property, WebLookAndFeel.TITLE_PROPERTY ) )
+                    {
+                        titleLabel.setText ( getWindowTitle () );
+                    }
+                }
+            };
+            window.addPropertyChangeListener ( windowTitleListener );
+
+            // Installing window decoration behavior
+            decorationBehavior = new WindowDecorationBehavior ( this );
+            decorationBehavior.install ();
+        }
+        root.add ( titleComponent );
+    }
+
+    /**
+     * Destroys window title component.
+     */
+    protected void destroyTitleComponent ()
+    {
+        if ( titleComponent != null )
+        {
+            decorationBehavior.uninstall ();
+            decorationBehavior = null;
+            window.removePropertyChangeListener ( windowTitleListener );
+            root.remove ( titleComponent );
+            StyleManager.resetStyleId ( titleComponent );
+            titleComponent = null;
+            titleIcon = null;
+            titleLabel = null;
+        }
+    }
+
+    /**
+     * Updates displayed buttons.
+     *
+     * todo 1. Optimize button updates
+     * todo 2. Reference icons in style instead of using hardcoded ones
+     * todo 3. Instead of single button for maximize/restore add a new restore button?
+     */
+    protected void updateButtons ()
+    {
+        // Ignore if not decorated
+        if ( !isDecorated () || !isComponentInstallAllowed () )
+        {
+            return;
+        }
+
+        // Creating new buttons panel
+        if ( buttonsPanel == null )
+        {
+            buttonsPanel = new GroupPane ( StyleId.rootpaneButtonsPanel.at ( root ) );
+            buttonsPanel.setPaintSides ( false, true, true, true );
+            root.add ( buttonsPanel );
+        }
+
+        // Minimize button
+        if ( displayMinimizeButton && isFrame () )
+        {
+            if ( minimizeButton == null )
+            {
+                final StyleId minimizeId = StyleId.rootpaneMinimizeButton.at ( buttonsPanel );
+                minimizeButton = new WebButton ( minimizeId )
+                {
+                    @Override
+                    public Icon getIcon ()
+                    {
+                        return setupButtonIcons ? minimizeIcon : null;
+                    }
+
+                    @Override
+                    public Icon getRolloverIcon ()
+                    {
+                        return setupButtonIcons ? minimizeActiveIcon : null;
+                    }
+                };
+                minimizeButton.setName ( "minimize" );
+                minimizeButton.setRolloverEnabled ( true );
+                minimizeButton.addActionListener ( new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        iconify ();
+                    }
+                } );
+            }
+            buttonsPanel.add ( minimizeButton );
+        }
+        else
+        {
+            if ( minimizeButton != null )
+            {
+                buttonsPanel.remove ( minimizeButton );
+            }
+        }
+
+        // Maximize button
+        if ( displayMaximizeButton && isResizable () && isFrame () )
+        {
+            if ( maximizeButton == null )
+            {
+                final StyleId maximizeId = StyleId.rootpaneMaximizeButton.at ( buttonsPanel );
+                maximizeButton = new WebButton ( maximizeId )
+                {
+                    @Override
+                    public Icon getIcon ()
+                    {
+                        return setupButtonIcons ? isMaximized () ? restoreIcon : maximizeIcon : null;
+                    }
+
+                    @Override
+                    public Icon getRolloverIcon ()
+                    {
+                        return setupButtonIcons ? isMaximized () ? restoreActiveIcon : maximizeActiveIcon : null;
+                    }
+                };
+                maximizeButton.setName ( "maximize" );
+                maximizeButton.setRolloverEnabled ( true );
+                maximizeButton.addActionListener ( new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        if ( isFrame () )
+                        {
+                            if ( isMaximized () )
+                            {
+                                restore ();
+                            }
+                            else
+                            {
+                                maximize ();
+                            }
+                        }
+                    }
+                } );
+            }
+            buttonsPanel.add ( maximizeButton );
+        }
+        else
+        {
+            if ( maximizeButton != null )
+            {
+                buttonsPanel.remove ( maximizeButton );
+            }
+        }
+
+        // Close button
+        if ( displayCloseButton )
+        {
+            if ( closeButton == null )
+            {
+                final StyleId closeId = StyleId.rootpaneCloseButton.at ( buttonsPanel );
+                closeButton = new WebButton ( closeId )
+                {
+                    @Override
+                    public Icon getIcon ()
+                    {
+                        return setupButtonIcons ? closeIcon : null;
+                    }
+
+                    @Override
+                    public Icon getRolloverIcon ()
+                    {
+                        return setupButtonIcons ? closeActiveIcon : null;
+                    }
+                };
+                closeButton.setName ( "close" );
+                closeButton.setRolloverEnabled ( true );
+                closeButton.addActionListener ( new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        close ();
+                    }
+                } );
+            }
+            buttonsPanel.add ( closeButton );
+        }
+        else
+        {
+            if ( closeButton != null )
+            {
+                buttonsPanel.remove ( closeButton );
+            }
+        }
+    }
+
+    /**
+     * Destroys window buttons.
+     */
+    protected void destroyButtons ()
+    {
+        if ( buttonsPanel != null )
+        {
+            root.remove ( buttonsPanel );
+            buttonsPanel.resetStyleId ();
+            buttonsPanel = null;
+            minimizeButton = null;
+            maximizeButton = null;
+            closeButton = null;
+        }
+    }
+
+    /**
+     * Returns window title text.
+     * Single spacing workaround allows window dragging even when title is not set.
+     * That is required because otherwise title label would shrink to zero size due to missing content.
+     *
+     * @return window title text
+     */
     protected String getWindowTitle ()
     {
-        if ( isDialog () )
+        final String title = isDialog () ? dialog.getTitle () : isFrame () ? frame.getTitle () : null;
+        final String t = !TextUtils.isBlank ( title ) ? title : emptyTitleText != null ? LM.get ( emptyTitleText ) : null;
+        return !TextUtils.isEmpty ( t ) ? t : " ";
+    }
+
+    /**
+     * Returns window image of suitable size if possible.
+     * Image size will not be adjusted here, so make sure to do that if its needed elsewhere.
+     *
+     * @return window image of suitable size if possible
+     */
+    protected Image getWindowImage ()
+    {
+        final List<Image> images = window != null ? window.getIconImages () : null;
+        if ( CollectionUtils.notEmpty ( images ) )
         {
-            return dialog.getTitle ();
-        }
-        else if ( isFrame () )
-        {
-            return frame.getTitle ();
+            if ( images.size () > 1 )
+            {
+                int bestIndex = 0;
+                int bestDiff = Math.abs ( images.get ( bestIndex ).getWidth ( null ) - iconSize );
+                for ( int i = 1; i < images.size (); i++ )
+                {
+                    if ( bestDiff == 0 )
+                    {
+                        break;
+                    }
+                    final int diff = Math.abs ( images.get ( i ).getWidth ( null ) - iconSize );
+                    if ( diff < bestDiff )
+                    {
+                        bestIndex = i;
+                        bestDiff = diff;
+                    }
+                }
+                return images.get ( bestIndex );
+            }
+            else
+            {
+                return images.get ( 0 );
+            }
         }
         else
         {
@@ -978,60 +879,26 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         }
     }
 
-    /**
-     * Finds a frame image with most suitable size
-     */
-
-    protected ImageIcon getWindowIcon ()
+    @Override
+    public Window getWindow ()
     {
-        final List<Image> images = window != null ? window.getIconImages () : null;
-        if ( images != null && images.size () > 1 )
-        {
-            int bestIndex = 0;
-            int bestDiff = Math.abs ( images.get ( bestIndex ).getWidth ( null ) - 16 );
-            for ( int i = 1; i < images.size (); i++ )
-            {
-                if ( bestDiff == 0 )
-                {
-                    break;
-                }
-                final int diff = Math.abs ( images.get ( i ).getWidth ( null ) - 16 );
-                if ( diff < bestDiff )
-                {
-                    bestIndex = i;
-                    bestDiff = diff;
-                }
-            }
-            return generateProperIcon ( images.get ( bestIndex ) );
-        }
-        else if ( images != null && images.size () == 1 )
-        {
-            return generateProperIcon ( images.get ( 0 ) );
-        }
-        else
-        {
-            return new ImageIcon ();
-        }
+        return CoreSwingUtils.getWindowAncestor ( root );
     }
 
-    protected ImageIcon generateProperIcon ( final Image image )
+    @Override
+    public boolean isFrame ()
     {
-        if ( image.getWidth ( null ) <= 16 )
-        {
-            return new ImageIcon ( image );
-        }
-        else
-        {
-            return ImageUtils.createPreviewIcon ( image, 16 );
-        }
+        return frame != null;
     }
 
+    @Override
+    public boolean isDialog ()
+    {
+        return dialog != null;
+    }
 
-    /**
-     * Closes the Window.
-     */
-
-    protected void close ()
+    @Override
+    public void close ()
     {
         if ( window != null )
         {
@@ -1039,11 +906,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         }
     }
 
-    /**
-     * Iconifies the Frame.
-     */
-
-    protected void iconify ()
+    @Override
+    public void iconify ()
     {
         if ( frame != null )
         {
@@ -1051,30 +915,54 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         }
     }
 
-    /**
-     * Maximizes the Frame.
-     */
-
-    protected void maximize ()
+    @Override
+    public void maximize ()
     {
         if ( frame != null )
         {
-            // Retrieving screen device configuration
-            final GraphicsConfiguration gc = frame.getGraphicsConfiguration ().getDevice ().getDefaultConfiguration ();
-
             // Updating maximized bounds for the frame
-            frame.setMaximizedBounds ( SystemUtils.getMaxWindowBounds ( gc, true ) );
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedBounds ( frame ) );
 
             // Forcing window to go into maximized state
             frame.setExtendedState ( Frame.MAXIMIZED_BOTH );
         }
     }
 
-    /**
-     * Restores the Frame size.
-     */
+    @Override
+    public void maximizeWest ()
+    {
+        if ( frame != null )
+        {
+            // Updating maximized bounds for the frame
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedWestBounds ( frame ) );
 
-    protected void restore ()
+            // todo Need to provide exact bounds for west side to work properly
+            // todo frame.setBounds ( westBounds );
+
+            // Forcing window to go into maximized state
+            frame.setExtendedState ( Frame.MAXIMIZED_VERT );
+
+        }
+    }
+
+    @Override
+    public void maximizeEast ()
+    {
+        if ( frame != null )
+        {
+            // Updating maximized bounds for the frame
+            frame.setMaximizedBounds ( SystemUtils.getMaximizedEastBounds ( frame ) );
+
+            // todo Need to provide exact bounds for east side to work properly
+            // todo frame.setBounds ( eastBounds );
+
+            // Forcing window to go into maximized state
+            frame.setExtendedState ( Frame.MAXIMIZED_VERT );
+        }
+    }
+
+    @Override
+    public void restore ()
     {
         if ( frame != null )
         {
@@ -1082,135 +970,57 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         }
     }
 
-    /**
-     * Checks if root pane's window is resizable
-     */
-
+    @Override
     protected boolean isResizable ()
     {
         return isDialog () ? dialog.isResizable () : isFrame () && frame.isResizable ();
     }
 
-    /**
-     * Checks if root pane is inside a frame
-     */
-
-    protected boolean isFrame ()
+    @Override
+    public boolean isIconified ()
     {
-        return frame != null;
+        return isFrame () && ( frame.getExtendedState () & Frame.ICONIFIED ) == Frame.ICONIFIED;
     }
 
-    /**
-     * Checks if frame is maximized
-     */
-
-    protected boolean isFrameMaximized ()
+    @Override
+    public boolean isMaximized ()
     {
-        return isFrame () && state == Frame.MAXIMIZED_BOTH;
+        return isFrame () && ( ( frame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == Frame.MAXIMIZED_BOTH ||
+                ( frame.getExtendedState () & Frame.MAXIMIZED_HORIZ ) == Frame.MAXIMIZED_HORIZ ||
+                ( frame.getExtendedState () & Frame.MAXIMIZED_VERT ) == Frame.MAXIMIZED_VERT );
     }
 
-    /**
-     * Checks if root pane is inside a dialog
-     */
-
-    protected boolean isDialog ()
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
     {
-        return dialog != null;
+        return PainterSupport.contains ( c, this, painter, x, y );
     }
 
-    /**
-     * Custom window decoration
-     */
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
 
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        if ( styled )
+        if ( painter != null )
         {
-            final Graphics2D g2d = ( Graphics2D ) g;
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final boolean max = isFrameMaximized ();
-
-            if ( max )
-            {
-                // Background
-                g2d.setPaint ( new GradientPaint ( 0, 0, topBg, 0, 30, middleBg ) );
-                g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
-
-                // Border
-                g2d.setPaint ( borderColor );
-                g2d.drawRect ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
-                g2d.setPaint ( innerBorderColor );
-                g2d.drawRect ( 1, 1, c.getWidth () - 3, c.getHeight () - 3 );
-
-                // Watermark
-                if ( drawWatermark )
-                {
-                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
-                    g2d.drawImage ( getWatermark ().getImage (), 2, 2, null );
-                    GraphicsUtils.restoreClip ( g2d, old );
-                }
-            }
-            else
-            {
-                // Shade
-                if ( shadeWidth > 0 )
-                {
-                    final int diff = isActive ( c ) ? 0 : shadeWidth - inactiveShadeWidth;
-                    getShadeIcon ( c ).paintIcon ( g2d, diff, diff, c.getWidth () - diff * 2, c.getHeight () - diff * 2 );
-                }
-
-                // Background
-                g2d.setPaint ( new GradientPaint ( 0, shadeWidth, topBg, 0, shadeWidth + 30, middleBg ) );
-                g2d.fillRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2, c.getHeight () - shadeWidth * 2, round * 2,
-                        round * 2 );
-
-                // Border
-                g2d.setPaint ( borderColor );
-                g2d.drawRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2 - 1, c.getHeight () - shadeWidth * 2 - 1,
-                        round * 2 - 2, round * 2 - 2 );
-                g2d.setPaint ( innerBorderColor );
-                g2d.drawRoundRect ( shadeWidth + 1, shadeWidth + 1, c.getWidth () - shadeWidth * 2 - 3, c.getHeight () - shadeWidth * 2 - 3,
-                        round * 2 - 4, round * 2 - 4 );
-
-                // Watermark
-                if ( drawWatermark )
-                {
-                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
-                    g2d.drawImage ( getWatermark ().getImage (), shadeWidth + 2, shadeWidth + 2, null );
-                    GraphicsUtils.restoreClip ( g2d, old );
-                }
-            }
-
-            GraphicsUtils.restoreAntialias ( g2d, aa );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 
-    protected RoundRectangle2D.Double getWatermarkClip ( final JComponent c )
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        return new RoundRectangle2D.Double ( shadeWidth + 2, shadeWidth + 2, c.getWidth () - shadeWidth * 2 - 3,
-                c.getHeight () - shadeWidth * 2 - 3, round * 2 - 4, round * 2 - 4 );
-    }
-
-    protected NinePatchIcon getShadeIcon ( final JComponent c )
-    {
-        if ( shadeWidth > 0 )
-        {
-            return NinePatchUtils.getShadeIcon ( getShadeWidth ( c ), round, 0.8f );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    protected int getShadeWidth ( final JComponent c )
-    {
-        return isActive ( c ) ? shadeWidth : inactiveShadeWidth;
-    }
-
-    protected boolean isActive ( final JComponent c )
-    {
-        return SwingUtils.getWindowAncestor ( c ).isFocused ();
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

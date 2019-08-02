@@ -17,17 +17,18 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
- * User: mgarin Date: 30.12.11 Time: 18:16
+ * @author Mikle Garin
  */
-
 public class HorizontalOverflowLayout extends AbstractLayoutManager
 {
     protected int overflow;
 
-    public HorizontalOverflowLayout ( int overflow )
+    public HorizontalOverflowLayout ( final int overflow )
     {
         this.overflow = overflow;
     }
@@ -37,74 +38,65 @@ public class HorizontalOverflowLayout extends AbstractLayoutManager
         return overflow;
     }
 
-    public void setOverflow ( int overflow )
+    public void setOverflow ( final int overflow )
     {
         this.overflow = overflow;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
-        return getLayoutSize ( parent, false );
+        return getLayoutSize ( container, false );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
-        return getLayoutSize ( parent, true );
+        return getLayoutSize ( container, true );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( @NotNull final Container container )
     {
         // Required size
-        Dimension required = preferredLayoutSize ( parent );
+        final Dimension required = preferredLayoutSize ( container );
 
         // Available size (limiting width to required)
-        Dimension available = new Dimension ( required.width, parent.getSize ().height );
+        final Dimension available = new Dimension ( required.width, container.getSize ().height );
 
-        boolean min = required.width < available.width;
-        Insets insets = parent.getInsets ();
+        final boolean min = required.width < available.width;
+        final Insets insets = container.getInsets ();
         int x = insets.left;
         final int y = insets.top;
         final int h = Math.max ( available.height, required.height ) - insets.top - insets.bottom;
         final int xsWidth = available.width - required.width;
 
-        int count = parent.getComponentCount ();
+        final int count = container.getComponentCount ();
         for ( int i = 0; i < count; i++ )
         {
-            Component c = parent.getComponent ( i );
+            final Component c = container.getComponent ( i );
             if ( c.isVisible () )
             {
-                int w = ( min ) ? c.getMinimumSize ().width : c.getPreferredSize ().width;
+                int w = min ? c.getMinimumSize ().width : c.getPreferredSize ().width;
                 if ( xsWidth > 0 )
                 {
-                    w += ( w * xsWidth / required.width );
+                    w += w * xsWidth / required.width;
                 }
 
                 c.setBounds ( x, y, w, h );
-                x += ( w - overflow );
+                x += w - overflow;
             }
         }
     }
 
-    protected Dimension getLayoutSize ( Container parent, boolean min )
+    protected Dimension getLayoutSize ( final Container container, final boolean min )
     {
-        int count = parent.getComponentCount ();
-        Dimension size = new Dimension ( 0, 0 );
+        final int count = container.getComponentCount ();
+        final Dimension size = new Dimension ( 0, 0 );
         for ( int i = 0; i < count; i++ )
         {
-            Component c = parent.getComponent ( i );
-            Dimension tmp = ( min ) ? c.getMinimumSize () : c.getPreferredSize ();
+            final Component c = container.getComponent ( i );
+            final Dimension tmp = min ? c.getMinimumSize () : c.getPreferredSize ();
             size.height = Math.max ( tmp.height, size.height );
             size.width += tmp.width;
 
@@ -113,7 +105,7 @@ public class HorizontalOverflowLayout extends AbstractLayoutManager
                 size.width -= overflow;
             }
         }
-        Insets border = parent.getInsets ();
+        final Insets border = container.getInsets ();
         size.width += border.left + border.right;
         size.height += border.top + border.bottom;
         return size;

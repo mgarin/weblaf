@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractImageTextureBackground.xsd" />
+
+    <!-- com.alee.painter.decoration.background.ImageTextureBackground -->
+    <xs:complexType name="ImageTextureBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractImageTextureBackground">
+
+                <!-- Identifier of an Icon from IconManager -->
+                <xs:attribute name="iconId" type="xs:string" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

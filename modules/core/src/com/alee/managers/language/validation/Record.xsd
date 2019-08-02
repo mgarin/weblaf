@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="Value.xsd" />
+
+    <!-- com.alee.managers.language.data.Record -->
+    <xs:complexType name="Record">
+
+        <!-- Elements which position can be mixed -->
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+
+            <!-- Record values -->
+            <xs:element name="value" type="Value" />
+
+        </xs:choice>
+
+        <!-- Record key -->
+        <xs:attribute name="key" type="xs:string" use="optional" />
+
+    </xs:complexType>
+
+</xs:schema>

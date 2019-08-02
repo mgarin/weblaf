@@ -1,0 +1,20 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.window.WebWindow -->
+
+    <!-- Undecorated window -->
+    <style type="rootpane" id="window" />
+
+    <!-- Transparent window -->
+    <style type="rootpane" id="window-transparent" extends="window">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape />
+                </decoration>
+            </decorations>
+        </painter>
+        <style type="panel" id="content" extends="transparent" />
+    </style>
+
+</skin>

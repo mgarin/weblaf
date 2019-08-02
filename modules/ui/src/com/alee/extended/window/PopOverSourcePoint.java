@@ -22,7 +22,6 @@ package com.alee.extended.window;
  *
  * @author Mikle Garin
  */
-
 public enum PopOverSourcePoint
 {
     /**

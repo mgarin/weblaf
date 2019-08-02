@@ -17,16 +17,18 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
-import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
+import com.alee.managers.drag.transfer.ProxyDropHandler;
+import com.alee.managers.icon.Icons;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.DragUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.WebTimer;
 
@@ -47,19 +49,16 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebFilePlate extends WebPanel
 {
-    public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFilePlate.class.getResource ( "icons/cross.png" ) );
-
     protected final List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );
 
     protected boolean showRemoveButton = true;
     protected boolean showFileExtensions = false;
-    protected final boolean animate = StyleConstants.animate;
+    protected final boolean animate = true;
 
-    private boolean dragEnabled = false;
-    private int dragAction = TransferHandler.MOVE;
+    protected boolean dragEnabled = false;
+    protected int dragAction = TransferHandler.MOVE;
 
     protected final File file;
 
@@ -69,29 +68,17 @@ public class WebFilePlate extends WebPanel
     protected final WebLabel fileName;
     protected WebButton remove = null;
 
-    public WebFilePlate ( final File file )
+    public WebFilePlate ( final WebFileDrop fileDrop, final File file )
     {
-        this ( file, true );
-    }
-
-    public WebFilePlate ( final File file, final boolean decorated )
-    {
-        super ( decorated );
+        super ( StyleId.filedropPlate.at ( fileDrop ) );
 
         this.file = file;
 
-        // setPaintFocus ( true );
-        setMargin ( 0, 3, 0, 0 );
-
-        final TableLayout tableLayout =
-                new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } } );
-        tableLayout.setHGap ( 0 );
-        tableLayout.setVGap ( 0 );
-        setLayout ( tableLayout );
+        // Layout
+        setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } }, 0, 0 ) );
 
         // Displayed file name
-        fileName = new WebLabel ();
-        fileName.setMargin ( 0, 0, 0, showRemoveButton ? 1 : 0 );
+        fileName = new WebLabel ( StyleId.filedropPlateFileLabel.at ( WebFilePlate.this ) );
         add ( fileName, "0,0" );
 
         // Updating current file name
@@ -115,7 +102,7 @@ public class WebFilePlate extends WebPanel
                 }
                 if ( animate )
                 {
-                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.animationDelay, new ActionListener ()
+                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -167,8 +154,10 @@ public class WebFilePlate extends WebPanel
         };
         addMouseListener ( ma );
         addMouseMotionListener ( ma );
-        setTransferHandler ( new FileDragAndDropHandler ( true, true )
+        setTransferHandler ( new FilesTransferHandler ( true, true )
         {
+            private final ProxyDropHandler dropProxy = new ProxyDropHandler ();
+
             @Override
             public boolean isDragEnabled ()
             {
@@ -181,7 +170,12 @@ public class WebFilePlate extends WebPanel
             }
 
             @Override
-            public int getDragAction ()
+            public int getSourceActions ( final JComponent component )
+            {
+                return getSourceActions ();
+            }
+
+            protected int getSourceActions ()
             {
                 final Container parent = WebFilePlate.this.getParent ();
                 if ( parent instanceof WebFileDrop )
@@ -192,10 +186,10 @@ public class WebFilePlate extends WebPanel
             }
 
             @Override
-            public File fileDragged ()
+            public File getDraggedFile ()
             {
                 // Remove this plate from WebFileDrop if it is a move action
-                if ( getDragAction () == MOVE )
+                if ( getSourceActions () == MOVE )
                 {
                     final Container parent = getParent ();
                     if ( parent instanceof WebFileDrop )
@@ -212,7 +206,7 @@ public class WebFilePlate extends WebPanel
             public boolean importData ( final TransferSupport info )
             {
                 // Special workaround to make this plate drop-transparent
-                return DragUtils.passDropAction ( WebFilePlate.this, info );
+                return dropProxy.importData ( info );
             }
         } );
     }
@@ -247,8 +241,7 @@ public class WebFilePlate extends WebPanel
     {
         if ( remove == null )
         {
-            remove = WebButton.createIconWebButton ( CROSS_ICON, StyleConstants.smallRound, 3, 1, true, false );
-            remove.setFocusable ( false );
+            remove = new WebButton ( StyleId.filedropPlateRemoveButton.at ( WebFilePlate.this ), Icons.crossSmall );
             remove.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -269,7 +262,7 @@ public class WebFilePlate extends WebPanel
         }
         if ( animate )
         {
-            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
+            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )

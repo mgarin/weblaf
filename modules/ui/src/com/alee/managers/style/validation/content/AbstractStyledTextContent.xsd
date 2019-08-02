@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractTextContent.xsd" />
+
+    <!-- com.alee.painter.decoration.content.AbstractTextContent -->
+    <xs:complexType name="AbstractStyledTextContent">
+        <xs:complexContent>
+            <xs:extension base="AbstractTextContent">
+
+                <!-- Whether or not should ignore style font color settings -->
+                <xs:attribute name="ignoreStyleColors" type="xs:boolean" />
+
+                <!-- Script font ratio -->
+                <xs:attribute name="scriptFontRatio" type="xs:float" />
+
+                <!-- Whether or not should keep hard line breaks -->
+                <xs:attribute name="preserveLineBreaks" type="xs:boolean" />
+
+                <!-- Size of gaps between label rows -->
+                <xs:attribute name="rowGap" type="xs:integer" />
+
+                <!-- Global text style -->
+                <xs:attribute name="globalStyle" type="xs:string" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

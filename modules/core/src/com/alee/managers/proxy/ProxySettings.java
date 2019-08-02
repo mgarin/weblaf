@@ -17,6 +17,7 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.api.clone.Clone;
 import com.alee.utils.TextUtils;
 import com.alee.utils.xml.PasswordConverter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -30,11 +31,10 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
- * @see com.alee.managers.proxy.ProxyManager
+ * @see ProxyManager
  */
-
-@XStreamAlias ("ProxySettings")
-public class ProxySettings implements Serializable, Cloneable
+@XStreamAlias ( "ProxySettings" )
+public class ProxySettings implements Cloneable, Serializable
 {
     /**
      * Whether should use proxy settings or not.
@@ -76,7 +76,7 @@ public class ProxySettings implements Serializable, Cloneable
      * Proxy password.
      */
     @XStreamAsAttribute
-    @XStreamConverter (PasswordConverter.class)
+    @XStreamConverter ( PasswordConverter.class )
     private String proxyPassword = null;
 
     /**
@@ -187,7 +187,7 @@ public class ProxySettings implements Serializable, Cloneable
     /**
      * Returns integer proxy port.
      *
-     * @return interger proxy port
+     * @return integer proxy port
      */
     public int getProxyPortInt ()
     {
@@ -195,7 +195,7 @@ public class ProxySettings implements Serializable, Cloneable
         {
             return Integer.parseInt ( proxyPort );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return 80;
         }
@@ -291,9 +291,12 @@ public class ProxySettings implements Serializable, Cloneable
         this.proxyPassword = proxyPassword;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public ProxySettings clone ()
+    {
+        return Clone.deep ().clone ( this );
+    }
+
     @Override
     public String toString ()
     {
@@ -307,22 +310,5 @@ public class ProxySettings implements Serializable, Cloneable
         {
             return "ProxySettings [ no proxy ]";
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected ProxySettings clone ()
-    {
-        final ProxySettings proxySettings = new ProxySettings ();
-        proxySettings.setUseProxy ( isUseProxy () );
-        proxySettings.setProxyHost ( getProxyHost () );
-        proxySettings.setProxyPort ( getProxyPort () );
-        proxySettings.setNonProxyHosts ( getNonProxyHosts () );
-        proxySettings.setUseProxyAuthentification ( isUseProxyAuthentification () );
-        proxySettings.setProxyLogin ( getProxyLogin () );
-        proxySettings.setProxyPassword ( getProxyPassword () );
-        return proxySettings;
     }
 }

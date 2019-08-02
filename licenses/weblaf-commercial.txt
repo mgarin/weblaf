@@ -1,0 +1,49 @@
+Alee Software Co. Ltd.
+Copyright (c) 1997 - 2012 Alee Software, all rights reserved. 
+ALEE SOFTWARE LICENSE AGREEMENT FOR WEB LOOK AND FEEL LIBRARY
+
+This Alee Software ("ALEE") License Agreement ("SLA") is a legal agreement between you (an individual developer or a company of software applications) and ALEE for the Web Look and Feel library ("WEBLAF") accompanying this SLA, which includes computer software and may include associated source code, media, printed materials, and "on-line" or electronic documentation. By installing, copying, or otherwise using the WEBLAF, you agree to be bound by the terms of this SLA. If you do not agree to the terms of this SLA, do not install, use, distribute in any manner, or replicate in any manner, any part, file or portion of the WEBLAF. 
+
+The WEBLAF is protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties.
+
+1. RIGOROUS ENFORCEMENT OF INTELLECTUAL PROPERTY RIGHTS. If the licensed right of use for this WEBLAF is purchased by you with any intent to create derivative look and feel libraries, and unauthorized exploitation or transfer of any ALEE intellectual property and trade secrets no licensed right of use shall exist, and any products created as a result shall be judged illegal by definition of all applicable law. Any sale or resale of intellectual property or created derivative look and feel libraries so obtained will be prosecuted to the fullest extent of all local, federal and international law.
+
+2. GRANT OF LICENSE. This SLA, if legally executed as defined herein, licenses and so grants you the following rights: 
+
+   A. Single Application License. Single Application License allows you to distribute WEBLAF together with one of your applications and may be shared or used by any amount of developers working with it.
+
+   B. Multi Application License. Multi Application License allows you to distribute WEBLAF together with any amount of your applications and may be shared or used by any amount of developers working with them.
+
+   C. Source Code Terms of Use. In addition to the license and rights granted above, ALEE grants you the right to use and modify the WEBLAF source code. ALEE shall retain all right, title and interest in and to all updates, modifications, enhancements and derivative works, in whole or in part, of the WEBLAF Source Code created by you, including all copyrights subsisting therein, to the extent such modifications, enhancements or derivative works contain copyrightable code or expression derived from the WEBLAF source code; provided, however, that ALEE grants to you a royalty free license to use copy and modify such updates, modifications, enhancements and derivative works or copies thereof for use as authorized in this LICENSE.
+
+3. DESCRIPTION OF OTHER RIGHTS AND LIMITATIONS. 
+
+   A. Not for Resale Software. The WEBLAF is labeled and provided as "Not for Resale" or "NFR", then, notwithstanding other sections of this SLA, you may not resell or otherwise transfer for value or benefit in any manner the WEBLAF or any derivative look and feel library using the WEBLAF.
+
+   B. License. You may not sublicense the WEBLAF, media or documentation. 
+
+   C. Rental. You may not rent, lease, or lend the WEBLAF. 
+
+   D. Installation and Use. The license granted in this SLA for you to create your own compiled programs and distribute your programs and the Redistributables (if any), is subject to all of the following conditions: 
+
+      I. All copies of the programs you create must bear a valid copyright notice, either your own or the ALEE copyright notice that appears on the WEBLAF. 
+
+      II. You may not remove or alter any ALEE copyright, trademark or other proprietary rights notice contained in any portion of ALEE libraries, source code, Redistributables or other files that bear such a notice. 
+
+      III. ALEE provides no warranty at all to any person, and you will remain solely responsible to anyone receiving your programs for support, service, upgrades, or technical or other assistance, and such recipients will have no right to contact ALEE for such services or assistance. 
+
+      IV. Your programs containing the WEBLAF must be written using a licensed, registered copy of the WEBLAF.
+
+   E. Support Services. ALEE may provide you with support services related to the WEBLAF ("Support Services"). Use of Support Services is governed by ALEE policies and programs described in on-line documentation and/or other WEBLAF provided materials. Any supplemental software code provided to you as part of the Support Services shall be considered part of the WEBLAF and subject to the terms and conditions of this SLA. With respect to technical information you provide to ALEE as part of the Support Services, ALEE may use such information for its business purposes, including for product support and development.
+
+   F. Termination. Without prejudice to any other rights or remedies, ALEE will terminate this SLA upon your failure to comply with all the terms and conditions of this SLA. In such event, you must destroy all copies of the WEBLAF and all of its component parts including any related documentation, and must remove ANY and ALL use of such technology with the next generally available release from any applications using technology contained in the WEBLAF developed by you, whether in native, altered or compiled state. 
+
+   G. Time Limitation: There is no time limitation on using the WEBLAF as long as you don't violate this license agreement.
+
+4. COPYRIGHT. All title and copyrights in and to the WEBLAF (including but not limited to any images, demos, source code, intermediate files, packages, photographs, animations, video, audio, music, text, and "applets" incorporated into the WEBLAF), the accompanying printed materials, and any copies of the WEBLAF are owned by ALEE or its subsidiaries. The WEBLAF is protected by copyright laws and international treaty provisions. 
+
+5. GENERAL PROVISIONS. This SLA may only be modified in writing signed by you and an authorized officer of ALEE. If any provision of this SLA is found void or unenforceable, the remainder will remain valid and enforceable according to its terms. 
+
+6. NO WARRANTIES. ALEE EXPRESSLY DISCLAIMS ANY WARRANTY FOR THE WEBLAF. THE PRODUCT AND ANY RELATED DOCUMENTATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NONINFRINGEMENT. THE ENTIRE RISK ARISING OUT OF USE OR PERFORMANCE OF THE PRODUCT REMAINS WITH YOU. 
+
+7. LIMITATION OF LIABILITY. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL ALEE OR ITS SUPPLIERS BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, ANY OTHER PECUNIARY LOSS, ATTORNEY FEES AND COURT COSTS) ARISING OUT OF THE USE OF OR INABILITY TO USE THE WEBLAF OR THE PROVISION OF OR FAILURE TO PROVIDE SUPPORT SERVICES, EVEN IF ALEE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. 

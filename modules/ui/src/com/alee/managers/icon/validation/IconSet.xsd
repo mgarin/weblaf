@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com/XmlIconSet"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.lang="java.lang"
+           elementFormDefault="qualified">
+
+    <!--<xs:include schemaLocation="lang/Class.xsd" />-->
+    <xs:include schemaLocation="icon/image/ImageIconData.xsd" />
+    <xs:include schemaLocation="icon/svg/SvgIconData.xsd" />
+
+    <!-- XML icon set root -->
+    <xs:element name="IconSet" type="IconSet" />
+
+    <!-- com.alee.managers.icon.set.IconSetData -->
+    <xs:complexType name="IconSet">
+
+        <!-- Icons list -->
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+
+            <!-- Raster icon -->
+            <xs:element name="ImageIcon" type="ImageIconData" />
+
+            <!-- SVG icon -->
+            <xs:element name="SvgIcon" type="SvgIconData" />
+
+        </xs:choice>
+
+        <!-- Icon set identifier -->
+        <xs:attribute name="id" type="xs:string" use="required" />
+
+        <!-- Class which specified icon paths are relative to -->
+        <xs:attribute name="nearClass" type="java.lang:Class" use="required" />
+
+        <!-- Icon files base path -->
+        <xs:attribute name="base" type="xs:string" use="optional" />
+
+    </xs:complexType>
+
+</xs:schema>

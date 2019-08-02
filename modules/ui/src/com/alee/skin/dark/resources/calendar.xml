@@ -1,0 +1,137 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.date.WebCalendar -->
+
+    <!-- Calendar -->
+    <style type="panel" id="calendar" extends="focusable">
+        <painter>
+            <decorations>
+                <decoration>
+                    <GradientBackground>
+                        <color>106,110,112</color>
+                        <color>68,68,68</color>
+                    </GradientBackground>
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Header panel -->
+        <style type="panel" id="header" extends="transparent">
+
+            <!-- Control buttons -->
+            <style type="button" id="control" extends="icon-hover">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape round="2" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+            <style type="button" id="prev-year" extends="control" />
+            <style type="button" id="prev-month" extends="control" />
+            <style type="button" id="next-month" extends="control" />
+            <style type="button" id="next-year" extends="control" />
+
+            <!-- Title label -->
+            <style type="label" id="title" extends="shadow">
+                <component>
+                    <horizontalAlignment>0</horizontalAlignment>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Week titles panel -->
+        <style type="panel" id="week-titles" extends="decorated" padding="2,1,3,1">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="1,0,1,0" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Week title separator -->
+            <style type="separator" id="separator">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <SeparatorStripes padding="0,1,0,1">
+                                <Stripe>
+                                    <color fraction="0.0">176,182,188,5</color>
+                                    <color fraction="0.5">176,182,188</color>
+                                    <color fraction="1.0">176,182,188,5</color>
+                                </Stripe>
+                            </SeparatorStripes>
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Week title label -->
+            <style type="label" id="title" extends="shadow">
+                <component>
+                    <horizontalAlignment>0</horizontalAlignment>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Month panel -->
+        <style type="panel" id="month" extends="transparent" padding="1,1,1,1">
+
+            <!-- Week title separator -->
+            <style type="separator" id="separator">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <SeparatorStripes padding="0,1,0,1">
+                                <Stripe>
+                                    <color fraction="0.0">176,182,188,5</color>
+                                    <color fraction="0.25">176,182,188</color>
+                                    <color fraction="0.95">176,182,188</color>
+                                    <color fraction="1.0">176,182,188,5</color>
+                                </Stripe>
+                            </SeparatorStripes>
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Month date buttons -->
+            <style type="togglebutton" id="date" extends="hover">
+                <component>
+                    <horizontalAlignment>4</horizontalAlignment>
+                </component>
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape round="2" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+            <style type="togglebutton" id="previous-date" extends="date">
+                <component>
+                    <foreground>210,210,210</foreground>
+                </component>
+            </style>
+            <style type="togglebutton" id="current-date" extends="date" />
+            <style type="togglebutton" id="weekend-date" extends="date">
+                <component>
+                    <foreground>255,150,150</foreground>
+                </component>
+            </style>
+            <style type="togglebutton" id="next-date" extends="date">
+                <component>
+                    <foreground>210,210,210</foreground>
+                </component>
+            </style>
+
+        </style>
+
+    </style>
+
+</skin>

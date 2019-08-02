@@ -1,0 +1,2308 @@
+<Dictionary name="WebLaF ui module" prefix="weblaf" xmlns="http://weblookandfeel.com/Dictionary">
+    <Dictionary name="Information window" prefix="info">
+        <record key="title">
+            <value lang="en">Library information</value>
+            <value lang="ru">Информация о библиотеке</value>
+            <value lang="pl">Informacje o bibliotece</value>
+            <value lang="ar">معلومات عن البرنامج</value>
+            <value lang="es">Información de la Librería</value>
+            <value lang="fr">Information sur la bibliothèque</value>
+            <value lang="pt">Inflormação sobre a biblioteca</value>
+            <value lang="de">Bibliotheksinformationen</value>
+            <value lang="it">Informazioni sulla Libreria</value>
+            <value lang="tr">Kütüphane bilgisi</value>
+            <value lang="vi">Thông tin thư viện</value>
+            <value lang="hu">Könyvtár információk</value>
+        </record>
+        <Dictionary name="General tab" prefix="general">
+            <record key="title">
+                <value lang="en">General</value>
+                <value lang="ru">Общие</value>
+                <value lang="pl">Ogólny</value>
+                <value lang="ar">عام</value>
+                <value lang="es">General</value>
+                <value lang="fr">Général</value>
+                <value lang="pt">Geral</value>
+                <value lang="de">Allgemein</value>
+                <value lang="it">Generale</value>
+                <value lang="tr">Genel</value>
+                <value lang="vi">Thông tin chung</value>
+                <value lang="hu">Általános</value>
+            </record>
+            <record key="updated">
+                <value lang="en">Updated: %s</value>
+                <value lang="ru">Обновлена: %s</value>
+                <value lang="pl">Zaktualizowano: %s</value>
+                <value lang="ar">تحديث: %s</value>
+                <value lang="es">Actualizado: %s</value>
+                <value lang="fr">Mise à jour: %s</value>
+                <value lang="pt">Actualizado: %s</value>
+                <value lang="de">Aktualisiert: %s</value>
+                <value lang="it">Aggiornato: %s</value>
+                <value lang="tr">Güncellenmiş: %s</value>
+                <value lang="vi">Cập nhật: %s</value>
+                <value lang="hu">Frissítve: %s</value>
+            </record>
+            <record key="java.version">
+                <value lang="en">Java v.%s</value>
+                <value lang="ru">Java v.%s</value>
+                <value lang="pl">Java v.%s</value>
+                <value lang="ar">Java v.%s</value>
+                <value lang="es">Java v.%s</value>
+                <value lang="fr">Java v.%s</value>
+                <value lang="pt">Java v.%s</value>
+                <value lang="de">Java v.%s</value>
+                <value lang="it">Java v.%s</value>
+                <value lang="tr">Java v.%s</value>
+                <value lang="vi">Java v.%s</value>
+                <value lang="hu">Java v.%s</value>
+            </record>
+            <record key="os.arch">
+                <value lang="en">Architecture: %s</value>
+                <value lang="ru">Архитектура: %s</value>
+                <value lang="pl">Architektura: %s</value>
+                <value lang="ar">النظام: %s</value>
+                <value lang="es">Arquitectura: %s</value>
+                <value lang="fr">Architecture: %s</value>
+                <value lang="pt">Arquitectura: %s</value>
+                <value lang="de">Architektur: %s</value>
+                <value lang="it">Architettura: %s</value>
+                <value lang="tr">Mimari: %s</value>
+                <value lang="vi">Kiến trúc: %s</value>
+                <value lang="hu">Architektúra: %s</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="Libraries tab" prefix="libraries">
+            <record key="title">
+                <value lang="en">Libraries</value>
+                <value lang="ru">Библиотеки</value>
+                <value lang="pl">Biblioteki</value>
+                <value lang="ar">البرمجيات</value>
+                <value lang="es">Bibliotecas</value>
+                <value lang="fr">Bibliothèques</value>
+                <value lang="pt">Bibliotecas</value>
+                <value lang="de">Bibliotheken</value>
+                <value lang="it">Librerie</value>
+                <value lang="tr">Kütüphaneler</value>
+                <value lang="vi">Thư viện</value>
+                <value lang="hu">Könyvtárak</value>
+            </record>
+            <record key="license">
+                <value lang="en">License:</value>
+                <value lang="ru">Лицензия:</value>
+                <value lang="pl">Licencja:</value>
+                <value lang="ar">الترخيص:</value>
+                <value lang="es">Licencia:</value>
+                <value lang="fr">Licence:</value>
+                <value lang="pt">Licença:</value>
+                <value lang="de">Lizenz:</value>
+                <value lang="it">Licenza:</value>
+                <value lang="tr">Lisans:</value>
+                <value lang="vi">Giấy phép:</value>
+                <value lang="hu">Licensz</value>
+            </record>
+            <record key="site">
+                <value lang="en">Site:</value>
+                <value lang="ru">Сайт:</value>
+                <value lang="pl">Strony:</value>
+                <value lang="ar">الموقع:</value>
+                <value lang="es">Sitio:</value>
+                <value lang="fr">Site:</value>
+                <value lang="pt">Site:</value>
+                <value lang="de">Seite:</value>
+                <value lang="it">Sito:</value>
+                <value lang="tr">Site:</value>
+                <value lang="vi">Trang:</value>
+                <value lang="hu">Oldal:</value>
+            </record>
+            <record key="error">
+                <value lang="en">Libraries data is unavailable</value>
+                <value lang="ru">Информация о библиотеках недоступна</value>
+                <value lang="pl">Biblioteki dane są niedostępne</value>
+                <value lang="ar">بيانات البرمجيات الملحقة غير متوفرة</value>
+                <value lang="es">Bibliotecas datos no está disponible</value>
+                <value lang="fr">Les bibliothèques de données ne sont pas disponibles</value>
+                <value lang="pt">Bibliotecas de dados está indisponível</value>
+                <value lang="de">Bibliotheksinformationen sind nicht verfügbar</value>
+                <value lang="it">Dati di libreria non disponibili</value>
+                <value lang="tr">Kütüphane bilgisi bulunamadı</value>
+                <value lang="vi">Dữ liệu thư viện không tồn tại</value>
+                <value lang="hu">Könyvtárinformációk nem állnak rendelkezésre</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="System properties tab" prefix="properties">
+            <record key="title">
+                <value lang="en">Properties</value>
+                <value lang="ru">Параметры</value>
+                <value lang="pl">Właściwości</value>
+                <value lang="ar">الخصائص</value>
+                <value lang="es">Propiedades</value>
+                <value lang="fr">Propriétés</value>
+                <value lang="pt">Propriedades</value>
+                <value lang="de">Einstellungen</value>
+                <value lang="it">Proprietà</value>
+                <value lang="tr">Özellikler</value>
+                <value lang="vi">Thuộc tính</value>
+                <value lang="hu">Tulajdonságok</value>
+            </record>
+            <record key="key">
+                <value lang="en">Key</value>
+                <value lang="ru">Ключ</value>
+                <value lang="pl">Klucz</value>
+                <value lang="ar">المفتاح</value>
+                <value lang="es">Clave</value>
+                <value lang="fr">Clé</value>
+                <value lang="pt">Chave</value>
+                <value lang="de">Schlüssel</value>
+                <value lang="it">Chiave</value>
+                <value lang="tr">Anahtar</value>
+                <value lang="vi">Khóa</value>
+                <value lang="hu">Kulcs</value>
+            </record>
+            <record key="value">
+                <value lang="en">Value</value>
+                <value lang="ru">Значение</value>
+                <value lang="pl">Wartość</value>
+                <value lang="ar">القيمة</value>
+                <value lang="es">Valor</value>
+                <value lang="fr">Valeur</value>
+                <value lang="pt">Valor</value>
+                <value lang="de">Wert</value>
+                <value lang="it">Valore</value>
+                <value lang="tr">Değer</value>
+                <value lang="vi">Giá trị</value>
+                <value lang="hu">Érték</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Dictionary name="RootPane" prefix="rootpane">
+        <record key="empty.title">
+            <value lang="en"> </value>
+            <value lang="ru"> </value>
+            <value lang="pl"> </value>
+            <value lang="ar"> </value>
+            <value lang="es"> </value>
+            <value lang="fr"> </value>
+            <value lang="pt"> </value>
+            <value lang="de"> </value>
+            <value lang="it"> </value>
+            <value lang="tr"> </value>
+            <value lang="vi"> </value>
+            <value lang="hu"> </value>
+        </record>
+    </Dictionary>
+    <Dictionary name="OptionPane" prefix="optionpane">
+        <record key="title">
+            <value lang="en">Select an option</value>
+            <value lang="ru">Выберите вариант</value>
+            <value lang="pl">Wybierz opcje</value>
+            <value lang="ar">اختر</value>
+            <value lang="es">Seleccione una opción</value>
+            <value lang="fr">Sélectionnez une option</value>
+            <value lang="pt">Seleccione uma opção</value>
+            <value lang="de">Wählen Sie eine Option</value>
+            <value lang="it">Seleziona una opzione</value>
+            <value lang="tr">Bir seçim yap</value>
+            <value lang="vi">Chọn một lựa chọn</value>
+            <value lang="hu">Válasszon</value>
+        </record>
+        <record key="ok">
+            <value lang="en" mnemonic="K">OK</value>
+            <value lang="ru" mnemonic="К">ОК</value>
+            <value lang="pl" mnemonic="K">OK</value>
+            <value lang="ar" mnemonic="ح">حسنا</value>
+            <value lang="es" mnemonic="K">OK</value>
+            <value lang="fr" mnemonic="K">OK</value>
+            <value lang="pt" mnemonic="K">OK</value>
+            <value lang="de" mnemonic="K">OK</value>
+            <value lang="it" mnemonic="K">OK</value>
+            <value lang="tr" mnemonic="K">OK</value>
+            <value lang="vi" mnemonic="D">Đồng ý</value>
+            <value lang="hu" mnemonic="O">OK</value>
+        </record>
+        <record key="cancel">
+            <value lang="en" mnemonic="C">Cancel</value>
+            <value lang="ru" mnemonic="О">Отмена</value>
+            <value lang="pl" mnemonic="A">Anuluj</value>
+            <value lang="ar" mnemonic="إ">إلغاء</value>
+            <value lang="es" mnemonic="C">Cancelar</value>
+            <value lang="fr" mnemonic="A">Annuler</value>
+            <value lang="pt" mnemonic="C">Cancelar</value>
+            <value lang="de" mnemonic="A">Abbrechen</value>
+            <value lang="it" mnemonic="A">Cancella</value>
+            <value lang="tr" mnemonic="C">Cancel</value>
+            <value lang="vi" mnemonic="H">Hủy bỏ</value>
+            <value lang="hu" mnemonic="M">Mégsem</value>
+        </record>
+        <record key="yes">
+            <value lang="en" mnemonic="Y">Yes</value>
+            <value lang="ru" mnemonic="Д">Да</value>
+            <value lang="pl" mnemonic="T">Tak</value>
+            <value lang="ar" mnemonic="ن">نعم</value>
+            <value lang="es" mnemonic="S">Si</value>
+            <value lang="fr" mnemonic="O">Oui</value>
+            <value lang="pt" mnemonic="S">Sim</value>
+            <value lang="de" mnemonic="J">Ja</value>
+            <value lang="it" mnemonic="J">Si</value>
+            <value lang="tr" mnemonic="Y">Yes</value>
+            <value lang="vi" mnemonic="C">Có</value>
+            <value lang="hu" mnemonic="I">Igen</value>
+        </record>
+        <record key="no">
+            <value lang="en" mnemonic="N">No</value>
+            <value lang="ru" mnemonic="Н">Нет</value>
+            <value lang="pl" mnemonic="N">Nie</value>
+            <value lang="ar" mnemonic="ل">لا</value>
+            <value lang="es" mnemonic="N">No</value>
+            <value lang="fr" mnemonic="N">Non</value>
+            <value lang="pt" mnemonic="N">Não</value>
+            <value lang="de" mnemonic="N">Nein</value>
+            <value lang="it" mnemonic="N">No</value>
+            <value lang="tr" mnemonic="N">No</value>
+            <value lang="vi" mnemonic="K">Không</value>
+            <value lang="hu" mnemonic="N">Nem</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="ProxyManager" prefix="proxy">
+        <record key="use.system.title">
+            <value lang="en">Change proxy settings</value>
+            <value lang="ru">Изменение настроек прокси</value>
+            <value lang="pl">Zmień ustawienia serwera proxy</value>
+            <value lang="ar">تغيير إعدادات البروكسي</value>
+            <value lang="es">Cambiar configuración del proxy</value>
+            <value lang="fr">Modifier les paramètres du proxy</value>
+            <value lang="pt">Alterar as definições de proxy</value>
+            <value lang="de">Proxyeinstellungen ändern</value>
+            <value lang="it">Cambia impostazioni proxy</value>
+            <value lang="tr">Proxy ayarlarını değiştir</value>
+            <value lang="vi">Thay đổi thiết lập proxy</value>
+            <value lang="hu">Proxy beállítások változtatása</value>
+        </record>
+        <record key="use.system.text">
+            <value lang="en">&lt;html&gt;Application proxy settings do not match system proxy settings.&lt;br&gt;Would you like to use system settings instead?&lt;/html&gt;</value>
+            <value lang="ru">&lt;html&gt;Настройки прокси приложения не совпадают с установленной в системе прокси.&lt;br&gt;Хотите ли вы использовать системные настройки?&lt;/html&gt;</value>
+            <value lang="pl">&lt;html&gt;Usutawienia serwera proxy aplikacji nie pasują do systemowych ustawień serwera proxy.&lt;br&gt;Chcesz korzystać z ustawień systemowych?&lt;/html&gt;</value>
+            <value lang="ar">&lt;html&gt;إعدادات البروكسي للبرنامج تختلف عن إعدادات البروكسي للنظام.&lt;br&gt;هل ترغب باستخدام إعدادات النظام؟&lt;/html&gt;</value>
+            <value lang="es">&lt;html&gt;La configuración del proxy en la aplicación no coincide con la configuración del sistema.&lt;br&gt;¿Desea usar la configuracion del sistema?&lt;/html&gt;</value>
+            <value lang="fr">&lt;html&gt;Les paramètres du proxy de l&apos;application ne correspondent pas aux paramètres du proxy du système&lt;br&gt;Voulez-vous utiliser les paramètres du système?&lt;/html&gt;</value>
+            <value lang="pt">&lt;html&gt;As definições de proxy da aplicação não são as mesmas do sistema.&lt;br&gt;Deseja usar as definições do sistema?&lt;/html&gt;</value>
+            <value lang="de">&lt;html&gt;Die Proxyeinstellungen der Anwendungen stimmen nicht mit denen des Systems überein.&lt;br&gt;Möchten Sie statt dessen die Systemeinstellungen verwenden?&lt;/html&gt;</value>
+            <value lang="it">&lt;html&gt;Le impostazioni proxy dell'applicazione non corrispondono a quelle del sistema.&lt;br&gt;Si vuole utilizzare la configurazione di sistema invece?&lt;/html&gt;</value>
+            <value lang="tr">&lt;html&gt;Uygulamanın proxy ayarları systemic proxy ayarlarından farklı.&lt;br&gt;Sistem proxy ayarlarını kullanmak istiyor musun?&lt;/html&gt;</value>
+            <value lang="vi">&lt;html&gt;Thiết lập proxy của ứng dụng không phù hợp với thiết lập proxy của hệ thống.&lt;br&gt;Bạn có muốn sử dụng các thiết lập hệ thống?&lt;/html&gt;</value>
+            <value lang="hu">&lt;html&gt;Az alkalmazás proxy beállításai nem egyeznek a rendszer proxy beállításaival.&lt;br&gt;Szeretné inkább a rendszer beállításait használni?&lt;/html&gt;</value>
+        </record>
+        <record key="use.system.save">
+            <value lang="en">Remember this choice</value>
+            <value lang="ru">Запомнить этот выбор</value>
+            <value lang="pl">Zapamiętaj wybór</value>
+            <value lang="ar">تذكر الخيار</value>
+            <value lang="es">Recordar esta opción</value>
+            <value lang="fr">Se souvenir de ce choix</value>
+            <value lang="pt">Lembrar esta escolha</value>
+            <value lang="de">Diese Auswahl merken</value>
+            <value lang="it">Ricorda questa scelta</value>
+            <value lang="tr">Seçimimi hatırla</value>
+            <value lang="vi">Ghi nhớ lựa chọn này</value>
+            <value lang="hu">Emlékezzen a választásra</value>
+        </record>
+        <Dictionary name="WebProxyAuthenticator" prefix="auth">
+            <record key="title">
+                <value lang="en">Proxy authentication required</value>
+                <value lang="ru">Необходима авторизация на прокси сервере</value>
+                <value lang="pl">Wymagane uwierzytelnienie proxy</value>
+                <value lang="ar">مطلوب بيانات النفاذ للبروكسي</value>
+                <value lang="es">Autenticación de proxy requerida</value>
+                <value lang="fr">Authentification par proxy requise</value>
+                <value lang="pt">Autenticação por proxy necessária</value>
+                <value lang="de">Authentifikation für den Proxy erforderlich</value>
+                <value lang="it">Autenticazione proxy richiesta</value>
+                <value lang="tr">Proxy doğrulaması gerekli</value>
+                <value lang="vi">Yêu cầu bắt buộc xác thực proxy</value>
+                <value lang="hu">Proxy hitelesítés szükséges</value>
+            </record>
+            <record key="host">
+                <value lang="en">Host:</value>
+                <value lang="ru">Хост:</value>
+                <value lang="pl">Host:</value>
+                <value lang="ar">الخادم (Host):</value>
+                <value lang="es">Host:</value>
+                <value lang="fr">Hôte:</value>
+                <value lang="pt">Host:</value>
+                <value lang="de">Host:</value>
+                <value lang="it">Host:</value>
+                <value lang="tr">Sunucu:</value>
+                <value lang="vi">Máy chủ:</value>
+                <value lang="hu">Kiszolgáló:</value>
+            </record>
+            <record key="port">
+                <value lang="en">Port:</value>
+                <value lang="ru">Порт:</value>
+                <value lang="pl">Port:</value>
+                <value lang="ar">المنفذ (Port):</value>
+                <value lang="es">Puerto:</value>
+                <value lang="fr">Port:</value>
+                <value lang="pt">Porto:</value>
+                <value lang="de">Port:</value>
+                <value lang="it">Porta:</value>
+                <value lang="tr">Port:</value>
+                <value lang="vi">Cổng:</value>
+                <value lang="hu">Port:</value>
+            </record>
+            <record key="login">
+                <value lang="en">Login:</value>
+                <value lang="ru">Логин:</value>
+                <value lang="pl">Login:</value>
+                <value lang="ar">الدخول:</value>
+                <value lang="es">Nombre usuario:</value>
+                <value lang="fr">Identifiant:</value>
+                <value lang="pt">Nome de utilizador:</value>
+                <value lang="de">Login:</value>
+                <value lang="it">Login:</value>
+                <value lang="tr">Giriş bilgisi:</value>
+                <value lang="vi">Đăng nhập:</value>
+                <value lang="hu">Felhasználónév:</value>
+            </record>
+            <record key="pass">
+                <value lang="en">Password:</value>
+                <value lang="ru">Пароль:</value>
+                <value lang="pl">Hasło:</value>
+                <value lang="ar">كلمة المرور:</value>
+                <value lang="es">Contraseña:</value>
+                <value lang="fr">Mot de passe:</value>
+                <value lang="pt">Palavra-chave:</value>
+                <value lang="de">Passwort:</value>
+                <value lang="it">Password:</value>
+                <value lang="tr">Şifre:</value>
+                <value lang="vi">Mật khẩu:</value>
+                <value lang="hu">Jelszó:</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Dictionary name="WebFileChooser" prefix="filechooser">
+        <record key="title">
+            <value lang="en">Choose files</value>
+            <value lang="ru">Выберите файлы</value>
+            <value lang="pl">Wybierz pliki</value>
+            <value lang="ar">اختر الملفات</value>
+            <value lang="es">Elija los archivos</value>
+            <value lang="fr">Choisissez les fichiers</value>
+            <value lang="pt">Escolher os ficheiros</value>
+            <value lang="de">Dateien auswählen</value>
+            <value lang="it">Scegli file</value>
+            <value lang="tr">Dosya seç</value>
+            <value lang="vi">Chọn file</value>
+            <value lang="hu">Válasszon fájlokat</value>
+        </record>
+        <record key="root">
+            <value lang="en">My computer</value>
+            <value lang="ru">Мой компьютер</value>
+            <value lang="pl">Mój komputer</value>
+            <value lang="ar">جهاز الكمبيوتر الخاص بي</value>
+            <value lang="es">Mi equipo</value>
+            <value lang="fr">Mon ordinateur</value>
+            <value lang="pt">Meu computador</value>
+            <value lang="de">Mein Computer</value>
+            <value lang="it">Il mio computer</value>
+            <value lang="tr">Bilgisayarım</value>
+            <value lang="vi">Máy tính của tôi</value>
+            <value lang="hu">Sajátgép</value>
+        </record>
+        <record key="back">
+            <value lang="en" state="tooltip">Back</value>
+            <value lang="ru" state="tooltip">Назад</value>
+            <value lang="pl" state="tooltip">Wstecz</value>
+            <value lang="ar" state="tooltip">رجوع</value>
+            <value lang="es" state="tooltip">Atras</value>
+            <value lang="fr" state="tooltip">Précédent</value>
+            <value lang="pt" state="tooltip">Voltar</value>
+            <value lang="de" state="tooltip">Zurück</value>
+            <value lang="it" state="tooltip">Indietro</value>
+            <value lang="tr" state="tooltip">Geri</value>
+            <value lang="vi" state="tooltip">Trở lại</value>
+            <value lang="hu" state="tooltip">Vissza</value>
+        </record>
+        <record key="forward">
+            <value lang="en" state="tooltip">Forward</value>
+            <value lang="ru" state="tooltip">Вперёд</value>
+            <value lang="pl" state="tooltip">Dalej</value>
+            <value lang="ar" state="tooltip">أمام</value>
+            <value lang="es" state="tooltip">Adelante</value>
+            <value lang="fr" state="tooltip">Suivant</value>
+            <value lang="pt" state="tooltip">Avançar</value>
+            <value lang="de" state="tooltip">Vorwärts</value>
+            <value lang="it" state="tooltip">Avanti</value>
+            <value lang="tr" state="tooltip">İleri</value>
+            <value lang="vi" state="tooltip">Tiếp theo</value>
+            <value lang="hu" state="tooltip">Előre</value>
+        </record>
+        <record key="history">
+            <value lang="en" state="tooltip">History</value>
+            <value lang="ru" state="tooltip">История</value>
+            <value lang="pl" state="tooltip">Historia</value>
+            <value lang="ar" state="tooltip">التاريخ</value>
+            <value lang="es" state="tooltip">Historia</value>
+            <value lang="fr" state="tooltip">Historique</value>
+            <value lang="pt" state="tooltip">História</value>
+            <value lang="de" state="tooltip">Geschichte</value>
+            <value lang="it" state="tooltip">Cronologia</value>
+            <value lang="tr" state="tooltip">Geçmiş</value>
+            <value lang="vi" state="tooltip">Lịch sử</value>
+            <value lang="hu" state="tooltip">Történet</value>
+        </record>
+        <record key="folderup">
+            <value lang="en" state="tooltip">Folder up</value>
+            <value lang="ru" state="tooltip">На уровень вверх</value>
+            <value lang="pl" state="tooltip">W górę</value>
+            <value lang="ar" state="tooltip">مجلد للأعلى</value>
+            <value lang="es" state="tooltip">Subir directorio</value>
+            <value lang="fr" state="tooltip">Dossier supérieur</value>
+            <value lang="pt" state="tooltip">Pasta acima</value>
+            <value lang="de" state="tooltip">Verzeichnis nach oben</value>
+            <value lang="it" state="tooltip">Torna indietro</value>
+            <value lang="tr" state="tooltip">Üst dosya</value>
+            <value lang="vi" state="tooltip">Thư mục cha</value>
+            <value lang="hu" state="tooltip">Előző mappa</value>
+        </record>
+        <record key="home">
+            <value lang="en" state="tooltip">Home directory</value>
+            <value lang="ru" state="tooltip">Домашняя директория</value>
+            <value lang="pl" state="tooltip">Katalog Domowy</value>
+            <value lang="ar" state="tooltip">المجلد الرئيسي</value>
+            <value lang="es" state="tooltip">Directorio de inicio</value>
+            <value lang="fr" state="tooltip">Répertoire personnel</value>
+            <value lang="pt" state="tooltip">Pasta pessoal</value>
+            <value lang="de" state="tooltip">Nutzerverzeichnis</value>
+            <value lang="it" state="tooltip">Cartella d'inizio</value>
+            <value lang="tr" state="tooltip">Ana dizin</value>
+            <value lang="vi" state="tooltip">Thư mục chủ</value>
+            <value lang="hu" state="tooltip">Saját mappa</value>
+        </record>
+        <record key="desktop">
+            <value lang="en" state="tooltip">Desktop</value>
+            <value lang="ru" state="tooltip">Рабочий стол</value>
+            <value lang="pl" state="tooltip">Pulpit</value>
+            <value lang="ar" state="tooltip">سطح المكتب</value>
+            <value lang="es" state="tooltip">Escritorio</value>
+            <value lang="fr" state="tooltip">Bureau</value>
+            <value lang="pt" state="tooltip">Área de Trabalho</value>
+            <value lang="de" state="tooltip">Desktop</value>
+            <value lang="it" state="tooltip">Desktop</value>
+            <value lang="tr" state="tooltip">Masaüstü</value>
+            <value lang="vi" state="tooltip">Desktop</value>
+            <value lang="hu" state="tooltip">Desktop</value>
+        </record>
+        <record key="newfolder">
+            <value lang="en" state="tooltip">Create new folder</value>
+            <value lang="ru" state="tooltip">Создать новую папку</value>
+            <value lang="pl" state="tooltip">Stwórz nowy folder</value>
+            <value lang="ar" state="tooltip">إنشاء مجلد جديد</value>
+            <value lang="es" state="tooltip">Crear nuevo directorio</value>
+            <value lang="fr" state="tooltip">Créer un nouveau dossier</value>
+            <value lang="pt" state="tooltip">Criar nova pasta</value>
+            <value lang="de" state="tooltip">Neues Verzeichnis erstellen</value>
+            <value lang="it" state="tooltip">Crea nuova cartella</value>
+            <value lang="tr" state="tooltip">Yeni dosya oluştur</value>
+            <value lang="vi" state="tooltip">Tạo thư mục mới</value>
+            <value lang="hu" state="tooltip">Új mappa létrehozása</value>
+        </record>
+        <record key="newfolder.name">
+            <value lang="en">New folder</value>
+            <value lang="ru">Новая папка</value>
+            <value lang="pl">Nowy folder</value>
+            <value lang="ar">مجلد جديد</value>
+            <value lang="es">Nuevo directorio</value>
+            <value lang="fr">Nouveau dossier</value>
+            <value lang="pt">Nova pasta</value>
+            <value lang="de">Neues Verzeichnis</value>
+            <value lang="it">Nuova cartella</value>
+            <value lang="tr">Yeni dosya</value>
+            <value lang="vi">Thư mục mới</value>
+            <value lang="hu">Új mappa neve</value>
+        </record>
+        <record key="newfolder.error.title">
+            <value lang="en">Error</value>
+            <value lang="ru">Ошибка</value>
+            <value lang="pl">Błąd</value>
+            <value lang="ar">خطأ</value>
+            <value lang="es">Error</value>
+            <value lang="fr">Erreur</value>
+            <value lang="pt">Erro</value>
+            <value lang="de">Fehler</value>
+            <value lang="it">Errore</value>
+            <value lang="tr">Hata</value>
+            <value lang="vi">Lỗi</value>
+            <value lang="hu">Hiba</value>
+        </record>
+        <record key="newfolder.error.text">
+            <value lang="en">Unable to create new folder</value>
+            <value lang="ru">Не удалось создать новую папку</value>
+            <value lang="pl">Nie można utworzyć nowego folderu</value>
+            <value lang="ar">غير قادر على إنشاء مجلد جديد</value>
+            <value lang="es">Imposible crear un nuevo directorio</value>
+            <value lang="fr">Impossible de créer un nouveau dossier</value>
+            <value lang="pt">Não foi possível criar a nova pasta</value>
+            <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
+            <value lang="it">Impossibile creare una nuova cartella</value>
+            <value lang="tr">Yeni dosya oluşturulamadı</value>
+            <value lang="vi">Không thể tạo thư mục mới</value>
+            <value lang="hu">Nem sikerült a mappa létrehozása</value>
+        </record>
+        <record key="refresh">
+            <value lang="en" state="tooltip">Reload folder content</value>
+            <value lang="ru" state="tooltip">Обновить содержимое папки</value>
+            <value lang="pl" state="tooltip">Ponownie załaduj zawartość folderu</value>
+            <value lang="ar" state="tooltip">تحديث محتوى المجلد</value>
+            <value lang="es" state="tooltip">Recargar contenido del directorio</value>
+            <value lang="fr" state="tooltip">Recharger le contenu du dossier</value>
+            <value lang="pt" state="tooltip">Refrescar o conteúdo da pasta</value>
+            <value lang="de" state="tooltip">Verzeichnisinhalt neu laden</value>
+            <value lang="it" state="tooltip">Ricarica contenuto cartella</value>
+            <value lang="tr" state="tooltip">Dosya içeriğini yeniden yükle</value>
+            <value lang="vi" state="tooltip">Tải lại nội dung thư mục</value>
+            <value lang="hu" state="tooltip">Mappa tartalmának frissítése</value>
+        </record>
+        <record key="delete">
+            <value lang="en" state="tooltip">Delete selected files</value>
+            <value lang="ru" state="tooltip">Удалить выбранные файлы</value>
+            <value lang="pl" state="tooltip">Usuń wybrane pliki</value>
+            <value lang="ar" state="tooltip">حذف الملفات المحددة</value>
+            <value lang="es" state="tooltip">Borrar los archivos seleccionados</value>
+            <value lang="fr" state="tooltip">Supprimer les fichiers sélectionnés</value>
+            <value lang="pt" state="tooltip">Apagar os ficheiros seleccionados</value>
+            <value lang="de" state="tooltip">Ausgewählte Dateien löschen</value>
+            <value lang="it" state="tooltip">Cancella file selezionati</value>
+            <value lang="tr" state="tooltip">Seçilen dosyaları sil</value>
+            <value lang="vi" state="tooltip">Xóa các file đã chọn</value>
+            <value lang="hu" state="tooltip">Kiválasztott fájlok törlése</value>
+        </record>
+        <record key="delete.confirm.title">
+            <value lang="en">Delete confirmation</value>
+            <value lang="ru">Подтверждение удаления</value>
+            <value lang="pl">Potwierdzenie usunięcia</value>
+            <value lang="ar">التأكد من الحذف</value>
+            <value lang="es">Confirmación de borrado</value>
+            <value lang="fr">Confirmation de suppression</value>
+            <value lang="pt">Confirmação de remoção</value>
+            <value lang="de">Löschbestätigung</value>
+            <value lang="it">Conferma di cancellazione</value>
+            <value lang="tr">Silme onayı</value>
+            <value lang="vi">Xóa xác nhận</value>
+            <value lang="hu">Törlés megerősítése</value>
+        </record>
+        <record key="delete.confirm.text">
+            <value lang="en">Are you sure you want to delete these files?</value>
+            <value lang="ru">Вы уверены что хотите удалить все эти файлы?</value>
+            <value lang="pl">Jesteś pewny, że chcesz usunąć te pliki?</value>
+            <value lang="ar">هل أنت متأكد من حذف هذه الملفات؟</value>
+            <value lang="es">¿Está seguro que desea borrar los archivos?</value>
+            <value lang="fr">Êtes-vous sûr de vouloir supprimer ces fichiers?</value>
+            <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
+            <value lang="de">Sind Sie sich sicher, dass Sie diese Dateien löschen wollen?</value>
+            <value lang="it">Si è sicuri di voler cancellare questi file?</value>
+            <value lang="tr">Bu dosyaları silmek istediğinden emin misin?</value>
+            <value lang="vi">Bạn có chắc muốn xóa những file này?</value>
+            <value lang="hu">Biztos, hogy törölni akarja a kiválasztott fájlokat?</value>
+        </record>
+        <record key="view">
+            <value lang="en" state="tooltip">Change view</value>
+            <value lang="ru" state="tooltip">Изменить вид</value>
+            <value lang="pl" state="tooltip">Zmień widok</value>
+            <value lang="ar" state="tooltip">تغيير المنظر</value>
+            <value lang="es" state="tooltip">Cambiar vista</value>
+            <value lang="fr" state="tooltip">Changer de vue</value>
+            <value lang="pt" state="tooltip">Alterar a vista</value>
+            <value lang="de" state="tooltip">Ansicht ändern</value>
+            <value lang="it" state="tooltip">Cambia vista</value>
+            <value lang="tr" state="tooltip">Görünümü değiştir</value>
+            <value lang="vi" state="tooltip">Thay đổi chế độ xem</value>
+            <value lang="hu" state="tooltip">Nézet választása</value>
+        </record>
+        <record key="view.table">
+            <value lang="en">Details</value>
+            <value lang="ru">Таблица</value>
+            <value lang="pl">Szczegóły</value>
+            <value lang="ar">التفاصيل</value>
+            <value lang="es">Detalles</value>
+            <value lang="fr">Détails</value>
+            <value lang="pt">Detalhes</value>
+            <value lang="de">Details</value>
+            <value lang="it">Dettagli</value>
+            <value lang="tr">Detaylar</value>
+            <value lang="vi">Chi tiết</value>
+            <value lang="hu">Részletek</value>
+        </record>
+        <record key="view.icons">
+            <value lang="en">Icons</value>
+            <value lang="ru">Иконки</value>
+            <value lang="pl">Ikony</value>
+            <value lang="ar">أيقونات</value>
+            <value lang="es">Íconos</value>
+            <value lang="fr">Icônes</value>
+            <value lang="pt">Ícones</value>
+            <value lang="de">Icons</value>
+            <value lang="it">Icone</value>
+            <value lang="tr">İkonlar</value>
+            <value lang="vi">Biểu tượng</value>
+            <value lang="hu">Ikonok</value>
+        </record>
+        <record key="view.tiles">
+            <value lang="en">Tiles</value>
+            <value lang="ru">Плитка</value>
+            <value lang="pl">Kafelki</value>
+            <value lang="ar">أسطح</value>
+            <value lang="es">Azulejos</value>
+            <value lang="fr">Carreaux</value>
+            <value lang="pt">Mozaicos</value>
+            <value lang="de">Kachel</value>
+            <value lang="it">Tessere</value>
+            <value lang="tr">Seramikler</value>
+            <value lang="vi">Ô vuông</value>
+            <value lang="hu">Csempék</value>
+        </record>
+        <record key="files.selected">
+            <value lang="en">Selected files:</value>
+            <value lang="ru">Выбранные файлы:</value>
+            <value lang="pl">Wybrane pliki:</value>
+            <value lang="ar">الملفات المحددة:</value>
+            <value lang="es">Archivos seleccionados:</value>
+            <value lang="fr">Fichiers sélectionnés:</value>
+            <value lang="pt">Ficheiros seleccionados:</value>
+            <value lang="de">Ausgewählte Dateien:</value>
+            <value lang="it">File selezionati:</value>
+            <value lang="tr">Seçilen dosyalar:</value>
+            <value lang="vi">Các file đã chọn:</value>
+            <value lang="hu">Kiválasztott fájlok:</value>
+        </record>
+        <record key="save">
+            <value lang="en">Save</value>
+            <value lang="ru">Сохранить</value>
+            <value lang="pl">Wybierz</value>
+            <value lang="ar">حفظ</value>
+            <value lang="es">Guardar</value>
+            <value lang="fr">Sauvegarder</value>
+            <value lang="pt">Salvar</value>
+            <value lang="de">Speichern</value>
+            <value lang="it">Salva</value>
+            <value lang="tr">Kaydet</value>
+            <value lang="vi">Lưu</value>
+            <value lang="hu">Mentés</value>
+        </record>
+        <record key="open">
+            <value lang="en">Open</value>
+            <value lang="ru">Открыть</value>
+            <value lang="pl">Otwarte</value>
+            <value lang="ar">فتح</value>
+            <value lang="es">Abierto</value>
+            <value lang="fr">Ouvrir</value>
+            <value lang="pt">Abrir</value>
+            <value lang="de">Öffnen</value>
+            <value lang="it">Apri</value>
+            <value lang="tr">Aç</value>
+            <value lang="vi">Mở</value>
+            <value lang="hu">Megnyit</value>
+        </record>
+        <record key="custom">
+            <value lang="en">Choose</value>
+            <value lang="ru">Выбрать</value>
+            <value lang="pl">Wybierz</value>
+            <value lang="ar">اختر</value>
+            <value lang="es">Elija</value>
+            <value lang="fr">Choisir</value>
+            <value lang="pt">Escolher</value>
+            <value lang="de">Auswählen</value>
+            <value lang="it">Scegli</value>
+            <value lang="tr">Seç</value>
+            <value lang="vi">Chọn</value>
+            <value lang="hu">Kiválaszt</value>
+        </record>
+        <record key="cancel">
+            <value lang="en">Cancel</value>
+            <value lang="ru">Отмена</value>
+            <value lang="pl">Anuluj</value>
+            <value lang="ar">إلغاء</value>
+            <value lang="es">Cancelar</value>
+            <value lang="fr">Annuler</value>
+            <value lang="pt">Cancelar</value>
+            <value lang="de">Abbrechen</value>
+            <value lang="it">Annulla</value>
+            <value lang="tr">İptal</value>
+            <value lang="vi">Hủy</value>
+            <value lang="hu">Mégsem</value>
+        </record>
+        <Dictionary name="WebFileTable" prefix="table.column">
+            <record key="number">
+                <value lang="en">#</value>
+                <value lang="ru">#</value>
+                <value lang="pl">#</value>
+                <value lang="ar">#</value>
+                <value lang="es">#</value>
+                <value lang="fr">#</value>
+                <value lang="pt">#</value>
+                <value lang="de">#</value>
+                <value lang="it">#</value>
+                <value lang="tr">#</value>
+                <value lang="vi">#</value>
+                <value lang="hu">#</value>
+            </record>
+            <record key="name">
+                <value lang="en">Name</value>
+                <value lang="ru">Имя</value>
+                <value lang="pl">Nazwa</value>
+                <value lang="ar">الاسم</value>
+                <value lang="es">Nombre</value>
+                <value lang="fr">Nom</value>
+                <value lang="pt">Nome</value>
+                <value lang="de">Name</value>
+                <value lang="it">Nome</value>
+                <value lang="tr">İsim</value>
+                <value lang="vi">Tên</value>
+                <value lang="hu">Név</value>
+            </record>
+            <record key="size">
+                <value lang="en">Size</value>
+                <value lang="ru">Размер</value>
+                <value lang="pl">Rozmiar</value>
+                <value lang="ar">الحجم</value>
+                <value lang="es">Tamaño</value>
+                <value lang="fr">Taille</value>
+                <value lang="pt">Tamanho</value>
+                <value lang="de">Größe</value>
+                <value lang="it">Dimensione</value>
+                <value lang="tr">Boyut</value>
+                <value lang="vi">Kích thước</value>
+                <value lang="hu">Méret</value>
+            </record>
+            <record key="extension">
+                <value lang="en">Extension</value>
+                <value lang="ru">Расширение</value>
+                <value lang="pl">Rozbudowa</value>
+                <value lang="ar">تمديد</value>
+                <value lang="es">Extensión</value>
+                <value lang="fr">Extension</value>
+                <value lang="pt">Extensão</value>
+                <value lang="de">Erweiterung</value>
+                <value lang="it">Estensione</value>
+                <value lang="tr">Uzantı</value>
+                <value lang="vi">Định dạng</value>
+                <value lang="hu">Kiterjesztés</value>
+            </record>
+            <record key="creation.date">
+                <value lang="en">Created</value>
+                <value lang="ru">Создан</value>
+                <value lang="pl">Stworzony</value>
+                <value lang="ar">أنشئ</value>
+                <value lang="es">Creado</value>
+                <value lang="fr">Créé</value>
+                <value lang="pt">Criado</value>
+                <value lang="de">Erstellt</value>
+                <value lang="it">Creato</value>
+                <value lang="tr">Oluşturma tarihi</value>
+                <value lang="vi">Được tạo</value>
+                <value lang="hu">Létrehozva</value>
+            </record>
+            <record key="modification.date">
+                <value lang="en">Modified</value>
+                <value lang="ru">Изменён</value>
+                <value lang="pl">Zmodyfikowany</value>
+                <value lang="ar">تغيير</value>
+                <value lang="es">Modificado</value>
+                <value lang="fr">Modifié</value>
+                <value lang="pt">Modificado</value>
+                <value lang="de">Geändert</value>
+                <value lang="it">Modificato</value>
+                <value lang="tr">Değiştirme tarihi</value>
+                <value lang="vi">Được sửa</value>
+                <value lang="hu">Módosítva</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Dictionary name="WebColorChooser" prefix="colorchooser">
+        <record key="title">
+            <value lang="en">Choose color</value>
+            <value lang="ru">Выбор цвета</value>
+            <value lang="pl">Wybierz kolor</value>
+            <value lang="ar">اختر اللون</value>
+            <value lang="es">Elija un color</value>
+            <value lang="fr">Choisissez une couleur</value>
+            <value lang="pt">Escolha uma cor</value>
+            <value lang="de">Farbe wählen</value>
+            <value lang="it">Scegli colore</value>
+            <value lang="tr">Renk seç</value>
+            <value lang="vi">Chọn màu</value>
+            <value lang="hu">Válasszon színt</value>
+        </record>
+        <record key="webonly">
+            <value lang="en">Web colors only</value>
+            <value lang="ru">Только Web-цвета</value>
+            <value lang="pl">Tylko kolory html</value>
+            <value lang="ar">ألوان ويب فقط</value>
+            <value lang="es">Colores Web solamente</value>
+            <value lang="fr">Couleurs Web uniquement</value>
+            <value lang="pt">Apenas cores Web</value>
+            <value lang="de">Nur Webfarben</value>
+            <value lang="it">Solo colori Web</value>
+            <value lang="tr">Sadece web renkleri</value>
+            <value lang="vi">Chỉ các màu web</value>
+            <value lang="hu">Csak Web színek</value>
+        </record>
+        <record key="color.new">
+            <value lang="en">New</value>
+            <value lang="ru">Новый</value>
+            <value lang="pl">Nowy</value>
+            <value lang="ar">جديد</value>
+            <value lang="es">Nuevo</value>
+            <value lang="fr">Nouveau</value>
+            <value lang="pt">Novo</value>
+            <value lang="de">Neu</value>
+            <value lang="it">Nuovo</value>
+            <value lang="tr">Yeni</value>
+            <value lang="vi">Mới</value>
+            <value lang="hu">Úl</value>
+        </record>
+        <record key="color.current">
+            <value lang="en">Current</value>
+            <value lang="ru">Текущий</value>
+            <value lang="pl">Prąd</value>
+            <value lang="ar">حالي</value>
+            <value lang="es">Corriente</value>
+            <value lang="fr">Actuel</value>
+            <value lang="pt">Atual</value>
+            <value lang="de">Aktuell</value>
+            <value lang="it">Attuale</value>
+            <value lang="tr">Kullanılan</value>
+            <value lang="vi">Hiện tại</value>
+            <value lang="hu">Aktuális</value>
+        </record>
+        <record key="choose">
+            <value lang="en">Choose</value>
+            <value lang="ru">Выбрать</value>
+            <value lang="pl">Wybierz</value>
+            <value lang="ar">اختر</value>
+            <value lang="es">Elegir</value>
+            <value lang="fr">Choisir</value>
+            <value lang="pt">Escolher</value>
+            <value lang="de">Auswählen</value>
+            <value lang="it">Scegli</value>
+            <value lang="tr">Seç</value>
+            <value lang="vi">Chọn</value>
+            <value lang="hu">Kiválaszt</value>
+        </record>
+        <record key="reset">
+            <value lang="en">Reset</value>
+            <value lang="ru">Сбросить</value>
+            <value lang="pl">Reset</value>
+            <value lang="ar">إعادة تعيين</value>
+            <value lang="es">Reinicializar</value>
+            <value lang="fr">Réinitialiser</value>
+            <value lang="pt">Repor</value>
+            <value lang="de">Zurücksetzen</value>
+            <value lang="it">Reset</value>
+            <value lang="tr">Sıfırla</value>
+            <value lang="vi">Thiết lập lại</value>
+            <value lang="hu">Alaphelyzet</value>
+        </record>
+        <record key="cancel">
+            <value lang="en">Cancel</value>
+            <value lang="ru">Отмена</value>
+            <value lang="pl">Anuluj</value>
+            <value lang="ar">إلغاء</value>
+            <value lang="es">Cancelar</value>
+            <value lang="fr">Annuler</value>
+            <value lang="pt">Cancelar</value>
+            <value lang="de">Abbrechen</value>
+            <value lang="it">Annulla</value>
+            <value lang="tr">İptal</value>
+            <value lang="vi">Hủy</value>
+            <value lang="hu">Mégsem</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Filter settings" prefix="filter">
+        <record key="matchcase">
+            <value lang="en">Match case</value>
+            <value lang="ru">Учитывать регистр</value>
+            <value lang="pl">Wielkość liter</value>
+            <value lang="ar">تتناسب مع الحالة</value>
+            <value lang="es">Coincidir mayúsculas y minúsculas</value>
+            <value lang="fr">Respecter la casse</value>
+            <value lang="pt">Combinar caso</value>
+            <value lang="de">Groß-/Kleinschreibung</value>
+            <value lang="it">Rispetta maisucole e minuscole</value>
+            <value lang="tr">Büyük/küçük harf duyarlılığı</value>
+            <value lang="vi">Chính xác ký tự hoa/thường</value>
+            <value lang="hu">Kis-nagybetű megkülönböztetése</value>
+        </record>
+        <record key="spaceseparator">
+            <value lang="en">Use space as separator</value>
+            <value lang="ru">Считать пробел за разделитель</value>
+            <value lang="pl">Użyj miejsca jako separator</value>
+            <value lang="ar">استخدام مفتاح المسافة كفاصل</value>
+            <value lang="es">Usar el espacio como separador</value>
+            <value lang="fr">Utiliser l'espace comme séparateur</value>
+            <value lang="pt">Use o espaço como separador</value>
+            <value lang="de">Verwenden Sie Leerzeichen als Trennzeichen</value>
+            <value lang="it">Usa lo spazio come separatore</value>
+            <value lang="tr">Ayrıcı olarak boşluk kullan</value>
+            <value lang="vi">Sử dụng khoảng trống để ngăn cách</value>
+            <value lang="hu">Szóköz mint elválasztó</value>
+        </record>
+        <record key="frombeginning">
+            <value lang="en">Search from beginning</value>
+            <value lang="ru">Искать с начала строки</value>
+            <value lang="pl">Szukaj z początku linii</value>
+            <value lang="ar">بحث من بداية السطر</value>
+            <value lang="es">Buscar en el principio de la línea</value>
+            <value lang="fr">Rechercher depuis le début</value>
+            <value lang="pt">Pesquisa com o início da linha</value>
+            <value lang="de">Suchen mit dem Anfang der Zeile</value>
+            <value lang="it">Cerca dall'inizio</value>
+            <value lang="tr">Başından ara</value>
+            <value lang="vi">Tìm kiếm từ đầu</value>
+            <value lang="hu">Keresés elölről</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Extended components" prefix="ex">
+        <Dictionary name="WebSwitch" prefix="switch">
+            <record key="selected">
+                <value lang="en"> </value>
+                <value lang="ru"> </value>
+                <value lang="pl"> </value>
+                <value lang="ar"> </value>
+                <value lang="es"> </value>
+                <value lang="fr"> </value>
+                <value lang="pt"> </value>
+                <value lang="de"> </value>
+                <value lang="it"> </value>
+                <value lang="tr"> </value>
+                <value lang="vi"> </value>
+                <value lang="hu"> </value>
+            </record>
+            <record key="deselected">
+                <value lang="en"> </value>
+                <value lang="ru"> </value>
+                <value lang="pl"> </value>
+                <value lang="ar"> </value>
+                <value lang="es"> </value>
+                <value lang="fr"> </value>
+                <value lang="pt"> </value>
+                <value lang="de"> </value>
+                <value lang="it"> </value>
+                <value lang="tr"> </value>
+                <value lang="vi"> </value>
+                <value lang="hu"> </value>
+            </record>
+        </Dictionary>
+        <Dictionary name="Notification" prefix="notification">
+            <record key="yes">
+                <value lang="en">Yes</value>
+                <value lang="ru">Да</value>
+                <value lang="pl">Tak</value>
+                <value lang="ar">نعم</value>
+                <value lang="es">Si</value>
+                <value lang="fr">Oui</value>
+                <value lang="pt">Sim</value>
+                <value lang="de">Ja</value>
+                <value lang="it">Si</value>
+                <value lang="tr">Evet</value>
+                <value lang="vi">Có</value>
+                <value lang="hu">Igen</value>
+            </record>
+            <record key="no">
+                <value lang="en">No</value>
+                <value lang="ru">Нет</value>
+                <value lang="pl">Nie</value>
+                <value lang="ar">لا</value>
+                <value lang="es">No</value>
+                <value lang="fr">Non</value>
+                <value lang="pt">Não</value>
+                <value lang="de">Nein</value>
+                <value lang="it">No</value>
+                <value lang="tr">Hayır</value>
+                <value lang="vi">Không</value>
+                <value lang="hu">Nem</value>
+            </record>
+            <record key="cancel">
+                <value lang="en">Cancel</value>
+                <value lang="ru">Отмена</value>
+                <value lang="pl">Anuluj</value>
+                <value lang="ar">إلغاء</value>
+                <value lang="es">Cancelar</value>
+                <value lang="fr">Annuler</value>
+                <value lang="pt">Cancelar</value>
+                <value lang="de">Abbrechen</value>
+                <value lang="it">Annulla</value>
+                <value lang="tr">İptal</value>
+                <value lang="vi">Hủy</value>
+                <value lang="hu">Mégsem</value>
+            </record>
+            <record key="choose">
+                <value lang="en">Choose</value>
+                <value lang="ru">Выбрать</value>
+                <value lang="pl">Wybierz</value>
+                <value lang="ar">اختر</value>
+                <value lang="es">Elegir</value>
+                <value lang="fr">Choisir</value>
+                <value lang="pt">Escolher</value>
+                <value lang="de">Auswählen</value>
+                <value lang="it">Scegli</value>
+                <value lang="tr">Seç</value>
+                <value lang="vi">Chọn</value>
+                <value lang="hu">Válasszon</value>
+            </record>
+            <record key="accept">
+                <value lang="en">Accept</value>
+                <value lang="ru">Принять</value>
+                <value lang="pl">Akceptować</value>
+                <value lang="ar">قبول</value>
+                <value lang="es">Aceptar</value>
+                <value lang="fr">Accepter</value>
+                <value lang="pt">Aceitar</value>
+                <value lang="de">Akzeptieren</value>
+                <value lang="it">Accetta</value>
+                <value lang="tr">Kabul et</value>
+                <value lang="vi">Chập nhận</value>
+                <value lang="hu">Jóváhagy</value>
+            </record>
+            <record key="decline">
+                <value lang="en">Decline</value>
+                <value lang="ru">Отказать</value>
+                <value lang="pl">Odrzuć</value>
+                <value lang="ar">رفض</value>
+                <value lang="es">Disminución</value>
+                <value lang="fr">Refuser</value>
+                <value lang="pt">Recusar</value>
+                <value lang="de">Ablehnen</value>
+                <value lang="it">Rifiuta</value>
+                <value lang="tr">Reddet</value>
+                <value lang="vi">Từ chối</value>
+                <value lang="hu">Elvet</value>
+            </record>
+            <record key="apply">
+                <value lang="en">Apply</value>
+                <value lang="ru">Применить</value>
+                <value lang="pl">Zastosować</value>
+                <value lang="ar">تطبيق</value>
+                <value lang="es">Aplicar</value>
+                <value lang="fr">Appliquer</value>
+                <value lang="pt">Aplicar</value>
+                <value lang="de">Anwenden</value>
+                <value lang="it">Applica</value>
+                <value lang="tr">Uygula</value>
+                <value lang="vi">Áp dụng</value>
+                <value lang="hu">Alkalmaz</value>
+            </record>
+            <record key="commit">
+                <value lang="en">Commit</value>
+                <value lang="ru">Фиксировать</value>
+                <value lang="pl">Popełnić</value>
+                <value lang="ar">تنفيذ</value>
+                <value lang="es">Cometer</value>
+                <value lang="fr">Commit</value>
+                <value lang="pt">Cometer</value>
+                <value lang="de">Verpflichten</value>
+                <value lang="it">Commissiona</value>
+                <value lang="tr">İşle</value>
+                <value lang="vi">Đồng ý</value>
+                <value lang="hu">Mentés</value>
+            </record>
+            <record key="discard">
+                <value lang="en">Discard</value>
+                <value lang="ru">Сбросить</value>
+                <value lang="pl">Odrzucać</value>
+                <value lang="ar">تجاهل</value>
+                <value lang="es">Descartar</value>
+                <value lang="fr">Abandonner</value>
+                <value lang="pt">Descartar</value>
+                <value lang="de">Verwerfen</value>
+                <value lang="it">Ignora modifiche</value>
+                <value lang="tr">Sil</value>
+                <value lang="vi">Hủy bỏ</value>
+                <value lang="hu">Eldob</value>
+            </record>
+            <record key="reset">
+                <value lang="en">Reset</value>
+                <value lang="ru">Сбросить</value>
+                <value lang="pl">Reset</value>
+                <value lang="ar">إعادة السابق</value>
+                <value lang="es">Reinicializar</value>
+                <value lang="fr">Réinitialiser</value>
+                <value lang="pt">Repor</value>
+                <value lang="de">Zurücksetzen</value>
+                <value lang="it">Reset</value>
+                <value lang="tr">Sıfırla</value>
+                <value lang="vi">Thiết lập lại</value>
+                <value lang="hu">Visszaállítás</value>
+            </record>
+            <record key="retry">
+                <value lang="en">Retry</value>
+                <value lang="ru">Повторить</value>
+                <value lang="pl">Spróbować ponownie</value>
+                <value lang="ar">إعادة المحاولة</value>
+                <value lang="es">Reintentar</value>
+                <value lang="fr">Réessayer</value>
+                <value lang="pt">Tentar novamente</value>
+                <value lang="de">Wiederholen</value>
+                <value lang="it">Riprova</value>
+                <value lang="tr">Yeniden dene</value>
+                <value lang="vi">Thử lại</value>
+                <value lang="hu">Újra</value>
+            </record>
+            <record key="save">
+                <value lang="en">Save</value>
+                <value lang="ru">Сохранить</value>
+                <value lang="pl">Wybierz</value>
+                <value lang="ar">حفظ</value>
+                <value lang="es">Guardar</value>
+                <value lang="fr">Sauvegarder</value>
+                <value lang="pt">Salvar</value>
+                <value lang="de">Speichern</value>
+                <value lang="it">Salva</value>
+                <value lang="tr">Kaydet</value>
+                <value lang="vi">Lưu</value>
+                <value lang="hu">Mentés</value>
+            </record>
+            <record key="open">
+                <value lang="en">Open</value>
+                <value lang="ru">Открыть</value>
+                <value lang="pl">Otwarte</value>
+                <value lang="ar">فتح</value>
+                <value lang="es">Abierto</value>
+                <value lang="fr">Ouvrir</value>
+                <value lang="pt">Abrir</value>
+                <value lang="de">Öffnen</value>
+                <value lang="it">Apri</value>
+                <value lang="tr">Aç</value>
+                <value lang="vi">Mở</value>
+                <value lang="hu">Megnyitás</value>
+            </record>
+            <record key="setup">
+                <value lang="en">Setup</value>
+                <value lang="ru">Установить</value>
+                <value lang="pl">Ustawienie</value>
+                <value lang="ar">تنصيب</value>
+                <value lang="es">Configurar</value>
+                <value lang="fr">Installation</value>
+                <value lang="pt">Estabelecer</value>
+                <value lang="de">Einrichten</value>
+                <value lang="it">Impostare</value>
+                <value lang="tr">Kurulum</value>
+                <value lang="vi">Thành lập</value>
+                <value lang="hu">Beállítás</value>
+            </record>
+            <record key="configure">
+                <value lang="en">Configure</value>
+                <value lang="ru">Настроить</value>
+                <value lang="pl">Skonfiguruj</value>
+                <value lang="ar">تخصيص</value>
+                <value lang="es">Configure</value>
+                <value lang="fr">Configurer</value>
+                <value lang="pt">Configurar</value>
+                <value lang="de">Konfigurieren</value>
+                <value lang="it">Configurare</value>
+                <value lang="tr">Yapılandırma</value>
+                <value lang="vi">Cấu hình</value>
+                <value lang="hu">Konfigurálás</value>
+            </record>
+            <record key="install">
+                <value lang="en">Install</value>
+                <value lang="ru">Установить</value>
+                <value lang="pl">Zainstalować</value>
+                <value lang="ar">تثبيت</value>
+                <value lang="es">Instalar</value>
+                <value lang="fr">Installer</value>
+                <value lang="pt">Instalar</value>
+                <value lang="de">Installieren</value>
+                <value lang="it">Installare</value>
+                <value lang="tr">Kurmak</value>
+                <value lang="vi">đặt</value>
+                <value lang="hu">Telepítés</value>
+            </record>
+            <record key="uninstall">
+                <value lang="en">Uninstall</value>
+                <value lang="ru">Удалить</value>
+                <value lang="pl">Odinstaluj</value>
+                <value lang="ar">إلغاء التثبيت</value>
+                <value lang="es">Desinstalar</value>
+                <value lang="fr">Désinstaller</value>
+                <value lang="pt">Uninstall</value>
+                <value lang="de">Uninstall</value>
+                <value lang="it">Disinstallare</value>
+                <value lang="tr">Kaldırma</value>
+                <value lang="vi">Tẩy</value>
+                <value lang="hu">Törlés</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebDirectoryChooser" prefix="dirchooser">
+            <record key="title">
+                <value lang="en">Choose directory</value>
+                <value lang="ru">Выбор папок</value>
+                <value lang="pl">Wybierz katalog</value>
+                <value lang="ar">اختر مجلد</value>
+                <value lang="es">Elija un directorio</value>
+                <value lang="fr">Choisissez un dossier</value>
+                <value lang="pt">Escolher uma pasta</value>
+                <value lang="de">Verzeichnis auswählen</value>
+                <value lang="it">Scegli directory</value>
+                <value lang="tr">Dizin seç</value>
+                <value lang="vi">Chọn thư mục</value>
+                <value lang="hu">Könyvtár választása</value>
+            </record>
+            <record key="folderup">
+                <value lang="en" state="tooltip">Folder up</value>
+                <value lang="ru" state="tooltip">На уровень вверх</value>
+                <value lang="pl" state="tooltip">W górę</value>
+                <value lang="ar" state="tooltip">مجلد للأعلى</value>
+                <value lang="es" state="tooltip">Subir un directorio</value>
+                <value lang="fr" state="tooltip">Dossier supérieur</value>
+                <value lang="pt" state="tooltip">Pasta acima</value>
+                <value lang="de" state="tooltip">Verzeichnis nach oben</value>
+                <value lang="it" state="tooltip">Cartella precedente</value>
+                <value lang="tr" state="tooltip">Üst dosya</value>
+                <value lang="vi" state="tooltip">Thư mục cha</value>
+                <value lang="hu" state="tooltip">Előző mappa</value>
+            </record>
+            <record key="home">
+                <value lang="en" state="tooltip">Home directory</value>
+                <value lang="ru" state="tooltip">Домашняя директория</value>
+                <value lang="pl" state="tooltip">Katalog domowy</value>
+                <value lang="ar" state="tooltip">المجلد الرئيسي</value>
+                <value lang="es" state="tooltip">Directorio de inicio</value>
+                <value lang="fr" state="tooltip">Répertoire personnel</value>
+                <value lang="pt" state="tooltip">Pasta pessoal</value>
+                <value lang="de" state="tooltip">Nutzerverzeichnis</value>
+                <value lang="it" state="tooltip">Cartella di inizio</value>
+                <value lang="tr" state="tooltip">Ana dizini</value>
+                <value lang="vi" state="tooltip">Thư mục chủ</value>
+                <value lang="hu" state="tooltip">Saját mappa</value>
+            </record>
+            <record key="desktop">
+                <value lang="en" state="tooltip">Desktop</value>
+                <value lang="ru" state="tooltip">Рабочий стол</value>
+                <value lang="pl" state="tooltip">Pulpit</value>
+                <value lang="ar" state="tooltip">سطح المكتب</value>
+                <value lang="es" state="tooltip">Escritorio</value>
+                <value lang="fr" state="tooltip">Bureau</value>
+                <value lang="pt" state="tooltip">Área de Trabalho</value>
+                <value lang="de" state="tooltip">Desktop</value>
+                <value lang="it" state="tooltip">Desktop</value>
+                <value lang="tr" state="tooltip">Masaüstü</value>
+                <value lang="vi" state="tooltip">Desktop</value>
+                <value lang="hu" state="tooltip">Desktop</value>
+            </record>
+            <record key="refresh">
+                <value lang="en" state="tooltip">Reload folder content</value>
+                <value lang="ru" state="tooltip">Обновить содержимое папки</value>
+                <value lang="pl" state="tooltip">Ponownie załaduj zawartość folderu</value>
+                <value lang="ar" state="tooltip">تحديث محتوى المجلد</value>
+                <value lang="es" state="tooltip">Recargar el contenido del directorio</value>
+                <value lang="fr" state="tooltip">Recharger le contenu du dossier</value>
+                <value lang="pt" state="tooltip">Refrescar o conteúdo da pasta</value>
+                <value lang="de" state="tooltip">Verzeichnisinhalt neu laden</value>
+                <value lang="it" state="tooltip">Ricarica contenuto cartella</value>
+                <value lang="tr" state="tooltip">Dosya içeriğini yeniden yükle</value>
+                <value lang="vi" state="tooltip">Tải lại nội dung thư mục</value>
+                <value lang="hu" state="tooltip">Mappa tartalmának frissítése</value>
+            </record>
+            <record key="newfolder">
+                <value lang="en" state="tooltip">Create new folder</value>
+                <value lang="ru" state="tooltip">Создать новую папку</value>
+                <value lang="pl" state="tooltip">Stwórz nowy folder</value>
+                <value lang="ar" state="tooltip">إنشاء مجلد جديد</value>
+                <value lang="es" state="tooltip">Crear nuevo directorio</value>
+                <value lang="fr" state="tooltip">Créer un nouveau dossier</value>
+                <value lang="pt" state="tooltip">Criar uma nova pasta</value>
+                <value lang="de" state="tooltip">Neues Verzeichnis erstellen</value>
+                <value lang="it" state="tooltip">Crea nuova cartella</value>
+                <value lang="tr" state="tooltip">Yeni dosya oluştur</value>
+                <value lang="vi" state="tooltip">Tạo thư mục mới</value>
+                <value lang="hu" state="tooltip">Új mappa létrehozása</value>
+            </record>
+            <record key="newfolder.name">
+                <value lang="en">New folder</value>
+                <value lang="ru">Новая папка</value>
+                <value lang="pl">Nowy folder</value>
+                <value lang="ar">مجلد جديد</value>
+                <value lang="es">Nuevo directorio</value>
+                <value lang="fr">Nouveau dossier</value>
+                <value lang="pt">Nova pasta</value>
+                <value lang="de">Neues Verzeichnis</value>
+                <value lang="it">Nuova cartella</value>
+                <value lang="tr">Yeni dosya</value>
+                <value lang="vi">Thư mục mới</value>
+                <value lang="hu">Új mappa neve</value>
+            </record>
+            <record key="newfolder.error.title">
+                <value lang="en">Error</value>
+                <value lang="ru">Ошибка</value>
+                <value lang="pl">Błąd</value>
+                <value lang="ar">خطأ</value>
+                <value lang="es">Error</value>
+                <value lang="fr">Erreur</value>
+                <value lang="pt">Erro</value>
+                <value lang="de">Fehler</value>
+                <value lang="it">Errore</value>
+                <value lang="tr">Hata</value>
+                <value lang="vi">Lỗi</value>
+                <value lang="hu">Hiba</value>
+            </record>
+            <record key="newfolder.error.text">
+                <value lang="en">Unable to create new folder</value>
+                <value lang="ru">Не удалось создать новую папку</value>
+                <value lang="pl">Nie można utworzyć nowego folderu</value>
+                <value lang="ar">غير قادر على إنشاء مجلد جديد</value>
+                <value lang="es">Imposible crear un nuevo directorio</value>
+                <value lang="fr">Impossible de créer un nouveau dossier</value>
+                <value lang="pt">Não foi possível criar a nova pasta</value>
+                <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
+                <value lang="it">Impossibile creare una nuova cartella</value>
+                <value lang="tr">Yeni dosya oluşturulamadı</value>
+                <value lang="vi">Không thể tạo thư mục mới</value>
+                <value lang="hu">Hiba a mappa létrehozásakor</value>
+            </record>
+            <record key="delete">
+                <value lang="en" state="tooltip">Delete selected files</value>
+                <value lang="ru" state="tooltip">Удалить выбранные файлы</value>
+                <value lang="pl" state="tooltip">Usuń wybrane pliki</value>
+                <value lang="ar" state="tooltip">حذف الملفات المحددة</value>
+                <value lang="es" state="tooltip">Borrar los archivos seleccionados</value>
+                <value lang="fr" state="tooltip">Supprimer les fichiers sélectionnés</value>
+                <value lang="pt" state="tooltip">Apagar os ficheiros seleccionados</value>
+                <value lang="de" state="tooltip">Ausgewählte Dateien löschen</value>
+                <value lang="it" state="tooltip">Cancella file selezionati</value>
+                <value lang="tr" state="tooltip">Seçilen dosyaları sil</value>
+                <value lang="vi" state="tooltip">Xóa các file đã chọn</value>
+                <value lang="hu" state="tooltip">Kiválasztott fájlok törlése</value>
+            </record>
+            <record key="delete.confirm.title">
+                <value lang="en">Delete confirmation</value>
+                <value lang="ru">Подтверждение удаления</value>
+                <value lang="pl">Potwierdzenie usunięcia</value>
+                <value lang="ar">التأكد من الحذف</value>
+                <value lang="es">Confirmación de borrado</value>
+                <value lang="fr">Confirmation de suppression</value>
+                <value lang="pt">Confirmação de remoção</value>
+                <value lang="de">Löschbestätigung</value>
+                <value lang="it">Conferma di cancellazione</value>
+                <value lang="tr">Silme onayı</value>
+                <value lang="vi">Xác nhận xóa</value>
+                <value lang="hu">Törlés megerősítése</value>
+            </record>
+            <record key="delete.confirm.text">
+                <value lang="en">Are you sure you want to delete directory?</value>
+                <value lang="ru">Вы уверены что хотите удалить папку?</value>
+                <value lang="pl">Jesteś pewien, że chcesz usunąć ten katalog?</value>
+                <value lang="ar">هل أنت متأكد من حذف هذه المجلد؟</value>
+                <value lang="es">¿Está seguro que desea borrar el directorio?</value>
+                <value lang="fr">Êtes-vous sûr de vouloir supprimer le dossier?</value>
+                <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
+                <value lang="de">Sind Sie sich sicher, dass Sie dieses Verzeichnis löschen wollen?</value>
+                <value lang="it">Si è sicuri di voler cancellare la cartella?</value>
+                <value lang="tr">Dizini silmek istediğinden emin misin?</value>
+                <value lang="vi">Bạn có chắc muốn xóa thư mục?</value>
+                <value lang="hu">Biztos, hogy törölni akarja a mappát?</value>
+            </record>
+            <record key="choose">
+                <value lang="en">Choose</value>
+                <value lang="ru">Выбрать</value>
+                <value lang="pl">Wybierz</value>
+                <value lang="ar">اختر</value>
+                <value lang="es">Elegir</value>
+                <value lang="fr">Choisir</value>
+                <value lang="pt">Escolher</value>
+                <value lang="de">Auswählen</value>
+                <value lang="it">Scegli</value>
+                <value lang="tr">Seç</value>
+                <value lang="vi">Chọn</value>
+                <value lang="hu">Kiválaszt</value>
+            </record>
+            <record key="cancel">
+                <value lang="en">Cancel</value>
+                <value lang="ru">Отмена</value>
+                <value lang="pl">Anuluj</value>
+                <value lang="ar">إلغاء</value>
+                <value lang="es">Cancelar</value>
+                <value lang="fr">Annuler</value>
+                <value lang="pt">Cancelar</value>
+                <value lang="de">Abbrechen</value>
+                <value lang="it">Cancella</value>
+                <value lang="tr">İptal</value>
+                <value lang="vi">Hủy</value>
+                <value lang="hu">Mégsem</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebMemoryBar" prefix="memorybar">
+            <record key="of">
+                <value lang="en">of</value>
+                <value lang="ru">из</value>
+                <value lang="pl">z</value>
+                <value lang="ar">من</value>
+                <value lang="es">de</value>
+                <value lang="fr">de</value>
+                <value lang="pt">de</value>
+                <value lang="de">von</value>
+                <value lang="it">di</value>
+                <value lang="tr">/</value>
+                <value lang="vi">/</value>
+                <value lang="hu">/</value>
+            </record>
+            <record key="alloc">
+                <value lang="en">Allocated memory:</value>
+                <value lang="ru">Выделенная память:</value>
+                <value lang="pl">Przydzielonej pamięci:</value>
+                <value lang="ar">الذاكرة المحجوزة:</value>
+                <value lang="es">Memoria asignada:</value>
+                <value lang="fr">Mémoire allouée:</value>
+                <value lang="pt">Memória alocada:</value>
+                <value lang="de">Zugewiesenen Speicher:</value>
+                <value lang="it">Memoria assegnata:</value>
+                <value lang="tr">Ayrılmış bellek:</value>
+                <value lang="vi">Bộ nhớ được cấp phát:</value>
+                <value lang="hu">Lefoglalt memória:</value>
+            </record>
+            <record key="used">
+                <value lang="en">Used:</value>
+                <value lang="ru">Занятая:</value>
+                <value lang="pl">Użyty:</value>
+                <value lang="ar">مستخدم:</value>
+                <value lang="es">Usado:</value>
+                <value lang="fr">Utilisé:</value>
+                <value lang="pt">Utilizado:</value>
+                <value lang="de">Benutzt:</value>
+                <value lang="it">Usata:</value>
+                <value lang="tr">Kullanılan:</value>
+                <value lang="vi">Đã sử dụng:</value>
+                <value lang="hu">Használt:</value>
+            </record>
+            <record key="max">
+                <value lang="en">Available:</value>
+                <value lang="ru">Доступная:</value>
+                <value lang="pl">Dostępny:</value>
+                <value lang="ar">متوفر:</value>
+                <value lang="es">Disponible:</value>
+                <value lang="fr">Disponible:</value>
+                <value lang="pt">Disponível:</value>
+                <value lang="de">Verfügbar:</value>
+                <value lang="it">Disponibile:</value>
+                <value lang="tr">Kullanılabilir:</value>
+                <value lang="vi">Còn trống:</value>
+                <value lang="hu">Rendelkezésre áll:</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebFileDrop" prefix="filedrop">
+            <record key="drop">
+                <value lang="en">Drop files here</value>
+                <value lang="ru">Перетащите файлы сюда</value>
+                <value lang="pl">Puść pliki tutaj</value>
+                <value lang="ar">أسقط الملفات هنا</value>
+                <value lang="es">Soltar archivos aquí</value>
+                <value lang="fr">Déposer des fichiers ici</value>
+                <value lang="pt">Largue ficheiros aqui</value>
+                <value lang="de">Legen Sie dateien hier ab</value>
+                <value lang="it">Rilascia i file quì</value>
+                <value lang="tr">Dosyaları buraya bırak</value>
+                <value lang="vi">Thả file vào đây</value>
+                <value lang="hu">Dobja ide a fájlokat</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebHotkeyField" prefix="hotkeyfield">
+            <record key="press">
+                <value lang="en">Press any key</value>
+                <value lang="ru">Выберите горячую клавишу</value>
+                <value lang="pl">Naciśnij jakiś klawisz</value>
+                <value lang="ar">اضغط أي مفتاح</value>
+                <value lang="es">Presione cualquier tecla</value>
+                <value lang="fr">Appuyez sur n&apos;importe quelle touche</value>
+                <value lang="pt">Pressione qualquer tecla</value>
+                <value lang="de">Drücken Sie irgendeine Taste</value>
+                <value lang="it">Premere qualsiasi tasto</value>
+                <value lang="tr">Bir tuşa bas</value>
+                <value lang="vi">Nhấn phím bất kỳ</value>
+                <value lang="hu">Nyomjon meg egy billentyűt</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebCalendar" prefix="calendar">
+            <record key="weekNumber">
+                <value lang="en">#</value>
+                <value lang="ru">#</value>
+                <value lang="pl">#</value>
+                <value lang="ar">#</value>
+                <value lang="es">#</value>
+                <value lang="fr">#</value>
+                <value lang="pt">#</value>
+                <value lang="de">KW</value>
+                <value lang="it">#</value>
+                <value lang="tr">#</value>
+                <value lang="vi">#</value>
+                <value lang="hu">#</value>
+            </record>
+            <record key="dayOfWeek.1">
+                <value lang="en">Mon</value>
+                <value lang="ru">Пн</value>
+                <value lang="pl">Pon</value>
+                <value lang="ar">الاثنين</value>
+                <value lang="es">Lun</value>
+                <value lang="fr">Lun</value>
+                <value lang="pt">Seg</value>
+                <value lang="de">Mo</value>
+                <value lang="it">Lun</value>
+                <value lang="tr">Pzt</value>
+                <value lang="vi">T2</value>
+                <value lang="hu">Hé</value>
+            </record>
+            <record key="dayOfWeek.2">
+                <value lang="en">Tue</value>
+                <value lang="ru">Вт</value>
+                <value lang="pl">Wt</value>
+                <value lang="ar">الثلاثاء</value>
+                <value lang="es">Mar</value>
+                <value lang="fr">Mar</value>
+                <value lang="pt">Ter</value>
+                <value lang="de">Di</value>
+                <value lang="it">Mar</value>
+                <value lang="tr">Sal</value>
+                <value lang="vi">T3</value>
+                <value lang="hu">Ke</value>
+            </record>
+            <record key="dayOfWeek.3">
+                <value lang="en">Wed</value>
+                <value lang="ru">Ср</value>
+                <value lang="pl">Śr</value>
+                <value lang="ar">الأربعاء</value>
+                <value lang="es">Mier</value>
+                <value lang="fr">Mer</value>
+                <value lang="pt">Qua</value>
+                <value lang="de">Mi</value>
+                <value lang="it">Mer</value>
+                <value lang="tr">Çrş</value>
+                <value lang="vi">T4</value>
+                <value lang="hu">Sze</value>
+            </record>
+            <record key="dayOfWeek.4">
+                <value lang="en">Thu</value>
+                <value lang="ru">Чт</value>
+                <value lang="pl">Czw</value>
+                <value lang="ar">الخميس</value>
+                <value lang="es">Jue</value>
+                <value lang="fr">Jeu</value>
+                <value lang="pt">Qui</value>
+                <value lang="de">Do</value>
+                <value lang="it">Gio</value>
+                <value lang="tr">Prş</value>
+                <value lang="vi">T5</value>
+                <value lang="hu">Csü</value>
+            </record>
+            <record key="dayOfWeek.5">
+                <value lang="en">Fri</value>
+                <value lang="ru">Пт</value>
+                <value lang="pl">Pt</value>
+                <value lang="ar">الجمعة</value>
+                <value lang="es">Vier</value>
+                <value lang="fr">Ven</value>
+                <value lang="pt">Sex</value>
+                <value lang="de">Fr</value>
+                <value lang="it">Ven</value>
+                <value lang="tr">Cum</value>
+                <value lang="vi">T6</value>
+                <value lang="hu">Pé</value>
+            </record>
+            <record key="dayOfWeek.6">
+                <value lang="en">Sat</value>
+                <value lang="ru">Сб</value>
+                <value lang="pl">Sob</value>
+                <value lang="ar">السبت</value>
+                <value lang="es">Sab</value>
+                <value lang="fr">Sam</value>
+                <value lang="pt">Sab</value>
+                <value lang="de">Sa</value>
+                <value lang="it">Sab</value>
+                <value lang="tr">Cmt</value>
+                <value lang="vi">T7</value>
+                <value lang="hu">Szo</value>
+            </record>
+            <record key="dayOfWeek.7">
+                <value lang="en">Sun</value>
+                <value lang="ru">Вс</value>
+                <value lang="pl">Niedz</value>
+                <value lang="ar">الأحد</value>
+                <value lang="es">Dom</value>
+                <value lang="fr">Dim</value>
+                <value lang="pt">Dom</value>
+                <value lang="de">So</value>
+                <value lang="it">Dom</value>
+                <value lang="tr">Paz</value>
+                <value lang="vi">CN</value>
+                <value lang="hu">Va</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="NinePatchEditor" prefix="npeditor">
+            <record key="title">
+                <value lang="en">Nine-patch editor %s</value>
+                <value lang="ru">Nine-patch редактор %s</value>
+                <value lang="pl">Edytor Nine-patch %s</value>
+                <value lang="ar">Nine-patch المحرر %s</value>
+                <value lang="es">Editor Nine-patch %s</value>
+                <value lang="fr">Editeur Nine-patch %s</value>
+                <value lang="pt">Editor nine-patch %s</value>
+                <value lang="de">Nine-patch Editor %s</value>
+                <value lang="it">Editor Nine-patch %s</value>
+                <value lang="tr">Nine-patch düzenleyici %s</value>
+                <value lang="vi">Bộ soạn thảo Nine-patch %s</value>
+                <value lang="hu">Nine-patch szerkesztő %s</value>
+            </record>
+            <record key="openImage">
+                <value lang="en" state="tooltip">Open image</value>
+                <value lang="ru" state="tooltip">Открыть изображение</value>
+                <value lang="pl" state="tooltip">Otwórz obraz</value>
+                <value lang="ar" state="tooltip">فتح صورة</value>
+                <value lang="es" state="tooltip">Abrir imagen</value>
+                <value lang="fr" state="tooltip">Ouvrir l&apos;image</value>
+                <value lang="pt" state="tooltip">Abrir imagem</value>
+                <value lang="de" state="tooltip">Bild öffnen</value>
+                <value lang="it" state="tooltip">Apri immagine</value>
+                <value lang="tr" state="tooltip">Görsel aç</value>
+                <value lang="vi" state="tooltip">Mở ảnh</value>
+                <value lang="hu" state="tooltip">Kép megnyitása</value>
+            </record>
+            <record key="openImage.title">
+                <value lang="en" state="tooltip">Choose image</value>
+                <value lang="ru" state="tooltip">Выберите изображение</value>
+                <value lang="pl" state="tooltip">Wybierz obraz</value>
+                <value lang="ar" state="tooltip">اختر صورة</value>
+                <value lang="es" state="tooltip">Elegir imagen</value>
+                <value lang="fr" state="tooltip">Choisir une image</value>
+                <value lang="pt" state="tooltip">Escolher imagem</value>
+                <value lang="de" state="tooltip">Bild auswählen</value>
+                <value lang="it" state="tooltip">Scegli immagine</value>
+                <value lang="tr" state="tooltip">Görsel seç</value>
+                <value lang="vi" state="tooltip">Chọn ảnh</value>
+                <value lang="hu" state="tooltip">Válasszon képfájlt</value>
+            </record>
+            <record key="saveImage">
+                <value lang="en" state="tooltip">Save image</value>
+                <value lang="ru" state="tooltip">Сохранить изображение</value>
+                <value lang="pl" state="tooltip">Zapisz obrazek</value>
+                <value lang="ar" state="tooltip">حفظ الصورة</value>
+                <value lang="es" state="tooltip">Guardar imagen</value>
+                <value lang="fr" state="tooltip">Enregistrer l&apos;image</value>
+                <value lang="pt" state="tooltip">Guardar imagem</value>
+                <value lang="de" state="tooltip">Bild speichern</value>
+                <value lang="it" state="tooltip">Salva immagine</value>
+                <value lang="tr" state="tooltip">Görseli kaydet</value>
+                <value lang="vi" state="tooltip">Lưu ảnh</value>
+                <value lang="hu" state="tooltip">Kép mentése</value>
+            </record>
+            <record key="saveImageAs">
+                <value lang="en" state="tooltip">Save image as</value>
+                <value lang="ru" state="tooltip">Сохранить изображение как</value>
+                <value lang="pl" state="tooltip">Zapisz obraz jako</value>
+                <value lang="ar" state="tooltip">حفظ الصورة باسم</value>
+                <value lang="es" state="tooltip">Guardar imagen como</value>
+                <value lang="fr" state="tooltip">Enregistrer l&apos;image sous</value>
+                <value lang="pt" state="tooltip">Guardar imagem como</value>
+                <value lang="de" state="tooltip">Bild speichern unter</value>
+                <value lang="it" state="tooltip">Salva immagine come</value>
+                <value lang="tr" state="tooltip">Görseli farklı kaydet</value>
+                <value lang="vi" state="tooltip">Lưu ảnh mới</value>
+                <value lang="hu" state="tooltip">Kép mentése másként</value>
+            </record>
+            <record key="saveImageAs.title">
+                <value lang="en" state="tooltip">Choose file to save into</value>
+                <value lang="ru" state="tooltip">Выберите файл для сохранения</value>
+                <value lang="pl" state="tooltip">Wybierz plik do zapisu</value>
+                <value lang="ar" state="tooltip">اختر الملف للحفظ فيه</value>
+                <value lang="es" state="tooltip">Elegir archivo para guardar en</value>
+                <value lang="fr" state="tooltip">Choisir un fichier à enregistrer dans</value>
+                <value lang="pt" state="tooltip">Escolha o ficheiro no qual guardar</value>
+                <value lang="de" state="tooltip">Escolha o ficheiro no qual guardar</value>
+                <value lang="it" state="tooltip">Scegli file da salvare in</value>
+                <value lang="tr" state="tooltip">Kaydetmek için dosya seç</value>
+                <value lang="vi" state="tooltip">Chọn file để lưu vào</value>
+                <value lang="hu" state="tooltip">Válassza ki a célfájlt</value>
+            </record>
+            <record key="undo">
+                <value lang="en" state="tooltip">Undo</value>
+                <value lang="ru" state="tooltip">Отмена</value>
+                <value lang="pl" state="tooltip">Cofnij</value>
+                <value lang="ar" state="tooltip">تراجع</value>
+                <value lang="es" state="tooltip">Deshacer</value>
+                <value lang="fr" state="tooltip">Annuler</value>
+                <value lang="pt" state="tooltip">Desfazer</value>
+                <value lang="de" state="tooltip">Rückgängig</value>
+                <value lang="it" state="tooltip">Annulla</value>
+                <value lang="tr" state="tooltip">Geri al</value>
+                <value lang="vi" state="tooltip">Hoàn tác</value>
+                <value lang="hu" state="tooltip">Visszavon</value>
+            </record>
+            <record key="redo">
+                <value lang="en" state="tooltip">Redo</value>
+                <value lang="ru" state="tooltip">Повтор</value>
+                <value lang="pl" state="tooltip">Powtórz</value>
+                <value lang="ar" state="tooltip">أعد</value>
+                <value lang="es" state="tooltip">Rehacer</value>
+                <value lang="fr" state="tooltip">Rétablir</value>
+                <value lang="pt" state="tooltip">Refazer</value>
+                <value lang="de" state="tooltip">Wiederholen</value>
+                <value lang="it" state="tooltip">Ripeti</value>
+                <value lang="tr" state="tooltip">Yinele</value>
+                <value lang="vi" state="tooltip">Làm lại</value>
+                <value lang="hu" state="tooltip">Ismét</value>
+            </record>
+            <record key="copyInfo">
+                <value lang="en" state="tooltip">Copy patch locations</value>
+                <value lang="ru" state="tooltip">Копировать расположение патчей</value>
+                <value lang="pl" state="tooltip">Skopiuj miejsca poprawki</value>
+                <value lang="ar" state="tooltip">انسخ مكان النقط</value>
+                <value lang="es" state="tooltip">Copiar localizaciones de parches</value>
+                <value lang="fr" state="tooltip">Copier l&apos;emplacement du patch</value>
+                <value lang="pt" state="tooltip">Copiar as localizações das patch</value>
+                <value lang="de" state="tooltip">Patchpfad kopieren</value>
+                <value lang="it" state="tooltip">Copia indirizzo patch</value>
+                <value lang="tr" state="tooltip">Yama konumunu kopyala</value>
+                <value lang="vi" state="tooltip">Sao chép vị trí vá</value>
+                <value lang="hu" state="tooltip">Patch elérési útjának másolása</value>
+            </record>
+            <record key="pasteInfo">
+                <value lang="en" state="tooltip">Paste patch locations</value>
+                <value lang="ru" state="tooltip">Вставить расположение патчей</value>
+                <value lang="pl" state="tooltip">Wklej miejsca poprawki</value>
+                <value lang="ar" state="tooltip">لصق مكان النقط</value>
+                <value lang="es" state="tooltip">Pegar localizaciones de parches</value>
+                <value lang="fr" state="tooltip">Coller l&apos;emplacement du patch</value>
+                <value lang="pt" state="tooltip">Colar as localizações das patch</value>
+                <value lang="de" state="tooltip">Patchpfad einfügen</value>
+                <value lang="it" state="tooltip">Incolla indirizzo patch</value>
+                <value lang="tr" state="tooltip">Yama konumunu yapıştır</value>
+                <value lang="vi" state="tooltip">Dán vị trí vá</value>
+                <value lang="hu" state="tooltip">Patch elérési útjának beillesztése</value>
+            </record>
+            <record key="rotateCCW">
+                <value lang="en" state="tooltip">Rotate by 90 degrees CCW</value>
+                <value lang="ru" state="tooltip">Поворот на 90 градусов против часовой стрелки</value>
+                <value lang="pl" state="tooltip">Obrót o 90 stopni w lewo</value>
+                <value lang="ar" state="tooltip">تدوير 90 درجة عكس عقارب الساعة</value>
+                <value lang="es" state="tooltip">Girar 90 grados en sentido antihorario</value>
+                <value lang="fr" state="tooltip">Rotation 90° anti-horaire</value>
+                <value lang="pt" state="tooltip">Girar 90 graus para a esquerda</value>
+                <value lang="de" state="tooltip">Um 90 Grad gegen den Uhrzeigersinn</value>
+                <value lang="it" state="tooltip">Ruotare di 90 gradi antiorario</value>
+                <value lang="tr" state="tooltip">Saatin ters yönünde 90 derece döndür</value>
+                <value lang="vi" state="tooltip">Xoay 90 độ ngược chiều kim đồng hồ</value>
+                <value lang="hu" state="tooltip">Forgatás 90°-al balra</value>
+            </record>
+            <record key="rotateCW">
+                <value lang="en" state="tooltip">Rotate by 90 degrees CW</value>
+                <value lang="ru" state="tooltip">Поворот на 90 градусов по часовой стрелке</value>
+                <value lang="pl" state="tooltip">Obrót o 90 stopni w prawo</value>
+                <value lang="ar" state="tooltip">تدوير 90 درجة في اتجاه عقارب الساعة</value>
+                <value lang="es" state="tooltip">Gire 90 grados hacia la derecha</value>
+                <value lang="fr" state="tooltip">Rotation 90° horaire</value>
+                <value lang="pt" state="tooltip">Girar 90 graus no sentido horário</value>
+                <value lang="de" state="tooltip">Um 90 Grad im Uhrzeigersinn</value>
+                <value lang="it" state="tooltip">Ruotare di 90 gradi orario</value>
+                <value lang="tr" state="tooltip">Saatin yönünde 90 derece döndür</value>
+                <value lang="vi" state="tooltip">Xoay 90 độ theo chiều kim đồng hồ</value>
+                <value lang="hu" state="tooltip">Forgatás 90°-al jobbra</value>
+            </record>
+            <record key="rotate180">
+                <value lang="en" state="tooltip">Rotate by 180 degrees</value>
+                <value lang="ru" state="tooltip">Поворот на 180 градусов</value>
+                <value lang="pl" state="tooltip">Obracać o 180 stopni</value>
+                <value lang="ar" state="tooltip">تدوير بمقدار 180 درجة</value>
+                <value lang="es" state="tooltip">Girar 180 grados</value>
+                <value lang="fr" state="tooltip">Rotation 180°</value>
+                <value lang="pt" state="tooltip">Girar 180 graus</value>
+                <value lang="de" state="tooltip">Drehen um 180 Grad</value>
+                <value lang="it" state="tooltip">Ruotare di 180 gradi</value>
+                <value lang="tr" state="tooltip">180 derece döndür</value>
+                <value lang="vi" state="tooltip">Xoay 180 độ</value>
+                <value lang="hu" state="tooltip">Forgatás 180°-al</value>
+            </record>
+            <record key="preview.text">
+                <value lang="en">Simple text</value>
+                <value lang="ru">Простой текст</value>
+                <value lang="pl">Prosty tekst</value>
+                <value lang="ar">كتابة</value>
+                <value lang="es">Texto simple</value>
+                <value lang="fr">Texte simple</value>
+                <value lang="pt">Texto simples</value>
+                <value lang="de">Einfacher Text</value>
+                <value lang="it">Testo di prova</value>
+                <value lang="tr">Basit metin</value>
+                <value lang="vi">Văn bản đơn giản</value>
+                <value lang="hu">Egyszerű szöveg</value>
+            </record>
+            <record key="preview.showIcon">
+                <value lang="en" state="tooltip">Show icon</value>
+                <value lang="ru" state="tooltip">Показывать иконку</value>
+                <value lang="pl" state="tooltip">Pokaż ikone</value>
+                <value lang="ar" state="tooltip">أظهر الأيقونة</value>
+                <value lang="es" state="tooltip">Mostrar ícono</value>
+                <value lang="fr" state="tooltip">Afficher l&apos;ícône</value>
+                <value lang="pt" state="tooltip">Mostrar ícone</value>
+                <value lang="de" state="tooltip">Icon anzeigen</value>
+                <value lang="it" state="tooltip">Mostra icona</value>
+                <value lang="tr" state="tooltip">İkonu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị biểu tượng</value>
+                <value lang="hu" state="tooltip">Ikon mutatása</value>
+            </record>
+            <record key="preview.showText">
+                <value lang="en" state="tooltip">Show text</value>
+                <value lang="ru" state="tooltip">Показывать текст</value>
+                <value lang="pl" state="tooltip">Pokaż tekst</value>
+                <value lang="ar" state="tooltip">أظهر الكتابة</value>
+                <value lang="es" state="tooltip">Mostrar texto</value>
+                <value lang="fr" state="tooltip">Afficher le texte</value>
+                <value lang="pt" state="tooltip">Mostrar texto</value>
+                <value lang="de" state="tooltip">Text anzeigen</value>
+                <value lang="it" state="tooltip">Mostra testo</value>
+                <value lang="tr" state="tooltip">Metni göster</value>
+                <value lang="vi" state="tooltip">Hiển thị văn bản</value>
+                <value lang="hu" state="tooltip">Szöveg mutatása</value>
+            </record>
+            <record key="preview.transparentBackground">
+                <value lang="en" state="tooltip">Show transparent background</value>
+                <value lang="ru" state="tooltip">Показывать прозрачный фон</value>
+                <value lang="pl" state="tooltip">Pokaż przeźroczyste tło</value>
+                <value lang="ar" state="tooltip">أظهر الخلفية الشفافة</value>
+                <value lang="es" state="tooltip">Mostrar fondo transparente</value>
+                <value lang="fr" state="tooltip">Afficher le fond transparent</value>
+                <value lang="pt" state="tooltip">Mostrar fundo transparente</value>
+                <value lang="de" state="tooltip">Transparenten Hintergrund anzeigen</value>
+                <value lang="it" state="tooltip">Mostra sfondo trasparente</value>
+                <value lang="tr" state="tooltip">Saydam arkaplan göster</value>
+                <value lang="vi" state="tooltip">Hiển thị nền trong suốt</value>
+                <value lang="hu" state="tooltip">Áttetsző háttér mutatása</value>
+            </record>
+            <record key="preview.coloredBackground">
+                <value lang="en" state="tooltip">Show colored background</value>
+                <value lang="ru" state="tooltip">Показывать цветной фон</value>
+                <value lang="pl" state="tooltip">Pokaż kolorowe tło</value>
+                <value lang="ar" state="tooltip">أظهر الخلفية الملونة</value>
+                <value lang="es" state="tooltip">Mostrar fondo colorido</value>
+                <value lang="fr" state="tooltip">Afficher le fond colorié</value>
+                <value lang="pt" state="tooltip">Mostrar fundo colorido</value>
+                <value lang="de" state="tooltip">Farbigen Hintergrund anzeigen</value>
+                <value lang="it" state="tooltip">Mostra sfondo colorato</value>
+                <value lang="tr" state="tooltip">Renkli arkaplan göster</value>
+                <value lang="vi" state="tooltip">Hiển thị nền màu</value>
+                <value lang="hu" state="tooltip">Színezett háttér mutatása</value>
+            </record>
+            <record key="preview.foregroundColor">
+                <value lang="en" state="tooltip">Text color</value>
+                <value lang="ru" state="tooltip">Цвет текста</value>
+                <value lang="pl" state="tooltip">Kolor tekstu</value>
+                <value lang="ar" state="tooltip">لون الكتابة</value>
+                <value lang="es" state="tooltip">Color del texto</value>
+                <value lang="fr" state="tooltip">Couleur du texte</value>
+                <value lang="pt" state="tooltip">Cor do texto</value>
+                <value lang="de" state="tooltip">Textfarbe</value>
+                <value lang="it" state="tooltip">Colore del testo</value>
+                <value lang="tr" state="tooltip">Metin rengi</value>
+                <value lang="vi" state="tooltip">Màu văn bản</value>
+                <value lang="hu" state="tooltip">Szöveg szín</value>
+            </record>
+            <record key="showSpacing">
+                <value lang="en" state="tooltip">Display spacing length between guidelines</value>
+                <value lang="ru" state="tooltip">Показывать расстояние между направляющими</value>
+                <value lang="pl" state="tooltip">Pokaż długość odstępu pomiędzy prowadnicami</value>
+                <value lang="ar" state="tooltip">أظهر المسافات بين الأسطر</value>
+                <value lang="es" state="tooltip">Desplegar longitud de espaciamiento entre las directrices</value>
+                <value lang="fr" state="tooltip">Afficher la longueur de l&apos;espacement entre les lignes</value>
+                <value lang="pt" state="tooltip">Mostar o tamanho do espaçamento entre as linhas guia</value>
+                <value lang="de" state="tooltip">Abstandslänge zwischen Hilfslinien anzeigen</value>
+                <value lang="it" state="tooltip">Mostra lunghezza della spaziatura fra le linee guida</value>
+                <value lang="tr" state="tooltip">Kılavuz çizgilerin arasında aralık uzunluğunu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị độ dài khoảng cách giữa những đường kẻ</value>
+                <value lang="hu" state="tooltip">Vezetővonalak közötti távolság mutatása</value>
+            </record>
+            <record key="showRuler">
+                <value lang="en" state="tooltip">Show ruler</value>
+                <value lang="ru" state="tooltip">Показывать линейку</value>
+                <value lang="pl" state="tooltip">Pokaż linie</value>
+                <value lang="ar" state="tooltip">أظهر المسطرة</value>
+                <value lang="es" state="tooltip">Mostrar regla</value>
+                <value lang="fr" state="tooltip">Afficher la règle</value>
+                <value lang="pt" state="tooltip">Mostrar régua</value>
+                <value lang="de" state="tooltip">Lineal anzeigen</value>
+                <value lang="it" state="tooltip">Mostra righello</value>
+                <value lang="tr" state="tooltip">Cetveli göster</value>
+                <value lang="vi" state="tooltip">Hiển thị thước kẻ</value>
+                <value lang="hu" state="tooltip">Vonalzó mutatása</value>
+            </record>
+            <record key="fillContent">
+                <value lang="en" state="tooltip">Show content area</value>
+                <value lang="ru" state="tooltip">Показывать область содержимого</value>
+                <value lang="pl" state="tooltip">Pokaż zawartość obszaru</value>
+                <value lang="ar" state="tooltip">أظهر مكان المحتوى</value>
+                <value lang="es" state="tooltip">Mostrar área de contenido</value>
+                <value lang="fr" state="tooltip">Afficher la zone de contenu</value>
+                <value lang="pt" state="tooltip">Mostrar área de conteúdo</value>
+                <value lang="de" state="tooltip">Inhaltsbereich anzeigen</value>
+                <value lang="it" state="tooltip">Mostra contenuto area</value>
+                <value lang="tr" state="tooltip">İçerin alanını göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vùng nội dung</value>
+                <value lang="hu" state="tooltip">Tartalom terület mutatása</value>
+            </record>
+            <record key="fillStretch">
+                <value lang="en" state="tooltip">Show stretched areas</value>
+                <value lang="ru" state="tooltip">Показывать растягиваемые области</value>
+                <value lang="pl" state="tooltip">Pokaż rozciągniete obszary</value>
+                <value lang="ar" state="tooltip">أظهر الأماكن الممدودة</value>
+                <value lang="es" state="tooltip">Mostrar áreas extendidas</value>
+                <value lang="fr" state="tooltip">Afficher la zone étendue</value>
+                <value lang="pt" state="tooltip">Mostrar áreas esticadas</value>
+                <value lang="de" state="tooltip">Gestreckte Bereiche anzeigen</value>
+                <value lang="it" state="tooltip">Mostra area estesa</value>
+                <value lang="tr" state="tooltip">Uzatılmış alanları göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vùng kéo dài</value>
+                <value lang="hu" state="tooltip">Kinyújtott terület mutatása</value>
+            </record>
+            <record key="rulerCursor">
+                <value lang="en" state="tooltip">Show cursor position on ruler</value>
+                <value lang="ru" state="tooltip">Показывать положение курсора на линейке</value>
+                <value lang="pl" state="tooltip">Pokaż pozycję kursora na linijce</value>
+                <value lang="ar" state="tooltip">أظهر موضع المؤشر على المسطرة</value>
+                <value lang="es" state="tooltip">Mostrar posición del cursor en regla</value>
+                <value lang="fr" state="tooltip">Voir la position du curseur sur la règle</value>
+                <value lang="pt" state="tooltip">Mostrar posição do cursor na régua</value>
+                <value lang="de" state="tooltip">Zeigerposition auf Lineal anzeigen</value>
+                <value lang="it" state="tooltip">Mostra posizione del cursore sul righello</value>
+                <value lang="tr" state="tooltip">Cetvelde kürsör konumunu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vị trí con trỏ trên thước kẻ</value>
+                <value lang="hu" state="tooltip">Kurzor helyzetének megjelenítése a vonalzón</value>
+            </record>
+            <record key="areaCursor">
+                <value lang="en" state="tooltip">Show cursor position on area</value>
+                <value lang="ru" state="tooltip">Показывать положение курсора на области</value>
+                <value lang="pl" state="tooltip">Pokaż pozycję kursora na obszarze</value>
+                <value lang="ar" state="tooltip">أظهر موضع المؤشر على المنطقة</value>
+                <value lang="es" state="tooltip">Mostrar posición del cursor en el área de</value>
+                <value lang="fr" state="tooltip">Voir la position du curseur sur la zone</value>
+                <value lang="pt" state="tooltip">Mostram a posição do cursor na área</value>
+                <value lang="de" state="tooltip">Zeigerposition in Bereich anzeigen</value>
+                <value lang="it" state="tooltip">Mostra posizione del cursore nell'area</value>
+                <value lang="tr" state="tooltip">Alanda kürsör konumunu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vị trí con trỏ trên vùng</value>
+                <value lang="hu" state="tooltip">Kurzor helyzetének megjelenítése a területen</value>
+            </record>
+            <record key="saveChanges.title">
+                <value lang="en">Confirm save</value>
+                <value lang="ru">Подтверждение сохранения</value>
+                <value lang="pl">Potwierdzenie zapisu</value>
+                <value lang="ar">تأكيد الحفظ</value>
+                <value lang="es">Confirmar guardado</value>
+                <value lang="fr">Confirmer l&apos;enregistrement</value>
+                <value lang="pt">Confirmar guardar</value>
+                <value lang="de">Speichern bestätigen</value>
+                <value lang="it">Conferma salvataggio</value>
+                <value lang="tr">Kaydetme onayı</value>
+                <value lang="vi">Xác nhận lưu</value>
+                <value lang="hu">Mentés megerősítése</value>
+            </record>
+            <record key="saveChanges.text">
+                <value lang="en">Do you want to save edited image?</value>
+                <value lang="ru">Сохранить изменённое изображение?</value>
+                <value lang="pl">Chcesz zapisać zmodyfikowany obraz?</value>
+                <value lang="ar">هل ترغب في حفظ التغييرات؟</value>
+                <value lang="es">¿Desea guardar la imagen editada?</value>
+                <value lang="fr">Voulez-vous enregistrer l&apos;image éditée?</value>
+                <value lang="pt">Deseja guardar a imagem editada?</value>
+                <value lang="de">Wollen Sie das bearbeitete Bild speichern?</value>
+                <value lang="it">Salvare l'immagine modificata?</value>
+                <value lang="tr">Değiştirilmiş görseli kaydetmek istiyor musun?</value>
+                <value lang="vi">Bạn có muốn lưu ảnh đã sửa?</value>
+                <value lang="hu">El kívánja menteni a szerkesztett képet?</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebAsyncTreeFilterField" prefix="treefilter">
+            <record key="inputprompt">
+                <value lang="en" state="input-prompt">Search...</value>
+                <value lang="ru" state="input-prompt">Искать...</value>
+                <value lang="pl" state="input-prompt">Szukaj...</value>
+                <value lang="ar" state="input-prompt">بحث ...</value>
+                <value lang="es" state="input-prompt">Buscar...</value>
+                <value lang="fr" state="input-prompt">Rechercher...</value>
+                <value lang="pt" state="input-prompt">Pesquisar...</value>
+                <value lang="de" state="input-prompt">Suchen...</value>
+                <value lang="it" state="input-prompt">Cerca...</value>
+                <value lang="tr" state="input-prompt">Ara...</value>
+                <value lang="vi" state="input-prompt">Tìm kiếm...</value>
+                <value lang="hu" state="input-prompt">Keresés...</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebDocumentPane" prefix="docpane">
+            <record key="close">
+                <value lang="en">Close</value>
+                <value lang="ru">Закрыть</value>
+                <value lang="pl">Blisko</value>
+                <value lang="ar">إغلاق</value>
+                <value lang="es">Cerca</value>
+                <value lang="fr">Fermer</value>
+                <value lang="pt">Perto</value>
+                <value lang="de">Schließen</value>
+                <value lang="it">Chiudi</value>
+                <value lang="tr">Kapat</value>
+                <value lang="vi">Đóng</value>
+                <value lang="hu">Bezárás</value>
+            </record>
+            <record key="closeAll">
+                <value lang="en">Close all</value>
+                <value lang="ru">Закрыть все</value>
+                <value lang="pl">Zamknij wszystkie</value>
+                <value lang="ar">إغلاق الكل</value>
+                <value lang="es">Cierra todo</value>
+                <value lang="fr">Ferme tout</value>
+                <value lang="pt">Feche tudo</value>
+                <value lang="de">Alle schließen</value>
+                <value lang="it">Chiudi tutto</value>
+                <value lang="tr">Hepsini kapat</value>
+                <value lang="vi">Đóng tất cả</value>
+                <value lang="hu">Zárjon be mindent</value>
+            </record>
+            <record key="closeOthers">
+                <value lang="en">Close others</value>
+                <value lang="ru">Закрыть остальные</value>
+                <value lang="pl">Zamknij inne</value>
+                <value lang="ar">أغلق البقية</value>
+                <value lang="es">Cerrar demás</value>
+                <value lang="fr">Fermer les autres</value>
+                <value lang="pt">Fechar os outros</value>
+                <value lang="de">Schließen andere</value>
+                <value lang="it">Chiudi gli altri</value>
+                <value lang="tr">Diğerleri kapat</value>
+                <value lang="vi">Đóng những thứ khác</value>
+                <value lang="hu">Többi bezárása</value>
+            </record>
+            <record key="left">
+                <value lang="en">Move to left group</value>
+                <value lang="ru">Переместить в левую группу</value>
+                <value lang="pl">Przenieść do lewej grupy</value>
+                <value lang="ar">انتقال إلى مجموعة اليسار</value>
+                <value lang="es">Mover al grupo de la izquierda</value>
+                <value lang="fr">Déplacer dans le groupe de gauche</value>
+                <value lang="pt">Mover para grupo deixou</value>
+                <value lang="de">Nach links Gruppe</value>
+                <value lang="it">Sposta nel gruppo di sinistra</value>
+                <value lang="tr">Sol gruba taşı</value>
+                <value lang="vi">Chuyển sang nhóm bên trái</value>
+                <value lang="hu">Mozgatás a bal oldali csoportba</value>
+            </record>
+            <record key="right">
+                <value lang="en">Move to right group</value>
+                <value lang="ru">Переместить в правую группу</value>
+                <value lang="pl">Przenieść się do odpowiedniej grupy</value>
+                <value lang="ar">انتقال إلى مجموعة اليمين</value>
+                <value lang="es">Mover al grupo correcto</value>
+                <value lang="fr">Déplacer dans le groupe de droite</value>
+                <value lang="pt">Mover para grupo certo</value>
+                <value lang="de">Bewegen nach rechts-Gruppe</value>
+                <value lang="it">Sposta nel gruppo di destra</value>
+                <value lang="tr">Sağ gruba taşı</value>
+                <value lang="vi">Chuyển sang nhóm bên phải</value>
+                <value lang="hu">Mozgatás a jobb oldali csoportba</value>
+            </record>
+            <record key="top">
+                <value lang="en">Move to top group</value>
+                <value lang="ru">Переместить в верхнюю группу</value>
+                <value lang="pl">Przesuń do góry grupy</value>
+                <value lang="ar">انتقال إلى المجموعة العلوية</value>
+                <value lang="es">Mover al grupo de cabeza</value>
+                <value lang="fr">Déplacer dans le groupe du haut</value>
+                <value lang="pt">Mover para o início do grupo</value>
+                <value lang="de">Gehen Sie zu Top-Gruppe</value>
+                <value lang="it">Sposta nel gruppo in alto</value>
+                <value lang="tr">Üst gruba taşı</value>
+                <value lang="vi">Chuyển lên nhóm trên</value>
+                <value lang="hu">Mozgatás a fenti csoportba</value>
+            </record>
+            <record key="bottom">
+                <value lang="en">Move to bottom group</value>
+                <value lang="ru">Переместить в нижнюю группу</value>
+                <value lang="pl">Przenieś do grupy dolnej</value>
+                <value lang="ar">الانتقال إلى المجموعة السفلية</value>
+                <value lang="es">Mover al grupo inferior</value>
+                <value lang="fr">Déplacer dans le groupe du bas</value>
+                <value lang="pt">Mover para grupo inferior</value>
+                <value lang="de">Nach ganz unten Gruppe</value>
+                <value lang="it">Sposta nel gruppo in basso</value>
+                <value lang="tr">Alt gruba taşı</value>
+                <value lang="vi">Chuyển xuống nhóm dưới</value>
+                <value lang="hu">Mozgatás a lenti csoportba</value>
+            </record>
+            <record key="rotate">
+                <value lang="en">Change split orientation</value>
+                <value lang="ru">Сменить ориентацию разделителя</value>
+                <value lang="pl">Zmienić orientację podziału</value>
+                <value lang="ar">تغيير اتجاه التقسيم</value>
+                <value lang="es">Cambiar la orientación de división</value>
+                <value lang="fr">Changer l'orientation de la division</value>
+                <value lang="pt">Altere a orientação de divisão</value>
+                <value lang="de">Ändern Sie Split-Orientierung</value>
+                <value lang="it">Cambia orientamento divisore</value>
+                <value lang="tr">Bölme yönünü değiştir</value>
+                <value lang="vi">Thay đổi hướng chia</value>
+                <value lang="hu">Elválasztó orientációjának módosítása</value>
+            </record>
+            <record key="swap">
+                <value lang="en">Swap groups</value>
+                <value lang="ru">Поменять группы местами</value>
+                <value lang="pl">Grupy swapowe</value>
+                <value lang="ar">مجموعات Swap</value>
+                <value lang="es">Grupos de swap</value>
+                <value lang="fr">Intervertir les groupes</value>
+                <value lang="pt">Grupos de swap</value>
+                <value lang="de">Swap-Gruppen</value>
+                <value lang="it">Gruppi swap</value>
+                <value lang="tr">Grupları değiştir</value>
+                <value lang="vi">Đảo các nhóm</value>
+                <value lang="hu">Csoportok cseréje</value>
+            </record>
+            <record key="unsplit">
+                <value lang="en">Combine groups</value>
+                <value lang="ru">Объединить группы</value>
+                <value lang="pl">łączyć grupy</value>
+                <value lang="ar">الجمع بين المجموعات</value>
+                <value lang="es">Combine grupos</value>
+                <value lang="fr">Combiner les groupes</value>
+                <value lang="pt">Combine grupos</value>
+                <value lang="de">Kombinieren Sie Gruppen</value>
+                <value lang="it">Unisci gruppi</value>
+                <value lang="tr">Grupları birleştir</value>
+                <value lang="vi">Gộp các nhóm</value>
+                <value lang="hu">Csoportok összevonása</value>
+            </record>
+            <record key="unsplitall">
+                <value lang="en">Combine all groups</value>
+                <value lang="ru">Объединить все группы</value>
+                <value lang="pl">Połączyć wszystkie grupy</value>
+                <value lang="ar">الجمع بين جميع المجموعات</value>
+                <value lang="es">Combine todos los grupos</value>
+                <value lang="fr">Combiner tous les groupes</value>
+                <value lang="pt">Misture todos os grupos</value>
+                <value lang="de">Kombinieren Sie alle Gruppen</value>
+                <value lang="it">Unisci tutti i gruppi</value>
+                <value lang="tr">Tüm grupları birleştir</value>
+                <value lang="vi">Gộp tất cả các nhóm</value>
+                <value lang="hu">Összes csoport összevonása</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="Dockable framework" prefix="dockable">
+            <Dictionary name="WebDockableFrame" prefix="frame">
+                <record key="minimize">
+                    <value lang="en" state="tooltip">Hide frame</value>
+                    <value lang="ru" state="tooltip">Скрыть фрейм</value>
+                    <value lang="pl" state="tooltip">Ukryj ramki</value>
+                    <value lang="ar" state="tooltip">إخفاء الإطار</value>
+                    <value lang="es" state="tooltip">Ocultar marco</value>
+                    <value lang="fr" state="tooltip">Masquer le cadre</value>
+                    <value lang="pt" state="tooltip">Ocultar quadro</value>
+                    <value lang="de" state="tooltip">Ausblenden rahmen</value>
+                    <value lang="it" state="tooltip">Nascondi cornice</value>
+                    <value lang="tr" state="tooltip">Gizle çerçevesi</value>
+                    <value lang="vi" state="tooltip">Ẩn khung</value>
+                    <value lang="hu" state="tooltip">Kis méret</value>
+                </record>
+                <record key="dock">
+                    <value lang="en" state="tooltip">Dock frame</value>
+                    <value lang="ru" state="tooltip">Закрепить фрейм</value>
+                    <value lang="pl" state="tooltip">Rama dock</value>
+                    <value lang="ar" state="tooltip">ألصق الإطار</value>
+                    <value lang="es" state="tooltip">Marco de muelle</value>
+                    <value lang="fr" state="tooltip">Attacher le cadre</value>
+                    <value lang="pt" state="tooltip">Doca quadro</value>
+                    <value lang="de" state="tooltip">Dock rahmen</value>
+                    <value lang="it" state="tooltip">Frame dock</value>
+                    <value lang="tr" state="tooltip">Dok çerçeve</value>
+                    <value lang="vi" state="tooltip">Dock khung</value>
+                    <value lang="hu" state="tooltip">Dokkolás</value>
+                </record>
+                <record key="float">
+                    <value lang="en" state="tooltip">Detach frame</value>
+                    <value lang="ru" state="tooltip">Отделить фрейм</value>
+                    <value lang="pl" state="tooltip">Zdjąć ramkę</value>
+                    <value lang="ar" state="tooltip">افصل الإطار</value>
+                    <value lang="es" state="tooltip">Separar trama</value>
+                    <value lang="fr" state="tooltip">Détacher le cadre</value>
+                    <value lang="pt" state="tooltip">Retire quadro</value>
+                    <value lang="de" state="tooltip">Trennen rahmen</value>
+                    <value lang="it" state="tooltip">Staccare cornice</value>
+                    <value lang="tr" state="tooltip">Çerçeve ayırın</value>
+                    <value lang="vi" state="tooltip">Tháo khung</value>
+                    <value lang="hu" state="tooltip">Lebegtetés</value>
+                </record>
+                <record key="restore">
+                    <value lang="en" state="tooltip">Restore frame size</value>
+                    <value lang="ru" state="tooltip">Восстановить размер фрейма</value>
+                    <value lang="pl" state="tooltip">Przywróć rozmiar ramki</value>
+                    <value lang="ar" state="tooltip">استعادة حجم الإطار</value>
+                    <value lang="es" state="tooltip">Restaurar tamaño de cuadro</value>
+                    <value lang="fr" state="tooltip">Restaurer la taille du cadre</value>
+                    <value lang="pt" state="tooltip">Restaurar tamanho do quadro</value>
+                    <value lang="de" state="tooltip">Wiederherstellen rahmengröße</value>
+                    <value lang="it" state="tooltip">Ripristinare dimensione del frame</value>
+                    <value lang="tr" state="tooltip">Çerçeve boyutunu restore</value>
+                    <value lang="vi" state="tooltip">Khôi phục kích thước khung hình</value>
+                    <value lang="hu" state="tooltip">Ablakméret visszaállítása</value>
+                </record>
+                <record key="maximize">
+                    <value lang="en" state="tooltip">Maximize frame</value>
+                    <value lang="ru" state="tooltip">Максимизировать фрейм</value>
+                    <value lang="pl" state="tooltip">Maksymalizacja ramkę</value>
+                    <value lang="ar" state="tooltip">تكبير الإطار</value>
+                    <value lang="es" state="tooltip">Maximizar la trama</value>
+                    <value lang="fr" state="tooltip">Maximiser le cadre</value>
+                    <value lang="pt" state="tooltip">Maximize quadro</value>
+                    <value lang="de" state="tooltip">Maximieren rahmen</value>
+                    <value lang="it" state="tooltip">Massimizzare cornice</value>
+                    <value lang="tr" state="tooltip">Çerçeve üst düzeye çıkarmak</value>
+                    <value lang="vi" state="tooltip">Tối đa hóa khung</value>
+                    <value lang="hu" state="tooltip">Teljes méret</value>
+                </record>
+                <record key="close">
+                    <value lang="en" state="tooltip">Close frame</value>
+                    <value lang="ru" state="tooltip">Закрыть фрейм</value>
+                    <value lang="pl" state="tooltip">Blisko ramki</value>
+                    <value lang="ar" state="tooltip">إغلاق الإطار</value>
+                    <value lang="es" state="tooltip">Cerrar marco</value>
+                    <value lang="fr" state="tooltip">Fermer le cadre</value>
+                    <value lang="pt" state="tooltip">Fechar quadro</value>
+                    <value lang="de" state="tooltip">Schließen rahmen</value>
+                    <value lang="it" state="tooltip">Chiudi frame</value>
+                    <value lang="tr" state="tooltip">Yakın çerçeve</value>
+                    <value lang="vi" state="tooltip">Đóng khung</value>
+                    <value lang="hu" state="tooltip">Ablak bezárása</value>
+                </record>
+            </Dictionary>
+        </Dictionary>
+        <Dictionary name="InterfaceInspector" prefix="inspector">
+            <record key="windows">
+                <value lang="en">All available windows</value>
+                <value lang="ru">Все доступные окна</value>
+                <value lang="pl"></value>
+                <value lang="ar"></value>
+                <value lang="es"></value>
+                <value lang="fr"></value>
+                <value lang="pt"></value>
+                <value lang="de"></value>
+                <value lang="it"></value>
+                <value lang="tr"></value>
+                <value lang="vi"></value>
+                <value lang="hu"></value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Translations>
+        <Translation lang="en" title="English" author="mgarin" />
+        <Translation lang="ru" title="Русский" author="mgarin" />
+        <Translation lang="pl" title="Polski" author="sciepa" />
+        <Translation lang="ar" title="العربية" author="Abu Abdullah" />
+        <Translation lang="es" title="Español" author="pablovilas" />
+        <Translation lang="fr" title="Français" author="nmagre" />
+        <Translation lang="pt" title="Português" author="esimoes" />
+        <Translation lang="de" title="Deutsch" author="trashguru" />
+        <Translation lang="it" title="Italiano" author="cR0Ck" />
+        <Translation lang="tr" title="Turkish" author="Tilelook" />
+        <Translation lang="vi" title="Tiếng Việt" author="espringtran" />
+        <Translation lang="hu" title="Magyar" author="kz" />
+    </Translations>
+</Dictionary>

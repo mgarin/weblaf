@@ -1,0 +1,8 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.grouping.GroupPane -->
+
+    <!-- Group pane -->
+    <style type="panel" id="grouppane" extends="transparent" />
+
+</skin>

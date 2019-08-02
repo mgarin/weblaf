@@ -17,32 +17,54 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.extended.painter.Painter;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SizeUtils;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.SizeMethods;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.DictionaryListener;
+import com.alee.managers.language.LanguageEventMethods;
+import com.alee.managers.language.LanguageListener;
+import com.alee.managers.language.UILanguageManager;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
+import com.alee.managers.style.*;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 
 /**
- * This JScrollBar extension class provides a direct access to WebScrollBarUI methods.
+ * {@link JScrollBar} extension class.
+ * It contains various useful methods to simplify core component usage.
+ *
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JScrollBar
+ * @see WebScrollBarUI
+ * @see ScrollBarPainter
  */
-
-public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<WebScrollBar>
+public class WebScrollBar extends JScrollBar implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
+        LanguageEventMethods, SettingsMethods, FontMethods<WebScrollBar>, SizeMethods<WebScrollBar>
 {
+    /**
+     * Properties.
+     */
+    public static final String HORIZONTAL_SCROLL_BAR_PROPERTY = "horizontalScrollBar";
+    public static final String VERTICAL_SCROLL_BAR_PROPERTY = "verticalScrollBar";
+
     /**
      * Constructs new scroll bar.
      */
     public WebScrollBar ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -52,7 +74,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      */
     public WebScrollBar ( final int orientation )
     {
-        super ( orientation );
+        this ( StyleId.auto, orientation );
     }
 
     /**
@@ -66,7 +88,44 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      */
     public WebScrollBar ( final int orientation, final int value, final int extent, final int min, final int max )
     {
+        this ( StyleId.auto, orientation, value, extent, min, max );
+    }
+
+    /**
+     * Constructs new scroll bar.
+     *
+     * @param id style ID
+     */
+    public WebScrollBar ( final StyleId id )
+    {
+        this ( id, VERTICAL );
+    }
+
+    /**
+     * Constructs new scroll bar with the specified orientation.
+     *
+     * @param id          style ID
+     * @param orientation scroll bar orientation
+     */
+    public WebScrollBar ( final StyleId id, final int orientation )
+    {
+        this ( id, orientation, 0, 10, 0, 100 );
+    }
+
+    /**
+     * Constructs new scroll bar with the specified orientation and values.
+     *
+     * @param id          style ID
+     * @param orientation scroll bar orientation
+     * @param value       scroll bar value
+     * @param extent      scroll bar extent
+     * @param min         scroll bar minimum value
+     * @param max         scroll bar maximum value
+     */
+    public WebScrollBar ( final StyleId id, final int orientation, final int value, final int extent, final int min, final int max )
+    {
         super ( orientation, value, extent, min, max );
+        setStyleId ( id );
     }
 
     /**
@@ -74,9 +133,9 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      *
      * @return true if scroll bar arrow buttons should be displayed, false otherwise
      */
-    public boolean isPaintButtons ()
+    public boolean isDisplayButtons ()
     {
-        return getWebUI ().isPaintButtons ();
+        return getUI ().isDisplayButtons ();
     }
 
     /**
@@ -85,9 +144,9 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * @param paintButtons whether scroll bar arrow buttons should be displayed or not
      * @return scroll bar
      */
-    public WebScrollBar setPaintButtons ( final boolean paintButtons )
+    public WebScrollBar setDisplayButtons ( final boolean paintButtons )
     {
-        getWebUI ().setPaintButtons ( paintButtons );
+        getUI ().setDisplayButtons ( paintButtons );
         return this;
     }
 
@@ -96,9 +155,9 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      *
      * @return true if scroll bar track should be displayed, false otherwise
      */
-    public boolean isPaintTrack ()
+    public boolean isDisplayTrack ()
     {
-        return getWebUI ().isPaintTrack ();
+        return getUI ().isDisplayTrack ();
     }
 
     /**
@@ -107,305 +166,570 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * @param paintTrack whether scroll bar track should be displayed or not
      * @return scroll bar
      */
-    public WebScrollBar setPaintTrack ( final boolean paintTrack )
+    public WebScrollBar setDisplayTrack ( final boolean paintTrack )
     {
-        getWebUI ().setPaintTrack ( paintTrack );
+        getUI ().setDisplayTrack ( paintTrack );
         return this;
     }
 
-    /**
-     * Returns scroll bar content margin.
-     *
-     * @return scroll bar content margin
-     */
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.scrollbar;
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( this );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin resetSkin ()
+    {
+        return StyleManager.resetSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public boolean resetCustomPainter ()
+    {
+        return StyleManager.resetCustomPainter ( this );
+    }
+
+    @Override
+    public Shape getShape ()
+    {
+        return ShapeMethodsImpl.getShape ( this );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param margin new scroll bar content margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param top    new scroll bar content top margin
-     * @param left   new scroll bar content left margin
-     * @param bottom new scroll bar content bottom margin
-     * @param right  new scroll bar content right margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        return setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param spacing new scroll bar content margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
-     * Returns scroll bar painter.
-     *
-     * @return scroll bar painter
-     */
-    public Painter getPainter ()
-    {
-        return StyleManager.getPainter ( this );
-    }
-
-    /**
-     * Sets scroll bar painter.
-     * Pass null to remove scroll bar painter.
-     *
-     * @param painter new scroll bar painter
-     * @return scroll bar
-     */
-    public WebScrollBar setPainter ( final Painter painter )
-    {
-        StyleManager.setCustomPainter ( this, painter );
-        return this;
-    }
-
-    /**
-     * Returns decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @return decrease button painter
-     */
-    public Painter getDecreaseButtonPainter ()
-    {
-        return getWebUI ().getDecreaseButtonPainter ();
-    }
-
-    /**
-     * Sets decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @param painter new decrease button painter
-     * @return scroll bar
-     */
-    public WebScrollBar setDecreaseButtonPainter ( final Painter painter )
-    {
-        getWebUI ().setDecreaseButtonPainter ( painter );
-        return this;
-    }
-
-    /**
-     * Returns increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @return increase button painter
-     */
-    public Painter getIncreaseButtonPainter ()
-    {
-        return getWebUI ().getIncreaseButtonPainter ();
-    }
-
-    /**
-     * Sets increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @param painter new increase button painter
-     * @return scroll bar
-     */
-    public WebScrollBar setIncreaseButtonPainter ( final Painter painter )
-    {
-        getWebUI ().setIncreaseButtonPainter ( painter );
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public void setMargin ( final int margin )
     {
-        return getWebUI ().getStyleId ();
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final String id )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        getWebUI ().setStyleId ( id );
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
     }
 
-    /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    public WebScrollBarUI getWebUI ()
-    {
-        return ( WebScrollBarUI ) getUI ();
-    }
-
-    /**
-     * Installs a Web-UI into this component.
-     */
     @Override
-    public void updateUI ()
+    public void setMargin ( final Insets margin )
     {
-        if ( getUI () == null || !( getUI () instanceof WebScrollBarUI ) )
-        {
-            try
-            {
-                setUI ( ( WebScrollBarUI ) ReflectUtils.createInstance ( WebLookAndFeel.scrollBarUI ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebScrollBarUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Insets getPadding ()
+    {
+        return PaddingMethodsImpl.getPadding ( this );
+    }
+
+    @Override
+    public void setPadding ( final int padding )
+    {
+        PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseExit ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusGain ( this, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        UILanguageManager.addLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        UILanguageManager.removeLanguageListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        UILanguageManager.removeLanguageListeners ( getRootPane () );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        UILanguageManager.addDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        UILanguageManager.removeDictionaryListeners ( getRootPane () );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
+    }
+
+    @Override
+    public WebScrollBar setPlainFont ()
+    {
+        return FontMethodsImpl.setPlainFont ( this );
+    }
+
+    @Override
+    public WebScrollBar setPlainFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setPlainFont ( this, apply );
+    }
+
+    @Override
+    public boolean isPlainFont ()
+    {
+        return FontMethodsImpl.isPlainFont ( this );
+    }
+
+    @Override
+    public WebScrollBar setBoldFont ()
+    {
+        return FontMethodsImpl.setBoldFont ( this );
+    }
+
+    @Override
+    public WebScrollBar setBoldFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setBoldFont ( this, apply );
+    }
+
+    @Override
+    public boolean isBoldFont ()
+    {
+        return FontMethodsImpl.isBoldFont ( this );
+    }
+
+    @Override
+    public WebScrollBar setItalicFont ()
+    {
+        return FontMethodsImpl.setItalicFont ( this );
+    }
+
+    @Override
+    public WebScrollBar setItalicFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setItalicFont ( this, apply );
+    }
+
+    @Override
+    public boolean isItalicFont ()
+    {
+        return FontMethodsImpl.isItalicFont ( this );
+    }
+
+    @Override
+    public WebScrollBar setFontStyle ( final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontStyle ( this, bold, italic );
+    }
+
+    @Override
+    public WebScrollBar setFontStyle ( final int style )
+    {
+        return FontMethodsImpl.setFontStyle ( this, style );
+    }
+
+    @Override
+    public WebScrollBar setFontSize ( final int fontSize )
+    {
+        return FontMethodsImpl.setFontSize ( this, fontSize );
+    }
+
+    @Override
+    public WebScrollBar changeFontSize ( final int change )
+    {
+        return FontMethodsImpl.changeFontSize ( this, change );
+    }
+
+    @Override
+    public int getFontSize ()
+    {
+        return FontMethodsImpl.getFontSize ( this );
+    }
+
+    @Override
+    public WebScrollBar setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, bold, italic );
+    }
+
+    @Override
+    public WebScrollBar setFontSizeAndStyle ( final int fontSize, final int style )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, style );
+    }
+
+    @Override
+    public WebScrollBar setFontName ( final String fontName )
+    {
+        return FontMethodsImpl.setFontName ( this, fontName );
+    }
+
+    @Override
+    public String getFontName ()
+    {
+        return FontMethodsImpl.getFontName ( this );
+    }
+
     @Override
     public int getPreferredWidth ()
     {
-        return SizeUtils.getPreferredWidth ( this );
+        return SizeMethodsImpl.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setPreferredWidth ( final int preferredWidth )
     {
-        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
-        return SizeUtils.getPreferredHeight ( this );
+        return SizeMethodsImpl.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setPreferredHeight ( final int preferredHeight )
     {
-        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
-        return SizeUtils.getMinimumWidth ( this );
+        return SizeMethodsImpl.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMinimumWidth ( final int minimumWidth )
     {
-        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
-        return SizeUtils.getMinimumHeight ( this );
+        return SizeMethodsImpl.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMinimumHeight ( final int minimumHeight )
     {
-        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
-        return SizeUtils.getMaximumWidth ( this );
+        return SizeMethodsImpl.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMaximumWidth ( final int maximumWidth )
     {
-        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
-        return SizeUtils.getMaximumHeight ( this );
+        return SizeMethodsImpl.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMaximumHeight ( final int maximumHeight )
     {
-        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
-        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
     @Override
     public WebScrollBar setPreferredSize ( final int width, final int height )
     {
-        return SizeUtils.setPreferredSize ( this, width, height );
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (LaF) object that renders this component.
+     *
+     * @return the {@link WScrollBarUI} object that renders this component
+     */
+    @Override
+    public WScrollBarUI getUI ()
+    {
+        return ( WScrollBarUI ) super.getUI ();
+    }
+
+    /**
+     * Sets the LaF object that renders this component.
+     *
+     * @param ui {@link WScrollBarUI}
+     */
+    public void setUI ( final WScrollBarUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

@@ -17,18 +17,18 @@
 
 package com.alee.extended.window;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.window.WebDialog;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.MathUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
 import java.awt.*;
 import java.awt.event.*;
 
 /**
- * User: mgarin Date: 24.07.12 Time: 17:53
+ * @author Mikle Garin
  */
-
 public class WebFadeDialog extends WebDialog implements ActionListener, WindowFocusListener, WindowListener
 {
     private float maximumOpacity = 0.9f;
@@ -42,7 +42,7 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
     {
         super ();
 
-        updater = new WebTimer ( "WebFadeDialog.updater", StyleConstants.fastAnimationDelay, this );
+        updater = new WebTimer ( "WebFadeDialog.updater", SwingUtils.frameRateDelay ( 48 ), this );
         addWindowFocusListener ( this );
         addWindowListener ( this );
     }
@@ -52,7 +52,7 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
         return maximumOpacity;
     }
 
-    public void setMaximumOpacity ( float maximumOpacity )
+    public void setMaximumOpacity ( final float maximumOpacity )
     {
         this.maximumOpacity = maximumOpacity;
     }
@@ -62,7 +62,7 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
         return minimumOpacity;
     }
 
-    public void setMinimumOpacity ( float minimumOpacity )
+    public void setMinimumOpacity ( final float minimumOpacity )
     {
         this.minimumOpacity = minimumOpacity;
     }
@@ -72,13 +72,13 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
         return minimumOpacityDistance;
     }
 
-    public void setMinimumOpacityDistance ( int minimumOpacityDistance )
+    public void setMinimumOpacityDistance ( final int minimumOpacityDistance )
     {
         this.minimumOpacityDistance = minimumOpacityDistance;
     }
 
     @Override
-    public void windowGainedFocus ( WindowEvent e )
+    public void windowGainedFocus ( final WindowEvent e )
     {
         updater.stop ();
         opacity = maximumOpacity;
@@ -86,7 +86,7 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
     }
 
     @Override
-    public void windowLostFocus ( WindowEvent e )
+    public void windowLostFocus ( final WindowEvent e )
     {
         if ( isShowing () )
         {
@@ -95,73 +95,73 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
     }
 
     @Override
-    public void windowOpened ( WindowEvent e )
+    public void windowOpened ( final WindowEvent e )
     {
         //
     }
 
     @Override
-    public void windowClosed ( WindowEvent e )
+    public void windowClosed ( final WindowEvent e )
     {
         updater.stop ();
     }
 
     @Override
-    public void windowClosing ( WindowEvent e )
+    public void windowClosing ( final WindowEvent e )
     {
 
     }
 
     @Override
-    public void windowIconified ( WindowEvent e )
+    public void windowIconified ( final WindowEvent e )
     {
 
     }
 
     @Override
-    public void windowDeiconified ( WindowEvent e )
+    public void windowDeiconified ( final WindowEvent e )
     {
 
     }
 
     @Override
-    public void windowActivated ( WindowEvent e )
+    public void windowActivated ( final WindowEvent e )
     {
 
     }
 
     @Override
-    public void windowDeactivated ( WindowEvent e )
+    public void windowDeactivated ( final WindowEvent e )
     {
 
     }
 
     @Override
-    public void actionPerformed ( ActionEvent e )
+    public void actionPerformed ( final ActionEvent e )
     {
-        float newOpacity;
+        final float newOpacity;
         if ( !WebFadeDialog.this.isActive () )
         {
-            Point mp = MouseInfo.getPointerInfo ().getLocation ();
-            Rectangle bounds = WebFadeDialog.this.getBounds ();
+            final Point mp = CoreSwingUtils.getMouseLocation ();
+            final Rectangle bounds = WebFadeDialog.this.getBounds ();
             if ( bounds.contains ( mp ) )
             {
                 newOpacity = maximumOpacity;
             }
             else
             {
-                int distance;
+                final int distance;
                 if ( mp.y < bounds.y )
                 {
                     if ( mp.x < bounds.x )
                     {
                         distance = minimumOpacityDistance -
-                                ( MathUtils.sqrt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( bounds.x - mp.x ) ) );
+                                MathUtils.sqrt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( bounds.x - mp.x ) );
                     }
                     else if ( mp.x > bounds.x + bounds.width )
                     {
                         distance = minimumOpacityDistance -
-                                ( MathUtils.sqrt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( mp.x - bounds.x - bounds.width ) ) );
+                                MathUtils.sqrt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( mp.x - bounds.x - bounds.width ) );
                     }
                     else
                     {
@@ -183,13 +183,13 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
                 {
                     if ( mp.x < bounds.x )
                     {
-                        distance = minimumOpacityDistance - ( MathUtils
-                                .sqrt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) + MathUtils.sqr ( bounds.x - mp.x ) ) );
+                        distance = minimumOpacityDistance -
+                                MathUtils.sqrt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) + MathUtils.sqr ( bounds.x - mp.x ) );
                     }
                     else if ( mp.x > bounds.x + bounds.width )
                     {
-                        distance = minimumOpacityDistance - ( MathUtils.sqrt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) +
-                                MathUtils.sqr ( mp.x - bounds.x - bounds.width ) ) );
+                        distance = minimumOpacityDistance - MathUtils.sqrt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) +
+                                MathUtils.sqr ( mp.x - bounds.x - bounds.width ) );
                     }
                     else
                     {

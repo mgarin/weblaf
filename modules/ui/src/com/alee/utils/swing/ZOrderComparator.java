@@ -26,19 +26,15 @@ import java.util.Comparator;
  *
  * @author Mikle Garin
  */
-
-public class ZOrderComparator implements Comparator<Component>, Serializable
+public final class ZOrderComparator implements Comparator<Component>, Serializable
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public int compare ( Component o1, Component o2 )
+    public int compare ( final Component o1, final Component o2 )
     {
-        Container parent1 = o1.getParent ();
-        Container parent2 = o2.getParent ();
-        int z1 = parent1.getComponentZOrder ( o1 );
-        int z2 = parent2.getComponentZOrder ( o2 );
-        return z1 < z2 ? -1 : ( z1 == z2 ? 0 : 1 );
+        final Container parent1 = o1.getParent ();
+        final Container parent2 = o2.getParent ();
+        final int z1 = parent1.getComponentZOrder ( o1 );
+        final int z2 = parent2.getComponentZOrder ( o2 );
+        return z1 < z2 ? -1 : z1 == z2 ? 0 : 1;
     }
 }

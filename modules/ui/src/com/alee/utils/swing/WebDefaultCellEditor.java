@@ -17,9 +17,8 @@
 
 package com.alee.utils.swing;
 
-import com.alee.laf.combobox.WebComboBoxUI;
-import com.alee.laf.table.WebTableStyle;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -32,14 +31,13 @@ import java.util.EventObject;
 /**
  * @author Mikle Garin
  */
-
 public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEditor implements TableCellEditor, TreeCellEditor
 {
     public static final String COMBOBOX_CELL_EDITOR = "JComboBox.isTableCellEditor";
 
     protected C editorComponent;
     protected EditorDelegate delegate;
-    protected int clickCountToStart = WebTableStyle.clickCountToStartEdit;
+    protected int clickCountToStart = 2;
 
     public WebDefaultCellEditor ()
     {
@@ -123,11 +121,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
         else if ( editor instanceof JComboBox )
         {
             final JComboBox comboBox = ( JComboBox ) editor;
-            if ( comboBox.getUI () instanceof WebComboBoxUI )
-            {
-                final WebComboBoxUI webComboBoxUI = ( WebComboBoxUI ) comboBox.getUI ();
-                webComboBoxUI.setDrawBorder ( false );
-            }
+            StyleId.comboboxUndecorated.set ( comboBox );
             comboBox.putClientProperty ( COMBOBOX_CELL_EDITOR, Boolean.TRUE );
             delegate = new EditorDelegate ()
             {

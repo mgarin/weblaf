@@ -1,0 +1,27 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.table.WebTableHeader -->
+
+    <!-- Table header -->
+    <style type="tableheader">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter>
+            <headerHeight>22</headerHeight>
+            <topBgColor>226,226,226</topBgColor>
+            <bottomBgColor>201,201,201</bottomBgColor>
+            <gridColor>170,170,170</gridColor>
+        </painter>
+
+        <!-- Default table header cell renderer label -->
+        <style type="label" id="renderer" extends="shadow" padding="0,2,1,2">
+            <component>
+                <opaque>true</opaque>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
+
+    </style>
+
+</skin>

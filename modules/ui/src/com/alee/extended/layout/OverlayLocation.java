@@ -18,9 +18,8 @@
 package com.alee.extended.layout;
 
 /**
- * User: mgarin Date: 05.06.12 Time: 20:06
+ * @author Mikle Garin
  */
-
 public enum OverlayLocation
 {
     fill,

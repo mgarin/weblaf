@@ -1,35 +1,18 @@
 /*
- * This file is part of WebLookAndFeel library.
+ * Copyright 2006 Jerry Huxtable
  *
- * WebLookAndFeel library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * WebLookAndFeel library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ *  Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-/*
-Copyright 2006 Jerry Huxtable
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 
 package com.alee.graphics.filters;
 
@@ -45,7 +28,6 @@ import java.awt.image.Kernel;
  *
  * @author Jerry Huxtable
  */
-
 public class ConvolveFilter extends AbstractBufferedImageOp
 {
     public static int ZERO_EDGES = 0;
@@ -69,7 +51,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
      *
      * @param matrix an array of 9 floats containing the kernel
      */
-    public ConvolveFilter ( float[] matrix )
+    public ConvolveFilter ( final float[] matrix )
     {
         this ( new Kernel ( 3, 3, matrix ) );
     }
@@ -81,7 +63,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
      * @param cols   the number of columns in the kernel
      * @param matrix an array of rows*cols floats containing the kernel
      */
-    public ConvolveFilter ( int rows, int cols, float[] matrix )
+    public ConvolveFilter ( final int rows, final int cols, final float[] matrix )
     {
         this ( new Kernel ( cols, rows, matrix ) );
     }
@@ -89,12 +71,12 @@ public class ConvolveFilter extends AbstractBufferedImageOp
     /**
      * Construct a filter with the given 3x3 kernel.
      */
-    public ConvolveFilter ( Kernel kernel )
+    public ConvolveFilter ( final Kernel kernel )
     {
         this.kernel = kernel;
     }
 
-    public void setKernel ( Kernel kernel )
+    public void setKernel ( final Kernel kernel )
     {
         this.kernel = kernel;
     }
@@ -104,7 +86,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
         return kernel;
     }
 
-    public void setEdgeAction ( int edgeAction )
+    public void setEdgeAction ( final int edgeAction )
     {
         this.edgeAction = edgeAction;
     }
@@ -115,18 +97,18 @@ public class ConvolveFilter extends AbstractBufferedImageOp
     }
 
     @Override
-    public BufferedImage filter ( BufferedImage src, BufferedImage dst )
+    public BufferedImage filter ( final BufferedImage src, BufferedImage dst )
     {
-        int width = src.getWidth ();
-        int height = src.getHeight ();
+        final int width = src.getWidth ();
+        final int height = src.getHeight ();
 
         if ( dst == null )
         {
             dst = createCompatibleDestImage ( src, null );
         }
 
-        int[] inPixels = new int[ width * height ];
-        int[] outPixels = new int[ width * height ];
+        final int[] inPixels = new int[ width * height ];
+        final int[] outPixels = new int[ width * height ];
         getRGB ( src, 0, 0, width, height, inPixels );
 
         convolve ( kernel, inPixels, outPixels, width, height, alpha, edgeAction );
@@ -136,7 +118,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
     }
 
     @Override
-    public BufferedImage createCompatibleDestImage ( BufferedImage src, ColorModel dstCM )
+    public BufferedImage createCompatibleDestImage ( final BufferedImage src, ColorModel dstCM )
     {
         if ( dstCM == null )
         {
@@ -147,13 +129,13 @@ public class ConvolveFilter extends AbstractBufferedImageOp
     }
 
     @Override
-    public Rectangle2D getBounds2D ( BufferedImage src )
+    public Rectangle2D getBounds2D ( final BufferedImage src )
     {
         return new Rectangle ( 0, 0, src.getWidth (), src.getHeight () );
     }
 
     @Override
-    public Point2D getPoint2D ( Point2D srcPt, Point2D dstPt )
+    public Point2D getPoint2D ( final Point2D srcPt, Point2D dstPt )
     {
         if ( dstPt == null )
         {
@@ -169,12 +151,12 @@ public class ConvolveFilter extends AbstractBufferedImageOp
         return null;
     }
 
-    public static void convolve ( Kernel kernel, int[] inPixels, int[] outPixels, int width, int height, int edgeAction )
+    public static void convolve ( final Kernel kernel, final int[] inPixels, final int[] outPixels, final int width, final int height, final int edgeAction )
     {
         convolve ( kernel, inPixels, outPixels, width, height, true, edgeAction );
     }
 
-    public static void convolve ( Kernel kernel, int[] inPixels, int[] outPixels, int width, int height, boolean alpha, int edgeAction )
+    public static void convolve ( final Kernel kernel, final int[] inPixels, final int[] outPixels, final int width, final int height, final boolean alpha, final int edgeAction )
     {
         if ( kernel.getHeight () == 1 )
         {
@@ -193,14 +175,14 @@ public class ConvolveFilter extends AbstractBufferedImageOp
     /**
      * Convolve with a 2D kernel
      */
-    public static void convolveHV ( Kernel kernel, int[] inPixels, int[] outPixels, int width, int height, boolean alpha, int edgeAction )
+    public static void convolveHV ( final Kernel kernel, final int[] inPixels, final int[] outPixels, final int width, final int height, final boolean alpha, final int edgeAction )
     {
         int index = 0;
-        float[] matrix = kernel.getKernelData ( null );
-        int rows = kernel.getHeight ();
-        int cols = kernel.getWidth ();
-        int rows2 = rows / 2;
-        int cols2 = cols / 2;
+        final float[] matrix = kernel.getKernelData ( null );
+        final int rows = kernel.getHeight ();
+        final int cols = kernel.getWidth ();
+        final int rows2 = rows / 2;
+        final int cols2 = cols / 2;
 
         for ( int y = 0; y < height; y++ )
         {
@@ -210,28 +192,28 @@ public class ConvolveFilter extends AbstractBufferedImageOp
 
                 for ( int row = -rows2; row <= rows2; row++ )
                 {
-                    int iy = y + row;
-                    int ioffset;
+                    final int iy = y + row;
+                    final int iOffset;
                     if ( 0 <= iy && iy < height )
                     {
-                        ioffset = iy * width;
+                        iOffset = iy * width;
                     }
                     else if ( edgeAction == CLAMP_EDGES )
                     {
-                        ioffset = y * width;
+                        iOffset = y * width;
                     }
                     else if ( edgeAction == WRAP_EDGES )
                     {
-                        ioffset = ( ( iy + height ) % height ) * width;
+                        iOffset = ( ( iy + height ) % height ) * width;
                     }
                     else
                     {
                         continue;
                     }
-                    int moffset = cols * ( row + rows2 ) + cols2;
+                    final int mOffset = cols * ( row + rows2 ) + cols2;
                     for ( int col = -cols2; col <= cols2; col++ )
                     {
-                        float f = matrix[ moffset + col ];
+                        final float f = matrix[ mOffset + col ];
 
                         if ( f != 0 )
                         {
@@ -251,7 +233,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
                                     continue;
                                 }
                             }
-                            int rgb = inPixels[ ioffset + ix ];
+                            final int rgb = inPixels[ iOffset + ix ];
                             a += f * ( ( rgb >> 24 ) & 0xff );
                             r += f * ( ( rgb >> 16 ) & 0xff );
                             g += f * ( ( rgb >> 8 ) & 0xff );
@@ -259,10 +241,10 @@ public class ConvolveFilter extends AbstractBufferedImageOp
                         }
                     }
                 }
-                int ia = alpha ? PixelUtils.clamp ( ( int ) ( a + 0.5 ) ) : 0xff;
-                int ir = PixelUtils.clamp ( ( int ) ( r + 0.5 ) );
-                int ig = PixelUtils.clamp ( ( int ) ( g + 0.5 ) );
-                int ib = PixelUtils.clamp ( ( int ) ( b + 0.5 ) );
+                final int ia = alpha ? PixelUtils.clamp ( ( int ) ( a + 0.5 ) ) : 0xff;
+                final int ir = PixelUtils.clamp ( ( int ) ( r + 0.5 ) );
+                final int ig = PixelUtils.clamp ( ( int ) ( g + 0.5 ) );
+                final int ib = PixelUtils.clamp ( ( int ) ( b + 0.5 ) );
                 outPixels[ index++ ] = ( ia << 24 ) | ( ir << 16 ) | ( ig << 8 ) | ib;
             }
         }
@@ -271,22 +253,22 @@ public class ConvolveFilter extends AbstractBufferedImageOp
     /**
      * Convolve with a kernel consisting of one row
      */
-    public static void convolveH ( Kernel kernel, int[] inPixels, int[] outPixels, int width, int height, boolean alpha, int edgeAction )
+    public static void convolveH ( final Kernel kernel, final int[] inPixels, final int[] outPixels, final int width, final int height, final boolean alpha, final int edgeAction )
     {
         int index = 0;
-        float[] matrix = kernel.getKernelData ( null );
-        int cols = kernel.getWidth ();
-        int cols2 = cols / 2;
+        final float[] matrix = kernel.getKernelData ( null );
+        final int cols = kernel.getWidth ();
+        final int cols2 = cols / 2;
 
         for ( int y = 0; y < height; y++ )
         {
-            int ioffset = y * width;
+            final int iOffset = y * width;
             for ( int x = 0; x < width; x++ )
             {
                 float r = 0, g = 0, b = 0, a = 0;
                 for ( int col = -cols2; col <= cols2; col++ )
                 {
-                    float f = matrix[ cols2 + col ];
+                    final float f = matrix[ cols2 + col ];
 
                     if ( f != 0 )
                     {
@@ -313,17 +295,17 @@ public class ConvolveFilter extends AbstractBufferedImageOp
                                 ix = ( x + width ) % width;
                             }
                         }
-                        int rgb = inPixels[ ioffset + ix ];
+                        final int rgb = inPixels[ iOffset + ix ];
                         a += f * ( ( rgb >> 24 ) & 0xff );
                         r += f * ( ( rgb >> 16 ) & 0xff );
                         g += f * ( ( rgb >> 8 ) & 0xff );
                         b += f * ( rgb & 0xff );
                     }
                 }
-                int ia = alpha ? PixelUtils.clamp ( ( int ) ( a + 0.5 ) ) : 0xff;
-                int ir = PixelUtils.clamp ( ( int ) ( r + 0.5 ) );
-                int ig = PixelUtils.clamp ( ( int ) ( g + 0.5 ) );
-                int ib = PixelUtils.clamp ( ( int ) ( b + 0.5 ) );
+                final int ia = alpha ? PixelUtils.clamp ( ( int ) ( a + 0.5 ) ) : 0xff;
+                final int ir = PixelUtils.clamp ( ( int ) ( r + 0.5 ) );
+                final int ig = PixelUtils.clamp ( ( int ) ( g + 0.5 ) );
+                final int ib = PixelUtils.clamp ( ( int ) ( b + 0.5 ) );
                 outPixels[ index++ ] = ( ia << 24 ) | ( ir << 16 ) | ( ig << 8 ) | ib;
             }
         }
@@ -332,12 +314,12 @@ public class ConvolveFilter extends AbstractBufferedImageOp
     /**
      * Convolve with a kernel consisting of one column
      */
-    public static void convolveV ( Kernel kernel, int[] inPixels, int[] outPixels, int width, int height, boolean alpha, int edgeAction )
+    public static void convolveV ( final Kernel kernel, final int[] inPixels, final int[] outPixels, final int width, final int height, final boolean alpha, final int edgeAction )
     {
         int index = 0;
-        float[] matrix = kernel.getKernelData ( null );
-        int rows = kernel.getHeight ();
-        int rows2 = rows / 2;
+        final float[] matrix = kernel.getKernelData ( null );
+        final int rows = kernel.getHeight ();
+        final int rows2 = rows / 2;
 
         for ( int y = 0; y < height; y++ )
         {
@@ -347,61 +329,60 @@ public class ConvolveFilter extends AbstractBufferedImageOp
 
                 for ( int row = -rows2; row <= rows2; row++ )
                 {
-                    int iy = y + row;
-                    int ioffset;
+                    final int iy = y + row;
+                    final int iOffset;
                     if ( iy < 0 )
                     {
                         if ( edgeAction == CLAMP_EDGES )
                         {
-                            ioffset = 0;
+                            iOffset = 0;
                         }
                         else if ( edgeAction == WRAP_EDGES )
                         {
-                            ioffset = ( ( y + height ) % height ) * width;
+                            iOffset = ( ( y + height ) % height ) * width;
                         }
                         else
                         {
-                            ioffset = iy * width;
+                            iOffset = iy * width;
                         }
                     }
                     else if ( iy >= height )
                     {
                         if ( edgeAction == CLAMP_EDGES )
                         {
-                            ioffset = ( height - 1 ) * width;
+                            iOffset = ( height - 1 ) * width;
                         }
                         else if ( edgeAction == WRAP_EDGES )
                         {
-                            ioffset = ( ( y + height ) % height ) * width;
+                            iOffset = ( ( y + height ) % height ) * width;
                         }
                         else
                         {
-                            ioffset = iy * width;
+                            iOffset = iy * width;
                         }
                     }
                     else
                     {
-                        ioffset = iy * width;
+                        iOffset = iy * width;
                     }
 
-                    float f = matrix[ row + rows2 ];
+                    final float f = matrix[ row + rows2 ];
 
                     if ( f != 0 )
                     {
-                        int rgb = inPixels[ ioffset + x ];
+                        final int rgb = inPixels[ iOffset + x ];
                         a += f * ( ( rgb >> 24 ) & 0xff );
                         r += f * ( ( rgb >> 16 ) & 0xff );
                         g += f * ( ( rgb >> 8 ) & 0xff );
                         b += f * ( rgb & 0xff );
                     }
                 }
-                int ia = alpha ? PixelUtils.clamp ( ( int ) ( a + 0.5 ) ) : 0xff;
-                int ir = PixelUtils.clamp ( ( int ) ( r + 0.5 ) );
-                int ig = PixelUtils.clamp ( ( int ) ( g + 0.5 ) );
-                int ib = PixelUtils.clamp ( ( int ) ( b + 0.5 ) );
+                final int ia = alpha ? PixelUtils.clamp ( ( int ) ( a + 0.5 ) ) : 0xff;
+                final int ir = PixelUtils.clamp ( ( int ) ( r + 0.5 ) );
+                final int ig = PixelUtils.clamp ( ( int ) ( g + 0.5 ) );
+                final int ib = PixelUtils.clamp ( ( int ) ( b + 0.5 ) );
                 outPixels[ index++ ] = ( ia << 24 ) | ( ir << 16 ) | ( ig << 8 ) | ib;
             }
         }
     }
 }
-

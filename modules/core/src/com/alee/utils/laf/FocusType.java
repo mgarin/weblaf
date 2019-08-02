@@ -22,7 +22,6 @@ package com.alee.utils.laf;
  *
  * @author Mikle Garin
  */
-
 public enum FocusType
 {
     /**

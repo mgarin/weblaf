@@ -17,8 +17,7 @@
 
 package com.alee.laf.tabbedpane;
 
-import com.alee.extended.painter.Painter;
-import com.alee.global.StyleConstants;
+import com.alee.painter.Painter;
 
 import java.awt.*;
 
@@ -27,7 +26,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public final class WebTabbedPaneStyle
 {
     /**
@@ -53,17 +51,17 @@ public final class WebTabbedPaneStyle
     /**
      * Bottom selected tab color.
      */
-    public static Color selectedBottomBg = StyleConstants.backgroundColor;
+    public static Color selectedBottomBg = new Color ( 237, 237, 237 );
 
     /**
      * Decoration rounding.
      */
-    public static int round = StyleConstants.smallRound;
+    public static int round = 2;
 
     /**
      * Decoration shade width.
      */
-    public static int shadeWidth = StyleConstants.shadeWidth;
+    public static int shadeWidth = 2;
 
     /**
      * Whether to rotate tab insets for different tab positions or not.
@@ -104,7 +102,7 @@ public final class WebTabbedPaneStyle
     /**
      * Color of the tab border.
      */
-    public static Color tabBorderColor = StyleConstants.darkBorderColor;
+    public static Color tabBorderColor = Color.GRAY;
 
     /**
      * Color of the content border.
@@ -120,11 +118,6 @@ public final class WebTabbedPaneStyle
      * If true, the selected tab background colors will be used in every case.
      */
     public static boolean forceUseSelectedTabBgColors = false;
-
-    /**
-     * Default background color.
-     */
-    public static Color backgroundColor = StyleConstants.backgroundColor;
 
     /**
      * If true, only the top border is painted.

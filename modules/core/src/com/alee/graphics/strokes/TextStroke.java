@@ -23,25 +23,24 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 
 /**
- * User: mgarin Date: 14.06.11 Time: 18:03
+ * @author Mikle Garin
  */
-
 public class TextStroke implements Stroke
 {
-    private String text;
-    private Font font;
+    private final String text;
+    private final Font font;
     private boolean stretchToFit = false;
     private boolean repeat = false;
-    private AffineTransform t = new AffineTransform ();
+    private final AffineTransform t = new AffineTransform ();
 
     private static final float FLATNESS = 1;
 
-    public TextStroke ( String text, Font font )
+    public TextStroke ( final String text, final Font font )
     {
         this ( text, font, true, false );
     }
 
-    public TextStroke ( String text, Font font, boolean stretchToFit, boolean repeat )
+    public TextStroke ( final String text, final Font font, final boolean stretchToFit, final boolean repeat )
     {
         this.text = text;
         this.font = font;
@@ -50,14 +49,14 @@ public class TextStroke implements Stroke
     }
 
     @Override
-    public Shape createStrokedShape ( Shape shape )
+    public Shape createStrokedShape ( final Shape shape )
     {
-        FontRenderContext frc = new FontRenderContext ( null, true, true );
-        GlyphVector glyphVector = font.createGlyphVector ( frc, text );
+        final FontRenderContext frc = new FontRenderContext ( null, true, true );
+        final GlyphVector glyphVector = font.createGlyphVector ( frc, text );
 
-        GeneralPath result = new GeneralPath ();
-        PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
-        float points[] = new float[ 6 ];
+        final GeneralPath result = new GeneralPath ();
+        final PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
+        final float[] points = new float[ 6 ];
         float moveX = 0;
         float moveY = 0;
         float lastX = 0;
@@ -67,14 +66,14 @@ public class TextStroke implements Stroke
         int type;
         float next = 0;
         int currentChar = 0;
-        int length = glyphVector.getNumGlyphs ();
+        final int length = glyphVector.getNumGlyphs ();
 
         if ( length == 0 )
         {
             return result;
         }
 
-        float factor = stretchToFit ? measurePathLength ( shape ) / ( float ) glyphVector.getLogicalBounds ().getWidth () : 1.0f;
+        final float factor = stretchToFit ? measurePathLength ( shape ) / ( float ) glyphVector.getLogicalBounds ().getWidth () : 1.0f;
         float nextAdvance = 0;
 
         while ( currentChar < length && !it.isDone () )
@@ -98,22 +97,22 @@ public class TextStroke implements Stroke
                 case PathIterator.SEG_LINETO:
                     thisX = points[ 0 ];
                     thisY = points[ 1 ];
-                    float dx = thisX - lastX;
-                    float dy = thisY - lastY;
-                    float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
+                    final float dx = thisX - lastX;
+                    final float dy = thisY - lastY;
+                    final float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
                     if ( distance >= next )
                     {
-                        float r = 1.0f / distance;
-                        float angle = ( float ) Math.atan2 ( dy, dx );
+                        final float r = 1.0f / distance;
+                        final float angle = ( float ) Math.atan2 ( dy, dx );
                         while ( currentChar < length && distance >= next )
                         {
-                            Shape glyph = glyphVector.getGlyphOutline ( currentChar );
-                            Point2D p = glyphVector.getGlyphPosition ( currentChar );
-                            float px = ( float ) p.getX ();
-                            float py = ( float ) p.getY ();
-                            float x = lastX + next * dx * r;
-                            float y = lastY + next * dy * r;
-                            float advance = nextAdvance;
+                            final Shape glyph = glyphVector.getGlyphOutline ( currentChar );
+                            final Point2D p = glyphVector.getGlyphPosition ( currentChar );
+                            final float px = ( float ) p.getX ();
+                            final float py = ( float ) p.getY ();
+                            final float x = lastX + next * dx * r;
+                            final float y = lastY + next * dy * r;
+                            final float advance = nextAdvance;
                             nextAdvance =
                                     currentChar < length - 1 ? glyphVector.getGlyphMetrics ( currentChar + 1 ).getAdvance () * 0.5f : 0;
                             t.setToTranslation ( x, y );
@@ -139,10 +138,10 @@ public class TextStroke implements Stroke
         return result;
     }
 
-    public float measurePathLength ( Shape shape )
+    public float measurePathLength ( final Shape shape )
     {
-        PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
-        float points[] = new float[ 6 ];
+        final PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
+        final float[] points = new float[ 6 ];
         float moveX = 0;
         float moveY = 0;
         float lastX = 0;
@@ -170,8 +169,8 @@ public class TextStroke implements Stroke
                 case PathIterator.SEG_LINETO:
                     thisX = points[ 0 ];
                     thisY = points[ 1 ];
-                    float dx = thisX - lastX;
-                    float dy = thisY - lastY;
+                    final float dx = thisX - lastX;
+                    final float dy = thisY - lastY;
                     total += ( float ) Math.sqrt ( dx * dx + dy * dy );
                     lastX = thisX;
                     lastY = thisY;
@@ -182,6 +181,4 @@ public class TextStroke implements Stroke
 
         return total;
     }
-
 }
-

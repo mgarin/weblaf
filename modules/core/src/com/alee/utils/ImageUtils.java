@@ -17,42 +17,64 @@
 
 package com.alee.utils;
 
-import com.alee.global.GlobalConstants;
-import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
-import com.alee.managers.log.Log;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.xml.Resource;
+import com.alee.utils.xml.ResourceLocation;
 import com.mortennobel.imagescaling.ResampleOp;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
+import java.awt.color.ColorSpace;
+import java.awt.geom.Area;
+import java.awt.image.*;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Mikle Garin
  */
-
 public final class ImageUtils
 {
     /**
-     * Default cached image data parts separator
+     * todo 1. Rework the way image instances and data are handled within WebLaF
+     * todo 2. Provide an appropriate way to cache images (based on component/
      */
-
-    public static final String IMAGE_CACHE_SEPARATOR = StyleConstants.SEPARATOR;
 
     /**
-     * Checks if the specified image pixel is fully transparent
+     * Image cache keys separator.
      */
+    private static final String IMAGE_CACHE_KEYS_SEPARATOR = "|";
 
-    public static boolean isImageContains ( final BufferedImage image, final int x, final int y )
+    /**
+     * Viewable image formats.
+     */
+    public static final List<String> VIEWABLE_IMAGES = new ImmutableList<String> (
+            "png", "apng", "gif", "agif", "jpg", "jpeg", "jpeg2000", "bmp"
+    );
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ImageUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
+     * Returns whether or not image pixel at the specified X and Y coordinates is fully transparent.
+     *
+     * @param image image
+     * @param x     X coordinate
+     * @param y     Y coordinate
+     * @return true if image pixel at the specified x and y coordinates is fully transparent, false otherwise
+     */
+    public static boolean isTransparent ( final BufferedImage image, final int x, final int y )
     {
         return ( image.getRGB ( x, y ) >> 24 & 0xFF ) > 0;
     }
@@ -158,12 +180,12 @@ public final class ImageUtils
      * Returns Images list instead of ImageIcons list
      */
 
-    public static List<Image> toImagesList ( final List<? extends ImageIcon> imageIcons )
+    public static List<Image> toImagesList ( final List<? extends ImageIcon> icons )
     {
-        final List<Image> images = new ArrayList<Image> ( imageIcons.size () );
-        for ( final ImageIcon imageIcon : imageIcons )
+        final List<Image> images = new ArrayList<Image> ( icons.size () );
+        for ( final ImageIcon icon : icons )
         {
-            images.add ( imageIcon.getImage () );
+            images.add ( icon.getImage () );
         }
         return images;
     }
@@ -277,12 +299,12 @@ public final class ImageUtils
         mergedIconsCache.clear ();
     }
 
-    public static ImageIcon mergeIcons ( final List<ImageIcon> icons )
+    public static ImageIcon mergeIcons ( final List<? extends Icon> icons )
     {
         return mergeIcons ( null, icons );
     }
 
-    public static ImageIcon mergeIcons ( final String key, final List<ImageIcon> icons )
+    public static ImageIcon mergeIcons ( final String key, final List<? extends Icon> icons )
     {
         // Icon is cached already
         if ( key != null && mergedIconsCache.containsKey ( key ) )
@@ -299,14 +321,19 @@ public final class ImageUtils
         // Single icon given
         if ( icons.size () == 1 )
         {
-            return icons.get ( 0 );
+            final ImageIcon icon = getImageIcon ( icons.get ( 0 ) );
+            if ( key != null )
+            {
+                mergedIconsCache.put ( key, icon );
+            }
+            return icon;
         }
 
         final Image[] images = new Image[ icons.size () ];
         int i = 0;
-        for ( final ImageIcon icon : icons )
+        for ( final Icon icon : icons )
         {
-            images[ i ] = icon != null ? icon.getImage () : null;
+            images[ i ] = icon != null ? getBufferedImage ( icon ) : null;
             i++;
         }
         final ImageIcon icon = new ImageIcon ( mergeImages ( images ) );
@@ -317,12 +344,12 @@ public final class ImageUtils
         return icon;
     }
 
-    public static ImageIcon mergeIcons ( final ImageIcon... icons )
+    public static ImageIcon mergeIcons ( final Icon... icons )
     {
         return mergeIcons ( null, icons );
     }
 
-    public static ImageIcon mergeIcons ( final String key, final ImageIcon... icons )
+    public static ImageIcon mergeIcons ( final String key, final Icon... icons )
     {
         // Icon is cached already
         if ( key != null && mergedIconsCache.containsKey ( key ) )
@@ -339,14 +366,19 @@ public final class ImageUtils
         // Single icon given
         if ( icons.length == 1 )
         {
-            return icons[ 0 ];
+            final ImageIcon icon = getImageIcon ( icons[ 0 ] );
+            if ( key != null )
+            {
+                mergedIconsCache.put ( key, icon );
+            }
+            return icon;
         }
 
         final Image[] images = new Image[ icons.length ];
         int i = 0;
-        for ( final ImageIcon icon : icons )
+        for ( final Icon icon : icons )
         {
-            images[ i ] = icon != null ? icon.getImage () : null;
+            images[ i ] = icon != null ? getBufferedImage ( icon ) : null;
             i++;
         }
         final ImageIcon icon = new ImageIcon ( mergeImages ( images ) );
@@ -440,7 +472,7 @@ public final class ImageUtils
         {
             return ImageIO.read ( file );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -462,7 +494,7 @@ public final class ImageUtils
             //            return imageIcon;
             return new ImageIcon ( url );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -478,7 +510,7 @@ public final class ImageUtils
         {
             return new ImageIcon ( nearClass.getResource ( src ) );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -494,7 +526,7 @@ public final class ImageUtils
         {
             return new ImageIcon ( ImageIO.read ( inputStream ) );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
             return null;
         }
@@ -625,15 +657,17 @@ public final class ImageUtils
 
     public static BufferedImage createColorImage ( final Color color, final int width, final int height )
     {
+        final int largeRound = 6;
+        final int bigRound = 4;
         final BufferedImage image = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
         final Graphics2D g2d = image.createGraphics ();
         GraphicsUtils.setupAntialias ( g2d );
         g2d.setPaint ( Color.GRAY );
-        g2d.drawRoundRect ( 0, 0, width - 1, height - 1, StyleConstants.largeRound, StyleConstants.bigRound );
+        g2d.drawRoundRect ( 0, 0, width - 1, height - 1, largeRound, bigRound );
         g2d.setPaint ( Color.WHITE );
-        g2d.drawRoundRect ( 1, 1, width - 3, height - 3, StyleConstants.bigRound, StyleConstants.bigRound );
+        g2d.drawRoundRect ( 1, 1, width - 3, height - 3, bigRound, bigRound );
         g2d.setPaint ( color );
-        g2d.fillRoundRect ( 2, 2, width - 4, height - 4, StyleConstants.bigRound, StyleConstants.bigRound );
+        g2d.fillRoundRect ( 2, 2, width - 4, height - 4, bigRound, bigRound );
         g2d.dispose ();
         return image;
     }
@@ -641,9 +675,6 @@ public final class ImageUtils
     /**
      * Creates color chooser icon
      */
-
-    public static final ImageIcon coloredChooserIcon = new ImageIcon ( ImageUtils.class.getResource ( "icons/color/color.png" ) );
-    public static final ImageIcon transarentChooserIcon = new ImageIcon ( ImageUtils.class.getResource ( "icons/color/transparent.png" ) );
 
     public static ImageIcon createColorChooserIcon ( final Color color )
     {
@@ -654,16 +685,21 @@ public final class ImageUtils
     {
         final BufferedImage image = createCompatibleImage ( 16, 16, Transparency.TRANSLUCENT );
         final Graphics2D g2d = image.createGraphics ();
+
         if ( color == null || color.getAlpha () < 255 )
         {
-            g2d.drawImage ( transarentChooserIcon.getImage (), 0, 0, null );
+            final ImageIcon transparentIcon = getImageIcon ( ImageUtils.class.getResource ( "icons/color/transparent.png" ) );
+            g2d.drawImage ( transparentIcon.getImage (), 0, 0, null );
         }
         if ( color != null )
         {
             g2d.setPaint ( color );
             g2d.fillRect ( 2, 2, 13, 12 );
         }
-        g2d.drawImage ( coloredChooserIcon.getImage (), 0, 0, null );
+
+        final ImageIcon colorIcon = getImageIcon ( ImageUtils.class.getResource ( "icons/color/color.png" ) );
+        g2d.drawImage ( colorIcon.getImage (), 0, 0, null );
+
         g2d.dispose ();
         return image;
     }
@@ -711,7 +747,7 @@ public final class ImageUtils
 
     public static boolean isImageLoadable ( final String name )
     {
-        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase () );
+        return VIEWABLE_IMAGES.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase ( Locale.ROOT ) );
     }
 
     /**
@@ -778,7 +814,7 @@ public final class ImageUtils
     {
         if ( image.getWidth () > width || image.getHeight () > height )
         {
-            // Calcuating maximum preview length
+            // Calculating maximum preview length
             if ( height * ( ( float ) image.getWidth () / image.getHeight () ) <= width )
             {
                 return createPreviewImage ( image,
@@ -941,7 +977,7 @@ public final class ImageUtils
             {
                 return new ImageIcon ( ImageIO.read ( new File ( src ) ) );
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 return new ImageIcon ();
             }
@@ -990,6 +1026,60 @@ public final class ImageUtils
     }
 
     /**
+     * Returns {@link javax.swing.ImageIcon} read from specified {@link com.alee.utils.xml.Resource}.
+     *
+     * @param location image file location
+     * @return {@link javax.swing.ImageIcon} read from specified {@link com.alee.utils.xml.Resource}
+     */
+    public static ImageIcon getImageIcon ( final Resource location )
+    {
+        if ( location.getLocation ().equals ( ResourceLocation.url ) )
+        {
+            try
+            {
+                return new ImageIcon ( new URL ( location.getPath () ) );
+            }
+            catch ( final MalformedURLException e )
+            {
+                final String msg = "Unable to load image from URL: %s";
+                LoggerFactory.getLogger ( ImageUtils.class ).error ( String.format ( msg, location.getPath () ), e );
+                return null;
+            }
+        }
+        if ( location.getLocation ().equals ( ResourceLocation.filePath ) )
+        {
+            try
+            {
+                return new ImageIcon ( new File ( location.getPath () ).getCanonicalPath () );
+            }
+            catch ( final IOException e )
+            {
+                final String msg = "Unable to load image from file: %s";
+                LoggerFactory.getLogger ( ImageUtils.class ).error ( String.format ( msg, location.getPath () ), e );
+                return null;
+            }
+        }
+        else if ( location.getLocation ().equals ( ResourceLocation.nearClass ) )
+        {
+            try
+            {
+                return new ImageIcon ( Class.forName ( location.getClassName () ).getResource ( location.getPath () ) );
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                final String msg = "Unable to load image from file '%s' near class: %s";
+                final String fmsg = TextUtils.format ( msg, location.getPath (), location.getClassName () );
+                LoggerFactory.getLogger ( ImageUtils.class ).error ( fmsg, e );
+                return null;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
      * Makes a copy of BufferedImage
      */
 
@@ -1005,6 +1095,40 @@ public final class ImageUtils
         g2d.drawImage ( bufferedImage, 0, 0, null );
         g2d.dispose ();
         return newImage;
+    }
+
+    /**
+     * Returns {@link BufferedImage} converted from the specified {@link RenderedImage}.
+     *
+     * @param image {@link RenderedImage} to convert
+     * @return {@link BufferedImage} converted from the specified {@link RenderedImage}
+     */
+    public static BufferedImage getBufferedImage ( final RenderedImage image )
+    {
+        if ( image instanceof BufferedImage )
+        {
+            return ( BufferedImage ) image;
+        }
+
+        final ColorModel cm = image.getColorModel ();
+        final int width = image.getWidth ();
+        final int height = image.getHeight ();
+        final WritableRaster raster = cm.createCompatibleWritableRaster ( width, height );
+        final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied ();
+        final Hashtable properties = new Hashtable ();
+        final String[] keys = image.getPropertyNames ();
+        if ( keys != null )
+        {
+            for ( final String key : keys )
+            {
+                properties.put ( key, image.getProperty ( key ) );
+            }
+        }
+
+        final BufferedImage result = new BufferedImage ( cm, raster, isAlphaPremultiplied, properties );
+        image.copyData ( raster );
+
+        return result;
     }
 
     /**
@@ -1087,7 +1211,6 @@ public final class ImageUtils
         return bi;
     }
 
-
     public static ImageIcon getImageIcon ( final Icon icon )
     {
         if ( icon instanceof ImageIcon )
@@ -1108,15 +1231,15 @@ public final class ImageUtils
 
     public static ImageIcon getSizedImagePreview ( final String src, final int length, final boolean drawBorder )
     {
-        if ( sizedPreviewCache.containsKey ( length + IMAGE_CACHE_SEPARATOR + src ) )
+        if ( sizedPreviewCache.containsKey ( length + IMAGE_CACHE_KEYS_SEPARATOR + src ) )
         {
-            return sizedPreviewCache.get ( length + IMAGE_CACHE_SEPARATOR + src );
+            return sizedPreviewCache.get ( length + IMAGE_CACHE_KEYS_SEPARATOR + src );
         }
         else
         {
             final ImageIcon icon = createThumbnailIcon ( src, length );
             final ImageIcon sized = createSizedImagePreview ( icon, length, drawBorder );
-            sizedPreviewCache.put ( length + IMAGE_CACHE_SEPARATOR + src, sized );
+            sizedPreviewCache.put ( length + IMAGE_CACHE_KEYS_SEPARATOR + src, sized );
             return sized;
         }
     }
@@ -1179,6 +1302,11 @@ public final class ImageUtils
         grayscaleCache.remove ( id );
     }
 
+    public static ImageIcon getDisabledCopy ( final String key, final Icon icon )
+    {
+        return getDisabledCopy ( key, getImageIcon ( icon ) );
+    }
+
     public static ImageIcon getDisabledCopy ( final String key, final ImageIcon imageIcon )
     {
         if ( grayscaleCache.containsKey ( key ) )
@@ -1203,7 +1331,7 @@ public final class ImageUtils
 
         final BufferedImage bi2 = createCompatibleImage ( bi );
         final Graphics2D g2d = bi2.createGraphics ();
-        GraphicsUtils.setupAlphaComposite ( g2d, StyleConstants.disabledIconsTransparency );
+        GraphicsUtils.setupAlphaComposite ( g2d, 0.7f );
         g2d.drawImage ( bi, 0, 0, null );
         g2d.dispose ();
 
@@ -1213,6 +1341,8 @@ public final class ImageUtils
     /**
      * Creates grayscale image copy
      */
+
+    private static final ColorConvertOp grayscaleColorConvert = new ColorConvertOp ( ColorSpace.getInstance ( ColorSpace.CS_GRAY ), null );
 
     public static ImageIcon createGrayscaleCopy ( final ImageIcon imageIcon )
     {
@@ -1226,34 +1356,44 @@ public final class ImageUtils
 
     public static BufferedImage createGrayscaleCopy ( final BufferedImage img )
     {
-        return ImageFilterUtils.applyGrayscaleFilter ( img, null );
+        return grayscaleColorConvert.filter ( img, null );
     }
 
     /**
      * Creating partially transparent ImageIcon
      */
 
-    private static final Map<String, ImageIcon> trasparentCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> transparentCache = new HashMap<String, ImageIcon> ();
 
-    public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float trasparency )
+    public static void clearTransparentCache ()
     {
-        if ( trasparentCache.containsKey ( id ) )
+        transparentCache.clear ();
+    }
+
+    public static void clearTransparentCache ( final String id )
+    {
+        transparentCache.remove ( id );
+    }
+
+    public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float opacity )
+    {
+        if ( transparentCache.containsKey ( id ) )
         {
-            return trasparentCache.get ( id );
+            return transparentCache.get ( id );
         }
         else
         {
-            trasparentCache.put ( id, createTransparentCopy ( imageIcon, trasparency ) );
-            return trasparentCache.get ( id );
+            transparentCache.put ( id, createTransparentCopy ( imageIcon, opacity ) );
+            return transparentCache.get ( id );
         }
     }
 
-    public static ImageIcon createTransparentCopy ( final ImageIcon imageIcon, final float trasparency )
+    public static ImageIcon createTransparentCopy ( final ImageIcon imageIcon, final float opacity )
     {
         final BufferedImage bi = createCompatibleImage ( imageIcon.getIconWidth (), imageIcon.getIconHeight (), Transparency.TRANSLUCENT );
 
         final Graphics2D g2d = bi.createGraphics ();
-        GraphicsUtils.setupAlphaComposite ( g2d, trasparency );
+        GraphicsUtils.setupAlphaComposite ( g2d, opacity );
         g2d.drawImage ( imageIcon.getImage (), 0, 0, null );
         g2d.dispose ();
 
@@ -1261,267 +1401,87 @@ public final class ImageUtils
     }
 
     /**
-     * Creating bordered pretty image
+     * Returns shadow image based on provided shape.
+     *
+     * @param width       shadow image width
+     * @param height      shadow image height
+     * @param shape       shadow shape
+     * @param shadowWidth shadow width
+     * @param opacity     shadow opacity
+     * @param clip        whether or not should clip shadow form
+     * @return shadow image based on provided shape
      */
-
-    public static BufferedImage createPrettyImage ( final Image image, final int shadeWidth, final int round )
+    public static BufferedImage createShadowImage ( final int width, final int height, final Shape shape, final int shadowWidth,
+                                                    final float opacity, final boolean clip )
     {
-        return createPrettyImage ( getBufferedImage ( image ), shadeWidth, round );
-    }
-
-    public static BufferedImage createPrettyImage ( final BufferedImage bufferedImage, final int shadeWidth, final int round )
-    {
-        final int width = bufferedImage.getWidth ();
-        final int height = bufferedImage.getHeight ();
-
-        final BufferedImage bi =
-                createCompatibleImage ( width + shadeWidth * 2 + 1, height + shadeWidth * 2 + 1, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bi.createGraphics ();
-        GraphicsUtils.setupAntialias ( g2d );
-        GraphicsUtils.setupImageQuality ( g2d );
-
-        final RoundRectangle2D.Double border = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, width, height, round, round );
-
-        final Shape old = g2d.getClip ();
-        g2d.setClip ( border );
-        g2d.drawImage ( bufferedImage, shadeWidth, shadeWidth, null );
-        g2d.setClip ( old );
-
-        GraphicsUtils.drawShade ( g2d, border, StyleConstants.shadeColor, shadeWidth );
-
-        g2d.setPaint ( new LinearGradientPaint ( 0, shadeWidth, 0, height - shadeWidth, new float[]{ 0f, 0.5f, 1f },
-                new Color[]{ new Color ( 125, 125, 125, 48 ), new Color ( 125, 125, 125, 0 ), new Color ( 125, 125, 125, 48 ) } ) );
-        g2d.fill ( border );
-
-        g2d.setColor ( Color.GRAY );
-        g2d.draw ( border );
-
-        g2d.dispose ();
-
-        return bi;
-    }
-
-    /**
-     * Creating shade for specified shape
-     */
-
-    public static BufferedImage createImageShade ( final int w, final int h, final Shape shape, final int shadeWidth,
-                                                   final float shadeOpacity )
-    {
-        return createImageShade ( w, h, shape, shadeWidth, shadeOpacity, StyleConstants.transparent );
-    }
-
-    public static BufferedImage createImageShade ( final int w, final int h, final Shape shape, final int shadeWidth,
-                                                   final float shadeOpacity, final Color clearColor )
-    {
-        // todo Properly use height
-        final int width = shadeWidth * 2 + w;
-        @SuppressWarnings ("UnusedDeclaration") final int height = shadeWidth * 2 + h;
-
         // Creating template image
-        final BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
+        final BufferedImage bi = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
         final Graphics2D ig = bi.createGraphics ();
         GraphicsUtils.setupAntialias ( ig );
-        ig.translate ( shadeWidth, shadeWidth );
         ig.setPaint ( Color.BLACK );
         ig.fill ( shape );
         ig.dispose ();
 
-        // Creating shade image
-        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
-        final BufferedImage shade = sf.filter ( bi, null );
+        // Creating shadow image
+        final ShadowFilter sf = new ShadowFilter ( shadowWidth, 0, 0, opacity );
+        final BufferedImage shadow = sf.filter ( bi, null );
 
-        // Clipping shade image
-        if ( clearColor != null )
+        // Clipping shadow image
+        if ( clip )
         {
-            final Graphics2D g2d = shade.createGraphics ();
+            final Graphics2D g2d = shadow.createGraphics ();
             GraphicsUtils.setupAntialias ( g2d );
-            g2d.translate ( shadeWidth, shadeWidth );
             g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-            g2d.setPaint ( clearColor );
+            g2d.setPaint ( ColorUtils.transparent () );
             g2d.fill ( shape );
             g2d.dispose ();
         }
 
-        return shade;
+        return shadow;
     }
 
     /**
-     * Arrow icons and images creation methods
+     * Returns shadow image based on provided shape.
+     *
+     * @param width       shadow image width
+     * @param shape       shadow shape
+     * @param shadowWidth shadow width
+     * @param opacity     shadow opacity
+     * @return shadow image based on provided shape
      */
-
-    public static ImageIcon createSimpleUpArrowIcon ( final int shadeWidth )
+    public static BufferedImage createInnerShadowImage ( final int width, final Shape shape, final int shadowWidth, final float opacity )
     {
-        return new ImageIcon ( createSimpleUpArrowImage ( shadeWidth ) );
-    }
+        // Creating template image
+        final BufferedImage bi = ImageUtils.createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
+        final Graphics2D ig = bi.createGraphics ();
+        GraphicsUtils.setupAntialias ( ig );
+        final Area area = new Area ( new Rectangle ( 0, 0, width, width ) );
+        area.exclusiveOr ( new Area ( shape ) );
+        ig.setPaint ( Color.BLACK );
+        ig.fill ( area );
+        ig.dispose ();
 
-    public static BufferedImage createSimpleUpArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createUpArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
+        // Creating shadow image
+        final ShadowFilter sf = new ShadowFilter ( shadowWidth, 0, 0, opacity );
+        final BufferedImage shadow = sf.filter ( bi, null );
 
-    public static ImageIcon createUpArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createUpArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createUpArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createUpArrowFill (), createUpArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createUpArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 0, 7 );
-        shape.lineTo ( 5, 1 );
-        shape.lineTo ( 10, 7 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createUpArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 0, 6 );
-        border.lineTo ( 4, 2 );
-        border.lineTo ( 8, 6 );
-        border.closePath ();
-        return border;
-    }
-
-    public static ImageIcon createSimpleLeftArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createSimpleLeftArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createSimpleLeftArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createLeftArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
-
-    public static ImageIcon createLeftArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createLeftArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createLeftArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createLeftArrowFill (), createLeftArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createLeftArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 7, 0 );
-        shape.lineTo ( 1, 5 );
-        shape.lineTo ( 7, 10 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createLeftArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 6, 0 );
-        border.lineTo ( 2, 4 );
-        border.lineTo ( 6, 8 );
-        border.closePath ();
-        return border;
-    }
-
-    public static ImageIcon createSimpleDownArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createSimpleDownArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createSimpleDownArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createDownArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
-
-    public static ImageIcon createDownArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createDownArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createDownArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createDownArrowFill (), createDownArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createDownArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 0, 3 );
-        shape.lineTo ( 5, 9 );
-        shape.lineTo ( 10, 3 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createDownArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 0, 3 );
-        border.lineTo ( 4, 7 );
-        border.lineTo ( 8, 3 );
-        border.closePath ();
-        return border;
-    }
-
-    public static ImageIcon createSimpleRightArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createSimpleRightArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createSimpleRightArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createRightArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
-
-    public static ImageIcon createRightArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createRightArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createRightArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createRightArrowFill (), createRightArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createRightArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 3, 0 );
-        shape.lineTo ( 9, 5 );
-        shape.lineTo ( 3, 10 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createRightArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 3, 0 );
-        border.lineTo ( 7, 4 );
-        border.lineTo ( 3, 8 );
-        border.closePath ();
-        return border;
-    }
-
-    private static BufferedImage createArrowImage ( final GeneralPath shape, final GeneralPath border, final int shadeWidth )
-    {
-        final BufferedImage image = createImageShade ( 10, 10, shape, shadeWidth, 1f, Color.BLACK );
-        final Graphics2D g2d = image.createGraphics ();
+        // Clipping shadow image
+        final Graphics2D g2d = shadow.createGraphics ();
         GraphicsUtils.setupAntialias ( g2d );
-        g2d.setPaint ( Color.WHITE );
-        g2d.translate ( shadeWidth, shadeWidth );
-        g2d.draw ( border );
+        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
+        g2d.setPaint ( ColorUtils.transparent () );
+        g2d.fill ( area );
         g2d.dispose ();
-        return image;
+
+        return shadow.getSubimage ( shadowWidth, shadowWidth, width - shadowWidth * 2, width - shadowWidth * 2 );
     }
 
+    /**
+     * Returns {@link java.awt.image.BufferedImage} decoded from Base64 string.
+     *
+     * @param imageString image encoded in Base64 string to decode
+     * @return {@link java.awt.image.BufferedImage} decoded from Base64 string
+     */
     public static BufferedImage decodeImage ( final String imageString )
     {
         BufferedImage image = null;
@@ -1538,7 +1498,8 @@ public final class ImageUtils
         }
         catch ( final Exception ex )
         {
-            Log.error ( "Unable to decode image icon", ex );
+            final String msg = "Unable to decode image icon";
+            LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
             try
             {
                 bis.close ();
@@ -1551,6 +1512,12 @@ public final class ImageUtils
         return image;
     }
 
+    /**
+     * Returns image encoded in Base64 string.
+     *
+     * @param image image to encode into Base64 string
+     * @return image encoded in Base64 string
+     */
     public static String encodeImage ( final BufferedImage image )
     {
         String imageString = null;
@@ -1567,7 +1534,8 @@ public final class ImageUtils
         }
         catch ( final IOException ex )
         {
-            Log.error ( "Unable to encode image icon", ex );
+            final String msg = "Unable to encode image icon";
+            LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
             try
             {
                 bos.close ();

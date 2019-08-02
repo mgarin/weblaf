@@ -26,10 +26,12 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.optionpane.WebOptionPaneUI;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebDialog;
-import com.alee.managers.language.LanguageManager;
+import com.alee.laf.window.WebDialog;
+import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +45,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebExtendedOptionPane extends WebDialog
 {
     public static final ImageIcon INFORMATION_ICON = new ImageIcon ( WebExtendedOptionPane.class.getResource ( "icons/information.png" ) );
@@ -73,7 +74,7 @@ public class WebExtendedOptionPane extends WebDialog
 
     private final WebPanel container;
     private final WebPanel controls;
-    private final WebPanel centerer;
+    private final WebPanel centered;
     private final WebPanel buttons;
 
     private WebButton yes;
@@ -86,7 +87,7 @@ public class WebExtendedOptionPane extends WebDialog
     public WebExtendedOptionPane ( final Component parentComponent, final Object message, final Object special, final String title,
                                    final int optionType, final int messageType )
     {
-        super ( SwingUtils.getWindowAncestor ( parentComponent ), title );
+        super ( CoreSwingUtils.getWindowAncestor ( parentComponent ), title );
         setIconImages ( getDialogIcons ( messageType ) );
         setLayout ( new BorderLayout () );
 
@@ -113,8 +114,8 @@ public class WebExtendedOptionPane extends WebDialog
         container.add ( controls, BorderLayout.SOUTH );
 
         // Buttons
-        centerer = new WebPanel ();
-        controls.add ( centerer, BorderLayout.CENTER );
+        centered = new WebPanel ();
+        controls.add ( centered, BorderLayout.CENTER );
         buttons = new WebPanel ( new HorizontalFlowLayout ( 5, false ) );
 
         // Special content
@@ -181,14 +182,15 @@ public class WebExtendedOptionPane extends WebDialog
         }
 
         // Equalize button widths
-        SwingUtils.equalizeComponentsWidths ( buttons.getComponents () );
+        final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+        SwingUtils.equalizeComponentsWidth ( properties, buttons.getComponents ()  );
 
         // Dialog settings
         setModal ( true );
         setResizable ( false );
         setDefaultCloseOperation ( JDialog.DISPOSE_ON_CLOSE );
         pack ();
-        setLocationRelativeTo ( SwingUtils.getWindowAncestor ( parentComponent ) );
+        setLocationRelativeTo ( CoreSwingUtils.getWindowAncestor ( parentComponent ) );
     }
 
     protected ImageIcon getLargeIcon ( final int messageType )
@@ -240,23 +242,23 @@ public class WebExtendedOptionPane extends WebDialog
             }
             controls.add ( specialComponent, BorderLayout.WEST );
         }
-        updateCenterer ();
+        updateCentered ();
     }
 
-    private void updateCenterer ()
+    private void updateCentered ()
     {
-        centerer.removeAll ();
+        centered.removeAll ();
         if ( specialComponent == null )
         {
-            centerer.setLayout ( new TableLayout (
+            centered.setLayout ( new TableLayout (
                     new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL }, { TableLayout.PREFERRED } } ) );
         }
         else
         {
-            centerer.setLayout (
+            centered.setLayout (
                     new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } } ) );
         }
-        centerer.add ( buttons, "1,0" );
+        centered.add ( buttons, "1,0" );
     }
 
     private void setContent ( final Object message, final boolean updateWindow )
@@ -278,7 +280,7 @@ public class WebExtendedOptionPane extends WebDialog
         if ( updateWindow )
         {
             pack ();
-            setLocationRelativeTo ( SwingUtils.getWindowAncestor ( parentComponent ) );
+            setLocationRelativeTo ( CoreSwingUtils.getWindowAncestor ( parentComponent ) );
         }
     }
 
@@ -314,7 +316,7 @@ public class WebExtendedOptionPane extends WebDialog
         final ImageIcon bi = WebOptionPaneUI.getTypeIcon ( messageType );
         final Image big = bi != null ? bi.getImage () : null;
 
-        return CollectionUtils.copy ( small, big );
+        return CollectionUtils.asList ( small, big );
     }
 
     private void closeDialog ( final int result )
@@ -325,9 +327,7 @@ public class WebExtendedOptionPane extends WebDialog
 
     private WebButton createControlButton ( final String key )
     {
-        final WebButton cancel = new WebButton ();
-        cancel.setLanguage ( key );
-        cancel.setLeftRightSpacing ( 10 );
+        final WebButton cancel = new WebButton ( key );
         cancel.setMinimumSize ( new Dimension ( 70, 0 ) );
         return cancel;
     }
@@ -358,7 +358,7 @@ public class WebExtendedOptionPane extends WebDialog
 
     public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special )
     {
-        return showConfirmDialog ( parentComponent, message, special, LanguageManager.get ( "weblaf.optionpane.title" ) );
+        return showConfirmDialog ( parentComponent, message, special, LM.get ( "weblaf.optionpane.title" ) );
     }
 
     public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special,

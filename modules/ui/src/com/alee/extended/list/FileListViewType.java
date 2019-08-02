@@ -22,7 +22,6 @@ package com.alee.extended.list;
  *
  * @author Mikle Garin
  */
-
 public enum FileListViewType
 {
     /**

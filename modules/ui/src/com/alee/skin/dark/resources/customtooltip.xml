@@ -1,0 +1,36 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.managers.tooltip.WebCustomTooltip -->
+
+    <!-- Tooltip label -->
+    <style type="styledlabel" id="customtooltip-label" padding="0,3,0,3">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout>
+                        <StyledLabelText color="245,245,245" />
+                    </LabelLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <LabelLayout>
+                        <StyledLabelText color="180,180,180" ignoreStyleColors="true" />
+                    </LabelLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Tooltip hotkey shortcut label -->
+    <style type="label" id="customtooltip-hotkey" padding="0,3,1,3">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape round="2" />
+                    <ColorBackground color="255,255,255,178" />
+                    <LabelText constraints="text" color="black" halign="0" valign="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

@@ -1,0 +1,132 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.collapsible.WebCollapsiblePane -->
+
+    <!-- Collapsible pane -->
+    <style type="collapsiblepane">
+        <component>
+            <layout class="CollapsiblePaneLayout$UIResource">
+                <fitHeader>true</fitHeader>
+                <easing class="Cubic$InOut" />
+                <duration>0.25s</duration>
+            </layout>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Header panel -->
+        <!-- todo Add extra 1xp top/... padding for all cases -->
+        <style type="panel" id="header" extends="decorated">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <WebShadow type="outer" width="0" />
+                        <LineBorder color="20,20,20" />
+                        <GradientBackground>
+                            <color>87,91,93</color>
+                            <color>77,81,83</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="left">
+                        <GradientBackground from="0,0" to="1,0" />
+                    </decoration>
+                    <decoration states="right">
+                        <GradientBackground from="0,0" to="1,0" />
+                    </decoration>
+                    <decoration states="top,expanded">
+                        <WebShape sides="0,0,1,0" />
+                    </decoration>
+                    <decoration states="left,expanded">
+                        <WebShape sides="0,0,0,1" />
+                    </decoration>
+                    <decoration states="right,expanded">
+                        <WebShape sides="0,1,0,0" />
+                    </decoration>
+                    <decoration states="bottom,expanded">
+                        <WebShape sides="1,0,0,0" />
+                    </decoration>
+                    <decoration states="collapsed">
+                        <WebShape sides="0,0,0,0" />
+                    </decoration>
+                    <decoration states="in-focused-parent">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Defailt title label -->
+            <style type="styledlabel" id="title" extends="shadow">
+                <component>
+                    <horizontalAlignment>10</horizontalAlignment>
+                </component>
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <LabelLayout padding="2,4,2,4" />
+                        </decoration>
+                        <decoration states="has-icon">
+                            <LabelLayout padding="2,2,2,4" />
+                        </decoration>
+                        <decoration states="left">
+                            <LabelLayout rotation="counterClockwise" />
+                        </decoration>
+                        <decoration states="right">
+                            <LabelLayout rotation="clockwise" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Expand button -->
+            <style type="button" id="control" extends="undecorated" padding="5">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter>
+                    <decorations>
+                        <decoration states="expanded">
+                            <ButtonLayout>
+                                <SetIcon constraints="icon" icon="up-small" />
+                            </ButtonLayout>
+                        </decoration>
+                        <decoration states="collapsed">
+                            <ButtonLayout>
+                                <SetIcon constraints="icon" icon="down-small" />
+                            </ButtonLayout>
+                        </decoration>
+                        <decoration states="left">
+                            <ButtonLayout rotation="counterClockwise" />
+                        </decoration>
+                        <decoration states="right">
+                            <ButtonLayout rotation="clockwise" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+        </style>
+
+    </style>
+
+    <!-- Undecorated collapsible pane -->
+    <style type="collapsiblepane" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

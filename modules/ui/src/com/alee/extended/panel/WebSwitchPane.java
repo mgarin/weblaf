@@ -22,7 +22,6 @@ import com.alee.laf.panel.WebPanel;
 /**
  * @author Mikle Garin
  */
-
 public class WebSwitchPane extends WebPanel
 {
     /**

@@ -1,0 +1,17 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.colorchooser.WebColorChooser -->
+
+    <!-- Color chooser -->
+    <style type="colorchooser">
+        <painter />
+
+        <!-- Main content panel -->
+        <style type="panel" id="content" extends="colorchooser" />
+
+    </style>
+
+    <!-- WebLaF-decorated color chooser dialog -->
+    <style type="rootpane" id="colorchooser" extends="dialog-decorated" />
+
+</skin>

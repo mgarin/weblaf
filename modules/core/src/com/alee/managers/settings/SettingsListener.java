@@ -24,9 +24,8 @@ import java.util.EventListener;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
+ * @see SettingsManager
  */
-
 public interface SettingsListener extends EventListener
 {
     /**
@@ -34,7 +33,8 @@ public interface SettingsListener extends EventListener
      *
      * @param group    settings group
      * @param key      settings key
+     * @param oldValue old value
      * @param newValue new value
      */
-    public void settingsChanged ( String group, String key, Object newValue );
+    public void settingsChanged ( String group, String key, Object oldValue, Object newValue );
 }

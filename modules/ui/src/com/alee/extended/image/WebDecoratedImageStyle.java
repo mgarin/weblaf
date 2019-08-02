@@ -17,16 +17,14 @@
 
 package com.alee.extended.image;
 
-import com.alee.global.StyleConstants;
 import com.alee.utils.laf.ShadeType;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 05.06.12 Time: 19:28
+ * @author Mikle Garin
  */
-
 public final class WebDecoratedImageStyle implements SwingConstants
 {
     /**
@@ -67,7 +65,7 @@ public final class WebDecoratedImageStyle implements SwingConstants
     /**
      * Image corners round, use 0 to disable rounding
      */
-    public static int round = StyleConstants.decorationRound;
+    public static int round = 8;
 
     /**
      * Blur center horizontal alignment

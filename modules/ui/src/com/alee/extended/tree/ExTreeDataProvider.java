@@ -20,60 +20,64 @@ package com.alee.extended.tree;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.compare.Filter;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * This interface provides methods for ex tree data retrieval.
+ * This interface provides methods for synchronous tree nodes retrieval within {@link ExTreeModel}.
+ * It also extends {@link Serializable} as it is used within {@link ExTreeModel} which must also be {@link Serializable}.
  *
- * @param <E> custom node type
+ * @param <N> node type
  * @author Mikle Garin
- * @see com.alee.extended.tree.WebExTree
- * @see com.alee.extended.tree.ExTreeModel
+ * @see WebExTree
+ * @see ExTreeModel
+ * @see UniqueNode
  */
-
-public interface ExTreeDataProvider<E extends UniqueNode>
+public interface ExTreeDataProvider<N extends UniqueNode> extends Serializable
 {
     /**
-     * Returns asynchronous tree root node.
-     * This request uses the EDT and should be processed quickly.
+     * Returns root {@link UniqueNode}.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @return root node
+     * @return root {@link UniqueNode}
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public E getRoot ();
+    public N getRoot ();
 
     /**
-     * Returns child nodes for the specified asynchronous tree node.
+     * Returns child {@link UniqueNode}s for the specified parent {@link UniqueNode}.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @param node parent node
-     * @return child nodes list
+     * @param parent {@link UniqueNode} to load children for
+     * @return child {@link UniqueNode}s for the specified parent {@link UniqueNode}
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public List<E> getChilds ( E node );
+    public List<N> getChildren ( N parent );
 
     /**
-     * Returns child nodes comparator for the specified asynchronous tree node.
-     * No sorting applied to childs in case null is returned.
+     * Returns {@link Filter} that will be used for the specified {@link UniqueNode} children.
+     * Specific {@link List} of child {@link UniqueNode}s is given for every separate filter operation.
+     * No filtering applied to children in case {@code null} is returned.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @param node parent node
-     * @return child nodes comparator
+     * @param parent   {@link UniqueNode} which children will be filtered using returned {@link Filter}
+     * @param children {@link UniqueNode}s to be filtered
+     * @return {@link Filter} that will be used for the specified {@link UniqueNode} children
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Comparator<E> getChildsComparator ( E node );
+    public Filter<N> getChildrenFilter ( N parent, List<N> children );
 
     /**
-     * Returns child nodes filter for the specified asynchronous tree node.
-     * No filtering applied to childs in case null is returned.
+     * Returns {@link Comparator} that will be used for the specified {@link UniqueNode} children.
+     * Specific {@link List} of child {@link UniqueNode}s is given for every separate comparison operation.
+     * No sorting applied to children in case {@code null} is returned.
+     * This operation is always performed on EDT and should not take excessive amounts of time.
      *
-     * @param node parent node
-     * @return child nodes filter
+     * @param parent   {@link UniqueNode} which children will be sorted using returned {@link Comparator}
+     * @param children {@link UniqueNode}s to be sorted
+     * @return {@link Comparator} that will be used for the specified {@link UniqueNode} children
+     * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Filter<E> getChildsFilter ( E node );
-
-    /**
-     * Returns whether the specified node is leaf (doesn't have any childs) or not.
-     * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
-     *
-     * @param node node
-     * @return true if the specified node is leaf, false otherwise
-     */
-    public boolean isLeaf ( E node );
+    public Comparator<N> getChildrenComparator ( N parent, List<N> children );
 }

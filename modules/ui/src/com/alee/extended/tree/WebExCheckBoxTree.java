@@ -17,292 +17,438 @@
 
 package com.alee.extended.tree;
 
-import com.alee.extended.tree.sample.SampleExDataProvider;
-import com.alee.extended.tree.sample.SampleTreeCellEditor;
-import com.alee.extended.tree.sample.SampleTreeCellRenderer;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.laf.tree.WebTreeCellEditor;
-import com.alee.laf.tree.WebTreeCellRenderer;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
 
+import javax.swing.tree.TreeCellEditor;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * This tree is a hybrid of WebCheckBoxTree and WebExTree.
- * Checking model from WebCheckBoxTree provides node checking feature.
- * ExTreeModel from WebExTree provides tree with structure data.
+ * {@link WebCheckBoxTree} extension class.
+ * It uses {@link ExTreeDataProvider} as data source instead of {@link TreeModel}.
+ * This tree structure is always fully available and can be navigated through the nodes.
  *
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
+ *
+ * @param <N> {@link UniqueNode} type
  * @author Mikle Garin
+ * @see WebCheckBoxTree
+ * @see com.alee.laf.tree.WebTreeUI
+ * @see com.alee.laf.tree.TreePainter
+ * @see TreeCheckingModel
+ * @see ExTreeModel
+ * @see ExTreeDataProvider
  */
-
-public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
+public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N> implements FilterableNodes<N>, SortableNodes<N>
 {
-    /**
-     * Tree nodes comparator.
-     */
-    protected Comparator<E> comparator;
-
     /**
      * Tree nodes filter.
      */
-    protected Filter<E> filter;
+    protected Filter<N> filter;
 
     /**
-     * Constructs sample ex checkbox tree.
+     * Tree nodes comparator.
+     */
+    protected Comparator<N> comparator;
+
+    /**
+     * Constructs new {@link WebExCheckBoxTree} with sample data.
      */
     public WebExCheckBoxTree ()
     {
-        super ();
-
-        // Installing sample data provider
-        setDataProvider ( new SampleExDataProvider () );
-
-        // Tree cell renderer & editor
-        setCellRenderer ( new SampleTreeCellRenderer () );
-        setCellEditor ( new SampleTreeCellEditor () );
+        this ( StyleId.auto );
     }
 
     /**
-     * Costructs ex checkbox tree using data from the custom data provider.
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
      *
-     * @param dataProvider custom data provider
+     * @param dataProvider {@link ExTreeDataProvider} implementation
      */
     public WebExCheckBoxTree ( final ExTreeDataProvider dataProvider )
     {
-        super ();
-
-        // Installing data provider
-        setDataProvider ( dataProvider );
-
-        // Tree cell renderer & editor
-        setCellRenderer ( new WebTreeCellRenderer () );
-        setCellEditor ( new WebTreeCellEditor () );
+        this ( StyleId.auto, dataProvider );
     }
 
     /**
-     * Returns ex tree data provider.
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
      *
-     * @return data provider
+     * @param dataProvider {@link ExTreeDataProvider} implementation
+     * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
      */
-    public ExTreeDataProvider<E> getDataProvider ()
+    public WebExCheckBoxTree ( final ExTreeDataProvider dataProvider, final TreeCellRenderer renderer )
     {
-        final TreeModel model = getModel ();
-        return model != null && model instanceof ExTreeModel ? getExModel ().getDataProvider () : null;
+        this ( StyleId.auto, dataProvider, renderer );
     }
 
     /**
-     * Changes data provider for this ex tree.
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
      *
-     * @param dataProvider new data provider
+     * @param dataProvider {@link ExTreeDataProvider} implementation
+     * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
+     */
+    public WebExCheckBoxTree ( final ExTreeDataProvider dataProvider, final TreeCellEditor editor )
+    {
+        this ( StyleId.auto, dataProvider, editor );
+    }
+
+    /**
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
+     *
+     * @param dataProvider {@link ExTreeDataProvider} implementation
+     * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
+     * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
+     */
+    public WebExCheckBoxTree ( final ExTreeDataProvider dataProvider, final TreeCellRenderer renderer, final TreeCellEditor editor )
+    {
+        this ( StyleId.auto, dataProvider, renderer, editor );
+    }
+
+    /**
+     * Constructs new {@link WebExCheckBoxTree} with sample data.
+     *
+     * @param id {@link StyleId}
+     */
+    public WebExCheckBoxTree ( final StyleId id )
+    {
+        this ( id, null, null, null );
+    }
+
+    /**
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
+     *
+     * @param id           {@link StyleId}
+     * @param dataProvider {@link ExTreeDataProvider} implementation
+     */
+    public WebExCheckBoxTree ( final StyleId id, final ExTreeDataProvider dataProvider )
+    {
+        this ( id, dataProvider, null, null );
+    }
+
+    /**
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
+     *
+     * @param id           {@link StyleId}
+     * @param dataProvider {@link ExTreeDataProvider} implementation
+     * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
+     */
+    public WebExCheckBoxTree ( final StyleId id, final ExTreeDataProvider dataProvider, final TreeCellRenderer renderer )
+    {
+        this ( id, dataProvider, renderer, null );
+    }
+
+    /**
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
+     *
+     * @param id           {@link StyleId}
+     * @param dataProvider {@link ExTreeDataProvider} implementation
+     * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
+     */
+    public WebExCheckBoxTree ( final StyleId id, final ExTreeDataProvider dataProvider, final TreeCellEditor editor )
+    {
+        this ( id, dataProvider, null, editor );
+    }
+
+    /**
+     * Costructs new {@link WebExCheckBoxTree} with the specified {@link ExTreeDataProvider} as data source.
+     *
+     * @param id           {@link StyleId}
+     * @param dataProvider {@link ExTreeDataProvider} implementation
+     * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
+     * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
+     */
+    public WebExCheckBoxTree ( final StyleId id, final ExTreeDataProvider dataProvider,
+                               final TreeCellRenderer renderer, final TreeCellEditor editor )
+    {
+        super ( id, new EmptyTreeModel () );
+        if ( dataProvider != null )
+        {
+            setDataProvider ( dataProvider );
+        }
+        if ( renderer != null )
+        {
+            setCellRenderer ( renderer );
+        }
+        if ( editor != null )
+        {
+            setEditable ( true );
+            setCellEditor ( editor );
+        }
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.excheckboxtree;
+    }
+
+    @Override
+    public ExTreeModel<N> getModel ()
+    {
+        return ( ExTreeModel<N> ) super.getModel ();
+    }
+
+    @Override
+    public void setModel ( final TreeModel newModel )
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        /**
+         * Simply ignoring any models that are not {@link ExTreeModel}-based.
+         * This is a workaround to avoid default model being set in {@link javax.swing.JTree}.
+         * This way we can prevent any models from being forced on us and avoid unnecessary events and UI updates.
+         */
+        if ( newModel instanceof ExTreeModel )
+        {
+            final ExTreeModel<N> old = getModel ();
+            if ( old != null )
+            {
+                old.uninstall ( this );
+            }
+
+            final ExTreeModel model = ( ExTreeModel ) newModel;
+            model.install ( this );
+
+            super.setModel ( newModel );
+        }
+        else if ( newModel == null )
+        {
+            throw new NullPointerException ( "ExTreeModel cannot be null" );
+        }
+    }
+
+    @Override
+    protected TreeCheckingModel<N> createDefaultCheckingModel ()
+    {
+        return new DefaultExTreeCheckingModel<N, WebExCheckBoxTree<N>> ( this );
+    }
+
+    /**
+     * Returns {@link ExTreeDataProvider} used by this {@link WebExCheckBoxTree}.
+     *
+     * @return {@link ExTreeDataProvider} used by this {@link WebExCheckBoxTree}
+     */
+    public ExTreeDataProvider<N> getDataProvider ()
+    {
+        final ExTreeModel model = getModel ();
+        return model != null ? getModel ().getDataProvider () : null;
+    }
+
+    /**
+     * Sets {@link ExTreeDataProvider} used by this {@link WebExCheckBoxTree}.
+     *
+     * @param dataProvider new {@link ExTreeDataProvider} for this {@link WebExCheckBoxTree}
      */
     public void setDataProvider ( final ExTreeDataProvider dataProvider )
     {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        /**
+         * Initializing new {@link ExTreeModel} based on specified {@link ExTreeDataProvider}.
+         * This is necessary as the model will keep {@link ExTreeDataProvider} instead of {@link WebExCheckBoxTree}.
+         */
         if ( dataProvider != null )
         {
-            final ExTreeDataProvider<E> oldDataProvider = getDataProvider ();
-
-            // Updating model
-            setModel ( new ExTreeModel<E> ( this, dataProvider ) );
-
-            // Informing about data provider change
-            firePropertyChange ( TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
+            final ExTreeDataProvider<N> oldDataProvider = getDataProvider ();
+            setModel ( new ExTreeModel<N> ( dataProvider ) );
+            firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
         }
-    }
-
-    /**
-     * Returns tree nodes comparator.
-     *
-     * @return tree nodes comparator
-     */
-    public Comparator<E> getComparator ()
-    {
-        return comparator;
-    }
-
-    /**
-     * Sets tree nodes comparator.
-     * Comparator replacement will automatically update all loaded nodes sorting.
-     *
-     * @param comparator tree nodes comparator
-     */
-    public void setComparator ( final Comparator<E> comparator )
-    {
-        final Comparator<E> oldComparator = this.comparator;
-        this.comparator = comparator;
-
-        final ExTreeDataProvider dataProvider = getDataProvider ();
-        if ( dataProvider instanceof AbstractExTreeDataProvider )
+        else
         {
-            ( ( AbstractExTreeDataProvider ) dataProvider ).setChildsComparator ( comparator );
-            updateSortingAndFiltering ();
+            throw new NullPointerException ( "ExTreeDataProvider cannot be null" );
         }
-
-        firePropertyChange ( TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
     }
 
-    /**
-     * Removes any applied tree nodes comparator.
-     */
-    public void clearComparator ()
-    {
-        setComparator ( null );
-    }
-
-    /**
-     * Returns tree nodes filter.
-     *
-     * @return tree nodes filter
-     */
-    public Filter<E> getFilter ()
+    @Override
+    public Filter<N> getFilter ()
     {
         return filter;
     }
 
-    /**
-     * Sets tree nodes filter.
-     * Comparator replacement will automatically re-filter all loaded nodes.
-     *
-     * @param filter tree nodes filter
-     */
-    public void setFilter ( final Filter<E> filter )
+    @Override
+    public void setFilter ( final Filter<N> filter )
     {
-        final Filter<E> oldFilter = this.filter;
+        final Filter<N> oldFilter = this.filter;
         this.filter = filter;
-
-        final ExTreeDataProvider dataProvider = getDataProvider ();
-        if ( dataProvider instanceof AbstractExTreeDataProvider )
-        {
-            ( ( AbstractExTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
-            updateSortingAndFiltering ();
-        }
-
-        firePropertyChange ( TREE_FILTER_PROPERTY, oldFilter, filter );
+        filter ();
+        firePropertyChange ( WebLookAndFeel.TREE_FILTER_PROPERTY, oldFilter, filter );
     }
 
-    /**
-     * Removes any applied tree nodes filter.
-     */
+    @Override
     public void clearFilter ()
     {
         setFilter ( null );
     }
 
+    @Override
+    public void filter ()
+    {
+        getModel ().filter ();
+    }
+
+    @Override
+    public void filter ( final N node )
+    {
+        getModel ().filter ( node );
+    }
+
+    @Override
+    public void filter ( final N node, final boolean recursively )
+    {
+        getModel ().filter ( node, recursively );
+    }
+
+    @Override
+    public Comparator<N> getComparator ()
+    {
+        return comparator;
+    }
+
+    @Override
+    public void setComparator ( final Comparator<N> comparator )
+    {
+        final Comparator<N> oldComparator = this.comparator;
+        this.comparator = comparator;
+        sort ();
+        firePropertyChange ( WebLookAndFeel.TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
+    }
+
+    @Override
+    public void clearComparator ()
+    {
+        setComparator ( null );
+    }
+
+    @Override
+    public void sort ()
+    {
+        getModel ().sort ();
+    }
+
+    @Override
+    public void sort ( final N node )
+    {
+        getModel ().sort ( node );
+    }
+
+    @Override
+    public void sort ( final N node, final boolean recursively )
+    {
+        getModel ().sort ( node, recursively );
+    }
+
     /**
      * Updates nodes sorting and filtering for all loaded nodes.
      */
-    public void updateSortingAndFiltering ()
+    public void filterAndSort ()
     {
-        getExModel ().updateSortingAndFiltering ();
+        getModel ().filterAndSort ( true );
     }
 
     /**
-     * Updates sorting and filtering for the specified node childs.
-     */
-    public void updateSortingAndFiltering ( final E node )
-    {
-        getExModel ().updateSortingAndFiltering ( node );
-    }
-
-    /**
-     * Returns ex tree model.
+     * Updates sorting and filtering for the specified node children.
      *
-     * @return ex tree model
+     * @param node node to update sorting and filtering for
      */
-    public ExTreeModel<E> getExModel ()
+    public void filterAndSort ( final N node )
     {
-        return ( ExTreeModel<E> ) getModel ();
+        getModel ().filterAndSort ( node, false );
     }
 
     /**
-     * Returns whether ex tree model is installed or not.
+     * Updates sorting and filtering for the specified node children.
      *
-     * @return true if ex tree model is installed, false otherwise
+     * @param node        node to update sorting and filter for
+     * @param recursively whether should update the whole children structure recursively or not
      */
-    public boolean isExModel ()
+    public void filterAndSort ( final N node, final boolean recursively )
     {
-        final TreeModel model = getModel ();
-        return model != null && model instanceof ExTreeModel;
+        getModel ().filterAndSort ( node, recursively );
     }
 
     /**
      * Sets child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param parent   node to process
      * @param children new node children
      */
-    public void setChildNodes ( final E parent, final List<E> children )
+    public void setChildNodes ( final N parent, final List<N> children )
     {
-        getExModel ().setChildNodes ( parent, children );
+        getModel ().setChildNodes ( parent, children );
     }
 
     /**
      * Adds child node for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param parent node to process
      * @param child  new node child
      */
-    public void addChildNode ( final E parent, final E child )
+    public void addChildNode ( final N parent, final N child )
     {
-        getExModel ().addChildNodes ( parent, Arrays.asList ( child ) );
+        getModel ().addChildNode ( parent, child );
     }
 
     /**
      * Adds child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param parent   node to process
      * @param children new node children
      */
-    public void addChildNodes ( final E parent, final List<E> children )
+    public void addChildNodes ( final N parent, final List<N> children )
     {
-        getExModel ().addChildNodes ( parent, children );
+        getModel ().addChildNodes ( parent, children );
     }
 
     /**
      * Inserts a list of child nodes into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param children list of new child nodes
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final List<E> children, final E parent, final int index )
+    public void insertChildNodes ( final List<N> children, final N parent, final int index )
     {
-        getExModel ().insertNodesInto ( children, parent, index );
+        getModel ().insertNodesInto ( children, parent, index );
     }
 
     /**
      * Inserts an array of child nodes into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param children array of new child nodes
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final E[] children, final E parent, final int index )
+    public void insertChildNodes ( final N[] children, final N parent, final int index )
     {
-        getExModel ().insertNodesInto ( children, parent, index );
+        getModel ().insertNodesInto ( children, parent, index );
     }
 
     /**
      * Inserts child node into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param child  new child node
      * @param parent parent node
      * @param index  insert index
      */
-    public void insertChildNode ( final E child, final E parent, final int index )
+    public void insertChildNode ( final N child, final N parent, final int index )
     {
-        getExModel ().insertNodeInto ( child, parent, index );
+        getModel ().insertNodeInto ( child, parent, index );
     }
 
     /**
@@ -310,11 +456,10 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * This method will have effect only if node exists.
      *
      * @param nodeId ID of the node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeNode ( final String nodeId )
+    public void removeNode ( final String nodeId )
     {
-        return removeNode ( findNode ( nodeId ) );
+        removeNode ( findNode ( nodeId ) );
     }
 
     /**
@@ -322,16 +467,10 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * This method will have effect only if node exists.
      *
      * @param node node to remove
-     * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeNode ( final E node )
+    public void removeNode ( final N node )
     {
-        final boolean exists = node != null && node.getParent () != null;
-        if ( exists )
-        {
-            getExModel ().removeNodeFromParent ( node );
-        }
-        return exists;
+        getModel ().removeNodeFromParent ( node );
     }
 
     /**
@@ -340,9 +479,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param nodes list of nodes to remove
      */
-    public void removeNodes ( final List<E> nodes )
+    public void removeNodes ( final List<N> nodes )
     {
-        getExModel ().removeNodesFromParent ( nodes );
+        getModel ().removeNodesFromParent ( nodes );
     }
 
     /**
@@ -351,9 +490,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param nodes array of nodes to remove
      */
-    public void removeNodes ( final E[] nodes )
+    public void removeNodes ( final N[] nodes )
     {
-        getExModel ().removeNodesFromParent ( nodes );
+        getModel ().removeNodesFromParent ( nodes );
     }
 
     /**
@@ -362,9 +501,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param nodeId node ID
      * @return node with the specified ID or null if it was not found
      */
-    public E findNode ( final String nodeId )
+    public N findNode ( final String nodeId )
     {
-        return getExModel ().findNode ( nodeId );
+        return getModel ().findNode ( nodeId );
     }
 
     /**
@@ -375,19 +514,6 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     public void updateNode ( final String nodeId )
     {
         updateNode ( findNode ( nodeId ) );
-    }
-
-    /**
-     * Forces tree node to be updated.
-     *
-     * @param node tree node to be updated
-     */
-    public void updateNode ( final E node )
-    {
-        getExModel ().updateNode ( node );
-
-        // todo Should actually perform this here (but need to improve filter interface methods - add cache clear methods)
-        // updateSortingAndFiltering ( ( E ) node.getParent () );
     }
 
     /**
@@ -405,13 +531,13 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      *
      * @param node tree node to be updated
      */
-    public void updateNodeStructure ( final E node )
+    public void updateNodeStructure ( final N node )
     {
-        getExModel ().updateNodeStructure ( node );
+        getModel ().updateNodeStructure ( node );
     }
 
     /**
-     * Reloads selected node childs.
+     * Reloads selected node children.
      */
     public void reloadSelectedNodes ()
     {
@@ -423,10 +549,10 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
             for ( final TreePath path : paths )
             {
                 // Checking if node is not null and not busy yet
-                final E node = getNodeForPath ( path );
+                final N node = getNodeForPath ( path );
                 if ( node != null )
                 {
-                    // Reloading node childs
+                    // Reloading node children
                     performReload ( node, path, false );
                 }
             }
@@ -439,7 +565,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param point point to look for node
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeUnderPoint ( final Point point )
+    public N reloadNodeUnderPoint ( final Point point )
     {
         return reloadNodeUnderPoint ( point.x, point.y );
     }
@@ -451,17 +577,17 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param y point Y coordinate
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNodeUnderPoint ( final int x, final int y )
+    public N reloadNodeUnderPoint ( final int x, final int y )
     {
         return reloadPath ( getPathForLocation ( x, y ) );
     }
 
     /**
-     * Reloads root node childs.
+     * Reloads root node children.
      *
      * @return reloaded root node
      */
-    public E reloadRootNode ()
+    public N reloadRootNode ()
     {
         return reloadNode ( getRootNode () );
     }
@@ -472,35 +598,35 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param nodeId ID of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final String nodeId )
+    public N reloadNode ( final String nodeId )
     {
         return reloadNode ( findNode ( nodeId ) );
     }
 
     /**
-     * Reloads specified node childs.
+     * Reloads specified node children.
      *
      * @param node node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final E node )
+    public N reloadNode ( final N node )
     {
         return reloadNode ( node, false );
     }
 
     /**
-     * Reloads specified node childs and selects it if requested.
+     * Reloads specified node children and selects it if requested.
      *
      * @param node   node to reload
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadNode ( final E node, final boolean select )
+    public N reloadNode ( final N node, final boolean select )
     {
         // Checking that node is not null
         if ( node != null )
         {
-            // Reloading node childs
+            // Reloading node children
             performReload ( node, getPathForNode ( node ), select );
             return node;
         }
@@ -508,33 +634,33 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Reloads node childs at the specified path.
+     * Reloads node children at the specified path.
      *
      * @param path path of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPath ( final TreePath path )
+    public N reloadPath ( final TreePath path )
     {
         return reloadPath ( path, false );
     }
 
     /**
-     * Reloads node childs at the specified path and selects it if needed.
+     * Reloads node children at the specified path and selects it if needed.
      *
      * @param path   path of the node to reload
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public E reloadPath ( final TreePath path, final boolean select )
+    public N reloadPath ( final TreePath path, final boolean select )
     {
         // Checking that path is not null
         if ( path != null )
         {
             // Checking if node is not null and not busy yet
-            final E node = getNodeForPath ( path );
+            final N node = getNodeForPath ( path );
             if ( node != null )
             {
-                // Reloading node childs
+                // Reloading node children
                 performReload ( node, path, select );
                 return node;
             }
@@ -549,7 +675,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param path   path to node
      * @param select whether select the node or not
      */
-    protected void performReload ( final E node, final TreePath path, final boolean select )
+    protected void performReload ( final N node, final TreePath path, final boolean select )
     {
         // Select node under the mouse
         if ( select && !isPathSelected ( path ) )
@@ -558,17 +684,17 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         }
 
         // Expand the selected node since the collapsed node will ignore reload call
-        // In case the node childs were not loaded yet this call will cause it to load childs
+        // In case the node children were not loaded yet this call will cause it to load children
         if ( !isExpanded ( path ) )
         {
             expandPath ( path );
         }
 
-        // Reload selected node childs
+        // Reload selected node children
         // This won't be called if node was not loaded yet since expand would call load before
         if ( node != null )
         {
-            getExModel ().reload ( node );
+            getModel ().reload ( node );
         }
     }
 
@@ -621,7 +747,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         final List<String> ids = CollectionUtils.copy ( pathNodeIds );
         for ( int initial = 0; initial < ids.size (); initial++ )
         {
-            final E initialNode = findNode ( ids.get ( initial ) );
+            final N initialNode = findNode ( ids.get ( initial ) );
             if ( initialNode != null )
             {
                 for ( int i = 0; i <= initial; i++ )
@@ -646,7 +772,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    protected void expandPathImpl ( final E currentNode, final List<String> leftToExpand, final boolean expandLastNode,
+    protected void expandPathImpl ( final N currentNode, final List<String> leftToExpand, final boolean expandLastNode,
                                     final boolean selectLastNode )
     {
         // There is still more to load
@@ -656,7 +782,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
             expandNode ( currentNode );
 
             // Retrieving next node
-            final E nextNode = findNode ( leftToExpand.get ( 0 ) );
+            final N nextNode = findNode ( leftToExpand.get ( 0 ) );
             leftToExpand.remove ( 0 );
 
             // If node exists continue expanding path
@@ -682,7 +808,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    protected void expandPathEndImpl ( final E lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
+    protected void expandPathEndImpl ( final N lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
     {
         if ( selectLastNode )
         {

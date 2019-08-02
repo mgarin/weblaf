@@ -17,8 +17,9 @@
 
 package com.alee.laf.toolbar;
 
-import com.alee.extended.layout.ToolbarLayout;
-import com.alee.global.StyleConstants;
+import com.alee.extended.layout.AbstractLineLayout;
+import com.alee.extended.layout.HorizontalFlowLayout;
+import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -31,9 +32,12 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WhiteSpace extends JComponent implements SwingConstants
 {
+    /**
+     * todo 1. Appropriate implement component with UI and painter
+     */
+
     /**
      * Spacing amount in px.
      */
@@ -41,6 +45,7 @@ public class WhiteSpace extends JComponent implements SwingConstants
 
     /**
      * Spacing orientation.
+     * It can either be {@link #HORIZONTAL} or {@link #VERTICAL}.
      */
     private int orientation;
 
@@ -49,7 +54,7 @@ public class WhiteSpace extends JComponent implements SwingConstants
      */
     public WhiteSpace ()
     {
-        this ( StyleConstants.contentSpacing );
+        this ( 2 );
     }
 
     /**
@@ -87,6 +92,67 @@ public class WhiteSpace extends JComponent implements SwingConstants
     }
 
     /**
+     * Returns actual current orientation.
+     *
+     * @return actual current orientation
+     */
+    protected int getActualOrientation ()
+    {
+        final int orientation;
+        final Container container = getParent ();
+        if ( container != null )
+        {
+            final LayoutManager layoutManager = container.getLayout ();
+            if ( layoutManager instanceof AbstractLineLayout )
+            {
+                /**
+                 * Support for {@link AbstractLineLayout} and any extending layout manager.
+                 */
+                final AbstractLineLayout layout = ( AbstractLineLayout ) layoutManager;
+                orientation = layout.getOrientation ( container );
+            }
+            else if ( layoutManager instanceof BoxLayout )
+            {
+                /**
+                 * Support for {@link BoxLayout} and any extending layout manager.
+                 */
+                final BoxLayout layout = ( BoxLayout ) layoutManager;
+                final int axis = layout.getAxis ();
+                orientation = axis == BoxLayout.LINE_AXIS || axis == BoxLayout.X_AXIS ? HORIZONTAL : VERTICAL;
+            }
+            else if ( layoutManager instanceof HorizontalFlowLayout || layoutManager instanceof FlowLayout )
+            {
+                /**
+                 * Static {@link #HORIZONTAL} orientation for some known layout types.
+                 */
+                orientation = HORIZONTAL;
+            }
+            else if ( layoutManager instanceof VerticalFlowLayout )
+            {
+                /**
+                 * Static {@link #VERTICAL} orientation for some known layout types.
+                 */
+                orientation = VERTICAL;
+            }
+            else
+            {
+                /**
+                 * Default orientation usage for all other layout types.
+                 */
+                orientation = this.orientation;
+            }
+        }
+        else
+        {
+            /**
+             * Default orientation usage for unattached component.
+             */
+            orientation = this.orientation;
+        }
+        return orientation;
+    }
+
+    /**
      * Sets spacing orientation.
      * Specify {@code -1} to have spacing for both orientations.
      *
@@ -117,22 +183,12 @@ public class WhiteSpace extends JComponent implements SwingConstants
         this.spacing = spacing;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
-        final Container container = getParent ();
-        if ( container != null && container.getLayout () instanceof ToolbarLayout )
-        {
-            final ToolbarLayout layout = ( ToolbarLayout ) container.getLayout ();
-            return new Dimension ( layout.getOrientation () != VERTICAL ? spacing : 0,
-                    layout.getOrientation () != HORIZONTAL ? spacing : 0 );
-        }
-        else
-        {
-            return new Dimension ( orientation != VERTICAL ? spacing : 0, orientation != HORIZONTAL ? spacing : 0 );
-        }
+        final int orientation = getActualOrientation ();
+        final int width = orientation != VERTICAL ? spacing : 0;
+        final int height = orientation != HORIZONTAL ? spacing : 0;
+        return new Dimension ( width, height );
     }
 }

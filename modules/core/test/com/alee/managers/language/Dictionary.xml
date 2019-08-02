@@ -1,0 +1,72 @@
+<Dictionary name="WebLaF test dictionary" prefix="weblaf.test" xmlns="http://weblookandfeel.com/Dictionary">
+
+    <!-- Simple record -->
+    <record key="record">
+        <value lang="en">English</value>
+        <value lang="ru">Русский</value>
+    </record>
+
+    <!-- Dictionary with country-related record -->
+    <Dictionary prefix="country">
+        <record key="record">
+            <value lang="en">English</value>
+            <value lang="en-US">US English</value>
+            <value lang="en-GB">GB English</value>
+            <value lang="ru">Русский</value>
+        </record>
+    </Dictionary>
+
+    <!-- Dictionary with multiple records for same key -->
+    <Dictionary prefix="multi">
+        <record key="record">
+            <value lang="en">English</value>
+        </record>
+        <record key="record">
+            <value lang="en-US">US English</value>
+        </record>
+        <record key="record">
+            <value lang="en-GB">GB English</value>
+        </record>
+        <record key="record">
+            <value lang="ru">Русский</value>
+        </record>
+    </Dictionary>
+
+    <!-- Dictionary with subdictionaries -->
+    <Dictionary prefix="sub">
+        <Dictionary prefix="first">
+            <record key="record">
+                <value lang="en">First record</value>
+            </record>
+            <Dictionary prefix="second">
+                <record key="record">
+                    <value lang="en">Second record</value>
+                </record>
+                <Dictionary prefix="third">
+                    <record key="record">
+                        <value lang="en">Third record</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
+    </Dictionary>
+
+    <!-- Dictionary with complex keys -->
+    <Dictionary prefix="complex.key">
+        <record key="record.title">
+            <value lang="en">Complex record</value>
+        </record>
+        <Dictionary>
+            <record key="sub.record.title">
+                <value lang="en">Complex record</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+
+    <!-- Language information -->
+    <Translations>
+        <Translation lang="en" title="English" author="mgarin" />
+        <Translation lang="ru" title="Русский" author="mgarin" />
+    </Translations>
+
+</Dictionary>

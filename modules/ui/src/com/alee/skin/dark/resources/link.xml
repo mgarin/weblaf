@@ -1,0 +1,73 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.link.WebLink -->
+
+    <!-- Link -->
+    <style type="link">
+        <painter>
+            <decorations>
+                <decoration cursor="hand">
+                    <LabelLayout>
+                        <LabelIcon constraints="icon" />
+                        <StyledLabelText constraints="text" color="160,160,255" />
+                    </LabelLayout>
+                </decoration>
+                <decoration states="visited">
+                    <LabelLayout>
+                        <StyledLabelText color="255,160,160" />
+                    </LabelLayout>
+                </decoration>
+                <decoration states="enabled,focused">
+                    <DashFocus bounds="margin" stroke="basic;1;round;round;0;2,2" color="160,160,255" />
+                </decoration>
+                <decoration states="visited,enabled,focused">
+                    <DashFocus color="255,160,160" />
+                </decoration>
+                <decoration states="hover">
+                    <LabelLayout>
+                        <StyledLabelText ignoreStyleColors="true" globalStyle="u" />
+                    </LabelLayout>
+                </decoration>
+                <decoration states="disabled" cursor="common">
+                    <LabelLayout>
+                        <StyledLabelText color="140,140,140" ignoreStyleColors="true" globalStyle="" />
+                    </LabelLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Link with text shadow -->
+    <style type="link" id="shadow">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout>
+                        <StyledLabelText shadow="true" shadowColor="black" />
+                    </LabelLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Vertical link -->
+    <style type="link" id="vertical-ccw">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout rotation="counterClockwise" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="link" id="vertical-cw">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout rotation="clockwise" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

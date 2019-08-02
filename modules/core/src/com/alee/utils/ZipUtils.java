@@ -17,8 +17,8 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.zip.UnzipListener;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Enumeration;
@@ -30,9 +30,16 @@ import java.util.zip.ZipFile;
  *
  * @author Mikle Garin
  */
-
 public final class ZipUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private ZipUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Extracts ZIP archive contents into destination directory.
      * Any folder required for extraction are created in the process.
@@ -112,7 +119,7 @@ public final class ZipUtils
                 {
                     // Ensures that destination file and its folders exist
                     extractToFile = new File ( dst, entry.getName () );
-                    extractToFile.getParentFile ().mkdirs ();
+                    FileUtils.getParent ( extractToFile ).mkdirs ();
                     extractToFile.createNewFile ();
 
                     // Copying file
@@ -130,9 +137,9 @@ public final class ZipUtils
             zipFile.close ();
             return true;
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.error ( ZipUtils.class, e );
+            LoggerFactory.getLogger ( ZipUtils.class ).error ( e.toString (), e );
             return false;
         }
     }
@@ -166,7 +173,7 @@ public final class ZipUtils
      *
      * @param in  data input stream
      * @param out data output stream
-     * @throws IOException
+     * @throws IOException when any IO exceptions occurs
      */
     private static void copyInputStream ( final InputStream in, final OutputStream out ) throws IOException
     {

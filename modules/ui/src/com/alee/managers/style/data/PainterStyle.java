@@ -17,42 +17,42 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.merge.Overwriting;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+
 import java.io.Serializable;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
- * Painter style information class.
+ * Contains single {@link com.alee.painter.Painter} style data.
+ * It stores any {@link com.alee.painter.Painter}-related data without instantiating {@link com.alee.painter.Painter} itself.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  */
-
-public final class PainterStyle implements Serializable
+@XStreamConverter ( PainterStyleConverter.class )
+public final class PainterStyle implements Overwriting, Cloneable, Serializable
 {
     /**
-     * Painter ID.
-     * Refers to painter type.
-     * It is required since a lot of components has more than just one painter.
+     * Whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged.
      */
-    private String id;
-
-    /**
-     * Whether this is base component painter or not.
-     */
-    private boolean base;
+    @XStreamAsAttribute
+    private Boolean overwrite;
 
     /**
      * Painter class canonical name.
      * Used for painter instantiation.
      */
+    @XStreamAsAttribute
     private String painterClass;
 
     /**
      * Painter properties.
-     * Contains parsed paintr settings.
+     * Contains parsed painter settings.
      */
-    private Map<String, Object> properties;
+    private LinkedHashMap<String, Object> properties;
 
     /**
      * Constructs new painter style information.
@@ -62,44 +62,20 @@ public final class PainterStyle implements Serializable
         super ();
     }
 
-    /**
-     * Returns painter ID.
-     *
-     * @return painter ID
-     */
-    public String getId ()
+    @Override
+    public boolean isOverwrite ()
     {
-        return id;
+        return overwrite != null && overwrite;
     }
 
     /**
-     * Sets painter ID.
+     * Sets whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged.
      *
-     * @param id new painter ID
+     * @param overwrite whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged
      */
-    public void setId ( final String id )
+    public void setOverwrite ( final Boolean overwrite )
     {
-        this.id = id;
-    }
-
-    /**
-     * Returns whether this is base component painter or not.
-     *
-     * @return true if this is base component painter, false otherwise
-     */
-    public boolean isBase ()
-    {
-        return base;
-    }
-
-    /**
-     * Sets whether this is base component painter or not.
-     *
-     * @param base whether this is base component painter or not
-     */
-    public void setBase ( final boolean base )
-    {
-        this.base = base;
+        this.overwrite = overwrite;
     }
 
     /**
@@ -127,7 +103,7 @@ public final class PainterStyle implements Serializable
      *
      * @return painter properties
      */
-    public Map<String, Object> getProperties ()
+    public LinkedHashMap<String, Object> getProperties ()
     {
         return properties;
     }
@@ -137,7 +113,7 @@ public final class PainterStyle implements Serializable
      *
      * @param properties new painter properties
      */
-    public void setProperties ( final Map<String, Object> properties )
+    public void setProperties ( final LinkedHashMap<String, Object> properties )
     {
         this.properties = properties;
     }

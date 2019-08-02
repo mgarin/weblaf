@@ -1,0 +1,147 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.list.WebFileList -->
+
+    <!-- File list -->
+    <style type="list" id="filelist">
+        <component class="com.alee.extended.list.WebFileList">
+            <layoutOrientation>2</layoutOrientation>
+            <generateThumbnails>true</generateThumbnails>
+            <preferredColumnCount>5</preferredColumnCount>
+            <preferredRowCount>5</preferredRowCount>
+            <fileListViewType>icons</fileListViewType>
+        </component>
+        <ui>
+            <selectionStyle>single</selectionStyle>
+        </ui>
+
+        <!-- File cell renderer -->
+        <style type="panel" id="renderer" extends="transparent">
+            <component class="com.alee.extended.list.WebFileListCellRenderer">
+                <gap>4</gap>
+            </component>
+
+            <!-- File icon component -->
+            <style type="label" id="icon" padding="4">
+                <component>
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <verticalAlignment>0</verticalAlignment>
+                    <preferredSize>54,54</preferredSize>
+                </component>
+            </style>
+
+            <!-- File name label -->
+            <style type="label" id="name" />
+
+            <!-- File description label, tile mode only  -->
+            <style type="label" id="description">
+                <component class="com.alee.laf.label.WebLabel">
+                    <foreground>200,200,200</foreground>
+                    <preferredWidth>140</preferredWidth>
+                </component>
+            </style>
+
+            <!-- File size label, tile mode only -->
+            <style type="label" id="size">
+                <component class="com.alee.laf.label.WebLabel">
+                    <foreground>140,180,255</foreground>
+                    <horizontalAlignment>10</horizontalAlignment>
+                    <preferredWidth>140</preferredWidth>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Tile cell renderer -->
+        <style type="panel" id="tile-renderer" extends="renderer" padding="5,5,5,8">
+
+            <!-- File name label -->
+            <style type="label" id="name">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>10</horizontalAlignment>
+                    <verticalAlignment>0</verticalAlignment>
+                    <preferredWidth>140</preferredWidth>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Icon cell renderer -->
+        <style type="panel" id="icon-renderer" extends="renderer" padding="5,5,8,5">
+
+            <!-- File name label -->
+            <style type="label" id="name">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <verticalAlignment>0</verticalAlignment>
+                    <preferredWidth>80</preferredWidth>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Cell editor field -->
+        <style type="textfield" id="editor" extends="nofocus" />
+    </style>
+
+    <!-- Non-opaque file list -->
+    <style type="list" id="filelist-non-opaque" extends="filelist">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file list -->
+    <style type="list" id="filelist-transparent" extends="filelist-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- File list with tiles view -->
+    <style type="list" id="filelist-tiles" extends="filelist">
+        <component class="com.alee.extended.list.WebFileList">
+            <preferredColumnCount>3</preferredColumnCount>
+            <preferredRowCount>6</preferredRowCount>
+            <fileListViewType>tiles</fileListViewType>
+        </component>
+    </style>
+
+    <!-- Non-opaque file list with tiles view -->
+    <style type="list" id="filelist-tiles-non-opaque" extends="filelist-tiles">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file list with tiles view -->
+    <style type="list" id="filelist-tiles-transparent" extends="filelist-tiles-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- File list with icons view -->
+    <style type="list" id="filelist-icons" extends="filelist">
+        <component class="com.alee.extended.list.WebFileList">
+            <preferredColumnCount>7</preferredColumnCount>
+            <preferredRowCount>5</preferredRowCount>
+            <fileListViewType>icons</fileListViewType>
+        </component>
+    </style>
+
+    <!-- Non-opaque file list with icons view -->
+    <style type="list" id="filelist-icons-non-opaque" extends="filelist-icons">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file list with icons view -->
+    <style type="list" id="filelist-icons-transparent" extends="filelist-icons-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

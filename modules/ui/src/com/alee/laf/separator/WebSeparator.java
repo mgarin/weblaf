@@ -17,205 +17,618 @@
 
 package com.alee.laf.separator;
 
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.log.Log;
-import com.alee.utils.ReflectUtils;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
+import com.alee.managers.style.*;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 
 /**
- * User: mgarin Date: 21.09.2010 Time: 15:37:04
+ * {@link JSeparator} extension class.
+ * It contains various useful methods to simplify core component usage.
+ *
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
+ *
+ * @author Mikle Garin
+ * @see JSeparator
+ * @see WebSeparatorUI
+ * @see SeparatorPainter
  */
-
-public class WebSeparator extends JSeparator
+public class WebSeparator extends JSeparator implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
+        SettingsMethods, FontMethods<WebSeparator>, SizeMethods<WebSeparator>
 {
+    /**
+     * Constructs new separator.
+     */
     public WebSeparator ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new separator with the specified orientation.
+     *
+     * @param orientation component orientation
+     */
     public WebSeparator ( final int orientation )
     {
-        super ( orientation );
+        this ( StyleId.auto, orientation );
     }
 
-    public WebSeparator ( final boolean reversedColors )
+    /**
+     * Constructs new separator.
+     *
+     * @param id style ID
+     */
+    public WebSeparator ( final StyleId id )
     {
-        super ();
-        setReversedColors ( reversedColors );
+        this ( id, HORIZONTAL );
     }
 
-    public WebSeparator ( final int orientation, final boolean reversedColors )
-    {
-        super ( orientation );
-        setReversedColors ( reversedColors );
-    }
-
-    public WebSeparator ( final boolean drawSideLines, final int orientation )
-    {
-        super ( orientation );
-        setDrawSideLines ( drawSideLines );
-    }
-
-    public WebSeparator ( final boolean drawSideLines, final int orientation, final boolean reversedColors )
+    /**
+     * Constructs new separator with the specified orientation.
+     *
+     * @param id          style ID
+     * @param orientation component orientation
+     */
+    public WebSeparator ( final StyleId id, final int orientation )
     {
         super ( orientation );
-        setDrawSideLines ( drawSideLines );
-        setReversedColors ( reversedColors );
+        setStyleId ( id );
     }
 
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine )
+    @Override
+    public StyleId getDefaultStyleId ()
     {
-        super ();
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
+        return StyleId.separator;
     }
 
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation )
+    @Override
+    public StyleId getStyleId ()
     {
-        super ( orientation );
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
+        return StyleManager.getStyleId ( this );
     }
 
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation,
-                          final boolean reversedColors )
+    @Override
+    public StyleId setStyleId ( final StyleId id )
     {
-        super ( orientation );
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
-        setReversedColors ( reversedColors );
+        return StyleManager.setStyleId ( this, id );
     }
 
-    public Color getSeparatorColor ()
+    @Override
+    public StyleId resetStyleId ()
     {
-        return getWebUI ().getSeparatorColor ();
+        return StyleManager.resetStyleId ( this );
     }
 
-    public void setSeparatorColor ( final Color separatorColor )
+    @Override
+    public Skin getSkin ()
     {
-        getWebUI ().setSeparatorColor ( separatorColor );
+        return StyleManager.getSkin ( this );
     }
 
-    public Color getSeparatorUpperColor ()
+    @Override
+    public Skin setSkin ( final Skin skin )
     {
-        return getWebUI ().getSeparatorUpperColor ();
+        return StyleManager.setSkin ( this, skin );
     }
 
-    public void setSeparatorUpperColor ( final Color separatorUpperColor )
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        getWebUI ().setSeparatorUpperColor ( separatorUpperColor );
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
-    public Color getSeparatorLightColor ()
+    @Override
+    public Skin resetSkin ()
     {
-        return getWebUI ().getSeparatorLightColor ();
+        return StyleManager.resetSkin ( this );
     }
 
-    public void setSeparatorLightColor ( final Color separatorLightColor )
+    @Override
+    public void addStyleListener ( final StyleListener listener )
     {
-        getWebUI ().setSeparatorLightColor ( separatorLightColor );
+        StyleManager.addStyleListener ( this, listener );
     }
 
-    public Color getSeparatorLightUpperColor ()
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
     {
-        return getWebUI ().getSeparatorLightUpperColor ();
+        StyleManager.removeStyleListener ( this, listener );
     }
 
-    public void setSeparatorLightUpperColor ( final Color separatorLightUpperColor )
+    @Override
+    public Painter getCustomPainter ()
     {
-        getWebUI ().setSeparatorLightUpperColor ( separatorLightUpperColor );
+        return StyleManager.getCustomPainter ( this );
     }
 
-    public boolean isReversedColors ()
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
     {
-        return getWebUI ().isReversedColors ();
+        return StyleManager.setCustomPainter ( this, painter );
     }
 
-    public void setReversedColors ( final boolean reversedColors )
+    @Override
+    public boolean resetCustomPainter ()
     {
-        getWebUI ().setReversedColors ( reversedColors );
+        return StyleManager.resetCustomPainter ( this );
     }
 
-    public void setDrawSideLines ( final boolean drawSideLines )
+    @Override
+    public Shape getShape ()
     {
-        setDrawLeadingLine ( drawSideLines );
-        setDrawTrailingLine ( drawSideLines );
+        return ShapeMethodsImpl.getShape ( this );
     }
 
-    public boolean isDrawLeadingLine ()
+    @Override
+    public boolean isShapeDetectionEnabled ()
     {
-        return getWebUI ().isDrawLeadingLine ();
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
     }
 
-    public void setDrawLeadingLine ( final boolean drawLeadingLine )
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        getWebUI ().setDrawLeadingLine ( drawLeadingLine );
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
-    public boolean isDrawTrailingLine ()
-    {
-        return getWebUI ().isDrawTrailingLine ();
-    }
-
-    public void setDrawTrailingLine ( final boolean drawTrailingLine )
-    {
-        getWebUI ().setDrawTrailingLine ( drawTrailingLine );
-    }
-
+    @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
+    @Override
+    public void setMargin ( final int margin )
+    {
+        MarginMethodsImpl.setMargin ( this, margin );
+    }
+
+    @Override
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
+    }
+
+    @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    public WebSeparator setMargin ( final int top, final int left, final int bottom, final int right )
+    @Override
+    public Insets getPadding ()
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    public WebSeparator setMargin ( final int spacing )
+    @Override
+    public void setPadding ( final int padding )
     {
-        return setMargin ( spacing, spacing, spacing, spacing );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    public WebSeparatorUI getWebUI ()
+    @Override
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        return ( WebSeparatorUI ) getUI ();
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PaddingMethodsImpl.setPadding ( this, padding );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseExit ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusGain ( this, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
+    }
+
+    @Override
+    public WebSeparator setPlainFont ()
+    {
+        return FontMethodsImpl.setPlainFont ( this );
+    }
+
+    @Override
+    public WebSeparator setPlainFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setPlainFont ( this, apply );
+    }
+
+    @Override
+    public boolean isPlainFont ()
+    {
+        return FontMethodsImpl.isPlainFont ( this );
+    }
+
+    @Override
+    public WebSeparator setBoldFont ()
+    {
+        return FontMethodsImpl.setBoldFont ( this );
+    }
+
+    @Override
+    public WebSeparator setBoldFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setBoldFont ( this, apply );
+    }
+
+    @Override
+    public boolean isBoldFont ()
+    {
+        return FontMethodsImpl.isBoldFont ( this );
+    }
+
+    @Override
+    public WebSeparator setItalicFont ()
+    {
+        return FontMethodsImpl.setItalicFont ( this );
+    }
+
+    @Override
+    public WebSeparator setItalicFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setItalicFont ( this, apply );
+    }
+
+    @Override
+    public boolean isItalicFont ()
+    {
+        return FontMethodsImpl.isItalicFont ( this );
+    }
+
+    @Override
+    public WebSeparator setFontStyle ( final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontStyle ( this, bold, italic );
+    }
+
+    @Override
+    public WebSeparator setFontStyle ( final int style )
+    {
+        return FontMethodsImpl.setFontStyle ( this, style );
+    }
+
+    @Override
+    public WebSeparator setFontSize ( final int fontSize )
+    {
+        return FontMethodsImpl.setFontSize ( this, fontSize );
+    }
+
+    @Override
+    public WebSeparator changeFontSize ( final int change )
+    {
+        return FontMethodsImpl.changeFontSize ( this, change );
+    }
+
+    @Override
+    public int getFontSize ()
+    {
+        return FontMethodsImpl.getFontSize ( this );
+    }
+
+    @Override
+    public WebSeparator setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, bold, italic );
+    }
+
+    @Override
+    public WebSeparator setFontSizeAndStyle ( final int fontSize, final int style )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, style );
+    }
+
+    @Override
+    public WebSeparator setFontName ( final String fontName )
+    {
+        return FontMethodsImpl.setFontName ( this, fontName );
+    }
+
+    @Override
+    public String getFontName ()
+    {
+        return FontMethodsImpl.getFontName ( this );
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeMethodsImpl.getPreferredWidth ( this );
+    }
+
+    @Override
+    public WebSeparator setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeMethodsImpl.getPreferredHeight ( this );
+    }
+
+    @Override
+    public WebSeparator setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @Override
+    public WebSeparator setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @Override
+    public WebSeparator setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeMethodsImpl.getMaximumWidth ( this );
+    }
+
+    @Override
+    public WebSeparator setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeMethodsImpl.getMaximumHeight ( this );
+    }
+
+    @Override
+    public WebSeparator setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public WebSeparator setPreferredSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * Returns the look and feel (LaF) object that renders this component.
+     *
+     * @return the {@link WSeparatorUI} object that renders this component
+     */
+    @Override
+    public WSeparatorUI getUI ()
+    {
+        return ( WSeparatorUI ) ui;
+    }
+
+    /**
+     * Sets the LaF object that renders this component.
+     *
+     * @param ui {@link WSeparatorUI}
+     */
+    public void setUI ( final WSeparatorUI ui )
+    {
+        super.setUI ( ui );
     }
 
     @Override
     public void updateUI ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebSeparatorUI ) )
-        {
-            try
-            {
-                setUI ( ( WebSeparatorUI ) ReflectUtils.createInstance ( WebLookAndFeel.separatorUI ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebSeparatorUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
+    }
+
+    /**
+     * Returns newly created horizontal separator.
+     *
+     * @return newly created horizontal separator
+     */
     public static WebSeparator createHorizontal ()
     {
         return new WebSeparator ( WebSeparator.HORIZONTAL );
     }
 
+    /**
+     * Returns newly created vertical separator.
+     *
+     * @return newly created vertical separator
+     */
     public static WebSeparator createVertical ()
     {
         return new WebSeparator ( WebSeparator.VERTICAL );

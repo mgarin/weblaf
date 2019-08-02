@@ -18,9 +18,8 @@
 package com.alee.extended.transition.effects;
 
 /**
- * User: mgarin Date: 28.10.11 Time: 13:23
+ * @author Mikle Garin
  */
-
 public enum Direction
 {
     // Any random direction each time (always first in enum)

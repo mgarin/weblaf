@@ -23,16 +23,15 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 
 /**
- * User: mgarin Date: 13.06.11 Time: 15:50
+ * @author Mikle Garin
  */
-
 public class RandomStroke implements Stroke
 {
     private float detail = 2;
     private float amplitude = 2;
     private static final float FLATNESS = 1;
 
-    public RandomStroke ( float detail, float amplitude )
+    public RandomStroke ( final float detail, final float amplitude )
     {
         this.detail = detail;
         this.amplitude = amplitude;
@@ -41,10 +40,10 @@ public class RandomStroke implements Stroke
     @Override
     public Shape createStrokedShape ( Shape shape )
     {
-        GeneralPath result = new GeneralPath ();
+        final GeneralPath result = new GeneralPath ();
         shape = new BasicStroke ( 10 ).createStrokedShape ( shape );
-        PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
-        float points[] = new float[ 6 ];
+        final PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
+        final float[] points = new float[ 6 ];
         float moveX = 0;
         float moveY = 0;
         float lastX = 0;
@@ -74,16 +73,16 @@ public class RandomStroke implements Stroke
                 case PathIterator.SEG_LINETO:
                     thisX = randomize ( points[ 0 ] );
                     thisY = randomize ( points[ 1 ] );
-                    float dx = thisX - lastX;
-                    float dy = thisY - lastY;
-                    float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
+                    final float dx = thisX - lastX;
+                    final float dy = thisY - lastY;
+                    final float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
                     if ( distance >= next )
                     {
-                        float r = 1.0f / distance;
+                        final float r = 1.0f / distance;
                         while ( distance >= next )
                         {
-                            float x = lastX + next * dx * r;
-                            float y = lastY + next * dy * r;
+                            final float x = lastX + next * dx * r;
+                            final float y = lastY + next * dy * r;
                             result.lineTo ( randomize ( x ), randomize ( y ) );
                             next += detail;
                         }
@@ -99,9 +98,8 @@ public class RandomStroke implements Stroke
         return result;
     }
 
-    private float randomize ( float x )
+    private float randomize ( final float x )
     {
         return x + ( float ) Math.random () * amplitude * 2 - 1;
     }
 }
-

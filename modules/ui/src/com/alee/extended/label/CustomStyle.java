@@ -18,13 +18,12 @@
 package com.alee.extended.label;
 
 /**
- * Custom styling that can be applied to WebStyledLabel text.
+ * Custom styling that can be applied to {@link WebStyledLabel} text.
  *
  * @author Mikle Garin
- * @see com.alee.extended.label.WebStyledLabel
- * @see com.alee.extended.label.StyleRange
+ * @see WebStyledLabel
+ * @see StyleRange
  */
-
 public enum CustomStyle
 {
     /**

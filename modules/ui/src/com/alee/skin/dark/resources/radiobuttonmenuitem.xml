@@ -1,0 +1,72 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.menu.WebRadioButtonMenuItem -->
+
+    <!-- Radio button menu item -->
+    <style type="radiobuttonmenuitem">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <MenuItemLayout padding="4,10,5,8" iconTextGap="6" textAcceleratorGap="20">
+                        <SimpleButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="245,245,245" />
+                        <RoundRectangle constraints="accelerator" round="4" opacity="0">
+                            <ColorBackground color="80,80,80" />
+                        </RoundRectangle>
+                        <AcceleratorText constraints="accelerator" padding="0,4,0,4" color="225,225,225" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="selected">
+                    <GradientBackground>
+                        <color>55,55,55</color>
+                        <color>25,25,25</color>
+                    </GradientBackground>
+                    <MenuItemLayout>
+                        <RoundRectangle opacity="1" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <MenuItemLayout>
+                        <ButtonText color="180,180,180" />
+                        <AcceleratorText color="180,180,180" />
+                    </MenuItemLayout>
+                </decoration>
+            </decorations>
+
+            <!-- Radio state painter -->
+            <checkStatePainter>
+                <decorations>
+                    <decoration size="17,17">
+                        <EllipseShape />
+                        <WebShadow type="outer" width="2" />
+                        <LineBorder color="20,20,20" />
+                        <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
+                            <color>77,81,83</color>
+                            <color>black</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="checked">
+                        <RadioIcon padding="2" leftColor="255,255,255,225" rightColor="255,255,255,235" />
+                    </decoration>
+                    <decoration states="disabled">
+                        <WebShadow type="outer" opacity="0" />
+                        <LineBorder color="68,72,74" />
+                        <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
+                            <color>111,115,117</color>
+                            <color>77,81,83</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="disabled,checked">
+                        <RadioIcon padding="2" leftColor="120,120,120" rightColor="130,130,130" />
+                    </decoration>
+                </decorations>
+            </checkStatePainter>
+
+        </painter>
+    </style>
+
+</skin>

@@ -1,0 +1,65 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.text.WebTextPane -->
+
+    <!-- Text pane -->
+    <style type="textpane" padding="2,2,2,2">
+        <component>
+            <opaque>true</opaque>
+            <background>106,110,112</background>
+            <foreground>245,245,245</foreground>
+            <selectedTextColor>245,245,245</selectedTextColor>
+            <selectionColor>black</selectionColor>
+            <caretColor>white</caretColor>
+        </component>
+        <painter>
+            <inputPromptHorizontalPosition>0</inputPromptHorizontalPosition>
+            <inputPromptVerticalPosition>0</inputPromptVerticalPosition>
+            <inputPromptForeground>160,160,160</inputPromptForeground>
+            <inputPromptOnlyWhenEditable>true</inputPromptOnlyWhenEditable>
+            <hideInputPromptOnFocus>true</hideInputPromptOnFocus>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Non-opaque text pane -->
+    <style type="textpane" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent text pane -->
+    <style type="textpane" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- Decorated text pane -->
+    <style type="textpane" id="decorated" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

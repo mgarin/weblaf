@@ -17,184 +17,203 @@
 
 package com.alee.extended.statusbar;
 
-import com.alee.extended.layout.ToolbarLayout;
-import com.alee.global.StyleConstants;
+import com.alee.api.annotations.NotNull;
+import com.alee.extended.WebContainer;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.toolbar.WhiteSpace;
-import com.alee.managers.language.LanguageContainerMethods;
-import com.alee.managers.language.LanguageManager;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 10.10.11 Time: 18:40
+ * Implementation of status bar panel.
+ * It is a container that is usually used at the bottom side of the application UI and contains some status information.
+ *
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
+ *
+ * @author Mikle Garin
+ * @see StatusBarDescriptor
+ * @see WStatusBarUI
+ * @see WebStatusBarUI
+ * @see IStatusBarPainter
+ * @see StatusBarPainter
+ * @see WebContainer
  */
-
-public class WebStatusBar extends JComponent implements LanguageContainerMethods
+public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
 {
-    private Color topBgColor = WebStatusBarStyle.topBgColor;
-    private Color bottomBgColor = WebStatusBarStyle.bottomBgColor;
-
-    private Insets margin = WebStatusBarStyle.margin;
-    private boolean undecorated = WebStatusBarStyle.undecorated;
-
+    /**
+     * Constructs new status bar.
+     */
     public WebStatusBar ()
     {
+        this ( StyleId.auto );
+    }
+
+    /**
+     * Constructs new status bar.
+     *
+     * @param id style ID
+     */
+    public WebStatusBar ( final StyleId id )
+    {
         super ();
-        SwingUtils.setOrientation ( this );
-        setLayout ( new ToolbarLayout () );
-        updateBorder ();
+        setLayout ( new StatusBarLayout () );
+        updateUI ();
+        setStyleId ( id );
     }
 
-    public boolean isUndecorated ()
+    @Override
+    public StyleId getDefaultStyleId ()
     {
-        return undecorated;
+        return StyleId.statusbar;
     }
 
-    public void setUndecorated ( boolean undecorated )
+    /**
+     * Adds component to the middle status bar area.
+     *
+     * @param component component to add
+     */
+    public void addToMiddle ( final Component component )
     {
-        this.undecorated = undecorated;
-        updateBorder ();
+        add ( component, StatusBarLayout.MIDDLE );
     }
 
-    public Insets getMargin ()
+    /**
+     * Adds component to the fill status bar area.
+     *
+     * @param component component to add
+     */
+    public void addFill ( final Component component )
     {
-        return margin;
+        add ( component, StatusBarLayout.FILL );
     }
 
-    public void setMargin ( int margin )
+    /**
+     * Adds component to the end of the status bar.
+     *
+     * @param component component to add
+     */
+    public void addToEnd ( final Component component )
     {
-        setMargin ( margin, margin, margin, margin );
+        add ( component, StatusBarLayout.END );
     }
 
-    public void setMargin ( int top, int left, int bottom, int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public void setMargin ( Insets margin )
-    {
-        this.margin = margin;
-        updateBorder ();
-    }
-
+    /**
+     * Adds separator to the start of the status bar.
+     */
     public void addSeparator ()
     {
-        addSeparator ( ToolbarLayout.START );
+        addSeparator ( StatusBarLayout.START );
     }
 
+    /**
+     * Adds separator to the end of the status bar.
+     */
     public void addSeparatorToEnd ()
     {
-        addSeparator ( ToolbarLayout.END );
+        addSeparator ( StatusBarLayout.END );
     }
 
-    public void addSeparator ( String constraints )
+    /**
+     * Adds separator under the specified constaints.
+     *
+     * @param constraints layout constraints
+     */
+    public void addSeparator ( final String constraints )
     {
         add ( createSeparator (), constraints );
     }
 
-    public void addToMiddle ( Component component )
-    {
-        add ( component, ToolbarLayout.MIDDLE );
-    }
-
-    public void addFill ( Component component )
-    {
-        add ( component, ToolbarLayout.FILL );
-    }
-
-    public void addToEnd ( Component component )
-    {
-        add ( component, ToolbarLayout.END );
-    }
-
-    public void addSpacing ()
-    {
-        addSpacing ( StyleConstants.contentSpacing );
-    }
-
-    public void addSpacing ( int spacing )
-    {
-        addSpacing ( spacing, ToolbarLayout.START );
-    }
-
-    public void addSpacingToEnd ()
-    {
-        addSpacingToEnd ( StyleConstants.contentSpacing );
-    }
-
-    public void addSpacingToEnd ( int spacing )
-    {
-        addSpacing ( spacing, ToolbarLayout.END );
-    }
-
-    public void addSpacing ( int spacing, String constrain )
-    {
-        add ( new WhiteSpace ( spacing ), constrain );
-    }
-
-    private void updateBorder ()
-    {
-        setBorder ( BorderFactory.createEmptyBorder ( margin.top + ( undecorated ? 0 : 1 ), margin.left, margin.bottom, margin.right ) );
-    }
-
-    public ToolbarLayout getActualLayout ()
-    {
-        return ( ToolbarLayout ) getLayout ();
-    }
-
-    @Override
-    protected void paintComponent ( Graphics g )
-    {
-        super.paintComponent ( g );
-
-        if ( !undecorated )
-        {
-            Graphics2D g2d = ( Graphics2D ) g;
-
-            g2d.setPaint ( new GradientPaint ( 0, 0, topBgColor, 0, getHeight (), bottomBgColor ) );
-            g2d.fillRect ( 0, 0, getWidth (), getHeight () );
-
-            g2d.setPaint ( StyleConstants.darkBorderColor );
-            g2d.drawLine ( 0, 0, getWidth () - 1, 0 );
-        }
-    }
-
-    private static WebSeparator createSeparator ()
+    /**
+     * Returns new status bar separator.
+     *
+     * @return new status bar separator
+     */
+    protected WebSeparator createSeparator ()
     {
         return new WebSeparator ( WebSeparator.VERTICAL );
     }
 
     /**
-     * Language container methods
+     * Adds spacing between components.
      */
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setLanguageContainerKey ( String key )
+    public void addSpacing ()
     {
-        LanguageManager.registerLanguageContainer ( this, key );
+        addSpacing ( 2 );
     }
 
     /**
-     * {@inheritDoc}
+     * Adds spacing between components.
+     *
+     * @param spacing spacing size
      */
-    @Override
-    public void removeLanguageContainerKey ()
+    public void addSpacing ( final int spacing )
     {
-        LanguageManager.unregisterLanguageContainer ( this );
+        addSpacing ( spacing, StatusBarLayout.START );
     }
 
     /**
-     * {@inheritDoc}
+     * Adds spacing between components at the end.
      */
-    @Override
-    public String getLanguageContainerKey ()
+    public void addSpacingToEnd ()
     {
-        return LanguageManager.getLanguageContainerKey ( this );
+        addSpacingToEnd ( 2 );
+    }
+
+    /**
+     * Adds spacing between components at the end.
+     *
+     * @param spacing spacing size
+     */
+    public void addSpacingToEnd ( final int spacing )
+    {
+        addSpacing ( spacing, StatusBarLayout.END );
+    }
+
+    /**
+     * Adds spacing between components at the specified constraints.
+     *
+     * @param spacing     spacing size
+     * @param constraints layout constraints
+     */
+    public void addSpacing ( final int spacing, final String constraints )
+    {
+        // todo Add layout implementation instead of wasted component
+        add ( new WhiteSpace ( spacing ), constraints );
+    }
+
+    /**
+     * Returns the look and feel (LaF) object that renders this component.
+     *
+     * @return the StatusBarUI object that renders this component
+     */
+    public WStatusBarUI getUI ()
+    {
+        return ( WStatusBarUI ) ui;
+    }
+
+    /**
+     * Sets the LaF object that renders this component.
+     *
+     * @param ui {@link WStatusBarUI}
+     */
+    public void setUI ( final WStatusBarUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @NotNull
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

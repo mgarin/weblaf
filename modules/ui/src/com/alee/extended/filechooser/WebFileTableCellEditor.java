@@ -19,9 +19,12 @@ package com.alee.extended.filechooser;
 
 import com.alee.extended.image.WebImage;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 /**
@@ -29,7 +32,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
 {
     /**
@@ -39,13 +41,17 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
     {
         super ();
         clickCountToStart = 3;
-
-        editorComponent = new WebTextField ( false );
-        editorComponent.setMargin ( 2 );
-        editorComponent.setFieldMargin ( 0, 4, 0, 0 );
-
+        editorComponent = new WebTextField ();
         delegate = new FileNameEditorDelegate ();
         editorComponent.addActionListener ( delegate );
+    }
+
+    @Override
+    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
+                                                   final int column )
+    {
+        editorComponent.setStyleId ( StyleId.tableCellEditor.at ( table ) );
+        return super.getTableCellEditorComponent ( table, value, isSelected, row, column );
     }
 
     /**
@@ -53,9 +59,6 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
      */
     protected class FileNameEditorDelegate extends EditorDelegate<File>
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void setValue ( final File file )
         {
@@ -64,9 +67,6 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
             super.setValue ( file );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean stopCellEditing ()
         {

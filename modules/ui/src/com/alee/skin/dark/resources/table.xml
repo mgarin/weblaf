@@ -1,0 +1,170 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.table.WebTable -->
+
+    <!-- Table -->
+    <style type="table">
+        <component>
+            <opaque>true</opaque>
+            <background>106,110,112</background>
+            <rowHeight>18</rowHeight>
+            <rowMargin>1</rowMargin>
+            <fillsViewportHeight>false</fillsViewportHeight>
+            <showHorizontalLines>true</showHorizontalLines>
+            <showVerticalLines>true</showVerticalLines>
+            <gridColor>88,92,94</gridColor>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+
+            <!-- Row background painter -->
+            <rowPainter>
+                <decorations>
+                    <decoration states="odd">
+                        <WebShape round="0" />
+                        <ColorBackground color="111,115,112" />
+                    </decoration>
+                </decorations>
+            </rowPainter>
+
+            <!-- Cell selection painter -->
+            <selectionPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>85,85,85</color>
+                            <color>55,55,55</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </selectionPainter>
+
+            <!-- Dragged column background painter -->
+            <draggedColumnPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <ColorBackground color="106,110,112" opacity="0.8" />
+                    </decoration>
+                </decorations>
+            </draggedColumnPainter>
+
+        </painter>
+
+        <!-- Table header -->
+        <style type="tableheader" id="header" />
+
+        <!-- Upper trailing corner -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,1,0" />
+                        <LineBorder color="20,20,20" />
+                        <GradientBackground>
+                            <color>81,85,87</color>
+                            <color>47,51,53</color>
+                        </GradientBackground>
+                        <Stripes padding="2,0,2,0" orientation="vertical" align="left">
+                            <Stripe>
+                                <color>20,20,20</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Default table cell renderer -->
+        <style type="styledlabel" id="renderer" padding="2" />
+
+        <!-- Default number table cell renderer -->
+        <style type="styledlabel" id="renderer-number" extends="renderer" />
+
+        <!-- Default double table cell renderer -->
+        <style type="styledlabel" id="renderer-double" extends="renderer-number" />
+
+        <!-- Default float table cell renderer -->
+        <style type="styledlabel" id="renderer-float" extends="renderer-number" />
+
+        <!-- Default date table cell renderer -->
+        <style type="styledlabel" id="renderer-date" extends="renderer" />
+
+        <!-- Icon cell renderer label -->
+        <style type="styledlabel" id="renderer-icon" padding="0" extends="renderer" />
+
+        <!-- Boolean table cell renderer -->
+        <style type="checkbox" id="renderer-boolean" />
+
+        <!-- File table cell editor -->
+        <style type="textfield" id="editor" extends="non-opaque">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Generic cell editor -->
+        <style type="textfield" id="editor-generic" extends="non-opaque">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Date table cell editor -->
+        <style type="datefield" id="editor-date" extends="non-opaque">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Boolean table cell editor -->
+        <style type="checkbox" id="editor-boolean">
+            <component>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
+
+    </style>
+
+    <!-- Non-opaque table -->
+    <style type="table" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent table -->
+    <style type="table" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

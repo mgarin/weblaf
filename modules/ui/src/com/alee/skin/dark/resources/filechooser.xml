@@ -1,0 +1,132 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.filechooser.WebFileChooser -->
+
+    <!-- File chooser -->
+    <style type="filechooser">
+        <painter />
+    </style>
+
+    <!-- WebLaF-decorated file chooser dialog -->
+    <style type="rootpane" id="filechooser" extends="dialog-decorated" />
+
+    <!-- Main content panel -->
+    <style type="panel" id="filechooser">
+
+        <!-- Toolbar -->
+        <style type="toolbar" id="decorated-bar" extends="attached-north">
+            <component>
+                <floatable>false</floatable>
+            </component>
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,0,0" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Toolbar button -->
+            <style type="button" id="tool" extends="icon-hover" />
+
+            <!-- History popup list scrollpane -->
+            <style type="scrollpane" id="history" extends="popup" />
+
+            <!-- Path field -->
+            <style type="panel" id="path" extends="pathfield" />
+
+        </style>
+        <style type="toolbar" id="undecorated-bar" extends="decorated-bar">
+            <painter>
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Central panel -->
+        <style type="panel" id="center">
+            <component>
+                <background>68,68,68</background>
+            </component>
+
+            <!-- Central split -->
+            <style type="splitpane" id="center" extends="undecorated">
+                <component>
+                    <dividerSize>8</dividerSize>
+                </component>
+
+                <!-- Files tree scrollpane -->
+                <style type="scrollpane" id="nav" extends="hovering">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" sides="1,0,1,1" />
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+
+                    <!-- Files tree -->
+                    <style type="tree" id="file" extends="filetree-non-opaque" />
+
+                </style>
+
+                <!-- Files list scrollpane -->
+                <style type="scrollpane" id="view">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" sides="1,1,1,0" />
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+
+                    <!-- Files list -->
+                    <style type="list" id="file-tiles" extends="filelist-tiles-non-opaque" />
+                    <style type="list" id="file-icons" extends="filelist-icons-non-opaque" />
+
+                    <!-- Files table -->
+                    <style type="table" id="file-table" extends="filetable-non-opaque" />
+
+                </style>
+
+            </style>
+
+        </style>
+
+        <!-- South panel -->
+        <style type="panel" id="south" padding="4,4,4,4">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground from="0,0" to="0,0.5">
+                            <color>68,68,68</color>
+                            <color>106,110,112</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Selected files title label -->
+            <style type="label" id="selected" extends="shadow" padding="0,4,0,0" />
+
+            <!-- Control buttons -->
+            <style type="button" id="control" />
+            <style type="button" id="accept" extends="control" />
+            <style type="button" id="cancel" extends="control" />
+
+        </style>
+
+        <!-- Files removal confirmation list -->
+        <style type="panel" id="removal" padding="4,4,4,4">
+            <component>
+                <background>106,110,112</background>
+            </component>
+        </style>
+
+    </style>
+
+</skin>

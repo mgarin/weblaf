@@ -30,7 +30,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTreeNode>
 {
     /**
@@ -46,9 +45,9 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     public FileTreeDataProvider ( final File... rootFiles )
     {
         super ();
-        this.rootFiles = CollectionUtils.copy ( rootFiles );
+        this.rootFiles = CollectionUtils.asList ( rootFiles );
         this.comparator = new FileTreeNodeComparator ();
-        this.filter = WebFileTreeStyle.filter;
+        this.filter = new FileTreeNodeFilter ();
     }
 
     /**
@@ -61,7 +60,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
         super ();
         this.rootFiles = rootFiles;
         this.comparator = new FileTreeNodeComparator ();
-        this.filter = WebFileTreeStyle.filter;
+        this.filter = new FileTreeNodeFilter ();
     }
 
     /**
@@ -73,7 +72,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     public FileTreeDataProvider ( final Filter<FileTreeNode> filter, final File... rootFiles )
     {
         super ();
-        this.rootFiles = CollectionUtils.copy ( rootFiles );
+        this.rootFiles = CollectionUtils.asList ( rootFiles );
         this.comparator = new FileTreeNodeComparator ();
         this.filter = filter;
     }
@@ -92,28 +91,22 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
         this.filter = filter;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FileTreeNode getRoot ()
     {
         return rootFiles.size () == 1 ? new FileTreeNode ( rootFiles.get ( 0 ) ) : new FileTreeNode ( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void loadChilds ( final FileTreeNode parent, final ChildsListener<FileTreeNode> listener )
+    public void loadChildren ( final FileTreeNode parent, final NodesLoadCallback<FileTreeNode> listener )
     {
         try
         {
-            listener.childsLoadCompleted ( parent.getFile () == null ? getRootChilds () : getFileChilds ( parent ) );
+            listener.completed ( parent.getFile () == null ? getRootChildren () : getFileChildren ( parent ) );
         }
-        catch ( final Throwable cause )
+        catch ( final Exception cause )
         {
-            listener.childsLoadFailed ( cause );
+            listener.failed ( cause );
         }
     }
 
@@ -122,14 +115,14 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
      *
      * @return root child nodes
      */
-    protected List<FileTreeNode> getRootChilds ()
+    protected List<FileTreeNode> getRootChildren ()
     {
-        final List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( rootFiles.size () );
+        final List<FileTreeNode> children = new ArrayList<FileTreeNode> ( rootFiles.size () );
         for ( final File rootFile : rootFiles )
         {
-            childs.add ( new FileTreeNode ( rootFile ) );
+            children.add ( new FileTreeNode ( rootFile ) );
         }
-        return childs;
+        return children;
     }
 
     /**
@@ -138,37 +131,31 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
      * @param node parent node
      * @return child nodes
      */
-    public List<FileTreeNode> getFileChilds ( final FileTreeNode node )
+    public List<FileTreeNode> getFileChildren ( final FileTreeNode node )
     {
-        final File[] childsList = node.getFile ().listFiles ();
-        if ( childsList == null || childsList.length == 0 )
+        final File[] childrenArray = node.getFile ().listFiles ();
+        if ( childrenArray == null || childrenArray.length == 0 )
         {
             return new ArrayList<FileTreeNode> ( 0 );
         }
         else
         {
-            final List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( childsList.length );
-            for ( final File f : childsList )
+            final List<FileTreeNode> children = new ArrayList<FileTreeNode> ( childrenArray.length );
+            for ( final File f : childrenArray )
             {
-                childs.add ( new FileTreeNode ( f ) );
+                children.add ( new FileTreeNode ( f ) );
             }
-            return childs;
+            return children;
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Filter<FileTreeNode> getChildsFilter ( final FileTreeNode node )
+    public Filter<FileTreeNode> getChildrenFilter ( final FileTreeNode parent, final List<FileTreeNode> children )
     {
         // We must not filter out given roots
-        return node.getFile () == null ? null : super.getChildsFilter ( node );
+        return parent.getFile () != null ? super.getChildrenFilter ( parent, children ) : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLeaf ( final FileTreeNode node )
     {

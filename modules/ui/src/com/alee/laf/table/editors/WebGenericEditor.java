@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.editors;
 
+import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
@@ -24,10 +25,9 @@ import java.awt.*;
 import java.lang.reflect.Constructor;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 15:30
+ * @author Mikle Garin
  */
-
-public class WebGenericEditor extends WebDefaultCellEditor
+public class WebGenericEditor extends WebDefaultCellEditor<GenericCellEditor>
 {
     private final Class[] argTypes = new Class[]{ String.class };
     private Constructor constructor;
@@ -74,6 +74,8 @@ public class WebGenericEditor extends WebDefaultCellEditor
         {
             return null;
         }
+
+        editorComponent.setStyleId ( StyleId.tableCellEditorGemeric.at ( table ) );
 
         final Component cellEditorComponent = super.getTableCellEditorComponent ( table, value, isSelected, row, column );
         updateValidationState ( cellEditorComponent, true );

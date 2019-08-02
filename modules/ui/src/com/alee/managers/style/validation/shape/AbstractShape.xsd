@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.painter.decoration.shape.AbstractShape -->
+    <xs:complexType name="AbstractShape">
+
+        <!-- Shape identifier -->
+        <xs:attribute name="id" type="xs:string" />
+
+        <!-- Merge overwrite setting -->
+        <xs:attribute name="overwrite" type="xs:boolean" />
+
+    </xs:complexType>
+
+</xs:schema>

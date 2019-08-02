@@ -17,27 +17,31 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.ui.TextBridge;
+import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.utils.FileUtils;
 
+import javax.swing.*;
 import java.io.File;
 
 /**
- * Custom AsyncUniqueNode for WebFileTree.
+ * {@link AsyncUniqueNode} representing single {@link File}.
  *
  * @author Mikle Garin
  */
-
-public class FileTreeNode extends AsyncUniqueNode
+public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
+        implements TextBridge<TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>>>
 {
     /**
-     * File for this node.
+     * Root node ID.
      */
-    protected File file;
+    public static final String rootId = "File.tree.root";
 
     /**
-     * Custom node name.
+     * Custom node title.
      */
-    protected String name = null;
+    protected String title = null;
 
     /**
      * Constructs file node for the specified file.
@@ -46,30 +50,15 @@ public class FileTreeNode extends AsyncUniqueNode
      */
     public FileTreeNode ( final File file )
     {
-        super ();
-        this.file = file;
+        super ( file );
     }
 
-    /**
-     * Constructs file node for the specified file with custom name.
-     *
-     * @param file node file
-     * @param name custom node name
-     */
-    public FileTreeNode ( final File file, final String name )
-    {
-        super ();
-        this.file = file;
-        this.name = name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
     @Override
     public String getId ()
     {
-        return file != null ? file.getAbsolutePath () : "File.tree.root";
+        final File file = getUserObject ();
+        return file != null ? file.getAbsolutePath () : rootId;
     }
 
     /**
@@ -79,7 +68,7 @@ public class FileTreeNode extends AsyncUniqueNode
      */
     public File getFile ()
     {
-        return file;
+        return getUserObject ();
     }
 
     /**
@@ -89,46 +78,73 @@ public class FileTreeNode extends AsyncUniqueNode
      */
     public void setFile ( final File file )
     {
-        this.file = file;
+        setUserObject ( file );
+    }
+
+    @Override
+    public Icon getNodeIcon ( final TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>> parameters )
+    {
+        final File file = getUserObject ();
+        return file != null ? FileUtils.getFileIcon ( file, false ) : null;
+    }
+
+    @Override
+    public String getText ( final TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>> parameters )
+    {
+        return getTitle ();
     }
 
     /**
-     * Returns custom name for this node.
+     * Returns node title.
      *
-     * @return custom name for this node
+     * @return node title
      */
-    public String getName ()
+    public String getTitle ()
     {
-        return name;
+        final String title;
+        if ( this.title != null )
+        {
+            title = this.title;
+        }
+        else
+        {
+            final File file = getUserObject ();
+            if ( file != null )
+            {
+                String name = FileUtils.getDisplayFileName ( file );
+                if ( name != null && !name.trim ().equals ( "" ) )
+                {
+                    title = name;
+                }
+                else
+                {
+                    name = file.getName ();
+                    if ( !name.trim ().equals ( "" ) )
+                    {
+                        title = name != null ? name : "";
+                    }
+                    else
+                    {
+                        title = FileUtils.getFileDescription ( file, null ).getDescription ();
+                    }
+                }
+            }
+            else
+            {
+                title = rootId;
+            }
+        }
+        return title;
     }
 
     /**
      * Sets custom name for this node.
      *
-     * @param name custom name for this node
+     * @param title custom name for this node
      */
-    public void setName ( final String name )
+    public void setTitle ( final String title )
     {
-        this.name = name;
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FileTreeNode getParent ()
-    {
-        return ( FileTreeNode ) super.getParent ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FileTreeNode getChildAt ( final int index )
-    {
-        return ( FileTreeNode ) super.getChildAt ( index );
+        this.title = title;
     }
 
     /**
@@ -149,11 +165,9 @@ public class FileTreeNode extends AsyncUniqueNode
         return -1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString ()
     {
-        return name != null ? name : ( file != null ? file.getName () : "root" );
+        return getTitle ();
     }
 }

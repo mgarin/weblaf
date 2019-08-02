@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContentLayout.xsd" />
+
+    <!-- com.alee.painter.decoration.layout.BorderLayout -->
+    <xs:complexType name="BorderLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractContentLayout">
+
+                <!-- Horizontal gap between content elements -->
+                <xs:attribute name="hgap" type="xs:integer" />
+
+                <!-- Vertical gap between content elements -->
+                <xs:attribute name="vgap" type="xs:integer" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

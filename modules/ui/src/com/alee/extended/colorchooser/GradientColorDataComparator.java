@@ -24,7 +24,6 @@ import java.util.Comparator;
  *
  * @author Mikle Garin
  */
-
 public class GradientColorDataComparator implements Comparator<GradientColorData>
 {
     /**

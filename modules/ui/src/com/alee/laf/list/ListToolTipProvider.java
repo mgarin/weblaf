@@ -19,32 +19,17 @@ package com.alee.laf.list;
 
 import com.alee.managers.tooltip.AbstractToolTipProvider;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
- * Abstract WebLaF tooltip provider for WebList component.
+ * Abstract WebLaF tooltip provider for {@link JList} component.
  *
+ * @param <V> cell value type
  * @author Mikle Garin
  */
-
-public abstract class ListToolTipProvider extends AbstractToolTipProvider<WebList>
+public abstract class ListToolTipProvider<V> extends AbstractToolTipProvider<V, JList, ListCellArea<V, JList>>
 {
-    @Override
-    public Rectangle getSourceBounds ( final WebList list, final Object value, final int index, final int column, final boolean isSelected )
-    {
-        final Rectangle bounds = list.getCellBounds ( index, index );
-        return bounds.intersection ( list.getVisibleRect () );
-    }
-
-    @Override
-    protected Object getValue ( final WebList list, final int index, final int column )
-    {
-        return list.getValueAt ( index );
-    }
-
-    @Override
-    protected boolean isSelected ( final WebList list, final int index, final int column )
-    {
-        return list.isSelectedIndex ( index );
-    }
+    /**
+     * No additional methods required for this implementation.
+     */
 }

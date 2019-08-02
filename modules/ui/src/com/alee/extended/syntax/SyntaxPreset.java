@@ -17,19 +17,19 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.global.StyleConstants;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.FileUtils;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import java.awt.*;
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Custom settings presets for WebSyntaxArea.
  *
  * @author Mikle Garin
  */
-
 public enum SyntaxPreset
 {
     base ( PresetType.settings )
@@ -106,7 +106,7 @@ public enum SyntaxPreset
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
                 {
-                    syntaxArea.setBackground ( StyleConstants.transparent );
+                    syntaxArea.setBackground ( ColorUtils.transparent () );
                     syntaxArea.setOpaque ( false );
                 }
             },
@@ -270,7 +270,7 @@ public enum SyntaxPreset
     public static SyntaxPreset getSyntaxPreset ( final String file )
     {
         final String fe = FileUtils.getFileExtPart ( file, false );
-        final String ext = fe.length () > 0 ? fe.toLowerCase () : file;
+        final String ext = fe.length () > 0 ? fe.toLowerCase ( Locale.ROOT ) : file;
         if ( ext.contains ( "java" ) )
         {
             return java;

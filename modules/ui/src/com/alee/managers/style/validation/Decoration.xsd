@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="ext/CursorType.xsd" />
+    <xs:include schemaLocation="ext/Resource.xsd" />
+    <xs:include schemaLocation="shape/Shapes.xsd" />
+    <xs:include schemaLocation="shadow/Shadows.xsd" />
+    <xs:include schemaLocation="border/Borders.xsd" />
+    <xs:include schemaLocation="background/Backgrounds.xsd" />
+    <xs:include schemaLocation="content/IContent.xsd" />
+
+    <!-- com.alee.painter.decoration.Decorations -->
+    <xs:complexType name="Decorations">
+
+        <!-- State decorations -->
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="decoration" type="WebDecoration" />
+            <xs:element name="ninepatch" type="NinePatchDecoration" />
+        </xs:choice>
+
+        <!-- Merge overwrite setting -->
+        <xs:attribute name="overwrite" type="xs:boolean" />
+
+    </xs:complexType>
+
+    <!-- com.alee.painter.decoration.AbstractDecoration -->
+    <xs:complexType name="AbstractDecoration">
+
+        <!-- Decoration states -->
+        <!-- todo This should have a restriction for list format -->
+        <xs:attribute name="states" type="xs:string" />
+
+        <!-- Whether or not this decoration should overwrite previous one when merged -->
+        <xs:attribute name="overwrite" type="xs:boolean" />
+
+        <!-- Whether or not decoration should be displayed -->
+        <xs:attribute name="visible" type="xs:boolean" />
+
+        <!-- Preferred size -->
+        <xs:attribute name="size" type="java.awt:Dimension" />
+
+        <!-- Display opacity -->
+        <xs:attribute name="opacity" type="xs:float" />
+
+        <!-- Custom component cursor -->
+        <xs:attribute name="cursor" type="CursorType" />
+
+    </xs:complexType>
+
+    <!-- com.alee.painter.decoration.ContentDecoration -->
+    <xs:complexType name="ContentDecoration">
+        <xs:complexContent>
+            <xs:extension base="AbstractDecoration">
+
+                <!-- Decoration contents -->
+                <xs:group ref="IContent" minOccurs="0" maxOccurs="unbounded" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- com.alee.painter.decoration.NinePatchDecoration -->
+    <xs:complexType name="NinePatchDecoration">
+        <xs:complexContent>
+            <xs:extension base="ContentDecoration">
+
+                <!-- Additional decoration elements -->
+                <xs:sequence>
+
+                    <!-- Nine-patch icon -->
+                    <xs:element name="icon" type="Resource" minOccurs="1" maxOccurs="1" />
+
+                </xs:sequence>
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- com.alee.painter.decoration.WebDecoration -->
+    <xs:complexType name="WebDecoration">
+        <xs:complexContent>
+            <xs:extension base="ContentDecoration">
+
+                <!-- Additional decoration elements -->
+                <xs:sequence>
+
+                    <!-- Shape -->
+                    <xs:group ref="Shapes" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Shadows -->
+                    <xs:group ref="Shadows" minOccurs="0" maxOccurs="2" />
+
+                    <!-- Border -->
+                    <xs:group ref="Borders" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Backgrounds -->
+                    <xs:group ref="Backgrounds" minOccurs="0" maxOccurs="unbounded" />
+
+                </xs:sequence>
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

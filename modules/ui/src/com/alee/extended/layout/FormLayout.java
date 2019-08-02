@@ -17,19 +17,24 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * @author Mikle Garin
  */
-
 public class FormLayout extends AbstractLayoutManager
 {
+    /**
+     * todo 1. Fix {@link #LINE} and {@link RIGHT} constraints behavior
+     */
+
     /**
      * Form elements constraint constants.
      */
@@ -84,7 +89,7 @@ public class FormLayout extends AbstractLayoutManager
     /**
      * Added component constraints.
      */
-    protected Map<Component, String> layoutConstraints = new WeakHashMap<Component, String> ();
+    protected Map<Component, String> layoutConstraints = new HashMap<Component, String> ();
 
     /**
      * Constructs new FormLayout with zero gaps and filled right side.
@@ -297,19 +302,16 @@ public class FormLayout extends AbstractLayoutManager
         this.verticalGap = verticalGap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         // Adding default constraints if needed (left side components aligned to right, right side components fill the space)
-        final Container parent = component.getParent ();
-        final int cc = parent.getComponentCount ();
+        final Container container = component.getParent ();
+        final int cc = container.getComponentCount ();
         boolean wasFirstColumn = false;
         for ( int j = 0; j < cc; j++ )
         {
-            final Component c = parent.getComponent ( j );
+            final Component c = container.getComponent ( j );
             final String lc = layoutConstraints.get ( c );
             if ( lc != null )
             {
@@ -324,26 +326,20 @@ public class FormLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         layoutConstraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( @NotNull final Container container )
     {
-        final int cc = parent.getComponentCount ();
+        final int cc = container.getComponentCount ();
         if ( cc > 0 )
         {
-            // Pre-calculating childs preferred sizes
-            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
+            // Pre-calculating children preferred sizes
+            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( container );
 
             // Calculating preferred column widths
             int lpw = 0;
@@ -351,7 +347,7 @@ public class FormLayout extends AbstractLayoutManager
             boolean wasFirstColumn = false;
             for ( int j = 0; j < cc; j++ )
             {
-                final Component component = parent.getComponent ( j );
+                final Component component = container.getComponent ( j );
                 final Dimension ps = cps.get ( component );
                 if ( !wasFirstColumn )
                 {
@@ -380,8 +376,8 @@ public class FormLayout extends AbstractLayoutManager
             }
 
             // Post-calculating actual column widths
-            final Dimension parentSize = parent.getSize ();
-            final Insets i = parent.getInsets ();
+            final Dimension parentSize = container.getSize ();
+            final Insets i = container.getInsets ();
             if ( fillLeftSide && fillRightSide )
             {
                 if ( cc > 1 )
@@ -421,7 +417,7 @@ public class FormLayout extends AbstractLayoutManager
             wasFirstColumn = false;
             for ( int j = 0; j < cc; j++ )
             {
-                final Component component = parent.getComponent ( j );
+                final Component component = container.getComponent ( j );
                 final Dimension ps = cps.get ( component );
                 final String pos = layoutConstraints.get ( component );
                 if ( !wasFirstColumn )
@@ -441,7 +437,7 @@ public class FormLayout extends AbstractLayoutManager
                     else
                     {
                         // Row preferred height
-                        final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
+                        final int next = cc > j + 1 ? cps.get ( container.getComponent ( j + 1 ) ).height : 0;
                         final int rh = Math.max ( ps.height, next );
 
                         // First column
@@ -472,7 +468,7 @@ public class FormLayout extends AbstractLayoutManager
                 else
                 {
                     // Row preferred height
-                    final int prev = cps.get ( parent.getComponent ( j - 1 ) ).height;
+                    final int prev = cps.get ( container.getComponent ( j - 1 ) ).height;
                     final int rh = Math.max ( ps.height, prev );
 
                     // Second column
@@ -532,18 +528,15 @@ public class FormLayout extends AbstractLayoutManager
         return rowY;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
-        final int cc = parent.getComponentCount ();
-        final Insets i = parent.getInsets ();
+        final int cc = container.getComponentCount ();
+        final Insets i = container.getInsets ();
         if ( cc > 0 )
         {
-            // Pre-calculating childs preferred sizes
-            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
+            // Pre-calculating children preferred sizes
+            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( container );
 
             int pw = 0;
             int lpw = 0;
@@ -552,7 +545,7 @@ public class FormLayout extends AbstractLayoutManager
             boolean wasFirstColumn = false;
             for ( int j = 0; j < cc; j++ )
             {
-                final Component thisComponent = parent.getComponent ( j );
+                final Component thisComponent = container.getComponent ( j );
                 final Dimension ps = cps.get ( thisComponent );
                 if ( !wasFirstColumn )
                 {
@@ -573,7 +566,7 @@ public class FormLayout extends AbstractLayoutManager
                         lpw = Math.max ( lpw, ps.width );
 
                         // Row preferred height
-                        final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
+                        final int next = cc > j + 1 ? cps.get ( container.getComponent ( j + 1 ) ).height : 0;
                         ph += Math.max ( ps.height, next ) + verticalGap;
 
                         // Remembering that this was first column

@@ -1,0 +1,119 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.tree.WebTree -->
+
+    <!-- Tree -->
+    <style type="tree">
+        <component>
+            <opaque>true</opaque>
+            <background>106,110,112</background>
+        </component>
+        <ui>
+            <selectionStyle>line</selectionStyle>
+        </ui>
+        <painter>
+            <paintLines>true</paintLines>
+            <dashedLines>true</dashedLines>
+            <linesColor>180,180,180</linesColor>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+
+            <!-- Node background painter -->
+            <nodePainter>
+                <decorations>
+                    <decoration states="unselected,hover" opacity="0.4">
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>55,55,55</color>
+                            <color>25,25,25</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </nodePainter>
+
+            <!-- Selection background painter -->
+            <selectionPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>55,55,55</color>
+                            <color>25,25,25</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="disabled" opacity="0.5" />
+                </decorations>
+            </selectionPainter>
+
+            <!-- Tree drop location painter -->
+            <dropLocationPainter>
+                <decorations>
+                    <decoration states="drop-on">
+                        <WebShape round="0" />
+                        <WebShadow type="inner" width="5" />
+                        <LineBorder color="220,220,220" stroke="basic;1;round;round;0;4,5" />
+                    </decoration>
+                    <decoration states="drop-between" size="80,2">
+                        <WebShape round="0" />
+                        <LineBorder color="220,220,220" stroke="basic;1;round;round;0;4,5" />
+                    </decoration>
+                </decorations>
+            </dropLocationPainter>
+
+            <!-- Selector painter -->
+            <selectorPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <LineBorder color="gray" stroke="basic;1;round;round;0;3,3" />
+                        <ColorBackground color="0,0,255,25" />
+                    </decoration>
+                </decorations>
+            </selectorPainter>
+
+        </painter>
+
+        <!-- Label cell renderer -->
+        <style type="label" id="renderer" padding="4,4,4,6" />
+
+        <!-- Styled label cell renderer -->
+        <style type="styledlabel" id="renderer" padding="4,4,4,6" />
+
+        <!-- Text field cell editor -->
+        <style type="textfield" id="editor" padding="0,3,0,2">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <WebShape round="2" />
+                        <LineBorder color="black" />
+                        <ColorBackground color="106,110,112" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Cell editor icon -->
+            <style type="image" id="icon" padding="0,0,0,4" />
+
+        </style>
+
+    </style>
+
+    <!-- Non-opaque tree -->
+    <style type="tree" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent tree -->
+    <style type="tree" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

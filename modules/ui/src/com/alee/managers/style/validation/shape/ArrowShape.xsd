@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractShape.xsd" />
+    <xs:include schemaLocation="../ext/CompassDirection.xsd" />
+
+    <!-- com.alee.painter.decoration.shape.ArrowShape -->
+    <xs:complexType name="ArrowShape">
+        <xs:complexContent>
+            <xs:extension base="AbstractShape">
+
+                <!-- Arrow corner direction -->
+                <xs:attribute name="direction" type="CompassDirection" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

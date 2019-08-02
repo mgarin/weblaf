@@ -17,18 +17,18 @@
 
 package com.alee.managers.settings;
 
-import com.alee.managers.log.Log;
+import com.alee.api.jdk.SerializableFunction;
+import com.alee.api.jdk.Supplier;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.swing.WebTimer;
+import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,145 +36,145 @@ import java.util.Map;
 
 /**
  * This manager allows you to quickly and easily save any serializable data into settings files using simple XML format.
- * <p/>
+ *
  * You can define settings group file name (they are equal to the SettingsGroup name and should be unique), its location on local or
  * remote drive and each separate property key. Any amount of properties could be stored in each group. Also there are some additional
  * manager settings that allows you to configure SettingsManager to work the way you want it to. The rest of the work is done by the
  * SettingsManager - it decides where, when and how to save the settings files.
- * <p/>
- * Settings data aliasing (see XStream documentation and XmlUtils class) or SettingsGroup file location changes should be done before
- * requesting any of the settings, preferably right at the application startup. Otherwise data might not be properly read and settings will
- * appear empty.
+ *
+ * Settings data aliasing (see XStream documentation and {@link XmlUtils} class) or SettingsGroup file location changes should be done
+ * before requesting any of the settings, preferably right at the application startup. Otherwise data might not be properly read and
+ * settings will appear empty.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.ComponentSettingsManager
- * @see com.alee.utils.XmlUtils
+ * @see XmlUtils
  */
-
-public class SettingsManager
+public final class SettingsManager
 {
     /**
-     * Settings change listeners.
+     * Global settings change listeners.
      */
-    protected static final Map<String, Map<String, List<SettingsListener>>> settingsListeners =
-            new HashMap<String, Map<String, List<SettingsListener>>> ();
+    private static final List<SettingsListener> globalSettingsListeners = new ArrayList<SettingsListener> ( 2 );
+
+    /**
+     * Specific settings change listeners.
+     */
+    private static final Map<String, Map<String, List<SettingsListener>>> specificSettingsListeners =
+            new HashMap<String, Map<String, List<SettingsListener>>> ( 20 );
 
     /**
      * Settings files extension.
      */
-    protected static String settingsFilesExtension = ".xml";
+    private static String settingsFilesExtension = ".xml";
 
     /**
      * Backup files extension.
      */
-    protected static String backupFilesExtension = ".backup";
+    private static String backupFilesExtension = ".backup";
 
     /**
      * Default settings directory location.
      */
-    protected static String defaultSettingsDir = null;
+    private static String defaultSettingsDir = null;
 
     /**
      * Default settings directory name.
      */
-    protected static String defaultSettingsDirName = ".weblaf";
+    private static String defaultSettingsDirName = ".weblaf";
 
     /**
      * Default settings group name.
      */
-    protected static String defaultSettingsGroup = "default";
+    private static String defaultSettingsGroup = "default";
 
     /**
      * Redefined per-group settings save locations.
      */
-    protected static final Map<String, String> groupFileLocation = new HashMap<String, String> ();
+    private static final Map<String, String> groupFileLocation = new HashMap<String, String> ();
 
     /**
      * Group settings read success marks.
      */
-    protected static final Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
+    private static final Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
 
     /**
      * Cached settings map.
      */
-    protected static final Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
+    private static final Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
 
     /**
      * Cached files map.
      */
-    protected static final Map<String, Object> files = new HashMap<String, Object> ();
+    private static final Map<String, Object> files = new HashMap<String, Object> ();
 
     /**
      * Whether should save settings right after any changes made or not.
      */
-    protected static boolean saveOnChange = true;
+    private static boolean saveOnChange = true;
 
     /**
      * Whether should save provided default value in "get" calls or not.
      */
-    protected static boolean saveDefaultValues = true;
+    private static boolean saveDefaultValues = true;
 
     /**
      * Save-on-change scheduler lock object.
      */
-    protected static final Object saveOnChangeLock = new Object ();
+    private static final Object saveOnChangeLock = new Object ();
 
     /**
      * Save-on-change save delay in milliseconds.
      * If larger than 0 then settings will be accumulated and saved all at once as soon as no new changes came within the delay time.
      */
-    protected static long saveOnChangeDelay = 500;
+    private static long saveOnChangeDelay = 500;
 
     /**
      * Save-on-change scheduler timer.
      */
-    protected static WebTimer groupSaveScheduler = null;
+    private static WebTimer groupSaveScheduler = null;
 
     /**
      * Delayed settings groups to save.
      */
-    protected static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
+    private static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
 
     /**
-     * Whether settings log is enabled or not.
-     * Log will display what settings are being loaded and saved and when that happens.
-     * Log might contain exceptions if settings cannot be read due to corrupted file or modified object stucture.
+     * Whether or not settings save logging is enabled.
      */
-    protected static boolean loggingEnabled = true;
-
-    /**
-     * Whether settings save log is enabled or not.
-     */
-    protected static boolean saveLoggingEnabled = false;
+    private static boolean saveLoggingEnabled = false;
 
     /**
      * Whether should allow saving settings into files or not.
      * If set to false settings will be available only in runtime and will be lost after application finishes working.
      */
-    protected static boolean allowSave = true;
+    private static boolean allowSave = true;
 
     /**
-     * Whether SettingsManager is initialized or not.
+     * Whether {@link SettingsManager} is initialized or not.
      */
-    protected static boolean initialized = false;
+    private static boolean initialized = false;
 
     /**
-     * Initializes SettingsManager.
+     * Initializes {@link SettingsManager}.
      */
-    public static synchronized void initialize ()
+    public static void initialize ()
     {
         if ( !initialized )
         {
-            initialized = true;
+            synchronized ( SettingsManager.class )
+            {
+                if ( !initialized )
+                {
+                    // Aliases
+                    XmlUtils.processAnnotations ( SettingsGroup.class );
+                    XmlUtils.processAnnotations ( SettingsGroupState.class );
+                    XmlUtils.processAnnotations ( ReadState.class );
 
-            // Aliases
-            XmlUtils.processAnnotations ( SettingsGroup.class );
-            XmlUtils.processAnnotations ( SettingsGroupState.class );
-            XmlUtils.processAnnotations ( ReadState.class );
-
-            // Initializing sub-manager
-            ComponentSettingsManager.initializeManager ();
+                    // Updating initialization mark
+                    initialized = true;
+                }
+            }
         }
     }
 
@@ -199,609 +199,104 @@ public class SettingsManager
     }
 
     /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component component to register
-     * @param key       component settings key
-     */
-    public static void registerComponent ( final JComponent component, final String key )
-    {
-        registerComponent ( component, key, ( Object ) null );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component         component to register
-     * @param key               component settings key
-     * @param defaultValueClass component default value class
-     * @param <T>               default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
-                                                                    final Class<T> defaultValueClass )
-    {
-        registerComponent ( component, key, getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component    component to register
-     * @param key          component settings key
-     * @param defaultValue component default value
-     */
-    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue )
-    {
-        registerComponent ( component, defaultSettingsGroup, key, defaultValue );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component component to register
-     * @param group     component settings group
-     * @param key       component settings key
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key )
-    {
-        registerComponent ( component, group, key, ( Object ) null );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component         component to register
-     * @param group             component settings group
-     * @param key               component settings key
-     * @param defaultValueClass component default value class
-     * @param <T>               default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
-                                                                    final Class<T> defaultValueClass )
-    {
-        registerComponent ( component, group, key, getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component    component to register
-     * @param group        component settings group
-     * @param key          component settings key
-     * @param defaultValue component default value
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue )
-    {
-        registerComponent ( component, group, key, defaultValue, true, true );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String key, final boolean loadInitialSettings,
-                                           final boolean applySettingsChanges )
-    {
-        registerComponent ( component, key, null, loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param defaultValueClass    component default value class
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     * @param <T>                  default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
-                                                                    final Class<T> defaultValueClass, final boolean loadInitialSettings,
-                                                                    final boolean applySettingsChanges )
-    {
-        registerComponent ( component, key, getDefaultValue ( defaultValueClass ), loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param key                  component settings key
-     * @param defaultValue         component default value
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue,
-                                           final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        registerComponent ( component, defaultSettingsGroup, key, defaultValue, loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param group                component settings group
-     * @param key                  component settings key
-     * @param defaultValueClass    component default value class
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     * @param <T>                  default value type
-     * @see DefaultValue
-     */
-    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
-                                                                    final Class<T> defaultValueClass, final boolean loadInitialSettings,
-                                                                    final boolean applySettingsChanges )
-    {
-        registerComponent ( component, group, key, getDefaultValue ( defaultValueClass ), loadInitialSettings, applySettingsChanges );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component            component to register
-     * @param group                component settings group
-     * @param key                  component settings key
-     * @param defaultValue         component default value
-     * @param loadInitialSettings  whether to load initial available settings into the component or not
-     * @param applySettingsChanges whether to apply settings changes to the component or not
-     */
-    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue,
-                                           final boolean loadInitialSettings, final boolean applySettingsChanges )
-    {
-        ComponentSettingsManager.registerComponent (
-                new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );
-    }
-
-    /**
-     * Registers component for settings auto-save.
-     * <p/>
-     * Also registered component will be:
-     * - listened for settings changes to save them when requested
-     * - automatically updated with any loaded settings for that key if requested
-     * - automatically updated with any changes made in its settings if requested
-     *
-     * @param component         component to register
-     * @param settingsProcessor component settings processor
-     */
-    public static void registerComponent ( final JComponent component, final SettingsProcessor settingsProcessor )
-    {
-        ComponentSettingsManager.registerComponent ( component, settingsProcessor );
-    }
-
-    /**
-     * Unregisters component from settings auto-save.
-     *
-     * @param component component to unregister
-     */
-    public static void unregisterComponent ( final JComponent component )
-    {
-        ComponentSettingsManager.unregisterComponent ( component );
-    }
-
-    /**
-     * Loads saved settings into the component if it is registered.
-     *
-     * @param component component registered for settings auto-save
-     */
-    public static void loadComponentSettings ( final JComponent component )
-    {
-        ComponentSettingsManager.loadSettings ( component );
-    }
-
-    /**
-     * Saves component settings.
-     *
-     * @param component component registered for settings auto-save
-     */
-    public static void saveComponentSettings ( final JComponent component )
-    {
-        ComponentSettingsManager.saveSettings ( component );
-    }
-
-    /**
-     * Registers specified settings processor class for the specified component type.
-     *
-     * @param componentType     component type
-     * @param settingsProcessor settings processor class
-     * @param <T>               settings processor type
-     */
-    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class<? extends JComponent> componentType,
-                                                                                 final Class<T> settingsProcessor )
-    {
-        ComponentSettingsManager.registerSettingsProcessor ( componentType, settingsProcessor );
-    }
-
-    /**
-     * Returns Boolean value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
      * @param key settings key
-     * @return Boolean value
-     */
-    public static Boolean getBoolean ( final String key )
-    {
-        return get ( key, ( Boolean ) null );
-    }
-
-    /**
-     * Returns Boolean value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Boolean value
-     */
-    public static Boolean getBoolean ( final String group, final String key )
-    {
-        return get ( group, key, ( Boolean ) null );
-    }
-
-    /**
-     * Returns String value.
-     *
-     * @param key settings key
-     * @return String value
-     */
-    public static String getString ( final String key )
-    {
-        return get ( key, ( String ) null );
-    }
-
-    /**
-     * Returns String value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return String value
-     */
-    public static String getString ( final String group, final String key )
-    {
-        return get ( group, key, ( String ) null );
-    }
-
-    /**
-     * Returns Integer value.
-     *
-     * @param key settings key
-     * @return Integer value
-     */
-    public static Integer getInteger ( final String key )
-    {
-        return get ( key, ( Integer ) null );
-    }
-
-    /**
-     * Returns Integer value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Integer value
-     */
-    public static Integer getInteger ( final String group, final String key )
-    {
-        return get ( group, key, ( Integer ) null );
-    }
-
-    /**
-     * Returns Long value.
-     *
-     * @param key settings key
-     * @return Long value
-     */
-    public static Long getLong ( final String key )
-    {
-        return get ( key, ( Long ) null );
-    }
-
-    /**
-     * Returns Long value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Long value
-     */
-    public static Long getLong ( final String group, final String key )
-    {
-        return get ( group, key, ( Long ) null );
-    }
-
-    /**
-     * Returns Float value.
-     *
-     * @param key settings key
-     * @return Float value
-     */
-    public static Float getFloat ( final String key )
-    {
-        return get ( key, ( Float ) null );
-    }
-
-    /**
-     * Returns Float value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Float value
-     */
-    public static Float getFloat ( final String group, final String key )
-    {
-        return get ( group, key, ( Float ) null );
-    }
-
-    /**
-     * Returns Double value.
-     *
-     * @param key settings key
-     * @return Double value
-     */
-    public static Double getDouble ( final String key )
-    {
-        return get ( key, ( Double ) null );
-    }
-
-    /**
-     * Returns Double value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Double value
-     */
-    public static Double getDouble ( final String group, final String key )
-    {
-        return get ( group, key, ( Double ) null );
-    }
-
-    /**
-     * Returns Dimension value.
-     *
-     * @param key settings key
-     * @return Dimension value
-     */
-    public static Dimension getDimension ( final String key )
-    {
-        return get ( key, ( Dimension ) null );
-    }
-
-    /**
-     * Returns Dimension value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Dimension value
-     */
-    public static Dimension getDimension ( final String group, final String key )
-    {
-        return get ( group, key, ( Dimension ) null );
-    }
-
-    /**
-     * Returns Point value.
-     *
-     * @param key settings key
-     * @return Point value
-     */
-    public static Point getPoint ( final String key )
-    {
-        return get ( key, ( Point ) null );
-    }
-
-    /**
-     * Returns Point value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Point value
-     */
-    public static Point getPoint ( final String group, final String key )
-    {
-        return get ( group, key, ( Point ) null );
-    }
-
-    /**
-     * Returns Color value.
-     *
-     * @param key settings key
-     * @return Color value
-     */
-    public static Color getColor ( final String key )
-    {
-        return get ( key, ( Color ) null );
-    }
-
-    /**
-     * Returns Color value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Color value
-     */
-    public static Color getColor ( final String group, final String key )
-    {
-        return get ( group, key, ( Color ) null );
-    }
-
-    /**
-     * Returns Rectangle value.
-     *
-     * @param key settings key
-     * @return Rectangle value
-     */
-    public static Rectangle getRectangle ( final String key )
-    {
-        return get ( key, ( Rectangle ) null );
-    }
-
-    /**
-     * Returns Rectangle value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Rectangle value
-     */
-    public static Rectangle getRectangle ( final String group, final String key )
-    {
-        return get ( group, key, ( Rectangle ) null );
-    }
-
-    /**
-     * Returns Insets value.
-     *
-     * @param key settings key
-     * @return Insets value
-     */
-    public static Insets getInsets ( final String key )
-    {
-        return get ( key, ( Insets ) null );
-    }
-
-    /**
-     * Returns Insets value.
-     *
-     * @param group settings group
-     * @param key   settings key
-     * @return Insets value
-     */
-    public static Insets getInsets ( final String group, final String key )
-    {
-        return get ( group, key, ( Insets ) null );
-    }
-
-    /**
-     * Returns Object value.
-     *
-     * @param key settings key
-     * @return Object value
+     * @param <T> settings type
+     * @return stored settings
      */
     public static <T> T get ( final String key )
     {
-        return get ( key, ( T ) null );
+        return get ( getDefaultSettingsGroup (), key, null );
     }
 
     /**
-     * Returns typed value.
-     *
-     * @param key               settings key
-     * @param defaultValueClass default value class
-     * @param <T>               default value type
-     * @return typed value
-     */
-    public static <T extends DefaultValue> T get ( final String key, final Class<T> defaultValueClass )
-    {
-        return get ( defaultSettingsGroup, key, getDefaultValue ( defaultValueClass ) );
-    }
-
-    /**
-     * Returns typed value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
      * @param key          settings key
      * @param defaultValue default value
-     * @param <T>          default value type
-     * @return typed value
+     * @param <T>          settings type
+     * @return stored settings
      */
     public static <T> T get ( final String key, final T defaultValue )
     {
-        return get ( defaultSettingsGroup, key, defaultValue );
+        return get ( getDefaultSettingsGroup (), key, defaultValue != null ? new StaticDefaultValue<T> ( defaultValue ) : null );
     }
 
     /**
-     * Returns typed value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
-     * @param group             settings group
-     * @param key               settings key
-     * @param defaultValueClass default value class
-     * @param <T>               default value type
-     * @return typed value
+     * @param key                  settings key
+     * @param defaultValueSupplier {@link Supplier} for default value
+     * @param <T>                  settings type
+     * @return stored settings
      */
-    public static <T extends DefaultValue> T get ( final String group, final String key, final Class<T> defaultValueClass )
+    public static <T> T get ( final String key, final Supplier<T> defaultValueSupplier )
     {
-        return get ( group, key, getDefaultValue ( defaultValueClass ) );
+        return get ( getDefaultSettingsGroup (), key, defaultValueSupplier );
     }
 
     /**
-     * Returns typed value.
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
      *
      * @param group        settings group
      * @param key          settings key
      * @param defaultValue default value
-     * @param <T>          default value type
-     * @return typed value
+     * @param <T>          settings type
+     * @return stored settings
      */
     public static <T> T get ( final String group, final String key, final T defaultValue )
     {
-        // Check manager initialization
+        return get ( group, key, defaultValue != null ? new StaticDefaultValue<T> ( defaultValue ) : null );
+    }
+
+    /**
+     * Returns stored settings.
+     * The only type of exceptions that is ignored here is {@link ClassCastException}.
+     * Whenever a {@link ClassCastException} there will be a warning logged and default value will be used.
+     *
+     * @param group                settings group
+     * @param key                  settings key
+     * @param defaultValueSupplier {@link Supplier} for default value
+     * @param <T>                  settings type
+     * @return stored settings
+     */
+    public static <T> T get ( final String group, final String key, final Supplier<T> defaultValueSupplier )
+    {
+        // Checking manager initialization
         initialize ();
 
-        // Get SettingsGroup safely
-        final SettingsGroup settingsGroup = getSettingsGroup ( group );
+        // Resulting value
+        T value;
 
-        // Get value
-        Object value = settingsGroup.get ( key );
+        try
+        {
+            // Retrieving stored value
+            value = getSettingsGroup ( group ).get ( key );
+        }
+        catch ( final ClassCastException e )
+        {
+            // Informing about inappropriate settings type found
+            final String msg = "Unable to load settings value for group '%s' and key '%s' because it has inappropriate class type";
+            LoggerFactory.getLogger ( SettingsManager.class ).warn ( String.format ( msg, group, key ) );
+
+            // Value is not available
+            value = null;
+        }
 
         // Applying default value if needed
-        if ( value == null && defaultValue != null )
+        if ( value == null && defaultValueSupplier != null )
         {
-            value = defaultValue;
+            // Retrieving default value
+            value = defaultValueSupplier.get ();
 
             // Saving default value if needed
             if ( saveDefaultValues )
@@ -810,47 +305,7 @@ public class SettingsManager
             }
         }
 
-        try
-        {
-            // Returning retrieved value
-            return ( T ) value;
-        }
-        catch ( final ClassCastException e )
-        {
-            Log.error ( SettingsManager.class, "Unable to load settings value for group \"" + group + "\" and key \"" + key +
-                    "\" because it has inappropriate class type:", e );
-
-            // Saving default value if needed
-            if ( saveDefaultValues )
-            {
-                set ( group, key, defaultValue );
-            }
-
-            // Returning default value if no actual found
-            return defaultValue;
-        }
-    }
-
-    /**
-     * Returns default value for the specified class.
-     *
-     * @param defaultValueClass default value class
-     * @param <T>               default value type
-     * @return default value for the specified class
-     */
-    public static <T extends DefaultValue> T getDefaultValue ( final Class<T> defaultValueClass )
-    {
-        if ( defaultValueClass == null )
-        {
-            // Workaround for cases with accidental method calls
-            // Also works fine if this method was called but class is actually null
-            return null;
-        }
-        else
-        {
-            // Call special static method that should be in each class that implements DefaultValue interface
-            return ReflectUtils.callStaticMethodSafely ( defaultValueClass, "getDefaultValue" );
-        }
+        return value;
     }
 
     /**
@@ -863,7 +318,7 @@ public class SettingsManager
      */
     public static <T> T set ( final String key, final T object )
     {
-        return set ( defaultSettingsGroup, key, object );
+        return set ( getDefaultSettingsGroup (), key, object );
     }
 
     /**
@@ -877,7 +332,7 @@ public class SettingsManager
      */
     public static <T> T set ( final String group, final String key, final T object )
     {
-        // Check manager initialization
+        // Checking manager initialization
         initialize ();
 
         // Get SettingsGroup safely
@@ -893,7 +348,7 @@ public class SettingsManager
         }
 
         // Inform about changes
-        fireSettingsChanged ( group, key, object );
+        fireSettingsChanged ( group, key, oldValue, object );
 
         return oldValue;
     }
@@ -903,7 +358,7 @@ public class SettingsManager
      */
     public static void resetDefaultGroup ()
     {
-        resetGroup ( defaultSettingsGroup );
+        resetGroup ( getDefaultSettingsGroup () );
     }
 
     /**
@@ -934,10 +389,12 @@ public class SettingsManager
      * Resets settings under the key within the default settings group.
      *
      * @param key settings key to reset
+     * @param <T> value type
+     * @return resetted value
      */
-    public static void resetValue ( final String key )
+    public static <T> T resetValue ( final String key )
     {
-        resetValue ( defaultSettingsGroup, key );
+        return resetValue ( getDefaultSettingsGroup (), key );
     }
 
     /**
@@ -945,10 +402,12 @@ public class SettingsManager
      *
      * @param group settings group
      * @param key   settings key to reset
+     * @param <T>   value type
+     * @return resetted value
      */
     public static <T> T resetValue ( final String group, final String key )
     {
-        Object oldValue = null;
+        T oldValue = null;
 
         // Resetting settings under the specified key in the group
         final SettingsGroup settingsGroup = getSettingsGroup ( group );
@@ -957,13 +416,13 @@ public class SettingsManager
             oldValue = settingsGroup.remove ( key );
         }
 
-        // Forcing settings group save in case value was resetted
+        // Forcing settings group save in case value was reset
         if ( oldValue != null )
         {
             saveSettingsGroup ( group );
         }
 
-        return ( T ) oldValue;
+        return oldValue;
     }
 
     /**
@@ -985,12 +444,13 @@ public class SettingsManager
     }
 
     /**
-     * Loads and returns settings group for the specified name.
+     * Attempts to load {@link SettingsGroup} for the specified name and return it.
+     * If {@link SettingsGroup} doesn't exist yet it will be created.
      *
-     * @param group settings group name
-     * @return loaded settings group for the specified name
+     * @param group {@link SettingsGroup} name
+     * @return {@link SettingsGroup} for the specified name
      */
-    protected static SettingsGroup loadSettingsGroup ( final String group )
+    private static SettingsGroup loadSettingsGroup ( final String group )
     {
         SettingsGroup settingsGroup = null;
 
@@ -1032,12 +492,17 @@ public class SettingsManager
                         groupState.put ( group, new SettingsGroupState ( readFromBackup ? ReadState.restored : ReadState.ok ) );
 
                         final String state = readFromBackup ? "restored from backup" : "loaded";
-                        Log.info ( SettingsManager.class, "Settings group \"" + group + "\" " + state + " successfully" );
+                        final String msg = "Settings group '%s' %s successfully";
+                        LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group, state ) );
                     }
-                    catch ( final Throwable e )
+                    catch ( final Exception e )
                     {
-                        Log.error ( SettingsManager.class, "Unable to load settings group \"" + group +
-                                "\" due to unexpected exception:", e );
+                        // todo Probably provide different solution for different errors?
+                        // todo CannotResolveClassException -> Probably settings class changed and not available anymore
+
+                        // Logging cause
+                        final String msg = "Unable to load settings group '%s' due to unexpected exception";
+                        LoggerFactory.getLogger ( SettingsManager.class ).error ( String.format ( msg, group ), e );
 
                         // Delete incorrect SettingsGroup file
                         FileUtils.deleteFile ( file );
@@ -1052,7 +517,8 @@ public class SettingsManager
                 // No group settings file or backup exists, new SettingsGroup will be created
                 groupState.put ( group, new SettingsGroupState ( ReadState.created ) );
 
-                Log.info ( SettingsManager.class, "Settings group \"" + group + "\" created successfully" );
+                final String msg = "Settings group '%s' created successfully";
+                LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group ) );
             }
         }
         else
@@ -1060,7 +526,8 @@ public class SettingsManager
             // No group setting dir exists, new SettingsGroup will be created
             groupState.put ( group, new SettingsGroupState ( ReadState.created ) );
 
-            Log.info ( SettingsManager.class, "Settings group \"" + group + "\" created successfully" );
+            final String msg = "Settings group '%s' created successfully";
+            LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group ) );
         }
 
         // Create new SettingsGroup
@@ -1074,7 +541,7 @@ public class SettingsManager
     }
 
     /**
-     * Saves all settings groups and files.
+     * Saves all {@link SettingsGroup}s and settings files.
      */
     public static void saveSettings ()
     {
@@ -1089,15 +556,12 @@ public class SettingsManager
         {
             saveSettings ( entry.getKey (), entry.getValue () );
         }
-
-        // Saving all component settings
-        ComponentSettingsManager.saveSettings ();
     }
 
     /**
-     * Saves settings group with the specified name.
+     * Saves {@link SettingsGroup} with the specified name.
      *
-     * @param group name of the settings group to save
+     * @param group name of the {@link SettingsGroup} to save
      */
     public static void saveSettingsGroup ( final String group )
     {
@@ -1105,9 +569,9 @@ public class SettingsManager
     }
 
     /**
-     * Saves specified settings group.
+     * Saves specified {@link SettingsGroup}.
      *
-     * @param settingsGroup settings group to save
+     * @param settingsGroup {@link SettingsGroup} to save
      */
     public static void saveSettingsGroup ( final SettingsGroup settingsGroup )
     {
@@ -1144,38 +608,54 @@ public class SettingsManager
 
                     if ( saveLoggingEnabled )
                     {
-                        Log.info ( SettingsManager.class, "Settings group \"" + group + "\" saved successfully" );
+                        final String msg = "Settings group '%s' saved successfully";
+                        LoggerFactory.getLogger ( SettingsManager.class ).info ( String.format ( msg, group ) );
                     }
                 }
                 else
                 {
-                    throw new RuntimeException ( "Cannot create settings directory: " + dir.getAbsolutePath () );
+                    final String msg = "Cannot create settings directory: %s";
+                    throw new SettingsException ( String.format ( msg, dir.getAbsolutePath () ) );
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
-                Log.error ( SettingsManager.class, "Unable to save settings group \"" + settingsGroup.getName () +
-                        "\" due to unexpected exception:", e );
+                final String msg = "Unable to save settings group '%s' due to unexpected exception";
+                LoggerFactory.getLogger ( SettingsManager.class ).error ( String.format ( msg, settingsGroup.getName () ), e );
             }
         }
     }
 
-    protected static File getGroupFile ( final String group, final File dir )
+    /**
+     * Returns actual {@link SettingsGroup} file.
+     *
+     * @param group {@link SettingsGroup} name
+     * @param dir   settings directory
+     * @return actual {@link SettingsGroup} file
+     */
+    private static File getGroupFile ( final String group, final File dir )
     {
         return new File ( dir, group + settingsFilesExtension );
     }
 
-    protected static File getGroupBackupFile ( final String group, final File dir )
+    /**
+     * Returns backup {@link SettingsGroup} file.
+     *
+     * @param group {@link SettingsGroup} name
+     * @param dir   settings directory
+     * @return backup {@link SettingsGroup} file
+     */
+    private static File getGroupBackupFile ( final String group, final File dir )
     {
         return new File ( dir, group + settingsFilesExtension + backupFilesExtension );
     }
 
     /**
-     * Delays settings group save or performs it immediately according to settings manager configuration.
+     * Delays {@link SettingsGroup} save or performs it immediately according to {@link SettingsManager} configuration.
      *
-     * @param group name of the settings group to save
+     * @param group name of the {@link SettingsGroup} to save
      */
-    protected static void delayedSaveSettingsGroup ( final String group )
+    private static void delayedSaveSettingsGroup ( final String group )
     {
         // Determining when we should save changes into file system
         if ( saveOnChangeDelay > 0 )
@@ -1227,10 +707,10 @@ public class SettingsManager
     }
 
     /**
-     * Returns settings group state.
+     * Returns {@link SettingsGroupState} for the {@link SettingsGroup} with the specified name.
      *
-     * @param group settings group name
-     * @return settings group state
+     * @param group {@link SettingsGroup} name to retreive {@link SettingsGroupState} for
+     * @return {@link SettingsGroupState} for the {@link SettingsGroup} with the specified name
      */
     public SettingsGroupState getSettingsGroupState ( final String group )
     {
@@ -1256,11 +736,31 @@ public class SettingsManager
      * Returns value read from the settings file.
      *
      * @param fileName     settings file name
-     * @param defaultValue default value class
+     * @param defaultValue default value
      * @param <T>          default value type
      * @return value read from the settings file
      */
     public static <T> T getSettings ( final String fileName, final T defaultValue )
+    {
+        return getSettings ( fileName, new Supplier<T> ()
+        {
+            @Override
+            public T get ()
+            {
+                return defaultValue;
+            }
+        } );
+    }
+
+    /**
+     * Returns value read from the settings file.
+     *
+     * @param fileName     settings file name
+     * @param defaultValue default value supplier
+     * @param <T>          default value type
+     * @return value read from the settings file
+     */
+    public static <T> T getSettings ( final String fileName, final Supplier<T> defaultValue )
     {
         if ( files.containsKey ( fileName ) )
         {
@@ -1268,17 +768,28 @@ public class SettingsManager
         }
         else
         {
-            Object value;
+            T value;
             try
             {
-                value = XmlUtils.fromXML ( getSettingsFile ( fileName ) );
+                final File settingsFile = getSettingsFile ( fileName );
+                if ( settingsFile.exists () )
+                {
+                    value = XmlUtils.fromXML ( settingsFile );
+                }
+                else
+                {
+                    value = defaultValue != null ? defaultValue.get () : null;
+                }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
-                value = defaultValue;
+                final String msg = "Unable to load settings file '%s' due to unexpected exception";
+                LoggerFactory.getLogger ( SettingsManager.class ).error ( String.format ( msg, fileName ), e );
+
+                value = defaultValue != null ? defaultValue.get () : null;
             }
             files.put ( fileName, value );
-            return ( T ) value;
+            return value;
         }
     }
 
@@ -1303,11 +814,21 @@ public class SettingsManager
      * @param fileName settings file name
      * @param settings value
      */
-    protected static void saveSettings ( final String fileName, final Object settings )
+    private static void saveSettings ( final String fileName, final Object settings )
     {
         if ( allowSave )
         {
-            XmlUtils.toXML ( settings, getSettingsFile ( fileName ) );
+            final File settingsFile = getSettingsFile ( fileName );
+            final File dir = FileUtils.getParent ( settingsFile );
+            if ( FileUtils.ensureDirectoryExists ( dir ) )
+            {
+                XmlUtils.toXML ( settings, settingsFile );
+            }
+            else
+            {
+                final String msg = "Cannot create settings directory: %s";
+                throw new SettingsException ( String.format ( msg, dir.getAbsolutePath () ) );
+            }
         }
     }
 
@@ -1315,7 +836,7 @@ public class SettingsManager
      * Returns whether settings file with the specified name exists or not.
      *
      * @param fileName settings file name
-     * @return true if settings file with the specified name exists, false otherwise
+     * @return {@code true} if settings file with the specified name exists, {@code false} otherwise
      */
     public static boolean settingsExists ( final String fileName )
     {
@@ -1328,7 +849,7 @@ public class SettingsManager
      * @param fileName settings file name
      * @return settings file for the specified file name
      */
-    protected static File getSettingsFile ( final String fileName )
+    private static File getSettingsFile ( final String fileName )
     {
         return new File ( getDefaultSettingsDir (), fileName );
     }
@@ -1421,9 +942,9 @@ public class SettingsManager
     }
 
     /**
-     * Returns default settings group name.
+     * Returns default {@link SettingsGroup} name.
      *
-     * @return default settings group name
+     * @return default {@link SettingsGroup} name
      */
     public static String getDefaultSettingsGroup ()
     {
@@ -1431,9 +952,9 @@ public class SettingsManager
     }
 
     /**
-     * Sets default settings group name.
+     * Sets default {@link SettingsGroup} name.
      *
-     * @param defaultSettingsGroup new default settings group name
+     * @param defaultSettingsGroup new default {@link SettingsGroup} name
      */
     public static void setDefaultSettingsGroup ( final String defaultSettingsGroup )
     {
@@ -1473,7 +994,7 @@ public class SettingsManager
     /**
      * Returns whether should save settings right after any changes made or not.
      *
-     * @return true if should save settings right after any changes made, false otherwise
+     * @return {@code true} if should save settings right after any changes made, {@code false} otherwise
      */
     public static boolean isSaveOnChange ()
     {
@@ -1491,9 +1012,9 @@ public class SettingsManager
     }
 
     /**
-     * Sets whether should save provided default value in "get" calls or not.
+     * Sets whether or not should save default value created as a result of {@code get(...)} calls.
      *
-     * @return true if should save provided default value in "get" calls, false otherwise
+     * @return {@code true} if should save default value created as a result of {@code get(...)} calls, {@code false} otherwise
      */
     public static boolean isSaveDefaultValues ()
     {
@@ -1501,9 +1022,9 @@ public class SettingsManager
     }
 
     /**
-     * Sets whether should save provided default value in "get" calls or not.
+     * Sets whether or not should save default value created as a result of {@code get(...)} calls.
      *
-     * @param saveDefaultValues whether should save provided default value in "get" calls or not
+     * @param saveDefaultValues whether or not should save default value created as a result of {@code get(...)} calls
      */
     public static void setSaveDefaultValues ( final boolean saveDefaultValues )
     {
@@ -1532,30 +1053,9 @@ public class SettingsManager
     }
 
     /**
-     * Returns whether should display settings load and save error messages or not.
-     *
-     * @return true if should display settings load and save error messages, false otherwise
-     */
-    public static boolean isLoggingEnabled ()
-    {
-        return loggingEnabled;
-    }
-
-    /**
-     * Sets whether should display settings load and save error messages or not.
-     *
-     * @param loggingEnabled whether should display settings load and save error messages or not
-     */
-    public static void setLoggingEnabled ( final boolean loggingEnabled )
-    {
-        SettingsManager.loggingEnabled = loggingEnabled;
-        Log.setLoggingEnabled ( SettingsManager.class, loggingEnabled );
-    }
-
-    /**
      * Returns whether settings save log is enabled or not.
      *
-     * @return true if settings save log is enabled, false otherwise
+     * @return {@code true} if settings save log is enabled, {@code false} otherwise
      */
     public static boolean isSaveLoggingEnabled ()
     {
@@ -1575,7 +1075,7 @@ public class SettingsManager
     /**
      * Returns whether should allow saving settings into files or not.
      *
-     * @return true if should allow saving settings into files, false otherwise
+     * @return {@code true} if should allow saving settings into files, {@code false} otherwise
      */
     public static boolean isAllowSave ()
     {
@@ -1609,10 +1109,20 @@ public class SettingsManager
     }
 
     /**
-     * Adds setting listener.
+     * Adds new global {@link SettingsListener}.
+     *
+     * @param listener {@link SettingsListener} to add
+     */
+    public static void addSettingsListener ( final SettingsListener listener )
+    {
+        globalSettingsListeners.add ( listener );
+    }
+
+    /**
+     * Adds new specific {@link SettingsListener}.
      *
      * @param key      settings key to listen to
-     * @param listener settings listener to add
+     * @param listener {@link SettingsListener} to add
      */
     public static void addSettingsListener ( final String key, final SettingsListener listener )
     {
@@ -1620,30 +1130,40 @@ public class SettingsManager
     }
 
     /**
-     * Adds setting listener.
+     * Adds new specific {@link SettingsListener}.
      *
-     * @param group    settings group to listen to
+     * @param group    name of the {@link SettingsGroup} to add {@link SettingsListener} for
      * @param key      settings key to listen to
-     * @param listener settings listener to add
+     * @param listener {@link SettingsListener} to add
      */
     public static void addSettingsListener ( final String group, final String key, final SettingsListener listener )
     {
-        if ( !settingsListeners.containsKey ( group ) )
+        if ( !specificSettingsListeners.containsKey ( group ) )
         {
-            settingsListeners.put ( group, new HashMap<String, List<SettingsListener>> () );
+            specificSettingsListeners.put ( group, new HashMap<String, List<SettingsListener>> () );
         }
-        if ( !settingsListeners.get ( group ).containsKey ( key ) )
+        if ( !specificSettingsListeners.get ( group ).containsKey ( key ) )
         {
-            settingsListeners.get ( group ).put ( key, new ArrayList<SettingsListener> () );
+            specificSettingsListeners.get ( group ).put ( key, new ArrayList<SettingsListener> () );
         }
-        settingsListeners.get ( group ).get ( key ).add ( listener );
+        specificSettingsListeners.get ( group ).get ( key ).add ( listener );
     }
 
     /**
-     * Removes settings listener.
+     * Removes global {@link SettingsListener}.
+     *
+     * @param listener {@link SettingsListener} to remove
+     */
+    public static void removeSettingsListener ( final SettingsListener listener )
+    {
+        globalSettingsListeners.remove ( listener );
+    }
+
+    /**
+     * Removes specific {@link SettingsListener}.
      *
      * @param key      listened settings key
-     * @param listener settings listener to remove
+     * @param listener {@link SettingsListener} to remove
      */
     public static void removeSettingsListener ( final String key, final SettingsListener listener )
     {
@@ -1651,41 +1171,83 @@ public class SettingsManager
     }
 
     /**
-     * Removes settings listener.
+     * Removes specific {@link SettingsListener}.
      *
-     * @param group    listened settings group
+     * @param group    name of the {@link SettingsGroup} to remove {@link SettingsListener} from
      * @param key      listened settings key
-     * @param listener settings listener to remove
+     * @param listener {@link SettingsListener} to remove
      */
     public static void removeSettingsListener ( final String group, final String key, final SettingsListener listener )
     {
-        if ( settingsListeners.containsKey ( group ) )
+        if ( specificSettingsListeners.containsKey ( group ) )
         {
-            if ( settingsListeners.get ( group ).containsKey ( key ) )
+            if ( specificSettingsListeners.get ( group ).containsKey ( key ) )
             {
-                settingsListeners.get ( group ).get ( key ).remove ( listener );
+                specificSettingsListeners.get ( group ).get ( key ).remove ( listener );
             }
         }
     }
 
     /**
-     * Notifies that value for the specified settings group and key has changed.
+     * Notifies that value for the {@link SettingsGroup} with the specified name and under specified key has changed.
      *
-     * @param group    settings group
+     * @param group    {@link SettingsGroup} name
      * @param key      settings key
+     * @param oldValue old value
      * @param newValue new value
      */
-    protected static void fireSettingsChanged ( final String group, final String key, final Object newValue )
+    private static void fireSettingsChanged ( final String group, final String key, final Object oldValue, final Object newValue )
     {
-        if ( settingsListeners.containsKey ( group ) )
+        /**
+         * Firing global listeners.
+         */
+        for ( final SettingsListener listener : CollectionUtils.copy ( globalSettingsListeners ) )
         {
-            if ( settingsListeners.get ( group ).containsKey ( key ) )
+            listener.settingsChanged ( group, key, oldValue, newValue );
+        }
+
+        /**
+         * Firing specific listeners.
+         */
+        if ( specificSettingsListeners.containsKey ( group ) )
+        {
+            if ( specificSettingsListeners.get ( group ).containsKey ( key ) )
             {
-                for ( final SettingsListener listener : CollectionUtils.copy ( settingsListeners.get ( group ).get ( key ) ) )
+                for ( final SettingsListener listener : CollectionUtils.copy ( specificSettingsListeners.get ( group ).get ( key ) ) )
                 {
-                    listener.settingsChanged ( group, key, newValue );
+                    listener.settingsChanged ( group, key, oldValue, newValue );
                 }
             }
+        }
+    }
+
+    /**
+     * Simple {@link SerializableFunction} for holding static default values.
+     *
+     * @param <V> {@link Serializable} value type
+     */
+    private static class StaticDefaultValue<V> implements Supplier<V>
+    {
+        /**
+         * Static value.
+         */
+        private final V value;
+
+        /**
+         * Csontructs new {@link StaticDefaultValue}.
+         *
+         * @param value static value
+         */
+        public StaticDefaultValue ( final V value )
+        {
+            super ();
+            this.value = value;
+        }
+
+        @Override
+        public V get ()
+        {
+            return value;
         }
     }
 }

@@ -26,7 +26,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class NotificationsLayoutUtils implements SwingConstants
 {
     /**
@@ -59,11 +58,11 @@ public final class NotificationsLayoutUtils implements SwingConstants
         {
             // Calculating settings
             final Dimension ps = notification.getPreferredSize ();
-            if ( south ? ( y - ps.height < bounds.y ) : ( y + ps.height > bounds.height ) )
+            if ( south ? y - ps.height < bounds.y : y + ps.height > bounds.height )
             {
                 final int gapsAmount = cascade ? Math.max ( 1, maxCascade ) : 1;
                 y = startY;
-                x = east ? ( x - maxWidth - gap * gapsAmount ) : ( x + maxWidth + gap );
+                x = east ? x - maxWidth - gap * gapsAmount : x + maxWidth + gap;
                 maxWidth = 0;
                 maxCascade = 0;
                 count = 0;
@@ -71,8 +70,8 @@ public final class NotificationsLayoutUtils implements SwingConstants
             final int cascadeShear = cascade ? gap * count : 0;
 
             // Placing notification
-            final int x1 = east ? ( x - ps.width - cascadeShear ) : ( x + cascadeShear );
-            final int y1 = south ? ( y - ps.height ) : y;
+            final int x1 = east ? x - ps.width - cascadeShear : x + cascadeShear;
+            final int y1 = south ? y - ps.height : y;
             notification.setBounds ( x1, y1, ps.width, ps.height );
             maxWidth = Math.max ( maxWidth, ps.width );
 

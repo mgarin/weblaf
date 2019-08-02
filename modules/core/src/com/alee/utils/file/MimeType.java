@@ -17,12 +17,13 @@
 
 package com.alee.utils.file;
 
+import java.util.Locale;
+
 /**
  * Common mime type references enumeration.
  *
  * @author Wytze van der Ploeg
  */
-
 public enum MimeType
 {
     /**
@@ -736,7 +737,7 @@ public enum MimeType
     {
         if ( type != null )
         {
-            type = type.trim ().toLowerCase ();
+            type = type.trim ().toLowerCase ( Locale.ROOT );
             for ( final MimeType mt : MimeType.values () )
             {
                 if ( mt.getType ().equals ( type ) )
@@ -759,7 +760,7 @@ public enum MimeType
     {
         if ( extension != null )
         {
-            extension = extension.trim ().toLowerCase ();
+            extension = extension.trim ().toLowerCase ( Locale.ROOT );
             for ( final MimeType mt : MimeType.values () )
             {
                 if ( mt.getExtension ().equals ( extension ) )

@@ -17,52 +17,54 @@
 
 package com.alee.extended.tab;
 
+import java.util.EventListener;
+
 /**
- * Documents state listener for WebDocumentPane component.
+ * {@link DocumentData} listener for {@link WebDocumentPane} component.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see com.alee.extended.tab.WebDocumentPane
+ * @see WebDocumentPane
  */
-
-public interface DocumentListener<T extends DocumentData>
+public interface DocumentListener<T extends DocumentData> extends EventListener
 {
     /**
-     * Informs that provided document was opened inside document pane.
+     * Informs that specified {@link DocumentData} was opened inside {@link WebDocumentPane}.
      *
-     * @param document document data
-     * @param pane     specific document pane
-     * @param index    document tab index
+     * @param document {@link DocumentData}
+     * @param pane     {@link PaneData} in which {@link DocumentData} was opened
+     * @param index    {@link DocumentData} index within {@link PaneData}
      */
     public void opened ( T document, PaneData<T> pane, int index );
 
     /**
-     * Informs that provided document was selected inside document pane.
+     * Informs that specified {@link DocumentData} was selected inside {@link WebDocumentPane}.
      * This will also occur when changing focus between panes in split mode as there is only one selected document at a time.
      *
-     * @param document document data
-     * @param pane     specific document pane
-     * @param index    document tab index
+     * @param document {@link DocumentData}
+     * @param pane     {@link PaneData} in which {@link DocumentData} was selected
+     * @param index    {@link DocumentData} index within {@link PaneData}
      */
     public void selected ( T document, PaneData<T> pane, int index );
 
     /**
-     * Informs that provided document is being closed.
+     * Informs that specified {@link DocumentData} is being closed.
      * Returns whether document is allowed to close or not.
      *
-     * @param document document data
-     * @param pane     specific document pane
-     * @param index    document tab index
-     * @return true if document is allowed to close, false otherwise
+     * @param document {@link DocumentData}
+     * @param pane     {@link PaneData} in which {@link DocumentData} is closing
+     * @param index    {@link DocumentData} index within {@link PaneData}
+     * @return {@code true} if document is allowed to close, {@code false} otherwise
      */
     public boolean closing ( T document, PaneData<T> pane, int index );
 
     /**
-     * Informs that provided document is closed.
+     * Informs that specified {@link DocumentData} is closed.
      *
-     * @param document document data
-     * @param pane     specific document pane
-     * @param index    document tab index
+     * @param document {@link DocumentData}
+     * @param pane     {@link PaneData} in which {@link DocumentData} was closed
+     * @param index    {@link DocumentData} index within {@link PaneData}
      */
     public void closed ( T document, PaneData<T> pane, int index );
 }

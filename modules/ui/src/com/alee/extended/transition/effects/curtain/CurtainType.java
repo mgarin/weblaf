@@ -18,20 +18,27 @@
 package com.alee.extended.transition.effects.curtain;
 
 /**
- * User: mgarin Date: 28.10.11 Time: 14:38
+ * @author Mikle Garin
  */
-
 public enum CurtainType
 {
-    // Any random curtain type each time (always first in enum)
+    /**
+     * Any random curtain type each time (always first in enum).
+     */
     random,
 
-    // Fade-in curtain blocks in a specific direction
+    /**
+     * Fade-in curtain blocks in a specific direction.
+     */
     fade,
 
-    // Fill (and fade-in) curtain blocks in a specific direction
+    /**
+     * Fill (and fade-in) curtain blocks in a specific direction.
+     */
     fill,
 
-    // Slide (and fade-in) curtain blocks from a specific side in a specific direction
+    /**
+     * Slide (and fade-in) curtain blocks from a specific side in a specific direction.
+     */
     slide
 }

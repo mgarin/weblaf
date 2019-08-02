@@ -25,45 +25,37 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Custom converter for TreeState class.
+ * Custom converter for {@link TreeState} class.
  *
  * @author Mikle Garin
  */
-
 public class TreeStateConverter extends ReflectionConverter
 {
     /**
-     * Constructs TreeStateConverter with the specified mapper and reflection provider.
+     * Constructs new {@link TreeStateConverter} with the specified mapper and reflection provider.
      *
-     * @param mapper             mapper
-     * @param reflectionProvider reflection provider
+     * @param mapper             {@link Mapper} implementation
+     * @param reflectionProvider {@link ReflectionProvider} implementation
      */
     public TreeStateConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( TreeState.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
         final TreeState treeState = ( TreeState ) source;
-        for ( final Map.Entry<String, NodeState> entry : treeState.getStates ().entrySet () )
+        for ( final Map.Entry<String, NodeState> entry : treeState.states ().entrySet () )
         {
             final String nodeId = entry.getKey ();
             final NodeState nodeState = entry.getValue ();
@@ -75,25 +67,21 @@ public class TreeStateConverter extends ReflectionConverter
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
-        final Map<String, NodeState> states = new LinkedHashMap<String, NodeState> ();
+        final TreeState state = new TreeState ();
         while ( reader.hasMoreChildren () )
         {
             reader.moveDown ();
-            final String nodeIdAttribue = reader.getAttribute ( "id" );
-            final String nodeId = nodeIdAttribue != null ? nodeIdAttribue : reader.getNodeName ();
+            final String nodeId = reader.getAttribute ( "id" );
             final String expandedAttribue = reader.getAttribute ( "expanded" );
-            final String expanded = expandedAttribue != null ? expandedAttribue : "false";
+            final boolean expanded = Boolean.parseBoolean ( expandedAttribue != null ? expandedAttribue : "false" );
             final String selectedAttribue = reader.getAttribute ( "selected" );
-            final String selected = selectedAttribue != null ? selectedAttribue : "false";
-            states.put ( nodeId, new NodeState ( Boolean.parseBoolean ( expanded ), Boolean.parseBoolean ( selected ) ) );
+            final boolean selected = Boolean.parseBoolean ( selectedAttribue != null ? selectedAttribue : "false" );
+            state.addState ( nodeId, new NodeState ( expanded, selected ) );
             reader.moveUp ();
         }
-        return new TreeState ( states );
+        return state;
     }
 }

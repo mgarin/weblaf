@@ -17,8 +17,14 @@
 
 package com.alee.extended.list;
 
+import com.alee.api.jdk.Objects;
+import com.alee.extended.label.WebStyledLabel;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.checkbox.WebCheckBox;
+import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.AbstractDecorationPainter;
 
+import javax.swing.plaf.basic.BasicHTML;
 import java.awt.*;
 
 /**
@@ -26,143 +32,154 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebCheckBoxListElement extends WebCheckBox
 {
     /**
-     * Constructs default checkbox list cell renderer element.
+     * Constructs default checkbox list cell renderer element in the specified state.
+     *
+     * @param id       style ID
+     * @param selected whether or not checkbox is selected
      */
-    public WebCheckBoxListElement ()
+    public WebCheckBoxListElement ( final StyleId id, final boolean selected )
     {
-        super ();
-        setOpaque ( false );
+        super ( id, selected );
+        setName ( "List.cellRenderer" );
+    }
+
+    @Override
+    public final void validate ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public final void invalidate ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public final void revalidate ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public final void repaint ( final long tm, final int x, final int y, final int width, final int height )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public final void repaint ( final Rectangle r )
+    {
+        /**
+         * Overridden for performance reasons.
+         */
+    }
+
+    @Override
+    public final void repaint ()
+    {
+        /**
+         * Overridden for performance reasons.
+         */
     }
 
     /**
-     * Overridden for performance reasons.
+     * Checks whether or not specified property change should actually be fired.
+     * All property fire methods are overridden and made final for performance reasons.
+     *
+     * @param propertyName changed property name
+     * @param oldValue     old property value
+     * @param newValue     new property value
      */
-    @Override
-    public void validate ()
+    protected void checkPropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
     {
-    }
-
-    /**
-     * Overridden for performance reasons.
-     */
-    @Override
-    public void invalidate ()
-    {
-    }
-
-    /**
-     * Overridden for performance reasons.
-     */
-    @Override
-    public void repaint ()
-    {
-    }
-
-    /**
-     * Overridden for performance reasons.
-     */
-    @Override
-    public void revalidate ()
-    {
-    }
-
-    /**
-     * Overridden for performance reasons.
-     */
-    @Override
-    public void repaint ( long tm, int x, int y, int width, int height )
-    {
-    }
-
-    /**
-     * Overridden for performance reasons.
-     */
-    @Override
-    public void repaint ( Rectangle r )
-    {
-    }
-
-    /**
-     * Overridden for performance reasons.
-     */
-    @Override
-    protected void firePropertyChange ( String propertyName, Object oldValue, Object newValue )
-    {
-        // Strings get interned
-        // noinspection StringEquality
-        if ( propertyName == "text" || ( ( propertyName == "font" || propertyName == "foreground" ) && oldValue != newValue &&
-                getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
+        if ( Objects.equals ( propertyName, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
+                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY,
+                WebLookAndFeel.TEXT_PROPERTY, WebLookAndFeel.BORDER_PROPERTY, WebLookAndFeel.MODEL_PROPERTY ) )
         {
-
-            super.firePropertyChange ( propertyName, oldValue, newValue );
+            allowPropertyChange ( propertyName, oldValue, newValue );
+        }
+        else if ( Objects.equals ( propertyName, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
+                oldValue != newValue && getClientProperty ( BasicHTML.propertyKey ) != null )
+        {
+            allowPropertyChange ( propertyName, oldValue, newValue );
         }
     }
 
     /**
-     * Overridden for performance reasons.
+     * Allows property change event to be fired.
+     *
+     * @param propertyName changed property name
+     * @param oldValue     old property value
+     * @param newValue     new property value
      */
-    @Override
-    public void firePropertyChange ( String propertyName, byte oldValue, byte newValue )
+    protected void allowPropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
     {
+        super.firePropertyChange ( propertyName, oldValue, newValue );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    public void firePropertyChange ( String propertyName, char oldValue, char newValue )
+    protected final void firePropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
     {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    public void firePropertyChange ( String propertyName, short oldValue, short newValue )
+    public final void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
     {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    public void firePropertyChange ( String propertyName, int oldValue, int newValue )
+    public final void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
     {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    public void firePropertyChange ( String propertyName, long oldValue, long newValue )
+    public final void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
     {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    public void firePropertyChange ( String propertyName, float oldValue, float newValue )
+    public final void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
     {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    public void firePropertyChange ( String propertyName, double oldValue, double newValue )
+    public final void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
     {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
-    /**
-     * Overridden for performance reasons.
-     */
     @Override
-    public void firePropertyChange ( String propertyName, boolean oldValue, boolean newValue )
+    public final void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
     {
+        checkPropertyChange ( propertyName, oldValue, newValue );
+    }
+
+    @Override
+    public final void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
+    {
+        checkPropertyChange ( propertyName, oldValue, newValue );
+    }
+
+    @Override
+    public final void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
+    {
+        checkPropertyChange ( propertyName, oldValue, newValue );
     }
 }

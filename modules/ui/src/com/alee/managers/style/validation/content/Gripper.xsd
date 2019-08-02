@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContent.xsd" />
+    <xs:include schemaLocation="../ext/CompassDirection.xsd" />
+
+    <!-- com.alee.extended.canvas.Gripper -->
+    <xs:complexType name="Gripper">
+        <xs:complexContent>
+            <xs:extension base="AbstractContent">
+
+                <!-- Gripper direction -->
+                <xs:attribute name="direction" type="CompassDirection" />
+
+                <!-- Gripper parts size -->
+                <xs:attribute name="part" type="java.awt:Dimension" />
+
+                <!-- Spacing between gripper parts -->
+                <xs:attribute name="spacing" type="xs:integer" />
+
+                <!-- Gripper parts color -->
+                <xs:attribute name="color" type="java.awt:Color" />
+
+                <!-- Gripper parts shadow color -->
+                <xs:attribute name="shadow" type="java.awt:Color" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

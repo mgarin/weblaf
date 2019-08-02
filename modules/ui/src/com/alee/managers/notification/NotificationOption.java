@@ -17,16 +17,28 @@
 
 package com.alee.managers.notification;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 
 /**
  * This enumeration represents available predefined question notification option types.
+ * All these options have attached translations for each supported language to simplify their usage.
  *
  * @author Mikle Garin
  */
-
 public enum NotificationOption
 {
+    /**
+     * todo Add in future:
+     * todo play
+     * todo pause
+     * todo stop
+     * todo download
+     * todo upload
+     * todo delete
+     * todo find
+     * todo replace
+     */
+
     /**
      * Yes option.
      */
@@ -90,19 +102,27 @@ public enum NotificationOption
     /**
      * Open option.
      */
-    open;
+    open,
 
     /**
-     * todo Add in future:
-     * todo play
-     * todo pause
-     * todo stop
-     * todo download
-     * todo upload
-     * todo delete
-     * todo find
-     * todo replace
+     * Setup option.
      */
+    setup,
+
+    /**
+     * Configure option.
+     */
+    configure,
+
+    /**
+     * Install option.
+     */
+    install,
+
+    /**
+     * Uninstall option.
+     */
+    uninstall;
 
     /**
      * Returns language key for this option.
@@ -121,6 +141,6 @@ public enum NotificationOption
      */
     public String getText ()
     {
-        return LanguageManager.get ( getLanguageKey () );
+        return LM.get ( getLanguageKey () );
     }
 }

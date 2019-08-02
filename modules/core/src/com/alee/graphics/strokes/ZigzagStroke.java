@@ -23,22 +23,21 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 
 /**
- * User: mgarin Date: 13.06.11 Time: 15:54
+ * @author Mikle Garin
  */
-
 public class ZigzagStroke implements Stroke
 {
     private float amplitude = 10.0f;
     private float wavelength = 10.0f;
-    private Stroke stroke;
+    private final Stroke stroke;
     private static final float FLATNESS = 1;
 
-    public ZigzagStroke ( float amplitude, float wavelength )
+    public ZigzagStroke ( final float amplitude, final float wavelength )
     {
         this ( new BasicStroke ( 1f ), amplitude, wavelength );
     }
 
-    public ZigzagStroke ( Stroke stroke, float amplitude, float wavelength )
+    public ZigzagStroke ( final Stroke stroke, final float amplitude, final float wavelength )
     {
         this.stroke = stroke;
         this.amplitude = amplitude;
@@ -46,11 +45,11 @@ public class ZigzagStroke implements Stroke
     }
 
     @Override
-    public Shape createStrokedShape ( Shape shape )
+    public Shape createStrokedShape ( final Shape shape )
     {
-        GeneralPath result = new GeneralPath ();
-        PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
-        float points[] = new float[ 6 ];
+        final GeneralPath result = new GeneralPath ();
+        final PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
+        final float[] points = new float[ 6 ];
         float moveX = 0;
         float moveY = 0;
         float lastX = 0;
@@ -81,16 +80,16 @@ public class ZigzagStroke implements Stroke
                 case PathIterator.SEG_LINETO:
                     thisX = points[ 0 ];
                     thisY = points[ 1 ];
-                    float dx = thisX - lastX;
-                    float dy = thisY - lastY;
-                    float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
+                    final float dx = thisX - lastX;
+                    final float dy = thisY - lastY;
+                    final float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
                     if ( distance >= next )
                     {
-                        float r = 1.0f / distance;
+                        final float r = 1.0f / distance;
                         while ( distance >= next )
                         {
-                            float x = lastX + next * dx * r;
-                            float y = lastY + next * dy * r;
+                            final float x = lastX + next * dx * r;
+                            final float y = lastY + next * dy * r;
                             if ( ( phase & 1 ) == 0 )
                             {
                                 result.lineTo ( x + amplitude * dy * r, y - amplitude * dx * r );

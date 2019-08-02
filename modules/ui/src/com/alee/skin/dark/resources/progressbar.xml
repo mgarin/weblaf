@@ -1,0 +1,77 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.progressbar.WebProgressBar -->
+
+    <!-- Progress bar -->
+    <style type="progressbar">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <minimumContentSize>100,10</minimumContentSize>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
+                </decoration>
+            </decorations>
+
+            <!-- Progress line -->
+            <progressPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <WebShadow type="outer" width="1" />
+                    </decoration>
+                    <decoration states="progress">
+                        <GradientBackground>
+                            <color>81,85,87</color>
+                            <color>47,51,53</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="progress,vertical">
+                        <GradientBackground from="0,0" to="1,0" />
+                    </decoration>
+                    <decoration states="progress,vertical,rtl">
+                        <GradientBackground from="1,0" to="0,0" />
+                    </decoration>
+                    <decoration states="enabled,progress,intermediate">
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="255,255,255,50" passes="1" duration="1s" delay="4s" />
+                    </decoration>
+                    <decoration states="enabled,progress,intermediate,vertical">
+                        <MovingHighlightBackground id="overlay" orientation="vertical" />
+                    </decoration>
+                    <decoration states="enabled,indeterminate">
+                        <MovingHighlightBackground id="overlay" orientation="horizontal" width="120" color="47,51,53" passes="2" duration="1.5s" delay="0s" />
+                    </decoration>
+                    <decoration states="enabled,indeterminate,vertical">
+                        <MovingHighlightBackground id="overlay" orientation="vertical" />
+                    </decoration>
+                </decorations>
+            </progressPainter>
+
+            <!-- Progress text painter -->
+            <progressTextPainter>
+                <decorations>
+                    <decoration>
+                        <ProgressBarText color="245,245,245" halign="0" />
+                    </decoration>
+                    <decoration states="disabled">
+                        <ProgressBarText color="180,180,180" />
+                    </decoration>
+                    <decoration states="vertical">
+                        <ProgressBarText rotation="counterClockwise" />
+                    </decoration>
+                </decorations>
+            </progressTextPainter>
+
+        </painter>
+    </style>
+
+</skin>

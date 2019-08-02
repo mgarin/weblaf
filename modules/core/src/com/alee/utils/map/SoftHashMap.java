@@ -27,10 +27,11 @@ import java.util.*;
  * Map implementation that holds soft references its values.
  * This map might be useful to hold memory-sensitive cache.
  *
+ * @param <K> key type
+ * @param <V> value type
  * @author Dr. Heinz M. Kabutz
  * @see <a href="http://www.javaspecialists.co.za/archive/Issue098.html">The Java Specialists' Newsletter [Issue 098]</a>
  */
-
 public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
 {
     /**
@@ -48,9 +49,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
      */
     private final ReferenceQueue<V> queue = new ReferenceQueue<V> ();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public V get ( final Object key )
     {
@@ -86,9 +84,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public V put ( final K key, final V value )
     {
@@ -103,9 +98,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         return result.get ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public V remove ( final Object key )
     {
@@ -118,9 +110,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         return result.get ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clear ()
     {
@@ -128,9 +117,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         reverseLookup.clear ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int size ()
     {
@@ -138,9 +124,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         return hash.size ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Set<Entry<K, V>> entrySet ()
     {

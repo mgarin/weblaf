@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.managers.style.BoundsType -->
+    <xs:simpleType name="BoundsType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="component" />
+            <xs:enumeration value="margin" />
+            <xs:enumeration value="border" />
+            <xs:enumeration value="padding" />
+            <xs:enumeration value="section" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

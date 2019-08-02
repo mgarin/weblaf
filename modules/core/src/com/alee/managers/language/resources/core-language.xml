@@ -1,0 +1,352 @@
+<Dictionary name="WebLaF core module" prefix="weblaf" xmlns="http://weblookandfeel.com/Dictionary">
+    <Dictionary name="Time" prefix="time">
+        <Dictionary name="Units" prefix="units">
+            <Dictionary name="Short name" prefix="short">
+                <record key="nanosecond">
+                    <value lang="en">ns</value>
+                    <value lang="ru">нс</value>
+                    <value lang="pl">ns</value>
+                    <value lang="ar">ns</value>
+                    <value lang="es">ns</value>
+                    <value lang="fr">ns</value>
+                    <value lang="pt">ns</value>
+                    <value lang="de">ns</value>
+                    <value lang="it">ns</value>
+                    <value lang="tr">ns</value>
+                    <value lang="vi">ns</value>
+                    <value lang="hu">ns</value>
+                </record>
+                <record key="microsecond">
+                    <value lang="en">μs</value>
+                    <value lang="ru">мкс</value>
+                    <value lang="pl">μs</value>
+                    <value lang="ar">μs</value>
+                    <value lang="es">μs</value>
+                    <value lang="fr">μs</value>
+                    <value lang="pt">μs</value>
+                    <value lang="de">μs</value>
+                    <value lang="it">μs</value>
+                    <value lang="tr">μs</value>
+                    <value lang="vi">μs</value>
+                    <value lang="hu">μs</value>
+                </record>
+                <record key="millisecond">
+                    <value lang="en">ms</value>
+                    <value lang="ru">мс</value>
+                    <value lang="pl">ms</value>
+                    <value lang="ar">ms</value>
+                    <value lang="es">ms</value>
+                    <value lang="fr">ms</value>
+                    <value lang="pt">ms</value>
+                    <value lang="de">ms</value>
+                    <value lang="it">ms</value>
+                    <value lang="tr">ms</value>
+                    <value lang="vi">ms</value>
+                    <value lang="hu">ms</value>
+                </record>
+                <record key="second">
+                    <value lang="en">s</value>
+                    <value lang="ru">с</value>
+                    <value lang="pl">s</value>
+                    <value lang="ar">s</value>
+                    <value lang="es">s</value>
+                    <value lang="fr">s</value>
+                    <value lang="pt">s</value>
+                    <value lang="de">s</value>
+                    <value lang="it">s</value>
+                    <value lang="tr">s</value>
+                    <value lang="vi">s</value>
+                    <value lang="hu">s</value>
+                </record>
+                <record key="minute">
+                    <value lang="en">m</value>
+                    <value lang="ru">м</value>
+                    <value lang="pl">m</value>
+                    <value lang="ar">m</value>
+                    <value lang="es">m</value>
+                    <value lang="fr">m</value>
+                    <value lang="pt">m</value>
+                    <value lang="de">m</value>
+                    <value lang="it">m</value>
+                    <value lang="tr">m</value>
+                    <value lang="vi">m</value>
+                    <value lang="hu">m</value>
+                </record>
+                <record key="hour">
+                    <value lang="en">h</value>
+                    <value lang="ru">ч</value>
+                    <value lang="pl">h</value>
+                    <value lang="ar">h</value>
+                    <value lang="es">h</value>
+                    <value lang="fr">h</value>
+                    <value lang="pt">h</value>
+                    <value lang="de">h</value>
+                    <value lang="it">h</value>
+                    <value lang="tr">h</value>
+                    <value lang="vi">h</value>
+                    <value lang="hu">h</value>
+                </record>
+                <record key="day">
+                    <value lang="en">d</value>
+                    <value lang="ru">д</value>
+                    <value lang="pl">d</value>
+                    <value lang="ar">d</value>
+                    <value lang="es">d</value>
+                    <value lang="fr">d</value>
+                    <value lang="pt">d</value>
+                    <value lang="de">d</value>
+                    <value lang="it">d</value>
+                    <value lang="tr">d</value>
+                    <value lang="vi">d</value>
+                    <value lang="hu">d</value>
+                </record>
+                <record key="week">
+                    <value lang="en">w</value>
+                    <value lang="ru">нед</value>
+                    <value lang="pl">w</value>
+                    <value lang="ar">w</value>
+                    <value lang="es">w</value>
+                    <value lang="fr">w</value>
+                    <value lang="pt">w</value>
+                    <value lang="de">w</value>
+                    <value lang="it">w</value>
+                    <value lang="tr">w</value>
+                    <value lang="vi">w</value>
+                    <value lang="hu">w</value>
+                </record>
+                <record key="month">
+                    <value lang="en">mon</value>
+                    <value lang="ru">мес</value>
+                    <value lang="pl">mon</value>
+                    <value lang="ar">mon</value>
+                    <value lang="es">mon</value>
+                    <value lang="fr">mon</value>
+                    <value lang="pt">mon</value>
+                    <value lang="de">mon</value>
+                    <value lang="it">mon</value>
+                    <value lang="tr">mon</value>
+                    <value lang="vi">mon</value>
+                    <value lang="hu">mon</value>
+                </record>
+                <record key="year">
+                    <value lang="en">y</value>
+                    <value lang="ru">г</value>
+                    <value lang="pl">y</value>
+                    <value lang="ar">y</value>
+                    <value lang="es">y</value>
+                    <value lang="fr">y</value>
+                    <value lang="pt">y</value>
+                    <value lang="de">y</value>
+                    <value lang="it">y</value>
+                    <value lang="tr">y</value>
+                    <value lang="vi">y</value>
+                    <value lang="hu">y</value>
+                </record>
+            </Dictionary>
+        </Dictionary>
+    </Dictionary>
+    <Dictionary name="File" prefix="file">
+        <Dictionary name="Type" prefix="type">
+            <record key="folder">
+                <value lang="en">Folder</value>
+                <value lang="ru">Папка</value>
+                <value lang="pl">Folder</value>
+                <value lang="ar">مجلد</value>
+                <value lang="es">Carpeta</value>
+                <value lang="fr">Dossier</value>
+                <value lang="pt">Pasta</value>
+                <value lang="de">Mappe</value>
+                <value lang="it">Cartella</value>
+                <value lang="tr">Klasör</value>
+                <value lang="vi">Thư mục</value>
+                <value lang="hu">Mappa</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="Size" prefix="size">
+            <record key="b">
+                <value lang="en">b</value>
+                <value lang="ru">б</value>
+                <value lang="pl">b</value>
+                <value lang="ar">بايت</value>
+                <value lang="es">b</value>
+                <value lang="fr">o</value>
+                <value lang="pt">b</value>
+                <value lang="de">b</value>
+                <value lang="it">b</value>
+                <value lang="tr">b</value>
+                <value lang="vi">b</value>
+                <value lang="hu">b</value>
+            </record>
+            <record key="kb">
+                <value lang="en">KB</value>
+                <value lang="ru">КБ</value>
+                <value lang="pl">KB</value>
+                <value lang="ar">كيلوبايت</value>
+                <value lang="es">KB</value>
+                <value lang="fr">Ko</value>
+                <value lang="pt">KB</value>
+                <value lang="de">KB</value>
+                <value lang="it">KB</value>
+                <value lang="tr">KB</value>
+                <value lang="vi">KB</value>
+                <value lang="hu">KB</value>
+            </record>
+            <record key="mb">
+                <value lang="en">MB</value>
+                <value lang="ru">МБ</value>
+                <value lang="pl">MB</value>
+                <value lang="ar">ميجابايت</value>
+                <value lang="es">MB</value>
+                <value lang="fr">Mo</value>
+                <value lang="pt">MB</value>
+                <value lang="de">MB</value>
+                <value lang="it">MB</value>
+                <value lang="tr">MB</value>
+                <value lang="vi">MB</value>
+                <value lang="hu">MB</value>
+            </record>
+            <record key="gb">
+                <value lang="en">GB</value>
+                <value lang="ru">ГБ</value>
+                <value lang="pl">GB</value>
+                <value lang="ar">جيجابايت</value>
+                <value lang="es">GB</value>
+                <value lang="fr">Go</value>
+                <value lang="pt">GB</value>
+                <value lang="de">GB</value>
+                <value lang="it">GB</value>
+                <value lang="tr">GB</value>
+                <value lang="vi">GB</value>
+                <value lang="hu">GB</value>
+            </record>
+            <record key="tb">
+                <value lang="en">TB</value>
+                <value lang="ru">ТБ</value>
+                <value lang="pl">TB</value>
+                <value lang="ar">تيرابايت</value>
+                <value lang="es">TB</value>
+                <value lang="fr">To</value>
+                <value lang="pt">TB</value>
+                <value lang="de">TB</value>
+                <value lang="it">TB</value>
+                <value lang="tr">TB</value>
+                <value lang="vi">TB</value>
+                <value lang="hu">TB</value>
+            </record>
+            <record key="pb">
+                <value lang="en">PB</value>
+                <value lang="ru">ПБ</value>
+                <value lang="pl">PB</value>
+                <value lang="ar">بيتابايت</value>
+                <value lang="es">PB</value>
+                <value lang="fr">Po</value>
+                <value lang="pt">PB</value>
+                <value lang="de">PB</value>
+                <value lang="it">PB</value>
+                <value lang="tr">PB</value>
+                <value lang="vi">PB</value>
+                <value lang="hu">PB</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="Filter" prefix="filter">
+            <record key="all">
+                <value lang="en">All files</value>
+                <value lang="ru">Все файлы</value>
+                <value lang="pl">Wszystkie pliki</value>
+                <value lang="ar">جميع الملفات</value>
+                <value lang="es">Todos los archivos</value>
+                <value lang="fr">Tous les fichiers</value>
+                <value lang="pt">Todos os ficheiros</value>
+                <value lang="de">Alle Dateien</value>
+                <value lang="it">Tutti i file</value>
+                <value lang="tr">Tüm dosyalar</value>
+                <value lang="vi">Tất cả các file</value>
+                <value lang="hu">Minden fájl</value>
+            </record>
+            <record key="folders">
+                <value lang="en">Folders only</value>
+                <value lang="ru">Только папки</value>
+                <value lang="pl">Tylko foldery</value>
+                <value lang="ar">مجلدات فقط</value>
+                <value lang="es">Directorios solamente</value>
+                <value lang="fr">Dossiers uniquement</value>
+                <value lang="pt">Apenas pastas</value>
+                <value lang="de">Nur Verzeichnisse</value>
+                <value lang="it">Solo cartelle</value>
+                <value lang="tr">Sadece klasörler</value>
+                <value lang="vi">Chỉ thư mục</value>
+                <value lang="hu">Csak mappák</value>
+            </record>
+            <record key="files">
+                <value lang="en">Files only</value>
+                <value lang="ru">Только файлы</value>
+                <value lang="pl">Tylko pliki</value>
+                <value lang="ar">ملفات فقط</value>
+                <value lang="es">Archivos solamente</value>
+                <value lang="fr">Fichiers uniquement</value>
+                <value lang="pt">Apenas ficheiros</value>
+                <value lang="de">Nur Dateien</value>
+                <value lang="it">Solo File</value>
+                <value lang="tr">Sadece dosyalar</value>
+                <value lang="vi">Chỉ file</value>
+                <value lang="hu">Csak fájlok</value>
+            </record>
+            <record key="images">
+                <value lang="en">Images only</value>
+                <value lang="ru">Только изображения</value>
+                <value lang="pl">Tylko obrazki</value>
+                <value lang="ar">صور فقط</value>
+                <value lang="es">Imagenes solamente</value>
+                <value lang="fr">Images uniquement</value>
+                <value lang="pt">Apenas imagens</value>
+                <value lang="de">Nur Bilder</value>
+                <value lang="it">Solo immagini</value>
+                <value lang="tr">Sadece görseller</value>
+                <value lang="vi">Chỉ hình ảnh</value>
+                <value lang="hu">Csak képek</value>
+            </record>
+            <record key="nonhidden">
+                <value lang="en">Non-hidden files only</value>
+                <value lang="ru">Только видимые файлы</value>
+                <value lang="pl">Tylko nie ukryte pliki</value>
+                <value lang="ar">الملفات الغير مخفية فقط</value>
+                <value lang="es">Archivos no ocultos solamente</value>
+                <value lang="fr">Fichiers non cachés uniquement</value>
+                <value lang="pt">Apenas ficheiros não ocultos</value>
+                <value lang="de">Nur nicht-versteckte Dateien</value>
+                <value lang="it">Solo file non nascosti</value>
+                <value lang="tr">Sadece gizli olmayan dosyalar</value>
+                <value lang="vi">Chỉ các file không ẩn</value>
+                <value lang="hu">Csak nem rejtett fájlok</value>
+            </record>
+            <record key="custom">
+                <value lang="en">...</value>
+                <value lang="ru">...</value>
+                <value lang="pl">...</value>
+                <value lang="ar">...</value>
+                <value lang="es">...</value>
+                <value lang="fr">...</value>
+                <value lang="pt">...</value>
+                <value lang="de">...</value>
+                <value lang="it">...</value>
+                <value lang="tr">...</value>
+                <value lang="vi">...</value>
+                <value lang="hu">...</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Translations>
+        <Translation lang="en" title="English" author="mgarin" />
+        <Translation lang="ru" title="Русский" author="mgarin" />
+        <Translation lang="pl" title="Polski" author="sciepa" />
+        <Translation lang="ar" title="العربية" author="Abu Abdullah" />
+        <Translation lang="es" title="Español" author="pablovilas" />
+        <Translation lang="fr" title="Français" author="nmagre" />
+        <Translation lang="pt" title="Português" author="esimoes" />
+        <Translation lang="de" title="Deutsch" author="trashguru" />
+        <Translation lang="it" title="Italiano" author="cR0Ck" />
+        <Translation lang="tr" title="Turkish" author="Tilelook" />
+        <Translation lang="vi" title="Tiếng Việt" author="espringtran" />
+        <Translation lang="hu" title="Magyar" author="kz" />
+    </Translations>
+</Dictionary>

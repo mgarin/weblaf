@@ -18,17 +18,22 @@
 package com.alee.extended.transition.effects.zoom;
 
 /**
- * User: mgarin Date: 21.01.13 Time: 17:58
+ * @author Mikle Garin
  */
-
 public enum ZoomType
 {
-    // Any random zoom type each time (always first in enum)
+    /**
+     * Any random zoom type each time (always first in enum).
+     */
     random,
 
-    // Zoom in new image
+    /**
+     * Zoom in new image.
+     */
     zoomIn,
 
-    // Zoom out old image
+    /**
+     * Zoom out old image.
+     */
     zoomOut
 }

@@ -17,10 +17,11 @@
 
 package com.alee.extended.panel;
 
+import com.alee.api.jdk.Supplier;
 import com.alee.extended.layout.OverlayData;
 import com.alee.extended.layout.OverlayLayout;
 import com.alee.laf.panel.WebPanel;
-import com.alee.utils.swing.DataProvider;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,58 +29,82 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 05.06.12 Time: 19:53
- * <p/>
  * This component allows you to add one or more custom overlaying components atop of other component. This will work with any kind of Swing
  * components - you can overlay anyhting with something like loader, progress bar, custom text, image or anything else.
+ *
+ * @author Mikle Garin
  */
-
 public class WebOverlay extends WebPanel implements SwingConstants
 {
-    private Component component;
-    private Map<Component, OverlayData> overlayData;
+    private JComponent component;
+    private Map<JComponent, OverlayData> overlayData;
 
     public WebOverlay ()
     {
-        super ( new OverlayLayout () );
+        this ( StyleId.auto );
+    }
+
+    public WebOverlay ( final JComponent component )
+    {
+        this ( StyleId.auto, component );
+    }
+
+    public WebOverlay ( final JComponent component, final JComponent overlay )
+    {
+        this ( StyleId.auto, component, overlay );
+    }
+
+    public WebOverlay ( final JComponent component, final JComponent overlay, final int halign, final int valign )
+    {
+        this ( StyleId.auto, component, overlay, halign, valign );
+    }
+
+    public WebOverlay ( final JComponent component, final JComponent overlay, final Supplier<Rectangle> boundsSupplier )
+    {
+        this ( StyleId.auto, component, overlay, boundsSupplier );
+    }
+
+    public WebOverlay ( final StyleId id )
+    {
+        super ( id, new OverlayLayout () );
         initialize ();
     }
 
-    public WebOverlay ( Component component )
+    public WebOverlay ( final StyleId id, final JComponent component )
     {
-        super ( new OverlayLayout () );
+        super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
     }
 
-    public WebOverlay ( Component component, Component overlay )
+    public WebOverlay ( final StyleId id, final JComponent component, final JComponent overlay )
     {
-        super ( new OverlayLayout () );
+        super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
         addOverlay ( overlay );
     }
 
-    public WebOverlay ( Component component, Component overlay, int halign, int valign )
+    public WebOverlay ( final StyleId id, final JComponent component, final JComponent overlay, final int halign, final int valign )
     {
-        super ( new OverlayLayout () );
+        super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
         addOverlay ( overlay, halign, valign );
     }
 
-    public WebOverlay ( Component component, Component overlay, DataProvider<Rectangle> rectangleProvider )
+    public WebOverlay ( final StyleId id, final JComponent component, final JComponent overlay, final Supplier<Rectangle> boundsSupplier )
     {
-        super ( new OverlayLayout () );
+        super ( id, new OverlayLayout () );
         initialize ();
         setComponent ( component );
-        addOverlay ( overlay, rectangleProvider );
+        addOverlay ( overlay, boundsSupplier );
     }
 
     private void initialize ()
     {
         component = null;
-        overlayData = new HashMap<Component, OverlayData> ();
+        overlayData = new HashMap<JComponent, OverlayData> ();
     }
 
     public Insets getComponentMargin ()
@@ -87,17 +112,17 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return getActualLayout ().getComponentMargin ();
     }
 
-    public void setComponentMargin ( int margin )
+    public void setComponentMargin ( final int margin )
     {
         getActualLayout ().setComponentMargin ( margin );
     }
 
-    public void setComponentMargin ( int top, int left, int bottom, int right )
+    public void setComponentMargin ( final int top, final int left, final int bottom, final int right )
     {
         getActualLayout ().setComponentMargin ( top, left, bottom, right );
     }
 
-    public void setComponentMargin ( Insets margin )
+    public void setComponentMargin ( final Insets margin )
     {
         getActualLayout ().setComponentMargin ( margin );
     }
@@ -107,17 +132,17 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return getActualLayout ().getOverlayMargin ();
     }
 
-    public void setOverlayMargin ( int margin )
+    public void setOverlayMargin ( final int margin )
     {
         getActualLayout ().setOverlayMargin ( margin );
     }
 
-    public void setOverlayMargin ( int top, int left, int bottom, int right )
+    public void setOverlayMargin ( final int top, final int left, final int bottom, final int right )
     {
         getActualLayout ().setOverlayMargin ( top, left, bottom, right );
     }
 
-    public void setOverlayMargin ( Insets margin )
+    public void setOverlayMargin ( final Insets margin )
     {
         getActualLayout ().setOverlayMargin ( margin );
     }
@@ -127,7 +152,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return ( OverlayLayout ) super.getLayout ();
     }
 
-    public void setComponent ( Component component )
+    public void setComponent ( final JComponent component )
     {
         if ( this.component != null )
         {
@@ -137,36 +162,36 @@ public class WebOverlay extends WebPanel implements SwingConstants
         add ( component, OverlayLayout.COMPONENT );
     }
 
-    public Component getComponent ()
+    public JComponent getComponent ()
     {
         return component;
     }
 
-    public void addOverlay ( Component overlay )
+    public void addOverlay ( final JComponent overlay )
     {
         overlayData.put ( overlay, new OverlayData () );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void addOverlay ( Component overlay, int halign, int valign )
+    public void addOverlay ( final JComponent overlay, final int halign, final int valign )
     {
         overlayData.put ( overlay, new OverlayData ( halign, valign ) );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void addOverlay ( Component overlay, DataProvider<Rectangle> rectangleProvider )
+    public void addOverlay ( final JComponent overlay, final Supplier<Rectangle> boundsSupplier )
     {
-        overlayData.put ( overlay, new OverlayData ( rectangleProvider ) );
+        overlayData.put ( overlay, new OverlayData ( boundsSupplier ) );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void removeOverlay ( Component overlay )
+    public void removeOverlay ( final JComponent overlay )
     {
         overlayData.remove ( overlay );
         remove ( overlay );
     }
 
-    public OverlayData getOverlayData ( Component overlay )
+    public OverlayData getOverlayData ( final JComponent overlay )
     {
         return overlayData.get ( overlay );
     }

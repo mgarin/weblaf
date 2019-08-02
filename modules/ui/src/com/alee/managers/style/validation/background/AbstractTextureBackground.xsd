@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBackground.xsd" />
+
+    <!-- com.alee.painter.decoration.background.AbstractTextureBackground -->
+    <xs:complexType name="AbstractTextureBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractBackground" />
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

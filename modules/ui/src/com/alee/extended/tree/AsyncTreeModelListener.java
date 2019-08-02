@@ -23,31 +23,31 @@ import java.util.List;
 /**
  * This listener interface provide various asynchronous tree model events.
  *
+ * @param <N> {@link AsyncUniqueNode} type
  * @author Mikle Garin
  */
-
-public interface AsyncTreeModelListener<E extends AsyncUniqueNode> extends EventListener
+public interface AsyncTreeModelListener<N extends AsyncUniqueNode> extends EventListener
 {
     /**
-     * Invoked when childs load operation starts.
+     * Invoked when {@link AsyncUniqueNode} children load operation starts.
      *
-     * @param parent node which childs are being loaded
+     * @param parent {@link AsyncUniqueNode} which children are being loaded
      */
-    public void childsLoadStarted ( E parent );
+    public void loadStarted ( N parent );
 
     /**
-     * Invoked when childs load operation finishes.
+     * Invoked when {@link AsyncUniqueNode} children load operation finishes.
      *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * @param parent   {@link AsyncUniqueNode} which children were loaded
+     * @param children {@link List} of loaded child {@link AsyncUniqueNode}s
      */
-    public void childsLoadCompleted ( E parent, List<E> childs );
+    public void loadCompleted ( N parent, List<N> children );
 
     /**
-     * Invoked when childs load operation failed.
+     * Invoked when {@link AsyncUniqueNode} children load operation fails.
      *
-     * @param parent node which childs were loaded
-     * @param cause  childs load failure cause
+     * @param parent {@link AsyncUniqueNode} which children were loaded
+     * @param cause  children load failure cause
      */
-    public void childsLoadFailed ( E parent, Throwable cause );
+    public void loadFailed ( N parent, Throwable cause );
 }

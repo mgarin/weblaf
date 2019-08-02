@@ -1,0 +1,121 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.scroll.WebScrollBar -->
+
+    <!-- Scroll bar -->
+    <style type="scrollbar" padding="1,1,1,1">
+        <component>
+            <opaque>false</opaque>
+            <background>237,237,237</background>
+        </component>
+        <ui>
+            <displayButtons>true</displayButtons>
+            <displayTrack>false</displayTrack>
+            <minimumThumbSize>25,25</minimumThumbSize>
+        </ui>
+        <painter>
+            <thumbRound>8</thumbRound>
+            <thumbMargin>1,2,1,2</thumbMargin>
+            <scrollBarWidth>13</scrollBarWidth>
+            <trackBorderColor>170,170,170</trackBorderColor>
+            <trackBackgroundColor>245,245,245</trackBackgroundColor>
+            <thumbBorderColor>189,189,189</thumbBorderColor>
+            <thumbBackgroundColor>217,217,217</thumbBackgroundColor>
+            <thumbDisabledBorderColor>210,210,210</thumbDisabledBorderColor>
+            <thumbDisabledBackgroundColor>230,230,230</thumbDisabledBackgroundColor>
+            <thumbRolloverBorderColor>166,166,166</thumbRolloverBorderColor>
+            <thumbRolloverBackgroundColor>194,194,194</thumbRolloverBackgroundColor>
+            <thumbPressedBorderColor>126,126,126</thumbPressedBorderColor>
+            <thumbPressedBackgroundColor>145,145,145</thumbPressedBackgroundColor>
+        </painter>
+
+        <!-- Scroll bar button -->
+        <style type="button" id="button" padding="0">
+            <painter>
+                <decorations>
+                    <decoration size="13,13">
+                        <ArrowShape />
+                        <WebShadow type="outer" width="0" />
+                        <ColorBackground color="223,223,223" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Decrease (scroll up/left) scroll bar button -->
+        <style type="button" id="decrease" extends="button">
+            <painter>
+                <decorations>
+                    <decoration states="vertical">
+                        <ArrowShape direction="north" />
+                    </decoration>
+                    <decoration states="horizontal">
+                        <ArrowShape direction="west" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Increase (scroll down/right) scroll bar button -->
+        <style type="button" id="increase" extends="button">
+            <painter>
+                <decorations>
+                    <decoration states="vertical">
+                        <ArrowShape direction="south" />
+                    </decoration>
+                    <decoration states="horizontal">
+                        <ArrowShape direction="east" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Decorated scrollbar -->
+    <style type="scrollbar" id="decorated">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <ui>
+            <displayButtons>true</displayButtons>
+            <displayTrack>true</displayTrack>
+        </ui>
+    </style>
+
+    <!-- Undecorated scrollbar -->
+    <style type="scrollbar" id="undecorated">
+        <ui>
+            <displayButtons>true</displayButtons>
+            <displayTrack>false</displayTrack>
+        </ui>
+    </style>
+
+    <!-- Button-less scrollbar -->
+    <style type="scrollbar" id="buttonless">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <ui>
+            <displayButtons>false</displayButtons>
+            <displayTrack>true</displayTrack>
+        </ui>
+        <painter>
+            <thumbRound>0</thumbRound>
+            <thumbMargin>1,1,1,1</thumbMargin>
+            <scrollBarWidth>11</scrollBarWidth>
+        </painter>
+    </style>
+
+    <!-- Undecorated button-less scrollbar -->
+    <style type="scrollbar" id="undecorated-buttonless">
+        <ui>
+            <displayButtons>false</displayButtons>
+            <displayTrack>false</displayTrack>
+        </ui>
+        <painter>
+            <thumbRound>0</thumbRound>
+        </painter>
+    </style>
+
+</skin>

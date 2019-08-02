@@ -18,17 +18,22 @@
 package com.alee.extended.transition.effects.blocks;
 
 /**
- * User: mgarin Date: 04.10.12 Time: 16:47
+ * @author Mikle Garin
  */
-
 public enum BlockType
 {
-    // Any random block type each time (always first in enum)
+    /**
+     * Any random block type each time (always first in enum).
+     */
     random,
 
-    // Fill (and fade-in) blocks in a specific direction
+    /**
+     * Fill (and fade-in) blocks in a specific direction.
+     */
     cascade,
 
-    // Fill (and fade-in) random blocks
+    /**
+     * Fill (and fade-in) random blocks.
+     */
     randomize
 }

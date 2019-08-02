@@ -20,13 +20,14 @@ package com.alee.managers.hotkey;
 import java.awt.event.KeyEvent;
 
 /**
- * This interface provides list of predefined dotkeys which can be easily used to setup any hotkey through WebLaF HotkeyManager system or
+ * This interface provides list of predefined hotkeys which can be easily used to setup any hotkey through WebLaF HotkeyManager system or
  * through standard Web-component methods. More different standard hotkeys will be added to this interface with time to make it even more
  * powerful and useful in various situations.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HotkeyManager">How to use HotkeyManager</a>
+ * @see HotkeyManager
  */
-
 public final class Hotkey
 {
     /**
@@ -81,6 +82,14 @@ public final class Hotkey
     public static final HotkeyData X = new HotkeyData ( KeyEvent.VK_X );
     public static final HotkeyData Y = new HotkeyData ( KeyEvent.VK_Y );
     public static final HotkeyData Z = new HotkeyData ( KeyEvent.VK_Z );
+
+    /**
+     * Symbol hotkeys.
+     */
+    public static final HotkeyData PLUS = new HotkeyData ( KeyEvent.VK_ADD );
+    public static final HotkeyData MINUS = new HotkeyData ( KeyEvent.VK_MINUS );
+    public static final HotkeyData MULTIPLY = new HotkeyData ( KeyEvent.VK_MULTIPLY );
+    public static final HotkeyData DIVIDE = new HotkeyData ( KeyEvent.VK_DIVIDE );
 
     /**
      * Number hotkeys.
@@ -203,13 +212,6 @@ public final class Hotkey
     public static final HotkeyData CTRL_SHIFT_Z = new HotkeyData ( true, false, true, KeyEvent.VK_Z );
     public static final HotkeyData CTRL_SHIFT_V = new HotkeyData ( true, false, true, KeyEvent.VK_V );
     public static final HotkeyData CTRL_SHIFT_N = new HotkeyData ( true, false, true, KeyEvent.VK_N );
-    
-    /**
-     * Mathematical Symbols
-     */
-    public static final HotkeyData PLUS = new HotkeyData ( KeyEvent.VK_ADD );
-    public static final HotkeyData MINUS = new HotkeyData ( KeyEvent.VK_MINUS );
-    public static final HotkeyData MULTIPLY = new HotkeyData ( KeyEvent.VK_MULTIPLY );
-    public static final HotkeyData DIVIDE = new HotkeyData ( KeyEvent.VK_DIVIDE );
-    
+    public static final HotkeyData CTRL_SHIFT_D = new HotkeyData ( true, false, true, KeyEvent.VK_D );
+    public static final HotkeyData CTRL_SHIFT_X = new HotkeyData ( true, false, true, KeyEvent.VK_X );
 }

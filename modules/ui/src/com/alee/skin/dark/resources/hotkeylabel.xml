@@ -1,0 +1,18 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.label.WebHotkeyLabel -->
+
+    <!-- Hotkey label -->
+    <style type="styledlabel" id="hotkeylabel">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <HotkeyLabelBackground round="6" border="68,72,74" spacing="81,85,87" color="77,81,83" />
+                    <LabelLayout padding="2,6,3,6" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

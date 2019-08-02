@@ -1,0 +1,26 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.image.WebImage -->
+
+    <!-- Image -->
+    <style type="image">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter />
+    </style>
+
+    <!-- Portrait image -->
+    <style type="image" id="portrait">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="10" />
+                    <LineBorder color="20,20,20" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

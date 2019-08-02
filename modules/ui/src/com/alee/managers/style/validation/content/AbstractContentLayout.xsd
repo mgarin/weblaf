@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContent.xsd" />
+    <xs:include schemaLocation="IContent.xsd" />
+
+    <!-- com.alee.painter.decoration.layout.AbstractContentLayout -->
+    <xs:complexType name="AbstractContentLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractContent">
+
+                <!-- Layout contents -->
+                <xs:group ref="IContent" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

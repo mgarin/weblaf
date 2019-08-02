@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.painter.decoration.shadow.ShadowType -->
+    <xs:simpleType name="ShadowType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="outer" />
+            <xs:enumeration value="inner" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

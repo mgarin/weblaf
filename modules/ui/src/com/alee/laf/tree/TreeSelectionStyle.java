@@ -22,7 +22,6 @@ package com.alee.laf.tree;
  *
  * @author Mikle Garin
  */
-
 public enum TreeSelectionStyle
 {
     /**
@@ -33,13 +32,13 @@ public enum TreeSelectionStyle
 
     /**
      * Single cell selection style.
-     * With this selection style tree will paint a separate selection under each selected cell.
+     * With this selection style tree will paint separate selection under each selected cell.
      */
     single,
 
     /**
      * Group cell selection style.
-     * With this selection style tree will paint a single selection for each group of nodes that are located close to each other.
+     * With this selection style tree will paint single selection for each group of nodes that are located close to each other.
      */
     group,
 

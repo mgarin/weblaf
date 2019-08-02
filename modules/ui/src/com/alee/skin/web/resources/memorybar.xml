@@ -1,0 +1,33 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.statusbar.WebMemoryBar -->
+
+    <!-- Memory bar -->
+    <style type="button" id="memorybar" padding="2,10,2,10">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <MemoryBarBackground round="2">
+                        <usedBorderColor>130,130,183</usedBorderColor>
+                        <usedFillColor>0,0,255,50</usedFillColor>
+                        <allocatedMarkColor>gray</allocatedMarkColor>
+                    </MemoryBarBackground>
+                </decoration>
+                <decoration states="disabled">
+                    <MemoryBarBackground opacity="0.5" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Tooltip label styling -->
+        <!-- todo Replace with custom tooltip style -->
+        <style type="label" id="tooltip">
+            <component>
+                <foreground>white</foreground>
+            </component>
+        </style>
+
+    </style>
+
+</skin>

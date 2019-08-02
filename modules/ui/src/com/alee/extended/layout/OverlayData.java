@@ -17,20 +17,19 @@
 
 package com.alee.extended.layout;
 
-import com.alee.utils.swing.DataProvider;
+import com.alee.api.jdk.Supplier;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 05.06.12 Time: 20:06
+ * @author Mikle Garin
  */
-
 public class OverlayData
 {
     private OverlayLocation location;
     private int halign;
     private int valign;
-    private DataProvider<Rectangle> rectangleProvider;
+    private Supplier<Rectangle> boundsSupplier;
 
     public OverlayData ()
     {
@@ -38,7 +37,7 @@ public class OverlayData
         this.location = OverlayLocation.fill;
     }
 
-    public OverlayData ( int halign, int valign )
+    public OverlayData ( final int halign, final int valign )
     {
         super ();
         this.location = OverlayLocation.align;
@@ -46,20 +45,21 @@ public class OverlayData
         this.valign = valign;
     }
 
-    public OverlayData ( DataProvider<Rectangle> rectangleProvider )
+    public OverlayData ( final Supplier<Rectangle> boundsSupplier )
     {
         super ();
         this.location = OverlayLocation.custom;
-        this.rectangleProvider = rectangleProvider;
+        this.boundsSupplier = boundsSupplier;
     }
 
-    public OverlayData ( OverlayLocation location, int halign, int valign, DataProvider<Rectangle> rectangleProvider )
+    public OverlayData ( final OverlayLocation location, final int halign, final int valign,
+                         final Supplier<Rectangle> boundsSupplier )
     {
         super ();
         this.location = location;
         this.halign = halign;
         this.valign = valign;
-        this.rectangleProvider = rectangleProvider;
+        this.boundsSupplier = boundsSupplier;
     }
 
     public OverlayLocation getLocation ()
@@ -67,7 +67,7 @@ public class OverlayData
         return location;
     }
 
-    public void setLocation ( OverlayLocation location )
+    public void setLocation ( final OverlayLocation location )
     {
         this.location = location;
     }
@@ -77,7 +77,7 @@ public class OverlayData
         return halign;
     }
 
-    public void setHalign ( int halign )
+    public void setHalign ( final int halign )
     {
         this.halign = halign;
     }
@@ -87,18 +87,18 @@ public class OverlayData
         return valign;
     }
 
-    public void setValign ( int valign )
+    public void setValign ( final int valign )
     {
         this.valign = valign;
     }
 
-    public DataProvider<Rectangle> getRectangleProvider ()
+    public Supplier<Rectangle> getBoundsSupplier ()
     {
-        return rectangleProvider;
+        return boundsSupplier;
     }
 
-    public void setRectangleProvider ( DataProvider<Rectangle> rectangleProvider )
+    public void setBoundsSupplier ( final Supplier<Rectangle> boundsSupplier )
     {
-        this.rectangleProvider = rectangleProvider;
+        this.boundsSupplier = boundsSupplier;
     }
 }

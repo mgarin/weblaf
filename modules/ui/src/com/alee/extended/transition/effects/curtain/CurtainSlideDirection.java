@@ -18,22 +18,27 @@
 package com.alee.extended.transition.effects.curtain;
 
 /**
- * User: mgarin Date: 20.11.12 Time: 17:34
- * <p/>
- * Slide curtain blocks to specific side relative to curtain appearance direction
+ * Slide curtain blocks to specific side relative to curtain appearance direction.
+ *
+ * @author Mikle Garin
  */
-
 public enum CurtainSlideDirection
 {
-    // Random each time (always first in enum)
+    /**
+     * Random each time (always first in enum).
+     */
     random,
 
-    // Left side relative to direction
+    /**
+     * Left side relative to direction.
+     */
     left,
 
-    // Right side relative to direction
+    /**
+     * Right side relative to direction.
+     */
     right,
 
-    // Both sides relative to direction
+    // Both sides relative to direction.
     both
 }

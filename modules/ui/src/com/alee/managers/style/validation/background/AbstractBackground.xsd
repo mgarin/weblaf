@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.painter.decoration.background.AbstractBackground -->
+    <xs:complexType name="AbstractBackground">
+
+        <!-- Border identifier -->
+        <xs:attribute name="id" type="xs:string" />
+
+        <!-- Merge overwrite setting -->
+        <xs:attribute name="overwrite" type="xs:boolean" />
+
+        <!-- Border opacity -->
+        <xs:attribute name="opacity" type="xs:float" />
+
+    </xs:complexType>
+
+</xs:schema>

@@ -22,9 +22,8 @@ import java.awt.*;
 import java.net.URL;
 
 /**
- * User: mgarin Date: 08.11.12 Time: 13:20
+ * @author Mikle Garin
  */
-
 public class OrientedIcon extends ImageIcon
 {
     public OrientedIcon ()
@@ -32,56 +31,56 @@ public class OrientedIcon extends ImageIcon
         super ();
     }
 
-    public OrientedIcon ( byte[] imageData )
+    public OrientedIcon ( final byte[] imageData )
     {
         super ( imageData );
     }
 
-    public OrientedIcon ( byte[] imageData, String description )
+    public OrientedIcon ( final byte[] imageData, final String description )
     {
         super ( imageData, description );
     }
 
-    public OrientedIcon ( Image image )
+    public OrientedIcon ( final Image image )
     {
         super ( image );
     }
 
-    public OrientedIcon ( Image image, String description )
+    public OrientedIcon ( final Image image, final String description )
     {
         super ( image, description );
     }
 
-    public OrientedIcon ( URL location )
+    public OrientedIcon ( final URL location )
     {
         super ( location );
     }
 
-    public OrientedIcon ( URL location, String description )
+    public OrientedIcon ( final URL location, final String description )
     {
         super ( location, description );
     }
 
-    public OrientedIcon ( String filename )
+    public OrientedIcon ( final String filename )
     {
         super ( filename );
     }
 
-    public OrientedIcon ( String filename, String description )
+    public OrientedIcon ( final String filename, final String description )
     {
         super ( filename, description );
     }
 
-    public OrientedIcon ( ImageIcon icon )
+    public OrientedIcon ( final ImageIcon icon )
     {
         super ( icon.getImage () );
     }
 
     @Override
-    public void paintIcon ( Component c, Graphics g, int x, int y )
+    public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
     {
-        int w = getIconWidth ();
-        int h = getIconHeight ();
+        final int w = getIconWidth ();
+        final int h = getIconHeight ();
         if ( c == null || c.getComponentOrientation ().isLeftToRight () )
         {
             g.drawImage ( getImage (), x, y, w, h, getImageObserver () );

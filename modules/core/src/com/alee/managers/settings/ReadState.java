@@ -20,40 +20,39 @@ package com.alee.managers.settings;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * This enumeration represents SettingsGroup read states.
+ * This enumeration represents {@link SettingsGroup} read states.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
- * @see com.alee.managers.settings.SettingsGroupState
- * @see com.alee.managers.settings.SettingsGroup
+ * @see SettingsManager
+ * @see SettingsGroupState
+ * @see SettingsGroup
  */
-
-@XStreamAlias ("ReadState")
+@XStreamAlias ( "ReadState" )
 public enum ReadState
 {
     /**
-     * Not read yet.
+     * Did not attempt to load {@link SettingsGroup} yet.
      */
     none,
 
     /**
-     * New one was created.
+     * New {@link SettingsGroup} has been created.
      */
     created,
 
     /**
-     * Read sucessfully.
+     * {@link SettingsGroup} was read successfully.
      */
     ok,
 
     /**
-     * Successfully restored from dump.
+     * {@link SettingsGroup} was successfully restored from backup.
      */
     restored,
 
     /**
-     * Failed to load.
+     * Failed to load {@link SettingsGroup}.
      */
     failed
 }

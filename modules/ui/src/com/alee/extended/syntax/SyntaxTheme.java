@@ -17,9 +17,9 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.managers.log.Log;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -29,7 +29,6 @@ import java.io.IOException;
  *
  * @author Mikle Garin
  */
-
 public enum SyntaxTheme
 {
     /**
@@ -97,7 +96,7 @@ public enum SyntaxTheme
         }
         catch ( final IOException e )
         {
-            Log.error ( this, e );
+            LoggerFactory.getLogger ( SyntaxTheme.class ).error ( e.toString (), e );
         }
     }
 }

@@ -1,0 +1,68 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.separator.WebSeparator -->
+
+    <!-- Separator -->
+    <style type="separator">
+        <painter>
+            <decorations>
+                <decoration>
+                    <SeparatorStripes>
+                        <Stripe>
+                            <color fraction="0.0">68,72,74,5</color>
+                            <color fraction="0.5">68,72,74</color>
+                            <color fraction="1.0">68,72,74,5</color>
+                        </Stripe>
+                        <Stripe>
+                            <color fraction="0.0">10,10,10,5</color>
+                            <color fraction="0.5">10,10,10</color>
+                            <color fraction="1.0">10,10,10,5</color>
+                        </Stripe>
+                        <Stripe>
+                            <color fraction="0.0">68,72,74,5</color>
+                            <color fraction="0.5">68,72,74</color>
+                            <color fraction="1.0">68,72,74,5</color>
+                        </Stripe>
+                    </SeparatorStripes>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Horizontal dark separator -->
+    <style type="separator" id="horizontal">
+        <component>
+            <orientation>0</orientation>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <SeparatorStripes>
+                        <Stripe>
+                            <color>10,10,10</color>
+                        </Stripe>
+                    </SeparatorStripes>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Vertical dark separator -->
+    <style type="separator" id="vertical">
+        <component>
+            <orientation>1</orientation>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <SeparatorStripes>
+                        <Stripe>
+                            <color>10,10,10</color>
+                        </Stripe>
+                    </SeparatorStripes>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

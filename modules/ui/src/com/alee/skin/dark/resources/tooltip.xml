@@ -1,0 +1,30 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.tooltip.WebToolTip -->
+
+    <!-- Tooltip -->
+    <style type="tooltip">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <LineBorder color="black" />
+                    <ColorBackground color="223,223,223" />
+                    <ToolTipText padding="2,6,2,6" color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Tooltip supporting styled text -->
+    <style type="tooltip" id="styled">
+        <painter>
+            <decorations>
+                <decoration>
+                    <StyledToolTipText padding="2,6,2,6" color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

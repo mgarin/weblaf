@@ -18,31 +18,38 @@
 package com.alee.laf.filechooser;
 
 /**
- * This enumeration represents all available file chooser types.
+ * This enumeration represents all available {@link javax.swing.JFileChooser} types.
  *
  * @author Mikle Garin
  */
-
 public enum FileChooserType
 {
     /**
      * Save file chooser type.
-     * <p/>
      * File chooser of this type has a special input field to enter saved file name.
-     * It is also limited to single file selection since there is no point in saving single content into multiply files.
+     * It is also limited to single file selection since there is no point in saving single content into multiple files.
      * It also has an extension chooser combobox if allowed extensions are limited.
      */
     save,
 
     /**
      * Open file chooser type.
-     * <p/>
-     * File chooser of this type is used to choose single or multiply files.
+     * File chooser of this type is used to choose single or multiple files.
      */
     open,
 
     /**
      * Custom file chooser type.
      */
-    custom
+    custom;
+
+    /**
+     * Returns approve text language key.
+     *
+     * @return approve text language key
+     */
+    public String getApproveButtonText ()
+    {
+        return "weblaf.filechooser." + this;
+    }
 }

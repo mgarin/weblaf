@@ -1,0 +1,56 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkinExtension">
+
+    <!-- Extension settings -->
+    <id>weblaf.info.skin.extension</id>
+    <class>com.alee.laf.information.LibraryInfoExtension</class>
+    <extends>weblaf.web.skin</extends>
+    <extends>weblaf.dark.skin</extends>
+
+    <!-- Icon sets -->
+    <iconSet>com.alee.laf.information.LibraryInfoIconSet</iconSet>
+
+    <!-- Document pane -->
+    <style type="panel" id="tabs" extends="documentpane">
+        <style type="tabbedpane" id="tabbedpane">
+            <ui>
+                <tabStretchType>always</tabStretchType>
+            </ui>
+        </style>
+    </style>
+
+    <!-- General tab content panel -->
+    <style type="panel" id="general" extends="non-opaque" padding="60,70,60,70">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Libraries tab content panel -->
+    <style type="panel" id="libraries" padding="5" />
+
+    <!-- Libraries tab content panel scroll -->
+    <style type="scrollpane" id="libraries" extends="undecorated">
+        <component class="com.alee.laf.scroll.WebScrollPane">
+            <preferredHeight>0</preferredHeight>
+        </component>
+    </style>
+
+    <!-- Single library content panel -->
+    <style type="panel" id="library" extends="decorated" margin="5" padding="5">
+        <component class="com.alee.laf.panel.WebPanel">
+            <preferredWidth>140</preferredWidth>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

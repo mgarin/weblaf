@@ -17,8 +17,9 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.api.jdk.Objects;
+import com.alee.api.jdk.Supplier;
 import com.alee.managers.settings.SettingsManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.EncryptionUtils;
 import com.alee.utils.XmlUtils;
 
@@ -34,36 +35,40 @@ import java.util.Properties;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
- * @see com.alee.managers.proxy.ProxySettings
- * @see com.alee.managers.proxy.SystemProxyConfirmationSupport
+ * @see ProxySettings
+ * @see SystemProxyConfirmationSupport
  */
-
-public class ProxyManager
+public final class ProxyManager
 {
+    /**
+     * todo 1. Rework to provide a move covenient API for initializing proxy at any point
+     * todo 2. Allow auto-detection to be enabled in runtime, long after initialization
+     */
+
     /**
      * Settings group key for proxy settings.
      */
-    public static String SETTINGS_GROUP = "ProxyManager";
+    public static final String SETTINGS_GROUP = "ProxyManager";
 
     /**
      * Settings key for proxy settings.
      */
-    public static String PROXY_SETTINGS = "ProxySettings";
+    public static final String PROXY_SETTINGS = "ProxySettings";
 
     /**
      * Settings key for automated proxy settings option.
      */
-    public static String AUTO_SETTINGS_ON = "AutoSettingsOn";
+    public static final String AUTO_SETTINGS_ON = "AutoSettingsOn";
 
     /**
      * Settings key for system proxy settings usage option.
      */
-    public static String ALWAYS_USE_SYSTEM_SETTINGS = "AlwaysUseSystemSettings";
+    public static final String ALWAYS_USE_SYSTEM_SETTINGS = "AlwaysUseSystemSettings";
 
     /**
      * Settings key for proxy settings save option.
      */
-    public static String SAVE_SETTINGS = "SaveSettings";
+    public static final String SAVE_SETTINGS = "SaveSettings";
 
     /**
      * Whether automatic proxy detection is enabled or not.
@@ -97,8 +102,6 @@ public class ProxyManager
     {
         if ( !initialized )
         {
-            initialized = true;
-
             // ProxySettings class alias
             XmlUtils.processAnnotations ( ProxySettings.class );
 
@@ -111,8 +114,8 @@ public class ProxyManager
                 // Checking if system proxy settings are not the same
                 final ProxySettings systemProxySettings = getSystemProxySettings ();
                 if ( proxySettings.isUseProxy () != systemProxySettings.isUseProxy () ||
-                        !CompareUtils.equals ( proxySettings.getProxyHost (), systemProxySettings.getProxyHost () ) ||
-                        !CompareUtils.equals ( proxySettings.getProxyPort (), systemProxySettings.getProxyPort () ) )
+                        Objects.notEquals ( proxySettings.getProxyHost (), systemProxySettings.getProxyHost () ) ||
+                        Objects.notEquals ( proxySettings.getProxyPort (), systemProxySettings.getProxyPort () ) )
                 {
                     // Checking whether we have proxy confirmation support or auto settings are enabled
                     if ( systemProxyConfirmationSupport == null || isAutoSettingsInitialization () )
@@ -132,7 +135,7 @@ public class ProxyManager
                         {
                             proxySettings = systemProxySettings;
                         }
-                        // Saving the choice if confirmation shouldn't be pronpted anymore
+                        // Saving the choice if confirmation shouldn't be prompted anymore
                         if ( systemProxyConfirmationSupport.alwaysDoTheSame () )
                         {
                             setAutoSettingsInitialization ( true );
@@ -144,6 +147,8 @@ public class ProxyManager
                 // Default proxy settings
                 setProxySettings ( proxySettings );
             }
+
+            initialized = true;
         }
     }
 
@@ -238,13 +243,20 @@ public class ProxyManager
      */
     public static ProxySettings getProxySettings ()
     {
-        return SettingsManager.get ( SETTINGS_GROUP, PROXY_SETTINGS, getSystemProxySettings () );
+        return SettingsManager.get ( SETTINGS_GROUP, PROXY_SETTINGS, new Supplier<ProxySettings> ()
+        {
+            @Override
+            public ProxySettings get ()
+            {
+                return getSystemProxySettings ();
+            }
+        } );
     }
 
     /**
      * Installs saved or system proxy settings.
      * This method will install existing proxy settings that were saved before.
-     * If old proxy settings could not be found then system proxy settigns will be retrieved and installed.
+     * If old proxy settings could not be found then system proxy settings will be retrieved and installed.
      */
     public static void setProxySettings ()
     {
@@ -303,42 +315,42 @@ public class ProxyManager
     /**
      * Installs proxy settings with specified host, port and proxy login and password.
      *
-     * @param setttings single proxy settings object
+     * @param settings single proxy settings object
      */
-    public static void setProxySettings ( final ProxySettings setttings )
+    public static void setProxySettings ( final ProxySettings settings )
     {
-        setProxySettings ( setttings, true );
+        setProxySettings ( settings, true );
     }
 
     /**
      * Installs proxy settings with specified host, port and proxy login and password.
      *
-     * @param setttings single proxy settings object
-     * @param save      whether save these settings or not
+     * @param settings single proxy settings object
+     * @param save     whether save these settings or not
      */
-    public static void setProxySettings ( final ProxySettings setttings, final boolean save )
+    public static void setProxySettings ( final ProxySettings settings, final boolean save )
     {
         proxySet = true;
 
         // Saving new ProxySettings
         if ( save )
         {
-            SettingsManager.set ( SETTINGS_GROUP, PROXY_SETTINGS, setttings );
+            SettingsManager.set ( SETTINGS_GROUP, PROXY_SETTINGS, settings );
         }
 
         // System properties
         final Properties systemSettings = System.getProperties ();
 
         // Use proxy or not
-        systemSettings.setProperty ( "proxySet", "" + setttings.isUseProxy () );
+        systemSettings.setProperty ( "proxySet", "" + settings.isUseProxy () );
 
         // Either use proxy or not
-        if ( setttings.isUseProxy () )
+        if ( settings.isUseProxy () )
         {
             // Proxy settings
-            systemSettings.setProperty ( "proxyHost", "" + setttings.getProxyHost () );
-            systemSettings.setProperty ( "proxyPort", "" + setttings.getProxyPort () );
-            systemSettings.setProperty ( "nonProxyHosts", "" + setttings.getNonProxyHosts () );
+            systemSettings.setProperty ( "proxyHost", "" + settings.getProxyHost () );
+            systemSettings.setProperty ( "proxyPort", "" + settings.getProxyPort () );
+            systemSettings.setProperty ( "nonProxyHosts", "" + settings.getNonProxyHosts () );
 
             // Proxy authentification
             Authenticator.setDefault ( authenticator );
@@ -358,9 +370,9 @@ public class ProxyManager
     /**
      * Opens URL connection with current proxy settings.
      *
-     * @param url url to process
+     * @param url url to connect to
      * @return opened URL connection
-     * @throws IOException
+     * @throws java.io.IOException when connection failed
      */
     public static URLConnection getURLConnection ( final URL url ) throws IOException
     {
@@ -414,12 +426,12 @@ public class ProxyManager
         final Proxy proxy = getSystemHttpProxy ();
         if ( proxy != null )
         {
-            final InetSocketAddress addr = ( InetSocketAddress ) proxy.address ();
-            if ( addr != null && addr.getHostName () != null )
+            final InetSocketAddress address = ( InetSocketAddress ) proxy.address ();
+            if ( address != null && address.getHostName () != null )
             {
                 proxySettings.setUseProxy ( true );
-                proxySettings.setProxyHost ( addr.getHostName () );
-                proxySettings.setProxyPort ( "" + addr.getPort () );
+                proxySettings.setProxyHost ( address.getHostName () );
+                proxySettings.setProxyPort ( "" + address.getPort () );
             }
         }
         System.setProperty ( "java.net.useSystemProxies", "false" );
@@ -445,7 +457,7 @@ public class ProxyManager
                 }
             }
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }

@@ -21,20 +21,21 @@ import com.alee.utils.EncryptionUtils;
 import com.thoughtworks.xstream.converters.basic.StringConverter;
 
 /**
+ * Custom XStream converter for serialized passwords.
+ *
  * @author Mikle Garin
  */
-
 public class PasswordConverter extends StringConverter
 {
-    @Override
-    public Object fromString ( final String str )
-    {
-        return EncryptionUtils.decrypt ( ( String ) super.fromString ( str ) );
-    }
-
     @Override
     public String toString ( final Object obj )
     {
         return EncryptionUtils.encrypt ( super.toString ( obj ) );
+    }
+
+    @Override
+    public Object fromString ( final String str )
+    {
+        return EncryptionUtils.decrypt ( ( String ) super.fromString ( str ) );
     }
 }

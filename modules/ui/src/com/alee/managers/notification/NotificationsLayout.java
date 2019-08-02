@@ -17,8 +17,10 @@
 
 package com.alee.managers.notification;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.BoundsType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +34,6 @@ import java.util.List;
  * @see com.alee.managers.notification.NotificationManager
  * @see com.alee.managers.notification.NotificationsLayoutUtils
  */
-
 public class NotificationsLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**
@@ -45,11 +46,8 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
      */
     protected final Object lock = new Object ();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         synchronized ( lock )
         {
@@ -60,11 +58,8 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         synchronized ( lock )
         {
@@ -75,27 +70,21 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( @NotNull final Container container )
     {
         synchronized ( lock )
         {
             if ( notifications.size () > 0 )
             {
                 // Container bounds
-                final Rectangle bounds = SwingUtils.size ( parent );
+                final Rectangle bounds = BoundsType.margin.bounds ( container );
 
                 // Layout notifications
                 NotificationsLayoutUtils.layout ( notifications, bounds );

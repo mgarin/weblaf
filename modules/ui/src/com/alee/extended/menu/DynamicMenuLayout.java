@@ -17,6 +17,7 @@
 
 package com.alee.extended.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.MathUtils;
@@ -30,17 +31,13 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class DynamicMenuLayout extends AbstractLayoutManager
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( final Container parent )
+    public void layoutContainer ( @NotNull final Container container )
     {
-        final WebDynamicMenu menu = ( WebDynamicMenu ) parent;
-        final float displayProgress = MathUtils.sqr ( menu.getDisplayProgress () );
+        final WebDynamicMenu menu = ( WebDynamicMenu ) container;
+        final float displayProgress = MathUtils.sqr ( menu.getVisibilityProgress () );
         final DynamicMenuType type = !menu.isHiding () ? menu.getType () : menu.getHideType ();
 
         if ( type.isRoundMenu () )
@@ -230,13 +227,10 @@ public class DynamicMenuLayout extends AbstractLayoutManager
         menuItem.setBounds ( x - ps.width / 2, y - ps.height / 2, ps.width, ps.height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
-        final WebDynamicMenu menu = ( WebDynamicMenu ) parent;
+        final WebDynamicMenu menu = ( WebDynamicMenu ) container;
         switch ( menu.getType () )
         {
             case roll:

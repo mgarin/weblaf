@@ -19,9 +19,9 @@ package com.alee.extended.list;
 
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
-import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
-import com.alee.utils.file.FileThumbnailProvider;
+import com.alee.utils.filefilter.NonHiddenFilter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,34 +36,37 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebFileList extends WebList
 {
+    /**
+     * todo 1. Move preferred col/row count into WebList
+     */
+
     /**
      * Whether to generate image file thumbnails or not.
      * Thumbnails generation might slow down list rendering in some cases.
      */
-    protected boolean generateThumbnails = WebFileListStyle.generateThumbnails;
+    protected boolean generateThumbnails;
 
     /**
      * Preferred visible column count.
      */
-    protected int preferredColumnCount = WebFileListStyle.preferredColumnCount;
+    protected int preferredColumnCount;
 
     /**
      * Preferred visible row count.
      */
-    protected int preferredRowCount = WebFileListStyle.preferredRowCount;
+    protected int preferredRowCount;
 
     /**
      * File view mode.
      */
-    protected FileListViewType fileListViewType = WebFileListStyle.fileListViewType;
+    protected FileListViewType fileListViewType;
 
     /**
      * File filter.
      */
-    protected FileFilter fileFilter = WebFileListStyle.fileFilter;
+    protected FileFilter fileFilter = new NonHiddenFilter ();
 
     /**
      * Custom thumbnail provider.
@@ -76,16 +79,11 @@ public class WebFileList extends WebList
     protected File displayedDirectory = null;
 
     /**
-     * Scroll pane with fixed preferred size that fits file list settings.
-     */
-    protected WebScrollPane scrollView = null;
-
-    /**
      * Constructs empty file list.
      */
     public WebFileList ()
     {
-        super ( new FileListModel () );
+        super ( StyleId.filelist, new FileListModel () );
         initializeDefaultSettings ();
     }
 
@@ -96,7 +94,7 @@ public class WebFileList extends WebList
      */
     public WebFileList ( final String directoryPath )
     {
-        super ( new FileListModel ( directoryPath ) );
+        super ( StyleId.filelist, new FileListModel ( directoryPath ) );
         initializeDefaultSettings ();
     }
 
@@ -107,7 +105,7 @@ public class WebFileList extends WebList
      */
     public WebFileList ( final File directory )
     {
-        super ( new FileListModel ( directory ) );
+        super ( StyleId.filelist, new FileListModel ( directory ) );
         initializeDefaultSettings ();
     }
 
@@ -118,7 +116,7 @@ public class WebFileList extends WebList
      */
     public WebFileList ( final File[] data )
     {
-        super ( new FileListModel ( data ) );
+        super ( StyleId.filelist, new FileListModel ( data ) );
         initializeDefaultSettings ();
     }
 
@@ -129,7 +127,66 @@ public class WebFileList extends WebList
      */
     public WebFileList ( final List<File> data )
     {
-        super ( new FileListModel ( data ) );
+        super ( StyleId.filelist, new FileListModel ( data ) );
+        initializeDefaultSettings ();
+    }
+
+    /**
+     * Constructs empty file list.
+     *
+     * @param id style ID
+     */
+    public WebFileList ( final StyleId id )
+    {
+        super ( id, new FileListModel () );
+        initializeDefaultSettings ();
+    }
+
+    /**
+     * Constructs file list with files from directory under the specified path.
+     *
+     * @param id            style ID
+     * @param directoryPath directory path
+     */
+    public WebFileList ( final StyleId id, final String directoryPath )
+    {
+        super ( id, new FileListModel ( directoryPath ) );
+        initializeDefaultSettings ();
+    }
+
+    /**
+     * Constructs file list with files from the specified directory.
+     *
+     * @param id        style ID
+     * @param directory directory
+     */
+    public WebFileList ( final StyleId id, final File directory )
+    {
+        super ( id, new FileListModel ( directory ) );
+        initializeDefaultSettings ();
+    }
+
+    /**
+     * Constructs file list with the specified files.
+     *
+     * @param id   style ID
+     * @param data files array
+     */
+    public WebFileList ( final StyleId id, final File[] data )
+    {
+        super ( id, new FileListModel ( data ) );
+        initializeDefaultSettings ();
+    }
+
+    /**
+     * Constructs file list with the specified files.
+     *
+     * @param id   style ID
+     * @param data files list
+     */
+    public WebFileList ( final StyleId id, final List<File> data )
+    {
+        super ( id, new FileListModel ( data ) );
         initializeDefaultSettings ();
     }
 
@@ -138,9 +195,9 @@ public class WebFileList extends WebList
      */
     protected void initializeDefaultSettings ()
     {
-        // Standard settings
-        setLayoutOrientation ( JList.HORIZONTAL_WRAP );
-        setVisibleRowCount ( 0 );
+        // This is necessary for proper elements wrapping
+        // If it is set to specific number list will fix the columns amount
+        setVisibleRowCount ( -1 );
 
         // Files list renderer
         setCellRenderer ( new WebFileListCellRenderer ( WebFileList.this ) );
@@ -151,7 +208,7 @@ public class WebFileList extends WebList
      * Be aware that this method might throw ClassCastException if renderer is altered by user.
      *
      * @return specific for WebFileList renderer
-     * @throws ClassCastException
+     * @throws java.lang.ClassCastException if wrong file list cell renderer type is set
      */
     public WebFileListCellRenderer getWebFileListCellRenderer () throws ClassCastException
     {
@@ -164,7 +221,7 @@ public class WebFileList extends WebList
      * Be aware that this method might throw ClassCastException if model is altered by user.
      *
      * @return specific for WebFileList model
-     * @throws ClassCastException
+     * @throws java.lang.ClassCastException if wrong file list model type is set
      */
     public FileListModel getFileListModel () throws ClassCastException
     {
@@ -183,16 +240,6 @@ public class WebFileList extends WebList
     }
 
     /**
-     * Sets preferred visible column count.
-     *
-     * @param preferredColumnCount new preferred visible column count
-     */
-    public void setPreferredColumnCount ( final int preferredColumnCount )
-    {
-        this.preferredColumnCount = preferredColumnCount;
-    }
-
-    /**
      * Returns preferred visible column count.
      *
      * @return preferred visible column count
@@ -200,6 +247,17 @@ public class WebFileList extends WebList
     public int getPreferredColumnCount ()
     {
         return preferredColumnCount;
+    }
+
+    /**
+     * Sets preferred visible column count.
+     *
+     * @param preferredColumnCount new preferred visible column count
+     */
+    public void setPreferredColumnCount ( final int preferredColumnCount )
+    {
+        this.preferredColumnCount = preferredColumnCount;
+        getUI ().updateListLayout ();
     }
 
     /**
@@ -220,6 +278,7 @@ public class WebFileList extends WebList
     public void setPreferredRowCount ( final int preferredRowCount )
     {
         this.preferredRowCount = preferredRowCount;
+        getUI ().updateListLayout ();
     }
 
     /**
@@ -260,7 +319,13 @@ public class WebFileList extends WebList
     public void setFileListViewType ( final FileListViewType fileListViewType )
     {
         this.fileListViewType = fileListViewType;
-        getWebFileListCellRenderer ().updateFilesView ();
+
+        // Updating renderer view
+        final WebFileListCellRenderer wr = getWebFileListCellRenderer ();
+        if ( wr != null )
+        {
+            wr.updateFilesView ();
+        }
     }
 
     /**
@@ -453,75 +518,14 @@ public class WebFileList extends WebList
         setSelectedValues ( elements );
     }
 
-    /**
-     * Returns scroll pane with fixed preferred size that fits file list settings.
-     *
-     * @return scroll pane with fixed preferred size that fits file list settings
-     */
-    public WebScrollPane getScrollView ()
+    @Override
+    public Dimension getPreferredScrollableViewportSize ()
     {
-        if ( scrollView == null )
-        {
-            scrollView = createScrollView ();
-        }
-        return scrollView;
-    }
-
-    /**
-     * Returns new scroll pane with fixed preferred size that fits file list settings.
-     *
-     * @return new scroll pane with fixed preferred size that fits file list settings
-     */
-    public WebScrollPane createScrollView ()
-    {
-        return new WebScrollPane ( WebFileList.this )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                final Dimension ps = super.getPreferredSize ();
-                final int fcw = getFixedCellWidth ();
-                final int fch = getFixedCellHeight ();
-                final Dimension oneCell;
-                if ( fcw != -1 && fch != -1 )
-                {
-                    oneCell = new Dimension ( fcw, fch );
-                }
-                else
-                {
-                    if ( getModel ().getSize () > 0 )
-                    {
-                        oneCell = getCellBounds ( 0, 0 ).getSize ();
-                    }
-                    else
-                    {
-                        final WebFileListCellRenderer fileListCellRenderer = getWebFileListCellRenderer ();
-                        if ( fileListCellRenderer != null )
-                        {
-                            oneCell = fileListCellRenderer.getPreferredSize ();
-                        }
-                        else
-                        {
-                            oneCell = new Dimension ( 90, 90 );
-                        }
-                    }
-                    if ( fcw != -1 )
-                    {
-                        oneCell.width = fcw;
-                    }
-                    else if ( fch != -1 )
-                    {
-                        oneCell.width = fcw;
-                    }
-                }
-                final Insets bi = getInsets ();
-                final JScrollBar vsb = getVerticalScrollBar ();
-                final int sbw = vsb != null && vsb.isShowing () ? vsb.getPreferredSize ().width : 0;
-                ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + sbw + 1;
-                ps.height = oneCell.height * preferredRowCount + bi.top + bi.bottom + 1;
-                return ps;
-            }
-        };
+        final Insets bi = getInsets ();
+        final Dimension oneCell = getPreferredCellSize ();
+        final int width = oneCell.width * getPreferredColumnCount () + bi.left + bi.right;
+        final int height = oneCell.height * getPreferredRowCount () + bi.top + bi.bottom;
+        return new Dimension ( width, height );
     }
 
     /**
@@ -533,11 +537,56 @@ public class WebFileList extends WebList
     public Dimension getPreferredSize ()
     {
         final Dimension ps = super.getPreferredSize ();
-        if ( getModel ().getSize () > 0 )
+        final Insets bi = getInsets ();
+        ps.width = getPreferredCellSize ().width * getPreferredColumnCount () + bi.left + bi.right;
+        return ps;
+    }
+
+    /**
+     * Returns single cell preferred size.
+     *
+     * @return single cell preferred size
+     */
+    protected Dimension getPreferredCellSize ()
+    {
+        final Dimension ps = new Dimension ( getFixedCellWidth (), getFixedCellHeight () );
+        if ( ps.width == -1 || ps.height == -1 )
         {
-            final Dimension oneCell = getCellBounds ( 0, 0 ).getSize ();
-            ps.width = oneCell.width * preferredColumnCount;
+            Dimension cps = getPrototypeCellSize ();
+            if ( cps == null )
+            {
+                if ( getModel ().getSize () > 0 )
+                {
+                    final Object v = getModel ().getElementAt ( 0 );
+                    final ListCellRenderer renderer = getCellRenderer ();
+                    final Component r = renderer.getListCellRendererComponent ( WebFileList.this, v, 0, false, false );
+                    cps = r.getPreferredSize ();
+                }
+                else
+                {
+                    cps = new Dimension ( 0, 0 );
+                }
+            }
+            if ( ps.width == -1 )
+            {
+                ps.width = cps.width;
+            }
+            if ( ps.height == -1 )
+            {
+                ps.height = cps.height;
+            }
         }
         return ps;
+    }
+
+    /**
+     * Returns cell size that will be used as prototype for all other cell sizes.
+     *
+     * @return cell size that will be used as prototype for all other cell sizes
+     */
+    protected Dimension getPrototypeCellSize ()
+    {
+        final ListCellRenderer renderer = getCellRenderer ();
+        return renderer instanceof JComponent ? ( ( JComponent ) renderer ).getPreferredSize () : null;
     }
 }

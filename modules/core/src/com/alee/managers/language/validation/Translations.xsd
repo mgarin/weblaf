@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="Translation.xsd" />
+
+    <!-- Translations infomation group -->
+    <xs:complexType name="Translations">
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+
+            <!-- Translations -->
+            <xs:element name="Translation" type="Translation" />
+
+        </xs:choice>
+    </xs:complexType>
+
+</xs:schema>

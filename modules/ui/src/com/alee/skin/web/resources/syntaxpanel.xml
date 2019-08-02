@@ -1,0 +1,15 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.syntax.WebSyntaxPanel -->
+
+    <!-- Container panel -->
+    <style type="panel" id="syntaxpanel" padding="2,4,2,4">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter class="SyntaxPanelPainter">
+            <style>thick</style>
+        </painter>
+    </style>
+
+</skin>

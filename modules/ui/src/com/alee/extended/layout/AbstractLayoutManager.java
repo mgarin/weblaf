@@ -17,41 +17,35 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 
 /**
- * This an abstract layout manager that hides some less frequently used layout methods.
+ * Abstract {@link LayoutManager2} implementation that hides some less frequently used methods.
+ * It also unifies different underlying component addition and removal methods.
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractLayoutManager implements LayoutManager2
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addLayoutComponent ( final Component comp, final Object constraints )
+    public final void addLayoutComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
-        addComponent ( comp, constraints );
+        addComponent ( component, constraints );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addLayoutComponent ( final String name, final Component comp )
+    public final void addLayoutComponent ( @Nullable final String constraints, @NotNull final Component component )
     {
-        addComponent ( comp, name );
+        addComponent ( component, constraints );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void removeLayoutComponent ( final Component comp )
+    public final void removeLayoutComponent ( @NotNull final Component component )
     {
-        removeComponent ( comp );
+        removeComponent ( component );
     }
 
     /**
@@ -60,9 +54,11 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * @param component   added component
      * @param constraints component constraints
      */
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -70,53 +66,48 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      *
      * @param component removed component
      */
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension minimumLayoutSize ( final Container parent )
+    public abstract void layoutContainer ( @NotNull Container parent );
+
+    @Override
+    public abstract Dimension preferredLayoutSize ( @NotNull Container parent );
+
+    @Override
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
-        return preferredLayoutSize ( parent );
+        return preferredLayoutSize ( container );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension maximumLayoutSize ( final Container target )
+    public Dimension maximumLayoutSize ( @NotNull final Container container )
     {
         return new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public float getLayoutAlignmentX ( final Container target )
+    public float getLayoutAlignmentX ( @NotNull final Container container )
     {
         return 0.5f;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public float getLayoutAlignmentY ( final Container target )
+    public float getLayoutAlignmentY ( @NotNull final Container container )
     {
         return 0.5f;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void invalidateLayout ( final Container target )
+    public void invalidateLayout ( @NotNull final Container container )
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 }

@@ -20,7 +20,6 @@ package com.alee.extended.menu;
 /**
  * @author Mikle Garin
  */
-
 public enum DynamicMenuType
 {
     /**

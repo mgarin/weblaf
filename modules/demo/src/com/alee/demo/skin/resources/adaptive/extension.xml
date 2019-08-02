@@ -1,0 +1,184 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkinExtension">
+
+    <!-- Extension settings -->
+    <id>weblaf.demo.skin.extension</id>
+    <class>com.alee.demo.skin.AdaptiveExtension</class>
+    <extends>weblaf.web.skin</extends>
+    <extends>weblaf.dark.skin</extends>
+
+    <!-- Fields leading/trailing elements -->
+    <style type="styledlabel" id="field-inner" padding="2,6,2,6">
+        <component>
+            <horizontalAlignment>0</horizontalAlignment>
+            <verticalAlignment>0</verticalAlignment>
+        </component>
+    </style>
+
+    <!-- Tool elements -->
+    <style type="togglebutton" id="tool" extends="hover" padding="2,8,2,8">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="togglebutton" id="tool-icon" extends="tool" padding="2,2,2,2" />
+    <style type="combobox" id="tool" extends="hover">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="combobox" id="tool-lang" extends="languagechooser-hover">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Filter fields -->
+    <style type="textfield" id="filter" extends="treefilterfield-non-opaque" padding="6">
+
+        <!-- Settings menu button -->
+        <style type="button" id="settings" padding="0,2,0,6" />
+
+    </style>
+
+    <!-- GitHub project page link -->
+    <style type="link" id="resource" extends="shadow" padding="0,5,0,5">
+        <component>
+            <focusable>true</focusable>
+            <iconTextGap>4</iconTextGap>
+        </component>
+    </style>
+
+    <!-- Document pane with stretched tabs -->
+    <style type="panel" id="examples" extends="documentpane">
+
+        <!-- Tabbed pane style -->
+        <style type="tabbedpane" id="tabbedpane">
+            <ui>
+                <tabStretchType>multiline</tabStretchType>
+            </ui>
+        </style>
+
+    </style>
+
+    <!-- Text field -->
+    <style type="image" id="leading" padding="0,0,0,4" />
+    <style type="image" id="trailing" padding="0,4,0,0" />
+
+    <!-- Example toolbar -->
+    <style type="toolbar" id="example" extends="attached-north" padding="4" />
+    <style type="label" id="wiki" padding="2,0,2,0" />
+    <style type="link" id="wiki" extends="shadow" padding="2,0,2,0" />
+
+    <!-- Single preview panel -->
+    <style type="panel" id="preview-base">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="8" />
+                    <ExpandingShadow type="outer" width="25" opacity="1" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Preview title label -->
+        <style type="styledlabel" id="title" padding="15,25,15,15">
+            <component>
+                <horizontalAlignment>11</horizontalAlignment>
+                <verticalAlignment>0</verticalAlignment>
+            </component>
+        </style>
+
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator" extends="vertical" padding="2,0,2,0" />
+
+        <!-- Preview components container -->
+        <style type="panel" id="content" extends="transparent" padding="15,15,15,15" />
+
+    </style>
+
+    <!-- Custom easing example styles -->
+    <style type="panel" id="easing-east-bar" extends="transparent" padding="55,0,55,55" />
+    <style type="panel" id="easing-south-bar" extends="transparent" padding="0,25,25,25" />
+
+    <!-- Shape detection example -->
+    <style type="styledlabel" id="shape-detection-title" extends="separator" padding="25,0,0,0" />
+    <style type="styledlabel" id="shape-detection-sub-title" padding="25,25,0,25" />
+    <style type="panel" id="shape-detection-test-panel" extends="transparent" padding="25,25,25,25" />
+    <style type="panel" id="shape-detection-test-panel-left" extends="transparent" padding="25,25,25,12" />
+    <style type="panel" id="shape-detection-test-panel-right" extends="transparent" padding="25,12,25,25" />
+    <style type="button" id="shape-detection-button" padding="15">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="20" />
+                    <WebShadow type="outer" width="15" />
+                </decoration>
+                <decoration states="hover">
+                    <WebShadow type="inner" opacity="1" width="10" color="100,80,250" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="textarea" id="shape-detection-textarea" extends="decorated" padding="15">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="20" />
+                    <WebShadow type="outer" width="15" />
+                </decoration>
+                <decoration states="hover">
+                    <WebShadow type="inner" opacity="1" width="10" color="100,80,250" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="panel" id="shape-detection-bounds-panel" extends="transparent">
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <LineBorder stroke="basic;1;round;round;0;4,5" color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="panel" id="shape-detection-decorated-panel" extends="transparent">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="25" />
+                    <WebShadow type="outer" width="25" />
+                    <LineBorder stroke="basic;1;round;round;0;4,5" color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

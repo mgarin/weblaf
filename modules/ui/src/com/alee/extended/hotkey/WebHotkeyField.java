@@ -19,9 +19,7 @@ package com.alee.extended.hotkey;
 
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageKeyListener;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.Value;
+import com.alee.managers.language.LM;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -34,14 +32,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 09.04.2010 Time: 12:26:09
+ * @author Mikle Garin
  */
-
 public class WebHotkeyField extends WebTextField
 {
+    /**
+     * todo 1. Requires rework into a proper standalone component
+     * todo 2. Add LanguageUpdater support
+     */
+
     private static final String EMPTY_HOTKEY_TEXT_KEY = "weblaf.ex.hotkeyfield.press";
 
-    private List<Integer> keys = new ArrayList<Integer> ();
+    private final List<Integer> keys = new ArrayList<Integer> ();
 
     private boolean isCtrl = false;
     private boolean isAlt = false;
@@ -62,7 +64,7 @@ public class WebHotkeyField extends WebTextField
         addKeyListener ( new KeyAdapter ()
         {
             @Override
-            public void keyPressed ( KeyEvent e )
+            public void keyPressed ( final KeyEvent e )
             {
                 if ( keys.size () == 0 )
                 {
@@ -75,13 +77,13 @@ public class WebHotkeyField extends WebTextField
             }
 
             @Override
-            public void keyReleased ( KeyEvent e )
+            public void keyReleased ( final KeyEvent e )
             {
                 keys.remove ( ( Object ) e.getKeyCode () );
                 updateFieldText ();
             }
 
-            private void updateKeys ( KeyEvent e )
+            private void updateKeys ( final KeyEvent e )
             {
                 isCtrl = SwingUtils.isCtrl ( e );
                 isAlt = SwingUtils.isAlt ( e );
@@ -96,23 +98,11 @@ public class WebHotkeyField extends WebTextField
         addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mouseClicked ( MouseEvent e )
+            public void mouseClicked ( final MouseEvent e )
             {
-                if ( e.getClickCount () == 2 && isEnabled () )
+                if ( isEnabled () && SwingUtils.isDoubleClick ( e ) )
                 {
                     clearData ();
-                    updateFieldText ();
-                }
-            }
-        } );
-
-        LanguageManager.addLanguageKeyListener ( EMPTY_HOTKEY_TEXT_KEY, new LanguageKeyListener ()
-        {
-            @Override
-            public void languageKeyUpdated ( String key, Value value )
-            {
-                if ( isEmpty () )
-                {
                     updateFieldText ();
                 }
             }
@@ -121,9 +111,10 @@ public class WebHotkeyField extends WebTextField
 
     public void updateFieldText ()
     {
-        setText ( isEmpty () ? LanguageManager.get ( EMPTY_HOTKEY_TEXT_KEY ) : getHotkeyData ().toString () );
+        setText ( isEmpty () ? LM.get ( EMPTY_HOTKEY_TEXT_KEY ) : getHotkeyData ().toString () );
     }
 
+    @Override
     public boolean isEmpty ()
     {
         return keyCode == null && ( !isCtrl && !isAlt && !isShift || keys.size () == 0 );
@@ -134,7 +125,7 @@ public class WebHotkeyField extends WebTextField
         return isCtrl;
     }
 
-    public void setCtrl ( boolean ctrl )
+    public void setCtrl ( final boolean ctrl )
     {
         isCtrl = ctrl;
     }
@@ -144,7 +135,7 @@ public class WebHotkeyField extends WebTextField
         return isAlt;
     }
 
-    public void setAlt ( boolean alt )
+    public void setAlt ( final boolean alt )
     {
         isAlt = alt;
     }
@@ -154,7 +145,7 @@ public class WebHotkeyField extends WebTextField
         return isShift;
     }
 
-    public void setShift ( boolean shift )
+    public void setShift ( final boolean shift )
     {
         isShift = shift;
     }
@@ -164,7 +155,7 @@ public class WebHotkeyField extends WebTextField
         return keyCode;
     }
 
-    public void setKeyCode ( Integer keyCode )
+    public void setKeyCode ( final Integer keyCode )
     {
         this.keyCode = keyCode;
         updateFieldText ();
@@ -172,15 +163,10 @@ public class WebHotkeyField extends WebTextField
 
     public HotkeyData getHotkeyData ()
     {
-        HotkeyData hd = new HotkeyData ();
-        hd.setKeyCode ( getKeyCode () );
-        hd.setCtrl ( isCtrl () );
-        hd.setAlt ( isAlt () );
-        hd.setShift ( isShift () );
-        return hd;
+        return new HotkeyData ( isCtrl (), isAlt (), isShift (), getKeyCode () );
     }
 
-    public void setHotkeyData ( HotkeyData hotkeyData )
+    public void setHotkeyData ( final HotkeyData hotkeyData )
     {
         setCtrl ( hotkeyData.isCtrl () );
         setAlt ( hotkeyData.isAlt () );

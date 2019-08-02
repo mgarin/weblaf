@@ -17,83 +17,178 @@
 
 package com.alee.extended.checkbox;
 
-import com.alee.laf.checkbox.CheckIcon;
-import com.alee.laf.checkbox.WebCheckBoxUI;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import java.awt.*;
 
 /**
- * Custom UI for WebTristateCheckBox component.
+ * Custom UI for {@link WebTristateCheckBox} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
-
-public class WebTristateCheckBoxUI extends WebCheckBoxUI
+public class WebTristateCheckBoxUI<C extends WebTristateCheckBox> extends WTristateCheckBoxUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Returns an instance of the WebTristateCheckBoxUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Component painter.
+     */
+    @DefaultPainter ( TristateCheckBoxPainter.class )
+    protected ITristateCheckBoxPainter painter;
+
+    /**
+     * Returns an instance of the {@link WebTristateCheckBoxUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTristateCheckBoxUI
+     * @return instance of the {@link WebTristateCheckBoxUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTristateCheckBoxUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Initial check state
-        checkIcon.setState ( getTristateCheckbox ().getState () );
+        // Applying skin
+        StyleManager.installSkin ( button );
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( button );
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public Shape getShape ()
+    {
+        return PainterSupport.getShape ( button, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( button, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( button );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        PainterSupport.setMargin ( button, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( button );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PainterSupport.setPadding ( button, padding );
     }
 
     /**
-     * Returns tristate checkbox which uses this UI.
+     * Returns checkbox painter.
      *
-     * @return tristate checkbox which uses this UI
+     * @return checkbox painter
      */
-    protected WebTristateCheckBox getTristateCheckbox ()
+    public Painter getPainter ()
     {
-        return ( WebTristateCheckBox ) checkBox;
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
-     * {@inheritDoc}
+     * Sets checkbox painter.
+     * Pass null to remove checkbox painter.
+     *
+     * @param painter new checkbox painter
      */
-    @Override
-    protected CheckIcon createCheckStateIcon ()
+    public void setPainter ( final Painter painter )
     {
-        return new TristateCheckIcon ( getTristateCheckbox () );
+        PainterSupport.setPainter ( button, new Consumer<ITristateCheckBoxPainter> ()
+        {
+            @Override
+            public void accept ( final ITristateCheckBoxPainter newPainter )
+            {
+                WebTristateCheckBoxUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ITristateCheckBoxPainter.class, AdaptiveTristateCheckBoxPainter.class );
     }
 
     /**
-     * {@inheritDoc}
+     * Returns icon bounds.
+     *
+     * @return icon bounds
      */
-    @Override
-    protected void performStateChanged ()
+    public Rectangle getIconBounds ()
     {
-        final WebTristateCheckBox tcb = getTristateCheckbox ();
-        if ( isAnimationAllowed () && isAnimated () && tcb.isEnabled () )
+        if ( painter != null )
         {
-            checkIcon.setNextState ( tcb.getState () );
-            checkTimer.start ();
+            return painter.getIconBounds ();
         }
-        else
+        return null;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
+    }
+
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
         {
-            checkTimer.stop ();
-            checkIcon.setState ( tcb.getState () );
-            tcb.repaint ();
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

@@ -24,7 +24,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class DerivedFontAttributes
 {
     /**
@@ -86,9 +85,6 @@ public class DerivedFontAttributes
         return size;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals ( final Object o )
     {
@@ -106,9 +102,6 @@ public class DerivedFontAttributes
         return Float.compare ( fa.size, size ) == 0 && style == fa.style && !( font == null || !font.equals ( fa.font ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode ()
     {

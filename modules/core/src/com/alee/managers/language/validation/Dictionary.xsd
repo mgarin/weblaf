@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com/Dictionary"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="Record.xsd" />
+    <xs:include schemaLocation="Translations.xsd" />
+
+    <!-- XML dictionary root -->
+    <xs:element name="Dictionary" type="Dictionary" />
+
+    <!-- com.alee.managers.language.data.Dictionary -->
+    <xs:complexType name="Dictionary">
+
+        <!-- Elements -->
+        <xs:sequence minOccurs="1" maxOccurs="1">
+
+            <!-- Elements which position can be mixed -->
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+                <!-- Dictionary records -->
+                <xs:element name="record" type="Record" />
+
+                <!-- Nested dictionaries -->
+                <xs:element name="Dictionary" type="Dictionary" />
+
+            </xs:choice>
+
+            <!-- Information on translations -->
+            <xs:element name="Translations" type="Translations" minOccurs="0" maxOccurs="1" />
+
+        </xs:sequence>
+
+        <!-- Dictionary name -->
+        <xs:attribute name="name" type="xs:string" use="optional" />
+
+        <!-- Dictionary prefix -->
+        <xs:attribute name="prefix" type="xs:string" use="optional" />
+
+    </xs:complexType>
+
+</xs:schema>

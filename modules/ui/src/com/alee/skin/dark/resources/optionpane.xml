@@ -1,0 +1,66 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.optionpane.WebOptionPane -->
+
+    <!-- Option pane -->
+    <style type="optionpane" padding="15,15,15,15">
+        <component>
+            <background>68,68,68</background>
+        </component>
+        <painter />
+
+        <!-- Message area -->
+        <style type="panel" id="message-area" extends="transparent">
+
+            <!-- Icon label -->
+            <style type="label" id="message-icon" extends="icon" />
+
+            <!-- Separator and message area -->
+            <style type="panel" id="real-body" extends="transparent">
+
+                <!-- Separator between icon and message -->
+                <style type="panel" id="separator" extends="transparent">
+                    <component>
+                        <preferredSize>15,1</preferredSize>
+                    </component>
+                </style>
+
+                <!-- Message area -->
+                <style type="panel" id="body" extends="transparent">
+
+                    <!-- Message labels -->
+                    <style type="label" id="message" />
+
+                </style>
+
+            </style>
+
+        </style>
+
+        <!-- Buttons area -->
+        <style type="panel" id="button-area" extends="transparent">
+
+            <!-- Buttons -->
+            <style type="button" id="button" padding="2,10,2,10" />
+            <style type="button" id="yes" extends="button" />
+            <style type="button" id="no" extends="button" />
+            <style type="button" id="ok" extends="button" />
+            <style type="button" id="cancel" extends="button" />
+
+        </style>
+
+    </style>
+
+    <!-- WebLaF-decorated information dialog -->
+    <style type="rootpane" id="information" extends="dialog-decorated" />
+
+    <!-- WebLaF-decorated error dialog -->
+    <style type="rootpane" id="error" extends="dialog-decorated" />
+
+    <!-- WebLaF-decorated question dialog -->
+    <style type="rootpane" id="question" extends="dialog-decorated" />
+
+    <!-- WebLaF-decorated warning dialog -->
+    <style type="rootpane" id="warning" extends="dialog-decorated" />
+
+</skin>

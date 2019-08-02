@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContentLayout.xsd" />
+    <xs:include schemaLocation="../ext/BoxOrientation.xsd" />
+
+    <!-- com.alee.painter.decoration.layout.IconTextLayout -->
+    <xs:complexType name="IconTextLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractContentLayout">
+
+                <!-- Gap between icon and text contents -->
+                <xs:attribute name="gap" type="xs:integer" />
+
+                <!-- Horizontal content alignment -->
+                <xs:attribute name="halign" type="BoxOrientation" />
+
+                <!-- Vertical content alignment -->
+                <xs:attribute name="valign" type="BoxOrientation" />
+
+                <!-- Horizontal text position -->
+                <xs:attribute name="hpos" type="BoxOrientation" />
+
+                <!-- Vertical text position -->
+                <xs:attribute name="vpos" type="BoxOrientation" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

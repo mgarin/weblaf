@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractShadow.xsd" />
+
+    <!-- com.alee.painter.decoration.shadow.WebShadow -->
+    <xs:complexType name="WebShadow">
+        <xs:complexContent>
+            <xs:extension base="AbstractShadow" />
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

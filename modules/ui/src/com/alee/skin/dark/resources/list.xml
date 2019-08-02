@@ -1,0 +1,89 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.list.WebList -->
+
+    <!-- List -->
+    <style type="list">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <ui>
+            <selectionStyle>group</selectionStyle>
+        </ui>
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+
+            <!-- Item background painter -->
+            <itemPainter>
+                <decorations>
+                    <decoration states="unselected,hover" opacity="0.4">
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>55,55,55</color>
+                            <color>25,25,25</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </itemPainter>
+
+            <!-- Selected cells background painter -->
+            <selectionPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>55,55,55</color>
+                            <color>25,25,25</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="disabled" opacity="0.5" />
+                </decorations>
+            </selectionPainter>
+
+        </painter>
+
+        <!-- Default cell renderer label -->
+        <style type="styledlabel" id="renderer" />
+
+        <!-- Text cell renderer label -->
+        <style type="styledlabel" id="text-renderer" extends="renderer" padding="4,6,4,4" />
+
+        <!-- Icon cell renderer label -->
+        <style type="styledlabel" id="icon-renderer" extends="renderer" padding="4,4,4,4" />
+
+        <!-- Text cell editor -->
+        <style type="textfield" id="editor" extends="non-opaque" padding="3,5,3,3">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Non-opaque list -->
+    <style type="list" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent list -->
+    <style type="list" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

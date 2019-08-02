@@ -1,0 +1,47 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.dock.WebDockablePane -->
+
+    <!-- Dockable frame -->
+    <style type="dockablepane" padding="2">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Empty content filler -->
+        <style type="panel" id="empty" extends="transparent" />
+
+        <!-- Floating frames dialog style -->
+        <style type="rootpane" id="floating" extends="dialog">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <WebShadow type="outer" opacity="0.3" width="20" />
+                    </decoration>
+                    <decoration states="focused">
+                        <WebShadow type="outer" opacity="0.5" />
+                    </decoration>
+                    <decoration states="maximized">
+                        <WebShape round="0" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                    <decoration states="unix">
+                        <WebShape round="0" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

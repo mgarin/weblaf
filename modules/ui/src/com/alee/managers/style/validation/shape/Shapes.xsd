@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="WebShape.xsd" />
+    <xs:include schemaLocation="BoundsShape.xsd" />
+    <xs:include schemaLocation="EllipseShape.xsd" />
+    <xs:include schemaLocation="ArrowShape.xsd" />
+    <xs:include schemaLocation="BreadcrumbElementShape.xsd" />
+
+    <!-- IShape implementations -->
+    <xs:group name="Shapes">
+        <xs:choice>
+
+            <!-- Basic supported shapes -->
+            <xs:element name="WebShape" type="WebShape" />
+            <xs:element name="BoundsShape" type="BoundsShape" />
+            <xs:element name="EllipseShape" type="EllipseShape" />
+            <xs:element name="ArrowShape" type="ArrowShape" />
+            <xs:element name="BreadcrumbElementShape" type="BreadcrumbElementShape" />
+
+            <!-- Any custom shape -->
+            <xs:any processContents="skip" />
+
+        </xs:choice>
+    </xs:group>
+
+</xs:schema>

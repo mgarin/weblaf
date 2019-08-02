@@ -18,45 +18,33 @@
 package com.alee.laf.list.editor;
 
 /**
- * ListEditListener interface adapter.
+ * Adapter for {@link ListEditListener}.
  *
  * @author Mikle Garin
  */
-
 public abstract class ListEditAdapter implements ListEditListener
 {
-    /**
-     * Informs that editing was started.
-     *
-     * @param index edited cell index
-     */
     @Override
-    public void editStarted ( int index )
+    public void editStarted ( final int index )
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 
-    /**
-     * Informs that editing was finished.
-     *
-     * @param index    edited cell index
-     * @param oldValue old cell value
-     * @param newValue new cell value
-     */
     @Override
-    public void editFinished ( int index, Object oldValue, Object newValue )
+    public void editFinished ( final int index, final Object oldValue, final Object newValue )
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 
-    /**
-     * Informs that editing was cancelled.
-     *
-     * @param index edited cell index
-     */
     @Override
-    public void editCancelled ( int index )
+    public void editCancelled ( final int index )
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 }

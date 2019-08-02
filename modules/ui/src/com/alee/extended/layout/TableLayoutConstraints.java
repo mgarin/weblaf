@@ -60,7 +60,6 @@ import java.util.StringTokenizer;
  * @author Daniel E. Barbalace
  * @version 2.0 March 14, 2004
  */
-
 public class TableLayoutConstraints implements TableLayoutConstants
 {
     /**
@@ -99,7 +98,7 @@ public class TableLayoutConstraints implements TableLayoutConstants
      * @param col column where the component is placed
      * @param row row where the component is placed
      */
-    public TableLayoutConstraints ( int col, int row )
+    public TableLayoutConstraints ( final int col, final int row )
     {
         this ( col, row, col, row, FULL, FULL );
     }
@@ -112,7 +111,7 @@ public class TableLayoutConstraints implements TableLayoutConstants
      * @param col2 column where lower-right cornor of the component is placed
      * @param row2 row where lower-right cornor of the component is placed
      */
-    public TableLayoutConstraints ( int col1, int row1, int col2, int row2 )
+    public TableLayoutConstraints ( final int col1, final int row1, final int col2, final int row2 )
     {
         this ( col1, row1, col2, row2, FULL, FULL );
     }
@@ -127,7 +126,7 @@ public class TableLayoutConstraints implements TableLayoutConstants
      * @param hAlign horizontal justification of a component in a single cell
      * @param vAlign vertical justification of a component in a single cell
      */
-    public TableLayoutConstraints ( int col1, int row1, int col2, int row2, int hAlign, int vAlign )
+    public TableLayoutConstraints ( final int col1, final int row1, final int col2, final int row2, final int hAlign, final int vAlign )
     {
         this.col1 = col1;
         this.row1 = row1;
@@ -164,7 +163,7 @@ public class TableLayoutConstraints implements TableLayoutConstants
      *                    justification". It is also acceptable to delimit the paramters with spaces
      *                    instead of commas.
      */
-    public TableLayoutConstraints ( String constraints )
+    public TableLayoutConstraints ( final String constraints )
     {
         // Use default values for any parameter not specified or specified
         // incorrectly.  The default parameters place the component in a single
@@ -177,8 +176,8 @@ public class TableLayoutConstraints implements TableLayoutConstants
         vAlign = FULL;
 
         // Parse constraints using spaces or commas
-        StringTokenizer st = new StringTokenizer ( constraints, ", " );
-        int numToken = st.countTokens ();
+        final StringTokenizer st = new StringTokenizer ( constraints, ", " );
+        final int numToken = st.countTokens ();
 
         try
         {
@@ -212,34 +211,34 @@ public class TableLayoutConstraints implements TableLayoutConstants
                 tokenA = st.nextToken ();
                 tokenB = st.nextToken ();
             }
-            catch ( NumberFormatException error )
+            catch ( final NumberFormatException error )
             {
                 col2 = col1;
                 row2 = row1;
             }
 
             // Check if token means horizontally justification the component
-            if ( ( tokenA.equalsIgnoreCase ( "L" ) ) || ( tokenA.equalsIgnoreCase ( "LEFT" ) ) )
+            if ( tokenA.equalsIgnoreCase ( "L" ) || tokenA.equalsIgnoreCase ( "LEFT" ) )
             {
                 hAlign = LEFT;
             }
-            else if ( ( tokenA.equalsIgnoreCase ( "C" ) ) || ( tokenA.equalsIgnoreCase ( "CENTER" ) ) )
+            else if ( tokenA.equalsIgnoreCase ( "C" ) || tokenA.equalsIgnoreCase ( "CENTER" ) )
             {
                 hAlign = CENTER;
             }
-            else if ( ( tokenA.equalsIgnoreCase ( "F" ) ) || ( tokenA.equalsIgnoreCase ( "FULL" ) ) )
+            else if ( tokenA.equalsIgnoreCase ( "F" ) || tokenA.equalsIgnoreCase ( "FULL" ) )
             {
                 hAlign = FULL;
             }
-            else if ( ( tokenA.equalsIgnoreCase ( "R" ) ) || ( tokenA.equalsIgnoreCase ( "RIGHT" ) ) )
+            else if ( tokenA.equalsIgnoreCase ( "R" ) || tokenA.equalsIgnoreCase ( "RIGHT" ) )
             {
                 hAlign = RIGHT;
             }
-            else if ( ( tokenA.equalsIgnoreCase ( "LD" ) ) || ( tokenA.equalsIgnoreCase ( "LEADING" ) ) )
+            else if ( tokenA.equalsIgnoreCase ( "LD" ) || tokenA.equalsIgnoreCase ( "LEADING" ) )
             {
                 hAlign = LEADING;
             }
-            else if ( ( tokenA.equalsIgnoreCase ( "TL" ) ) || ( tokenA.equalsIgnoreCase ( "TRAILING" ) ) )
+            else if ( tokenA.equalsIgnoreCase ( "TL" ) || tokenA.equalsIgnoreCase ( "TRAILING" ) )
             {
                 hAlign = TRAILING;
             }
@@ -249,19 +248,19 @@ public class TableLayoutConstraints implements TableLayoutConstants
             }
 
             // Check if token means horizontally justification the component
-            if ( ( tokenB.equalsIgnoreCase ( "T" ) ) || ( tokenB.equalsIgnoreCase ( "TOP" ) ) )
+            if ( tokenB.equalsIgnoreCase ( "T" ) || tokenB.equalsIgnoreCase ( "TOP" ) )
             {
                 vAlign = TOP;
             }
-            else if ( ( tokenB.equalsIgnoreCase ( "C" ) ) || ( tokenB.equalsIgnoreCase ( "CENTER" ) ) )
+            else if ( tokenB.equalsIgnoreCase ( "C" ) || tokenB.equalsIgnoreCase ( "CENTER" ) )
             {
                 vAlign = CENTER;
             }
-            else if ( ( tokenB.equalsIgnoreCase ( "F" ) ) || ( tokenB.equalsIgnoreCase ( "FULL" ) ) )
+            else if ( tokenB.equalsIgnoreCase ( "F" ) || tokenB.equalsIgnoreCase ( "FULL" ) )
             {
                 vAlign = FULL;
             }
-            else if ( ( tokenB.equalsIgnoreCase ( "B" ) ) || ( tokenB.equalsIgnoreCase ( "BOTTOM" ) ) )
+            else if ( tokenB.equalsIgnoreCase ( "B" ) || tokenB.equalsIgnoreCase ( "BOTTOM" ) )
             {
                 vAlign = BOTTOM;
             }
@@ -270,10 +269,10 @@ public class TableLayoutConstraints implements TableLayoutConstants
                 throw new RuntimeException ();
             }
         }
-        catch ( NoSuchElementException ignored )
+        catch ( final NoSuchElementException ignored )
         {
         }
-        catch ( RuntimeException error )
+        catch ( final RuntimeException error )
         {
             throw new IllegalArgumentException ( "Expected constraints in one of the following formats:\n" +
                     "  col1, row1\n  col1, row1, col2, row2\n" +
@@ -301,27 +300,11 @@ public class TableLayoutConstraints implements TableLayoutConstants
      * @return a string in the form "row 1, column 1, row 2, column 2, horizontal justification,
      * vertical justification"
      */
+    @Override
     public String toString ()
     {
-        StringBuilder buffer = new StringBuilder ();
-
-        buffer.append ( col1 );
-        buffer.append ( ", " );
-        buffer.append ( row1 );
-        buffer.append ( ", " );
-
-        buffer.append ( col2 );
-        buffer.append ( ", " );
-        buffer.append ( row2 );
-        buffer.append ( ", " );
-
         final String h[] = { "left", "center", "full", "right", "leading", "trailing" };
         final String v[] = { "top", "center", "full", "bottom" };
-
-        buffer.append ( h[ hAlign ] );
-        buffer.append ( ", " );
-        buffer.append ( v[ vAlign ] );
-
-        return buffer.toString ();
+        return String.valueOf ( col1 ) + ", " + row1 + ", " + col2 + ", " + row2 + ", " + h[ hAlign ] + ", " + v[ vAlign ];
     }
 }

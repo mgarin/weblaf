@@ -24,9 +24,8 @@ import com.alee.utils.GraphicsUtils;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 14:32
+ * @author Mikle Garin
  */
-
 public class FadeTransitionEffect extends DefaultTransitionEffect
 {
     private static final String FADE_MINIMUM_SPEED = "FADE_MINIMUM_SPEED";
@@ -47,7 +46,7 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
         return get ( FADE_MINIMUM_SPEED, 0.02f );
     }
 
-    public void setMinimumSpeed ( float speed )
+    public void setMinimumSpeed ( final float speed )
     {
         put ( FADE_MINIMUM_SPEED, speed );
     }
@@ -57,13 +56,13 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
         return get ( FADE_SPEED, 0.1f );
     }
 
-    public void setSpeed ( float speed )
+    public void setSpeed ( final float speed )
     {
         put ( FADE_SPEED, speed );
     }
 
     @Override
-    public void prepareAnimation ( ImageTransition imageTransition )
+    public void prepareAnimation ( final ImageTransition imageTransition )
     {
         // Updating settings
         minimumSpeed = getMinimumSpeed ();
@@ -77,7 +76,7 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public boolean performAnimation ( ImageTransition imageTransition )
+    public boolean performAnimation ( final ImageTransition imageTransition )
     {
         if ( opacity < 1f )
         {
@@ -97,10 +96,10 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public void paint ( Graphics2D g2d, ImageTransition transition )
+    public void paint ( final Graphics2D g2d, final ImageTransition transition )
     {
         // Fading out old image
-        Composite old = GraphicsUtils.setupAlphaComposite ( g2d, 1f - opacity );
+        final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, 1f - opacity );
         g2d.drawImage ( transition.getCurrentImage (), 0, 0, transition.getWidth (), transition.getHeight (), null );
         GraphicsUtils.restoreComposite ( g2d, old );
 

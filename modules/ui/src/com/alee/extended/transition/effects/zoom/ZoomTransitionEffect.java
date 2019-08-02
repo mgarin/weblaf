@@ -25,9 +25,8 @@ import com.alee.utils.GraphicsUtils;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 18:56
+ * @author Mikle Garin
  */
-
 public class ZoomTransitionEffect extends DefaultTransitionEffect
 {
     private static final String ZOOM_MINIMUM_SPEED = "ZOOM_MINIMUM_SPEED";
@@ -51,7 +50,7 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
         return get ( ZOOM_MINIMUM_SPEED, 0.02f );
     }
 
-    public void setMinimumSpeed ( float speed )
+    public void setMinimumSpeed ( final float speed )
     {
         put ( ZOOM_MINIMUM_SPEED, speed );
     }
@@ -61,7 +60,7 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
         return get ( ZOOM_SPEED, 0.1f );
     }
 
-    public void setSpeed ( float speed )
+    public void setSpeed ( final float speed )
     {
         put ( ZOOM_SPEED, speed );
     }
@@ -71,7 +70,7 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
         return get ( ZOOM_FADE, true );
     }
 
-    public void setFade ( boolean transparent )
+    public void setFade ( final boolean transparent )
     {
         put ( ZOOM_FADE, transparent );
     }
@@ -81,13 +80,13 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
         return get ( ZOOM_TYPE, ZoomType.random );
     }
 
-    public void setType ( ZoomType type )
+    public void setType ( final ZoomType type )
     {
         put ( ZOOM_TYPE, type );
     }
 
     @Override
-    public void prepareAnimation ( ImageTransition imageTransition )
+    public void prepareAnimation ( final ImageTransition imageTransition )
     {
         // Updating settings
         minimumSpeed = getMinimumSpeed ();
@@ -102,7 +101,7 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public boolean performAnimation ( ImageTransition imageTransition )
+    public boolean performAnimation ( final ImageTransition imageTransition )
     {
         if ( size < 1f )
         {
@@ -122,19 +121,19 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public void paint ( Graphics2D g2d, ImageTransition transition )
+    public void paint ( final Graphics2D g2d, final ImageTransition transition )
     {
-        int tw = transition.getWidth ();
-        int th = transition.getHeight ();
+        final int tw = transition.getWidth ();
+        final int th = transition.getHeight ();
         if ( type.equals ( ZoomType.zoomIn ) )
         {
             // Painting old image behind the new one
             g2d.drawImage ( transition.getCurrentImage (), 0, 0, tw, th, null );
 
             // Fading in new image
-            Composite old = GraphicsUtils.setupAlphaComposite ( g2d, size, isFade () );
-            int w = Math.round ( tw * size );
-            int h = Math.round ( th * size );
+            final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, size, isFade () );
+            final int w = Math.round ( tw * size );
+            final int h = Math.round ( th * size );
             g2d.drawImage ( transition.getOtherImage (), tw / 2 - w / 2, th / 2 - h / 2, w, h, null );
             GraphicsUtils.restoreComposite ( g2d, old, isFade () );
         }
@@ -144,9 +143,9 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
             g2d.drawImage ( transition.getOtherImage (), 0, 0, tw, th, null );
 
             // Fading in new image
-            Composite old = GraphicsUtils.setupAlphaComposite ( g2d, 1f - size, isFade () );
-            int w = Math.round ( tw * ( 1f - size ) );
-            int h = Math.round ( th * ( 1f - size ) );
+            final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, 1f - size, isFade () );
+            final int w = Math.round ( tw * ( 1f - size ) );
+            final int h = Math.round ( th * ( 1f - size ) );
             g2d.drawImage ( transition.getCurrentImage (), tw / 2 - w / 2, th / 2 - h / 2, w, h, null );
             GraphicsUtils.restoreComposite ( g2d, old, isFade () );
         }

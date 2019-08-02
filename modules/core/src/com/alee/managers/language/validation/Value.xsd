@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="Text.xsd" />
+
+    <!-- com.alee.managers.language.data.Value -->
+    <xs:complexType name="Value" mixed="true">
+
+        <!-- Elements which position can be mixed -->
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+            <!-- Value texts -->
+            <xs:element name="text" type="Text" />
+
+        </xs:choice>
+
+        <!-- Value language -->
+        <!-- TODO: More string rules can be defined for this field -->
+        <xs:attribute name="lang" type="xs:string" use="required" />
+
+        <!-- Singular text state -->
+        <xs:attribute name="state" type="xs:string" use="optional" />
+
+        <!-- Singular text mnemonic -->
+        <xs:attribute type="xs:string" name="mnemonic" use="optional" />
+
+    </xs:complexType>
+
+</xs:schema>

@@ -24,10 +24,11 @@ package com.alee.utils.xml;
  *
  * @author Mikle Garin
  */
-
 public interface AliasProvider
 {
-    // Method name for extenal usage
+    /**
+     * Method name for external usage.
+     */
     public static final String methodName = "provideAliases";
 
     /**

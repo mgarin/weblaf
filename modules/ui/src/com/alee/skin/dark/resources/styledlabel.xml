@@ -1,0 +1,103 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.label.WebStyledLabel -->
+
+    <!-- Styled label -->
+    <style type="styledlabel">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout>
+                        <LabelIcon constraints="icon" />
+                        <StyledLabelText constraints="text" color="245,245,245" />
+                    </LabelLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <LabelLayout>
+                        <StyledLabelText color="180,180,180" ignoreStyleColors="true" />
+                    </LabelLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Label containing only icon -->
+    <style type="styledlabel" id="icon">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <LabelIcon />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Label with text shadow -->
+    <style type="styledlabel" id="shadow">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout>
+                        <StyledLabelText shadow="true" shadowColor="black" />
+                    </LabelLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Vertical label -->
+    <style type="styledlabel" id="vertical-ccw">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout rotation="counterClockwise" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="styledlabel" id="vertical-cw">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout rotation="clockwise" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Label with tag decoration -->
+    <style type="styledlabel" id="tag" padding="2,5,2,5">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="3" />
+                    <LineBorder color="68,72,74" />
+                    <ColorBackground color="77,81,83" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Separator label -->
+    <style type="styledlabel" id="separator">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout>
+                        <Stripes constraints="left-space" id="left-space" orientation="horizontal" padding="0,0,0,4" size="10,1">
+                            <Stripe>
+                                <color>10,10,10</color>
+                            </Stripe>
+                        </Stripes>
+                        <Stripes constraints="right-space" id="right-space" orientation="horizontal" padding="0,4,0,0" size="10,1">
+                            <Stripe>
+                                <color>10,10,10</color>
+                            </Stripe>
+                        </Stripes>
+                    </LabelLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

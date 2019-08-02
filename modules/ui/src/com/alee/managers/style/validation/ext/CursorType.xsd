@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.utils.swing.CursorType -->
+    <xs:simpleType name="CursorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="common" />
+            <xs:enumeration value="crosshair" />
+            <xs:enumeration value="text" />
+            <xs:enumeration value="wait" />
+            <xs:enumeration value="swResize" />
+            <xs:enumeration value="seResize" />
+            <xs:enumeration value="nwResize" />
+            <xs:enumeration value="neResize" />
+            <xs:enumeration value="nResize" />
+            <xs:enumeration value="sResize" />
+            <xs:enumeration value="wResize" />
+            <xs:enumeration value="eResize" />
+            <xs:enumeration value="hand" />
+            <xs:enumeration value="move" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.painter.decoration.shape.Round -->
+    <xs:simpleType name="Round">
+        <xs:restriction base="xs:string">
+
+            <!-- Round for all corners -->
+            <xs:pattern value="^[0-9]+$" />
+
+            <!-- Round for topLeft+bottomRight and topRight+bottomLeft corners -->
+            <xs:pattern value="^[0-9]+,[0-9]+$" />
+
+            <!-- Round for topLeft, topRight+bottomLeft and bottomRight corners -->
+            <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+$" />
+
+            <!-- Round for all separate corners -->
+            <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+,[0-9]+$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContent.xsd" />
+    <xs:include schemaLocation="../background/Backgrounds.xsd" />
+
+    <!-- com.alee.painter.decoration.content.RoundRectangle -->
+    <xs:complexType name="RoundRectangle">
+        <xs:complexContent>
+            <xs:extension base="AbstractContent">
+
+                <!-- Background settings -->
+                <xs:group ref="Backgrounds" minOccurs="1" maxOccurs="unbounded" />
+
+                <!-- Corners rounding -->
+                <xs:attribute name="round" type="xs:integer" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

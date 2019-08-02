@@ -17,230 +17,99 @@
 
 package com.alee.laf.label;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.api.jdk.Consumer;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
- * Custom UI for JLabel component.
+ * Custom UI for {@link JLabel} component.
  *
  * @author Mikle Garin
  */
-
-public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
+public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    /**
-     * Style settings.
-     */
-    protected Insets margin = WebLabelStyle.margin;
-    protected boolean drawShade = WebLabelStyle.drawShade;
-
     /**
      * Component painter.
      */
-    protected LabelPainter painter;
+    @DefaultPainter ( LabelPainter.class )
+    protected ILabelPainter painter;
 
     /**
-     * Label listeners.
-     */
-    protected PropertyChangeListener propertyChangeListener;
-
-    /**
-     * Runtime variables.
-     */
-    protected String styleId = null;
-    protected JLabel label;
-
-    /**
-     * Returns an instance of the WebLabelUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebLabelUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebLabelUI
+     * @return instance of the {@link WebLabelUI}
      */
-    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Saving label to local variable
-        label = ( JLabel ) c;
-
-        // Default settings
-        SwingUtils.setOrientation ( label );
-
         // Applying skin
-        StyleManager.applySkin ( label );
-
-        // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        label.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        StyleManager.installSkin ( label );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Removing listeners
-        label.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-
         // Uninstalling applied skin
-        StyleManager.removeSkin ( label );
+        StyleManager.uninstallSkin ( label );
 
-        // Cleaning up reference
-        label = null;
-
-        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public Shape getShape ()
     {
-        return styleId;
+        return PainterSupport.getShape ( label, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final String id )
+    public boolean isShapeDetectionEnabled ()
     {
-        this.styleId = id;
-        StyleManager.applySkin ( label );
+        return PainterSupport.isShapeDetectionEnabled ( label, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void updateBorder ()
+    public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        LafUtils.updateBorder ( label, margin, painter );
+        PainterSupport.setShapeDetectionEnabled ( label, painter, enabled );
     }
 
-    /**
-     * Returns whether text shade is displayed or not.
-     *
-     * @return true if text shade is displayed, false otherwise
-     */
-    public boolean isDrawShade ()
-    {
-        return drawShade;
-    }
-
-    /**
-     * Sets whether text shade should be displayed or not.
-     *
-     * @param drawShade whether text shade should be displayed or not
-     */
-    public void setDrawShade ( final boolean drawShade )
-    {
-        this.drawShade = drawShade;
-        if ( painter != null )
-        {
-            painter.setDrawShade ( drawShade );
-        }
-    }
-
-    /**
-     * Returns component margin.
-     *
-     * @return component margin
-     */
+    @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( label );
     }
 
-    /**
-     * Sets component margin.
-     *
-     * @param margin component margin
-     */
+    @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        updateBorder ();
+        PainterSupport.setMargin ( label, margin );
     }
 
-    /**
-     * Returns text shade color.
-     *
-     * @return text shade color
-     */
-    public Color getShadeColor ()
+    @Override
+    public Insets getPadding ()
     {
-        final Color shadeColor = StyleManager.getPainterPropertyValue ( label, "shadeColor" );
-        return shadeColor != null ? shadeColor : WebLabelStyle.shadeColor;
+        return PainterSupport.getPadding ( label );
     }
 
-    /**
-     * Sets text shade color.
-     *
-     * @param shadeColor text shade color
-     */
-    public void setShadeColor ( final Color shadeColor )
+    @Override
+    public void setPadding ( final Insets padding )
     {
-        StyleManager.setCustomPainterProperty ( label, "shadeColor", shadeColor );
-    }
-
-    /**
-     * Returns label transparency.
-     *
-     * @return label transparency
-     */
-    public Float getTransparency ()
-    {
-        final Float transparency = StyleManager.getPainterPropertyValue ( label, "transparency" );
-        return transparency != null ? transparency : WebLabelStyle.transparency;
-    }
-
-    /**
-     * Sets label transparency.
-     *
-     * @param transparency label transparency
-     */
-    public void setTransparency ( final Float transparency )
-    {
-        StyleManager.setCustomPainterProperty ( label, "transparency", transparency );
+        PainterSupport.setPadding ( label, padding );
     }
 
     /**
@@ -250,7 +119,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      */
     public Painter getPainter ()
     {
-        return LafUtils.getAdaptedPainter ( painter );
+        return PainterSupport.getPainter ( painter );
     }
 
     /**
@@ -261,56 +130,46 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      */
     public void setPainter ( final Painter painter )
     {
-        // Creating adaptive painter if required
-        final LabelPainter properPainter = LafUtils.getProperPainter ( painter, LabelPainter.class, AdaptiveLabelPainter.class );
-
-        // Properly updating painter
-        PainterSupport.uninstallPainter ( label, this.painter );
-        final Painter oldPainter = this.painter;
-        this.painter = properPainter;
-        applyPainterSettings ( properPainter );
-        PainterSupport.installPainter ( label, properPainter );
-
-        // Firing painter change event
-        // This is made using reflection because required method is protected within Component class
-        LafUtils.firePainterChanged ( label, oldPainter, properPainter );
-    }
-
-    /**
-     * Applies UI settings to this specific painter.
-     *
-     * @param painter label painter
-     */
-    protected void applyPainterSettings ( final LabelPainter painter )
-    {
-        if ( painter != null )
+        PainterSupport.setPainter ( label, new Consumer<ILabelPainter> ()
         {
-            // UI settings
-            painter.setDrawShade ( drawShade );
-        }
+            @Override
+            public void accept ( final ILabelPainter newPainter )
+            {
+                WebLabelUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ILabelPainter.class, AdaptiveLabelPainter.class );
     }
 
-    /**
-     * Paints label.
-     *
-     * @param g graphics
-     * @param c component
-     */
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
+    }
+
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return LafUtils.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

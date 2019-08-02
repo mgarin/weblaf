@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractSvgAttributeAdjustment.xsd" />
+
+    <!-- com.alee.extended.svg.SvgStroke -->
+    <xs:complexType name="SvgStroke">
+        <xs:complexContent>
+            <xs:extension base="AbstractSvgAttributeAdjustment">
+
+                <!-- Stroke color -->
+                <xs:attribute name="color" type="java.awt:Color" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

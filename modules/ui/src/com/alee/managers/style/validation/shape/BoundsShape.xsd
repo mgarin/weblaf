@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractShape.xsd" />
+
+    <!-- com.alee.painter.decoration.shape.BoundsShape -->
+    <xs:complexType name="BoundsShape">
+        <xs:complexContent>
+            <xs:extension base="AbstractShape" />
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

@@ -24,16 +24,17 @@ import java.util.EventListener;
  * Global focus tracking listener.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-FocusManager">How to use FocusManager</a>
+ * @see FocusManager
  */
-
 public interface GlobalFocusListener extends EventListener
 {
     /**
      * Informs about global focus changes within the application.
-     * In case focus goes outside the application or comes from other application one of components might be null.
+     * In case focus goes outside the application or comes from other application one of components might be {@code null}.
      *
-     * @param oldFocus previously focused component
-     * @param newFocus currently focused component
+     * @param oldFocus previously focused {@link Component}
+     * @param newFocus currently focused {@link Component}
      */
     public void focusChanged ( Component oldFocus, Component newFocus );
 }

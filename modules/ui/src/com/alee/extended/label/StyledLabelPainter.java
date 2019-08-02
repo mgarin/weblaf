@@ -17,47 +17,23 @@
 
 package com.alee.extended.label;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.laf.label.AbstractLabelPainter;
+import com.alee.painter.decoration.IDecoration;
 
 /**
- * Base interface for WebStyledLabel component painters.
+ * Basic painter for {@link WebStyledLabel} component.
+ * It is used as {@link WStyledLabelUI} default painter.
  *
+ * @param <C> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
-public interface StyledLabelPainter<E extends WebStyledLabel> extends Painter<E>, SpecificPainter
+public class StyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI<C>, D extends IDecoration<C, D>>
+        extends AbstractLabelPainter<C, U, D> implements IStyledLabelPainter<C, U>
 {
     /**
-     * Sets preferred row count.
-     *
-     * @param rows new preferred row count
+     * Implementation is used completely from {@link AbstractLabelPainter}.
      */
-    public void setPreferredRowCount ( final int rows );
-
-    /**
-     * Sets whether color settings should be ignored or not.
-     *
-     * @param ignore whether color settings should be ignored or not
-     */
-    public void setIgnoreColorSettings ( final boolean ignore );
-
-    /**
-     * Sets subscript and superscript font ratio.
-     *
-     * @param ratio new subscript and superscript font ratio
-     */
-    public void setScriptFontRatio ( final float ratio );
-
-    /**
-     * Sets truncated text suffix.
-     *
-     * @param suffix new truncated text suffix
-     */
-    public void setTruncatedTextSuffix ( final String suffix );
-
-    /**
-     * Forces text ranges to be updated according to current style ranges and text.
-     */
-    public void updateTextRanges ();
 }

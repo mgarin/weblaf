@@ -17,15 +17,16 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
-import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
+import com.alee.managers.icon.Icons;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
@@ -38,19 +39,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 07.08.11 Time: 15:44
+ * @author Mikle Garin
  */
-
 public class WebFileChooserField extends WebPanel
 {
-    public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFileChooserField.class.getResource ( "icons/cross.png" ) );
-
-    private final List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
-
-    private final List<File> selectedFiles = new ArrayList<File> ();
+    /**
+     * todo 1. Create UI for this class and move the implementation there
+     * todo 2. Optimize chosen elements by replacing scroll with list
+     */
 
     /**
-     * Whether multiply files selection allowed or not.
+     * Whether multiple files selection allowed or not.
      */
     protected boolean multiSelectionEnabled = false;
 
@@ -61,45 +60,62 @@ public class WebFileChooserField extends WebPanel
     private boolean showChooseButton = true;
     private boolean filesDropEnabled = true;
 
-    private WebFileChooser webFileChooser = null;
+    /**
+     * Selected files list.
+     */
+    private final List<File> selectedFiles = new ArrayList<File> ();
 
+    /**
+     * UI elements.
+     */
     private final WebPanel contentPanel;
     private final WebScrollPane scroll;
-    private WebButton chooseButton;
+    private final WebButton chooseButton;
+    private final WebFileChooser webFileChooser;
 
     public WebFileChooserField ()
     {
-        this ( null );
+        this ( StyleId.auto, null );
     }
 
     public WebFileChooserField ( final Window parent )
     {
-        this ( parent, true );
+        this ( StyleId.auto, parent, true );
     }
 
     public WebFileChooserField ( final boolean showChooseButton )
     {
-        this ( null, showChooseButton );
+        this ( StyleId.auto, null, showChooseButton );
     }
 
     public WebFileChooserField ( final Window owner, final boolean showChooseButton )
     {
-        super ( true );
+        this ( StyleId.auto, owner, showChooseButton );
+    }
+
+    public WebFileChooserField ( final StyleId id )
+    {
+        this ( id, null );
+    }
+
+    public WebFileChooserField ( final StyleId id, final Window parent )
+    {
+        this ( id, parent, true );
+    }
+
+    public WebFileChooserField ( final StyleId id, final boolean showChooseButton )
+    {
+        this ( id, null, showChooseButton );
+    }
+
+    public WebFileChooserField ( final StyleId id, final Window owner, final boolean showChooseButton )
+    {
+        super ( id, new BorderLayout ( 0, 0 ) );
 
         this.showChooseButton = showChooseButton;
 
-        setOpaque ( false );
-        setLayout ( new BorderLayout ( 0, 0 ) );
-        setWebColoredBackground ( false );
-        setPaintFocus ( true );
-        setMargin ( -1 );
-        setBackground ( Color.WHITE );
-
-        contentPanel = new WebPanel ();
-        contentPanel.setOpaque ( false );
-
         // Files TransferHandler
-        setTransferHandler ( new FileDragAndDropHandler ()
+        setTransferHandler ( new FilesTransferHandler ( false, filesDropEnabled )
         {
             @Override
             public boolean isDropEnabled ()
@@ -116,6 +132,22 @@ public class WebFileChooserField extends WebPanel
             }
         } );
 
+        // Files list scroll
+        scroll = new WebScrollPane ( StyleId.filechooserfieldContentScroll.at ( this ) )
+        {
+            @Override
+            public Dimension getPreferredSize ()
+            {
+                final Dimension ps = super.getPreferredSize ();
+                ps.height = contentPanel.getPreferredSize ().height;
+                return ps;
+            }
+        };
+
+        // Files list panel
+        contentPanel = new WebPanel ( StyleId.filechooserfieldContentPanel.at ( scroll ) );
+        scroll.setViewportView ( contentPanel );
+
         // For wide content scrolling
         contentPanel.addMouseWheelListener ( new MouseWheelListener ()
         {
@@ -127,21 +159,6 @@ public class WebFileChooserField extends WebPanel
             }
         } );
 
-        scroll = new WebScrollPane ( contentPanel, false )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                final Dimension ps = super.getPreferredSize ();
-                ps.height = contentPanel.getPreferredSize ().height;
-                return ps;
-            }
-        };
-        scroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-        scroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_NEVER );
-        scroll.setMargin ( 1 );
-        scroll.setOpaque ( false );
-        scroll.getViewport ().setOpaque ( false );
         add ( scroll, BorderLayout.CENTER );
 
         if ( this.showChooseButton )
@@ -161,14 +178,7 @@ public class WebFileChooserField extends WebPanel
                 }
             } );
 
-            chooseButton = new WebButton ( "..." );
-            chooseButton.setRound ( WebFileChooserField.this.getRound () );
-            chooseButton.setLeftRightSpacing ( StyleConstants.smallLeftRightSpacing );
-            chooseButton.setDrawFocus ( false );
-            chooseButton.setDrawLeft ( false );
-            chooseButton.setDrawLeftLine ( true );
-            chooseButton.setRolloverDarkBorderOnly ( false );
-            chooseButton.setShadeWidth ( 0 );
+            chooseButton = new WebButton ( StyleId.filechooserfieldChooseButton.at ( this ), "..." );
             chooseButton.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -195,9 +205,20 @@ public class WebFileChooserField extends WebPanel
             } );
             add ( chooseButton, BorderLayout.LINE_END );
         }
+        else
+        {
+            chooseButton = null;
+            webFileChooser = null;
+        }
 
         // Updating layout
         updateContentLayout ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.filechooserfield;
     }
 
     private void updateContentLayout ()
@@ -367,30 +388,47 @@ public class WebFileChooserField extends WebPanel
 
     private List<AbstractFileFilter> getAvailableFilters ()
     {
-        return webFileChooser == null ? null : webFileChooser.getAvailableFilters ();
+        return webFileChooser != null ? webFileChooser.getFileChooserPanel ().getAvailableFilters () : null;
     }
 
     public class FilePlate extends WebPanel
     {
         public FilePlate ( final File file )
         {
-            super ( true );
+            super ( StyleId.filechooserfieldFilePlate.at ( contentPanel ), new BorderLayout () );
 
-            setLayout ( new BorderLayout () );
-            setPaintSides ( false, false, false, true );
-            setShadeWidth ( 0 );
-            setMargin ( 0, 3, 0, 1 );
-            setFocusable ( true );
+            final String actual = FileUtils.getDisplayFileName ( file );
+            final String display = showFileExtensions || file.isDirectory () ? actual : FileUtils.getFileNamePart ( actual );
+            final String absolute = file.getAbsolutePath ();
 
             // File name label
-            final String actualFileName = FileUtils.getDisplayFileName ( file );
-            final String displayFileName =
-                    showFileExtensions || file.isDirectory () ? actualFileName : FileUtils.getFileNamePart ( actualFileName );
-            final String absolutePath = file.getAbsolutePath ();
-            final WebLabel fileName = new WebLabel ( showFileShortName ? displayFileName : absolutePath );
+            final StyleId nameId = StyleId.filechooserfieldFileNameLabel.at ( FilePlate.this );
+            final WebLabel fileName = new WebLabel ( nameId, showFileShortName ? display : absolute );
             fileName.setIcon ( showFileIcon ? FileUtils.getFileIcon ( file, false ) : null );
-            fileName.setMargin ( 0, 0, 0, 2 );
             add ( fileName, BorderLayout.CENTER );
+
+            // Remove button
+            if ( showRemoveButton )
+            {
+                final StyleId removeId = StyleId.filechooserfieldFileRemoveButton.at ( FilePlate.this );
+                final WebButton remove = new WebButton ( removeId, Icons.crossSmall );
+                remove.addActionListener ( new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        // Remove file
+                        selectedFiles.remove ( file );
+                        contentPanel.remove ( FilePlate.this );
+                        WebFileChooserField.this.revalidate ();
+                        WebFileChooserField.this.repaint ();
+
+                        // Inform that selected files changed
+                        fireSelectionChanged ( selectedFiles );
+                    }
+                } );
+                add ( new CenterPanel ( remove ), BorderLayout.LINE_END );
+            }
 
             addMouseListener ( new MouseAdapter ()
             {
@@ -405,7 +443,7 @@ public class WebFileChooserField extends WebPanel
                         if ( multiSelectionEnabled )
                         {
                             showShortName = !showShortName;
-                            fileName.setText ( showShortName ? displayFileName : absolutePath );
+                            fileName.setText ( showShortName ? display : absolute );
                         }
                         else
                         {
@@ -424,34 +462,6 @@ public class WebFileChooserField extends WebPanel
                     scrollToPlate ();
                 }
             } );
-
-            // Remove button
-            if ( showRemoveButton )
-            {
-                final WebButton remove = new WebButton ( CROSS_ICON );
-                remove.setLeftRightSpacing ( 0 );
-                remove.setInnerShadeWidth ( 2 );
-                remove.setRound ( StyleConstants.smallRound );
-                remove.setShadeWidth ( StyleConstants.shadeWidth );
-                remove.setFocusable ( false );
-                remove.setRolloverDecoratedOnly ( true );
-                remove.addActionListener ( new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        // Remove file
-                        selectedFiles.remove ( file );
-                        contentPanel.remove ( FilePlate.this );
-                        WebFileChooserField.this.revalidate ();
-                        WebFileChooserField.this.repaint ();
-
-                        // Inform that selected files changed
-                        fireSelectionChanged ( selectedFiles );
-                    }
-                } );
-                add ( new CenterPanel ( remove ), BorderLayout.LINE_END );
-            }
         }
 
         private void scrollToPlate ()
@@ -465,17 +475,17 @@ public class WebFileChooserField extends WebPanel
 
     public void addSelectedFilesListener ( final FilesSelectionListener listener )
     {
-        listeners.add ( listener );
+        listenerList.add ( FilesSelectionListener.class, listener );
     }
 
     public void removeSelectedFilesListener ( final FilesSelectionListener listener )
     {
-        listeners.remove ( listener );
+        listenerList.remove ( FilesSelectionListener.class, listener );
     }
 
     private void fireSelectionChanged ( final List<File> selectedFiles )
     {
-        for ( final FilesSelectionListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final FilesSelectionListener listener : listenerList.getListeners ( FilesSelectionListener.class ) )
         {
             listener.selectionChanged ( selectedFiles );
         }

@@ -33,9 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 15:15
+ * @author Mikle Garin
  */
-
 public class BlocksTransitionEffect extends DefaultTransitionEffect
 {
     private static final String BLOCK_TYPE = "BLOCK_TYPE";
@@ -124,9 +123,9 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
 
         // Updating runtime values
         int h = imageTransition.getHeight ();
-        h = ( h % size == 0 ? h : ( h / size ) * size + size );
+        h = h % size == 0 ? h : ( h / size ) * size + size;
         int w = imageTransition.getWidth ();
-        w = ( w % size == 0 ? w : ( w / size ) * size + size );
+        w = w % size == 0 ? w : ( w / size ) * size + size;
         final int cols = w / size;
         final int rows = h / size;
         progress = new int[ cols ][ rows ];
@@ -338,7 +337,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
                         final int dx2 = dx1 + w;
                         final int dy2 = dy1 + h;
 
-                        // Single image block with custom transparency
+                        // Single image block with custom opacity
                         final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, ( float ) block / size, block < size );
                         g2d.drawImage ( transition.getOtherImage (), dx1, dy1, dx2, dy2, dx1, dy1, dx2, dy2, null );
                         GraphicsUtils.restoreComposite ( g2d, old, block < size );

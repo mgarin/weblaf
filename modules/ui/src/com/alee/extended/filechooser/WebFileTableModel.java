@@ -17,24 +17,22 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 
 import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Data model for WebFileTable.
+ * {@link javax.swing.table.TableModel} implementation for {@link WebFileTable}.
  *
  * @author Mikle Garin
  */
-
-public class WebFileTableModel extends AbstractTableModel implements WebFileTableColumns
+public class WebFileTableModel extends AbstractTableModel implements FileTableColumns
 {
     /**
      * List of displayed column ids.
@@ -44,7 +42,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * List of displayed files.
      */
-    private List<File> files;
+    private final List<File> files;
 
     /**
      * Constructs empty model with default displayed columns.
@@ -61,7 +59,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      */
     public WebFileTableModel ( final String... columns )
     {
-        this ( new ArrayList<File> (), Arrays.asList ( columns ) );
+        this ( new ArrayList<File> (), CollectionUtils.asList ( columns ) );
     }
 
     /**
@@ -77,12 +75,22 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * Constructs model with specified displayed columns and files.
      *
+     * @param files files to display
+     */
+    public WebFileTableModel ( final Collection<File> files )
+    {
+        this ( files, CollectionUtils.copy ( DEFAULT_COLUMNS ) );
+    }
+
+    /**
+     * Constructs model with specified displayed columns and files.
+     *
      * @param files   files to display
      * @param columns columns to display
      */
     public WebFileTableModel ( final Collection<File> files, final String... columns )
     {
-        this ( files, Arrays.asList ( columns ) );
+        this ( files, CollectionUtils.asList ( columns ) );
     }
 
     /**
@@ -191,63 +199,42 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
         return columns.indexOf ( column );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getColumnName ( final int column )
     {
-        return LanguageManager.get ( columns.get ( column ) );
+        return LM.get ( columns.get ( column ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getRowCount ()
     {
         return files.size ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getColumnCount ()
     {
         return columns.size ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object getValueAt ( final int rowIndex, final int columnIndex )
     {
         return files.get ( rowIndex );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setValueAt ( final Object aValue, final int rowIndex, final int columnIndex )
     {
         files.set ( rowIndex, ( File ) aValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class<?> getColumnClass ( final int columnIndex )
     {
         return File.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isCellEditable ( final int rowIndex, final int columnIndex )
     {

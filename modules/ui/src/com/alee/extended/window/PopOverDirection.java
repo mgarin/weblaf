@@ -17,6 +17,8 @@
 
 package com.alee.extended.window;
 
+import com.alee.utils.UtilityException;
+
 import javax.swing.*;
 
 /**
@@ -26,7 +28,6 @@ import javax.swing.*;
  * @author Mikle Garin
  * @see WebPopOver
  */
-
 public enum PopOverDirection
 {
     /**
@@ -62,14 +63,19 @@ public enum PopOverDirection
         {
             case up:
                 return new PopOverDirection[]{ up, down, right, left };
+
             case down:
                 return new PopOverDirection[]{ down, up, right, left };
+
             case left:
                 return new PopOverDirection[]{ left, right, down, up };
+
             case right:
                 return new PopOverDirection[]{ right, left, down, up };
+
+            default:
+                throw new UtilityException ( "Unsupported PopOverDirection: " + this );
         }
-        return null;
     }
 
     /**
@@ -84,13 +90,18 @@ public enum PopOverDirection
         {
             case up:
                 return SwingConstants.BOTTOM;
+
             case down:
                 return SwingConstants.TOP;
+
             case left:
                 return ltr ? SwingConstants.RIGHT : SwingConstants.LEFT;
+
             case right:
                 return ltr ? SwingConstants.LEFT : SwingConstants.RIGHT;
+
+            default:
+                throw new UtilityException ( "Unsupported PopOverDirection: " + this );
         }
-        return -1;
     }
 }

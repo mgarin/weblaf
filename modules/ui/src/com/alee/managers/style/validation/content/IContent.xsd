@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AcceleratorText.xsd" />
+    <xs:include schemaLocation="BorderLayout.xsd" />
+    <xs:include schemaLocation="OverflowLineLayout.xsd" />
+    <xs:include schemaLocation="AlignLayout.xsd" />
+    <xs:include schemaLocation="ButtonIcon.xsd" />
+    <xs:include schemaLocation="ButtonLayout.xsd" />
+    <xs:include schemaLocation="ButtonText.xsd" />
+    <xs:include schemaLocation="CheckIcon.xsd" />
+    <xs:include schemaLocation="DashFocus.xsd" />
+    <xs:include schemaLocation="Gripper.xsd" />
+    <xs:include schemaLocation="IconTextLayout.xsd" />
+    <xs:include schemaLocation="LabelIcon.xsd" />
+    <xs:include schemaLocation="LabelLayout.xsd" />
+    <xs:include schemaLocation="LabelText.xsd" />
+    <xs:include schemaLocation="MenuItemLayout.xsd" />
+    <xs:include schemaLocation="SimpleMenuItemLayout.xsd" />
+    <xs:include schemaLocation="MixedIcon.xsd" />
+    <xs:include schemaLocation="ProgressBarText.xsd" />
+    <xs:include schemaLocation="RadioIcon.xsd" />
+    <xs:include schemaLocation="RoundRectangle.xsd" />
+    <xs:include schemaLocation="SeparatorStripes.xsd" />
+    <xs:include schemaLocation="SetIcon.xsd" />
+    <xs:include schemaLocation="SimpleButtonIcon.xsd" />
+    <xs:include schemaLocation="Stripes.xsd" />
+    <xs:include schemaLocation="StyledButtonText.xsd" />
+    <xs:include schemaLocation="StyledLabelText.xsd" />
+    <xs:include schemaLocation="StyledToolTipText.xsd" />
+    <xs:include schemaLocation="ToolTipText.xsd" />
+
+    <!-- IContent implementations -->
+    <xs:group name="IContent">
+        <xs:choice>
+
+            <!-- Basic supported contents -->
+            <xs:element name="AcceleratorText" type="AcceleratorText" />
+            <xs:element name="BorderLayout" type="BorderLayout" />
+            <xs:element name="OverflowLineLayout" type="OverflowLineLayout" />
+            <xs:element name="AlignLayout" type="AlignLayout" />
+            <xs:element name="ButtonIcon" type="ButtonIcon" />
+            <xs:element name="ButtonLayout" type="ButtonLayout" />
+            <xs:element name="ButtonText" type="ButtonText" />
+            <xs:element name="CheckIcon" type="CheckIcon" />
+            <xs:element name="DashFocus" type="DashFocus" />
+            <xs:element name="Gripper" type="Gripper" />
+            <xs:element name="IconTextLayout" type="IconTextLayout" />
+            <xs:element name="LabelIcon" type="LabelIcon" />
+            <xs:element name="LabelLayout" type="LabelLayout" />
+            <xs:element name="LabelText" type="LabelText" />
+            <xs:element name="MenuItemLayout" type="MenuItemLayout" />
+            <xs:element name="SimpleMenuItemLayout" type="SimpleMenuItemLayout" />
+            <xs:element name="MixedIcon" type="MixedIcon" />
+            <xs:element name="ProgressBarText" type="ProgressBarText" />
+            <xs:element name="RadioIcon" type="RadioIcon" />
+            <xs:element name="RoundRectangle" type="RoundRectangle" />
+            <xs:element name="SeparatorStripes" type="SeparatorStripes" />
+            <xs:element name="SetIcon" type="SetIcon" />
+            <xs:element name="SimpleButtonIcon" type="SimpleButtonIcon" />
+            <xs:element name="Stripes" type="Stripes" />
+            <xs:element name="StyledButtonText" type="StyledButtonText" />
+            <xs:element name="StyledLabelText" type="StyledLabelText" />
+            <xs:element name="StyledToolTipText" type="StyledToolTipText" />
+            <xs:element name="ToolTipText" type="ToolTipText" />
+
+            <!-- Any custom content -->
+            <xs:any processContents="skip" />
+
+        </xs:choice>
+    </xs:group>
+
+</xs:schema>

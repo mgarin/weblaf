@@ -1,0 +1,24 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.filechooser.WebFileDrop -->
+
+    <!-- Container panel -->
+    <style type="panel" id="filedrop" padding="2,2,2,2">
+        <component>
+            <background>106,110,112</background>
+        </component>
+
+        <!-- Single file panel -->
+        <style type="panel" id="plate" padding="0,3,0,0">
+
+            <!-- File name label -->
+            <style type="label" id="file" />
+
+            <!-- Remove button -->
+            <style type="button" id="remove" extends="icon-hover" />
+
+        </style>
+
+    </style>
+
+</skin>

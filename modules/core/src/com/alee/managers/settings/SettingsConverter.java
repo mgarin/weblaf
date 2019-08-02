@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.xml.XMLChar;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -26,18 +25,18 @@ import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Custom XStream converter for SettingsManager groups.
+ * Custom XStream converter for {@link SettingsGroup}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see com.alee.managers.settings.SettingsManager
+ * @see SettingsManager
  */
-
 public class SettingsConverter extends ReflectionConverter
 {
     /**
@@ -46,28 +45,22 @@ public class SettingsConverter extends ReflectionConverter
     private static final String NULL_TYPE = "null";
 
     /**
-     * Constructs SettingsConverter with the specified mapper and reflection provider.
+     * Constructs new {@link SettingsConverter}.
      *
-     * @param mapper             mapper
-     * @param reflectionProvider reflection provider
+     * @param mapper             {@link Mapper}
+     * @param reflectionProvider {@link ReflectionProvider}
      */
     public SettingsConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( SettingsGroup.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
@@ -78,7 +71,7 @@ public class SettingsConverter extends ReflectionConverter
         writer.addAttribute ( "name", settingsGroup.getName () );
 
         // Converting settings
-        for ( final Map.Entry<String, Object> entry : settingsGroup.getSettings ().entrySet () )
+        for ( final Map.Entry<String, Object> entry : settingsGroup.settings ().entrySet () )
         {
             // If key text is proper for node name it will be used, otherwise it will be separated
             final String key = entry.getKey ();
@@ -122,9 +115,6 @@ public class SettingsConverter extends ReflectionConverter
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
@@ -132,7 +122,7 @@ public class SettingsConverter extends ReflectionConverter
         final SettingsGroup settingsGroup = new SettingsGroup ( reader.getAttribute ( "id" ), reader.getAttribute ( "name" ) );
 
         // Collecting readable settings
-        final Map<String, Object> settings = new HashMap<String, Object> ();
+        final HashMap<String, Object> settings = new HashMap<String, Object> ();
         while ( reader.hasMoreChildren () )
         {
             // Read next map entry
@@ -158,8 +148,8 @@ public class SettingsConverter extends ReflectionConverter
             else
             {
                 // Reading new settings style
-                final String keyAttribue = reader.getAttribute ( "key" );
-                final String key = keyAttribue != null ? keyAttribue : nodeName;
+                final String keyAttribute = reader.getAttribute ( "key" );
+                final String key = keyAttribute != null ? keyAttribute : nodeName;
                 try
                 {
                     // Determining data type
@@ -177,13 +167,11 @@ public class SettingsConverter extends ReflectionConverter
                         settings.put ( key, context.convertAnother ( settings, type ) );
                     }
                 }
-                catch ( final Throwable e )
+                catch ( final Exception e )
                 {
-                    if ( SettingsManager.isLoggingEnabled () )
-                    {
-                        Log.error ( this, "Unable to load settings entry for group \"" +
-                                settingsGroup.getName () + "\" under key \"" + key + "\" due to unexpected exception:", e );
-                    }
+                    final String msg = "Unable to load settings entry for group '%s' under key '%s' due to unexpected exception";
+                    final String fmsg = String.format ( msg, settingsGroup.getName (), key );
+                    LoggerFactory.getLogger ( SettingsConverter.class ).error ( fmsg, e );
                 }
             }
             reader.moveUp ();

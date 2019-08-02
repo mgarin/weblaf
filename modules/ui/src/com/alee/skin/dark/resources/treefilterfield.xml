@@ -1,0 +1,39 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.tree.WebTreeFilterField -->
+
+    <!-- Tree filter field -->
+    <style type="textfield" id="treefilterfield">
+
+        <!-- Settings menu button -->
+        <style type="button" id="settings" extends="undecorated" padding="0,2,0,2">
+            <component>
+                <focusable>false</focusable>
+            </component>
+        </style>
+
+    </style>
+
+    <!-- Non-opaque tree filter field -->
+    <style type="textfield" id="treefilterfield-non-opaque" extends="treefilterfield">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent tree filter field -->
+    <style type="textfield" id="treefilterfield-transparent" extends="treefilterfield-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

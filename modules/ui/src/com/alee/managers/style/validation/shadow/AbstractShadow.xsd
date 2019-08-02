@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="ShadowType.xsd" />
+
+    <!-- com.alee.painter.decoration.shadow.AbstractShadow -->
+    <xs:complexType name="AbstractShadow">
+
+        <!-- Shadow type -->
+        <xs:attribute name="type" type="ShadowType" />
+
+        <!-- Merge overwrite setting -->
+        <xs:attribute name="overwrite" type="xs:boolean" />
+
+        <!-- Shadow opacity -->
+        <xs:attribute name="opacity" type="xs:float" />
+
+        <!-- Shadow width -->
+        <xs:attribute name="width" type="xs:integer" />
+
+        <!-- Shadow color -->
+        <xs:attribute name="color" type="java.awt:Color" />
+
+    </xs:complexType>
+
+</xs:schema>

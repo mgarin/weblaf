@@ -1,0 +1,115 @@
+/*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.alee.extended.accordion;
+
+import com.alee.api.annotations.NotNull;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
+ * @see WebAccordion
+ * @see WebAccordionModel
+ */
+public interface AccordionModel extends Serializable
+{
+    /**
+     * Installs this {@link AccordionModel} into specified {@link WebAccordion}.
+     *
+     * @param accordion {@link WebAccordion} this model should be installed into
+     */
+    public void install ( @NotNull WebAccordion accordion );
+
+    /**
+     * Uninstalls this {@link AccordionModel} from the specified {@link WebAccordion}.
+     *
+     * @param accordion {@link WebAccordion} this model should be uninstalled from
+     */
+    public void uninstall ( @NotNull WebAccordion accordion );
+
+    /**
+     * Returns {@link AccordionState}.
+     * Note that returned states will only contain states for panes that are actually available in {@link WebAccordion} at the time.
+     * All other states will be trimmed to avoid piling up unnecessary junk in the saved state.
+     * The only exception is when model is not yet installed anywhere, in that case all available states will be returned.
+     *
+     * @return {@link AccordionState}
+     */
+    @NotNull
+    public AccordionState getAccordionState ();
+
+    /**
+     * Sets {@link AccordionState}.
+     * Note that provided states will be set "as is" to avoid trimming state for any lazy-loaded panes.
+     *
+     * @param state {@link AccordionState}
+     */
+    public void setAccordionState ( @NotNull AccordionState state );
+
+    /**
+     * Returns {@link List} of expanded {@link AccordionPane}s.
+     *
+     * @return {@link List} of expanded {@link AccordionPane}s
+     */
+    @NotNull
+    public List<AccordionPane> getExpanded ();
+
+    /**
+     * Returns whether or not {@link AccordionPane} with the specified identifier is expanded.
+     *
+     * @param id {@link AccordionPane} identifier
+     * @return {@code true} if {@link AccordionPane} with the specified identifier is expanded, {@code false} otherwise
+     */
+    public boolean isExpanded ( @NotNull String id );
+
+    /**
+     * Asks model to expand {@link AccordionPane} with the specified identifier.
+     *
+     * @param id       {@link AccordionPane} identifier
+     * @param animated whether or not transition should be animated
+     * @return {@code true} if {@link AccordionPane} was successfully expanded, {@code false} otherwise
+     */
+    public boolean expand ( @NotNull String id, boolean animated );
+
+    /**
+     * Returns {@link List} of collapsed {@link AccordionPane}s
+     *
+     * @return {@link List} of collapsed {@link AccordionPane}s
+     */
+    @NotNull
+    public List<AccordionPane> getCollapsed ();
+
+    /**
+     * Returns whether or not {@link AccordionPane} with the specified identifier is collapsed.
+     *
+     * @param id {@link AccordionPane} identifier
+     * @return {@code true} if {@link AccordionPane} with the specified identifier is collapsed, {@code false} otherwise
+     */
+    public boolean isCollapsed ( @NotNull String id );
+
+    /**
+     * Asks model to collapse {@link AccordionPane} with the specified identifier.
+     *
+     * @param id       {@link AccordionPane} identifier
+     * @param animated whether or not transition should be animated
+     * @return {@code true} if {@link AccordionPane} was successfully collapsed, {@code false} otherwise
+     */
+    public boolean collapse ( @NotNull String id, boolean animated );
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.lang="java.lang"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.managers.icon.data.AbstractIconData -->
+    <xs:complexType name="AbstractIconData">
+
+        <!-- Adjustments -->
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+            <!-- Any custom adjustments -->
+            <xs:any processContents="skip" />
+
+        </xs:choice>
+
+        <!-- Icon set identifier -->
+        <xs:attribute name="id" type="xs:string" use="required" />
+
+        <!-- Class which specified icon paths are relative to -->
+        <xs:attribute name="nearClass" type="java.lang:Class" use="optional" />
+
+        <!-- Icon file path -->
+        <xs:attribute name="path" type="xs:string" use="required" />
+
+    </xs:complexType>
+
+</xs:schema>

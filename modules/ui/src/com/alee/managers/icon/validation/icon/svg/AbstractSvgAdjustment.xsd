@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="../IconAdjustment.xsd" />
+
+    <!-- com.alee.extended.svg.AbstractSvgAdjustment -->
+    <xs:complexType name="AbstractSvgAdjustment">
+        <xs:complexContent>
+            <xs:extension base="IconAdjustment">
+
+                <!-- SVG element selector -->
+                <xs:attribute name="selector" type="xs:string" use="required" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

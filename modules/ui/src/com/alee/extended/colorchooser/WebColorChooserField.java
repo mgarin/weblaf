@@ -18,7 +18,6 @@
 package com.alee.extended.colorchooser;
 
 import com.alee.extended.image.WebImage;
-import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
@@ -27,17 +26,16 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.ColorChooserListener;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.label.WebLabel;
-import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.text.WebTextField;
+import com.alee.laf.window.WebWindow;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.log.Log;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.BoundsType;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.*;
 import com.alee.utils.swing.ChooserListener;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +50,6 @@ import java.beans.PropertyChangeListener;
  *
  * @author Mikle Garin
  */
-
 public class WebColorChooserField extends WebTextField
 {
     /**
@@ -108,26 +105,32 @@ public class WebColorChooserField extends WebTextField
 
     public WebColorChooserField ()
     {
-        this ( Color.WHITE );
+        this ( StyleId.colorchooserfield, Color.WHITE );
     }
 
     public WebColorChooserField ( final Color color )
     {
-        super ();
+        this ( StyleId.colorchooserfield, color );
+    }
+
+    public WebColorChooserField ( final StyleId id )
+    {
+        this ( id, Color.WHITE );
+    }
+
+    public WebColorChooserField ( final StyleId id, final Color color )
+    {
+        super ( id );
 
         // Field settings
-        updateMargin ();
         setHorizontalAlignment ( CENTER );
 
         // Eyedropper tool
         updateEyedropper ();
 
         // Trailing color choose button
-        colorButton = new WebButton ( ImageUtils.createColorChooserIcon ( color ) );
-        colorButton.setFocusable ( false );
-        colorButton.setShadeWidth ( 0 );
-        colorButton.setMoveIconOnPress ( false );
-        colorButton.setRolloverDecoratedOnly ( true );
+        final StyleId colorButtonId = StyleId.colorchooserfieldColorButton.at ( this );
+        colorButton = new WebButton ( colorButtonId, ImageUtils.createColorChooserIcon ( color ) );
         colorButton.setCursor ( Cursor.getDefaultCursor () );
         colorButton.addActionListener ( new ActionListener ()
         {
@@ -139,7 +142,7 @@ public class WebColorChooserField extends WebTextField
         } );
         setTrailingComponent ( colorButton );
 
-        // Color update lsiteners
+        // Color update listeners
         addActionListener ( new ActionListener ()
         {
             @Override
@@ -233,13 +236,6 @@ public class WebColorChooserField extends WebTextField
         updateFieldType ();
     }
 
-    @Override
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        super.setDrawBorder ( drawBorder );
-        updateMargin ();
-    }
-
     /**
      * protected update methods
      */
@@ -258,11 +254,11 @@ public class WebColorChooserField extends WebTextField
             try
             {
                 final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
-                Color newColor = hex ? ColorUtils.parseHexColor ( current ) : ColorUtils.parseRgbColor ( current );
+                Color newColor = hex ? ColorUtils.fromHex ( current ) : ColorUtils.fromRGB ( current );
                 if ( newColor != null )
                 {
                     // todo Ignoring alpha for now
-                    newColor = ColorUtils.removeAlpha ( newColor );
+                    newColor = ColorUtils.opaque ( newColor );
 
                     // Apply new value
                     setColorImpl ( newColor );
@@ -273,7 +269,7 @@ public class WebColorChooserField extends WebTextField
                     updateViewFromColor ();
                 }
             }
-            catch ( final Throwable e )
+            catch ( final Exception e )
             {
                 // Restore old value
                 updateViewFromColor ();
@@ -304,13 +300,13 @@ public class WebColorChooserField extends WebTextField
     protected String getColorText ( final Color color )
     {
         final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
-        return hex ? ColorUtils.getHexColor ( color ) : color.getRed () + "," + color.getGreen () + "," + color.getBlue ();
+        return hex ? ColorUtils.toHex ( color ) : color.getRed () + "," + color.getGreen () + "," + color.getBlue ();
     }
 
-    protected void updateMargin ()
-    {
-        setMargin ( isDrawBorder () ? new Insets ( -1, 0, -1, -1 ) : new Insets ( 0, 0, 0, 0 ) );
-    }
+    //    protected void updateMargin ()
+    //    {
+    //        setMargin ( isDrawBorder () ? new Insets ( -1, 0, -1, -1 ) : new Insets ( 0, 0, 0, 0 ) );
+    //    }
 
     /**
      * Eyedropper chooser
@@ -344,7 +340,7 @@ public class WebColorChooserField extends WebTextField
             }
             catch ( final AWTException e )
             {
-                Log.error ( this, e );
+                LoggerFactory.getLogger ( WebColorChooserField.class ).error ( e.toString (), e );
             }
             if ( robot != null )
             {
@@ -353,7 +349,7 @@ public class WebColorChooserField extends WebTextField
                     private boolean shouldUpdateColor;
 
                     private WebWindow window;
-                    private WebPanel screen;
+                    private JComponent screen;
                     private WebLabel info;
 
                     private boolean updating = false;
@@ -377,10 +373,10 @@ public class WebColorChooserField extends WebTextField
                             window.setVisible ( true );
 
                             // Transferring focus to preview panel
-                            screen.requestFocus ();
+                            screen.requestFocusInWindow ();
 
                             // Updating preview screenshot
-                            updateScreenshot ();
+                            updateScreenView ();
                         }
                     }
 
@@ -393,7 +389,7 @@ public class WebColorChooserField extends WebTextField
                             updateWindowLocation ();
 
                             // Updating preview screenshot
-                            updateScreenshot ();
+                            updateScreenView ();
                         }
                     }
 
@@ -407,7 +403,10 @@ public class WebColorChooserField extends WebTextField
                         }
                     }
 
-                    private void updateScreenshot ()
+                    /**
+                     * Performs screen view update.
+                     */
+                    private void updateScreenView ()
                     {
                         // Simply ignore update if an old one is still running
                         if ( !updating )
@@ -421,7 +420,7 @@ public class WebColorChooserField extends WebTextField
                                 {
                                     if ( screen != null )
                                     {
-                                        final Point p = MouseInfo.getPointerInfo ().getLocation ();
+                                        final Point p = CoreSwingUtils.getMouseLocation ();
                                         screenshot = robot.createScreenCapture (
                                                 new Rectangle ( p.x - eyedropperImageSide / 2, p.y - eyedropperImageSide / 2,
                                                         eyedropperImageSide, eyedropperImageSide ) );
@@ -429,7 +428,14 @@ public class WebColorChooserField extends WebTextField
                                         if ( screen != null )
                                         {
                                             screen.repaint ();
-                                            info.setText ( getColorText ( color ) );
+                                            CoreSwingUtils.invokeLater ( new Runnable ()
+                                            {
+                                                @Override
+                                                public void run ()
+                                                {
+                                                    info.setText ( getColorText ( color ) );
+                                                }
+                                            } );
                                         }
                                         else
                                         {
@@ -473,24 +479,24 @@ public class WebColorChooserField extends WebTextField
                             }
                         } );
 
-                        final AbstractPainter<WebPanel> screenPainter = new AbstractPainter<WebPanel> ()
+                        screen = new JComponent ()
                         {
-                            /**
-                             * {@inheritDoc}
-                             */
                             @Override
-                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebPanel c )
+                            protected void paintComponent ( final Graphics g )
                             {
                                 if ( window.isShowing () && robot != null )
                                 {
+                                    final Graphics2D g2d = ( Graphics2D ) g;
+                                    final Rectangle bounds = BoundsType.margin.bounds ( this );
+
                                     // Screen
                                     g2d.drawImage ( screenshot, bounds.x + 2, bounds.y + 2, bounds.width - 4, bounds.height - 4, null );
 
                                     // Border
                                     g2d.setPaint ( Color.BLACK );
-                                    g2d.drawRect ( 0, 0, bounds.width - 1, bounds.height - 1 );
+                                    g2d.drawRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1 );
                                     g2d.setPaint ( Color.WHITE );
-                                    g2d.drawRect ( 1, 1, bounds.width - 3, bounds.height - 3 );
+                                    g2d.drawRect ( bounds.x + 1, bounds.y + 1, bounds.width - 3, bounds.height - 3 );
 
                                     // Cursor
                                     final int mx = bounds.x + bounds.width / 2;
@@ -506,15 +512,12 @@ public class WebColorChooserField extends WebTextField
                                 }
                             }
                         };
-
-                        screen = new WebPanel ( screenPainter );
                         screen.setFocusable ( true );
                         screen.setPreferredSize ( new Dimension ( eyedropperImageSide * eyedropperImagePixelSize + 4,
                                 eyedropperImageSide * eyedropperImagePixelSize + 4 ) );
                         window.add ( screen, BorderLayout.CENTER );
 
                         info = new WebLabel ( WebLabel.LEADING );
-                        info.setMargin ( 4 );
                         info.setIcon ( new Icon ()
                         {
                             @Override
@@ -544,27 +547,22 @@ public class WebColorChooserField extends WebTextField
                                 return 16;
                             }
                         } );
-                        info.setPainter ( new AbstractPainter<WebLabel> ()
-                        {
-                            /**
-                             * {@inheritDoc}
-                             */
-                            @Override
-                            public Insets getMargin ( final WebLabel c )
-                            {
-                                return new Insets ( 0, 2, 2, 2 );
-                            }
-
-                            /**
-                             * {@inheritDoc}
-                             */
-                            @Override
-                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebLabel c )
-                            {
-                                g2d.setPaint ( Color.BLACK );
-                                g2d.drawRect ( bounds.x, bounds.y - 1, bounds.width - 1, bounds.height );
-                            }
-                        } );
+                        // todo Custom style
+                        //                        info.setPainter ( new AbstractPainter<WebLabel, WebLabelUI> ()
+                        //                        {
+                        //                            @Override
+                        //                            public Insets getBorders ()
+                        //                            {
+                        //                                return new Insets ( 4, 6, 6, 6 );
+                        //                            }
+                        //
+                        //                            @Override
+                        //                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebLabel c, final WebLabelUI ui )
+                        //                            {
+                        //                                g2d.setPaint ( Color.BLACK );
+                        //                                g2d.drawRect ( bounds.x, bounds.y - 1, bounds.width - 1, bounds.height );
+                        //                            }
+                        //                        } );
                         window.add ( info, BorderLayout.SOUTH );
 
                         HotkeyManager.registerHotkey ( screen, Hotkey.ESCAPE, new HotkeyRunnable ()
@@ -583,8 +581,8 @@ public class WebColorChooserField extends WebTextField
 
                     private void updateWindowLocation ()
                     {
-                        final Point p = MouseInfo.getPointerInfo ().getLocation ();
-                        final Rectangle b = window.getGraphicsConfiguration ().getDevice ().getDefaultConfiguration ().getBounds ();
+                        final Point p = CoreSwingUtils.getMouseLocation ();
+                        final Rectangle b = SystemUtils.getDeviceBounds ( p, true );
                         final int ww = window.getWidth ();
                         final int wh = window.getHeight ();
                         final int x = p.x + 20 + ww < b.x + b.width ? p.x + 20 : p.x - 20 - ww;
@@ -614,10 +612,10 @@ public class WebColorChooserField extends WebTextField
 
     protected void showColorChooserPopup ()
     {
-        // Checking that component is eligable for focus request
+        // Checking that component is eligible for focus request
         if ( !requestFocusInWindow () && !isFocusOwner () )
         {
-            // Cancel operation if component is not eligable for focus yet
+            // Cancel operation if component is not eligible for focus yet
             // This might occur if some other component input verifier holds the focus or in some other rare cases
             return;
         }
@@ -628,16 +626,16 @@ public class WebColorChooserField extends WebTextField
         // Create popup if it doesn't exist
         if ( popup == null || colorChooserPanel == null )
         {
-            final Window ancestor = SwingUtils.getWindowAncestor ( this );
+            final Window ancestor = CoreSwingUtils.getWindowAncestor ( this );
+
+            // Popup window
+            popup = new WebPopOver ( ancestor );
+            popup.setPadding ( 5 );
+            popup.setCloseOnFocusLoss ( true );
 
             // Color chooser
             colorChooserPanel = new WebColorChooserPanel ( true );
             colorChooserPanel.setColor ( color );
-
-            // Popup window
-            popup = new WebPopOver ( ancestor );
-            popup.setMargin ( 5 );
-            popup.setCloseOnFocusLoss ( true );
             popup.add ( colorChooserPanel );
 
             // Correct popup positioning
@@ -662,7 +660,7 @@ public class WebColorChooserField extends WebTextField
                     }
                 }
             } );
-            ancestor.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
+            ancestor.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
             {
                 @Override
                 public void propertyChange ( final PropertyChangeEvent evt )
@@ -716,9 +714,9 @@ public class WebColorChooserField extends WebTextField
 
     protected void updatePopupLocation ()
     {
-        final Point los = WebColorChooserField.this.getLocationOnScreen ();
-        final Rectangle gb = popup.getGraphicsConfiguration ().getBounds ();
-        final int shadeWidth = isDrawBorder () ? getShadeWidth () : 0;
+        final Point los = CoreSwingUtils.locationOnScreen ( WebColorChooserField.this );
+        final Rectangle gb = SystemUtils.getDeviceBounds ( popup.getGraphicsConfiguration (), true );
+        final int shadeWidth = /*isDrawBorder () ? getShadeWidth () :*/ 0; // todo check shade width
         final boolean ltr = WebColorChooserField.this.getComponentOrientation ().isLeftToRight ();
         final int w = WebColorChooserField.this.getWidth ();
         final int h = WebColorChooserField.this.getHeight ();
@@ -750,11 +748,11 @@ public class WebColorChooserField extends WebTextField
         final int y;
         if ( los.y + h + popup.getHeight () <= gb.y + gb.height )
         {
-            y = los.y + h + ( isDrawBorder () ? 0 : 1 );
+            y = los.y + h; // + ( isDrawBorder () ? 0 : 1 );
         }
         else
         {
-            y = los.y - popup.getHeight () - ( isDrawBorder () ? 0 : 1 );
+            y = los.y - popup.getHeight (); // - ( isDrawBorder () ? 0 : 1 );
         }
 
         popup.setLocation ( x, y );

@@ -17,70 +17,27 @@
 
 package com.alee.extended.label;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 /**
- * Simple StyledLabelPainter adapter class.
- * It is used to install simple non-specific painters into WebStyledLabelUI.
+ * Simple {@link StyledLabelPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WStyledLabelUI}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
+ * @see WebStyledLabel
  */
-
-public class AdaptiveStyledLabelPainter<E extends WebStyledLabel> extends AdaptivePainter<E> implements StyledLabelPainter<E>
+public final class AdaptiveStyledLabelPainter<C extends WebStyledLabel, U extends WStyledLabelUI<C>>
+        extends AdaptivePainter<C, U> implements IStyledLabelPainter<C, U>
 {
     /**
-     * Constructs new AdaptiveLabelPainter for the specified painter.
+     * Constructs new {@link AdaptiveStyledLabelPainter} for the specified painter.
      *
      * @param painter painter to adapt
      */
     public AdaptiveStyledLabelPainter ( final Painter painter )
     {
         super ( painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPreferredRowCount ( final int rows )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setIgnoreColorSettings ( final boolean ignore )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setScriptFontRatio ( final float ratio )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTruncatedTextSuffix ( final String suffix )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateTextRanges ()
-    {
-        // Ignore this method in adaptive class
     }
 }

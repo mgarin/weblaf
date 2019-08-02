@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="../AbstractIconData.xsd" />
+
+    <!-- javax.swing.ImageIcon -->
+    <!-- com.alee.managers.icon.data.ImageIconData -->
+    <xs:complexType name="ImageIconData">
+        <xs:complexContent>
+            <xs:extension base="AbstractIconData">
+
+                <!-- No extra settings -->
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

@@ -17,11 +17,15 @@
 
 package com.alee.extended.list;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
-import com.alee.laf.list.WebListCellRenderer;
+import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.BoundsType;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.file.FileDescription;
 
 import javax.swing.*;
@@ -31,40 +35,22 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 
 /**
- * Custom list cell renderer for WebFileList component.
- * This renderer is also able to generate image thumbnails for image file elements.
+ * Custom {@link ListCellRenderer} implementation for {@link WebFileList}.
+ * This renderer is able to display extended file information and generate thumbnails for file image files.
  *
  * @author Mikle Garin
  */
-
-public class WebFileListCellRenderer extends WebListCellRenderer
+public class WebFileListCellRenderer extends WebPanel implements ListCellRenderer
 {
     /**
-     * Constant cell sizes.
+     * todo 1. Replace all parts with single component and IContent acting as parts
+     * todo 2. Move thumbnail generation into `WebImage` component as a feature?
      */
-    public static final Dimension tileCellSize = new Dimension ( 220, 65 );
-    public static final Dimension iconCellSize = new Dimension ( 90, 90 );
-
-    /**
-     * Constant cell margins.
-     */
-    public static final Insets tileCellMargin = new Insets ( 6, 6, 5, 8 );
-    public static final Insets iconCellMargin = new Insets ( 5, 5, 8, 5 );
-
-    /**
-     * Image thumbnails size.
-     */
-    public static final int thumbSize = 50;
-
-    /**
-     * Image side length.
-     */
-    public static final int imageSide = 54;
 
     /**
      * Gap between renderer elements.
      */
-    public static final int gap = 4;
+    protected int gap = 4;
 
     /**
      * File list in which this list cell renderer is used.
@@ -98,26 +84,20 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      */
     public WebFileListCellRenderer ( final WebFileList fileList )
     {
-        super ();
+        super ( StyleId.filelistCellRenderer.at ( fileList ) );
 
         this.fileList = fileList;
 
-        iconLabel = new WebLabel ();
-        iconLabel.setHorizontalAlignment ( JLabel.CENTER );
-        iconLabel.setPreferredSize ( new Dimension ( imageSide, imageSide ) );
+        iconLabel = new WebLabel ( StyleId.filelistCellRendererIcon.at ( this ) );
 
-        nameLabel = new WebLabel ();
+        nameLabel = new WebLabel ( StyleId.filelistCellRendererName.at ( this ) );
         nameLabel.setFont ( nameLabel.getFont ().deriveFont ( Font.PLAIN ) );
-        nameLabel.setForeground ( Color.BLACK );
-        nameLabel.setVerticalAlignment ( JLabel.CENTER );
 
-        descriptionLabel = new WebLabel ( WebLabel.LEADING );
+        descriptionLabel = new WebLabel ( StyleId.filelistCellRendererDescription.at ( this ) );
         descriptionLabel.setFont ( descriptionLabel.getFont ().deriveFont ( Font.PLAIN ) );
-        descriptionLabel.setForeground ( Color.GRAY );
 
-        sizeLabel = new WebLabel ( WebLabel.LEADING );
+        sizeLabel = new WebLabel ( StyleId.filelistCellRendererSize.at ( this ) );
         sizeLabel.setFont ( sizeLabel.getFont ().deriveFont ( Font.PLAIN ) );
-        sizeLabel.setForeground ( new Color ( 49, 77, 179 ) );
 
         setLayout ( new FileCellLayout () );
         add ( iconLabel );
@@ -138,7 +118,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
             }
         } );
 
-        fileList.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
+        fileList.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
@@ -168,18 +148,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      */
     public void updateFilesView ()
     {
-        if ( isTilesView () )
-        {
-            nameLabel.setHorizontalAlignment ( JLabel.LEADING );
-            fileList.setFixedCellWidth ( tileCellSize.width );
-            fileList.setFixedCellHeight ( tileCellSize.height );
-        }
-        else
-        {
-            nameLabel.setHorizontalAlignment ( JLabel.CENTER );
-            fileList.setFixedCellWidth ( iconCellSize.width );
-            fileList.setFixedCellHeight ( iconCellSize.height );
-        }
+        nameLabel.setHorizontalAlignment ( isTilesView () ? JLabel.LEADING : JLabel.CENTER );
     }
 
     /**
@@ -222,40 +191,22 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         return descriptionLabel;
     }
 
-    /**
-     * Returns list cell renderer component.
-     *
-     * @param list         tree
-     * @param value        cell value
-     * @param index        cell index
-     * @param isSelected   whether cell is selected or not
-     * @param cellHasFocus whether cell has focus or not
-     * @return cell renderer component
-     */
     @Override
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                     final boolean cellHasFocus )
     {
-        super.getListCellRendererComponent ( list, "", index, isSelected, cellHasFocus );
-
         final FileElement element = ( FileElement ) value;
         final File file = element.getFile ();
 
-        // Proper margin
-        setMargin ( isTilesView () ? tileCellMargin : iconCellMargin );
+        // Updating style ID
+        setStyleId ( getStyleId ( list, value, index, isSelected, cellHasFocus ) );
 
         // Renderer icon
         String imageSize = null;
         if ( iconLabel.isEnabled () )
         {
             // Thumbnail loading
-            synchronized ( element.getLock () )
-            {
-                if ( !element.isThumbnailQueued () && !element.isDisabledThumbnailQueued () )
-                {
-                    ThumbnailGenerator.queueThumbnailLoad ( fileList, element, false );
-                }
-            }
+            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, BoundsType.padding.bounds ( iconLabel ).getSize (), false );
 
             // Image thumbnail
             final ImageIcon thumbnail = element.getEnabledThumbnail ();
@@ -270,13 +221,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         else
         {
             // Disabled thumbnail loading
-            synchronized ( element.getLock () )
-            {
-                if ( !element.isDisabledThumbnailQueued () )
-                {
-                    ThumbnailGenerator.queueThumbnailLoad ( fileList, element, true );
-                }
-            }
+            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, BoundsType.padding.bounds ( iconLabel ).getSize (), true );
 
             // Image disabled thumbnail
             iconLabel.setDisabledIcon ( element.getDisabledThumbnail () );
@@ -287,7 +232,8 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         {
             // Settings description
             final FileDescription fileDescription = FileUtils.getFileDescription ( file, imageSize );
-            nameLabel.setText ( fileDescription.getName () );
+            final String name = fileDescription.getName ();
+            nameLabel.setText ( !TextUtils.isEmpty ( name ) ? name : " " );
 
             // Updating tile view additional description
             if ( isTilesView () )
@@ -321,13 +267,29 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     }
 
     /**
+     * Returns style ID for specific list cell.
+     *
+     * @param list         tree
+     * @param value        cell value
+     * @param index        cell index
+     * @param isSelected   whether cell is selected or not
+     * @param cellHasFocus whether cell has focus or not
+     * @return style ID for specific list cell
+     */
+    protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+                                   final boolean cellHasFocus )
+    {
+        return isTilesView () ? StyleId.filelistTileCellRenderer.at ( list ) : StyleId.filelistIconCellRenderer.at ( list );
+    }
+
+    /**
      * Returns whether list is currently displaying tiles or not.
      *
      * @return true if list is currently displaying tiles, false otherwise
      */
     protected boolean isTilesView ()
     {
-        return fileList.getFileListViewType ().equals ( FileListViewType.tiles );
+        return fileList != null && fileList.getFileListViewType ().equals ( FileListViewType.tiles );
     }
 
     /**
@@ -335,31 +297,19 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      */
     protected class FileCellLayout extends AbstractLayoutManager
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
-        public Dimension preferredLayoutSize ( final Container parent )
+        public void layoutContainer ( @NotNull final Container container )
         {
-            return isTilesView () ? tileCellSize : iconCellSize;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void layoutContainer ( final Container parent )
-        {
-            // Constants for futher layout calculations
+            // Constants for further layout calculations
+            final Dimension cellSize = getSize ();
+            final Dimension iconSize = iconLabel.getPreferredSize ();
             final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
             final Insets i = getInsets ();
             final boolean tilesView = isTilesView ();
-            final boolean hasName = nameLabel.getText () != null;
-            final boolean hasDescription = tilesView && descriptionLabel.getText () != null;
-            final boolean hasFileSize = tilesView && sizeLabel.getText () != null;
+            final boolean hasDescription = tilesView && !TextUtils.isEmpty ( descriptionLabel.getText () );
+            final boolean hasFileSize = tilesView && !TextUtils.isEmpty ( sizeLabel.getText () );
 
             // Updating elements visibility
-            nameLabel.setVisible ( hasName );
             descriptionLabel.setVisible ( hasDescription );
             sizeLabel.setVisible ( hasFileSize );
 
@@ -367,50 +317,72 @@ public class WebFileListCellRenderer extends WebListCellRenderer
             if ( tilesView )
             {
                 // Left-middle icon
-                iconLabel.setBounds ( ltr ? i.left : tileCellSize.width - i.right - imageSide, i.top, imageSide, imageSide );
+                iconLabel.setBounds ( ltr ? i.left : cellSize.width - i.right - iconSize.width, i.top, iconSize.width, iconSize.height );
 
-                // Description elements
-                if ( hasName )
+                // Constants for further description positioning calculations
+                final Dimension nps = nameLabel.getPreferredSize ();
+                final Dimension dps = hasDescription ? descriptionLabel.getPreferredSize () : new Dimension ( 0, 0 );
+                final Dimension sps = hasFileSize ? sizeLabel.getPreferredSize () : new Dimension ( 0, 0 );
+                final int dh = nps.height + ( hasDescription ? gap + dps.height : 0 ) + ( hasFileSize ? gap + sps.height : 0 );
+                final int dx = ltr ? i.left + iconSize.width + gap : i.left;
+                final int dw = cellSize.width - i.left - i.right - iconSize.width - gap;
+
+                // Name element
+                int dy = i.top + ( cellSize.height - i.top - i.bottom ) / 2 - dh / 2;
+                nameLabel.setBounds ( dx, dy, dw, nps.height );
+                dy += nps.height + gap;
+
+                // Description element
+                if ( hasDescription )
                 {
-                    // Constants for futher description positioning calculations
-                    final Dimension nps = nameLabel.getPreferredSize ();
-                    final Dimension dps = hasDescription ? descriptionLabel.getPreferredSize () : new Dimension ( 0, 0 );
-                    final Dimension sps = hasFileSize ? sizeLabel.getPreferredSize () : new Dimension ( 0, 0 );
-                    final int dh = nps.height + ( hasDescription ? gap + dps.height : 0 ) + ( hasFileSize ? gap + sps.height : 0 );
-                    final int dx = ltr ? i.left + imageSide + gap : i.left;
-                    final int dw = tileCellSize.width - i.left - i.right - imageSide - gap;
+                    descriptionLabel.setBounds ( dx, dy, dw, dps.height );
+                    dy += dps.height + gap;
+                }
 
-                    // Name element
-                    int dy = i.top + ( tileCellSize.height - i.top - i.bottom ) / 2 - dh / 2;
-                    nameLabel.setBounds ( dx, dy, dw, nps.height );
-                    dy += nps.height + gap;
-
-                    // Description element
-                    if ( hasDescription )
-                    {
-                        descriptionLabel.setBounds ( dx, dy, dw, dps.height );
-                        dy += dps.height + gap;
-                    }
-
-                    // File size element
-                    if ( hasFileSize )
-                    {
-                        sizeLabel.setBounds ( dx, dy, dw, sps.height );
-                    }
+                // File size element
+                if ( hasFileSize )
+                {
+                    sizeLabel.setBounds ( dx, dy, dw, sps.height );
                 }
             }
             else
             {
                 // Top-middle icon
-                final int cw = iconCellSize.width - i.left - i.right;
-                iconLabel.setBounds ( i.left + cw / 2 - 27, i.top, imageSide, imageSide );
+                final int cw = cellSize.width - i.left - i.right;
+                iconLabel.setBounds ( i.left + cw / 2 - 27, i.top, iconSize.width, iconSize.height );
 
                 // Name element
-                if ( hasName )
+                final int ny = i.top + iconSize.height + gap;
+                nameLabel.setBounds ( i.left, ny, cw, cellSize.height - ny - i.bottom );
+            }
+        }
+
+        @Override
+        public Dimension preferredLayoutSize ( @NotNull final Container container )
+        {
+            final Insets i = container.getInsets ();
+            final Dimension is = iconLabel.getPreferredSize ();
+            final Dimension ns = nameLabel.getPreferredSize ();
+            if ( isTilesView () )
+            {
+                final Dimension bs = new Dimension ( ns.width, ns.height );
+                if ( descriptionLabel.isVisible () )
                 {
-                    final int ny = i.top + imageSide + gap;
-                    nameLabel.setBounds ( i.left, ny, cw, iconCellSize.height - ny - i.bottom );
+                    final Dimension ds = descriptionLabel.getPreferredSize ();
+                    bs.width = Math.max ( bs.width, ds.width );
+                    bs.height += gap + ds.height;
                 }
+                if ( sizeLabel.isVisible () )
+                {
+                    final Dimension ss = sizeLabel.getPreferredSize ();
+                    bs.width = Math.max ( bs.width, ss.width );
+                    bs.height += gap + ss.height;
+                }
+                return new Dimension ( i.left + is.width + gap + bs.width + i.right, i.top + Math.max ( is.height, bs.height ) + i.bottom );
+            }
+            else
+            {
+                return new Dimension ( i.left + Math.max ( is.width, ns.width ) + i.right, i.top + is.height + gap + ns.height + i.bottom );
             }
         }
 
@@ -421,7 +393,9 @@ public class WebFileListCellRenderer extends WebListCellRenderer
          */
         public Rectangle getDescriptionBounds ()
         {
-            // Constants for futher size calculations
+            // Constants for further size calculations
+            final Dimension cellSize = getSize ();
+            final Dimension iconSize = iconLabel.getPreferredSize ();
             final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
             final Insets i = getInsets ();
             final boolean tilesView = isTilesView ();
@@ -433,21 +407,21 @@ public class WebFileListCellRenderer extends WebListCellRenderer
                 if ( ltr )
                 {
                     // Icon at the left side, description at the right side
-                    final int x = i.left + imageSide + gap;
-                    return new Rectangle ( x, i.top, tileCellSize.width - x - i.right, tileCellSize.height - i.top - i.bottom );
+                    final int x = i.left + iconSize.width + gap;
+                    return new Rectangle ( x, i.top, cellSize.width - x - i.right, cellSize.height - i.top - i.bottom );
                 }
                 else
                 {
                     // Icon at the right side, description at the left side
-                    return new Rectangle ( i.left, i.top, tileCellSize.width - gap - imageSide - i.right,
-                            tileCellSize.height - i.top - i.bottom );
+                    return new Rectangle ( i.left, i.top, cellSize.width - gap - iconSize.width - i.right,
+                            cellSize.height - i.top - i.bottom );
                 }
             }
             else
             {
                 // Icon view
-                final int ny = i.top + imageSide + gap;
-                return new Rectangle ( i.left, ny, iconCellSize.width - i.left - i.right, iconCellSize.height - ny - i.bottom );
+                final int ny = i.top + iconSize.height + gap;
+                return new Rectangle ( i.left, ny, cellSize.width - i.left - i.right, cellSize.height - ny - i.bottom );
             }
         }
     }

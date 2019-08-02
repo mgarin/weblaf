@@ -1,0 +1,30 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.menu.WebMenuBar -->
+
+    <!-- Menu bar -->
+    <style type="menubar">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape sides="0,0,1,0" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground>
+                        <color>240,240,240</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Undecorated menu bar -->
+    <style type="menubar" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

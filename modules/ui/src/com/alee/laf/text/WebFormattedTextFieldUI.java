@@ -17,36 +17,292 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.jdk.Consumer;
+import com.alee.api.jdk.Objects;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.SwingUtils;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import java.awt.*;
 
 /**
- * Custom UI for JFormattedTextField component.
+ * Custom UI for {@link JFormattedTextField} component.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
-
-public class WebFormattedTextFieldUI extends WebTextFieldUI
+public class WebFormattedTextFieldUI extends WFormattedTextFieldUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Returns an instance of the WebFormattedTextFieldUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Input prompt text.
+     */
+    protected String inputPrompt;
+
+    /**
+     * Component painter.
+     */
+    @DefaultPainter ( FormattedTextFieldPainter.class )
+    protected IFormattedTextFieldPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected transient JFormattedTextField field = null;
+    protected transient JComponent leadingComponent = null;
+    protected transient JComponent trailingComponent = null;
+
+    /**
+     * Returns an instance of the {@link WebFormattedTextFieldUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebFormattedTextFieldUI
+     * @return instance of the {@link WebFormattedTextFieldUI}
      */
-    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFormattedTextFieldUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected String getPropertyPrefix ()
+    public void installUI ( final JComponent c )
     {
-        return "FormattedTextField";
+        // Saving text field reference
+        // This have to be set before calling super to make sure field reference is available
+        this.field = ( JFormattedTextField ) c;
+
+        super.installUI ( c );
+
+        // Applying skin
+        StyleManager.installSkin ( field );
+    }
+
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( field );
+
+        // Removing internal components
+        removeLeadingComponent ();
+        removeTrailingComponent ();
+
+        super.uninstallUI ( c );
+
+        // Removing field reference
+        field = null;
+    }
+
+    @Override
+    public Shape getShape ()
+    {
+        return PainterSupport.getShape ( field, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( field, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( field, painter, enabled );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( field );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        PainterSupport.setMargin ( field, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( field );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PainterSupport.setPadding ( field, padding );
+    }
+
+    /**
+     * Returns field painter.
+     *
+     * @return field painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getPainter ( painter );
+    }
+
+    /**
+     * Sets field painter.
+     * Pass null to remove field painter.
+     *
+     * @param painter new field painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( field, new Consumer<IFormattedTextFieldPainter> ()
+        {
+            @Override
+            public void accept ( final IFormattedTextFieldPainter newPainter )
+            {
+                WebFormattedTextFieldUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IFormattedTextFieldPainter.class, AdaptiveFormattedTextFieldPainter.class );
+    }
+
+    @Override
+    public String getInputPrompt ()
+    {
+        return inputPrompt;
+    }
+
+    @Override
+    public void setInputPrompt ( final String text )
+    {
+        if ( Objects.notEquals ( text, this.inputPrompt ) )
+        {
+            this.inputPrompt = text;
+            field.repaint ();
+        }
+    }
+
+    @Override
+    public JComponent getLeadingComponent ()
+    {
+        return leadingComponent;
+    }
+
+    @Override
+    public JComponent setLeadingComponent ( final JComponent leadingComponent )
+    {
+        // Component haven't changed
+        if ( this.leadingComponent == leadingComponent )
+        {
+            return null;
+        }
+
+        // Removing old leading component
+        final JComponent old = this.leadingComponent;
+        if ( this.leadingComponent != null )
+        {
+            field.remove ( this.leadingComponent );
+            this.leadingComponent = null;
+        }
+
+        // New leading component
+        if ( leadingComponent != null )
+        {
+            this.leadingComponent = leadingComponent;
+            field.add ( leadingComponent );
+        }
+
+        // Informing about leading component change
+        SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, leadingComponent );
+
+        // Updating layout
+        field.revalidate ();
+
+        return old;
+    }
+
+    @Override
+    public JComponent removeLeadingComponent ()
+    {
+        return setLeadingComponent ( null );
+    }
+
+    @Override
+    public JComponent getTrailingComponent ()
+    {
+        return trailingComponent;
+    }
+
+    @Override
+    public JComponent setTrailingComponent ( final JComponent trailingComponent )
+    {
+        // Component haven't changed
+        if ( this.trailingComponent == trailingComponent )
+        {
+            return null;
+        }
+
+        // Removing old trailing component
+        final JComponent old = this.trailingComponent;
+        if ( this.trailingComponent != null )
+        {
+            field.remove ( this.trailingComponent );
+            this.trailingComponent = null;
+        }
+
+        // New trailing component
+        if ( trailingComponent != null )
+        {
+            this.trailingComponent = trailingComponent;
+            field.add ( trailingComponent );
+        }
+
+        // Informing about trailing component change
+        SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, trailingComponent );
+
+        // Updating layout
+        field.revalidate ();
+
+        return old;
+    }
+
+    @Override
+    public JComponent removeTrailingComponent ()
+    {
+        return setTrailingComponent ( null );
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
+    }
+
+    @Override
+    protected void paintSafely ( final Graphics g )
+    {
+        if ( painter != null )
+        {
+            // Updating painted field
+            // This is important for proper basic UI usage
+            ReflectUtils.setFieldValueSafely ( this, "painted", true );
+
+            // Painting text component
+            final JComponent c = getComponent ();
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        final Dimension ps = super.getPreferredSize ( c );
+
+        // Fix for Swing bug with pointless scrolling when field's default preferred size is already reached
+        ps.width += 1;
+
+        return PainterSupport.getPreferredSize ( c, ps, painter );
     }
 }

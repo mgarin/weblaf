@@ -17,24 +17,30 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.layout.ToolbarLayout;
+import com.alee.extended.layout.TableLayout;
+import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.pathfield.WebPathField;
 import com.alee.extended.tree.FileTreeNode;
 import com.alee.extended.tree.FileTreeRootType;
 import com.alee.extended.tree.WebFileTree;
-import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.toolbar.ToolbarStyle;
+import com.alee.laf.toolbar.ToolbarLayout;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.hotkey.HotkeyCondition;
+import com.alee.managers.hotkey.HotkeyManager;
+import com.alee.managers.icon.Icons;
+import com.alee.managers.language.LM;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
-import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.filefilter.*;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -53,21 +59,8 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebDirectoryChooserPanel extends WebPanel
 {
-    /**
-     * Used icons.
-     */
-    protected static final ImageIcon FOLDER_UP_ICON =
-            new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/folder_up.png" ) );
-    protected static final ImageIcon FOLDER_HOME_ICON =
-            new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/folder_home.png" ) );
-    protected static final ImageIcon FOLDER_NEW_ICON =
-            new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/folder_new.png" ) );
-    protected static final ImageIcon REFRESH_ICON = new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/refresh.png" ) );
-    protected static final ImageIcon REMOVE_ICON = new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/remove.png" ) );
-
     /**
      * Directory chooser listeners.
      */
@@ -81,13 +74,14 @@ public class WebDirectoryChooserPanel extends WebPanel
     /**
      * File filter.
      */
-    protected AbstractFileFilter filter = GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER;
+    protected AbstractFileFilter filter = new GroupedFileFilter ( FilterGroupType.AND, new DirectoriesFilter (), new NonHiddenFilter () );
 
     /**
      * Toolbar components.
      */
     protected WebButton folderUp;
     protected WebButton folderHome;
+    protected WebButton folderDesktop;
     protected WebButton folderNew;
     protected WebButton refresh;
     protected WebButton remove;
@@ -104,185 +98,70 @@ public class WebDirectoryChooserPanel extends WebPanel
     protected TreeSelectionListener fileTreeListener;
 
     /**
+     * Control components.
+     */
+    protected WebButton acceptButton;
+    protected WebButton cancelButton;
+
+    /**
      * Constructs new directory chooser panel.
      */
     public WebDirectoryChooserPanel ()
     {
-        super ();
+        this ( StyleId.directorychooser );
+    }
 
-        // Panel settings
-        setOpaque ( true );
+    /**
+     * Constructs new directory chooser panel.
+     *
+     * @param id style ID
+     */
+    public WebDirectoryChooserPanel ( final StyleId id )
+    {
+        super ( id, new TableLayout ( new double[][]{
+                { TableLayout.FILL },
+                { TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED }
+        } ) );
 
-        // Controls pane
-        final WebToolBar contolsToolbar = new WebToolBar ( WebToolBar.HORIZONTAL );
-        contolsToolbar.setToolbarStyle ( ToolbarStyle.attached );
-        contolsToolbar.setFloatable ( false );
+        // Panel content
+        add ( createToolBar (), "0,0" );
+        add ( createPathField (), "0,1" );
+        add ( createFileTree (), "0,2" );
+        add ( createControlsPanel (), "0,3" );
 
-        folderUp = new WebButton ( FOLDER_UP_ICON );
-        folderUp.setLanguage ( "weblaf.ex.dirchooser.folderup" );
-        folderUp.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_UP ).setHotkeyDisplayWay ( TooltipWay.down );
-        folderUp.setRolloverDecoratedOnly ( true );
-        folderUp.addActionListener ( new ActionListener ()
+        // Updating selected directory
+        updateSelectedDirectory ( null, true, true );
+        updateToolbarControlsState ();
+
+        // Hotkeys preview action and hotkeys global condition
+        HotkeyManager.installShowAllHotkeysAction ( this, Hotkey.F1 );
+        HotkeyManager.addContainerHotkeyCondition ( this, new HotkeyCondition ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public boolean checkCondition ( final Component component )
             {
-                if ( selectedDirectory != null )
-                {
-                    updateSelectedDirectory ( selectedDirectory.getParentFile (), true, true );
-                }
+                return allowHotkeys ();
             }
         } );
-        contolsToolbar.add ( folderUp );
+    }
 
-        folderHome = new WebButton ( FOLDER_HOME_ICON );
-        folderHome.setLanguage ( "weblaf.ex.dirchooser.home" );
-        folderHome.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_H ).setHotkeyDisplayWay ( TooltipWay.trailing );
-        folderHome.setRolloverDecoratedOnly ( true );
-        folderHome.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                updateSelectedDirectory ( FileUtils.getUserHome (), true, true );
-            }
-        } );
-        contolsToolbar.add ( folderHome );
+    /**
+     * Returns file tree component.
+     *
+     * @return file tree component
+     */
+    protected WebScrollPane createFileTree ()
+    {
+        final WebScrollPane treeScroll = new WebScrollPane ( StyleId.directorychooserScroll.at ( this ) );
+        treeScroll.setPreferredWidth ( 400 );
 
-        contolsToolbar.addSeparator ();
-
-        for ( final File file : FileTreeRootType.drives.getRoots () )
-        {
-            final WebButton root = new WebButton ( FileUtils.getFileIcon ( file ) );
-            TooltipManager.setTooltip ( root, FileUtils.getDisplayFileName ( file ) );
-            root.setRolloverDecoratedOnly ( true );
-            root.addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    updateSelectedDirectory ( file, true, true );
-                }
-            } );
-            contolsToolbar.add ( root );
-        }
-
-
-        refresh = new WebButton ( REFRESH_ICON );
-        refresh.setLanguage ( "weblaf.ex.dirchooser.refresh" );
-        refresh.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.F5 ).setHotkeyDisplayWay ( TooltipWay.leading );
-        refresh.setRolloverDecoratedOnly ( true );
-        refresh.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                if ( selectedDirectory != null )
-                {
-                    fileTree.reloadChilds ( selectedDirectory );
-                }
-                else
-                {
-                    fileTree.reloadRootNode ();
-                }
-            }
-        } );
-        contolsToolbar.add ( refresh, ToolbarLayout.END );
-
-        folderNew = new WebButton ( FOLDER_NEW_ICON );
-        folderNew.setLanguage ( "weblaf.ex.dirchooser.newfolder" );
-        folderNew.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.CTRL_N ).setHotkeyDisplayWay ( TooltipWay.down );
-        folderNew.setRolloverDecoratedOnly ( true );
-        folderNew.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                if ( selectedDirectory != null )
-                {
-                    final String defaultName = LanguageManager.get ( "weblaf.ex.dirchooser.newfolder.name" );
-                    final String freeName = FileUtils.getAvailableName ( selectedDirectory, defaultName );
-                    final File file = new File ( selectedDirectory, freeName );
-                    if ( file.mkdir () )
-                    {
-                        // Updating filestree
-                        fileTree.addFile ( selectedDirectory, file );
-
-                        // Editing added folder name
-                        fileTree.startEditingFile ( file );
-                    }
-                    else
-                    {
-                        final String message = LanguageManager.get ( "weblaf.ex.dirchooser.newfolder.error.text" );
-                        final String title = LanguageManager.get ( "weblaf.ex.dirchooser.newfolder.error.title" );
-                        WebOptionPane.showMessageDialog ( WebDirectoryChooserPanel.this, message, title, WebOptionPane.ERROR_MESSAGE );
-                    }
-                }
-            }
-        } );
-        contolsToolbar.add ( folderNew, ToolbarLayout.END );
-
-        remove = new WebButton ( REMOVE_ICON );
-        remove.setLanguage ( "weblaf.ex.dirchooser.delete" );
-        remove.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.DELETE ).setHotkeyDisplayWay ( TooltipWay.down );
-        remove.setRolloverDecoratedOnly ( true );
-        remove.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                final File file = fileTree.getSelectedFile ();
-                if ( file == null )
-                {
-                    return;
-                }
-
-                // Displaying delete confirmation
-                final String message = LanguageManager.get ( "weblaf.ex.dirchooser.delete.confirm.text" );
-                final String title = LanguageManager.get ( "weblaf.ex.dirchooser.delete.confirm.title" );
-                final int confirm = WebOptionPane
-                        .showConfirmDialog ( WebDirectoryChooserPanel.this, message, title, WebOptionPane.YES_NO_OPTION,
-                                WebOptionPane.QUESTION_MESSAGE );
-
-                // Proceed if delete was confirmed
-                if ( confirm == WebOptionPane.YES_OPTION )
-                {
-                    // Retrieving index of deleted file node in parent node
-                    final FileTreeNode parentNode = fileTree.getSelectedNode ().getParent ();
-                    final int index = parentNode.indexOfFileChild ( file );
-                    final int count = parentNode.getChildCount ();
-
-                    // Removing file
-                    FileUtils.deleteFile ( file );
-                    fileTree.removeFile ( file );
-
-                    // Restoring selection
-                    fileTree.setSelectedNode ( count == 1 ? parentNode :
-                            ( index < count - 1 ? parentNode.getChildAt ( index ) : parentNode.getChildAt ( index - 1 ) ) );
-                }
-            }
-        } );
-        contolsToolbar.add ( remove, ToolbarLayout.END );
-
-        // Path field
-        webPathField = new WebPathField ( selectedDirectory );
-        webPathField.setFileFilter ( filter );
-        webPathField.addPathFieldListener ( new PathFieldListener ()
-        {
-            @Override
-            public void directoryChanged ( final File newDirectory )
-            {
-                updateSelectedDirectory ( webPathField.getSelectedPath (), false, true );
-            }
-        } );
-
-        // Files tree
-        fileTree = new WebFileTree ( FileTreeRootType.drives );
+        fileTree = new WebFileTree ( StyleId.directorychooserFileSystem.at ( treeScroll ), FileTreeRootType.drives );
         fileTree.setVisibleRowCount ( 15 );
         fileTree.setFileFilter ( filter );
         fileTree.setSelectedFile ( selectedDirectory, true );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         fileTree.setEditable ( true );
+        treeScroll.setViewportView ( fileTree );
 
         // Selected directory update
         fileTreeListener = new TreeSelectionListener ()
@@ -305,21 +184,259 @@ public class WebDirectoryChooserPanel extends WebPanel
             }
         } );
 
-        // Tree scroll
-        final WebScrollPane treeScroll = new WebScrollPane ( fileTree );
-        treeScroll.setPreferredWidth ( 400 );
+        return treeScroll;
+    }
 
-        // Panel content
-        setLayout ( new BorderLayout ( 0, 3 ) );
-        add ( contolsToolbar, BorderLayout.NORTH );
-        final WebPanel panel = new WebPanel ( new BorderLayout ( 0, 1 ) );
-        panel.setMargin ( 0, 3, 2, 3 );
-        panel.add ( webPathField, BorderLayout.NORTH );
-        panel.add ( treeScroll, BorderLayout.CENTER );
-        add ( panel, BorderLayout.CENTER );
+    /**
+     * Returns path field component.
+     *
+     * @return path field component
+     */
+    protected WebPathField createPathField ()
+    {
+        // Path field
+        webPathField = new WebPathField ( StyleId.directorychooserPathField.at ( this ), selectedDirectory );
+        webPathField.setFileFilter ( filter );
+        webPathField.addPathFieldListener ( new PathFieldListener ()
+        {
+            @Override
+            public void directoryChanged ( final File newDirectory )
+            {
+                updateSelectedDirectory ( webPathField.getSelectedPath (), false, true );
+            }
+        } );
+        return webPathField;
+    }
 
-        updateSelectedDirectory ( null, true, true );
-        updateToolbarControlsState ();
+    /**
+     * Returns toolbar component.
+     *
+     * @return toolbar component
+     */
+    protected WebToolBar createToolBar ()
+    {
+        // Controls pane
+        final WebToolBar toolBar = new WebToolBar ( StyleId.directorychooserToolbar.at ( this ) );
+
+        final StyleId folderUpId = StyleId.directorychooserFolderUpButton.at ( toolBar );
+        folderUp = new WebButton ( folderUpId, "weblaf.ex.dirchooser.folderup", Icons.folderUp );
+        folderUp.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_UP ).setHotkeyDisplayWay ( TooltipWay.down );
+        folderUp.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( selectedDirectory != null )
+                {
+                    updateSelectedDirectory ( FileUtils.getParent ( selectedDirectory ), true, true );
+                }
+            }
+        } );
+        toolBar.add ( folderUp );
+
+        final StyleId folderHomeId = StyleId.directorychooserHomeButton.at ( toolBar );
+        folderHome = new WebButton ( folderHomeId, "weblaf.ex.dirchooser.home", Icons.folderHome );
+        folderHome.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_H ).setHotkeyDisplayWay ( TooltipWay.trailing );
+        folderHome.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                updateSelectedDirectory ( FileUtils.getUserHome (), true, true );
+            }
+        } );
+        toolBar.add ( folderHome );
+
+        final File desktop = FileUtils.getDesktop ();
+        if ( desktop != null )
+        {
+            final StyleId desktopHomeId = StyleId.directorychooserDesktopButton.at ( toolBar );
+            folderDesktop = new WebButton ( desktopHomeId, "weblaf.ex.dirchooser.desktop", Icons.folderDesktop );
+            folderDesktop.addActionListener ( new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    updateSelectedDirectory ( desktop, true, true );
+                }
+            } );
+            toolBar.add ( folderDesktop );
+        }
+
+        toolBar.addSeparator ();
+
+        for ( final File file : FileTreeRootType.drives.getRoots () )
+        {
+            final StyleId driveId = StyleId.directorychooserDriveButton.at ( toolBar );
+            final WebButton drive = new WebButton ( driveId, Icons.drive );
+            drive.setToolTip ( FileUtils.getDisplayFileName ( file ) );
+            drive.addActionListener ( new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    updateSelectedDirectory ( file, true, true );
+                }
+            } );
+            toolBar.add ( drive );
+        }
+
+        final StyleId refreshId = StyleId.directorychooserRefreshButton.at ( toolBar );
+        refresh = new WebButton ( refreshId, "weblaf.ex.dirchooser.refresh", Icons.refresh );
+        refresh.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.F5 ).setHotkeyDisplayWay ( TooltipWay.leading );
+        refresh.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( selectedDirectory != null )
+                {
+                    fileTree.reloadChildren ( selectedDirectory );
+                }
+                else
+                {
+                    fileTree.reloadRootNode ();
+                }
+            }
+        } );
+        toolBar.add ( refresh, ToolbarLayout.END );
+
+        final StyleId folderNewId = StyleId.directorychooserNewFolderButton.at ( toolBar );
+        folderNew = new WebButton ( folderNewId, "weblaf.ex.dirchooser.newfolder", Icons.folderNew );
+        folderNew.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.CTRL_N ).setHotkeyDisplayWay ( TooltipWay.down );
+        folderNew.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( selectedDirectory != null )
+                {
+                    final String defaultName = LM.get ( "weblaf.ex.dirchooser.newfolder.name" );
+                    final String freeName = FileUtils.getAvailableName ( selectedDirectory, defaultName );
+                    final File file = new File ( selectedDirectory, freeName );
+                    if ( file.mkdir () )
+                    {
+                        // Updating files tree
+                        fileTree.addFile ( selectedDirectory, file );
+
+                        // Editing added folder name
+                        fileTree.startEditingFile ( file );
+                    }
+                    else
+                    {
+                        final String message = LM.get ( "weblaf.ex.dirchooser.newfolder.error.text" );
+                        final String title = LM.get ( "weblaf.ex.dirchooser.newfolder.error.title" );
+                        WebOptionPane.showMessageDialog ( WebDirectoryChooserPanel.this, message, title, WebOptionPane.ERROR_MESSAGE );
+                    }
+                }
+            }
+        } );
+        toolBar.add ( folderNew, ToolbarLayout.END );
+
+        final StyleId removeId = StyleId.directorychooserDeleteButton.at ( toolBar );
+        remove = new WebButton ( removeId, "weblaf.ex.dirchooser.delete", Icons.remove );
+        remove.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.DELETE ).setHotkeyDisplayWay ( TooltipWay.down );
+        remove.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                final File file = fileTree.getSelectedFile ();
+                if ( file == null )
+                {
+                    return;
+                }
+
+                // Displaying delete confirmation
+                final String message = LM.get ( "weblaf.ex.dirchooser.delete.confirm.text" );
+                final String title = LM.get ( "weblaf.ex.dirchooser.delete.confirm.title" );
+                final int confirm = WebOptionPane.showConfirmDialog ( WebDirectoryChooserPanel.this,
+                        message, title, WebOptionPane.YES_NO_OPTION, WebOptionPane.QUESTION_MESSAGE );
+
+                // Proceed if delete was confirmed
+                if ( confirm == WebOptionPane.YES_OPTION )
+                {
+                    // Retrieving index of deleted file node in parent node
+                    final FileTreeNode parentNode = fileTree.getSelectedNode ().getParent ();
+                    final int index = parentNode.indexOfFileChild ( file );
+                    final int count = parentNode.getChildCount ();
+
+                    // Removing file
+                    FileUtils.deleteFile ( file );
+                    fileTree.removeFile ( file );
+
+                    // Restoring selection
+                    fileTree.setSelectedNode ( count == 1 ? parentNode :
+                            index < count - 1 ? parentNode.getChildAt ( index ) : parentNode.getChildAt ( index - 1 ) );
+                }
+            }
+        } );
+        toolBar.add ( remove, ToolbarLayout.END );
+        return toolBar;
+    }
+
+    /**
+     * Returns controls panel.
+     *
+     * @return controls panel
+     */
+    protected WebPanel createControlsPanel ()
+    {
+        final StyleId controlsPanelId = StyleId.directorychooserControlsPanel.at ( this );
+        final WebPanel controlsPanel = new WebPanel ( controlsPanelId, new BorderLayout ( 0, 0 ) );
+
+        final StyleId acceptButtonId = StyleId.directorychooserAcceptButton.at ( controlsPanel );
+        acceptButton = new WebButton ( acceptButtonId, "weblaf.ex.dirchooser.choose", Icons.accept );
+        acceptButton.addHotkey ( Hotkey.CTRL_ENTER );
+        acceptButton.setEnabled ( false );
+        acceptButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                fireAccepted ( getSelectedDirectory () );
+            }
+        } );
+
+        final StyleId cancelButtonId = StyleId.directorychooserCancelButton.at ( controlsPanel );
+        cancelButton = new WebButton ( cancelButtonId, "weblaf.ex.dirchooser.cancel", Icons.cancel );
+        cancelButton.addHotkey ( Hotkey.ESCAPE );
+        cancelButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                fireCancelled ();
+            }
+        } );
+
+        controlsPanel.add ( new GroupPanel ( 4, acceptButton, cancelButton ), BorderLayout.LINE_END );
+
+        final List<String> properties = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
+        SwingUtils.equalizeComponentsWidth ( properties, acceptButton, cancelButton );
+
+        // Buttons updater
+        updateButtonsState ( getSelectedDirectory () );
+        addDirectoryChooserListener ( new DirectoryChooserAdapter ()
+        {
+            @Override
+            public void selectionChanged ( final File file )
+            {
+                updateButtonsState ( file );
+            }
+        } );
+
+        return controlsPanel;
+    }
+
+    /**
+     * Forces buttons update according to selected file.
+     *
+     * @param file newly selected file
+     */
+    protected void updateButtonsState ( final File file )
+    {
+        acceptButton.setEnabled ( file != null );
     }
 
     /**
@@ -328,12 +445,9 @@ public class WebDirectoryChooserPanel extends WebPanel
     protected void updateToolbarControlsState ()
     {
         final File selectedFile = fileTree.getSelectedFile ();
-
-        folderUp.setEnabled ( selectedFile != null && selectedFile.getParentFile () != null );
-
+        folderUp.setEnabled ( selectedFile != null && FileUtils.getParent ( selectedFile ) != null );
         folderNew.setEnabled ( selectedFile != null && selectedFile.canWrite () );
-        remove.setEnabled ( selectedFile != null && selectedFile.getParentFile () != null &&
-                selectedFile.canWrite () );
+        remove.setEnabled ( selectedFile != null && FileUtils.getParent ( selectedFile ) != null && selectedFile.canWrite () );
     }
 
     /**
@@ -459,6 +573,30 @@ public class WebDirectoryChooserPanel extends WebPanel
         for ( final DirectoryChooserListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.selectionChanged ( file );
+        }
+    }
+
+    /**
+     * Fires when directory selection accepted.
+     *
+     * @param file newly selected directory
+     */
+    protected void fireAccepted ( final File file )
+    {
+        for ( final DirectoryChooserListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.accepted ( file );
+        }
+    }
+
+    /**
+     * Fires when directory selection cancelled.
+     */
+    protected void fireCancelled ()
+    {
+        for ( final DirectoryChooserListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.cancelled ();
         }
     }
 }

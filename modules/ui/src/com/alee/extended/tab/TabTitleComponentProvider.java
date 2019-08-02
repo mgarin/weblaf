@@ -18,23 +18,25 @@
 package com.alee.extended.tab;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
 
 /**
  * Custom interface used to create document tab title provider.
  * It can be used to completely alter WebDocumentPane tab title components.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see com.alee.extended.tab.DefaultTabTitleComponentProvider
  */
-
 public interface TabTitleComponentProvider<T extends DocumentData>
 {
     /**
      * Returns newly created tab title component.
      *
-     * @param paneData PaneData containing document
-     * @param document document to create tab title component for
+     * @param paneData     PaneData containing document
+     * @param document     document to create tab title component for
+     * @param mouseAdapter mouse adapter that forwards all mouse events to tabbed pane
      * @return newly created tab title component
      */
-    public JComponent createTabTitleComponent ( final PaneData<T> paneData, final T document );
+    public JComponent createTabTitleComponent ( PaneData<T> paneData, T document, MouseAdapter mouseAdapter );
 }

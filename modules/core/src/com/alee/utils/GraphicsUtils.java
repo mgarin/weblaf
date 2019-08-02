@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.global.StyleConstants;
 import com.alee.utils.laf.ShadeType;
 
 import java.awt.*;
@@ -30,9 +29,16 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public final class GraphicsUtils
 {
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private GraphicsUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
     /**
      * Setting antialias on
      */
@@ -75,37 +81,6 @@ public final class GraphicsUtils
     }
 
     /**
-     * Installing system text settings
-     */
-
-    private static boolean systemTextHintsInitialized = false;
-    private static Map systemTextHints = null;
-
-    public static Map getSystemTextHints ()
-    {
-        if ( !systemTextHintsInitialized )
-        {
-            systemTextHints = ( Map ) Toolkit.getDefaultToolkit ().getDesktopProperty ( "awt.font.desktophints" );
-            systemTextHintsInitialized = true;
-        }
-        return systemTextHints;
-    }
-
-    public static void setupSystemTextHints ( final Graphics g )
-    {
-        setupSystemTextHints ( ( Graphics2D ) g );
-    }
-
-    public static void setupSystemTextHints ( final Graphics2D g2d )
-    {
-        final Map systemTextHints = getSystemTextHints ();
-        if ( systemTextHints != null )
-        {
-            g2d.addRenderingHints ( systemTextHints );
-        }
-    }
-
-    /**
      * Setting AlphaComposite by taking old AlphaComposite settings into account
      */
 
@@ -135,7 +110,8 @@ public final class GraphicsUtils
 
         // Determining old composite alpha
         float currentComposite = 1f;
-        if ( composeWith != null && composeWith instanceof AlphaComposite )
+        if ( composeWith != null && composeWith instanceof AlphaComposite &&
+                ( ( AlphaComposite ) composeWith ).getRule () == AlphaComposite.SRC_OVER )
         {
             currentComposite = ( ( AlphaComposite ) composeWith ).getAlpha ();
         }
@@ -157,6 +133,42 @@ public final class GraphicsUtils
         if ( shouldRestore )
         {
             g2d.setComposite ( composite );
+        }
+    }
+
+    /**
+     * Setting new paint
+     */
+
+    public static Paint setupPaint ( final Graphics2D g2d, final Paint paint )
+    {
+        return setupPaint ( g2d, paint, true );
+    }
+
+    public static Paint setupPaint ( final Graphics2D g2d, final Paint paint, final boolean shouldSetup )
+    {
+        if ( shouldSetup && paint != null )
+        {
+            final Paint old = g2d.getPaint ();
+            g2d.setPaint ( paint );
+            return old;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static void restorePaint ( final Graphics2D g2d, final Paint paint )
+    {
+        restorePaint ( g2d, paint, true );
+    }
+
+    public static void restorePaint ( final Graphics2D g2d, final Paint paint, final boolean shouldRestore )
+    {
+        if ( shouldRestore && paint != null )
+        {
+            g2d.setPaint ( paint );
         }
     }
 
@@ -370,6 +382,110 @@ public final class GraphicsUtils
     }
 
     /**
+     * Draws web styled shade using specified shape
+     */
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width )
+    {
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width );
+    }
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
+                                   final int width )
+    {
+        drawShade ( g2d, shape, shadeType, shadeColor, width, null, true );
+    }
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip )
+    {
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, clip, true );
+    }
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
+                                   final int width, final Shape clip )
+    {
+        drawShade ( g2d, shape, shadeType, shadeColor, width, clip, true );
+    }
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final boolean round )
+    {
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, null, round );
+    }
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
+                                   final int width, final boolean round )
+    {
+        drawShade ( g2d, shape, shadeType, shadeColor, width, null, round );
+    }
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip,
+                                   final boolean round )
+    {
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, clip, round );
+    }
+
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor, int width,
+                                   final Shape clip, final boolean round )
+    {
+        // Ignoring shade with width less than 2
+        if ( width <= 1 )
+        {
+            return;
+        }
+
+        // Applying clip
+        final Shape oldClip = clip != null ? intersectClip ( g2d, clip ) : subtractClip ( g2d, shape );
+
+        // Saving composite
+        final Composite oldComposite = g2d.getComposite ();
+        float currentComposite = 1f;
+        if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
+        {
+            currentComposite = ( ( AlphaComposite ) oldComposite ).getAlpha ();
+        }
+
+        // Saving stroke
+        final Stroke oldStroke = g2d.getStroke ();
+
+        // Drawing shade
+        if ( shadeColor != null )
+        {
+            g2d.setPaint ( shadeColor );
+        }
+        if ( shadeType.equals ( ShadeType.simple ) )
+        {
+            // Drawing simple shade
+            final float simpleShadeOpacity = 0.7f;
+            if ( simpleShadeOpacity < 1f )
+            {
+                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, simpleShadeOpacity * currentComposite ) );
+            }
+            g2d.setStroke ( getStroke ( width * 2, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
+            g2d.draw ( shape );
+        }
+        else
+        {
+            // Drawing complex gradient shade
+            width = width * 2;
+            for ( int i = width; i >= 2; i -= 2 )
+            {
+                // float minTransparency = 0.2f;
+                // float maxTransparency = 0.6f;
+                // float opacity = minTransparency + ( maxTransparency - minTransparency ) * ( 1 - ( i - 2 ) / ( width - 2 ) );
+                final float opacity = ( float ) ( width - i ) / ( width - 1 );
+                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity * currentComposite ) );
+                g2d.setStroke ( getStroke ( i, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
+                g2d.draw ( shape );
+            }
+        }
+
+        // Restoring initial graphics settings
+        restoreStroke ( g2d, oldStroke );
+        restoreComposite ( g2d, oldComposite );
+        restoreClip ( g2d, oldClip );
+    }
+
+    /**
      * Strokes caching
      */
 
@@ -395,109 +511,5 @@ public final class GraphicsUtils
             cachedStrokes.put ( key, stroke );
         }
         return stroke;
-    }
-
-    /**
-     * Draws web styled shade using specified shape
-     */
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width )
-    {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
-                                   final int width )
-    {
-        drawShade ( g2d, shape, shadeType, shadeColor, width, null, true );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip )
-    {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, clip, true );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
-                                   final int width, final Shape clip )
-    {
-        drawShade ( g2d, shape, shadeType, shadeColor, width, clip, true );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final boolean round )
-    {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, null, round );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
-                                   final int width, final boolean round )
-    {
-        drawShade ( g2d, shape, shadeType, shadeColor, width, null, round );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip,
-                                   final boolean round )
-    {
-        drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, clip, round );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor, int width,
-                                   final Shape clip, final boolean round )
-    {
-        // Ignoring shade with width less than 2
-        if ( width <= 1 )
-        {
-            return;
-        }
-
-        // Applying clip
-        final Shape oldClip = clip != null ? intersectClip ( g2d, clip ) : subtractClip ( g2d, shape );
-
-        // Saving composite
-        final Composite oldComposite = g2d.getComposite ();
-        float currentComposite = 1f;
-        if ( oldComposite instanceof AlphaComposite )
-        {
-            currentComposite = ( ( AlphaComposite ) oldComposite ).getAlpha ();
-        }
-
-        // Saving stroke
-        final Stroke oldStroke = g2d.getStroke ();
-
-        // Drawing shade
-        if ( shadeColor != null )
-        {
-            g2d.setPaint ( shadeColor );
-        }
-        if ( shadeType.equals ( ShadeType.simple ) )
-        {
-            // Drawing simple shade
-            if ( StyleConstants.simpleShadeTransparency < 1f )
-            {
-                g2d.setComposite (
-                        AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, StyleConstants.simpleShadeTransparency * currentComposite ) );
-            }
-            g2d.setStroke ( getStroke ( width * 2, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
-            g2d.draw ( shape );
-        }
-        else
-        {
-            // Drawing comples gradient shade
-            width = width * 2;
-            for ( int i = width; i >= 2; i -= 2 )
-            {
-                // float minTransp = 0.2f;
-                // float maxTransp = 0.6f;
-                // float opacity = minTransp + ( maxTransp - minTransp ) * ( 1 - ( i - 2 ) / ( width - 2 ) );
-                final float opacity = ( float ) ( width - i ) / ( width - 1 );
-                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity * currentComposite ) );
-                g2d.setStroke ( getStroke ( i, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
-                g2d.draw ( shape );
-            }
-        }
-
-        // Restoring initial grphics settings
-        restoreStroke ( g2d, oldStroke );
-        restoreComposite ( g2d, oldComposite );
-        restoreClip ( g2d, oldClip );
     }
 }

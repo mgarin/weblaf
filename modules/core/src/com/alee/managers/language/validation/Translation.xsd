@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.managers.language.data.TranslationInformation -->
+    <xs:complexType name="Translation">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+
+                <!-- Translation language -->
+                <!-- TODO: More string rules can be defined for this field -->
+                <xs:attribute name="lang" type="xs:string" use="required" />
+
+                <!-- Translation title -->
+                <xs:attribute name="title" type="xs:string" use="required"/>
+
+                <!-- Translation author -->
+                <xs:attribute name="author" type="xs:string" use="required"/>
+
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+</xs:schema>

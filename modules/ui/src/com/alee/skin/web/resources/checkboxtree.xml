@@ -1,0 +1,32 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.tree.WebCheckBoxTree -->
+
+    <!-- Checkbox tree -->
+    <style type="tree" id="checkboxtree">
+
+        <!-- Tristate checkbox cell renderer -->
+        <style type="panel" id="renderer" extends="transparent">
+
+            <!-- Cell renderer check box -->
+            <style type="tristatecheckbox" id="check" padding="0,4,0,0" />
+
+        </style>
+
+    </style>
+
+    <!-- Non-opaque checkbox tree -->
+    <style type="tree" id="checkboxtree-non-opaque" extends="checkboxtree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent checkbox tree -->
+    <style type="tree" id="checkboxtree-transparent" extends="checkboxtree-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

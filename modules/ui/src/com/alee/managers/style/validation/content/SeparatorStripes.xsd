@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="Stripes.xsd" />
+
+    <!-- com.alee.laf.separator.SeparatorStripes -->
+    <xs:complexType name="SeparatorStripes">
+        <xs:complexContent>
+            <xs:extension base="Stripes">
+
+                <!-- No extra settings -->
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

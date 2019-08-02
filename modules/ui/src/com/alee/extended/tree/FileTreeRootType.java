@@ -30,7 +30,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public enum FileTreeRootType
 {
     /**
@@ -41,7 +40,7 @@ public enum FileTreeRootType
                 @Override
                 public List<File> getRoots ()
                 {
-                    return CollectionUtils.copy ( FileSystemView.getFileSystemView ().getRoots () );
+                    return CollectionUtils.asList ( FileSystemView.getFileSystemView ().getRoots () );
                 }
             },
 
@@ -53,7 +52,7 @@ public enum FileTreeRootType
                 @Override
                 public List<File> getRoots ()
                 {
-                    return CollectionUtils.copy ( FileUtils.getDiskRoots () );
+                    return CollectionUtils.asList ( FileUtils.getDiskRoots () );
                 }
             },
 
@@ -65,7 +64,7 @@ public enum FileTreeRootType
                 @Override
                 public List<File> getRoots ()
                 {
-                    return CollectionUtils.copy ( FileUtils.getUserHome () );
+                    return CollectionUtils.asList ( FileUtils.getUserHome () );
                 }
             };
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBackground.xsd" />
+    <xs:include schemaLocation="../ext/Orientation.xsd" />
+
+    <!-- com.alee.painter.decoration.background.MovingHighlightBackground -->
+    <xs:complexType name="MovingHighlightBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractBackground">
+
+                <!-- Movement orientation -->
+                <xs:attribute name="orientation" type="Orientation" />
+
+                <!-- Highlight width -->
+                <xs:attribute name="width" type="xs:integer" />
+
+                <!-- Highlight color -->
+                <xs:attribute name="color" type="java.awt:Color" />
+
+                <!-- Amount of highlight passes before delay -->
+                <xs:attribute name="passes" type="xs:integer" />
+
+                <!-- Single pass duration -->
+                <!-- todo Use separate time measurement type -->
+                <xs:attribute name="duration" type="xs:string" />
+
+                <!-- Delay between animations -->
+                <!-- todo Use separate time measurement type -->
+                <xs:attribute name="delay" type="xs:string" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

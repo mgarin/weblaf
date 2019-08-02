@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- Predefined component type -->
+    <xs:simpleType name="ComponentType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="canvas" />
+            <xs:enumeration value="image" />
+            <xs:enumeration value="label" />
+            <xs:enumeration value="styledlabel" />
+            <xs:enumeration value="tooltip" />
+            <xs:enumeration value="link" />
+            <xs:enumeration value="button" />
+            <xs:enumeration value="splitbutton" />
+            <xs:enumeration value="togglebutton" />
+            <xs:enumeration value="checkbox" />
+            <xs:enumeration value="tristatecheckbox" />
+            <xs:enumeration value="radiobutton" />
+            <xs:enumeration value="switcher" />
+            <xs:enumeration value="separator" />
+            <xs:enumeration value="menubar" />
+            <xs:enumeration value="menu" />
+            <xs:enumeration value="popupmenu" />
+            <xs:enumeration value="menuitem" />
+            <xs:enumeration value="checkboxmenuitem" />
+            <xs:enumeration value="radiobuttonmenuitem" />
+            <xs:enumeration value="popupmenuseparator" />
+            <xs:enumeration value="panel" />
+            <xs:enumeration value="tabbedpane" />
+            <xs:enumeration value="splitpanedivider" />
+            <xs:enumeration value="splitpane" />
+            <xs:enumeration value="multisplitpanedivider" />
+            <xs:enumeration value="multisplitpane" />
+            <xs:enumeration value="popup" />
+            <xs:enumeration value="collapsiblepane" />
+            <xs:enumeration value="accordion" />
+            <xs:enumeration value="rootpane" />
+            <xs:enumeration value="toolbar" />
+            <xs:enumeration value="toolbarseparator" />
+            <xs:enumeration value="statusbar" />
+            <xs:enumeration value="scrollbar" />
+            <xs:enumeration value="scrollpane" />
+            <xs:enumeration value="viewport" />
+            <xs:enumeration value="textfield" />
+            <xs:enumeration value="passwordfield" />
+            <xs:enumeration value="formattedtextfield" />
+            <xs:enumeration value="textarea" />
+            <xs:enumeration value="editorpane" />
+            <xs:enumeration value="textpane" />
+            <xs:enumeration value="tableheader" />
+            <xs:enumeration value="table" />
+            <xs:enumeration value="progressbar" />
+            <xs:enumeration value="slider" />
+            <xs:enumeration value="spinner" />
+            <xs:enumeration value="combobox" />
+            <xs:enumeration value="list" />
+            <xs:enumeration value="tree" />
+            <xs:enumeration value="colorchooser" />
+            <xs:enumeration value="filechooser" />
+            <xs:enumeration value="desktoppane" />
+            <xs:enumeration value="desktopicon" />
+            <xs:enumeration value="internalframe" />
+            <xs:enumeration value="dockablepane" />
+            <xs:enumeration value="dockableframe" />
+            <xs:enumeration value="optionpane" />
+            <xs:enumeration value="datefield" />
+            <xs:enumeration value="breadcrumb" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

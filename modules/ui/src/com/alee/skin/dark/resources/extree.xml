@@ -1,0 +1,22 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.tree.WebExTree -->
+
+    <!-- Extended tree -->
+    <style type="tree" id="extree" />
+
+    <!-- Non-opaque extended tree -->
+    <style type="tree" id="extree-non-opaque" extends="extree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent extended tree -->
+    <style type="tree" id="extree-transparent" extends="extree-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

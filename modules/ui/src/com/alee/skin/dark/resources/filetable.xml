@@ -1,0 +1,29 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.filechooser.WebFileTable -->
+
+    <!-- File table -->
+    <style type="table" id="filetable">
+        <component class="com.alee.extended.filechooser.WebFileTable">
+            <visibleRowCount>18</visibleRowCount>
+            <rowHeight>22</rowHeight>
+            <showHorizontalLines>true</showHorizontalLines>
+            <showVerticalLines>false</showVerticalLines>
+        </component>
+    </style>
+
+    <!-- Non-opaque file table -->
+    <style type="table" id="filetable-non-opaque" extends="filetable">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file table -->
+    <style type="table" id="filetable-transparent" extends="filetable-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

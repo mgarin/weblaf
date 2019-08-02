@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.api.data.CompassDirection -->
+    <xs:simpleType name="CompassDirection">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="center" />
+            <xs:enumeration value="northEast" />
+            <xs:enumeration value="north" />
+            <xs:enumeration value="northWest" />
+            <xs:enumeration value="east" />
+            <xs:enumeration value="west" />
+            <xs:enumeration value="southEast" />
+            <xs:enumeration value="south" />
+            <xs:enumeration value="southWest" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

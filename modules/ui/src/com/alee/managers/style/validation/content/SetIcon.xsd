@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractIconContent.xsd" />
+
+    <!-- com.alee.managers.icon.data.SetIcon -->
+    <xs:complexType name="SetIcon">
+        <xs:complexContent>
+            <xs:extension base="AbstractIconContent">
+
+                <!-- Unique set icon ID -->
+                <xs:attribute name="icon" type="xs:string" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

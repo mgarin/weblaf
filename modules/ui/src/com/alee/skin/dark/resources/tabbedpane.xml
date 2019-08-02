@@ -1,0 +1,35 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.tabbedpane.WebTabbedPane -->
+
+    <!-- Tabbed pane -->
+    <style type="tabbedpane">
+        <component>
+            <background>68,68,68</background>
+        </component>
+        <ui>
+            <tabbedPaneStyle>standalone</tabbedPaneStyle>
+        </ui>
+        <painter>
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <selectedTopBg>111,115,117</selectedTopBg>
+            <selectedBottomBg>68,68,68</selectedBottomBg>
+            <topBg>111,115,117</topBg>
+            <bottomBg>77,81,83</bottomBg>
+            <tabBorderColor>20,20,20</tabBorderColor>
+            <contentBorderColor>20,20,20</contentBorderColor>
+            <paintBorderOnlyOnSelectedTab>false</paintBorderOnlyOnSelectedTab>
+            <forceUseSelectedTabBgColors>false</forceUseSelectedTabBgColors>
+            <paintOnlyTopBorder>false</paintOnlyTopBorder>
+        </painter>
+    </style>
+
+    <!-- Attached tabbed pane -->
+    <style type="tabbedpane" id="attached">
+        <ui>
+            <tabbedPaneStyle>attached</tabbedPaneStyle>
+        </ui>
+    </style>
+
+</skin>

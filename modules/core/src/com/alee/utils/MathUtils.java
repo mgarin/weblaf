@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -24,13 +25,20 @@ import java.util.Random;
  *
  * @author Mikle Garin
  */
-
 public final class MathUtils
 {
     /**
      * Random numbers generator.
      */
-    private static Random random = new Random ();
+    private static final Random random = new Random ();
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private MathUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns random integer number between 0 (inclusive) and 100 (inclusive).
@@ -112,13 +120,68 @@ public final class MathUtils
     /**
      * Returns value limited by the specified range.
      *
-     * @param value value to limit
      * @param min   range minimum
+     * @param value value to limit
      * @param max   range maximum
      * @return value limited by the specified range
      */
-    public static int limit ( final int value, final int min, final int max )
+    public static int limit ( final int min, final int value, final int max )
     {
+        if ( min > max )
+        {
+            throw new RuntimeException ( "Minimum value cannot be greated than maximum value" );
+        }
+        return Math.max ( min, Math.min ( value, max ) );
+    }
+
+    /**
+     * Returns value limited by the specified range.
+     *
+     * @param min   range minimum
+     * @param value value to limit
+     * @param max   range maximum
+     * @return value limited by the specified range
+     */
+    public static long limit ( final long min, final long value, final long max )
+    {
+        if ( min > max )
+        {
+            throw new RuntimeException ( "Minimum value cannot be greated than maximum value" );
+        }
+        return Math.max ( min, Math.min ( value, max ) );
+    }
+
+    /**
+     * Returns value limited by the specified range.
+     *
+     * @param min   range minimum
+     * @param value value to limit
+     * @param max   range maximum
+     * @return value limited by the specified range
+     */
+    public static float limit ( final float min, final float value, final float max )
+    {
+        if ( min > max )
+        {
+            throw new RuntimeException ( "Minimum value cannot be greated than maximum value" );
+        }
+        return Math.max ( min, Math.min ( value, max ) );
+    }
+
+    /**
+     * Returns value limited by the specified range.
+     *
+     * @param min   range minimum
+     * @param value value to limit
+     * @param max   range maximum
+     * @return value limited by the specified range
+     */
+    public static double limit ( final double min, final double value, final double max )
+    {
+        if ( min > max )
+        {
+            throw new RuntimeException ( "Minimum value cannot be greated than maximum value" );
+        }
         return Math.max ( min, Math.min ( value, max ) );
     }
 
@@ -186,4 +249,16 @@ public final class MathUtils
     //        }
     //        return max;
     //    }
+
+    /**
+     * Returns distance between two points.
+     *
+     * @param p1 first point
+     * @param p2 second point
+     * @return distance between two points
+     */
+    public static int distance ( final Point p1, final Point p2 )
+    {
+        return sqrt ( sqr ( p2.x - p1.x ) + sqr ( p2.y - p1.y ) );
+    }
 }

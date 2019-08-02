@@ -17,9 +17,13 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.jdk.Objects;
+import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleException;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleManager;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.xml.InsetsConverter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -28,82 +32,105 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Custom XStream converter for ComponentStyle class.
+ * Custom XStream converter for {@link ComponentStyle} class.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.StyleManager
- * @see com.alee.managers.style.data.ComponentStyle
+ * @see StyleManager
+ * @see ComponentStyle
  */
-
-public class ComponentStyleConverter extends ReflectionConverter
+public final class ComponentStyleConverter extends ReflectionConverter
 {
     /**
      * Converter constants.
      */
     public static final String STYLE_NODE = "style";
-    public static final String STYLE_ID_ATTRIBUTE = "id";
     public static final String COMPONENT_TYPE_ATTRIBUTE = "type";
+    public static final String STYLE_ID_ATTRIBUTE = "id";
     public static final String EXTENDS_ID_ATTRIBUTE = "extends";
+    public static final String MARGIN_ATTRIBUTE = "margin";
+    public static final String PADDING_ATTRIBUTE = "padding";
+    public static final String CLASS_ATTRIBUTE = "class";
     public static final String COMPONENT_NODE = "component";
     public static final String UI_NODE = "ui";
     public static final String PAINTER_NODE = "painter";
-    public static final String PAINTER_ID_ATTRIBUTE = "id";
-    public static final String PAINTER_CLASS_ATTRIBUTE = "class";
-    public static final String IGNORED_ATTRIBUTE = "ignored";
+    public static final String OVERWRITE_ATTRIBUTE = "overwrite";
 
     /**
-     * Default component style ID.
+     * Context variables.
      */
-    public static final String DEFAULT_STYLE_ID = "default";
+    public static final String CONTEXT_COMPONENT_TYPE = "component.type";
+    public static final String CONTEXT_STYLE_ID = "style.id";
+    public static final String CONTEXT_COMPONENT_CLASS = "component.class";
+    public static final String CONTEXT_UI_CLASS = "ui.class";
+    public static final String CONTEXT_PAINTER_CLASS = "painter.class";
 
     /**
-     * Constructs ComponentStyleConverter with the specified mapper and reflection provider.
+     * Constructs new {@link ComponentStyleConverter} with the specified {@link Mapper} and {@link ReflectionProvider}.
      *
-     * @param mapper             mapper
-     * @param reflectionProvider reflection provider
+     * @param mapper             {@link Mapper} implementation
+     * @param reflectionProvider {@link ReflectionProvider} implementation
      */
     public ComponentStyleConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( ComponentStyle.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
         final ComponentStyle componentStyle = ( ComponentStyle ) source;
 
-        // Component style ID
-        final String componentStyleId = componentStyle.getId ();
-        writer.addAttribute ( STYLE_ID_ATTRIBUTE, componentStyleId != null ? componentStyleId : DEFAULT_STYLE_ID );
+        // Writing component type
+        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, componentStyle.getType () );
 
-        // Style component type
-        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, componentStyle.getType ().toString () );
+        // Writing component style identifier
+        final String styleId = componentStyle.getId ();
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( componentStyle.getType () );
+        if ( styleId != null && !descriptor.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
+        {
+            writer.addAttribute ( STYLE_ID_ATTRIBUTE, styleId );
+        }
 
-        // Extended style ID
+        // Writing extended style identifier
         final String extendsId = componentStyle.getExtendsId ();
         if ( extendsId != null )
         {
             writer.addAttribute ( EXTENDS_ID_ATTRIBUTE, extendsId );
         }
 
-        // Component properties
+        // Writing margin and padding
+        final Map<String, Object> uiProperties = componentStyle.getUIProperties ();
+        if ( uiProperties != null )
+        {
+            final Insets margin = ( Insets ) uiProperties.get ( MARGIN_ATTRIBUTE );
+            if ( margin != null )
+            {
+                writer.addAttribute ( MARGIN_ATTRIBUTE, InsetsConverter.insetsToString ( margin ) );
+            }
+            final Insets padding = ( Insets ) uiProperties.get ( PADDING_ATTRIBUTE );
+            if ( padding != null )
+            {
+                writer.addAttribute ( PADDING_ATTRIBUTE, InsetsConverter.insetsToString ( padding ) );
+            }
+        }
+
+        // Writing component properties
         final Map<String, Object> componentProperties = componentStyle.getComponentProperties ();
         if ( componentProperties != null )
         {
@@ -117,222 +144,329 @@ public class ComponentStyleConverter extends ReflectionConverter
             writer.endNode ();
         }
 
-        // UI properties
-        final Map<String, Object> uiProperties = componentStyle.getUIProperties ();
+        // Writing UI properties
         if ( uiProperties != null )
         {
             writer.startNode ( UI_NODE );
             for ( final Map.Entry<String, Object> property : uiProperties.entrySet () )
             {
-                writer.startNode ( property.getKey () );
-                context.convertAnother ( property.getValue () );
-                writer.endNode ();
+                final String key = property.getKey ();
+                if ( Objects.notEquals ( key, MARGIN_ATTRIBUTE, PADDING_ATTRIBUTE ) )
+                {
+                    writer.startNode ( key );
+                    context.convertAnother ( property.getValue () );
+                    writer.endNode ();
+                }
             }
             writer.endNode ();
         }
 
-        // Painters
-        final List<PainterStyle> painters = componentStyle.getPainters ();
-        if ( painters != null )
+        // Writing painter style
+        final PainterStyle painterStyle = componentStyle.getPainterStyle ();
+        if ( painterStyle != null )
         {
-            for ( final PainterStyle painterStyle : painters )
+            writer.startNode ( PAINTER_NODE );
+
+            // Writing painter canonical class name
+            // That name is shortened if it has the same package as the skin class
+            final String skinClassName = ( String ) context.get ( SkinInfoConverter.SKIN_CLASS );
+            final Class skinClass = ReflectUtils.getClassSafely ( skinClassName );
+            if ( skinClass == null )
             {
-                writer.startNode ( PAINTER_NODE );
-                writer.addAttribute ( PAINTER_ID_ATTRIBUTE, painterStyle.getId () );
-                writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterStyle.getPainterClass () );
-                for ( final Map.Entry<String, Object> property : painterStyle.getProperties ().entrySet () )
-                {
-                    writer.startNode ( property.getKey () );
-                    context.convertAnother ( property.getValue () );
-                    writer.endNode ();
-                }
+                final String msg = "Specified skin class '%s' cannot be found";
+                throw new StyleException ( String.format ( msg, skinClassName ) );
+            }
+            final String painterClassName = painterStyle.getPainterClass ();
+            final Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
+            if ( painterClass == null )
+            {
+                final String msg = "Specified painter class '%s' cannot be found";
+                throw new StyleException ( String.format ( msg, painterClassName ) );
+            }
+            final String skinPackage = skinClass.getPackage ().getName ();
+            final String painterPackage = painterClass.getPackage ().getName ();
+            if ( skinPackage.equals ( painterPackage ) )
+            {
+                writer.addAttribute ( CLASS_ATTRIBUTE, painterClassName.substring ( skinPackage.length () + 1 ) );
+            }
+            else
+            {
+                writer.addAttribute ( CLASS_ATTRIBUTE, painterClassName );
+            }
+
+            // Writing painter properties
+            for ( final Map.Entry<String, Object> property : painterStyle.getProperties ().entrySet () )
+            {
+                writer.startNode ( property.getKey () );
+                context.convertAnother ( property.getValue () );
                 writer.endNode ();
             }
+
+            writer.endNode ();
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
-        // Creating component style
-        final ComponentStyle componentStyle = new ComponentStyle ();
-
-        // Reading style ID
-        final String componentStyleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
-        componentStyle.setId ( componentStyleId != null ? componentStyleId : DEFAULT_STYLE_ID );
+        // Creating new component style to read settings into
+        final ComponentStyle style = new ComponentStyle ();
+        final LinkedHashMap<String, Object> componentProperties = new LinkedHashMap<String, Object> ();
+        final LinkedHashMap<String, Object> uiProperties = new LinkedHashMap<String, Object> ();
+        final List<ComponentStyle> nestedStyles = new ArrayList<ComponentStyle> ();
 
         // Reading style component type
-        final SupportedComponent type = SupportedComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
-        componentStyle.setType ( type );
+        final String type = reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE );
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( type );
+        style.setType ( type );
+
+        // Saving context component type
+        final String oldComponentType = ( String ) context.get ( CONTEXT_COMPONENT_TYPE );
+        context.put ( CONTEXT_COMPONENT_TYPE, type );
+
+        // Reading style ID
+        final String styleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
+        style.setId ( styleId != null ? styleId : descriptor.getDefaultStyleId ().getCompleteId () );
+
+        // Saving context style ID
+        final String oldStyleId = ( String ) context.get ( CONTEXT_STYLE_ID );
+        context.put ( CONTEXT_STYLE_ID, style.getId () );
 
         // Reading extended style ID
-        componentStyle.setExtendsId ( reader.getAttribute ( EXTENDS_ID_ATTRIBUTE ) );
+        style.setExtendsId ( reader.getAttribute ( EXTENDS_ID_ATTRIBUTE ) );
 
-        // Reading component style properties and painters
-        // Using LinkedHashMap to keep properties order intact
-        final Map<String, Object> componentProperties = new LinkedHashMap<String, Object> ();
-        final Map<String, Object> uiProperties = new LinkedHashMap<String, Object> ();
-        final List<PainterStyle> painters = new ArrayList<PainterStyle> ();
+        // Reading margin
+        final String marginAttribute = reader.getAttribute ( MARGIN_ATTRIBUTE );
+        if ( marginAttribute != null )
+        {
+            uiProperties.put ( MARGIN_ATTRIBUTE, InsetsConverter.insetsFromString ( marginAttribute ) );
+        }
+
+        // Reading padding
+        final String paddingAttribute = reader.getAttribute ( PADDING_ATTRIBUTE );
+        if ( paddingAttribute != null )
+        {
+            uiProperties.put ( PADDING_ATTRIBUTE, InsetsConverter.insetsFromString ( paddingAttribute ) );
+        }
+
+        // Saving previously set context values
+        // This is required to restore them after processing all child elements
+        final Object occ = context.get ( CONTEXT_COMPONENT_CLASS );
+        final Object ouic = context.get ( CONTEXT_UI_CLASS );
+        final Object opc = context.get ( CONTEXT_PAINTER_CLASS );
+
+        // Adding default component and UI class
+        // This is required to avoid {@code null} references
+        context.put ( CONTEXT_COMPONENT_CLASS, descriptor.getComponentClass () );
+        context.put ( CONTEXT_UI_CLASS, descriptor.getUIClass () );
+
+        // Reading component and UI properties, painter styles and child styles
         while ( reader.hasMoreChildren () )
         {
-            // Read next node
             reader.moveDown ();
             final String nodeName = reader.getNodeName ();
             if ( nodeName.equals ( COMPONENT_NODE ) )
             {
-                // Reading component property
-                final Class componentClass = type.getComponentClass ();
-                while ( reader.hasMoreChildren () )
-                {
-                    reader.moveDown ();
-                    final String propName = reader.getNodeName ();
-                    readProperty ( reader, context, componentStyleId, componentProperties, componentClass, propName );
-                    reader.moveUp ();
-                }
+                // Reading component settings
+                readComponentProperties ( style, componentProperties, reader, context, descriptor );
             }
             else if ( nodeName.equals ( UI_NODE ) )
             {
-                // Reading UI property
-                final Class uiClass = type.getUIClass ();
-                while ( reader.hasMoreChildren () )
-                {
-                    reader.moveDown ();
-                    final String propName = reader.getNodeName ();
-                    readProperty ( reader, context, componentStyleId, uiProperties, uiClass, propName );
-                    reader.moveUp ();
-                }
+                // Reading UI settings
+                readUIProperties ( style, uiProperties, reader, context, descriptor );
             }
             else if ( nodeName.equals ( PAINTER_NODE ) )
             {
-                // Collecting style IDs
-                final String indicesString = reader.getAttribute ( PAINTER_ID_ATTRIBUTE );
-                final List<String> indices = new ArrayList<String> ( 1 );
-                if ( indicesString.contains ( "," ) )
-                {
-                    final StringTokenizer st = new StringTokenizer ( indicesString, ",", false );
-                    while ( st.hasMoreTokens () )
-                    {
-                        indices.add ( st.nextToken () );
-                    }
-                }
-                else
-                {
-                    indices.add ( indicesString );
-                }
-
-                // Creating separate painter styles for each style ID
-                // This might be the case when the same style scheme applied to more than one painter
-                final String painterClassName = reader.getAttribute ( PAINTER_CLASS_ATTRIBUTE );
-                final List<PainterStyle> separateStyles = new ArrayList<PainterStyle> ( indices.size () );
-                for ( final String id : indices )
-                {
-                    final PainterStyle painterStyle = new PainterStyle ();
-                    painterStyle.setId ( id );
-                    painterStyle.setPainterClass ( painterClassName );
-                    separateStyles.add ( painterStyle );
-                }
-                context.put ( PAINTER_CLASS_ATTRIBUTE, painterClassName );
-
-                // Reading painter style properties
-                // Using LinkedHashMap to keep properties order
-                final Map<String, Object> painterProperties = new LinkedHashMap<String, Object> ();
-                final Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
-                if ( painterClass != null )
-                {
-                    while ( reader.hasMoreChildren () )
-                    {
-                        reader.moveDown ();
-                        final String propName = reader.getNodeName ();
-                        readProperty ( reader, context, componentStyleId, painterProperties, painterClass, propName );
-                        reader.moveUp ();
-                    }
-                }
-                for ( final PainterStyle painterStyle : separateStyles )
-                {
-                    painterStyle.setProperties ( painterProperties );
-                }
-
-                // Adding read painter style
-                painters.addAll ( separateStyles );
+                // Reading painter settings
+                readPainterStyle ( style, reader, context );
+            }
+            else if ( nodeName.equals ( STYLE_NODE ) )
+            {
+                // Reading child style settings
+                readNestedStyles ( style, nestedStyles, context );
+            }
+            else
+            {
+                final String msg = "Unknown style settings block '%s' provided for '%s' style";
+                throw new StyleException ( String.format ( msg, nodeName, styleId ) );
             }
             reader.moveUp ();
         }
+        style.setComponentProperties ( componentProperties );
+        style.setUIProperties ( uiProperties );
+        style.setNestedStyles ( nestedStyles );
 
-        // Marking base painter
-        if ( componentStyle.getExtendsId () == null )
-        {
-            if ( painters.size () == 1 )
-            {
-                painters.get ( 0 ).setBase ( true );
-            }
-            else
-            {
-                boolean baseSet = false;
-                for ( final PainterStyle painter : painters )
-                {
-                    if ( painter.isBase () )
-                    {
-                        baseSet = true;
-                        break;
-                    }
-                }
-                if ( !baseSet && painters.size () > 0 )
-                {
-                    painters.get ( 0 ).setBase ( true );
-                }
-            }
-        }
+        // Restoring context values
+        context.put ( CONTEXT_COMPONENT_CLASS, occ );
+        context.put ( CONTEXT_UI_CLASS, ouic );
+        context.put ( CONTEXT_PAINTER_CLASS, opc );
 
-        // Updating values we have just read
-        componentStyle.setComponentProperties ( componentProperties );
-        componentStyle.setUIProperties ( uiProperties );
-        componentStyle.setPainters ( painters );
+        // Cleaning up context
+        context.put ( CONTEXT_STYLE_ID, oldStyleId );
+        context.put ( CONTEXT_COMPONENT_TYPE, oldComponentType );
 
-        return componentStyle;
+        return style;
     }
 
     /**
-     * Parses single style property into properties map.
+     * Reads component properties.
      *
-     * @param reader           hierarchical stream reader
-     * @param context          unmarshalling context
-     * @param componentStyleId component style ID
-     * @param properties       properties
-     * @param propertyClass    property class
-     * @param propertyName     property name
+     * @param style               {@link ComponentStyle} to read component properties for
+     * @param componentProperties {@link Map} to read component properties into
+     * @param reader              {@link HierarchicalStreamReader}
+     * @param context             {@link UnmarshallingContext}
+     * @param descriptor          {@link ComponentDescriptor}
      */
-    protected void readProperty ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final String componentStyleId,
-                                  final Map<String, Object> properties, final Class propertyClass, final String propertyName )
+    private void readComponentProperties ( final ComponentStyle style, final Map<String, Object> componentProperties,
+                                           final HierarchicalStreamReader reader, final UnmarshallingContext context,
+                                           final ComponentDescriptor descriptor )
     {
-        final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
-        if ( ignored != null && Boolean.parseBoolean ( ignored ) )
+        Class<? extends JComponent> componentType = descriptor.getComponentClass ();
+
+        // Reading component class property
+        // It might be specified explicitly to allow specifying additional parameters from the custom component class
+        final String componentClassName = reader.getAttribute ( CLASS_ATTRIBUTE );
+        if ( componentClassName != null )
         {
-            properties.put ( propertyName, IgnoredValue.VALUE );
-        }
-        else
-        {
-            final Class fieldClass = ReflectUtils.getFieldTypeSafely ( propertyClass, propertyName );
-            if ( fieldClass != null )
+            final Class<? extends JComponent> cc = ReflectUtils.getClassSafely ( componentClassName );
+            if ( cc != null )
             {
-                properties.put ( propertyName, context.convertAnother ( properties, fieldClass ) );
-            }
-            else
-            {
-                final Method getter = ReflectUtils.getFieldGetter ( propertyClass, propertyName );
-                if ( getter != null )
+                if ( componentType.isAssignableFrom ( cc ) )
                 {
-                    final Class<?> rClass = getter.getReturnType ();
-                    properties.put ( propertyName, context.convertAnother ( properties, rClass ) );
+                    componentType = cc;
                 }
                 else
                 {
-                    throw new StyleException ( "Component property \"" + propertyName + "\" type from style \"" + componentStyleId +
-                            "\" cannot be determined! Make sure it points to existing field or getter method." );
+                    final String custom = cc.getCanonicalName ();
+                    final String basic = componentType.getCanonicalName ();
+                    final String msg = "Specified custom component class '%s' for style '%s' is not assignable from base class '%s'";
+                    throw new StyleException ( String.format ( msg, custom, style.getId (), basic ) );
                 }
             }
+            else
+            {
+                final String msg = "Specified custom component class %s for style %s cannot be found";
+                throw new StyleException ( String.format ( msg, componentClassName, style.getId () ) );
+            }
         }
+
+        // Saving component class into context
+        context.put ( CONTEXT_COMPONENT_CLASS, componentType );
+
+        // Reading component properties based on the component class
+        StyleConverterUtils.readProperties ( reader, context, mapper, componentProperties, componentType, style.getId () );
+    }
+
+    /**
+     * Reads UI properties.
+     *
+     * @param style        {@link ComponentStyle} to read UI properties for
+     * @param uiProperties {@link Map} to read UI properties into
+     * @param reader       {@link HierarchicalStreamReader}
+     * @param context      {@link UnmarshallingContext}
+     * @param descriptor   {@link ComponentDescriptor}
+     */
+    private void readUIProperties ( final ComponentStyle style, final Map<String, Object> uiProperties,
+                                    final HierarchicalStreamReader reader, final UnmarshallingContext context,
+                                    final ComponentDescriptor descriptor )
+    {
+        Class<? extends ComponentUI> uiType = descriptor.getUIClass ();
+
+        // Reading UI class property
+        // It might be specified explicitly to allow specifying additional parameters from the custom UI class
+        final String uiClassName = reader.getAttribute ( CLASS_ATTRIBUTE );
+        if ( uiClassName != null )
+        {
+            final Class<? extends ComponentUI> uic = ReflectUtils.getClassSafely ( uiClassName );
+            if ( uic != null )
+            {
+                if ( uiType.isAssignableFrom ( uic ) )
+                {
+                    uiType = uic;
+                }
+                else
+                {
+                    final String custom = uic.getCanonicalName ();
+                    final String basic = uiType.getCanonicalName ();
+                    final String msg = "Specified custom UI class '%s' for style '%s' is not assignable from base UI class '%s'";
+                    throw new StyleException ( String.format ( msg, custom, style.getId (), basic ) );
+                }
+            }
+            else
+            {
+                final String msg = "Specified custom UI class '%s' for style '%s' cannot be found";
+                throw new StyleException ( String.format ( msg, uiClassName, style.getId () ) );
+            }
+        }
+
+        // Saving UI class into context
+        context.put ( CONTEXT_UI_CLASS, uiType );
+
+        // Reading UI properties based on component UI class
+        StyleConverterUtils.readProperties ( reader, context, mapper, uiProperties, uiType, style.getId () );
+    }
+
+    /**
+     * Reads {@link PainterStyle} for the specified {@link ComponentStyle}.
+     *
+     * @param style   {@link ComponentStyle} to read {@link PainterStyle} for
+     * @param reader  {@link HierarchicalStreamReader}
+     * @param context {@link UnmarshallingContext}
+     */
+    private void readPainterStyle ( final ComponentStyle style, final HierarchicalStreamReader reader,
+                                    final UnmarshallingContext context )
+    {
+        // Retrieving overwrite policy
+        final String ow = reader.getAttribute ( OVERWRITE_ATTRIBUTE );
+        final boolean overwrite = Boolean.valueOf ( ow );
+
+        // Retrieving default painter class based on UI class and default painter field name
+        // Basically we are reading this painter as a field of the UI class here
+        final Class<? extends ComponentUI> uiClass = ( Class<? extends ComponentUI> ) context.get ( CONTEXT_UI_CLASS );
+        final Class<? extends Painter> defaultPainter = StyleConverterUtils.getDefaultPainter ( uiClass, PAINTER_NODE );
+
+        // Unmarshalling painter class
+        final Class<? extends Painter> painterClass =
+                PainterStyleConverter.unmarshalPainterClass ( reader, context, mapper, defaultPainter, style.getId () );
+
+        // Providing painter class to subsequent converters
+        final Object opc = context.get ( CONTEXT_PAINTER_CLASS );
+        context.put ( CONTEXT_PAINTER_CLASS, painterClass );
+
+        // Creating painter style
+        final PainterStyle painterStyle = new PainterStyle ();
+        painterStyle.setOverwrite ( overwrite );
+        painterStyle.setPainterClass ( painterClass.getCanonicalName () );
+
+        // Reading painter style properties
+        // Using LinkedHashMap to keep properties order
+        final LinkedHashMap<String, Object> painterProperties = new LinkedHashMap<String, Object> ();
+        StyleConverterUtils.readProperties ( reader, context, mapper, painterProperties, painterClass, style.getId () );
+        painterStyle.setProperties ( painterProperties );
+
+        // Saving painter style
+        style.setPainterStyle ( painterStyle );
+
+        // Cleaning up context
+        context.put ( CONTEXT_PAINTER_CLASS, opc );
+    }
+
+    /**
+     * Reads nested {@link ComponentStyle}s.
+     *
+     * @param style   parent {@link ComponentStyle}
+     * @param styles  {@link List} to read nested {@link ComponentStyle}s into
+     * @param context {@link UnmarshallingContext}
+     */
+    private void readNestedStyles ( final ComponentStyle style, final List<ComponentStyle> styles, final UnmarshallingContext context )
+    {
+        // Reading nested component style
+        final ComponentStyle childStyle = ( ComponentStyle ) context.convertAnother ( style, ComponentStyle.class );
+
+        // Saving parent style reference
+        childStyle.setParent ( style );
+
+        // Adding single child style
+        styles.add ( childStyle );
     }
 }

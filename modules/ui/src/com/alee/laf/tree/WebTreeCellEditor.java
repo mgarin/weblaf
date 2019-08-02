@@ -21,10 +21,11 @@ import com.alee.extended.image.WebImage;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
-import javax.swing.plaf.TreeUI;
+import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -32,11 +33,15 @@ import java.awt.event.FocusListener;
 /**
  * This class provides a styled default cell editor for trees.
  *
+ * @param <C> editor {@link JComponent} type
  * @author Mikle Garin
  */
-
 public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEditor<C> implements FocusListener
 {
+    /**
+     * todo 1. Break this editor into proper separate implementations instead of Swing-way chaos
+     */
+
     /**
      * Whether should update editor's leading icon automatically when it is possible or not.
      */
@@ -80,27 +85,20 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         super ( comboBox );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void focusGained ( final FocusEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void focusLost ( final FocusEvent e )
     {
         stopCellEditing ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean stopCellEditing ()
     {
@@ -113,9 +111,6 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         return stopped;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void cancelCellEditing ()
     {
@@ -145,43 +140,27 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         cellEditor.addFocusListener ( this );
 
         // Copying editor size from cell renderer size
-        final Component component =
-                tree.getCellRenderer ().getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, true );
+        final TreeCellRenderer r = tree.getCellRenderer ();
+        final Component component = r.getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, true );
         cellEditor.setPreferredSize ( component.getPreferredSize () );
 
         // Updating editor styling
-        if ( component instanceof JLabel && ( ( JLabel ) component ).getIcon () != null )
+        if ( cellEditor instanceof WebTextField )
         {
-            final JLabel label = ( JLabel ) component;
+            // Field styling
+            final WebTextField editor = ( WebTextField ) cellEditor;
+            editor.setStyleId ( StyleId.treeCellEditor.at ( tree ) );
 
-            // todo Proper editor for RTL
-            // boolean ltr = tree.getComponentOrientation ().isLeftToRight ();
-
-            if ( cellEditor instanceof WebTextField )
+            // Updating leading icon styling
+            if ( component instanceof JLabel && ( ( JLabel ) component ).getIcon () != null )
             {
-                final TreeUI tui = tree.getUI ();
-                final int sw =
-                        tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
-
-                // Field styling
-                final WebTextField editor = ( WebTextField ) cellEditor;
-                editor.setDrawFocus ( false );
-                editor.setShadeWidth ( sw );
-                editor.setDrawShade ( false );
-
-                // Leading icon
+                final JLabel label = ( JLabel ) component;
                 if ( autoUpdateLeadingIcon )
                 {
-                    editor.setLeadingComponent ( new WebImage ( label.getIcon () ) );
+                    // Leading icon styling
+                    final WebImage image = new WebImage ( StyleId.treeCellEditorIcon.at ( editor ), label.getIcon () );
+                    editor.setLeadingComponent ( image );
                 }
-
-                // Field side margin
-                final int sm = sw + 1;
-                final Insets margin = label.getInsets ();
-                editor.setMargin ( margin.top - sm, margin.left - sm, margin.bottom - sm, margin.right - sm - 2 );
-
-                // Gap between leading icon and text
-                editor.setFieldMargin ( 0, label.getIconTextGap (), 0, 0 );
             }
         }
 

@@ -1,0 +1,24 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.statusbar.WebStatusBar -->
+
+    <!-- StatusBar -->
+    <style type="statusbar" padding="2">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" sides="1,0,0,0" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground>
+                        <color>white</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="disabled">
+                    <LineBorder color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

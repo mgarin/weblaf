@@ -17,103 +17,82 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.data.Corner;
+import com.alee.api.jdk.Consumer;
+import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.scroll.ScrollPaneCornerProvider;
 import com.alee.laf.table.editors.WebBooleanEditor;
 import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
-import com.alee.managers.tooltip.ToolTipProvider;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.AncestorAdapter;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTableUI;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Date;
 
 /**
- * Custom UI for JTable component.
+ * Custom UI for {@link JTable} component.
  *
  * @author Mikle Garin
  */
-
-public class WebTableUI extends BasicTableUI
+public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
 {
     /**
-     * Table listeners.
+     * Component painter.
      */
-    protected AncestorAdapter ancestorAdapter;
-    protected MouseAdapter mouseAdapter;
-
-    private Color scrollPaneBackgroundColor = WebTableStyle.scrollPaneBackgroundColor;
+    @DefaultPainter ( TablePainter.class )
+    protected ITablePainter painter;
 
     /**
-     * Runtime variables.
+     * Listeners.
      */
-    protected Point rolloverCell;
-
-    public Color getScrollPaneBackgroundColor ()
-    {
-        return scrollPaneBackgroundColor;
-    }
-
-    public void setScrollPaneBackgroundColor ( final Color scrollPaneBackgroundColor )
-    {
-        this.scrollPaneBackgroundColor = scrollPaneBackgroundColor;
-    }
+    protected transient PropertyChangeListener propertyChangeListener;
 
     /**
-     * Returns an instance of the WebTreeUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebTableUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebTreeUI
+     * @return instance of the {@link WebTableUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( table );
-        LookAndFeel.installProperty ( table, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        table.setFillsViewportHeight ( false );
-        table.setBackground ( WebTableStyle.background );
-        table.setForeground ( WebTableStyle.foreground );
-        table.setSelectionBackground ( WebTableStyle.selectionBackground );
-        table.setSelectionForeground ( WebTableStyle.selectionForeground );
-        table.setRowHeight ( WebTableStyle.rowHeight );
-        table.setShowHorizontalLines ( WebTableStyle.showHorizontalLines );
-        table.setShowVerticalLines ( WebTableStyle.showVerticalLines );
-        table.setIntercellSpacing ( WebTableStyle.cellsSpacing );
-
-        // todo Save and restore old renderers/editors on uninstall
         // Configuring default renderers
-        table.setDefaultRenderer ( Object.class, new WebTableCellRenderer () );
-        table.setDefaultRenderer ( Number.class, new WebNumberRenderer () );
-        table.setDefaultRenderer ( Double.class, new WebDoubleRenderer () );
-        table.setDefaultRenderer ( Float.class, new WebDoubleRenderer () );
-        table.setDefaultRenderer ( Date.class, new WebDateRenderer () );
-        table.setDefaultRenderer ( Icon.class, new WebIconRenderer () );
-        table.setDefaultRenderer ( ImageIcon.class, new WebIconRenderer () );
-        table.setDefaultRenderer ( Boolean.class, new WebBooleanRenderer () );
+        table.setDefaultRenderer ( Object.class,
+                new WebTableCellRenderer.UIResource<Object, JTable, TableCellParameters<Object, JTable>> () );
+        table.setDefaultRenderer ( Number.class,
+                new WebTableNumberCellRenderer.UIResource<Number, JTable, TableCellParameters<Number, JTable>> () );
+        table.setDefaultRenderer ( Double.class,
+                new WebTableDoubleCellRenderer.UIResource<Double, JTable, TableCellParameters<Double, JTable>> () );
+        table.setDefaultRenderer ( Float.class,
+                new WebTableFloatCellRenderer.UIResource<Float, JTable, TableCellParameters<Float, JTable>> () );
+        table.setDefaultRenderer ( Date.class,
+                new WebTableDateCellRenderer.UIResource<Date, JTable, TableCellParameters<Date, JTable>> () );
+        table.setDefaultRenderer ( Icon.class,
+                new WebTableIconCellRenderer.UIResource<Icon, JTable, TableCellParameters<Icon, JTable>> () );
+        table.setDefaultRenderer ( ImageIcon.class,
+                new WebTableIconCellRenderer.UIResource<ImageIcon, JTable, TableCellParameters<ImageIcon, JTable>> () );
+        table.setDefaultRenderer ( Boolean.class,
+                new WebTableBooleanCellRenderer.UIResource<JTable, TableCellParameters<Boolean, JTable>> () );
         // todo Additional renderers:
         // table.setDefaultRenderer ( Dimension.class,  );
         // table.setDefaultRenderer ( Point.class,  );
@@ -133,135 +112,145 @@ public class WebTableUI extends BasicTableUI
         // table.setDefaultEditor ( Color.class,  );
         // table.setDefaultEditor ( List.class,  );
 
-        // Configuring scrollpane corner
-        configureEnclosingScrollPaneUI ( table );
-        ancestorAdapter = new AncestorAdapter ()
+        // Table header change listener
+        updateTableHeaderStyleId ();
+        propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void ancestorAdded ( final AncestorEvent event )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
-                configureEnclosingScrollPaneUI ( table );
+                updateTableHeaderStyleId ();
             }
         };
-        table.addAncestorListener ( ancestorAdapter );
+        table.addPropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
 
-        // Rollover listener
-        mouseAdapter = new MouseAdapter ()
-        {
-            @Override
-            public void mouseMoved ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseDragged ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseExited ( final MouseEvent e )
-            {
-                clearMouseover ();
-            }
-
-            private void updateMouseover ( final MouseEvent e )
-            {
-                final Point point = e.getPoint ();
-                final Point cell = new Point ( table.columnAtPoint ( point ), table.rowAtPoint ( point ) );
-                if ( cell.x != -1 && cell.y != -1 )
-                {
-                    if ( !CompareUtils.equals ( rolloverCell, cell ) )
-                    {
-                        updateRolloverCell ( rolloverCell, cell );
-                    }
-                }
-                else
-                {
-                    clearMouseover ();
-                }
-            }
-
-            private void clearMouseover ()
-            {
-                if ( rolloverCell != null )
-                {
-                    updateRolloverCell ( rolloverCell, null );
-                }
-            }
-
-            private void updateRolloverCell ( final Point oldCell, final Point newCell )
-            {
-                // Updating rollover cell
-                rolloverCell = newCell;
-
-                // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
-                if ( provider != null )
-                {
-                    final int oldIndex = oldCell != null ? oldCell.y : -1;
-                    final int oldColumn = oldCell != null ? oldCell.x : -1;
-                    final int newIndex = newCell != null ? newCell.y : -1;
-                    final int newColumn = newCell != null ? newCell.x : -1;
-                    provider.rolloverCellChanged ( table, oldIndex, oldColumn, newIndex, newColumn );
-                }
-            }
-        };
-        table.addMouseListener ( mouseAdapter );
-        table.addMouseMotionListener ( mouseAdapter );
+        // Applying skin
+        StyleManager.installSkin ( table );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        table.removeMouseListener ( mouseAdapter );
-        table.removeMouseMotionListener ( mouseAdapter );
-        table.removeAncestorListener ( ancestorAdapter );
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( table );
+
+        // Cleaning up listeners
+        table.removePropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
+        propertyChangeListener = null;
 
         super.uninstallUI ( c );
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
-     *
-     * @return custom WebLaF tooltip provider
+     * Performs table header style ID update.
+     * This method helps to keep header style ID in sync with table style.
      */
-    protected ToolTipProvider<? extends WebTable> getToolTipProvider ()
+    protected void updateTableHeaderStyleId ()
     {
-        return table != null && table instanceof WebTable ? ( ( WebTable ) table ).getToolTipProvider () : null;
+        // Header might be null so we should guard against it here
+        final JTableHeader header = table.getTableHeader ();
+        if ( header != null )
+        {
+            // Pairing table header style with table as parent
+            StyleId.tableHeader.at ( table ).set ( header );
+        }
+    }
+
+    @Override
+    public Shape getShape ()
+    {
+        return PainterSupport.getShape ( table, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( table, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( table, painter, enabled );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( table );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        PainterSupport.setMargin ( table, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( table );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PainterSupport.setPadding ( table, padding );
     }
 
     /**
-     * Configures table scroll pane with UI specific settings.
+     * Returns text field painter.
      *
-     * @param table table to process
+     * @return text field painter
      */
-    protected void configureEnclosingScrollPaneUI ( final JTable table )
+    public Painter getPainter ()
     {
-        // Retrieving table scroll pane if it has one
-        final JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
-        if ( scrollPane != null )
+        return PainterSupport.getPainter ( painter );
+    }
+
+    /**
+     * Sets text field painter.
+     * Pass null to remove text field painter.
+     *
+     * @param painter new text field painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( table, new Consumer<ITablePainter> ()
         {
-            // Make certain we are the viewPort's view and not, for
-            // example, the rowHeaderView of the scrollPane -
-            // an implementor of fixed columns might do this.
-            final JViewport viewport = scrollPane.getViewport ();
-            if ( viewport == null || viewport.getView () != table )
+            @Override
+            public void accept ( final ITablePainter newPainter )
             {
-                return;
+                WebTableUI.this.painter = newPainter;
             }
+        }, this.painter, painter, ITablePainter.class, AdaptiveTablePainter.class );
+    }
 
-            scrollPane.getViewport().setBackground( scrollPaneBackgroundColor );
+    @Override
+    public JComponent getCorner ( final Corner type )
+    {
+        return type == Corner.upperTrailing ? new WebCanvas ( StyleId.tableCorner.at ( table ), type.name () ) : null;
+    }
 
-            // Adding both corners to the scroll pane for both orientation cases
-            scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );
-            scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, new WebTableCorner ( true ) );
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.prepareToPaint ( rendererPane );
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

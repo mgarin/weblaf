@@ -17,7 +17,6 @@
 
 package com.alee.extended.tab;
 
-import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
@@ -26,58 +25,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents basic data for single document opened in WebDocumentPane.
+ * This class represents basic data for single document opened in {@link WebDocumentPane}.
  *
+ * @param <C> {@link Component} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see com.alee.extended.tab.WebDocumentPane
- * @see com.alee.extended.tab.PaneData
+ * @see WebDocumentPane
+ * @see PaneData
  */
-
 public class DocumentData<C extends Component>
 {
     /**
-     * Document data listeners.
-     * Used to properly update WebDocumentPane view on document changes.
+     * {@link DocumentDataListener}s used to properly update {@link WebDocumentPane} on document changes.
      */
     protected transient List<DocumentDataListener> listeners = new ArrayList<DocumentDataListener> ( 1 );
 
     /**
-     * Document ID.
-     * This ID have to be unique only within single WebDocumentPane instance.
+     * Document identifier unique within {@link WebDocumentPane}.
      */
     protected String id;
 
     /**
-     * Document icon.
-     * Used to display icon on the document tab.
+     * Document {@link Icon} used for the document tab.
      */
     protected Icon icon;
 
     /**
-     * Document title.
-     * This can be a plain text or a language key.
+     * Plain text or a language key used as document title.
      * Whether this is a plain text or a language key will be determined automatically, you only have to provide it.
      */
     protected String title;
 
     /**
-     * Document title foreground color.
-     * Used to color tab title text.
+     * Document foreground {@link Color} used for the document tab title.
      */
     protected Color foreground;
 
     /**
-     * Document tab background color.
-     * Used to color tab and tab content background.
+     * Document background {@link Color} used for the document tab and content.
      */
     protected Color background;
 
     /**
-     * Whether this document is closeable or not.
-     * All documents are closeable by default, but you may change that.
+     * Whether this document is closable or not.
+     * All documents are closable by default, but you may change that.
      */
-    protected boolean closeable;
+    protected boolean closable;
 
     /**
      * Whether this document is draggable or not.
@@ -86,17 +79,16 @@ public class DocumentData<C extends Component>
     protected boolean draggable;
 
     /**
-     * Document content.
-     * A component that represents document tab content.
+     * {@link Component} used as document tab content.
      */
     protected C component;
 
     /**
-     * Constructs new document.
+     * Constructs new {@link DocumentData}.
      *
-     * @param id        document ID
-     * @param title     document title
-     * @param component document content
+     * @param id        document identifier unique within {@link WebDocumentPane}
+     * @param title     plain text or a language key used as document title
+     * @param component {@link Component} used as document tab content
      */
     public DocumentData ( final String id, final String title, final C component )
     {
@@ -104,11 +96,11 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Constructs new document.
+     * Constructs new {@link DocumentData}.
      *
-     * @param id        document ID
-     * @param icon      document icon
-     * @param component document content
+     * @param id        document identifier unique within {@link WebDocumentPane}
+     * @param icon      document {@link Icon} used for the document tab
+     * @param component {@link Component} used as document tab content
      */
     public DocumentData ( final String id, final Icon icon, final C component )
     {
@@ -116,12 +108,12 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Constructs new document.
+     * Constructs new {@link DocumentData}.
      *
-     * @param id        document ID
-     * @param icon      document icon
-     * @param title     document title
-     * @param component document content
+     * @param id        document identifier unique within {@link WebDocumentPane}
+     * @param icon      document {@link Icon} used for the document tab
+     * @param title     plain text or a language key used as document title
+     * @param component {@link Component} used as document tab content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final C component )
     {
@@ -129,13 +121,13 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Constructs new document.
+     * Constructs new {@link DocumentData}.
      *
-     * @param id         document ID
-     * @param icon       document icon
-     * @param title      document title
-     * @param background document tab background color
-     * @param component  document content
+     * @param id         document identifier unique within {@link WebDocumentPane}
+     * @param icon       document {@link Icon} used for the document tab
+     * @param title      plain text or a language key used as document title
+     * @param background document background {@link Color} used for the document tab and content
+     * @param component  {@link Component} used as document tab content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final C component )
     {
@@ -143,52 +135,52 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Constructs new document.
+     * Constructs new {@link DocumentData}.
      *
-     * @param id         document ID
-     * @param icon       document icon
-     * @param title      document title
-     * @param background document tab background color
-     * @param closeable  whether document is closeable or not
-     * @param component  document content
+     * @param id         document identifier unique within {@link WebDocumentPane}
+     * @param icon       document {@link Icon} used for the document tab
+     * @param title      plain text or a language key used as document title
+     * @param background document background {@link Color} used for the document tab and content
+     * @param closable   whether document is closable or not
+     * @param component  {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closable,
                           final C component )
     {
-        this ( id, icon, title, background, closeable, true, component );
+        this ( id, icon, title, background, closable, true, component );
     }
 
     /**
-     * Constructs new document.
+     * Constructs new {@link DocumentData}.
      *
-     * @param id         document ID
-     * @param icon       document icon
-     * @param title      document title
-     * @param background document tab background color
-     * @param closeable  whether document is closeable or not
+     * @param id         document identifier unique within {@link WebDocumentPane}
+     * @param icon       document {@link Icon} used for the document tab
+     * @param title      plain text or a language key used as document title
+     * @param background document background {@link Color} used for the document tab and content
+     * @param closable   whether document is closable or not
      * @param draggable  whether document is draggable or not
-     * @param component  document content
+     * @param component  {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closable,
                           final boolean draggable, final C component )
     {
-        this ( id, icon, title, Color.BLACK, background, closeable, draggable, component );
+        this ( id, icon, title, Color.BLACK, background, closable, draggable, component );
     }
 
     /**
-     * Constructs new document.
+     * Constructs new {@link DocumentData}.
      *
-     * @param id         document ID
-     * @param icon       document icon
-     * @param title      document title
-     * @param foreground document title foreground color
-     * @param background document tab background color
-     * @param closeable  whether document is closeable or not
+     * @param id         document identifier unique within {@link WebDocumentPane}
+     * @param icon       document {@link Icon} used for the document tab
+     * @param title      plain text or a language key used as document title
+     * @param foreground document foreground {@link Color} used for the document tab title
+     * @param background document background {@link Color} used for the document tab and content
+     * @param closable   whether document is closable or not
      * @param draggable  whether document is draggable or not
-     * @param component  document content
+     * @param component  {@link Component} used as document tab content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color foreground, final Color background,
-                          final boolean closeable, final boolean draggable, final C component )
+                          final boolean closable, final boolean draggable, final C component )
     {
         super ();
         this.id = id;
@@ -196,15 +188,15 @@ public class DocumentData<C extends Component>
         this.title = title;
         this.foreground = foreground;
         this.background = background;
-        this.closeable = closeable;
+        this.closable = closable;
         this.draggable = draggable;
         this.component = component;
     }
 
     /**
-     * Returns document ID.
+     * Returns document identifier unique within {@link WebDocumentPane}.
      *
-     * @return document ID
+     * @return document identifier unique within {@link WebDocumentPane}
      */
     public String getId ()
     {
@@ -212,9 +204,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Sets document ID.
+     * Sets document identifier unique within {@link WebDocumentPane}.
      *
-     * @param id new document ID
+     * @param id new document identifier unique within {@link WebDocumentPane}
      */
     public void setId ( final String id )
     {
@@ -222,9 +214,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns document icon.
+     * Returns document {@link Icon} used for the document tab.
      *
-     * @return document icon
+     * @return document {@link Icon} used for the document tab
      */
     public Icon getIcon ()
     {
@@ -232,9 +224,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Sets document icon.
+     * Sets document {@link Icon} used for the document tab.
      *
-     * @param icon new document icon
+     * @param icon new document {@link Icon} used for the document tab
      */
     public void setIcon ( final Icon icon )
     {
@@ -243,9 +235,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns document title.
+     * Returns plain text or a language key used as document title.
      *
-     * @return document title
+     * @return plain text or a language key used as document title
      */
     public String getTitle ()
     {
@@ -253,19 +245,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns translated document title.
+     * Sets plain text or a language key used as document title.
      *
-     * @return translated document title
-     */
-    public String getActualTitle ()
-    {
-        return title != null ? title : LM.get ( id );
-    }
-
-    /**
-     * Sets document title.
-     *
-     * @param title new document title
+     * @param title new plain text or a language key used as document title
      */
     public void setTitle ( final String title )
     {
@@ -274,9 +256,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns document title text foreground color.
+     * Returns document foreground {@link Color} used for the document tab title.
      *
-     * @return document title text foreground color
+     * @return document foreground {@link Color} used for the document tab title
      */
     public Color getForeground ()
     {
@@ -284,9 +266,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Sets document title text foreground color
+     * Sets document foreground {@link Color} used for the document tab title
      *
-     * @param foreground document title text foreground color
+     * @param foreground document foreground {@link Color} used for the document tab title
      */
     public void setForeground ( final Color foreground )
     {
@@ -295,9 +277,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns document tab background color.
+     * Returns document background {@link Color} used for the document tab and content.
      *
-     * @return document tab background color
+     * @return document background {@link Color} used for the document tab and content
      */
     public Color getBackground ()
     {
@@ -305,9 +287,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Sets document tab background color.
+     * Sets document background {@link Color} used for the document tab and content.
      *
-     * @param background document tab background color
+     * @param background document background {@link Color} used for the document tab and content
      */
     public void setBackground ( final Color background )
     {
@@ -317,23 +299,23 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns whether document is closeable or not.
+     * Returns whether document is closable or not.
      *
-     * @return true if document is closeable, false otherwise
+     * @return true if document is closable, false otherwise
      */
-    public boolean isCloseable ()
+    public boolean isClosable ()
     {
-        return closeable;
+        return closable;
     }
 
     /**
-     * Sets whether document is closeable or not.
+     * Sets whether document is closable or not.
      *
-     * @param closeable whether document is closeable or not
+     * @param closable whether document is closable or not
      */
-    public void setCloseable ( final boolean closeable )
+    public void setClosable ( final boolean closable )
     {
-        this.closeable = closeable;
+        this.closable = closable;
         fireTitleChanged ();
     }
 
@@ -358,9 +340,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns document content.
+     * Returns {@link Component} used as document tab content.
      *
-     * @return document content
+     * @return {@link Component} used as document tab content
      */
     public C getComponent ()
     {
@@ -368,9 +350,9 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Sets document content.
+     * Sets {@link Component} used as document tab content.
      *
-     * @param component new document content
+     * @param component new {@link Component} used as document tab content
      */
     public void setComponent ( final C component )
     {

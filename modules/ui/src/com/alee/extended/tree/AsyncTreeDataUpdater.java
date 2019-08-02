@@ -24,49 +24,60 @@ import java.util.List;
  * Basically these methods called when some tree node is renamed, moved or removed.
  * This interface will be informed about such changes so you can perform data update actions.
  *
+ * @param <N> node type
  * @author Mikle Garin
  */
-
-public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
+public interface AsyncTreeDataUpdater<N extends AsyncUniqueNode>
 {
     /**
-     * Called when node add operation performed.
-     * At this point node is already added visually, but you can still cancel this action if you cannot update data properly.
+     * Called when nodes add operation performed.
+     * At this point nodes are already added visually, but you can still cancel this action if you cannot update data properly.
      *
      * @param nodes      added nodes list
      * @param parentNode parent node where specified nodes were added
-     * @param addFailed  runnable you should call in case data update failed, it will cancel changes
+     * @param rollback   runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodesAdded ( List<E> nodes, E parentNode, Runnable addFailed );
+    public void nodesAdded ( List<N> nodes, N parentNode, Runnable rollback );
 
     /**
      * Called when node rename operation performed.
      * At this point node is already renamed visually, but you can still cancel this action if you cannot update data properly.
      *
-     * @param node         renamed node
-     * @param oldName      old node name
-     * @param newName      new node name
-     * @param renameFailed runnable you should call in case data update failed, it will cancel changes
+     * @param node     renamed node
+     * @param oldName  old node name
+     * @param newName  new node name
+     * @param rollback runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodeRenamed ( E node, String oldName, String newName, Runnable renameFailed );
+    public void nodeRenamed ( N node, String oldName, String newName, Runnable rollback );
 
     /**
-     * Called when node move (D&D or cut/paste) operation performed.
-     * At this point node is already moved visually, but you can still cancel this action if you cannot update data properly.
+     * Called when node move (D&amp;D or cut/paste) operation performed.
+     * At this point nodes are already moved visually, but you can still cancel this action if you cannot update data properly.
      *
-     * @param node       moved node
-     * @param oldParent  old parent node
-     * @param newParent  new parent node
-     * @param moveFailed runnable you should call in case data update failed, it will cancel changes
+     * @param nodes     moved nodes list
+     * @param oldParent old parent node
+     * @param newParent new parent node
+     * @param rollback  runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodeMoved ( E node, E oldParent, E newParent, Runnable moveFailed );
+    public void nodesMoved ( List<N> nodes, N oldParent, N newParent, Runnable rollback );
 
     /**
-     * Called when node remove operation performed.
-     * At this point node is already removed visually, but you can still cancel this action if you cannot update data properly.
+     * Called when node copy (D&amp;D or copy/paste) operation performed.
+     * At this point nodes are already copied visually, but you can still cancel this action if you cannot update data properly.
      *
-     * @param node         removed node
-     * @param removeFailed runnable you should call in case data update failed, it will cancel changes
+     * @param nodes     moved nodes list
+     * @param oldParent old parent node
+     * @param newParent new parent node
+     * @param rollback  runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodeRemoved ( E node, Runnable removeFailed );
+    public void nodesCopied ( List<N> nodes, N oldParent, N newParent, Runnable rollback );
+
+    /**
+     * Called when nodes remove operation performed.
+     * At this point nodes are already removed visually, but you can still cancel this action if you cannot update data properly.
+     *
+     * @param nodes    removed nodes list
+     * @param rollback runnable you should call in case data update failed, it will cancel changes
+     */
+    public void nodesRemoved ( List<N> nodes, Runnable rollback );
 }

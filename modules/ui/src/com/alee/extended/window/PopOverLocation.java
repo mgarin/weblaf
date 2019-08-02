@@ -23,7 +23,6 @@ package com.alee.extended.window;
  * @author Mikle Garin
  * @see WebPopOver
  */
-
 public enum PopOverLocation
 {
     /**

@@ -17,7 +17,7 @@
 
 package com.alee.managers.hotkey;
 
-import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
@@ -26,10 +26,16 @@ import java.lang.ref.WeakReference;
 
 /**
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HotkeyManager">How to use HotkeyManager</a>
+ * @see HotkeyManager
  */
-
 public class HotkeyInfo
 {
+    /**
+     * todo 1. Rework according to {@link HotkeyManager} rework
+     * todo 2. Make {@link java.io.Serializable}
+     */
+
     public static final String ID_PREFIX = "HI";
 
     // Hotkey id

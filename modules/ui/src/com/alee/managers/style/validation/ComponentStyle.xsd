@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.lang="java.lang"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="Decoration.xsd" />
+    <xs:include schemaLocation="ext/ComponentType.xsd" />
+
+    <!-- com.alee.managers.style.data.ComponentStyle -->
+    <xs:complexType name="ComponentStyle">
+
+        <!-- Style settings -->
+        <xs:sequence>
+
+            <!-- Component settings block -->
+            <xs:element name="component" type="ComponentSettings" minOccurs="0" maxOccurs="1" />
+
+            <!-- UI settings block -->
+            <xs:element name="ui" type="UISettings" minOccurs="0" maxOccurs="1" />
+
+            <!-- Painter settings block -->
+            <xs:element name="painter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+
+            <!-- Nested styles -->
+            <xs:element name="style" type="ComponentStyle" minOccurs="0" maxOccurs="unbounded" />
+
+        </xs:sequence>
+
+        <!-- Component type -->
+        <xs:attribute name="type" type="ComponentType" use="required" />
+
+        <!-- Style unique identifier -->
+        <xs:attribute name="id" type="xs:string" use="optional" />
+
+        <!-- Margin -->
+        <xs:attribute name="margin" type="java.awt:Insets" use="optional" />
+
+        <!-- Padding -->
+        <xs:attribute name="padding" type="java.awt:Insets" use="optional" />
+
+        <!-- Extends -->
+        <xs:attribute name="extends" type="xs:string" use="optional" />
+
+    </xs:complexType>
+
+    <!-- Abstract settings block type -->
+    <xs:complexType name="AbstractSettings">
+
+        <!-- Various possible settings -->
+        <xs:sequence>
+
+            <!-- Any custom field -->
+            <xs:any minOccurs="0" maxOccurs="unbounded" />
+
+        </xs:sequence>
+
+    </xs:complexType>
+
+    <!-- Component settings type -->
+    <xs:complexType name="ComponentSettings">
+        <xs:complexContent>
+            <xs:extension base="AbstractSettings">
+
+                <!-- Various possible JComponent settings -->
+                <xs:sequence>
+
+                    <!-- Opaque -->
+                    <xs:element name="opaque" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Layout -->
+                    <xs:choice minOccurs="0" maxOccurs="1">
+
+                        <!-- Any custom layout settings -->
+                        <xs:element name="layout" type="java.awt:LayoutManager" />
+
+                    </xs:choice>
+
+                </xs:sequence>
+
+                <!-- Specific JComponent class -->
+                <xs:attribute name="class" type="java.lang:Class" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- UI settings type -->
+    <xs:complexType name="UISettings">
+        <xs:complexContent>
+            <xs:extension base="AbstractSettings">
+
+                <!-- Various possible UI settings -->
+                <xs:sequence>
+
+                    <!-- Margin -->
+                    <xs:element name="margin" type="java.awt:Insets" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Padding -->
+                    <xs:element name="padding" type="java.awt:Insets" minOccurs="0" maxOccurs="1" />
+
+                </xs:sequence>
+
+                <!-- Specific ComponentUI class -->
+                <xs:attribute name="class" type="java.lang:Class" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Painter settings type -->
+    <xs:complexType name="PainterSettings">
+        <xs:complexContent>
+            <xs:extension base="AbstractSettings">
+
+                <!-- Various possible Painter settings -->
+                <xs:sequence>
+
+                    <!-- Decoration settings -->
+                    <xs:element name="decorations" type="Decorations" minOccurs="0" maxOccurs="1" />
+
+                    <!-- Optional section painters -->
+                    <xs:choice>
+
+                        <!-- com.alee.laf.checkbox.AbstractStateButtonPainter -->
+                        <xs:sequence>
+                            <xs:element name="checkStatePainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+
+                        <!-- com.alee.laf.list.ListPainter -->
+                        <xs:sequence>
+                            <xs:element name="itemPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="selectionPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+
+                        <!-- com.alee.laf.tree.TreePainter -->
+                        <xs:sequence>
+                            <xs:element name="rowPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="nodePainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="selectionPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="dropLocationPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="selectorPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+
+                        <!-- com.alee.laf.table.TablePainter -->
+                        <xs:sequence>
+                            <xs:element name="rowPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="columnPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="cellPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="selectionPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="draggedColumnPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+
+                        <!-- com.alee.laf.progressbar.ProgressBarPainter -->
+                        <xs:sequence>
+                            <xs:element name="progressPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="progressTextPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+
+                    </xs:choice>
+
+                </xs:sequence>
+
+                <!-- Specific Painter class -->
+                <xs:attribute name="overwrite" type="xs:boolean" use="optional" />
+
+                <!-- Specific Painter class -->
+                <xs:attribute name="class" type="java.lang:Class" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

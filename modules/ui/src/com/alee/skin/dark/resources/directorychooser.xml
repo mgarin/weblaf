@@ -1,0 +1,95 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.filechooser.WebDirectoryChooser -->
+
+    <!-- Directory chooser panel -->
+    <style type="panel" id="directorychooser">
+
+        <!-- Toolbar -->
+        <style type="toolbar" id="toolbar" extends="attached-north">
+            <component>
+                <orientation>0</orientation>
+                <floatable>false</floatable>
+            </component>
+
+            <!-- Tool buttons -->
+            <style type="button" id="button" extends="icon-hover" />
+            <style type="button" id="folderup" extends="button" />
+            <style type="button" id="home" extends="button" />
+            <style type="button" id="desktop" extends="button" />
+            <style type="button" id="drive" extends="button" />
+            <style type="button" id="refresh" extends="button" />
+            <style type="button" id="new-folder" extends="button" />
+            <style type="button" id="delete" extends="button" />
+
+        </style>
+
+        <!-- Path field -->
+        <style type="panel" id="path" extends="pathfield">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <WebShape round="0" sides="0,0,1,0" />
+                        <LineBorder color="20,20,20" />
+                        <ColorBackground color="106,110,112" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Customized root button -->
+            <style type="panel" id="content">
+                <style type="button" id="root" padding="6,7,6,7">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape sides="0,0,0,1" round="2,0,0,2" />
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+            </style>
+
+        </style>
+
+        <!-- Directories tree scroll -->
+        <style type="scrollpane" id="scroll" extends="hovering">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <WebShape round="0" sides="0,0,1,0" />
+                        <LineBorder color="20,20,20" />
+                        <ColorBackground color="77,81,83" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Directories tree -->
+            <style type="tree" id="file-system" extends="filetree-non-opaque" />
+
+        </style>
+
+        <!-- Controls panel -->
+        <style type="panel" id="controls" padding="4,4,4,4">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground from="0,0" to="0,0.5">
+                            <color>68,68,68</color>
+                            <color>106,110,112</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Control buttons -->
+            <style type="button" id="button" />
+            <style type="button" id="accept" extends="button" />
+            <style type="button" id="cancel" extends="button" />
+
+        </style>
+
+    </style>
+
+</skin>

@@ -17,16 +17,16 @@
 
 package com.alee.extended.window;
 
-import com.alee.utils.swing.SwingMethods;
+import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
  * This interface provides a set of methods that should be added into popover that supports custom WebLaF events.
- * Basically all these methods are already implemented in EventUtils but it is much easier to call them directly from popover.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.MethodExtension
+ * @see com.alee.extended.window.PopOverEventMethodsImpl
  */
-
-public interface PopOverEventMethods extends SwingMethods
+public interface PopOverEventMethods extends MethodExtension
 {
     /**
      * Shortcut method for popover open event.
@@ -34,7 +34,7 @@ public interface PopOverEventMethods extends SwingMethods
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onOpen ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onOpen ( PopOverEventRunnable runnable );
 
     /**
      * Shortcut method for popover reopen event.
@@ -42,7 +42,7 @@ public interface PopOverEventMethods extends SwingMethods
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onReopen ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onReopen ( PopOverEventRunnable runnable );
 
     /**
      * Shortcut method for popover detach event.
@@ -50,7 +50,7 @@ public interface PopOverEventMethods extends SwingMethods
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onDetach ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onDetach ( PopOverEventRunnable runnable );
 
     /**
      * Shortcut method for popover close event.
@@ -58,5 +58,5 @@ public interface PopOverEventMethods extends SwingMethods
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onClose ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onClose ( PopOverEventRunnable runnable );
 }

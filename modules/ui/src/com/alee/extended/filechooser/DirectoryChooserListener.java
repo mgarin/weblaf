@@ -27,7 +27,6 @@ import java.util.EventListener;
  * @see WebDirectoryChooserPanel
  * @see WebDirectoryChooser
  */
-
 public interface DirectoryChooserListener extends EventListener
 {
     /**
@@ -36,4 +35,16 @@ public interface DirectoryChooserListener extends EventListener
      * @param file newly selected directory or null if none selected
      */
     public void selectionChanged ( File file );
+
+    /**
+     * Notifies about directory selection accept.
+     *
+     * @param file newly selected directory or null if none selected
+     */
+    public void accepted ( File file );
+
+    /**
+     * Notifies about directory selection cancel.
+     */
+    public void cancelled ();
 }

@@ -17,13 +17,13 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.WrapFlowLayout;
-import com.alee.global.StyleConstants;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.language.UILanguageManager;
+import com.alee.managers.language.LanguageUpdater;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.WebTimer;
@@ -40,23 +40,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Custom component that acts as files container and allows drag & drop them.
+ * Custom component that acts as files container and allows drag-and-drop them.
  * Separate WebFilePlate component is created for each added file to display it.
  *
  * @author Mikle Garin
  */
-
 public class WebFileDrop extends WebPanel implements LanguageMethods
 {
-    /**
-     * Remove file icon.
-     */
-    public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFileDrop.class.getResource ( "icons/cross.png" ) );
-
     protected static final BasicStroke dashStroke =
             new BasicStroke ( 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, new float[]{ 8f, 8f }, 0f );
 
-    protected int dashRound = StyleConstants.smallRound;
+    protected int dashRound = 2;
     protected int dashSideSpacing = 10;
 
     protected Color dropBackground = new Color ( 242, 242, 242 );
@@ -83,7 +77,12 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     public WebFileDrop ()
     {
-        super ( "file-drop", new WrapFlowLayout ( true ) );
+        this ( StyleId.filedrop );
+    }
+
+    public WebFileDrop ( final StyleId id )
+    {
+        super ( id, new WrapFlowLayout ( true ) );
 
         // Default visual settings
         setFont ( SwingUtils.getDefaultLabelFont ().deriveFont ( Font.BOLD ).deriveFont ( 20f ) );
@@ -92,7 +91,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         setShowDefaultDropText ( true );
 
         // Files TransferHandler
-        setTransferHandler ( new FileDragAndDropHandler ()
+        setTransferHandler ( new FilesTransferHandler ( false, true )
         {
             @Override
             public boolean isDropEnabled ()
@@ -132,7 +131,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                 {
                     stopAnimator ();
                     filesCount = selectedFiles.size ();
-                    animator = new WebTimer ( "WebFileDrop.textFadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
+                    animator = new WebTimer ( "WebFileDrop.textFadeOutTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -155,7 +154,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                 {
                     stopAnimator ();
                     filesCount = selectedFiles.size ();
-                    animator = new WebTimer ( "WebFileDrop.textFadeInTimer", StyleConstants.animationDelay, new ActionListener ()
+                    animator = new WebTimer ( "WebFileDrop.textFadeInTimer", SwingUtils.frameRateDelay ( 24 ), new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -277,8 +276,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     protected boolean addSelectedFileImpl ( final File file )
     {
-        if ( ( fileFilter == null || fileFilter.accept ( file ) ) &&
-                ( allowSameFiles || !FileUtils.containtsFile ( selectedFiles, file ) ) )
+        if ( ( fileFilter == null || fileFilter.accept ( file ) ) && ( allowSameFiles || !FileUtils.containsFile ( selectedFiles, file ) ) )
         {
             add ( createFilePlate ( file ) );
             selectedFiles.add ( file );
@@ -343,7 +341,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     protected boolean removeSelectedFileImpl ( final File file, final boolean animate )
     {
-        if ( FileUtils.containtsFile ( selectedFiles, file ) )
+        if ( FileUtils.containsFile ( selectedFiles, file ) )
         {
             for ( final WebFilePlate filePlate : getFilePlates ( file ) )
             {
@@ -508,7 +506,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     protected WebFilePlate createFilePlate ( final File file )
     {
-        final WebFilePlate filePlate = new WebFilePlate ( file );
+        final WebFilePlate filePlate = new WebFilePlate ( this, file );
         filePlate.setShowFileExtensions ( showFileExtensions );
 
         // To block parent container events
@@ -570,7 +568,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
             if ( dashWidth >= fm.stringWidth ( dropText ) && dashHeight > fm.getHeight () )
             {
                 final Map hints = SwingUtils.setupTextAntialias ( g2d );
-                final Point ts = LafUtils.getTextCenterShear ( fm, dropText );
+                final Point ts = LafUtils.getTextCenterShift ( fm, dropText );
                 g2d.drawString ( dropText, dashX + dashWidth / 2 + ts.x, dashY + dashHeight / 2 + ts.y );
                 SwingUtils.restoreTextAntialias ( g2d, hints );
             }
@@ -601,66 +599,51 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * Language methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public String getLanguage ()
+    {
+        return UILanguageManager.getComponentKey ( this );
+    }
+
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
-        LanguageManager.registerComponent ( this, key, data );
+        UILanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
-        LanguageManager.updateComponent ( this, data );
+        UILanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
-        LanguageManager.updateComponent ( this, key, data );
+        UILanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
-        LanguageManager.unregisterComponent ( this );
+        UILanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
-        return LanguageManager.isRegisteredComponent ( this );
+        return UILanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
-        LanguageManager.registerLanguageUpdater ( this, updater );
+        UILanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
-        LanguageManager.unregisterLanguageUpdater ( this );
+        UILanguageManager.unregisterLanguageUpdater ( this );
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractMenuItemLayout.xsd" />
+
+    <!-- com.alee.laf.menu.SimpleMenuItemLayout -->
+    <xs:complexType name="SimpleMenuItemLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractMenuItemLayout" />
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

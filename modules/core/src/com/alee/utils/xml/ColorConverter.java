@@ -17,101 +17,145 @@
 
 package com.alee.utils.xml;
 
+import com.alee.api.jdk.Objects;
 import com.alee.utils.ColorUtils;
-import com.alee.utils.collection.ValuesTable;
+import com.alee.utils.MapUtils;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
- * Custom Color class converter.
+ * Custom XStream converter for {@link Color}.
  *
  * @author Mikle Garin
  */
-
 public class ColorConverter extends AbstractSingleValueConverter
 {
     /**
-     * Null color constant.
+     * Constant for {@code null} color.
      */
     public static final String NULL_COLOR = "null";
 
     /**
-     * Default colors map.
+     * Another constant for {@code null} color.
      */
-    private static final ValuesTable<String, Color> defaultColors = new ValuesTable<String, Color> ();
-
-    static
-    {
-        // Special value for null color
-        defaultColors.put ( NULL_COLOR, null );
-
-        // Standard Swing color set
-        defaultColors.put ( "black", Color.BLACK );
-        defaultColors.put ( "white", Color.WHITE );
-        defaultColors.put ( "red", Color.RED );
-        defaultColors.put ( "green", Color.GREEN );
-        defaultColors.put ( "blue", Color.BLUE );
-        defaultColors.put ( "lightGray", Color.LIGHT_GRAY );
-        defaultColors.put ( "gray", Color.GRAY );
-        defaultColors.put ( "darkGray", Color.DARK_GRAY );
-        defaultColors.put ( "pink", Color.PINK );
-        defaultColors.put ( "orange", Color.ORANGE );
-        defaultColors.put ( "yellow", Color.YELLOW );
-        defaultColors.put ( "magenta", Color.MAGENTA );
-        defaultColors.put ( "cyan", Color.CYAN );
-    }
+    public static final String NONE_COLOR = "none";
 
     /**
-     * {@inheritDoc}
+     * Default colors map.
      */
+    private static final Map<String, Color> defaultColors = MapUtils.newHashMap (
+            /**
+             * Null colors.
+             */
+            NULL_COLOR, null,
+            NONE_COLOR, null,
+
+            /**
+             * Transparent color.
+             */
+            "transparent", ColorUtils.transparent (),
+
+            /**
+             * Standard Swing colors.
+             */
+            "black", Color.BLACK,
+            "white", Color.WHITE,
+            "red", Color.RED,
+            "green", Color.GREEN,
+            "blue", Color.BLUE,
+            "lightGray", Color.LIGHT_GRAY,
+            "gray", Color.GRAY,
+            "darkGray", Color.DARK_GRAY,
+            "pink", Color.PINK,
+            "orange", Color.ORANGE,
+            "yellow", Color.YELLOW,
+            "magenta", Color.MAGENTA,
+            "cyan", Color.CYAN
+    );
+
     @Override
     public boolean canConvert ( final Class type )
     {
-        return type.equals ( Color.class );
+        return Color.class.isAssignableFrom ( type );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object fromString ( final String color )
-    {
-        return parseColor ( color );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ( final Object object )
     {
         final Color color = ( Color ) object;
-        return convertColor ( color );
+        return colorToString ( color );
+    }
+
+    @Override
+    public Object fromString ( final String color )
+    {
+        return colorFromString ( color );
     }
 
     /**
-     * Parses Color from its string form.
+     * Convert specified {@link Color} into string form.
      *
-     * @param color string form to parse
-     * @return parsed color
+     * @param color {@link Color} to convert
+     * @return string {@link Color} representation.
      */
-    public static Color parseColor ( final String color )
+    public static String colorToString ( final Color color )
     {
-        return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
-                color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );
+        if ( defaultColors.containsValue ( color ) )
+        {
+            for ( final Map.Entry<String, Color> entry : defaultColors.entrySet () )
+            {
+                if ( Objects.equals ( color, entry.getValue () ) )
+                {
+                    return entry.getKey ();
+                }
+            }
+            throw new RuntimeException ( "Unable to find mapping for Color: " + color );
+        }
+        else
+        {
+            final StringBuilder string = new StringBuilder ( 15 );
+            string.append ( color.getRed () ).append ( "," );
+            string.append ( color.getGreen () ).append ( "," );
+            string.append ( color.getBlue () );
+            if ( color.getAlpha () < 255 )
+            {
+                string.append ( "," ).append ( color.getAlpha () );
+            }
+            return string.toString ();
+        }
     }
 
     /**
-     * Convert specified color into string form.
+     * Parses {@link Color} from its string form.
      *
-     * @param color color to convert
-     * @return string color representation.
+     * @param color string {@link Color} form to parse
+     * @return parsed {@link Color}
      */
-    public static String convertColor ( final Color color )
+    public static Color colorFromString ( final String color )
     {
-        return defaultColors.containsValue ( color ) ? defaultColors.getKey ( color ) :
-                color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
-                        ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
+        try
+        {
+            if ( defaultColors.containsKey ( color ) )
+            {
+                return defaultColors.get ( color );
+            }
+            else
+            {
+                if ( color.contains ( "#" ) )
+                {
+                    return ColorUtils.fromHex ( color );
+                }
+                else
+                {
+                    return ColorUtils.fromRGB ( color );
+                }
+            }
+        }
+        catch ( final Exception e )
+        {
+            throw new XmlException ( "Unable to parse Color: " + color, e );
+        }
     }
 }

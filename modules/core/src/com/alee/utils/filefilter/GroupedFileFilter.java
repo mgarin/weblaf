@@ -17,6 +17,8 @@
 
 package com.alee.utils.filefilter;
 
+import com.alee.api.ui.RenderingParameters;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileFilter;
@@ -29,7 +31,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class GroupedFileFilter extends AbstractFileFilter
 {
     /**
@@ -94,27 +95,18 @@ public class GroupedFileFilter extends AbstractFileFilter
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public ImageIcon getIcon ()
+    public Icon getIcon ( final RenderingParameters parameters )
     {
-        return defaultFilter != null ? defaultFilter.getIcon () : null;
+        return defaultFilter != null ? defaultFilter.getIcon ( parameters ) : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription ()
     {
         return defaultFilter != null ? defaultFilter.getDescription () : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept ( final File file )
     {

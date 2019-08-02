@@ -28,7 +28,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class DefaultLayoutStyle extends LayoutStyle
 {
     /**
@@ -50,17 +49,13 @@ public class DefaultLayoutStyle extends LayoutStyle
         return instance;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredGap ( final JComponent component1, final JComponent component2, final ComponentPlacement type,
-                                 final int position, final Container parent )
+                                 final int position, final Container container )
     {
-
         if ( component1 == null || component2 == null || type == null )
         {
-            throw new NullPointerException ();
+            throw new NullPointerException ( "Components and their type must not be null" );
         }
         if ( type == ComponentPlacement.INDENT && ( position == SwingConstants.EAST || position == SwingConstants.WEST ) )
         {
@@ -70,18 +65,15 @@ public class DefaultLayoutStyle extends LayoutStyle
                 return indent;
             }
         }
-        return ( type == ComponentPlacement.UNRELATED ) ? 12 : 6;
+        return type == ComponentPlacement.UNRELATED ? 12 : 6;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public int getContainerGap ( final JComponent component, final int position, final Container parent )
+    public int getContainerGap ( final JComponent component, final int position, final Container container )
     {
         if ( component == null )
         {
-            throw new NullPointerException ();
+            throw new NullPointerException ( "Component must not be null" );
         }
         checkPosition ( position );
         return 6;
@@ -99,9 +91,9 @@ public class DefaultLayoutStyle extends LayoutStyle
     {
         if ( position == SwingConstants.EAST || position == SwingConstants.WEST )
         {
-            final boolean c1Label = ( c1 instanceof JLabel );
-            final boolean c2Label = ( c2 instanceof JLabel );
-            return ( ( c1Label || c2Label ) && ( c1Label != c2Label ) );
+            final boolean c1Label = c1 instanceof JLabel;
+            final boolean c2Label = c2 instanceof JLabel;
+            return ( c1Label || c2Label ) && c1Label != c2Label;
         }
         return false;
     }
@@ -280,8 +272,8 @@ public class DefaultLayoutStyle extends LayoutStyle
         {
             final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
             final int hAlign = button.getHorizontalAlignment ();
-            return ( ( ltr && ( hAlign == SwingConstants.LEFT || hAlign == SwingConstants.LEADING ) ) ||
-                    ( !ltr && ( hAlign == SwingConstants.TRAILING ) ) );
+            return ltr && ( hAlign == SwingConstants.LEFT || hAlign == SwingConstants.LEADING ) ||
+                    !ltr && hAlign == SwingConstants.TRAILING;
         }
         return false;
     }
@@ -299,8 +291,8 @@ public class DefaultLayoutStyle extends LayoutStyle
         {
             final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
             final int hAlign = button.getHorizontalAlignment ();
-            return ( ( ltr && ( hAlign == SwingConstants.RIGHT || hAlign == SwingConstants.TRAILING ) ) ||
-                    ( !ltr && ( hAlign == SwingConstants.LEADING ) ) );
+            return ltr && ( hAlign == SwingConstants.RIGHT || hAlign == SwingConstants.TRAILING ) ||
+                    !ltr && hAlign == SwingConstants.LEADING;
         }
         return false;
     }

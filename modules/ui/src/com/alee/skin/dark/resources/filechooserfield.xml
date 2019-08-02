@@ -1,0 +1,74 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.filechooser.WebFileChooserField -->
+
+    <!-- File chooser field -->
+    <style type="panel" id="filechooserfield" extends="focusable">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Selected files scroll -->
+        <style type="scrollpane" id="scroll" extends="transparent" padding="1,1,1,1">
+            <component>
+                <verticalScrollBarPolicy>21</verticalScrollBarPolicy>
+                <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
+            </component>
+
+            <!-- Selected files panel -->
+            <style type="panel" id="content" extends="transparent">
+
+                <!-- Selected file plate -->
+                <style type="panel" id="file" extends="focusable" padding="0,3,0,1">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape sides="0,0,0,1" />
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+
+                    <!-- Name label -->
+                    <style type="label" id="name" padding="0,0,0,2" />
+
+                    <!-- Remove button -->
+                    <style type="button" id="remove" extends="icon-hover" />
+
+                </style>
+
+            </style>
+
+        </style>
+
+        <!-- File choose button -->
+        <style type="button" id="choose" extends="hover">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape sides="0,1,0,0" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Undecorated file chooser field -->
+    <style type="panel" id="filechooserfield-undecorated" extends="filechooserfield">
+        <component>
+            <background>white</background>
+        </component>
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

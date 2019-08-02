@@ -1,0 +1,22 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.tree.WebFileTree -->
+
+    <!-- File tree -->
+    <style type="tree" id="filetree" />
+
+    <!-- Non-opaque file tree -->
+    <style type="tree" id="filetree-non-opaque" extends="filetree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent file tree -->
+    <style type="tree" id="filetree-transparent" extends="filetree-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

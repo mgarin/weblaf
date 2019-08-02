@@ -28,9 +28,8 @@ import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 16:35
+ * @author Mikle Garin
  */
-
 public class CurtainTransitionEffect extends DefaultTransitionEffect
 {
     private static final String CURTAIN_SIZE = "CURTAIN_SIZE";

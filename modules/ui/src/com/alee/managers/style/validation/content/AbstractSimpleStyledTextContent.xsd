@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractStyledTextContent.xsd" />
+    <xs:include schemaLocation="../ext/TextWrap.xsd" />
+
+    <!-- com.alee.extended.label.SimpleStyledTextContent -->
+    <xs:complexType name="AbstractSimpleStyledTextContent">
+        <xs:complexContent>
+            <xs:extension base="AbstractStyledTextContent">
+
+                <!-- Text wrapping type -->
+                <xs:attribute name="wrap" type="TextWrap" />
+
+                <!-- Maximum amount of displayed rows -->
+                <xs:attribute name="maximumRows" type="xs:integer" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

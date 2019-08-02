@@ -1,0 +1,106 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.pathfield.WebPathField -->
+
+    <!-- Path field -->
+    <style type="panel" id="pathfield" extends="focusable">
+
+        <!-- Path content panel -->
+        <style type="panel" id="content" extends="transparent">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <WebShadow type="outer" width="0" />
+                        <LineBorder color="20,20,20" />
+                        <ColorBackground color="106,110,112" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="black" />
+                    </decoration>
+                    <decoration states="disabled">
+                        <WebShadow type="outer" opacity="0" />
+                        <LineBorder color="68,72,74" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Path field -->
+            <style type="textfield" id="path-field" extends="transparent">
+
+                <!-- Autocomplete popup list scroll -->
+                <style type="scrollpane" id="scroll">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+
+            </style>
+
+            <!-- Path root button -->
+            <style type="button" id="root" extends="icon-hover">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape sides="0,0,0,1" round="2,0,0,2" />
+                            <WebShadow type="outer" width="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Path element button -->
+            <style type="button" id="element" extends="icon-hover">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape sides="0,1,0,1" round="0" />
+                            <WebShadow type="outer" width="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Path element menu button -->
+            <style type="togglebutton" id="menu" extends="icon-hover">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape sides="0,1,0,1" round="0" />
+                            <WebShadow type="outer" width="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+        </style>
+
+    </style>
+
+    <!-- Non-opaque path field -->
+    <style type="panel" id="pathfield-non-opaque" extends="pathfield">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="106,110,112" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent path field -->
+    <style type="panel" id="pathfield-transparent" extends="pathfield-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

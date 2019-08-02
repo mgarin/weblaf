@@ -22,38 +22,16 @@ import com.alee.extended.checkbox.WebTristateCheckBox;
 import javax.swing.tree.TreeCellRenderer;
 
 /**
- * Base for any checkbox tree cell renderer.
+ * Base interface for {@link TreeCellRenderer} implementations for {@link WebCheckBoxTree}.
  *
  * @author Mikle Garin
  */
-
 public interface CheckBoxTreeCellRenderer extends TreeCellRenderer
 {
     /**
-     * Returns gap between checkbox and actual cell renderer.
+     * Returns {@link WebTristateCheckBox} used for rendering.
      *
-     * @return gap between checkbox and actual cell renderer
-     */
-    public int getCheckBoxRendererGap ();
-
-    /**
-     * Sets gap between checkbox and actual cell renderer.
-     *
-     * @param checkBoxRendererGap new gap between checkbox and actual cell renderer
-     */
-    public void setCheckBoxRendererGap ( int checkBoxRendererGap );
-
-    /**
-     * Returns checkbox part width in this cell renderer.
-     *
-     * @return checkbox part width in this cell renderer
-     */
-    public int getCheckBoxWidth ();
-
-    /**
-     * Returns checkbox used for rendering.
-     *
-     * @return checkbox used for rendering
+     * @return {@link WebTristateCheckBox} used for rendering
      */
     public WebTristateCheckBox getCheckBox ();
 }

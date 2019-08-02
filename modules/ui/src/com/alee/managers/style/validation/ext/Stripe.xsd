@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="../ext/GradientColor.xsd" />
+
+    <!-- com.alee.painter.decoration.content.Stripe -->
+    <xs:complexType name="Stripe">
+
+        <!-- Stripe colors -->
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="color" type="GradientColor" />
+        </xs:sequence>
+
+        <!-- Stripe stroke -->
+        <xs:attribute name="stroke" type="java.awt:Stroke" />
+
+    </xs:complexType>
+
+</xs:schema>

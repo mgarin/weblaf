@@ -17,9 +17,9 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.list.WebListStyle;
 import com.alee.laf.list.editor.AbstractListCellEditor;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,11 +29,10 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextField, CheckBoxCellData>
 {
     /**
-     * Creates list cell editor component for the cell nder specified index.
+     * Creates list cell editor component for the cell under specified index.
      *
      * @param list  list to process
      * @param index cell index
@@ -43,8 +42,7 @@ public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextFie
     @Override
     protected WebTextField createCellEditor ( final JList list, final int index, final CheckBoxCellData value )
     {
-        final WebTextField field = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
-        field.setDrawFocus ( false );
+        final WebTextField field = new WebTextField ( StyleId.checkboxlistCellEditor.at ( list ) );
         field.setText ( value.getUserObject () != null ? value.getUserObject ().toString () : "" );
         field.selectAll ();
         return field;
@@ -62,8 +60,8 @@ public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextFie
     @Override
     protected Rectangle getEditorBounds ( final JList list, final int index, final CheckBoxCellData value, final Rectangle cellBounds )
     {
-        final WebCheckBoxListElement element = ( ( WebCheckBoxList ) list ).getWebCheckBoxListCellRenderer ().getElement ( value );
-        final Rectangle ir = element.getWebUI ().getIconRect ();
+        final WebCheckBoxListElement element = ( ( WebCheckBoxList ) list ).getWebCheckBoxListCellRenderer ().getElement ( list, value );
+        final Rectangle ir = element.getUI ().getIconBounds ();
         final int shear = ir.x + ir.width + element.getIconTextGap () - editor.getInsets ().left;
         return new Rectangle ( shear, 0, cellBounds.width - shear, cellBounds.height );
     }

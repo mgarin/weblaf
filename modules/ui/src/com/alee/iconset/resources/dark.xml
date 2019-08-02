@@ -1,0 +1,244 @@
+<IconSet id="weblaf" nearClass="com.alee.iconset.DarkIconSet" base="icons/flat/" xmlns="http://weblookandfeel.com/XmlIconSet">
+
+    <!-- General purpose icons -->
+    <SvgIcon id="underline" path="underline.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="underline-hover" path="underline.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="target" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="target-hover" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="target-selected" path="target.svg" size="16,16">
+        <SvgFill selector="svg" color="160,160,255" />
+    </SvgIcon>
+    <SvgIcon id="pin" path="pin.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="pin-hover" path="pin.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="external" path="external.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="external-hover" path="external.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="maximize" path="maximize.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="maximize-hover" path="maximize.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="shrink" path="shrink.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="shrink-hover" path="shrink.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="cross" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="cross-hover" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="255,160,160" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="cross-small" path="cross.svg" size="9,9">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="cross-small-hover" path="cross.svg" size="9,9">
+        <SvgFill selector="svg" color="255,160,160" />
+        <SvgTransform selector="svg" scale="1.15,1.15" translate="-0.5,-0.5" />
+    </SvgIcon>
+    <SvgIcon id="magnifier" path="magnifier.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="magnifier-hover" path="magnifier.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="filter" path="filter.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" scale="0.85,0.85" />
+    </SvgIcon>
+    <SvgIcon id="filter-hover" path="filter.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="globe" path="globe.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="globe-hover" path="globe.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="email" path="email.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="email-hover" path="email.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="broken" path="broken.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="broken-hover" path="broken.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+    <SvgIcon id="hourglass" path="hourglass.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="hourglass-hover" path="hourglass.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+
+    <!-- Medium arrow icons -->
+    <SvgIcon id="up" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="180" />
+    </SvgIcon>
+    <SvgIcon id="down" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="left" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="90" />
+    </SvgIcon>
+    <SvgIcon id="right" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="-90" />
+    </SvgIcon>
+
+    <!-- Small arrow icons -->
+    <SvgIcon id="up-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="180" translate="0,1" />
+    </SvgIcon>
+    <SvgIcon id="down-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="left-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="90" />
+    </SvgIcon>
+    <SvgIcon id="right-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="-90" />
+    </SvgIcon>
+
+    <!-- Large arrow icons -->
+    <SvgIcon id="up-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="180" />
+    </SvgIcon>
+    <SvgIcon id="down-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="left-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="90" />
+    </SvgIcon>
+    <SvgIcon id="right-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="-90" />
+    </SvgIcon>
+
+    <!-- Tree icons -->
+    <SvgIcon id="square-plus" path="square-plus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="square-plus-disabled" path="square-plus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="180,180,180" />
+    </SvgIcon>
+    <SvgIcon id="square-minus" path="square-minus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="square-minus-disabled" path="square-minus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="180,180,180" />
+    </SvgIcon>
+    <SvgIcon id="root" path="folder.svg" size="16,16">
+        <SvgFill selector="svg" color="220,220,220" />
+    </SvgIcon>
+    <SvgIcon id="root-open" path="folder-open.svg" size="16,16">
+        <SvgFill selector="svg" color="220,220,220" />
+    </SvgIcon>
+    <SvgIcon id="folder" path="folder.svg" size="16,16">
+        <SvgFill selector="svg" color="200,200,200" />
+    </SvgIcon>
+    <SvgIcon id="folder-open" path="folder-open.svg" size="16,16">
+        <SvgFill selector="svg" color="200,200,200" />
+    </SvgIcon>
+    <SvgIcon id="leaf" path="leaf.svg" size="16,16">
+        <SvgFill selector="svg" color="200,200,200" />
+    </SvgIcon>
+
+    <!-- File Chooser icons -->
+    <SvgIcon id="backward" path="arrow-left.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="forward" path="arrow-right.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="history" path="clock.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="folder-up" path="folder-up.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="folder-home" path="home.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="folder-desktop" path="desktop.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="folder-new" path="folder-plus.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="drive" path="drive.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="refresh" path="refresh.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="remove" path="bin.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="view" path="cog.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="icons" path="icons.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="tiles" path="tiles.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="table" path="table.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="accept" path="checkmark.svg" size="16,16">
+        <SvgFill selector="svg" color="160,255,160" />
+    </SvgIcon>
+    <SvgIcon id="cancel" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="255,160,160" />
+    </SvgIcon>
+    <SvgIcon id="computer" path="monitor.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="dir" path="dir.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="edit" path="edit.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
+</IconSet>

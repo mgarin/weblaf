@@ -18,32 +18,41 @@
 package com.alee.managers.tooltip;
 
 /**
- * User: mgarin Date: 07.01.11 Time: 2:35
+ * Adapter for {@link TooltipListener}
+ *
+ * @author Mikle Garin
  */
-
 public abstract class TooltipAdapter implements TooltipListener
 {
     @Override
     public void tooltipShowing ()
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void tooltipShown ()
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void tooltipHidden ()
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void tooltipDestroyed ()
     {
-        //
+        /**
+         * Do nothing by default.
+         */
     }
 }

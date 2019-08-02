@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractImageTextureBackground.xsd" />
+    <xs:include schemaLocation="TextureType.xsd" />
+
+    <!-- com.alee.painter.decoration.background.PresetTextureBackground -->
+    <xs:complexType name="PresetTextureBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractImageTextureBackground">
+
+                <!-- Texture preset type -->
+                <xs:attribute name="preset" type="TextureType" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

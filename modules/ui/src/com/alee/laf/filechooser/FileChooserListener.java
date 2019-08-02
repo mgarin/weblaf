@@ -17,29 +17,37 @@
 
 package com.alee.laf.filechooser;
 
+import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import java.util.EventListener;
 import java.util.List;
 
 /**
- * File chooser actions listener.
+ * File chooser events listener.
  *
  * @author Mikle Garin
  */
-
 public interface FileChooserListener extends EventListener
 {
     /**
-     * Called when currently viewed in chooser directory changes.
+     * Informs about displayed directory change.
      *
-     * @param newDirectory new viewed directory
+     * @param newDirectory displayed directory
      */
     public void directoryChanged ( File newDirectory );
 
     /**
-     * Called when files selected in file chooser change.
+     * Informs about selected files change.
      *
-     * @param selectedFiles new list of selected files
+     * @param selectedFiles selected files
      */
     public void selectionChanged ( List<File> selectedFiles );
+
+    /**
+     * Informs about selected file filter change.
+     *
+     * @param oldFilter previously used filter
+     * @param newFilter currently used filter
+     */
+    public void fileFilterChanged ( FileFilter oldFilter, FileFilter newFilter );
 }

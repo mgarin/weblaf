@@ -17,6 +17,8 @@
 
 package com.alee.extended.checkbox;
 
+import com.alee.laf.checkbox.CheckState;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -28,7 +30,6 @@ import java.awt.event.ItemEvent;
  *
  * @author Mikle Garin
  */
-
 public class TristateCheckBoxModel extends JToggleButton.ToggleButtonModel
 {
     /**
@@ -39,7 +40,7 @@ public class TristateCheckBoxModel extends JToggleButton.ToggleButtonModel
     /**
      * Whether partially checked tristate checkbox should be checked or unchecked on toggle.
      */
-    protected boolean checkMixedOnToggle = WebTristateCheckBoxStyle.checkMixedOnToggle;
+    protected boolean checkMixedOnToggle = false;
 
     /**
      * Constructs new model for the specified WebTristateCheckBox.
@@ -90,6 +91,11 @@ public class TristateCheckBoxModel extends JToggleButton.ToggleButtonModel
         }
     }
 
+    /**
+     * Returns current check state.
+     *
+     * @return current check state
+     */
     public CheckState getState ()
     {
         return isMixed () ? CheckState.mixed : isSelected () ? CheckState.checked : CheckState.unchecked;

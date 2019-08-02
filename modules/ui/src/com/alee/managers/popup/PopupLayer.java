@@ -19,7 +19,8 @@ package com.alee.managers.popup;
 
 import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.managers.style.ShapeMethods;
+import com.alee.managers.style.StyleId;
 
 import java.awt.*;
 
@@ -28,10 +29,9 @@ import java.awt.*;
  * These lightweight popups are visible only within the window's root pane bounds.
  *
  * @author Mikle Garin
- * @see PopupManager
- * @see WebPopup
+ * @see com.alee.managers.popup.PopupManager
+ * @see com.alee.managers.popup.WebInnerPopup
  */
-
 public class PopupLayer extends WebPanel
 {
     /**
@@ -43,11 +43,13 @@ public class PopupLayer extends WebPanel
     }
 
     /**
-     * Constructs new popup layer with the specified layout
+     * Constructs new popup layer with the specified custom layout manager.
+     *
+     * @param layoutManager custom layout manager for this layer
      */
     public PopupLayer ( final LayoutManager layoutManager )
     {
-        super ( layoutManager );
+        super ( StyleId.panelTransparent, layoutManager );
         setOpaque ( false );
     }
 
@@ -96,7 +98,7 @@ public class PopupLayer extends WebPanel
      *
      * @param popup popup to display
      */
-    public void showPopup ( final WebPopup popup )
+    public void showPopup ( final WebInnerPopup popup )
     {
         // Informing that popup will now become visible
         popup.firePopupWillBeOpened ();
@@ -118,7 +120,7 @@ public class PopupLayer extends WebPanel
      *
      * @param popup popup to hide
      */
-    public void hidePopup ( final WebPopup popup )
+    public void hidePopup ( final WebInnerPopup popup )
     {
         // Ignore hide
         if ( !popup.isShowing () || popup.getParent () != PopupLayer.this )
@@ -150,9 +152,9 @@ public class PopupLayer extends WebPanel
         for ( final Component child : getComponents () )
         {
             final Point l = child.getLocation ();
-            if ( child instanceof ShapeProvider )
+            if ( child instanceof ShapeMethods )
             {
-                final Shape shape = ( ( ShapeProvider ) child ).provideShape ();
+                final Shape shape = ( ( ShapeMethods ) child ).getShape ();
                 if ( shape != null && shape.contains ( x - l.x, y - l.y ) )
                 {
                     return true;

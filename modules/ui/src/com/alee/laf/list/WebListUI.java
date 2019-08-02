@@ -17,453 +17,396 @@
 
 package com.alee.laf.list;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.tooltip.ToolTipProvider;
-import com.alee.utils.GeometryUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.api.jdk.Consumer;
+import com.alee.laf.list.behavior.ListItemHoverBehavior;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.RoundRectangle2D;
 
 /**
- * Custom UI for JList component.
+ * Custom UI for {@link JList} component.
  *
  * @author Mikle Garin
  */
-
-public class WebListUI extends BasicListUI
+public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * todo 1. Visual shade effect on sides when scrollable
-     * todo 2. Even-odd cells highlight
+     * Static fields from {@link javax.swing.plaf.basic.BasicListUI}.
      */
+    public final static int heightChanged = 1 << 8;
+    public final static int widthChanged = 1 << 9;
 
     /**
-     * Style settings.
+     * List selection style.
      */
-    protected boolean decorateSelection = WebListStyle.decorateSelection;
-    protected boolean highlightRolloverCell = WebListStyle.highlightRolloverCell;
-    protected int selectionRound = WebListStyle.selectionRound;
-    protected int selectionShadeWidth = WebListStyle.selectionShadeWidth;
-    protected boolean webColoredSelection = WebListStyle.webColoredSelection;
-    protected Color selectionBorderColor = WebListStyle.selectionBorderColor;
-    protected Color selectionBackgroundColor = WebListStyle.selectionBackgroundColor;
-    protected boolean autoScrollToSelection = WebListStyle.autoScrollToSelection;
+    protected ListSelectionStyle selectionStyle;
 
     /**
-     * List listeners.
+     * Component painter.
      */
-    protected MouseAdapter mouseAdapter;
-    protected ListSelectionListener selectionListener;
+    @DefaultPainter ( ListPainter.class )
+    protected IListPainter painter;
+
+    /**
+     * Listeners.
+     */
+    protected transient ListItemHoverBehavior hoverCellTracker;
 
     /**
      * Runtime variables.
      */
-    protected int rolloverIndex = -1;
+    protected transient int hoverIndex = -1;
 
     /**
-     * Returns an instance of the WebListUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebListUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebListUI
+     * @return instance of the {@link WebListUI}
      */
-    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( list );
-        LookAndFeel.installProperty ( list, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
-        list.setBackground ( new ColorUIResource ( WebListStyle.background ) );
-        list.setForeground ( new ColorUIResource ( WebListStyle.foreground ) );
-
-        // Rollover listener
-        mouseAdapter = new MouseAdapter ()
+        // Hover behavior
+        hoverCellTracker = new ListItemHoverBehavior<JList> ( list, true )
         {
             @Override
-            public void mouseMoved ( final MouseEvent e )
+            public void hoverChanged ( final Integer previous, final Integer current )
             {
-                updateMouseover ( e );
-            }
+                // Updating hover row
+                final int previousIndex = hoverIndex;
+                hoverIndex = current;
 
-            @Override
-            public void mouseDragged ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseExited ( final MouseEvent e )
-            {
-                clearMouseover ();
-            }
-
-            private void updateMouseover ( final MouseEvent e )
-            {
-                final int index = list.locationToIndex ( e.getPoint () );
-                final Rectangle bounds = list.getCellBounds ( index, index );
-                if ( list.isEnabled () && bounds != null && bounds.contains ( e.getPoint () ) )
+                // Repainting nodes according to hover changes
+                // This occurs only if hover highlight is enabled
+                if ( painter != null && painter.isItemHoverDecorationSupported () )
                 {
-                    if ( rolloverIndex != index )
-                    {
-                        updateRolloverCell ( rolloverIndex, index );
-                    }
-                }
-                else
-                {
-                    clearMouseover ();
-                }
-            }
-
-            private void clearMouseover ()
-            {
-                if ( rolloverIndex != -1 )
-                {
-                    updateRolloverCell ( rolloverIndex, -1 );
-                }
-            }
-
-            private void updateRolloverCell ( final int oldIndex, final int newIndex )
-            {
-                // Updating rollover index
-                rolloverIndex = newIndex;
-
-                // Repaint list only if rollover index is used
-                if ( decorateSelection && highlightRolloverCell )
-                {
-                    final Rectangle oldBounds = list.getCellBounds ( oldIndex, oldIndex );
-                    final Rectangle newBounds = list.getCellBounds ( newIndex, newIndex );
-                    final Rectangle rect = GeometryUtils.getContainingRect ( oldBounds, newBounds );
-                    if ( rect != null )
-                    {
-                        list.repaint ( rect );
-                    }
+                    repaintCell ( previousIndex );
+                    repaintCell ( hoverIndex );
                 }
 
                 // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
+                final ListToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    provider.rolloverCellChanged ( list, oldIndex, 0, newIndex, 0 );
+                    final ListCellArea oldArea = previousIndex != -1 ? new ListCellArea ( previousIndex ) : null;
+                    final ListCellArea newArea = hoverIndex != -1 ? new ListCellArea ( hoverIndex ) : null;
+                    provider.hoverAreaChanged ( list, oldArea, newArea );
+                }
+
+                // Informing {@link com.alee.laf.list.WebList} about hover index change
+                // This is performed here to avoid excessive hover listeners usage
+                if ( list instanceof WebList )
+                {
+                    ( ( WebList ) list ).fireHoverChanged ( previous, current );
                 }
             }
-        };
-        list.addMouseListener ( mouseAdapter );
-        list.addMouseMotionListener ( mouseAdapter );
 
-        // Selection listener
-        selectionListener = new ListSelectionListener ()
-        {
-            @Override
-            public void valueChanged ( final ListSelectionEvent e )
+            /**
+             * Repaints specified row if it exists and it is visible.
+             *
+             * @param index index of cell to repaint
+             */
+            private void repaintCell ( final int index )
             {
-                if ( autoScrollToSelection )
+                if ( index != -1 )
                 {
-                    if ( list.getSelectedIndex () != -1 )
+                    final Rectangle cellBounds = list.getCellBounds ( index, index );
+                    if ( cellBounds != null )
                     {
-                        final int index = list.getLeadSelectionIndex ();
-                        final Rectangle selection = getCellBounds ( list, index, index );
-                        if ( selection != null && !selection.intersects ( list.getVisibleRect () ) )
-                        {
-                            list.scrollRectToVisible ( selection );
-                        }
+                        list.repaint ( cellBounds );
                     }
                 }
             }
         };
-        list.addListSelectionListener ( selectionListener );
+        hoverCellTracker.install ();
+
+        // Applying skin
+        StyleManager.installSkin ( list );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        list.removeMouseListener ( mouseAdapter );
-        list.removeMouseMotionListener ( mouseAdapter );
-        list.removeListSelectionListener ( selectionListener );
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( list );
+
+        // Removing custom listeners
+        hoverCellTracker.uninstall ();
+        hoverCellTracker = null;
+
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
+    @Override
+    public Shape getShape ()
+    {
+        return PainterSupport.getShape ( list, painter );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( list, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( list, painter, enabled );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( list );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        PainterSupport.setMargin ( list, margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( list );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        PainterSupport.setPadding ( list, padding );
+    }
+
     /**
-     * Returns custom WebLaF tooltip provider.
+     * Returns list painter.
      *
-     * @return custom WebLaF tooltip provider
+     * @return list painter
      */
-    protected ToolTipProvider<? extends WebList> getToolTipProvider ()
+    public Painter getPainter ()
+    {
+        return PainterSupport.getPainter ( painter );
+    }
+
+    /**
+     * Sets list painter.
+     * Pass null to remove list painter.
+     *
+     * @param painter new list painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( list, new Consumer<IListPainter> ()
+        {
+            @Override
+            public void accept ( final IListPainter newPainter )
+            {
+                WebListUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IListPainter.class, AdaptiveListPainter.class );
+    }
+
+    @Override
+    public int getHoverIndex ()
+    {
+        return hoverIndex;
+    }
+
+    @Override
+    public ListSelectionStyle getSelectionStyle ()
+    {
+        return selectionStyle;
+    }
+
+    @Override
+    public void setSelectionStyle ( final ListSelectionStyle style )
+    {
+        this.selectionStyle = style;
+    }
+
+    @Override
+    public void updateListLayout ()
+    {
+        updateLayoutStateNeeded = modelChanged;
+        redrawList ();
+    }
+
+    @Override
+    public CellRendererPane getCellRendererPane ()
+    {
+        return rendererPane;
+    }
+
+    @Override
+    public boolean contains ( final JComponent c, final int x, final int y )
+    {
+        return PainterSupport.contains ( c, this, painter, x, y );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            // Invalidating list layout
+            validateListLayout ();
+
+            // Preparing list painter
+            painter.prepareToPaint ( getLayoutOrientation (), getListHeight (), getListWidth (), getColumnCount (), getRowsPerColumn (),
+                    getPreferredHeight (), cellWidth, cellHeight, cellHeights );
+
+            // Painting list
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
+        }
+    }
+
+    /**
+     * Perform list layout validation.
+     */
+    protected void validateListLayout ()
+    {
+        switch ( getLayoutOrientation () )
+        {
+            case JList.VERTICAL_WRAP:
+                if ( list.getHeight () != getListHeight () )
+                {
+                    updateLayoutStateNeeded |= heightChanged;
+                    redrawList ();
+                }
+                break;
+
+            case JList.HORIZONTAL_WRAP:
+                if ( list.getWidth () != getListWidth () )
+                {
+                    updateLayoutStateNeeded |= widthChanged;
+                    redrawList ();
+                }
+                break;
+
+            default:
+                break;
+        }
+        maybeUpdateLayoutState ();
+    }
+
+    /**
+     * Requests full list update.
+     */
+    public void redrawList ()
+    {
+        list.revalidate ();
+        list.repaint ();
+    }
+
+    /**
+     * Returns layout orientation field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return layout orientation field value
+     */
+    protected Integer getLayoutOrientation ()
+    {
+        return getBasicListUIValue ( "layoutOrientation" );
+    }
+
+    /**
+     * Returns cached list height field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached list height field value
+     */
+    protected Integer getListHeight ()
+    {
+        return getBasicListUIValue ( "listHeight" );
+    }
+
+    /**
+     * Returns cached list width field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached list width field value
+     */
+    protected Integer getListWidth ()
+    {
+        return getBasicListUIValue ( "listWidth" );
+    }
+
+    /**
+     * Returns cached column count field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached column count field value
+     */
+    protected Integer getColumnCount ()
+    {
+        return getBasicListUIValue ( "columnCount" );
+    }
+
+    /**
+     * Returns cached rows per column amount field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached rows per column amount field value
+     */
+    protected Integer getRowsPerColumn ()
+    {
+        return getBasicListUIValue ( "rowsPerColumn" );
+    }
+
+    /**
+     * Returns cached preferred height field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached preferred height field value
+     */
+    protected Integer getPreferredHeight ()
+    {
+        return getBasicListUIValue ( "preferredHeight" );
+    }
+
+    /**
+     * Returns basic list UI field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @param field field name
+     * @param <T>   field type
+     * @return basic list UI field value
+     */
+    protected <T> T getBasicListUIValue ( final String field )
+    {
+        return ReflectUtils.getFieldValueSafely ( this, field );
+    }
+
+    /**
+     * Returns {@link ListToolTipProvider} for {@link JList} that uses this {@link WebListUI}.
+     *
+     * @return {@link ListToolTipProvider} for {@link JList} that uses this {@link WebListUI}
+     */
+    protected ListToolTipProvider getToolTipProvider ()
     {
         return list != null && list instanceof WebList ? ( ( WebList ) list ).getToolTipProvider () : null;
     }
 
-    /**
-     * Returns whether should decorate selected and rollover cells or not.
-     *
-     * @return true if should decorate selected and rollover cells, false otherwise
-     */
-    public boolean isDecorateSelection ()
-    {
-        return decorateSelection;
-    }
-
-    /**
-     * Sets whether should decorate selected and rollover cells or not.
-     *
-     * @param decorateSelection whether should decorate selected and rollover cells or not
-     */
-    public void setDecorateSelection ( final boolean decorateSelection )
-    {
-        this.decorateSelection = decorateSelection;
-    }
-
-    /**
-     * Returns whether should highlight rollover cell or not.
-     *
-     * @return true if rollover cell is being highlighted, false otherwise
-     */
-    public boolean isHighlightRolloverCell ()
-    {
-        return highlightRolloverCell;
-    }
-
-    /**
-     * Sets whether should highlight rollover cell or not.
-     *
-     * @param highlightRolloverCell whether should highlight rollover cell or not
-     */
-    public void setHighlightRolloverCell ( final boolean highlightRolloverCell )
-    {
-        this.highlightRolloverCell = highlightRolloverCell;
-    }
-
-    /**
-     * Returns cells selection rounding.
-     *
-     * @return cells selection rounding
-     */
-    public int getSelectionRound ()
-    {
-        return selectionRound;
-    }
-
-    /**
-     * Sets cells selection rounding.
-     *
-     * @param selectionRound new cells selection rounding
-     */
-    public void setSelectionRound ( final int selectionRound )
-    {
-        this.selectionRound = selectionRound;
-    }
-
-    /**
-     * Returns cells selection shade width.
-     *
-     * @return cells selection shade width
-     */
-    public int getSelectionShadeWidth ()
-    {
-        return selectionShadeWidth;
-    }
-
-    /**
-     * Sets cells selection shade width.
-     *
-     * @param selectionShadeWidth new cells selection shade width
-     */
-    public void setSelectionShadeWidth ( final int selectionShadeWidth )
-    {
-        this.selectionShadeWidth = selectionShadeWidth;
-    }
-
-    /**
-     * Returns whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @return true if selection should be web-colored, false otherwise
-     */
-    public boolean isWebColoredSelection ()
-    {
-        return webColoredSelection;
-    }
-
-    /**
-     * Sets whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @param webColored whether selection should be web-colored or not
-     */
-    public void setWebColoredSelection ( final boolean webColored )
-    {
-        this.webColoredSelection = webColored;
-    }
-
-    /**
-     * Returns selection border color.
-     *
-     * @return selection border color
-     */
-    public Color getSelectionBorderColor ()
-    {
-        return selectionBorderColor;
-    }
-
-    /**
-     * Sets selection border color.
-     *
-     * @param color selection border color
-     */
-    public void setSelectionBorderColor ( final Color color )
-    {
-        this.selectionBorderColor = color;
-    }
-
-    /**
-     * Returns selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @return selection background color
-     */
-    public Color getSelectionBackgroundColor ()
-    {
-        return selectionBackgroundColor;
-    }
-
-    /**
-     * Sets selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @param color selection background color
-     */
-    public void setSelectionBackgroundColor ( final Color color )
-    {
-        this.selectionBackgroundColor = color;
-    }
-
-    /**
-     * Returns whether to scroll list down to selection automatically or not.
-     *
-     * @return true if list is being automatically scrolled to selection, false otherwise
-     */
-    public boolean isAutoScrollToSelection ()
-    {
-        return autoScrollToSelection;
-    }
-
-    /**
-     * Sets whether to scroll list down to selection automatically or not.
-     *
-     * @param autoScrollToSelection whether to scroll list down to selection automatically or not
-     */
-    public void setAutoScrollToSelection ( final boolean autoScrollToSelection )
-    {
-        this.autoScrollToSelection = autoScrollToSelection;
-    }
-
-    //    /**
-    //     * Paints list content.
-    //     *
-    //     * @param g graphics context
-    //     * @param c painted component
-    //     */
-    //    @Override
-    //    public void paint ( final Graphics g, final JComponent c )
-    //    {
-    //        super.paint ( g, c );
-    //
-    //        Rectangle vr = c.getVisibleRect ();
-    //        if ( vr.y > 0 )
-    //        {
-    //            final int shadeWidth = 10;
-    //            float opacity = shadeWidth > vr.y ? 1f - ( float ) ( shadeWidth - vr.y ) / shadeWidth : 1f;
-    //            NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
-    //            Dimension ps = npi.getPreferredSize ();
-    //            npi.paintIcon ( ( Graphics2D ) g, vr.x - shadeWidth, vr.y + shadeWidth - ps.height, vr.width + shadeWidth * 2, ps.height );
-    //        }
-    //    }
-
-    /**
-     * Paint one List cell: compute the relevant state, get the "rubber stamp" cell renderer component, and then use the CellRendererPane
-     * to paint it. Subclasses may want to override this method rather than paint().
-     *
-     * @param g            graphics context
-     * @param index        cell index
-     * @param rowBounds    cell bounds
-     * @param cellRenderer cell renderer
-     * @param dataModel    list model
-     * @param selModel     list selection model
-     * @param leadIndex    lead cell index
-     * @see #paint
-     */
     @Override
-    protected void paintCell ( final Graphics g, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
-                               final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        //        if ( list.getLayoutOrientation () == WebList.VERTICAL && ( evenLineColor != null || oddLineColor != null ) )
-        //        {
-        //            boolean even = index % 2 == 0;
-        //            if ( even && evenLineColor != null )
-        //            {
-        //                g.setColor ( evenLineColor );
-        //                g.fillRect ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
-        //            }
-        //            if ( !even && oddLineColor != null )
-        //            {
-        //                g.setColor ( oddLineColor );
-        //                g.fillRect ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
-        //            }
-        //        }
-
-        final Object value = dataModel.getElementAt ( index );
-        final boolean isSelected = selModel.isSelectedIndex ( index );
-
-        if ( decorateSelection && ( isSelected || index == rolloverIndex ) )
-        {
-            final Graphics2D g2d = ( Graphics2D ) g;
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, 0.35f, !isSelected );
-
-            final Rectangle rect = new Rectangle ( rowBounds );
-            rect.x += selectionShadeWidth;
-            rect.y += selectionShadeWidth;
-            rect.width -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
-            rect.height -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
-
-            LafUtils.drawCustomWebBorder ( g2d, list,
-                    new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
-                    StyleConstants.shadeColor, selectionShadeWidth, true, webColoredSelection, selectionBorderColor, selectionBorderColor,
-                    selectionBackgroundColor );
-
-            GraphicsUtils.restoreComposite ( g2d, oc, !isSelected );
-        }
-
-        final boolean cellHasFocus = list.hasFocus () && ( index == leadIndex );
-        final Component rendererComponent = cellRenderer.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-        rendererPane.paintComponent ( g, rendererComponent, list, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

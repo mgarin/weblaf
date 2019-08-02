@@ -1,0 +1,63 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.panel.WebPanel -->
+
+    <!-- Panel -->
+    <!-- Note: It doesn't include decoration by default to allow making it transparent by simply making panel non-opaque -->
+    <!-- This is an important workaround to allow popup windows (for example for JPopupMenu) to have transparent content -->
+    <style type="panel">
+        <component>
+            <opaque>true</opaque>
+            <background>68,68,68</background>
+        </component>
+        <painter />
+    </style>
+
+    <!-- Non-opaque panel -->
+    <style type="panel" id="non-opaque">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent panel -->
+    <style type="panel" id="transparent" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- Decorated panel -->
+    <style type="panel" id="decorated" extends="non-opaque">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Decorated panel -->
+    <style type="panel" id="focusable" extends="decorated">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

@@ -1,45 +1,28 @@
 /*
- * This file is part of WebLookAndFeel library.
+ * Copyright 2006 Jerry Huxtable
  *
- * WebLookAndFeel library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * WebLookAndFeel library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ *  Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-/*
-Copyright 2006 Jerry Huxtable
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 
 package com.alee.graphics.filters;
 
 /**
  * Sets the opacity (alpha) of every pixel in an image to a constant value.
+ *
+ * @author Jerry Huxtable
  */
-
 public class OpacityFilter extends PointFilter
 {
-
     private int opacity;
     private int opacity24;
 
@@ -56,7 +39,7 @@ public class OpacityFilter extends PointFilter
      *
      * @param opacity the opacity (alpha) in the range 0..255
      */
-    public OpacityFilter ( int opacity )
+    public OpacityFilter ( final int opacity )
     {
         setOpacity ( opacity );
     }
@@ -67,7 +50,7 @@ public class OpacityFilter extends PointFilter
      * @param opacity the opacity (alpha) in the range 0..255
      * @see #getOpacity
      */
-    public void setOpacity ( int opacity )
+    public void setOpacity ( final int opacity )
     {
         this.opacity = opacity;
         opacity24 = opacity << 24;
@@ -85,7 +68,7 @@ public class OpacityFilter extends PointFilter
     }
 
     @Override
-    public int filterRGB ( int x, int y, int rgb )
+    public int filterRGB ( final int x, final int y, final int rgb )
     {
         if ( ( rgb & 0xff000000 ) != 0 )
         {
@@ -94,4 +77,3 @@ public class OpacityFilter extends PointFilter
         return rgb;
     }
 }
-

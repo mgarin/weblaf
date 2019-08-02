@@ -17,6 +17,7 @@
 
 package com.alee.extended.syntax;
 
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.event.FocusAdapter;
@@ -31,7 +32,6 @@ import static com.alee.extended.syntax.SyntaxPreset.*;
  *
  * @author Mikle Garin
  */
-
 public class WebSyntaxPanel extends WebPanel
 {
     /**
@@ -46,7 +46,7 @@ public class WebSyntaxPanel extends WebPanel
      */
     public WebSyntaxPanel ( final SyntaxPreset... presets )
     {
-        this ( "", presets );
+        this ( StyleId.syntaxpanel, "", presets );
     }
 
     /**
@@ -57,18 +57,41 @@ public class WebSyntaxPanel extends WebPanel
      */
     public WebSyntaxPanel ( final String code, final SyntaxPreset... presets )
     {
-        super ( "syntax-panel" );
+        this ( StyleId.syntaxpanel, code, presets );
+    }
+
+    /**
+     * Constructs new WebSyntaxPanel.
+     *
+     * @param id      style ID
+     * @param presets presets to apply
+     */
+    public WebSyntaxPanel ( final StyleId id, final SyntaxPreset... presets )
+    {
+        this ( id, "", presets );
+    }
+
+    /**
+     * Constructs new WebSyntaxPanel.
+     *
+     * @param id      style ID
+     * @param code    displayed code
+     * @param presets presets to apply
+     */
+    public WebSyntaxPanel ( final StyleId id, final String code, final SyntaxPreset... presets )
+    {
+        super ( id );
 
         // Syntax area
         syntaxArea = new WebSyntaxArea ( code );
         syntaxArea.applyPresets ( base, viewable, hideMenu, ideaTheme, transparent );
         syntaxArea.applyPresets ( presets );
         syntaxArea.setText ( code );
-        syntaxArea.setHighlightCurrentLine ( false );
 
         // Additional focus loss listener that resets caret position
         // This is required to drop any highlights made due to caret position changes
         // This also disables current line highlight for non-focused areas
+        syntaxArea.setHighlightCurrentLine ( false );
         syntaxArea.addFocusListener ( new FocusAdapter ()
         {
             @Override
@@ -89,13 +112,13 @@ public class WebSyntaxPanel extends WebPanel
     }
 
     /**
-     * Sets displayed code.
+     * Sets displayed text.
      *
-     * @param code displayed code
+     * @param text displayed text
      */
-    public void setCode ( final String code )
+    public void setText ( final String text )
     {
-        syntaxArea.setText ( code );
+        syntaxArea.setText ( text );
         syntaxArea.setHighlightCurrentLine ( shouldHighlightCurrentLine () );
     }
 
@@ -110,7 +133,7 @@ public class WebSyntaxPanel extends WebPanel
     }
 
     /**
-     * Applies presets to undelying WebSyntaxArea.
+     * Applies presets to underlying WebSyntaxArea.
      *
      * @param presets presets to apply
      */
@@ -120,7 +143,7 @@ public class WebSyntaxPanel extends WebPanel
     }
 
     /**
-     * Applies presets to undelying WebSyntaxArea.
+     * Applies presets to underlying WebSyntaxArea.
      *
      * @param presets presets to apply
      */

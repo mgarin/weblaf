@@ -1,0 +1,22 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.tree.WebExCheckBoxTree -->
+
+    <!-- Extended checkbox tree -->
+    <style type="tree" id="excheckboxtree" extends="checkboxtree" />
+
+    <!-- Non-opaque extended checkbox tree -->
+    <style type="tree" id="excheckboxtree-non-opaque" extends="excheckboxtree">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent extended checkbox tree -->
+    <style type="tree" id="excheckboxtree-transparent" extends="excheckboxtree-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

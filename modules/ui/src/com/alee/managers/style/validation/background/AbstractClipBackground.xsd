@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBackground.xsd" />
+    <xs:include schemaLocation="Backgrounds.xsd" />
+
+    <!-- com.alee.painter.decoration.background.AbstractClipBackground -->
+    <xs:complexType name="AbstractClipBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractBackground">
+
+                <!-- List of actual background implementations which are used to paint background -->
+                <xs:group ref="Backgrounds" minOccurs="1" maxOccurs="unbounded" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

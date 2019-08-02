@@ -17,8 +17,14 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.jdk.Objects;
+import com.alee.api.merge.MergeBehavior;
+import com.alee.api.merge.RecursiveMerge;
+import com.alee.api.merge.behavior.PreserveOnMerge;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.ReflectUtils;
+
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,43 +32,44 @@ import java.util.List;
  * It contains various style settings supported by the styled label UI.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see com.alee.extended.label.WebStyledLabel
  */
-
-public class StyleRange
+public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
 {
     /**
      * Text style start index.
      */
-    protected int startIndex;
+    protected final int startIndex;
 
     /**
      * Text style length.
      */
-    protected int length;
+    protected final int length;
 
     /**
      * Text foreground.
      */
-    protected Color foreground;
+    protected final Color foreground;
 
     /**
      * Text background.
      */
-    protected Color background;
+    protected final Color background;
 
     /**
      * Basic text style.
-     * Either Font.ITALIC or Font.BOLD or their combination.
+     * Either {@link Font#ITALIC} or {@link Font#BOLD} or their combination.
      */
-    protected int style;
+    @PreserveOnMerge
+    protected final int style;
 
     /**
      * Custom text styles.
      *
      * @see com.alee.extended.label.CustomStyle
      */
-    protected List<CustomStyle> customStyles;
+    protected final List<CustomStyle> customStyles;
 
     /**
      * Constructs new StyleRange based on another StyleRange settings.
@@ -71,8 +78,20 @@ public class StyleRange
      */
     public StyleRange ( final StyleRange styleRange )
     {
-        this ( styleRange.getStartIndex (), styleRange.getLength (), styleRange.getStyle (), styleRange.getForeground (),
-                styleRange.getBackground (), getCustomStyles ( styleRange ) );
+        this ( styleRange.getStartIndex (), styleRange.getLength (), styleRange );
+    }
+
+    /**
+     * Constructs new StyleRange based on another StyleRange settings but with new start index and length.
+     *
+     * @param startIndex text style start index
+     * @param length     text style length
+     * @param styleRange style range
+     */
+    public StyleRange ( final int startIndex, final int length, final StyleRange styleRange )
+    {
+        this ( startIndex, length, styleRange.getStyle (), styleRange.getForeground (),
+                styleRange.getBackground (), CollectionUtils.copy ( styleRange.getCustomStyle () ) );
     }
 
     /**
@@ -155,21 +174,40 @@ public class StyleRange
     public StyleRange ( final int startIndex, final int length, final int style, final Color foreground, final Color background,
                         final CustomStyle... customStyles )
     {
+        this ( startIndex, length, style, foreground, background, CollectionUtils.asList ( customStyles ) );
+    }
+
+    /**
+     * Constructs new StyleRange with the specified settings
+     *
+     * @param startIndex   text style start index
+     * @param length       text style length
+     * @param style        basic text style
+     * @param foreground   text foreground color
+     * @param background   text background color
+     * @param customStyles custom text styles
+     */
+    public StyleRange ( final int startIndex, final int length, final int style, final Color foreground, final Color background,
+                        final List<CustomStyle> customStyles )
+    {
         if ( startIndex < 0 )
         {
             throw new IllegalArgumentException ( "Style start index cannot be less than zero" );
         }
-        if ( length == 0 )
+        if ( length <= 0 )
         {
-            throw new IllegalArgumentException ( "Style length cannot be zero" );
+            throw new IllegalArgumentException ( "Style length cannot be zero or less than zero" );
         }
-
+        if ( Objects.notEquals ( style, -1, Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC ) )
+        {
+            throw new IllegalArgumentException ( "Unknown font style: " + style );
+        }
         this.startIndex = startIndex;
         this.length = length;
         this.foreground = foreground;
         this.background = background;
         this.style = style;
-        this.customStyles = Arrays.asList ( customStyles );
+        this.customStyles = customStyles;
     }
 
     /**
@@ -183,16 +221,6 @@ public class StyleRange
     }
 
     /**
-     * Sets text style start index.
-     *
-     * @param startIndex new text style start index
-     */
-    public void setStartIndex ( final int startIndex )
-    {
-        this.startIndex = startIndex;
-    }
-
-    /**
      * Returns text style length.
      *
      * @return text style length
@@ -200,16 +228,6 @@ public class StyleRange
     public int getLength ()
     {
         return length;
-    }
-
-    /**
-     * Sets text style length.
-     *
-     * @param length new text style length
-     */
-    public void setLength ( final int length )
-    {
-        this.length = length;
     }
 
     /**
@@ -312,14 +330,33 @@ public class StyleRange
         return customStyles;
     }
 
-    /**
-     * Returns custom styles array.
-     *
-     * @param styleRange style range
-     * @return custom styles array
-     */
-    protected static CustomStyle[] getCustomStyles ( final StyleRange styleRange )
+    @Override
+    public StyleRange merge ( final RecursiveMerge merge, final Class type, final StyleRange object, final int depth )
     {
-        return styleRange.getCustomStyle ().toArray ( new CustomStyle[ styleRange.getCustomStyle ().size () ] );
+        final StyleRange result = merge.mergeFields ( type, this, object, depth );
+
+        /**
+         * Special merge algorithm for {@link Font} style field.
+         * It is important to avoid simple overwriting of the {@link #style} field in this class.
+         */
+        final int fontStyle;
+        if ( object.style != -1 )
+        {
+            if ( this.style != -1 )
+            {
+                fontStyle = this.style | object.style;
+            }
+            else
+            {
+                fontStyle = object.style;
+            }
+        }
+        else
+        {
+            fontStyle = this.style;
+        }
+        ReflectUtils.setFieldValueSafely ( result, "style", fontStyle );
+
+        return result;
     }
 }

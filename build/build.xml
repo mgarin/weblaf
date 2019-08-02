@@ -1,36 +1,38 @@
 <?xml version="1.0"?>
-<project name="Web Look and Feel" basedir="../" default="build.all.artifacts">
+<project name="Web Look and Feel" basedir="../" default="build.basic.artifacts">
+
+    <!-- =========================== Includes ============================ -->
 
     <!-- Property files -->
     <property file="build/version.properties" />
     <property file="build/build.properties" />
 
-    <!-- =========================== Base settings ============================ -->
+    <!-- =========================== Classpath settings ============================ -->
 
-    <!-- Base classpaths -->
-    <property name="core.classpath" value="${slf4j.api.jar} ${slf4j.binding.jar} ${imagescaling.jar} ${jericho.jar} ${xstream.jar}" />
-    <property name="ui.classpath" value="${core.classpath} ${rsyntaxtextarea.jar}" />
-    <property name="demo.classpath" value="${ui.classpath}" />
-    <!-- Separate JAR classpaths -->
-    <property name="core.jar.classpath" value="${core.classpath}" />
-    <property name="ui.jar.classpath" value="${ui.classpath} ${library.core.jar.name}" />
-    <property name="demo.jar.classpath" value="${demo.classpath} ${library.core.jar.name} ${library.ui.jar.name}" />
-    <!-- Complete JAR classpaths -->
-    <property name="weblaf.jar.classpath" value="${ui.classpath}" />
-
-    <!-- Classpath -->
+    <!-- Compile classpaths -->
     <path id="core.classpath">
         <fileset dir="${lib.dir}" includes="*.jar" />
     </path>
+    <path id="plugin.classpath">
+        <fileset dir="${lib.dir}" includes="*.jar" />
+        <pathelement path="${module.core.dist.dir}" />
+    </path>
     <path id="ui.classpath">
         <fileset dir="${lib.dir}" includes="*.jar" />
-        <pathelement path="${library.core.dist.dir}" />
+        <pathelement path="${module.core.dist.dir}" />
     </path>
     <path id="demo.classpath">
         <fileset dir="${lib.dir}" includes="*.jar" />
-        <pathelement path="${library.core.dist.dir}" />
-        <pathelement path="${library.ui.dist.dir}" />
+        <pathelement path="${module.core.dist.dir}" />
+        <pathelement path="${module.ui.dist.dir}" />
     </path>
+
+    <!-- JAR classpaths -->
+    <property name="core.jar.classpath" value="${module.core.lib}" />
+    <property name="plugin.jar.classpath" value="${module.core.lib} ${module.core.jar.name}" />
+    <property name="ui.jar.classpath" value="${module.ui.lib} ${module.core.jar.name}" />
+    <property name="demo.jar.classpath" value="${module.ui.lib} ${module.core.jar.name} ${module.ui.jar.name}" />
+    <property name="full.classpath" value="${module.ui.lib}" />
 
     <!-- =========================== Base targets ============================ -->
 
@@ -52,56 +54,68 @@
 
     <!-- Compile classes -->
     <target name="compile.core" depends="create.dist.dir">
-        <mkdir dir="${library.core.dist.dir}" />
-        <javac debug="true" includeantruntime="false" destdir="${library.core.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
-            <src path="${library.core.src.dir}" />
+        <mkdir dir="${module.core.dist.dir}" />
+        <javac debug="true" includeantruntime="false" destdir="${module.core.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
+            <src path="${module.core.src.dir}" />
             <classpath refid="core.classpath" />
         </javac>
     </target>
+    <target name="compile.plugin" depends="compile.core">
+        <mkdir dir="${module.plugin.dist.dir}" />
+        <javac debug="true" includeantruntime="false" destdir="${module.plugin.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
+            <src path="${module.plugin.src.dir}" />
+            <classpath refid="plugin.classpath" />
+        </javac>
+    </target>
     <target name="compile.ui" depends="compile.core">
-        <mkdir dir="${library.ui.dist.dir}" />
-        <javac debug="true" includeantruntime="false" destdir="${library.ui.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
-            <src path="${library.ui.src.dir}" />
+        <mkdir dir="${module.ui.dist.dir}" />
+        <javac debug="true" includeantruntime="false" destdir="${module.ui.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
+            <src path="${module.ui.src.dir}" />
             <classpath refid="ui.classpath" />
         </javac>
     </target>
     <target name="compile.demo" depends="compile.ui">
-        <mkdir dir="${library.demo.dist.dir}" />
-        <javac debug="true" includeantruntime="false" destdir="${library.demo.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
-            <src path="${library.demo.src.dir}" />
+        <mkdir dir="${module.demo.dist.dir}" />
+        <javac debug="true" includeantruntime="false" destdir="${module.demo.dist.dir}" encoding="utf-8" source="1.6" target="1.6">
+            <src path="${module.demo.src.dir}" />
             <classpath refid="demo.classpath" />
         </javac>
     </target>
 
     <!-- Resources copy -->
     <target name="copy.core.res">
-        <copy todir="${library.core.dist.dir}">
-            <fileset dir="${library.core.src.dir}" excludes="**/*.java" />
+        <copy todir="${module.core.dist.dir}">
+            <fileset dir="${module.core.src.dir}" excludes="**/*.java" />
+        </copy>
+    </target>
+    <target name="copy.plugin.res" depends="copy.core.res">
+        <copy todir="${module.plugin.dist.dir}">
+            <fileset dir="${module.plugin.src.dir}" excludes="**/*.java" />
         </copy>
     </target>
     <target name="copy.ui.res" depends="copy.core.res">
-        <copy todir="${library.ui.dist.dir}">
-            <fileset dir="${library.ui.src.dir}" excludes="**/*.java" />
+        <copy todir="${module.ui.dist.dir}">
+            <fileset dir="${module.ui.src.dir}" excludes="**/*.java" />
         </copy>
     </target>
     <target name="copy.demo.res" depends="copy.ui.res">
-        <copy todir="${library.demo.dist.dir}">
-            <fileset dir="${library.demo.src.dir}" excludes="**/*.java" />
+        <copy todir="${module.demo.dist.dir}">
+            <fileset dir="${module.demo.src.dir}" excludes="**/*.java" />
         </copy>
     </target>
     <target name="copy.core.src">
-        <copy todir="${library.core.dist.dir}">
-            <fileset dir="${library.core.src.dir}" />
+        <copy todir="${module.core.dist.dir}">
+            <fileset dir="${module.core.src.dir}" />
         </copy>
     </target>
     <target name="copy.ui.src">
-        <copy todir="${library.ui.dist.dir}">
-            <fileset dir="${library.ui.src.dir}" />
+        <copy todir="${module.ui.dist.dir}">
+            <fileset dir="${module.ui.src.dir}" />
         </copy>
     </target>
     <target name="copy.demo.src">
-        <copy todir="${library.demo.dist.dir}">
-            <fileset dir="${library.demo.src.dir}" />
+        <copy todir="${module.demo.dist.dir}">
+            <fileset dir="${module.demo.src.dir}" />
         </copy>
     </target>
     <target name="copy.lic">
@@ -114,94 +128,116 @@
             <fileset dir="${lib.dir}" />
         </copy>
     </target>
+    <target name="copy.demo.jnlp">
+        <copy todir="${artifacts.dir}">
+            <fileset file="${demo.application.jnlp}" />
+        </copy>
+    </target>
 
     <!-- =========================== Separate binaries ============================ -->
 
     <!-- Assemble library core jar -->
-    <target name="build.core.jar" description="Build ${library.core.jar}" depends="clean.dist.dir,compile.core,copy.core.res,copy.lic,create.artifacts.dir">
-        <jar destfile="${library.core.jar}">
+    <target name="build.module.core.jar" description="Build ${module.core.jar}" depends="clean.dist.dir,compile.core,copy.core.res,copy.lic,create.artifacts.dir">
+        <jar destfile="${module.core.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
-            <fileset dir="${library.core.dist.dir}" />
+            <fileset dir="${module.core.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
                 <attribute name="Package-Version" value="${version.info}" />
-                <attribute name="Product-Name" value="${library.core.title}" />
+                <attribute name="Product-Name" value="${module.core.title}" />
                 <attribute name="Class-Path" value="${core.jar.classpath}" />
             </manifest>
         </jar>
     </target>
 
-    <!-- Assemble library ui jar -->
-    <target name="build.ui.jar" description="Build ${library.ui.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
-        <jar destfile="${library.ui.jar}">
+    <!-- Assemble library plugin jar -->
+    <target name="build.module.plugin.jar" description="Build ${module.plugin.jar}" depends="clean.dist.dir,compile.plugin,copy.plugin.res,copy.lic,create.artifacts.dir">
+        <jar destfile="${module.plugin.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
-            <fileset dir="${library.ui.dist.dir}" />
+            <fileset dir="${module.plugin.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
                 <attribute name="Package-Version" value="${version.info}" />
-                <attribute name="Product-Name" value="${library.ui.title}" />
-                <attribute name="Main-Class" value="${library.ui.main}" />
+                <attribute name="Product-Name" value="${module.plugin.title}" />
+                <attribute name="Class-Path" value="${plugin.jar.classpath}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Assemble library ui jar -->
+    <target name="build.module.ui.jar" description="Build ${module.ui.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
+        <jar destfile="${module.ui.jar}">
+            <fileset dir="${dist.dir}" includes="licenses/**" />
+            <fileset dir="${module.ui.dist.dir}" />
+            <manifest>
+                <attribute name="Package-Title" value="${package}" />
+                <attribute name="Package-Vendor" value="${dev}" />
+                <attribute name="Package-Version" value="${version.info}" />
+                <attribute name="Product-Name" value="${module.ui.title}" />
+                <attribute name="Main-Class" value="${module.ui.main}" />
                 <attribute name="Class-Path" value="${ui.jar.classpath}" />
             </manifest>
         </jar>
     </target>
 
-    <!-- Assemble library demo jar
-    <target name="build.demo.jar" description="Build ${library.demo.jar}" depends="compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
-        <jar destfile="${library.demo.jar}">
+    <!-- Assemble library demo jar -->
+    <target name="build.module.demo.jar" description="Build ${module.demo.jar}" depends="compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
+        <jar destfile="${module.demo.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
-            <fileset dir="${library.demo.dist.dir}" />
+            <fileset dir="${module.demo.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
                 <attribute name="Package-Version" value="${version.info}" />
-                <attribute name="Product-Name" value="${library.demo.title}" />
-                <attribute name="Main-Class" value="${library.demo.main}" />
+                <attribute name="Product-Name" value="${module.demo.title}" />
+                <attribute name="Main-Class" value="${module.demo.main}" />
                 <attribute name="Class-Path" value="${demo.jar.classpath}" />
             </manifest>
         </jar>
     </target>
-    -->
 
     <!-- =========================== Complete binaries ============================ -->
 
     <!-- Assemble library binary -->
-    <target name="build.weblaf.jar" description="Build ${library.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
-        <jar destfile="${library.jar}">
-            <fileset dir="${dist.dir}" includes="licenses/**" />
-            <fileset dir="${library.core.dist.dir}" />
-            <fileset dir="${library.ui.dist.dir}" />
-            <manifest>
-                <attribute name="Package-Title" value="${package}" />
-                <attribute name="Package-Vendor" value="${dev}" />
-                <attribute name="Package-Version" value="${version.info}" />
-                <attribute name="Product-Name" value="${library.title}" />
-                <attribute name="Main-Class" value="${library.main}" />
-                <attribute name="Class-Path" value="${weblaf.jar.classpath}" />
-            </manifest>
-        </jar>
-    </target>
-
-    <!-- Assemble complete library binary -->
-    <target name="build.weblaf.complete.jar" description="Build ${library.complete.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
+    <target name="build.complete.jar" description="Build ${library.complete.jar}" depends="clean.dist.dir,compile.plugin,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.complete.jar}">
-            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
-            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
-            <zipfileset src="${lib.dir}/${jericho.jar}" />
-            <zipfileset src="${lib.dir}/${xstream.jar}" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
-            <fileset dir="${library.core.dist.dir}" />
-            <fileset dir="${library.ui.dist.dir}" />
+            <fileset dir="${module.core.dist.dir}" />
+            <fileset dir="${module.plugin.dist.dir}" />
+            <fileset dir="${module.ui.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
                 <attribute name="Package-Version" value="${version.info}" />
                 <attribute name="Product-Name" value="${library.complete.title}" />
                 <attribute name="Main-Class" value="${library.complete.main}" />
+                <attribute name="Class-Path" value="${full.classpath}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Assemble complete library binary -->
+    <target name="build.complete.deps.jar" description="Build ${library.complete.deps.jar}" depends="clean.dist.dir,compile.plugin,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
+        <jar destfile="${library.complete.deps.jar}">
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
+            <fileset dir="${dist.dir}" includes="licenses/**" />
+            <fileset dir="${module.core.dist.dir}" />
+            <fileset dir="${module.plugin.dist.dir}" />
+            <fileset dir="${module.ui.dist.dir}" />
+            <manifest>
+                <attribute name="Package-Title" value="${package}" />
+                <attribute name="Package-Vendor" value="${dev}" />
+                <attribute name="Package-Version" value="${version.info}" />
+                <attribute name="Product-Name" value="${library.complete.deps.title}" />
+                <attribute name="Main-Class" value="${library.complete.deps.main}" />
             </manifest>
         </jar>
     </target>
@@ -209,49 +245,54 @@
     <!-- =========================== Featured binaries ============================ -->
 
     <!-- Assemble library demo -->
-    <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
-        <jar destfile="${demo.jar}">
-            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
-            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
-            <zipfileset src="${lib.dir}/${jericho.jar}" />
-            <zipfileset src="${lib.dir}/${xstream.jar}" />
+    <target name="build.weblaf.demo.jar" description="Build ${demo.application.jar}" depends="clean.dist.dir,compile.plugin,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir,copy.demo.jnlp">
+        <jar destfile="${demo.application.jar}">
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
-            <fileset dir="${library.core.dist.dir}" />
-            <fileset dir="${library.core.src.dir}" includes="**/*.java" />
-            <fileset dir="${library.ui.dist.dir}" />
-            <fileset dir="${library.ui.src.dir}" includes="**/*.java" />
-            <fileset dir="${library.demo.dist.dir}" />
-            <fileset dir="${library.demo.src.dir}" includes="**/*.java" />
+            <fileset dir="${module.core.dist.dir}" />
+            <fileset dir="${module.core.src.dir}" includes="**/*.java" />
+            <fileset dir="${module.plugin.dist.dir}" />
+            <fileset dir="${module.plugin.src.dir}" includes="**/*.java" />
+            <fileset dir="${module.ui.dist.dir}" />
+            <fileset dir="${module.ui.src.dir}" includes="**/*.java" />
+            <fileset dir="${module.demo.dist.dir}" />
+            <fileset dir="${module.demo.src.dir}" includes="**/*.java" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
                 <attribute name="Package-Version" value="${version.info}" />
-                <attribute name="Product-Name" value="${demo.title}" />
-                <attribute name="Main-Class" value="${demo.main}" />
+                <attribute name="Product-Name" value="${demo.application.title}" />
+                <attribute name="Main-Class" value="${demo.application.main}" />
             </manifest>
         </jar>
     </target>
 
     <!-- Assemble nine-patch editor jar -->
-    <target name="build.npe.jar" description="Build ${npe.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
-        <jar destfile="${npe.jar}">
-            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
-            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
-            <zipfileset src="${lib.dir}/${jericho.jar}" />
-            <zipfileset src="${lib.dir}/${xstream.jar}" />
+    <target name="build.npe.jar" description="Build ${ninepatcheditor.jar}" depends="clean.dist.dir,compile.plugin,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
+        <jar destfile="${ninepatcheditor.jar}">
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
-            <fileset dir="${library.core.dist.dir}" />
-            <fileset dir="${library.ui.dist.dir}" />
+            <fileset dir="${module.core.dist.dir}" />
+            <fileset dir="${module.plugin.dist.dir}" />
+            <fileset dir="${module.ui.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
                 <attribute name="Package-Version" value="${version.info}" />
-                <attribute name="Product-Name" value="${npe.title}" />
-                <attribute name="Main-Class" value="${npe.main}" />
+                <attribute name="Product-Name" value="${ninepatcheditor.title}" />
+                <attribute name="Main-Class" value="${ninepatcheditor.main}" />
             </manifest>
         </jar>
     </target>
@@ -285,9 +326,10 @@
             <fileset dir="${lic.dir}" />
         </copy>
         <copy todir="${dist.dir}">
-            <fileset dir="${library.core.src.dir}" />
-            <fileset dir="${library.ui.src.dir}" />
-            <fileset dir="${library.demo.src.dir}" />
+            <fileset dir="${module.core.src.dir}" />
+            <fileset dir="${module.plugin.src.dir}" />
+            <fileset dir="${module.ui.src.dir}" />
+            <fileset dir="${module.demo.src.dir}" />
         </copy>
         <jar destfile="${sources.jar}">
             <fileset dir="${dist.dir}" />
@@ -295,9 +337,9 @@
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
                 <attribute name="Package-Version" value="${version.info}" />
-                <attribute name="Product-Name" value="${library.title}" />
-                <attribute name="Main-Class" value="${library.main}" />
-                <attribute name="Class-Path" value="${weblaf.jar.classpath}" />
+                <attribute name="Product-Name" value="${library.complete.title}" />
+                <attribute name="Main-Class" value="${library.complete.main}" />
+                <attribute name="Class-Path" value="${full.classpath}" />
             </manifest>
         </jar>
     </target>
@@ -305,9 +347,10 @@
     <!-- Assemble JavaDoc JAR -->
     <target name="build.javadoc.jar" description="Build ${javadoc.jar}" depends="create.artifacts.dir">
         <javadoc destdir="${javadoc.dir}" author="true" version="true" use="true">
-            <packageset dir="${library.core.src.dir}" defaultexcludes="yes" />
-            <packageset dir="${library.ui.src.dir}" defaultexcludes="yes" />
-            <packageset dir="${library.demo.src.dir}" defaultexcludes="yes" />
+            <packageset dir="${module.core.src.dir}" defaultexcludes="yes" />
+            <packageset dir="${module.plugin.src.dir}" defaultexcludes="yes" />
+            <packageset dir="${module.ui.src.dir}" defaultexcludes="yes" />
+            <packageset dir="${module.demo.src.dir}" defaultexcludes="yes" />
             <classpath refid="demo.classpath" />
         </javadoc>
         <zip destfile="${javadoc.jar}">
@@ -320,7 +363,7 @@
     <!-- Assemble and run version updater jar -->
     <target name="update.library.version" depends="clean.dist.dir,compile.ui,copy.ui.res,create.artifacts.dir">
         <jar destfile="${vupdater.jar}">
-            <fileset dir="${library.ui.dist.dir}" />
+            <fileset dir="${module.ui.dist.dir}" />
             <manifest>
                 <attribute name="Main-Class" value="${vupdater.main}" />
                 <attribute name="Class-Path" value="${ui.jar.classpath}" />
@@ -343,15 +386,26 @@
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
+        <antcall target="build.javadoc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
-    <!-- Assemble separate and complete artifacts -->
+    <!-- Assemble basic artifacts -->
+    <target name="build.basic.artifacts" description="Build basic WebLaF binaries">
+        <antcall target="clean.artifacts.dir" />
+        <antcall target="build.base.impl" />
+        <antcall target="build.src.impl" />
+        <antcall target="clean.dist.dir" />
+    </target>
+
+    <!-- Assemble common artifacts -->
     <target name="build.common.artifacts" description="Build common WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
+        <antcall target="build.featured.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
@@ -362,7 +416,7 @@
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="build.javadoc.impl" />
         <antcall target="copy.version.file" />
         <antcall target="update.library.version" />
@@ -372,44 +426,51 @@
     <!-- Single assembled builds -->
     <target name="build.base.artifacts" description="Build base WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.base.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.complete.artifacts" description="Build unified WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.complete.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.featured.artifacts" description="Build featured WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.featured.impl" />
         <antcall target="clean.dist.dir" />
     </target>
-    <target name="build.misc.artifacts" description="Build miscellaneous WebLAF binaries" >
+    <target name="build.misc.artifacts" description="Build miscellaneous WebLaF binaries" >
         <antcall target="clean.artifacts.dir" />
-        <antcall target="build.misc.impl" />
+        <antcall target="copy.lib" />
+        <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
-    <target name="build.javadoc.artifacts" description="Build miscellaneous WebLAF binaries" >
+    <target name="build.javadoc.artifacts" description="Build WebLaF JavaDoc" >
         <antcall target="clean.artifacts.dir" />
+        <antcall target="copy.lib" />
         <antcall target="build.javadoc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
     <!-- Assembled build implementations -->
     <target name="build.base.impl">
-        <antcall target="build.core.jar" />
-        <antcall target="build.ui.jar" />
+        <antcall target="build.module.core.jar" />
+        <antcall target="build.module.plugin.jar" />
+        <antcall target="build.module.ui.jar" />
+        <antcall target="build.module.demo.jar" />
     </target>
     <target name="build.complete.impl">
-        <antcall target="build.weblaf.jar" />
-        <antcall target="build.weblaf.complete.jar" />
+        <antcall target="build.complete.jar" />
+        <antcall target="build.complete.deps.jar" />
     </target>
     <target name="build.featured.impl">
         <antcall target="build.weblaf.demo.jar" />
         <antcall target="build.npe.jar" />
     </target>
-    <target name="build.misc.impl">
+    <target name="build.src.impl">
         <antcall target="build.sources.zip" />
         <antcall target="build.sources.jar" />
     </target>
@@ -419,16 +480,16 @@
 
     <!-- =========================== Run targets ============================ -->
 
-    <target name="run.weblaf" description="Display WebLaF information dialog" depends="build.weblaf.complete.jar">
-        <java jar="${library.complete.jar}" fork="true" />
+    <target name="run.weblaf" description="Display WebLaF information dialog" depends="build.complete.deps.jar">
+        <java jar="${library.complete.deps.jar}" fork="true" />
     </target>
 
     <target name="run.weblaf.demo" description="Run WebLaF demo application" depends="build.weblaf.demo.jar">
-        <java jar="${demo.jar}" fork="true" />
+        <java jar="${demo.application.jar}" fork="true" />
     </target>
 
     <target name="run.npe" description="Run Nine-Patch Editor" depends="build.npe.jar">
-        <java jar="${npe.jar}" fork="true" />
+        <java jar="${ninepatcheditor.jar}" fork="true" />
     </target>
 
 </project>

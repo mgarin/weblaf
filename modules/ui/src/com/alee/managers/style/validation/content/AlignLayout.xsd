@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContentLayout.xsd" />
+
+    <!-- com.alee.painter.decoration.layout.AlignLayout -->
+    <xs:complexType name="AlignLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractContentLayout">
+
+                <!-- Horizontal gap between content elements -->
+                <xs:attribute name="hgap" type="xs:integer" />
+
+                <!-- Vertical gap between content elements -->
+                <xs:attribute name="vgap" type="xs:integer" />
+
+                <!-- Whether or not contents should fill all available horizontal space -->
+                <xs:attribute name="hfill" type="xs:boolean" />
+
+                <!-- Whether or not contents should fill all available vertical space -->
+                <xs:attribute name="vfill" type="xs:boolean" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

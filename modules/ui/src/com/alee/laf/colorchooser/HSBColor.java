@@ -23,21 +23,26 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 10.03.11 Time: 18:52
+ * @author Mikle Garin
  */
-
 @XStreamAlias ( "HSBColor" )
 public class HSBColor
 {
-    // Values: 0f-1f (0-360 degrees)
+    /**
+     * Values: 0f-1f (0-360 degrees).
+     */
     @XStreamAsAttribute
     private float hue = 0f;
 
-    // Values: 0f-1f (0-100%)
+    /**
+     * Values: 0f-1f (0-100%).
+     */
     @XStreamAsAttribute
     private float saturation = 0f;
 
-    // Values: 0f-1f (0-100%)
+    /**
+     * Values: 0f-1f (0-100%).
+     */
     @XStreamAsAttribute
     private float brightness = 0f;
 
@@ -46,7 +51,7 @@ public class HSBColor
         super ();
     }
 
-    public HSBColor ( float hue, float saturation, float brightness )
+    public HSBColor ( final float hue, final float saturation, final float brightness )
     {
         super ();
         this.hue = hue;
@@ -54,16 +59,16 @@ public class HSBColor
         this.brightness = brightness;
     }
 
-    public HSBColor ( Color color )
+    public HSBColor ( final Color color )
     {
         this ( color.getRed (), color.getGreen (), color.getBlue () );
     }
 
-    public HSBColor ( int red, int green, int blue )
+    public HSBColor ( final int red, final int green, final int blue )
     {
         super ();
 
-        float[] values = Color.RGBtoHSB ( red, green, blue, null );
+        final float[] values = Color.RGBtoHSB ( red, green, blue, null );
         this.hue = values[ 0 ];
         this.saturation = values[ 1 ];
         this.brightness = values[ 2 ];
@@ -74,7 +79,7 @@ public class HSBColor
         return brightness;
     }
 
-    public void setBrightness ( float brightness )
+    public void setBrightness ( final float brightness )
     {
         this.brightness = brightness;
     }
@@ -84,7 +89,7 @@ public class HSBColor
         return hue;
     }
 
-    public void setHue ( float hue )
+    public void setHue ( final float hue )
     {
         this.hue = hue;
     }
@@ -94,7 +99,7 @@ public class HSBColor
         return saturation;
     }
 
-    public void setSaturation ( float saturation )
+    public void setSaturation ( final float saturation )
     {
         this.saturation = saturation;
     }
@@ -104,6 +109,7 @@ public class HSBColor
         return new Color ( Color.HSBtoRGB ( hue, saturation, brightness ) );
     }
 
+    @Override
     public String toString ()
     {
         return getClass ().getCanonicalName () + "[h=" + getHue () + ",s=" + getSaturation () +

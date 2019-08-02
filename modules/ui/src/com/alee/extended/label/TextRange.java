@@ -19,22 +19,22 @@ package com.alee.extended.label;
 
 /**
  * This class represents part of the multi-styled text with its own style.
- * Created for internal usage within WebStyledLabelUI to split the styled text into separate renderable pieces.
+ * Used within {@link AbstractStyledTextContent} to split styled text into simple renderable pieces.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 public class TextRange
 {
     /**
      * Text part.
      */
-    public String text;
+    public final String text;
 
     /**
      * Text part style.
      */
-    public StyleRange styleRange;
+    public final StyleRange styleRange;
 
     /**
      * Constructs new TextRange with empty style.

@@ -25,9 +25,17 @@ package com.alee.utils;
 public final class AnimationUtils
 {
     /**
+     * Private constructor to avoid instantiation.
+     */
+    private AnimationUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
      * Returns move animation speed depending on the animated object location.
      * Speed provided by this method will ensure smooth movement animation with spring effect.
-     * <p/>
+     * <p>
      * Specified location must be a floating point number in the inclusive range [0.0, 1.0].
      * 0.0 location = object is at the start of its path.
      * 1.0 location = object has reached the end of its path.

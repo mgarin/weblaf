@@ -17,25 +17,23 @@
 
 package com.alee.laf.panel;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PartialDecoration;
-import com.alee.laf.WebLookAndFeel;
+import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageContainerMethods;
-import com.alee.managers.language.LanguageManager;
-import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.language.*;
+import com.alee.managers.language.LanguageUpdater;
+import com.alee.managers.settings.Configuration;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.settings.UISettingsManager;
+import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.EventUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SizeUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.*;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,62 +43,27 @@ import java.awt.event.MouseAdapter;
 import java.util.List;
 
 /**
- * This JPanel extension class provides a direct access to WebPanelUI methods.
- * By default WebPanel uses BorderLayout instead of FlowLayout (unlike JPanel).
- * <p/>
+ * {@link JPanel} extension class.
+ * It contains various useful methods to simplify core component usage.
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JPanel
+ * @see WebPanelUI
+ * @see PanelPainter
  */
-
-public class WebPanel extends JPanel
-        implements Styleable, ShapeProvider, PartialDecoration, EventMethods, ToolTipMethods, SizeMethods<WebPanel>,
-        LanguageContainerMethods
+public class WebPanel extends JPanel implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
+        ContainerMethods<WebPanel>, EventMethods, LanguageEventMethods, ToolTipMethods, LanguageMethods, SettingsMethods,
+        FontMethods<WebPanel>, SizeMethods<WebPanel>
 {
     /**
      * Constructs new panel.
      */
     public WebPanel ()
     {
-        super ( new BorderLayout () );
-    }
-
-    /**
-     * Constructs new panel which is either decorated or undecorated.
-     *
-     * @param decorated whether panel should be decorated or not
-     */
-    public WebPanel ( final boolean decorated )
-    {
-        super ( new BorderLayout () );
-        setUndecorated ( !decorated );
-    }
-
-    /**
-     * Constructs new panel with the specified layout which is either decorated or undecorated.
-     *
-     * @param decorated whether panel should be decorated or not
-     * @param layout    panel layout
-     */
-    public WebPanel ( final boolean decorated, final LayoutManager layout )
-    {
-        super ( layout );
-        setUndecorated ( !decorated );
-    }
-
-    /**
-     * Constructs new panel which is either decorated or undecorated.
-     * Also the specified component is automatically added into panel's center area.
-     *
-     * @param decorated whether panel should be decorated or not
-     * @param component component to add into the panel
-     */
-    public WebPanel ( final boolean decorated, final Component component )
-    {
-        super ( new BorderLayout () );
-        setUndecorated ( !decorated );
-        add ( component, BorderLayout.CENTER );
+        this ( StyleId.auto );
     }
 
     /**
@@ -110,81 +73,7 @@ public class WebPanel extends JPanel
      */
     public WebPanel ( final Component component )
     {
-        super ( new BorderLayout () );
-        add ( component, BorderLayout.CENTER );
-    }
-
-    /**
-     * Constructs new panel with the specified painter.
-     *
-     * @param painter panel painter
-     */
-    public WebPanel ( final Painter painter )
-    {
-        super ( new BorderLayout () );
-        setPainter ( painter );
-    }
-
-    /**
-     * Constructs new panel with the specified layout and painter.
-     *
-     * @param layout  panel layout
-     * @param painter panel painter
-     */
-    public WebPanel ( final LayoutManager layout, final Painter painter )
-    {
-        super ( layout );
-        setPainter ( painter );
-    }
-
-    /**
-     * Constructs new panel with the specified painter.
-     * Also the specified component is automatically added into panel's center area.
-     *
-     * @param painter   panel painter
-     * @param component component to add into the panel
-     */
-    public WebPanel ( final Painter painter, final Component component )
-    {
-        super ( new BorderLayout () );
-        setPainter ( painter );
-        add ( component, BorderLayout.CENTER );
-    }
-
-    /**
-     * Constructs new panel with the specified layout and painter.
-     * Also the specified components are automatically added into panel's center area.
-     *
-     * @param layout     panel layout
-     * @param painter    panel painter
-     * @param components components to add into panel
-     */
-    public WebPanel ( final LayoutManager layout, final Painter painter, final Component... components )
-    {
-        super ( layout );
-        setPainter ( painter );
-        add ( components );
-    }
-
-    /**
-     * Constructs new panel with the specified layout.
-     *
-     * @param layout panel layout
-     */
-    public WebPanel ( final LayoutManager layout )
-    {
-        super ( layout );
-    }
-
-    /**
-     * Constructs new panel with the specified layout and double-buffered mark.
-     *
-     * @param layout           panel layout
-     * @param isDoubleBuffered whether panel should be double-buffered or not
-     */
-    public WebPanel ( final LayoutManager layout, final boolean isDoubleBuffered )
-    {
-        super ( layout, isDoubleBuffered );
+        this ( StyleId.auto, component );
     }
 
     /**
@@ -196,1358 +85,884 @@ public class WebPanel extends JPanel
      */
     public WebPanel ( final LayoutManager layout, final Component... components )
     {
+        this ( StyleId.auto, layout, components );
+    }
+
+    /**
+     * Constructs new panel with the specified style ID.
+     *
+     * @param id style ID
+     */
+    public WebPanel ( final StyleId id )
+    {
+        this ( id, new BorderLayout () );
+    }
+
+    /**
+     * Constructs new panel with the specified style ID.
+     *
+     * @param id        style ID
+     * @param component component to add into panel
+     */
+    public WebPanel ( final StyleId id, final Component component )
+    {
+        this ( id, new BorderLayout (), component );
+    }
+
+    /**
+     * Constructs new panel with the specified style ID.
+     *
+     * @param id         style ID
+     * @param layout     panel layout
+     * @param components components to add into panel
+     */
+    public WebPanel ( final StyleId id, final LayoutManager layout, final Component... components )
+    {
         super ( layout );
+        setStyleId ( id );
         add ( components );
     }
 
-    /**
-     * Constructs new panel with the specified style ID.
-     *
-     * @param styleId style ID
-     */
-    public WebPanel ( final String styleId )
+    @Override
+    public StyleId getDefaultStyleId ()
     {
-        super ( new BorderLayout () );
-        setStyleId ( styleId );
+        return StyleId.panel;
     }
 
-    /**
-     * Constructs new panel with the specified style ID.
-     *
-     * @param styleId style ID
-     * @param layout  panel layout
-     */
-    public WebPanel ( final String styleId, final LayoutManager layout )
+    @Override
+    public StyleId getStyleId ()
     {
-        super ( layout );
-        setStyleId ( styleId );
+        return StyleManager.getStyleId ( this );
     }
 
-    /**
-     * Constructs new panel with the specified style ID.
-     *
-     * @param styleId   style ID
-     * @param component component to add into panel
-     */
-    public WebPanel ( final String styleId, final Component component )
+    @Override
+    public StyleId setStyleId ( final StyleId id )
     {
-        super ( new BorderLayout () );
-        setStyleId ( styleId );
-        add ( component, BorderLayout.CENTER );
+        return StyleManager.setStyleId ( this, id );
     }
 
-    /**
-     * Returns whether the specified component belongs to this container or not.
-     *
-     * @param component component to process
-     * @return true if the specified component belongs to this container, false otherwise
-     */
-    public boolean contains ( final Component component )
+    @Override
+    public StyleId resetStyleId ()
     {
-        return component != null && component.getParent () == this;
+        return StyleManager.resetStyleId ( this );
     }
 
-    /**
-     * Adds all components from the list into the panel under the specified index.
-     *
-     * @param components components to add into panel
-     * @param index      index where components should be placed
-     * @return this panel
-     */
-    public WebPanel add ( final List<? extends Component> components, final int index )
+    @Override
+    public Skin getSkin ()
     {
-        if ( components != null )
-        {
-            int skipped = 0;
-            for ( int i = 0; i < components.size (); i++ )
-            {
-                final Component component = components.get ( i );
-                if ( component != null )
-                {
-                    add ( component, index + i - skipped );
-                }
-                else
-                {
-                    skipped++;
-                }
-            }
-        }
-        return this;
+        return StyleManager.getSkin ( this );
     }
 
-    /**
-     * Adds all components from the list into the panel under the specified constraints.
-     *
-     * @param components  components to add into panel
-     * @param constraints constraints for all components
-     * @return this panel
-     */
-    public WebPanel add ( final List<? extends Component> components, final String constraints )
+    @Override
+    public Skin setSkin ( final Skin skin )
     {
-        if ( components != null )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component, constraints );
-                }
-            }
-        }
-        return this;
+        return StyleManager.setSkin ( this, skin );
     }
 
-    /**
-     * Adds all components from the list into the panel.
-     *
-     * @param components components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final List<? extends Component> components )
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        if ( components != null )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component );
-                }
-            }
-        }
-        return this;
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
-    /**
-     * Adds all components into the panel under the specified index.
-     *
-     * @param index      index where components should be placed
-     * @param components components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final int index, final Component... components )
+    @Override
+    public Skin resetSkin ()
     {
-        if ( components != null && components.length > 0 )
-        {
-            int skipped = 0;
-            for ( int i = 0; i < components.length; i++ )
-            {
-                final Component component = components[ i ];
-                if ( component != null )
-                {
-                    add ( component, index + i - skipped );
-                }
-                else
-                {
-                    skipped++;
-                }
-            }
-        }
-        return this;
+        return StyleManager.resetSkin ( this );
     }
 
-    /**
-     * Adds all components into the panel under the specified constraints.
-     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
-     *
-     * @param constraints constraints for all components
-     * @param components  components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final String constraints, final Component... components )
+    @Override
+    public void addStyleListener ( final StyleListener listener )
     {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component, constraints );
-                }
-            }
-        }
-        return this;
+        StyleManager.addStyleListener ( this, listener );
     }
 
-    /**
-     * Adds all specified components into the panel.
-     * Useful for layouts like FlowLayout and some others.
-     *
-     * @param components components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final Component... components )
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
     {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component );
-                }
-            }
-        }
-        return this;
+        StyleManager.removeStyleListener ( this, listener );
     }
 
-    /**
-     * Removes all components from the list from the panel.
-     *
-     * @param components components to remove from panel
-     * @return this panel
-     */
-    public WebPanel remove ( final List<? extends Component> components )
+    @Override
+    public Painter getCustomPainter ()
     {
-        if ( components != null )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    remove ( component );
-                }
-            }
-        }
-        return this;
+        return StyleManager.getCustomPainter ( this );
     }
 
-    /**
-     * Removes all specified components from the panel.
-     *
-     * @param components components to remove from panel
-     * @return this panel
-     */
-    public WebPanel remove ( final Component... components )
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
     {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    remove ( component );
-                }
-            }
-        }
-        return this;
+        return StyleManager.setCustomPainter ( this, painter );
     }
 
-    /**
-     * Removes all children with the specified component class type.
-     *
-     * @param componentClass class type of child components to be removed
-     * @return this panel
-     */
-    public WebPanel removeAll ( final Class<? extends Component> componentClass )
+    @Override
+    public boolean resetCustomPainter ()
     {
-        if ( componentClass != null )
-        {
-            for ( int i = 0; i < getComponentCount (); i++ )
-            {
-                final Component component = getComponent ( i );
-                if ( componentClass.isAssignableFrom ( component.getClass () ) )
-                {
-                    remove ( component );
-                }
-            }
-        }
-        return this;
+        return StyleManager.resetCustomPainter ( this );
     }
 
-    /**
-     * Returns first component contained in this panel.
-     *
-     * @return first component contained in this panel
-     */
-    public Component getFirstComponent ()
+    @Override
+    public Shape getShape ()
     {
-        if ( getComponentCount () > 0 )
-        {
-            return getComponent ( 0 );
-        }
-        else
-        {
-            return null;
-        }
+        return ShapeMethodsImpl.getShape ( this );
     }
 
-    /**
-     * Returns last component contained in this panel.
-     *
-     * @return last component contained in this panel
-     */
-    public Component getLastComponent ()
+    @Override
+    public boolean isShapeDetectionEnabled ()
     {
-        if ( getComponentCount () > 0 )
-        {
-            return getComponent ( getComponentCount () - 1 );
-        }
-        else
-        {
-            return null;
-        }
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
     }
 
-    /**
-     * Returns whether panel is undecorated or not.
-     *
-     * @return true if panel is undecorated, false otherwise
-     */
-    public boolean isUndecorated ()
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        return getWebUI ().isUndecorated ();
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
-    /**
-     * Sets whether panel should be undecorated or not.
-     *
-     * @param undecorated whether panel should be undecorated or not
-     * @return this panel
-     */
-    public WebPanel setUndecorated ( final boolean undecorated )
-    {
-        getWebUI ().setUndecorated ( undecorated );
-        return this;
-    }
-
-    /**
-     * Returns whether focus should be painted or not.
-     * Panel focus is displayed when either panel or one of its children are focused.
-     *
-     * @return true if focus should be painted, false otherwise
-     */
-    public boolean isPaintFocus ()
-    {
-        return getWebUI ().isPaintFocus ();
-    }
-
-    /**
-     * Sets whether focus should be painted or not.
-     * Panel focus is displayed when either panel or one of its children are focused.
-     *
-     * @param paint whether focus should be painted or not
-     * @return this panel
-     */
-    public WebPanel setPaintFocus ( final boolean paint )
-    {
-        getWebUI ().setPaintFocus ( paint );
-        return this;
-    }
-
-    /**
-     * Returns panel margin.
-     *
-     * @return panel margin
-     */
+    @Override
     public Insets getMargin ()
     {
-        return getWebUI ().getMargin ();
+        return MarginMethodsImpl.getMargin ( this );
     }
 
-    /**
-     * Sets panel margin.
-     *
-     * @param margin new panel margin
-     */
+    @Override
+    public void setMargin ( final int margin )
+    {
+        MarginMethodsImpl.setMargin ( this, margin );
+    }
+
+    @Override
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
+    }
+
+    @Override
     public void setMargin ( final Insets margin )
     {
-        getWebUI ().setMargin ( margin );
+        MarginMethodsImpl.setMargin ( this, margin );
     }
 
-    /**
-     * Sets panel margin.
-     *
-     * @param top    top panel margin
-     * @param left   left panel margin
-     * @param bottom bottom panel margin
-     * @param right  right panel margin
-     * @return this panel
-     */
-    public WebPanel setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
-    }
-
-    /**
-     * Sets panel margin.
-     *
-     * @param spacing panel margin
-     * @return this panel
-     */
-    public WebPanel setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
-     * Returns whether should paint top side or not.
-     *
-     * @return true if should paint top side, false otherwise
-     */
-    public boolean isPaintTop ()
-    {
-        return getWebUI ().isPaintTop ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintTop ( final boolean top )
+    public Insets getPadding ()
     {
-        getWebUI ().setPaintTop ( top );
+        return PaddingMethodsImpl.getPadding ( this );
     }
 
-    /**
-     * Returns whether should paint left side or not.
-     *
-     * @return true if should paint left side, false otherwise
-     */
-    public boolean isPaintLeft ()
-    {
-        return getWebUI ().isPaintLeft ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintLeft ( final boolean left )
+    public void setPadding ( final int padding )
     {
-        getWebUI ().setPaintLeft ( left );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * Returns whether should paint bottom side or not.
-     *
-     * @return true if should paint bottom side, false otherwise
-     */
-    public boolean isPaintBottom ()
-    {
-        return getWebUI ().isPaintBottom ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintBottom ( final boolean bottom )
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        getWebUI ().setPaintBottom ( bottom );
+        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
     }
 
-    /**
-     * Returns whether should paint right side or not.
-     *
-     * @return true if should paint right side, false otherwise
-     */
-    public boolean isPaintRight ()
-    {
-        return getWebUI ().isPaintRight ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintRight ( final boolean right )
+    public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPaintRight ( right );
+        PaddingMethodsImpl.setPadding ( this, padding );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    public boolean contains ( final Component component )
     {
-        getWebUI ().setPaintSides ( top, left, bottom, right );
+        return ContainerMethodsImpl.contains ( this, component );
     }
 
-    /**
-     * Returns whether should paint top side line or not.
-     *
-     * @return true if should paint top side line, false otherwise
-     */
-    public boolean isPaintTopLine ()
-    {
-        return getWebUI ().isPaintTopLine ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintTopLine ( final boolean top )
+    public WebPanel add ( final List<? extends Component> components )
     {
-        getWebUI ().setPaintTopLine ( top );
+        return ContainerMethodsImpl.add ( this, components );
     }
 
-    /**
-     * Returns whether should paint left side line or not.
-     *
-     * @return true if should paint left side line, false otherwise
-     */
-    public boolean isPaintLeftLine ()
-    {
-        return getWebUI ().isPaintLeftLine ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintLeftLine ( final boolean left )
+    public WebPanel add ( final List<? extends Component> components, final int index )
     {
-        getWebUI ().setPaintLeftLine ( left );
+        return ContainerMethodsImpl.add ( this, components, index );
     }
 
-    /**
-     * Returns whether should paint bottom side line or not.
-     *
-     * @return true if should paint bottom side line, false otherwise
-     */
-    public boolean isPaintBottomLine ()
-    {
-        return getWebUI ().isPaintBottomLine ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintBottomLine ( final boolean bottom )
+    public WebPanel add ( final List<? extends Component> components, final Object constraints )
     {
-        getWebUI ().setPaintBottomLine ( bottom );
+        return ContainerMethodsImpl.add ( this, components, constraints );
     }
 
-    /**
-     * Returns whether should paint right side line or not.
-     *
-     * @return true if should paint right side line, false otherwise
-     */
-    public boolean isPaintRightLine ()
-    {
-        return getWebUI ().isPaintRightLine ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintRightLine ( final boolean right )
+    public WebPanel add ( final Component component1, final Component component2 )
     {
-        getWebUI ().setPaintRightLine ( right );
+        return ContainerMethodsImpl.add ( this, component1, component2 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    public WebPanel add ( final Component... components )
     {
-        getWebUI ().setPaintSideLines ( top, left, bottom, right );
+        return ContainerMethodsImpl.add ( this, components );
     }
 
-    /**
-     * Returns decoration corners rounding.
-     *
-     * @return decoration corners rounding
-     */
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    /**
-     * Sets decoration corners rounding.
-     *
-     * @param round decoration corners rounding
-     * @return this panel
-     */
-    public WebPanel setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-        return this;
-    }
-
-    /**
-     * Returns decoration shade width.
-     *
-     * @return decoration shade width
-     */
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    /**
-     * Sets decoration shade width.
-     *
-     * @param shadeWidth decoration shade width
-     * @return this panel
-     */
-    public WebPanel setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-        return this;
-    }
-
-    /**
-     * Returns decoration shade transparency.
-     *
-     * @return decoration shade transparency
-     */
-    public float getShadeTransparency ()
-    {
-        return getWebUI ().getShadeTransparency ();
-    }
-
-    /**
-     * Sets decoration shade transparency.
-     *
-     * @param transparency new decoration shade transparency
-     * @return this panel
-     */
-    public WebPanel setShadeTransparency ( final float transparency )
-    {
-        getWebUI ().setShadeTransparency ( transparency );
-        return this;
-    }
-
-    /**
-     * Returns decoration border stroke.
-     *
-     * @return decoration border stroke
-     */
-    public Stroke getBorderStroke ()
-    {
-        return getWebUI ().getBorderStroke ();
-    }
-
-    /**
-     * Sets decoration border stroke.
-     *
-     * @param stroke decoration border stroke
-     * @return this panel
-     */
-    public WebPanel setBorderStroke ( final Stroke stroke )
-    {
-        getWebUI ().setBorderStroke ( stroke );
-        return this;
-    }
-
-    /**
-     * Returns decoration border color.
-     *
-     * @return decoration border color
-     */
-    public Color getBorderColor ()
-    {
-        return getWebUI ().getBorderColor ();
-    }
-
-    /**
-     * Sets decoration border color.
-     *
-     * @param color decoration border color
-     * @return this panel
-     */
-    public WebPanel setBorderColor ( final Color color )
-    {
-        getWebUI ().setBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns decoration disabled border color.
-     *
-     * @return decoration disabled border color
-     */
-    public Color getDisabledBorderColor ()
-    {
-        return getWebUI ().getDisabledBorderColor ();
-    }
-
-    /**
-     * Sets decoration disabled border color.
-     *
-     * @param color decoration disabled border color
-     * @return this panel
-     */
-    public WebPanel setDisabledBorderColor ( final Color color )
-    {
-        getWebUI ().setDisabledBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns whether should paint decoration background or not.
-     *
-     * @return true if should paint decoration background, false otherwise
-     */
-    public boolean isPaintBackground ()
-    {
-        return getWebUI ().isPaintBackground ();
-    }
-
-    /**
-     * Sets whether should paint decoration background or not.
-     *
-     * @param paint whether should paint decoration background or not
-     * @return this panel
-     */
-    public WebPanel setPaintBackground ( final boolean paint )
-    {
-        getWebUI ().setPaintBackground ( paint );
-        return this;
-    }
-
-    /**
-     * Returns whether should paint web-styled background or not.
-     *
-     * @return true if should paint web-styled background, false otherwise
-     */
-    public boolean isWebColoredBackground ()
-    {
-        return getWebUI ().isWebColoredBackground ();
-    }
-
-    /**
-     * Sets whether should paint web-styled background or not.
-     *
-     * @param webColored whether should paint web-styled background or not
-     * @return this panel
-     */
-    public WebPanel setWebColoredBackground ( final boolean webColored )
-    {
-        getWebUI ().setWebColoredBackground ( webColored );
-        return this;
-    }
-
-    /**
-     * Returns panel painter.
-     *
-     * @return panel painter
-     */
-    public Painter getPainter ()
-    {
-        return StyleManager.getPainter ( this );
-    }
-
-    /**
-     * Sets panel painter.
-     * Pass null to remove panel painter.
-     *
-     * @param painter new panel painter
-     * @return this panel
-     */
-    public WebPanel setPainter ( final Painter painter )
-    {
-        StyleManager.setCustomPainter ( this, painter );
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public WebPanel remove ( final List<? extends Component> components )
     {
-        return getWebUI ().getStyleId ();
+        return ContainerMethodsImpl.remove ( this, components );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final String id )
+    public WebPanel remove ( final Component... components )
     {
-        getWebUI ().setStyleId ( id );
+        return ContainerMethodsImpl.remove ( this, components );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Shape provideShape ()
+    public WebPanel removeAll ( final Class<? extends Component> componentClass )
     {
-        return getWebUI ().provideShape ();
+        return ContainerMethodsImpl.removeAll ( this, componentClass );
     }
 
-    /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    public WebPanelUI getWebUI ()
-    {
-        return ( WebPanelUI ) getUI ();
-    }
-
-    /**
-     * Installs a Web-UI into this component.
-     */
     @Override
-    public void updateUI ()
+    public Component getFirstComponent ()
     {
-        if ( getUI () == null || !( getUI () instanceof WebPanelUI ) )
-        {
-            try
-            {
-                setUI ( ( WebPanelUI ) ReflectUtils.createInstance ( WebLookAndFeel.panelUI ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebPanelUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
+        return ContainerMethodsImpl.getFirstComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Component getLastComponent ()
+    {
+        return ContainerMethodsImpl.getLastComponent ( this );
+    }
+
+    @Override
+    public WebPanel equalizeComponentsWidth ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsWidth ( this );
+    }
+
+    @Override
+    public WebPanel equalizeComponentsHeight ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsHeight ( this );
+    }
+
+    @Override
+    public WebPanel equalizeComponentsSize ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsSize ( this );
+    }
+
+    @Override
+    public <T extends Component> WebPanel forEach ( final BiConsumer<Integer, T> consumer )
+    {
+        return ContainerMethodsImpl.forEach ( this, consumer );
+    }
+
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMousePress ( this, runnable );
+        return EventMethodsImpl.onMousePress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMousePress ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseEnter ( this, runnable );
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseExit ( this, runnable );
+        return EventMethodsImpl.onMouseExit ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseDrag ( this, runnable );
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseClick ( this, runnable );
+        return EventMethodsImpl.onMouseClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onDoubleClick ( this, runnable );
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMenuTrigger ( this, runnable );
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyType ( this, runnable );
+        return EventMethodsImpl.onKeyType ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyType ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyPress ( this, runnable );
+        return EventMethodsImpl.onKeyPress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyPress ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyRelease ( this, runnable );
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
-        return EventUtils.onFocusGain ( this, runnable );
+        return EventMethodsImpl.onFocusGain ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
-        return EventUtils.onFocusLoss ( this, runnable );
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
+
+    @Override
+    public void addLanguageListener ( final LanguageListener listener )
+    {
+        UILanguageManager.addLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListener ( final LanguageListener listener )
+    {
+        UILanguageManager.removeLanguageListener ( this, listener );
+    }
+
+    @Override
+    public void removeLanguageListeners ()
+    {
+        UILanguageManager.removeLanguageListeners ( this );
+    }
+
+    @Override
+    public void addDictionaryListener ( final DictionaryListener listener )
+    {
+        UILanguageManager.addDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListener ( final DictionaryListener listener )
+    {
+        UILanguageManager.removeDictionaryListener ( this, listener );
+    }
+
+    @Override
+    public void removeDictionaryListeners ()
+    {
+        UILanguageManager.removeDictionaryListeners ( this );
+    }
+
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTip ( final WebCustomTooltip tooltip )
     {
         TooltipManager.removeTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ()
     {
         TooltipManager.removeTooltips ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final WebCustomTooltip... tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public String getLanguage ()
+    {
+        return UILanguageManager.getComponentKey ( this );
+    }
+
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        UILanguageManager.registerComponent ( this, key, data );
+    }
+
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        UILanguageManager.updateComponent ( this, data );
+    }
+
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        UILanguageManager.updateComponent ( this, key, data );
+    }
+
+    @Override
+    public void removeLanguage ()
+    {
+        UILanguageManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return UILanguageManager.isRegisteredComponent ( this );
+    }
+
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        UILanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        UILanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    @Override
+    public void registerSettings ( final Configuration configuration )
+    {
+        UISettingsManager.registerComponent ( this, configuration );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor processor )
+    {
+        UISettingsManager.registerComponent ( this, processor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        UISettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        UISettingsManager.loadSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        UISettingsManager.saveSettings ( this );
+    }
+
+    @Override
+    public WebPanel setPlainFont ()
+    {
+        return FontMethodsImpl.setPlainFont ( this );
+    }
+
+    @Override
+    public WebPanel setPlainFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setPlainFont ( this, apply );
+    }
+
+    @Override
+    public boolean isPlainFont ()
+    {
+        return FontMethodsImpl.isPlainFont ( this );
+    }
+
+    @Override
+    public WebPanel setBoldFont ()
+    {
+        return FontMethodsImpl.setBoldFont ( this );
+    }
+
+    @Override
+    public WebPanel setBoldFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setBoldFont ( this, apply );
+    }
+
+    @Override
+    public boolean isBoldFont ()
+    {
+        return FontMethodsImpl.isBoldFont ( this );
+    }
+
+    @Override
+    public WebPanel setItalicFont ()
+    {
+        return FontMethodsImpl.setItalicFont ( this );
+    }
+
+    @Override
+    public WebPanel setItalicFont ( final boolean apply )
+    {
+        return FontMethodsImpl.setItalicFont ( this, apply );
+    }
+
+    @Override
+    public boolean isItalicFont ()
+    {
+        return FontMethodsImpl.isItalicFont ( this );
+    }
+
+    @Override
+    public WebPanel setFontStyle ( final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontStyle ( this, bold, italic );
+    }
+
+    @Override
+    public WebPanel setFontStyle ( final int style )
+    {
+        return FontMethodsImpl.setFontStyle ( this, style );
+    }
+
+    @Override
+    public WebPanel setFontSize ( final int fontSize )
+    {
+        return FontMethodsImpl.setFontSize ( this, fontSize );
+    }
+
+    @Override
+    public WebPanel changeFontSize ( final int change )
+    {
+        return FontMethodsImpl.changeFontSize ( this, change );
+    }
+
+    @Override
+    public int getFontSize ()
+    {
+        return FontMethodsImpl.getFontSize ( this );
+    }
+
+    @Override
+    public WebPanel setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, bold, italic );
+    }
+
+    @Override
+    public WebPanel setFontSizeAndStyle ( final int fontSize, final int style )
+    {
+        return FontMethodsImpl.setFontSizeAndStyle ( this, fontSize, style );
+    }
+
+    @Override
+    public WebPanel setFontName ( final String fontName )
+    {
+        return FontMethodsImpl.setFontName ( this, fontName );
+    }
+
+    @Override
+    public String getFontName ()
+    {
+        return FontMethodsImpl.getFontName ( this );
+    }
+
     @Override
     public int getPreferredWidth ()
     {
-        return SizeUtils.getPreferredWidth ( this );
+        return SizeMethodsImpl.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPanel setPreferredWidth ( final int preferredWidth )
     {
-        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
-        return SizeUtils.getPreferredHeight ( this );
+        return SizeMethodsImpl.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPanel setPreferredHeight ( final int preferredHeight )
     {
-        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
-        return SizeUtils.getMinimumWidth ( this );
+        return SizeMethodsImpl.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPanel setMinimumWidth ( final int minimumWidth )
     {
-        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
-        return SizeUtils.getMinimumHeight ( this );
+        return SizeMethodsImpl.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPanel setMinimumHeight ( final int minimumHeight )
     {
-        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
-        return SizeUtils.getMaximumWidth ( this );
+        return SizeMethodsImpl.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPanel setMaximumWidth ( final int maximumWidth )
     {
-        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
-        return SizeUtils.getMaximumHeight ( this );
+        return SizeMethodsImpl.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPanel setMaximumHeight ( final int maximumHeight )
     {
-        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
-        Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
-
-        // Fix to take painter preferres size into account
-        final Painter painter = getPainter ();
-        if ( painter != null )
-        {
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( this ) );
-        }
-
-        return ps;
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
     @Override
     public WebPanel setPreferredSize ( final int width, final int height )
     {
-        return SizeUtils.setPreferredSize ( this, width, height );
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the look and feel (LaF) object that renders this component.
+     *
+     * @return the {@link WPanelUI} object that renders this component
      */
     @Override
-    public void setLanguageContainerKey ( final String key )
+    public WPanelUI getUI ()
     {
-        LanguageManager.registerLanguageContainer ( this, key );
+        return ( WPanelUI ) ui;
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the LaF object that renders this component.
+     *
+     * @param ui {@link WPanelUI}
      */
-    @Override
-    public void removeLanguageContainerKey ()
+    public void setUI ( final WPanelUI ui )
     {
-        LanguageManager.unregisterLanguageContainer ( this );
+        super.setUI ( ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getLanguageContainerKey ()
+    public void updateUI ()
     {
-        return LanguageManager.getLanguageContainerKey ( this );
+        StyleManager.getDescriptor ( this ).updateUI ( this );
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

@@ -17,8 +17,8 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.laf.rootpane.WebDialog;
-import com.alee.utils.SwingUtils;
+import com.alee.laf.window.WebDialog;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
@@ -30,7 +30,6 @@ import java.awt.event.WindowEvent;
 /**
  * @author Mikle Garin
  */
-
 public class WebColorChooserDialog extends WebDialog implements DialogOptions
 {
     public static final ImageIcon COLOR_CHOOSER_ICON =
@@ -75,7 +74,7 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
 
     public WebColorChooserDialog ( final WebColorChooser webColorChooser, final Component parent, final String title )
     {
-        super ( SwingUtils.getWindowAncestor ( parent ), title != null ? title : "weblaf.colorchooser.title" );
+        super ( CoreSwingUtils.getWindowAncestor ( parent ), title != null ? title : "weblaf.colorchooser.title" );
         setIconImage ( COLOR_CHOOSER_ICON.getImage () );
         setLayout ( new BorderLayout ( 0, 0 ) );
 

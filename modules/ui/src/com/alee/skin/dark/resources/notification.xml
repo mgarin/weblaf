@@ -1,0 +1,47 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.managers.notification.WebNotification -->
+
+    <!-- Notification -->
+    <style type="popup" id="notification" padding="15,20,15,20">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="4" />
+                    <WebShadow type="outer" opacity="0.6" width="32" />
+                    <LineBorder color="20,20,20" />
+                    <GradientBackground>
+                        <color>111,115,117</color>
+                        <color>77,81,83</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="unix">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Option button -->
+        <style type="button" id="option" padding="2,12,2,12" />
+
+    </style>
+
+    <!-- Inner notification -->
+    <style type="panel" id="notification" extends="innerpopup" padding="15,20,15,20">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="4" />
+                    <WebShadow type="outer" opacity="0.6" width="32" />
+                    <LineBorder color="20,20,20" />
+                    <GradientBackground>
+                        <color>111,115,117</color>
+                        <color>77,81,83</color>
+                    </GradientBackground>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

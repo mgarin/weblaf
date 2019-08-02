@@ -35,9 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 07.07.2010 Time: 17:21:44
+ * @author Mikle Garin
  */
-
 public class PaletteColorChooser extends WebPanel
 {
     public static final ImageIcon LOOP_ICON = new ImageIcon ( PaletteColorChooser.class.getResource ( "icons/loop.png" ) );
@@ -71,14 +70,14 @@ public class PaletteColorChooser extends WebPanel
         colorChooser = new JComponent ()
         {
             @Override
-            protected void paintComponent ( Graphics g )
+            protected void paintComponent ( final Graphics g )
             {
                 super.paintComponent ( g );
 
-                Graphics2D g2d = ( Graphics2D ) g;
+                final Graphics2D g2d = ( Graphics2D ) g;
 
-                Shape old = g2d.getClip ();
-                Area clip = new Area ( new Rectangle2D.Double ( 2, 2, getWidth () - 4, getHeight () - 4 ) );
+                final Shape old = g2d.getClip ();
+                final Area clip = new Area ( new Rectangle2D.Double ( 2, 2, getWidth () - 4, getHeight () - 4 ) );
                 clip.intersect ( new Area ( old ) );
                 g2d.setClip ( clip );
 
@@ -96,7 +95,7 @@ public class PaletteColorChooser extends WebPanel
         //                        new Color ( 160, 160, 160 ), new Color ( 178, 178, 178 ) ) );
         colorChooser.setPreferredSize ( new Dimension ( 260, 260 ) );
 
-        ColorChooserMouseAdapter adapter = new ColorChooserMouseAdapter ();
+        final ColorChooserMouseAdapter adapter = new ColorChooserMouseAdapter ();
         colorChooser.addMouseListener ( adapter );
         colorChooser.addMouseMotionListener ( adapter );
 
@@ -110,7 +109,7 @@ public class PaletteColorChooser extends WebPanel
 
     private void repaintImage ()
     {
-        Graphics2D g2d = image.createGraphics ();
+        final Graphics2D g2d = image.createGraphics ();
         g2d.setPaint ( paletteColorChooserPaint );
         g2d.fillRect ( 0, 0, 256, 256 );
         g2d.dispose ();
@@ -121,7 +120,7 @@ public class PaletteColorChooser extends WebPanel
         private boolean dragging = false;
 
         @Override
-        public void mousePressed ( MouseEvent e )
+        public void mousePressed ( final MouseEvent e )
         {
             dragging = true;
             adjusting = true;
@@ -129,13 +128,13 @@ public class PaletteColorChooser extends WebPanel
         }
 
         @Override
-        public void mouseDragged ( MouseEvent e )
+        public void mouseDragged ( final MouseEvent e )
         {
             updateCoordinate ( e.getPoint () );
         }
 
         @Override
-        public void mouseReleased ( MouseEvent e )
+        public void mouseReleased ( final MouseEvent e )
         {
             dragging = false;
             adjusting = false;
@@ -145,7 +144,7 @@ public class PaletteColorChooser extends WebPanel
             }
         }
 
-        private void updateCoordinate ( Point point )
+        private void updateCoordinate ( final Point point )
         {
             coordinate = point;
             if ( coordinate.x < 2 )
@@ -168,13 +167,13 @@ public class PaletteColorChooser extends WebPanel
         }
 
         @Override
-        public void mouseEntered ( MouseEvent e )
+        public void mouseEntered ( final MouseEvent e )
         {
             setCursor ( createLoopCursor () );
         }
 
         @Override
-        public void mouseExited ( MouseEvent e )
+        public void mouseExited ( final MouseEvent e )
         {
             if ( !dragging )
             {
@@ -185,11 +184,12 @@ public class PaletteColorChooser extends WebPanel
 
     private Cursor createLoopCursor ()
     {
-        Dimension dimension = Toolkit.getDefaultToolkit ().getBestCursorSize ( 14, 14 );
+        final Dimension dimension = Toolkit.getDefaultToolkit ().getBestCursorSize ( 14, 14 );
 
-        BufferedImage bufferedImage = ImageUtils.createCompatibleImage ( dimension.width, dimension.height, Transparency.TRANSLUCENT );
+        final BufferedImage bufferedImage =
+                ImageUtils.createCompatibleImage ( dimension.width, dimension.height, Transparency.TRANSLUCENT );
 
-        Graphics2D g2d = bufferedImage.createGraphics ();
+        final Graphics2D g2d = bufferedImage.createGraphics ();
         g2d.drawImage ( LOOP_ICON.getImage (), 0, 0, LOOP_ICON.getImageObserver () );
         g2d.dispose ();
 
@@ -201,7 +201,7 @@ public class PaletteColorChooser extends WebPanel
         return sideColor;
     }
 
-    public void setSideColor ( Color sideColor )
+    public void setSideColor ( final Color sideColor )
     {
         adjusting = true;
 
@@ -224,7 +224,7 @@ public class PaletteColorChooser extends WebPanel
         return color;
     }
 
-    public void setColor ( Color color )
+    public void setColor ( final Color color )
     {
         this.color = color;
 
@@ -246,7 +246,7 @@ public class PaletteColorChooser extends WebPanel
         return webOnlyColors;
     }
 
-    public void setWebOnlyColors ( boolean webOnlyColors )
+    public void setWebOnlyColors ( final boolean webOnlyColors )
     {
         this.webOnlyColors = webOnlyColors;
         paletteColorChooserPaint.setWebSafe ( webOnlyColors );
@@ -257,25 +257,25 @@ public class PaletteColorChooser extends WebPanel
 
     private void updateSelectionByColor ()
     {
-        HSBColor hsbColor = new HSBColor ( color );
+        final HSBColor hsbColor = new HSBColor ( color );
         coordinate.x = 2 + Math.round ( 256 * hsbColor.getSaturation () );
         coordinate.y = 2 + Math.round ( 256 - 256 * hsbColor.getBrightness () );
     }
 
-    public void addChangeListener ( ChangeListener listener )
+    public void addChangeListener ( final ChangeListener listener )
     {
         changeListeners.add ( listener );
     }
 
-    public void removeChangeListener ( ChangeListener listener )
+    public void removeChangeListener ( final ChangeListener listener )
     {
         changeListeners.remove ( listener );
     }
 
     private void firePropertyChanged ()
     {
-        ChangeEvent changeEvent = new ChangeEvent ( PaletteColorChooser.this );
-        for ( ChangeListener changeListener : CollectionUtils.copy ( changeListeners ) )
+        final ChangeEvent changeEvent = new ChangeEvent ( PaletteColorChooser.this );
+        for ( final ChangeListener changeListener : CollectionUtils.copy ( changeListeners ) )
         {
             changeListener.stateChanged ( changeEvent );
         }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="java.awt"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.lang="java.lang"
+           elementFormDefault="qualified">
+
+    <!-- java.awt.Color -->
+    <xs:simpleType name="Color">
+        <xs:union>
+
+            <!-- Pattern-based colors -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+
+                    <!-- Hex color -->
+                    <xs:pattern value="^#[0-9a-f]{3}([0-9a-f]{3})?$" />
+
+                    <!-- RGB color -->
+                    <!-- todo Proper RGB values check -->
+                    <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+$" />
+
+                    <!-- RGBA color -->
+                    <!-- todo Proper RGB values check -->
+                    <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+,[0-9]+$" />
+
+                </xs:restriction>
+            </xs:simpleType>
+
+            <!-- Preset colors -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+
+                    <!-- Special "null" colors -->
+                    <xs:enumeration value="null" />
+                    <xs:enumeration value="none" />
+
+                    <!-- Fully transparent color -->
+                    <xs:enumeration value="transparent" />
+
+                    <!-- Standard Swing colors-->
+                    <xs:enumeration value="black" />
+                    <xs:enumeration value="white" />
+                    <xs:enumeration value="red" />
+                    <xs:enumeration value="green" />
+                    <xs:enumeration value="blue" />
+                    <xs:enumeration value="lightGray" />
+                    <xs:enumeration value="gray" />
+                    <xs:enumeration value="darkGray" />
+                    <xs:enumeration value="pink" />
+                    <xs:enumeration value="orange" />
+                    <xs:enumeration value="yellow" />
+                    <xs:enumeration value="magenta" />
+                    <xs:enumeration value="cyan" />
+
+                </xs:restriction>
+            </xs:simpleType>
+
+        </xs:union>
+    </xs:simpleType>
+
+    <!-- java.awt.Dimension -->
+    <xs:simpleType name="Dimension">
+        <xs:restriction base="xs:string">
+
+            <!-- Integer width and height values -->
+            <xs:pattern value="^[0-9]+,[0-9]+$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.Insets -->
+    <xs:simpleType name="Insets">
+        <xs:restriction base="xs:string">
+
+            <!-- Simple insets -->
+            <xs:pattern value="^[0-9]+$" />
+
+            <!-- Full insets -->
+            <xs:pattern value="^[0-9]+,[0-9]+,[0-9]+,[0-9]+$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.geom.Point2D -->
+    <xs:simpleType name="Point2D">
+        <xs:restriction base="xs:string">
+
+            <!-- Float X,Y values -->
+            <xs:pattern value="^[+-]?([0-9]*[.])?[0-9]+,[+-]?([0-9]*[.])?[0-9]+$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.Stroke -->
+    <xs:simpleType name="Stroke">
+        <xs:restriction base="xs:string">
+
+            <!-- todo Proper Stroke value check -->
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- java.awt.LayoutManager -->
+    <xs:complexType name="LayoutManager">
+
+        <!-- Any custom layout settings -->
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:any processContents="skip" />
+        </xs:choice>
+
+        <!-- Layout implementation class -->
+        <xs:attribute name="class" type="java.lang:Class" />
+
+        <!-- Any custom attribute -->
+        <xs:anyAttribute />
+
+    </xs:complexType>
+
+</xs:schema>

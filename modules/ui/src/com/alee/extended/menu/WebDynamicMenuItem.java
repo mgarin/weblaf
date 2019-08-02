@@ -34,7 +34,6 @@ import java.awt.geom.Ellipse2D;
  *
  * @author Mikle Garin
  */
-
 public class WebDynamicMenuItem extends JComponent
 {
     /**
@@ -128,10 +127,7 @@ public class WebDynamicMenuItem extends JComponent
         setOpaque ( false );
         setBackground ( new Color ( 0, 0, 0, 200 ) );
         setForeground ( Color.WHITE );
-
         setFont ( SwingUtils.getDefaultLabelFont () );
-        SwingUtils.setBoldFont ( this );
-        SwingUtils.changeFontSize ( this, 2 );
 
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
@@ -285,7 +281,7 @@ public class WebDynamicMenuItem extends JComponent
                 final Ellipse2D.Double inner = new Ellipse2D.Double ( 2, 2, h - 4, h - 4 );
                 outer.exclusiveOr ( new Area ( inner ) );
 
-                g2d.setColor ( isEnabled () ? getBorderColor () : getDisabledBorderColor () );
+                g2d.setPaint ( isEnabled () ? getBorderColor () : getDisabledBorderColor () );
                 g2d.fill ( outer );
 
                 g2d.setPaint ( isEnabled () ? getBorderBackground () : getDisabledBorderBackground () );
@@ -305,7 +301,7 @@ public class WebDynamicMenuItem extends JComponent
             final FontMetrics fm = g2d.getFontMetrics ();
             final int tw = fm.stringWidth ( text );
             final int th = fm.getHeight ();
-            final int ts = LafUtils.getTextCenterShearY ( fm );
+            final int ts = LafUtils.getTextCenterShiftY ( fm );
 
             // Calculating full text rectangle
             final int tx = margin.left + iw + iconTextGap;

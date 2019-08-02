@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractTextContent.xsd" />
+
+    <!-- com.alee.laf.tooltip.ToolTipText -->
+    <xs:complexType name="ToolTipText">
+        <xs:complexContent>
+            <xs:extension base="AbstractTextContent">
+
+                <!-- No extra settings -->
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

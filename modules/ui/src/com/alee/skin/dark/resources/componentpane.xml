@@ -1,0 +1,15 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.panel.WebComponentPane -->
+
+    <!-- Container panel -->
+    <style type="panel" id="componentpane">
+
+        <!-- Single panel -->
+        <style type="panel" id="panel">
+            <painter class="SelectablePanelPainter" />
+        </style>
+
+    </style>
+
+</skin>

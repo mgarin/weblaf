@@ -1,0 +1,145 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.desktoppane.WebInternalFrame -->
+
+    <!-- Internal frame -->
+    <style type="internalframe">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="4" />
+                    <WebShadow type="outer" opacity="0.35" width="10" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="focused">
+                    <WebShadow type="outer" opacity="0.7" />
+                </decoration>
+                <decoration states="maximized">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                    <LineBorder opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Title panel -->
+        <style type="panel" id="title" extends="transparent" padding="0,5,0,0">
+
+            <!-- Title icon -->
+            <style type="image" id="icon" />
+
+            <!-- Title label -->
+            <style type="label" id="title" extends="shadow" padding="0,5,0,10">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <maximumWidth>100</maximumWidth>
+                </component>
+            </style>
+
+            <!-- Buttons panel -->
+            <style type="panel" id="buttons" extends="grouppane">
+
+                <!-- Decoration control buttons -->
+                <style type="button" id="control" padding="3,5,3,5">
+                    <component>
+                        <focusable>false</focusable>
+                    </component>
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" />
+                                <WebShadow type="outer" width="5" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+                <style type="button" id="minimize" extends="control" />
+                <style type="button" id="maximize" extends="control" />
+                <style type="button" id="close" extends="control" />
+
+            </style>
+
+        </style>
+
+        <!-- Root pane -->
+        <style type="rootpane" id="rootpane">
+            <component>
+                <opaque>false</opaque>
+            </component>
+
+            <!-- Content pane -->
+            <style type="panel" id="content" extends="transparent" />
+
+        </style>
+
+    </style>
+
+    <!-- Desktop icon -->
+    <style type="desktopicon">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="4" />
+                    <WebShadow type="outer" opacity="0.45" width="10" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="focused">
+                    <WebShadow type="outer" opacity="0.7" />
+                </decoration>
+                <decoration states="maximized">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Title panel -->
+        <style type="panel" id="title" extends="transparent" padding="0,5,0,0">
+
+            <!-- Title icon -->
+            <style type="image" id="icon" />
+
+            <!-- Title label -->
+            <style type="label" id="title" extends="shadow" padding="0,5,0,10">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <maximumWidth>100</maximumWidth>
+                </component>
+            </style>
+
+            <!-- Buttons panel -->
+            <style type="panel" id="buttons" extends="grouppane">
+
+                <!-- Decoration control buttons -->
+                <style type="button" id="control" padding="3,5,3,5">
+                    <component>
+                        <focusable>false</focusable>
+                    </component>
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" />
+                                <WebShadow type="outer" width="5" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+                <style type="button" id="minimize" extends="control" />
+                <style type="button" id="maximize" extends="control" />
+                <style type="button" id="close" extends="control" />
+
+            </style>
+
+        </style>
+
+    </style>
+
+</skin>

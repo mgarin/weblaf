@@ -1,0 +1,30 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.list.WebCheckBoxList -->
+
+    <!-- Checkbox list -->
+    <style type="list" id="checkboxlist">
+
+        <!-- Default cell renderer checkbox -->
+        <style type="checkbox" id="renderer" padding="4,4,4,6" />
+
+        <!-- Default cell editor checkbox -->
+        <style type="textfield" id="editor" extends="nofocus" />
+
+    </style>
+
+    <!-- Non-opaque checkbox list -->
+    <style type="list" id="checkboxlist-non-opaque" extends="checkboxlist">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Transparent checkbox list -->
+    <style type="list" id="checkboxlist-transparent" extends="checkboxlist-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+</skin>

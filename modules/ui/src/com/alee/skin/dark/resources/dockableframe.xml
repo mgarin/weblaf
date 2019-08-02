@@ -1,0 +1,157 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.dock.WebDockableFrame -->
+
+    <!-- Dockable frame -->
+    <style type="dockableframe">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="floating">
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Dockable frame title panel -->
+        <style type="panel" id="title" padding="0,0,0,2">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,1,0" />
+                        <LineBorder color="20,20,20" />
+                        <GradientBackground>
+                            <color>87,91,93</color>
+                            <color>77,81,83</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="in-focused-parent">
+                        <LineBorder color="black" />
+                        <GradientBackground>
+                            <color>111,115,117</color>
+                            <color>77,81,83</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Dockable frame title label -->
+            <style type="styledlabel" id="title" padding="3,3,3,5">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <LabelLayout>
+                                <StyledLabelText shadow="true" shadowColor="black" />
+                            </LabelLayout>
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Dockable frame tool buttons panel -->
+            <style type="panel" id="buttons">
+                <component>
+                    <opaque>false</opaque>
+                </component>
+
+                <!-- Separator -->
+                <style type="separator" id="tool">
+                    <component>
+                        <orientation>1</orientation>
+                    </component>
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <SeparatorStripes padding="0,2,0,2">
+                                    <Stripe>
+                                        <color fraction="0.0">10,10,10,5</color>
+                                        <color fraction="0.5">10,10,10</color>
+                                        <color fraction="1.0">10,10,10,5</color>
+                                    </Stripe>
+                                    <Stripe>
+                                        <color fraction="0.0">68,72,74,5</color>
+                                        <color fraction="0.5">68,72,74</color>
+                                        <color fraction="1.0">68,72,74,5</color>
+                                    </Stripe>
+                                </SeparatorStripes>
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+
+                <!-- Dockable frame tool button -->
+                <style type="button" id="tool" extends="undecorated" padding="3,1,3,3">
+                    <component>
+                        <focusable>false</focusable>
+                    </component>
+                </style>
+                <style type="button" id="tool-icon" extends="tool" padding="3,1,3,1" />
+
+            </style>
+
+        </style>
+
+        <!-- Sidebar button -->
+        <style type="togglebutton" id="sidebar" extends="hover" padding="2">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <WebShape round="0" />
+                        <WebShadow type="outer" width="2" />
+                        <LineBorder color="20,20,20" />
+                        <GradientBackground>
+                            <color>111,115,117</color>
+                            <color>77,81,83</color>
+                        </GradientBackground>
+                        <IconTextLayout gap="3">
+                            <ButtonIcon constraints="icon" />
+                            <ButtonText constraints="text" color="245,245,245" shadow="true" shadowColor="black" />
+                        </IconTextLayout>
+                    </decoration>
+                    <decoration states="west">
+                        <GradientBackground from="0,0" to="1,0" />
+                        <IconTextLayout hpos="center" vpos="top">
+                            <ButtonText rotation="counterClockwise" />
+                        </IconTextLayout>
+                    </decoration>
+                    <decoration states="east">
+                        <GradientBackground from="1,0" to="0,0" />
+                        <IconTextLayout hpos="center" vpos="bottom">
+                            <ButtonText rotation="clockwise" />
+                        </IconTextLayout>
+                    </decoration>
+                    <decoration states="selected">
+                        <WebShadow type="outer" opacity="0" />
+                        <WebShadow type="inner" width="6" />
+                        <ColorBackground color="77,81,83" />
+                    </decoration>
+                    <decoration states="pressed">
+                        <WebShadow type="outer" opacity="0" />
+                        <WebShadow type="inner" width="6" />
+                        <ColorBackground color="57,61,63" />
+                    </decoration>
+                    <decoration states="disabled">
+                        <WebShadow type="outer" opacity="0" />
+                        <LineBorder color="68,72,74" />
+                        <IconTextLayout>
+                            <ButtonText color="180,180,180" />
+                        </IconTextLayout>
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

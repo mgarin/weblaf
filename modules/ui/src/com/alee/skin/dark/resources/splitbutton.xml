@@ -1,0 +1,114 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.button.WebSplitButton -->
+
+    <!-- Split button -->
+    <style type="splitbutton" padding="2,4,2,0">
+        <painter>
+            <splitLineColor>20,20,20</splitLineColor>
+            <splitLineDisabledColor>68,72,74</splitLineDisabledColor>
+            <menuIconGap>4</menuIconGap>
+            <contentGap>6</contentGap>
+            <decorations>
+                <decoration>
+                    <WebShape round="3" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <GradientBackground>
+                        <color>111,115,117</color>
+                        <color>77,81,83</color>
+                    </GradientBackground>
+                    <ButtonLayout>
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="245,245,245" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+                <decoration states="pressed">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="57,61,63" />
+                </decoration>
+                <decoration states="popup-visible">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="57,61,63" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
+                    <ButtonLayout>
+                        <ButtonText color="180,180,180" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Split button supporting styled text -->
+    <style type="splitbutton" id="styled">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ButtonLayout>
+                        <StyledButtonText constraints="text" color="245,245,245" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <ButtonLayout>
+                        <StyledButtonText color="180,180,180" ignoreStyleColors="true" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Icon-only split button -->
+    <style type="splitbutton" id="icon" padding="2">
+        <painter>
+            <menuIconGap>2</menuIconGap>
+            <contentGap>2</contentGap>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Hover-decorated-only split button -->
+    <style type="splitbutton" id="hover">
+        <painter>
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="enabled,popup-visible" opacity="1" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Icon-only and hover-decorated-only split button -->
+    <style type="splitbutton" id="icon-hover" extends="icon">
+        <painter>
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="enabled,popup-visible" opacity="1" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Undecorated split button -->
+    <style type="splitbutton" id="undecorated" padding="0">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

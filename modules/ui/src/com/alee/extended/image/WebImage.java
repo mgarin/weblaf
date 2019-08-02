@@ -17,51 +17,57 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.extended.WebComponent;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.data.TooltipWay;
-import com.alee.managers.tooltip.ToolTipMethods;
-import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.EventUtils;
-import com.alee.utils.GraphicsUtils;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseAdapter;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.image.RenderedImage;
 import java.net.URL;
-import java.util.List;
 
 /**
  * This component allows you to display images in many different ways.
  * This component uses less resources than a label and has a few optimization.
  *
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see ImageDescriptor
+ * @see WImageUI
+ * @see WebImageUI
+ * @see IImagePainter
+ * @see ImagePainter
+ * @see WebComponent
  */
-
-public class WebImage extends JComponent implements EventMethods, ToolTipMethods, SwingConstants
+public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingConstants
 {
     /**
-     * Image source.
+     * todo 1. Properly handle passed icons so they are not always saved to static raster image since that causes issues with SvgIcon
+     * todo    Probably make a custom shell for the passed image that has all APIs necessary for displaying image?
+     */
+
+    /**
+     * Component properties.
+     */
+    public static final String IMAGE_PROPERTY = "image";
+    public static final String DISPLAY_TYPE_PROPERTY = "displayType";
+    public static final String HORIZONTAL_ALIGNMENT_PROPERTY = WebLookAndFeel.HORIZONTAL_ALIGNMENT_PROPERTY;
+    public static final String VERTICAL_ALIGNMENT_PROPERTY = WebLookAndFeel.VERTICAL_ALIGNMENT_PROPERTY;
+    public static final String OPACITY_PROPERTY = WebLookAndFeel.OPACITY_PROPERTY;
+
+    /**
+     * Displayed image.
      */
     private BufferedImage image;
 
     /**
-     * Cached disabled image version.
-     */
-    private BufferedImage disabledImage;
-
-    /**
-     * How image should be displayed.
+     * Determines how exactly image should be displayed within component bounds.
      */
     private DisplayType displayType;
 
@@ -78,34 +84,16 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     private int verticalAlignment;
 
     /**
-     * Image transparency.
+     * Image opacity.
      */
-    private float transparency;
-
-    /**
-     * Image margins.
-     */
-    private Insets margin;
-
-    /**
-     * Last cached image size.
-     * This is used to determine when image component was resized since last paint call.
-     */
-    private Dimension lastDimention = null;
-
-    /**
-     * Last cached image preview.
-     * This variable is used when actual painted image is smaller than source image.
-     * In that case source image is getting scaled and saved into this variable.
-     */
-    private BufferedImage lastPreviewImage = null;
+    private float opacity;
 
     /**
      * Constructs an empty image component.
      */
     public WebImage ()
     {
-        this ( ( Image ) null );
+        this ( StyleId.auto );
     }
 
     /**
@@ -115,7 +103,7 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage ( final String src )
     {
-        this ( ImageUtils.loadImage ( src ) );
+        this ( StyleId.auto, src );
     }
 
     /**
@@ -126,134 +114,192 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage ( final Class nearClass, final String src )
     {
-        this ( ImageUtils.loadImage ( nearClass, src ) );
+        this ( StyleId.auto, nearClass, src );
     }
 
     /**
-     * Constructs component with an image loaded from the specified url.
+     * Constructs component with an image loaded from the specified {@link URL}.
      *
-     * @param url image url
+     * @param url image {@link URL}
      */
     public WebImage ( final URL url )
     {
-        this ( ImageUtils.loadImage ( url ) );
+        this ( StyleId.auto, url );
     }
 
     /**
-     * Constructs component with an image retrieved from the specified icon.
+     * Constructs component with an image retrieved from the specified {@link Icon}.
      *
-     * @param icon icon to process
+     * @param icon {@link Icon} to display
      */
     public WebImage ( final Icon icon )
     {
-        this ( ImageUtils.getBufferedImage ( icon ) );
+        this ( StyleId.auto, icon );
     }
 
     /**
-     * Constructs component with an image retrieved from the specified image icon.
+     * Constructs component with an image retrieved from the specified {@link ImageIcon}.
      *
-     * @param icon image icon to process
+     * @param icon {@link ImageIcon} to display
      */
     public WebImage ( final ImageIcon icon )
     {
-        this ( icon.getImage () );
+        this ( StyleId.auto, icon );
     }
 
     /**
-     * Constructs component with a specified image.
+     * Constructs component with a specified {@link Image}.
      *
-     * @param image image
+     * @param image {@link Image} to display
      */
     public WebImage ( final Image image )
     {
-        this ( ImageUtils.getBufferedImage ( image ) );
+        this ( StyleId.auto, image );
     }
 
     /**
-     * Constructs component with a specified image.
+     * Constructs component with a specified {@link RenderedImage}.
      *
-     * @param image image
+     * @param image {@link RenderedImage} to display
+     */
+    public WebImage ( final RenderedImage image )
+    {
+        this ( StyleId.auto, image );
+    }
+
+    /**
+     * Constructs component with a specified {@link BufferedImage}.
+     *
+     * @param image {@link BufferedImage} to display
      */
     public WebImage ( final BufferedImage image )
     {
+        this ( StyleId.auto, image );
+    }
+
+    /**
+     * Constructs an empty image component.
+     *
+     * @param id style ID
+     */
+    public WebImage ( final StyleId id )
+    {
+        this ( id, ( Image ) null );
+    }
+
+    /**
+     * Constructs component with an image loaded from the specified path.
+     *
+     * @param id  style ID
+     * @param src path to image
+     */
+    public WebImage ( final StyleId id, final String src )
+    {
+        this ( id, ImageUtils.loadImage ( src ) );
+    }
+
+    /**
+     * Constructs component with an image loaded from package near specified class.
+     *
+     * @param id        style ID
+     * @param nearClass class near which image is located
+     * @param src       image file location
+     */
+    public WebImage ( final StyleId id, final Class nearClass, final String src )
+    {
+        this ( id, ImageUtils.loadImage ( nearClass, src ) );
+    }
+
+    /**
+     * Constructs component with an image loaded from the specified {@link URL}.
+     *
+     * @param id  style ID
+     * @param url image {@link URL}
+     */
+    public WebImage ( final StyleId id, final URL url )
+    {
+        this ( id, ImageUtils.loadImage ( url ) );
+    }
+
+    /**
+     * Constructs component with an image retrieved from the specified {@link Icon}.
+     *
+     * @param id   style ID
+     * @param icon {@link Icon} to display
+     */
+    public WebImage ( final StyleId id, final Icon icon )
+    {
+        this ( id, ImageUtils.getBufferedImage ( icon ) );
+    }
+
+    /**
+     * Constructs component with an image retrieved from the specified {@link ImageIcon}.
+     *
+     * @param id   style ID
+     * @param icon {@link ImageIcon} to display
+     */
+    public WebImage ( final StyleId id, final ImageIcon icon )
+    {
+        this ( id, icon.getImage () );
+    }
+
+    /**
+     * Constructs component with a specified {@link Image}.
+     *
+     * @param id    style ID
+     * @param image {@link Image} to display
+     */
+    public WebImage ( final StyleId id, final Image image )
+    {
+        this ( id, ImageUtils.getBufferedImage ( image ) );
+    }
+
+    /**
+     * Constructs component with a specified {@link RenderedImage}.
+     *
+     * @param id    style ID
+     * @param image {@link RenderedImage} to display
+     */
+    public WebImage ( final StyleId id, final RenderedImage image )
+    {
+        this ( id, ImageUtils.getBufferedImage ( image ) );
+    }
+
+    /**
+     * Constructs component with a specified {@link BufferedImage}.
+     *
+     * @param id    style ID
+     * @param image {@link BufferedImage} to display
+     */
+    public WebImage ( final StyleId id, final BufferedImage image )
+    {
         super ();
-
-        this.image = image;
-        this.disabledImage = null;
-
-        this.displayType = DisplayType.preferred;
-        this.horizontalAlignment = CENTER;
-        this.verticalAlignment = CENTER;
-        this.transparency = 1f;
-
-        SwingUtils.setOrientation ( this );
-        setOpaque ( false );
-
-        addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                if ( !isEnabled () )
-                {
-                    calculateDisabledImage ();
-                    repaint ();
-                }
-                else
-                {
-                    clearDisabledImage ();
-                    repaint ();
-                }
-            }
-        } );
+        initialize ( id, image );
     }
 
     /**
-     * Updates cached disabled image.
-     */
-    protected void calculateDisabledImage ()
-    {
-        disabledImage = image != null ? ImageUtils.createDisabledCopy ( image ) : null;
-        lastPreviewImage = null;
-    }
-
-    /**
-     * Clears cached disabled image
-     */
-    private void clearDisabledImage ()
-    {
-        if ( disabledImage != null )
-        {
-            disabledImage.flush ();
-            disabledImage = null;
-        }
-        lastPreviewImage = null;
-    }
-
-    /**
-     * Returns image width or -1 if image was not set.
+     * Initializes image component.
      *
-     * @return image width or -1 if image was not set
+     * @param id    style ID
+     * @param image initially displayed image
      */
-    public int getImageWidth ()
+    protected void initialize ( final StyleId id, final BufferedImage image )
     {
-        return image != null ? image.getWidth () : -1;
+        setImage ( image );
+        updateUI ();
+        setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.image;
     }
 
     /**
-     * Returns image height or -1 if image was not set.
+     * Returns currently displayed {@link BufferedImage}.
      *
-     * @return image height or -1 if image was not set
-     */
-    public int getImageHeight ()
-    {
-        return image != null ? image.getHeight () : -1;
-    }
-
-    /**
-     * Returns current image.
-     *
-     * @return image
+     * @return currently displayed {@link BufferedImage}
      */
     public BufferedImage getImage ()
     {
@@ -261,88 +307,60 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     }
 
     /**
-     * Returns icon representing current image.
+     * Changes displayed image to the specified {@link Icon}.
      *
-     * @return icon representing current image
-     */
-    public ImageIcon geIcon ()
-    {
-        return new ImageIcon ( image );
-    }
-
-    /**
-     * Returns last image preview.
-     * This image might be the modified version of original image set into this component.
-     *
-     * @return last image preview
-     */
-    public BufferedImage getPreviewImage ()
-    {
-        return lastPreviewImage;
-    }
-
-    /**
-     * Returns icon representing last image preview.
-     * This image icon might contain modified version of original image set into this component.
-     *
-     * @return icon representing last image preview
-     */
-    public ImageIcon getPreviewIcon ()
-    {
-        return lastPreviewImage != null ? new ImageIcon ( lastPreviewImage ) : null;
-    }
-
-    /**
-     * Changes image to new one taken from specified icon.
-     *
-     * @param icon icon to process
+     * @param icon {@link Icon} to display
      * @return this image component
      */
-    public WebImage setIcon ( final Icon icon )
+    public WebImage setImage ( final Icon icon )
     {
-        setImage ( ImageUtils.getBufferedImage ( icon ) );
-        return this;
+        return setImage ( ImageUtils.getBufferedImage ( icon ) );
     }
 
     /**
-     * Changes image to new one taken from specified image icon.
+     * Changes displayed image to the specified {@link ImageIcon}.
      *
-     * @param icon image icon to process
+     * @param icon {@link ImageIcon} to display
      * @return this image component
      */
-    public WebImage setIcon ( final ImageIcon icon )
+    public WebImage setImage ( final ImageIcon icon )
     {
-        setImage ( icon.getImage () );
-        return this;
+        return setImage ( icon.getImage () );
     }
 
     /**
-     * Changes image to the specified one.
+     * Changes displayed image to the specified {@link Image}.
      *
-     * @param image new image
+     * @param image {@link Image} to display
      * @return this image component
      */
     public WebImage setImage ( final Image image )
     {
-        setImage ( ImageUtils.getBufferedImage ( image ) );
-        return this;
+        return setImage ( ImageUtils.getBufferedImage ( image ) );
     }
 
     /**
-     * Changes image to the specified one.
+     * Changes displayed image to the specified {@link RenderedImage}.
      *
-     * @param image new image
+     * @param image {@link RenderedImage} to display
+     * @return this image component
+     */
+    public WebImage setImage ( final RenderedImage image )
+    {
+        return setImage ( ImageUtils.getBufferedImage ( image ) );
+    }
+
+    /**
+     * Changes displayed image to the specified {@link BufferedImage}.
+     *
+     * @param image {@link BufferedImage} to display
      * @return this image component
      */
     public WebImage setImage ( final BufferedImage image )
     {
+        final BufferedImage old = this.image;
         this.image = image;
-        if ( !isEnabled () )
-        {
-            calculateDisabledImage ();
-        }
-        revalidate ();
-        repaint ();
+        firePropertyChange ( IMAGE_PROPERTY, old, image );
         return this;
     }
 
@@ -364,8 +382,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setDisplayType ( final DisplayType displayType )
     {
+        final DisplayType old = this.displayType;
         this.displayType = displayType;
-        updateView ();
+        firePropertyChange ( DISPLAY_TYPE_PROPERTY, old, displayType );
         return this;
     }
 
@@ -387,8 +406,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setHorizontalAlignment ( final int horizontalAlignment )
     {
+        final int old = this.horizontalAlignment;
         this.horizontalAlignment = horizontalAlignment;
-        updateView ();
+        firePropertyChange ( HORIZONTAL_ALIGNMENT_PROPERTY, old, horizontalAlignment );
         return this;
     }
 
@@ -410,649 +430,66 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setVerticalAlignment ( final int verticalAlignment )
     {
+        final int old = this.verticalAlignment;
         this.verticalAlignment = verticalAlignment;
-        updateView ();
+        firePropertyChange ( VERTICAL_ALIGNMENT_PROPERTY, old, verticalAlignment );
         return this;
     }
 
     /**
-     * Returns image transparency.
+     * Returns image opacity.
      *
-     * @return image transparency
+     * @return image opacity
      */
-    public float getTransparency ()
+    public float getOpacity ()
     {
-        return transparency;
+        return opacity;
     }
 
     /**
-     * Changes image transparency.
+     * Sets image opacity.
      *
-     * @param transparency new image transparency
+     * @param opacity new image opacity
      * @return this image component
      */
-    public WebImage setTransparency ( final float transparency )
+    public WebImage setOpacity ( final float opacity )
     {
-        this.transparency = transparency;
-        updateView ();
+        final float old = this.opacity;
+        this.opacity = opacity;
+        firePropertyChange ( OPACITY_PROPERTY, old, opacity );
         return this;
     }
 
     /**
-     * Updates image component view.
-     */
-    protected void updateView ()
-    {
-        if ( isShowing () )
-        {
-            repaint ();
-        }
-    }
-
-    /**
-     * Returns image margin.
+     * Returns the look and feel (LaF) object that renders this component.
      *
-     * @return image margin
+     * @return the {@link WImageUI} object that renders this component
      */
-    public Insets getMargin ()
+    public WImageUI getUI ()
     {
-        return margin;
+        return ( WImageUI ) ui;
     }
 
     /**
-     * Changes image margin.
+     * Sets the LaF object that renders this component.
      *
-     * @param margin new image margin
-     * @return this image component
+     * @param ui {@link WImageUI}
      */
-    public WebImage setMargin ( final Insets margin )
+    public void setUI ( final WImageUI ui )
     {
-        this.margin = margin;
-        updateBorder ();
-        return this;
+        super.setUI ( ui );
     }
 
-    /**
-     * Changes image margin.
-     *
-     * @param top    top margin
-     * @param left   left margin
-     * @param bottom bottom margin
-     * @param right  right margin
-     * @return this image component
-     */
-    public WebImage setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        return setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Changes image margin.
-     *
-     * @param spacing side spacing
-     * @return this image component
-     */
-    public WebImage setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
-     * Updates image component border.
-     */
-    protected void updateBorder ()
-    {
-        if ( margin != null )
-        {
-            setBorder ( BorderFactory.createEmptyBorder ( margin.top, margin.left, margin.bottom, margin.right ) );
-        }
-        else
-        {
-            setBorder ( null );
-        }
-    }
-
-    /**
-     * Paints image component.
-     *
-     * @param g graphics
-     */
     @Override
-    protected void paintComponent ( final Graphics g )
+    public void updateUI ()
     {
-        super.paintComponent ( g );
-
-        if ( transparency <= 0f )
-        {
-            return;
-        }
-
-        final Graphics2D g2d = ( Graphics2D ) g;
-        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
-
-        // todo Optimize for repaint (check if image is out of repainted/clipped bounds)
-        final BufferedImage currentImage = getCurrentImage ();
-        if ( currentImage != null )
-        {
-            final Insets insets = getInsets ();
-            if ( getSize ().equals ( getRequiredSize () ) )
-            {
-                // Drawing image when it is currently at preferred size
-                g2d.drawImage ( currentImage, insets.left, insets.top, null );
-            }
-            else
-            {
-                switch ( displayType )
-                {
-                    case preferred:
-                    {
-                        // Drawing preferred sized image at specified side
-                        final int x = horizontalAlignment == LEFT ? insets.left :
-                                horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
-                                        getCenterX ( insets ) - currentImage.getWidth () / 2;
-                        final int y = verticalAlignment == TOP ? insets.top :
-                                verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
-                                        getCenterY ( insets ) - currentImage.getHeight () / 2;
-                        g2d.drawImage ( currentImage, x, y, null );
-                        break;
-                    }
-                    case fitComponent:
-                    {
-                        // Drawing sized to fit object image
-                        final BufferedImage preview = getPreviewImage ( insets );
-                        g2d.drawImage ( preview, getCenterX ( insets ) - preview.getWidth () / 2,
-                                getCenterY ( insets ) - preview.getHeight () / 2, null );
-                        break;
-                    }
-                    case repeat:
-                    {
-                        // Drawing repeated in background image
-                        final int x = horizontalAlignment == LEFT ? insets.left :
-                                horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
-                                        getCenterX ( insets ) - currentImage.getWidth () / 2;
-                        final int y = verticalAlignment == TOP ? insets.top :
-                                verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
-                                        getCenterY ( insets ) - currentImage.getHeight () / 2;
-                        g2d.setPaint ( new TexturePaint ( currentImage,
-                                new Rectangle2D.Double ( x, y, currentImage.getWidth (), currentImage.getHeight () ) ) );
-                        g2d.fillRect ( insets.left, insets.top, getWidth () - insets.left - insets.right,
-                                getHeight () - insets.top - insets.bottom );
-                        break;
-                    }
-                }
-            }
-        }
-
-        GraphicsUtils.restoreComposite ( g2d, oc, transparency < 1f );
+        StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
-    /**
-     * Returns image component center X coordinate.
-     *
-     * @param insets image component insets
-     * @return image component center X coordinate
-     */
-    protected int getCenterX ( final Insets insets )
-    {
-        return insets.left + ( getWidth () - insets.left - insets.right ) / 2;
-    }
-
-    /**
-     * Returns image component center Y coordinate.
-     *
-     * @param insets image component insets
-     * @return image component center Y coordinate
-     */
-    protected int getCenterY ( final Insets insets )
-    {
-        return insets.top + ( getHeight () - insets.top - insets.bottom ) / 2;
-    }
-
-    /**
-     * Returns preview image for specified insets.
-     *
-     * @param insets image component insets
-     * @return preview image
-     */
-    protected BufferedImage getPreviewImage ( final Insets insets )
-    {
-        if ( image.getWidth () > getWidth () || image.getHeight () > getHeight () )
-        {
-            final Dimension size = getSize ();
-            size.setSize ( size.width - insets.left - insets.right, size.height - insets.top - insets.bottom );
-            if ( lastPreviewImage == null || lastDimention != null && !lastDimention.equals ( size ) )
-            {
-                if ( lastPreviewImage != null )
-                {
-                    lastPreviewImage.flush ();
-                    lastPreviewImage = null;
-                }
-                lastPreviewImage = ImageUtils.createPreviewImage ( getCurrentImage (), size );
-                lastDimention = getSize ();
-            }
-            return lastPreviewImage;
-        }
-        else
-        {
-            return image;
-        }
-    }
-
-    /**
-     * Returns currently displayed image.
-     *
-     * @return currently displayed image
-     */
-    protected BufferedImage getCurrentImage ()
-    {
-        return !isEnabled () && disabledImage != null ? disabledImage : image;
-    }
-
-    /**
-     * Returns preferred size of image component.
-     *
-     * @return preferred size of image component
-     */
+    @NotNull
     @Override
-    public Dimension getPreferredSize ()
+    public String getUIClassID ()
     {
-        if ( isPreferredSizeSet () )
-        {
-            return super.getPreferredSize ();
-        }
-        else
-        {
-            return getRequiredSize ();
-        }
-    }
-
-    /**
-     * Returns component size required to fully show the image.
-     *
-     * @return component size required to fully show the image
-     */
-    protected Dimension getRequiredSize ()
-    {
-        final Insets insets = getInsets ();
-        return new Dimension ( insets.left + ( image != null ? image.getWidth () : 0 ) + insets.right,
-                insets.top + ( image != null ? image.getHeight () : 0 ) + insets.bottom );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMousePress ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMousePress ( this, mouseButton, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMouseEnter ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMouseExit ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMouseDrag ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMouseClick ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMouseClick ( this, mouseButton, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
-    {
-        return EventUtils.onDoubleClick ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
-    {
-        return EventUtils.onMenuTrigger ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
-    {
-        return EventUtils.onKeyType ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventUtils.onKeyType ( this, hotkey, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
-    {
-        return EventUtils.onKeyPress ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventUtils.onKeyPress ( this, hotkey, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
-    {
-        return EventUtils.onKeyRelease ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventUtils.onKeyRelease ( this, hotkey, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
-    {
-        return EventUtils.onFocusGain ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
-    {
-        return EventUtils.onFocusLoss ( this, runnable );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final String tooltip )
-    {
-        return TooltipManager.setTooltip ( this, tooltip );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
-    {
-        return TooltipManager.setTooltip ( this, icon, tooltip );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip )
-    {
-        return TooltipManager.setTooltip ( this, tooltip );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final String tooltip )
-    {
-        return TooltipManager.addTooltip ( this, tooltip );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
-    {
-        return TooltipManager.addTooltip ( this, icon, tooltip );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip )
-    {
-        return TooltipManager.addTooltip ( this, tooltip );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeToolTip ( final WebCustomTooltip tooltip )
-    {
-        TooltipManager.removeTooltip ( this, tooltip );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeToolTips ()
-    {
-        TooltipManager.removeTooltips ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeToolTips ( final WebCustomTooltip... tooltips )
-    {
-        TooltipManager.removeTooltips ( this, tooltips );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
-    {
-        TooltipManager.removeTooltips ( this, tooltips );
+        return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 }

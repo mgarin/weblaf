@@ -17,27 +17,21 @@
 
 package com.alee.utils;
 
-import com.alee.managers.log.Log;
-import com.alee.managers.plugin.data.PluginDependency;
-import com.alee.managers.plugin.data.PluginInformation;
-import com.alee.managers.plugin.data.PluginLibrary;
-import com.alee.managers.plugin.data.PluginVersion;
-import com.alee.utils.collection.ValuesTable;
 import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.core.util.CompositeClassLoader;
+import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class provides a set of utilities to easily serialize and deserialize objects into and from XML.
@@ -45,29 +39,35 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class XmlUtils
 {
     /**
-     * Whether should offer better aliases for standard Java classes like Point and Rectangle or not.
+     * todo 1. Instead of utilities class create an extension over XStream
+     * todo 2. Structure the way all custom converters/aliases are provided
      */
-    public static boolean aliasJdkClasses = true;
 
     /**
-     * Custom converters.
+     * Whether or not should offer better aliases for standard JDK classes like {@link Point} and {@link Rectangle}.
      */
-    public static final ColorConverter colorConverter = new ColorConverter ();
-    public static final InsetsConverter insetsConverter = new InsetsConverter ();
+    private static boolean aliasJdkClasses = true;
 
     /**
-     * Custom password converter that encrypts serialized passwords.
+     * XStream driver.
      */
-    public static final PasswordConverter passwordConverter = new PasswordConverter ();
+    private static HierarchicalStreamDriver hierarchicalStreamDriver;
 
     /**
      * XStream instance.
      */
     private static XStream xStream = null;
+
+    /**
+     * Private constructor to avoid instantiation.
+     */
+    private XmlUtils ()
+    {
+        throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
 
     /**
      * Returns global XStream instance configured with all required aliases and converters.
@@ -90,51 +90,106 @@ public final class XmlUtils
     {
         try
         {
-            // XStream instnce initialization
-            xStream = new XStream ( new DomDriver () );
-            // xStream.setMode ( XStream.ID_REFERENCES );
+            // Custom ReflectionProvider to provide pure-java objects instantiation
+            // Unlike default SunUnsafeReflectionProvider it has limited objects instantiation options
+            // Also it properly initializes object field values specified directly near the fields
+            final PureJavaReflectionProvider reflectionProvider = new PureJavaReflectionProvider ();
 
-            // Standart Java-classes aliases
+            // Custom HierarchicalStreamDriver implementation based on StaxDriver
+            // It provides us HierarchicalStreamReader to allow XStreamContext usage
+            hierarchicalStreamDriver = new XmlDriver ();
+
+            // XStream instance initialization
+            xStream = new XStream ( reflectionProvider, hierarchicalStreamDriver );
+
+            // Make sure that XStream ClassLoader finds WebLaF classes in cases where multiple ClassLoaders are used
+            // E.g. IntelliJ IDEA uses different ClassLoaders for plugins (e.g. JFormDesigner) and its core (which includes XStream)
+            if ( XmlUtils.class.getClassLoader () != xStream.getClass ().getClassLoader () )
+            {
+                final ClassLoader classLoader = xStream.getClassLoader ();
+                if ( classLoader instanceof CompositeClassLoader )
+                {
+                    ( ( CompositeClassLoader ) classLoader ).add ( XmlUtils.class.getClassLoader () );
+                }
+                else
+                {
+                    final CompositeClassLoader compositeClassLoader = new CompositeClassLoader ();
+                    compositeClassLoader.add ( XmlUtils.class.getClassLoader () );
+                    xStream.setClassLoader ( compositeClassLoader );
+                }
+            }
+
+            // Standard Java-classes aliases
             if ( aliasJdkClasses )
             {
+                // Custom {@link java.awt.Point} mapping
                 xStream.alias ( "Point", Point.class );
                 xStream.useAttributeFor ( Point.class, "x" );
                 xStream.useAttributeFor ( Point.class, "y" );
+
+                // Custom {@link java.awt.geom.Point2D} mapping
+                xStream.alias ( "Point2D", Point2D.class );
+                xStream.registerConverter ( new Point2DConverter () );
+
+                // Custom {@link java.awt.Dimension} mapping
                 xStream.alias ( "Dimension", Dimension.class );
-                xStream.useAttributeFor ( Dimension.class, "width" );
-                xStream.useAttributeFor ( Dimension.class, "height" );
+                xStream.registerConverter ( new DimensionConverter () );
+
+                // Custom {@link java.awt.Rectangle} mapping
                 xStream.alias ( "Rectangle", Rectangle.class );
                 xStream.useAttributeFor ( Rectangle.class, "x" );
                 xStream.useAttributeFor ( Rectangle.class, "y" );
                 xStream.useAttributeFor ( Rectangle.class, "width" );
                 xStream.useAttributeFor ( Rectangle.class, "height" );
+
+                // Custom {@link java.awt.Font} mapping
                 xStream.alias ( "Font", Font.class );
+
+                // Custom {@link java.awt.Color} mapping
                 xStream.alias ( "Color", Color.class );
-                xStream.registerConverter ( colorConverter );
+                xStream.registerConverter ( new ColorConverter () );
+
+                // Custom {@link java.awt.Insets} mapping
                 xStream.alias ( "Insets", Insets.class );
-                xStream.registerConverter ( insetsConverter );
+                xStream.registerConverter ( new InsetsConverter () );
+
+                // Custom {@link java.awt.Stroke} mapping
+                xStream.alias ( "Stroke", Stroke.class );
+                xStream.registerConverter ( new StrokeConverter () );
             }
 
             // XML resources aliases
             xStream.processAnnotations ( ResourceLocation.class );
-            xStream.processAnnotations ( ResourceFile.class );
-            xStream.processAnnotations ( ResourceList.class );
-            xStream.processAnnotations ( ResourceMap.class );
+            xStream.processAnnotations ( Resource.class );
 
             // Additional WebLaF data classes aliases
-            xStream.processAnnotations ( ValuesTable.class );
             xStream.processAnnotations ( Pair.class );
-
-            // Plugin manager classes aliases
-            xStream.processAnnotations ( PluginInformation.class );
-            xStream.processAnnotations ( PluginVersion.class );
-            xStream.processAnnotations ( PluginDependency.class );
-            xStream.processAnnotations ( PluginLibrary.class );
         }
-        catch ( final Throwable e )
+        catch ( final Exception e )
         {
-            Log.error ( XmlUtils.class, e );
+            // It is a pretty fatal for library if something goes wrong here
+            throw new UtilityException ( "Unable to initialize XStream instance", e );
         }
+    }
+
+    /**
+     * Returns whether or not aliases for standard JDK classes like {@link Point} and {@link Rectangle} are used.
+     *
+     * @return {@code true} if should use aliases for standard JDK classes are used, {@code false} otherwise
+     */
+    public static boolean isAliasJdkClasses ()
+    {
+        return aliasJdkClasses;
+    }
+
+    /**
+     * Sets whether or not aliases for standard JDK classes like {@link Point} and {@link Rectangle} should be used.
+     *
+     * @param alias whether or not aliases for standard JDK classes should be used
+     */
+    public static void setAliasJdkClasses ( final boolean alias )
+    {
+        XmlUtils.aliasJdkClasses = alias;
     }
 
     /**
@@ -167,6 +222,17 @@ public final class XmlUtils
     public static void alias ( final String name, final Class type )
     {
         getXStream ().alias ( name, type );
+    }
+
+    /**
+     * Prevents field from being serialized.
+     *
+     * @param type  class owning the field
+     * @param field name of the field
+     */
+    public static void omitField ( final Class type, final String field )
+    {
+        getXStream ().omitField ( type, field );
     }
 
     /**
@@ -236,6 +302,208 @@ public final class XmlUtils
     }
 
     /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param reader XML text source
+     * @param <T>    read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final Reader reader )
+    {
+        return ( T ) getXStream ().fromXML ( reader );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param reader  XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final Reader reader, final XStreamContext context )
+    {
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( reader ), null, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param input XML text source
+     * @param <T>   read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final InputStream input )
+    {
+        return ( T ) getXStream ().fromXML ( input );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param input   XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final InputStream input, final XStreamContext context )
+    {
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( input ), null, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param url XML text source
+     * @param <T> read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final URL url )
+    {
+        return ( T ) getXStream ().fromXML ( url );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param url     XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final URL url, final XStreamContext context )
+    {
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( url ), null, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param file file with XML content
+     * @param <T>  read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final File file )
+    {
+        return ( T ) getXStream ().fromXML ( file );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param file    file with XML content
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final File file, final XStreamContext context )
+    {
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( file ), null, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param xml XML content
+     * @param <T> read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final String xml )
+    {
+        return ( T ) getXStream ().fromXML ( xml );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param xml     XML content
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final String xml, final XStreamContext context )
+    {
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( new StringReader ( xml ) ), null, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param resource XML text source description
+     * @param <T>      read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final Resource resource )
+    {
+        return fromXML ( resource, null );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param resource XML text source description
+     * @param context  unmarshalling context data
+     * @param <T>      read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final Resource resource, final XStreamContext context )
+    {
+        try
+        {
+            switch ( resource.getLocation () )
+            {
+                case url:
+                {
+                    return fromXML ( new URL ( resource.getPath () ), context );
+                }
+                case filePath:
+                {
+                    return fromXML ( new File ( resource.getPath () ), context );
+                }
+                case nearClass:
+                {
+                    // todo Replace with try-with-resource when switched to JDK8+
+                    InputStream is = null;
+                    try
+                    {
+                        is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getPath () );
+                        if ( is == null )
+                        {
+                            final String src = resource.getPath ();
+                            final String cn = resource.getClassName ();
+                            final String msg = "Unable to read XML file '%s' near class: %s";
+                            throw new RuntimeException ( String.format ( msg, src, cn ) );
+                        }
+                        return fromXML ( is, context );
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if ( is != null )
+                            {
+                                is.close ();
+                            }
+                        }
+                        catch ( final Exception e )
+                        {
+                            // Ignore this exception
+                        }
+                    }
+                }
+                default:
+                {
+                    throw new RuntimeException ( "Unknown resource location type: " + resource.getLocation () );
+                }
+            }
+        }
+        catch ( final Exception e )
+        {
+            throw new RuntimeException ( "Unable to deserialize object from XML", e );
+        }
+    }
+
+    /**
      * Serializes Object into XML and writes it into specified file.
      *
      * @param obj  object to serialize
@@ -264,7 +532,8 @@ public final class XmlUtils
         }
         catch ( final IOException e )
         {
-            Log.error ( XmlUtils.class, e );
+            final String msg = "Unable to serialize object '%s' into XML and write it into file: %s";
+            LoggerFactory.getLogger ( XmlUtils.class ).error ( TextUtils.format ( msg, obj, file ), e );
         }
     }
 
@@ -310,351 +579,5 @@ public final class XmlUtils
     public static void toXML ( final Object obj, final HierarchicalStreamWriter writer )
     {
         getXStream ().marshal ( obj, writer );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param reader XML text source
-     * @param <T>    read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final Reader reader )
-    {
-        return ( T ) getXStream ().fromXML ( reader );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param input XML text source
-     * @param <T>   read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final InputStream input )
-    {
-        return ( T ) getXStream ().fromXML ( input );
-    }
-
-    /**
-     * Returns Object deserialized from XML text
-     *
-     * @param url XML text source
-     * @param <T> read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final URL url )
-    {
-        return ( T ) getXStream ().fromXML ( url );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param file file with XML content
-     * @param <T>  read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final File file )
-    {
-        return ( T ) getXStream ().fromXML ( file );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param xml XML content
-     * @param <T> read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final String xml )
-    {
-        return ( T ) getXStream ().fromXML ( xml );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param source XML text source
-     * @param <T>    read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final Object source )
-    {
-        if ( source instanceof URL )
-        {
-            return fromXML ( ( URL ) source );
-        }
-        else if ( source instanceof String )
-        {
-            return fromXML ( new File ( ( String ) source ) );
-        }
-        else if ( source instanceof File )
-        {
-            return fromXML ( ( File ) source );
-        }
-        else if ( source instanceof Reader )
-        {
-            return fromXML ( ( Reader ) source );
-        }
-        else if ( source instanceof InputStream )
-        {
-            return fromXML ( ( InputStream ) source );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns Object deserialized from XML text
-     *
-     * @param resource XML text source description
-     * @param <T>      read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final ResourceFile resource )
-    {
-        switch ( resource.getLocation () )
-        {
-            case url:
-            {
-                try
-                {
-                    return XmlUtils.fromXML ( new URL ( resource.getSource () ) );
-                }
-                catch ( final MalformedURLException e )
-                {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
-                }
-            }
-            case filePath:
-            {
-                return XmlUtils.fromXML ( new File ( resource.getSource () ) );
-            }
-            case nearClass:
-            {
-                InputStream is = null;
-                try
-                {
-                    is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getSource () );
-                    if ( is == null )
-                    {
-                        final String src = resource.getSource ();
-                        final String cn = resource.getClassName ();
-                        throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
-                    }
-                    return XmlUtils.fromXML ( is );
-                }
-                catch ( final ClassNotFoundException e )
-                {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
-                }
-                catch ( final Throwable e )
-                {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
-                }
-                finally
-                {
-                    try
-                    {
-                        if ( is != null )
-                        {
-                            is.close ();
-                        }
-                    }
-                    catch ( final Throwable e )
-                    {
-                        Log.error ( XmlUtils.class, e );
-                    }
-                }
-            }
-            default:
-            {
-                return null;
-            }
-        }
-    }
-
-    /**
-     * Returns text which is read from the source.
-     *
-     * @param source one of possible sources: URL, String, File, Reader, InputStream
-     * @return text as String
-     */
-    public static String loadString ( final Object source )
-    {
-        return loadString ( loadResourceFile ( source ) );
-    }
-
-    /**
-     * Returns text which is read from specified ResourceFile.
-     *
-     * @param resource file description
-     * @return text as String
-     */
-    public static String loadString ( final ResourceFile resource )
-    {
-        if ( resource.getLocation ().equals ( ResourceLocation.url ) )
-        {
-            try
-            {
-                return FileUtils.readToString ( new URL ( resource.getSource () )  );
-            }
-            catch ( final IOException e )
-            {
-                Log.error ( XmlUtils.class, e );
-                return null;
-            }
-        }
-        if ( resource.getLocation ().equals ( ResourceLocation.filePath ) )
-        {
-            return FileUtils.readToString ( new File ( resource.getSource () ) );
-        }
-        else if ( resource.getLocation ().equals ( ResourceLocation.nearClass ) )
-        {
-            try
-            {
-                return FileUtils.readToString ( Class.forName ( resource.getClassName () ), resource.getSource () );
-            }
-            catch ( final ClassNotFoundException e )
-            {
-                Log.error ( XmlUtils.class, e );
-                return null;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns ImageIcon which is read from the source.
-     *
-     * @param source one of possible sources: URL, String, File, Reader, InputStream
-     * @return ImageIcon
-     */
-    public static ImageIcon loadImageIcon ( final Object source )
-    {
-        return loadImageIcon ( loadResourceFile ( source ) );
-    }
-
-    /**
-     * Returns ImageIcon which is read from specified ResourceFile.
-     *
-     * @param resource file description
-     * @return ImageIcon
-     */
-    public static ImageIcon loadImageIcon ( final ResourceFile resource )
-    {
-        if ( resource.getLocation ().equals ( ResourceLocation.url ) )
-        {
-            try
-            {
-                return new ImageIcon ( new URL ( resource.getSource () ) );
-            }
-            catch ( final MalformedURLException e )
-            {
-                Log.error ( XmlUtils.class, e );
-                return null;
-            }
-        }
-        if ( resource.getLocation ().equals ( ResourceLocation.filePath ) )
-        {
-            try
-            {
-                return new ImageIcon ( new File ( resource.getSource () ).getCanonicalPath () );
-            }
-            catch ( final IOException e )
-            {
-                Log.error ( XmlUtils.class, e );
-                return null;
-            }
-        }
-        else if ( resource.getLocation ().equals ( ResourceLocation.nearClass ) )
-        {
-            try
-            {
-                return new ImageIcon ( Class.forName ( resource.getClassName () ).getResource ( resource.getSource () ) );
-            }
-            catch ( final ClassNotFoundException e )
-            {
-                Log.error ( XmlUtils.class, e );
-                return null;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns ImageIcon list which is read from the source.
-     *
-     * @param source one of possible sources: URL, String, File, Reader, InputStream
-     * @return ImageIcon list
-     */
-    public static List<ImageIcon> loadImagesList ( final Object source )
-    {
-        return loadImagesList ( loadResourceList ( source ) );
-    }
-
-    /**
-     * Returns ImageIcon list which is read from specified ResourceList.
-     *
-     * @param resourceList ResourceFile list
-     * @return ImageIcon list
-     */
-    public static List<ImageIcon> loadImagesList ( final ResourceList resourceList )
-    {
-        final List<ImageIcon> icons = new ArrayList<ImageIcon> ();
-        for ( final ResourceFile resource : resourceList.getResources () )
-        {
-            final ImageIcon imageIcon = loadImageIcon ( resource );
-            if ( imageIcon != null )
-            {
-                icons.add ( imageIcon );
-            }
-        }
-        return icons;
-    }
-
-    /**
-     * Returns ResourceMap which is read from the source.
-     *
-     * @param source one of possible sources: URL, String, File, Reader, InputStream
-     * @return ResourceMap
-     */
-    public static ResourceMap loadResourceMap ( final Object source )
-    {
-        return fromXML ( source );
-    }
-
-    /**
-     * Returns ResourceList which is read from the source.
-     *
-     * @param source one of possible sources: URL, String, File, Reader, InputStream
-     * @return ResourceList
-     */
-    public static ResourceList loadResourceList ( final Object source )
-    {
-        return fromXML ( source );
-    }
-
-    /**
-     * Returns ResourceFile which is read from the source.
-     *
-     * @param source one of possible sources: URL, String, File, Reader, InputStream
-     * @return ResourceFile
-     */
-    public static ResourceFile loadResourceFile ( final Object source )
-    {
-        return fromXML ( source );
     }
 }

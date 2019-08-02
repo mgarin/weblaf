@@ -17,7 +17,7 @@
 
 package com.alee.extended.layout;
 
-import com.alee.global.StyleConstants;
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
@@ -27,9 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * User: mgarin Date: 11.04.12 Time: 17:30
+ * @author Mikle Garin
  */
-
 public class SlidingLayout extends AbstractLayoutManager
 {
     protected int slideY = 0;
@@ -39,7 +38,7 @@ public class SlidingLayout extends AbstractLayoutManager
 
     protected JComponent container;
 
-    public SlidingLayout ( JComponent container )
+    public SlidingLayout ( final JComponent container )
     {
         super ();
         this.container = container;
@@ -53,10 +52,10 @@ public class SlidingLayout extends AbstractLayoutManager
         }
 
         slideY = 0;
-        animator = new WebTimer ( "SlidingLayout.slideInTimer", StyleConstants.avgAnimationDelay, new ActionListener ()
+        animator = new WebTimer ( "SlidingLayout.slideInTimer", SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( slideY < height )
                 {
@@ -78,7 +77,7 @@ public class SlidingLayout extends AbstractLayoutManager
         return slideSpeed;
     }
 
-    public void setSlideSpeed ( int slideSpeed )
+    public void setSlideSpeed ( final int slideSpeed )
     {
         this.slideSpeed = slideSpeed;
     }
@@ -91,10 +90,10 @@ public class SlidingLayout extends AbstractLayoutManager
         }
 
         slideY = height;
-        animator = new WebTimer ( "SlidingLayout.slideOutTimer", StyleConstants.avgAnimationDelay, new ActionListener ()
+        animator = new WebTimer ( "SlidingLayout.slideOutTimer", SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( slideY > 0 )
                 {
@@ -111,14 +110,11 @@ public class SlidingLayout extends AbstractLayoutManager
         animator.start ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         Dimension ps = new Dimension ( 0, 0 );
-        for ( Component c : parent.getComponents () )
+        for ( final Component c : container.getComponents () )
         {
             ps = SwingUtils.max ( ps, c.getPreferredSize () );
         }
@@ -126,16 +122,13 @@ public class SlidingLayout extends AbstractLayoutManager
         return ps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( @NotNull final Container container )
     {
-        for ( Component c : parent.getComponents () )
+        for ( final Component c : container.getComponents () )
         {
             final Dimension ps = c.getPreferredSize ();
-            c.setBounds ( 0, slideY < ps.height ? slideY - ps.height : 0, parent.getWidth (), ps.height );
+            c.setBounds ( 0, slideY < ps.height ? slideY - ps.height : 0, container.getWidth (), ps.height );
             height = Math.max ( height, ps.height );
         }
     }

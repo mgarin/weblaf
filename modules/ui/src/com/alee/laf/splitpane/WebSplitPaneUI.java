@@ -17,401 +17,166 @@
 
 package com.alee.laf.splitpane;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButton;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.api.jdk.Consumer;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
- * Custom UI for JSplitPane component.
+ * Custom UI for {@link JSplitPane} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
-
-public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
+public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Style settings.
+     * Component painter.
      */
-    protected Insets margin = WebSplitPaneStyle.margin;
-    protected Color dragDividerColor = WebSplitPaneStyle.dragDividerColor;
-    protected boolean drawDividerBorder = WebSplitPaneStyle.drawDividerBorder;
-    protected Color dividerBorderColor = WebSplitPaneStyle.dividerBorderColor;
+    @DefaultPainter ( SplitPanePainter.class )
+    protected ISplitPanePainter painter;
 
     /**
-     * SplitPane listeners.
-     */
-    protected PropertyChangeListener propertyChangeListener;
-
-    /**
-     * Returns an instance of the WebSplitPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
+     * Returns an instance of the {@link WebSplitPaneUI} for the specified component.
+     * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebSplitPaneUI
+     * @return instance of the {@link WebSplitPaneUI}
      */
-    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
     }
 
-    /**
-     * Installs UI in the specified component.
-     *
-     * @param c component for this UI
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( splitPane );
-        LookAndFeel.installProperty ( splitPane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        splitPane.setBorder ( LafUtils.createWebBorder ( 0 ) );
-        splitPane.setDividerSize ( 6 );
-
-        // Updating border
-        updateBorder ();
-
-        // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        splitPane.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        // Applying skin
+        StyleManager.installSkin ( splitPane );
     }
 
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        splitPane.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( splitPane );
 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void updateBorder ()
+    public Shape getShape ()
     {
-        if ( splitPane != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( splitPane ) )
-            {
-                return;
-            }
-
-            // Actual margin
-            final boolean ltr = splitPane.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
-
-            // Installing border
-            splitPane.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
+        return PainterSupport.getShape ( splitPane, painter );
     }
 
-    /**
-     * Returns component margin.
-     *
-     * @return component margin
-     */
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( splitPane, painter );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( splitPane, painter, enabled );
+    }
+
+    @Override
     public Insets getMargin ()
     {
-        return margin;
+        return PainterSupport.getMargin ( splitPane );
     }
 
-    /**
-     * Sets component margin.
-     *
-     * @param margin component margin
-     */
+    @Override
     public void setMargin ( final Insets margin )
     {
-        this.margin = margin;
-        updateBorder ();
+        PainterSupport.setMargin ( splitPane, margin );
     }
 
-    /**
-     * Returns dragged divider color.
-     *
-     * @return dragged divider color
-     */
-    public Color getDragDividerColor ()
-    {
-        return dragDividerColor;
-    }
-
-    /**
-     * Sets dragged divider color.
-     *
-     * @param dragDividerColor dragged divider color
-     */
-    public void setDragDividerColor ( final Color dragDividerColor )
-    {
-        this.dragDividerColor = dragDividerColor;
-    }
-
-    /**
-     * Returns whether divider border is painted or not.
-     *
-     * @return true if divider border is painted, false otherwise
-     */
-    public boolean isDrawDividerBorder ()
-    {
-        return drawDividerBorder;
-    }
-
-    /**
-     * Sets whether divider border is painted or not.
-     *
-     * @param draw whether divider border is painted or not
-     */
-    public void setDrawDividerBorder ( final boolean draw )
-    {
-        this.drawDividerBorder = draw;
-    }
-
-    /**
-     * Returns divider border color.
-     *
-     * @return divider border color
-     */
-    public Color getDividerBorderColor ()
-    {
-        return dividerBorderColor;
-    }
-
-    /**
-     * Sets divider border color.
-     *
-     * @param color new divider border color
-     */
-    public void setDividerBorderColor ( final Color color )
-    {
-        this.dividerBorderColor = color;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public BasicSplitPaneDivider createDefaultDivider ()
+    public Insets getPadding ()
     {
-        return new BasicSplitPaneDivider ( this )
-        {
-            protected final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
-
-            protected final Color color = new Color ( 158, 158, 158 );
-            protected final Color[] gradient = new Color[]{ StyleConstants.transparent, color, color, StyleConstants.transparent };
-
-            @Override
-            public Border getBorder ()
-            {
-                return border;
-            }
-
-            @Override
-            protected JButton createLeftOneTouchButton ()
-            {
-                final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
-                final ImageIcon icon = getOneTouchIcon ( true, hor );
-                final WebButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
-                iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
-                iconWebButton.setCursor ( Cursor.getDefaultCursor () );
-                iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                iconWebButton.setFocusable ( false );
-                return iconWebButton;
-            }
-
-            @Override
-            protected JButton createRightOneTouchButton ()
-            {
-                final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
-                final ImageIcon icon = getOneTouchIcon ( false, hor );
-                final JButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
-                iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
-                iconWebButton.setCursor ( Cursor.getDefaultCursor () );
-                iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                iconWebButton.setFocusable ( false );
-                return iconWebButton;
-            }
-
-            /**
-             * todo Replace with paintComponent?
-             */
-            @Override
-            public void paint ( final Graphics g )
-            {
-                final Graphics2D g2d = ( Graphics2D ) g;
-                final Object aa = GraphicsUtils.setupAntialias ( g2d );
-
-                if ( orientation == JSplitPane.HORIZONTAL_SPLIT )
-                {
-                    final int startY = getHeight () / 2 - 35;
-                    final int endY = getHeight () / 2 + 35;
-                    g2d.setPaint ( new LinearGradientPaint ( 0, startY, 0, endY, new float[]{ 0f, 0.25f, 0.75f, 1f }, gradient ) );
-                    for ( int i = startY; i < endY; i += 5 )
-                    {
-                        g2d.fillRect ( getWidth () / 2 - 1, i - 1, 2, 2 );
-                    }
-
-                    if ( drawDividerBorder )
-                    {
-                        g2d.setPaint ( dividerBorderColor );
-                        g2d.drawLine ( 0, 0, 0, getHeight () - 1 );
-                        g2d.drawLine ( getWidth () - 1, 0, getWidth () - 1, getHeight () - 1 );
-                    }
-                }
-                else
-                {
-                    final int startX = getWidth () / 2 - 35;
-                    final int endX = getWidth () / 2 + 35;
-                    g2d.setPaint ( new LinearGradientPaint ( startX, 0, endX, 0, new float[]{ 0f, 0.25f, 0.75f, 1f }, gradient ) );
-                    for ( int i = startX; i < endX; i += 5 )
-                    {
-                        g2d.fillRect ( i - 1, getHeight () / 2 - 1, 2, 2 );
-                    }
-
-                    if ( drawDividerBorder )
-                    {
-                        g2d.setPaint ( dividerBorderColor );
-                        g2d.drawLine ( 0, 0, getWidth () - 1, 0 );
-                        g2d.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
-                    }
-                }
-
-                super.paint ( g );
-
-                GraphicsUtils.restoreAntialias ( g2d, aa );
-            }
-
-            /**
-             * Property change event, presumably from the JSplitPane, will message
-             * updateOrientation if necessary.
-             */
-            @Override
-            public void propertyChange ( final PropertyChangeEvent e )
-            {
-                super.propertyChange ( e );
-
-                // Listening to split orientation changes
-                if ( e.getSource () == splitPane && e.getPropertyName ().equals ( JSplitPane.ORIENTATION_PROPERTY ) )
-                {
-                    // Updating one-touch-button icons according to new orentation
-                    final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
-                    if ( leftButton != null )
-                    {
-                        leftButton.setIcon ( getOneTouchIcon ( true, hor ) );
-                        leftButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                    }
-                    if ( rightButton != null )
-                    {
-                        rightButton.setIcon ( getOneTouchIcon ( false, hor ) );
-                        rightButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                    }
-                }
-            }
-        };
+        return PainterSupport.getPadding ( splitPane );
     }
 
-    /**
-     * Returns cached one-touch-button icon.
-     *
-     * @param leading    whether it should be leading button icon or not
-     * @param horizontal whether split is horizontal or not
-     * @return cached one-touch-button icon
-     */
-    protected ImageIcon getOneTouchIcon ( final boolean leading, final boolean horizontal )
-    {
-        final String name = horizontal ? leading ? "left" : "right" : leading ? "up" : "down";
-        return ImageUtils.getImageIcon ( WebSplitPaneUI.class.getResource ( "icons/" + name + ".png" ), true );
-    }
-
-    /**
-     * Returns one-touch-button size.
-     *
-     * @param horizontal whether split is horizontal or not
-     * @return one-touch-button size
-     */
-    protected Dimension getOneTouchButtonSize ( final boolean horizontal )
-    {
-        return new Dimension ( horizontal ? 6 : 7, horizontal ? 7 : 6 );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Component createDefaultNonContinuousLayoutDivider ()
+    public void setPadding ( final Insets padding )
     {
-        return new Canvas ()
+        PainterSupport.setPadding ( splitPane, padding );
+    }
+
+    /**
+     * Returns split pane painter.
+     *
+     * @return split pane painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getPainter ( painter );
+    }
+
+    /**
+     * Sets split pane painter.
+     * Pass null to remove split pane painter.
+     *
+     * @param painter new split pane painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( splitPane, new Consumer<ISplitPanePainter> ()
         {
             @Override
-            public void paint ( final Graphics g )
+            public void accept ( final ISplitPanePainter newPainter )
             {
-                if ( !isContinuousLayout () && getLastDragLocation () != -1 )
-                {
-                    final Dimension size = splitPane.getSize ();
-                    g.setColor ( dragDividerColor );
-                    if ( getOrientation () == JSplitPane.HORIZONTAL_SPLIT )
-                    {
-                        g.fillRect ( 0, 0, dividerSize - 1, size.height - 1 );
-                    }
-                    else
-                    {
-                        g.fillRect ( 0, 0, size.width - 1, dividerSize - 1 );
-                    }
-                }
+                WebSplitPaneUI.this.painter = newPainter;
             }
-        };
+        }, this.painter, painter, ISplitPanePainter.class, AdaptiveSplitPanePainter.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void finishedPaintingChildren ( final JSplitPane jc, final Graphics g )
+    public boolean contains ( final JComponent c, final int x, final int y )
     {
-        if ( jc == splitPane && getLastDragLocation () != -1 && !isContinuousLayout () &&
-                !draggingHW )
-        {
-            final Dimension size = splitPane.getSize ();
+        return PainterSupport.contains ( c, this, painter, x, y );
+    }
 
-            g.setColor ( dragDividerColor );
-            if ( getOrientation () == JSplitPane.HORIZONTAL_SPLIT )
-            {
-                g.fillRect ( getLastDragLocation (), 0, dividerSize - 1, size.height - 1 );
-            }
-            else
-            {
-                g.fillRect ( 0, getLastDragLocation (), size.width - 1, dividerSize - 1 );
-            }
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, painter, width, height );
+    }
+
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            // Call superclass to set internal flags
+            // It doesn't paint anything so we don't need to worry about that
+            super.paint ( g, c );
+
+            // Painting split pane
+            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

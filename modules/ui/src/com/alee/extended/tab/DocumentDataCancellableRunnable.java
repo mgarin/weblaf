@@ -20,19 +20,20 @@ package com.alee.extended.tab;
 /**
  * Custom runnable that provides information about DocumentData.
  *
+ * @param <T> {@link DocumentData} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see WebDocumentPane
  */
-
 public interface DocumentDataCancellableRunnable<T extends DocumentData>
 {
     /**
-     * Performs action according to provided event data.
-     * Returns whether event should be cancelled or not according to performed actions.
+     * Performs action and returns whether or not event should be cancelled or not according to performed actions.
      *
-     * @param document document
-     * @param pane     pane data
-     * @param index    document index within pane
-     * @return true if event should be cancelled, false otherwise
+     * @param document {@link DocumentData}
+     * @param pane     {@link PaneData}
+     * @param index    {@link DocumentData} within {@link PaneData}
+     * @return {@code true} if event should be cancelled, {@code false} otherwise
      */
     public boolean run ( T document, PaneData<T> pane, int index );
 }

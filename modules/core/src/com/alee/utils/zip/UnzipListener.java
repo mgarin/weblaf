@@ -26,7 +26,6 @@ import java.util.zip.ZipEntry;
  *
  * @author Mikle Garin
  */
-
 public interface UnzipListener extends EventListener
 {
     /**

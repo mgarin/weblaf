@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.painter.decoration.background.GradientColor -->
+    <xs:complexType name="GradientColor">
+        <xs:simpleContent>
+
+            <!-- Gradient color for the specified position -->
+            <xs:extension base="java.awt:Color">
+
+                <!-- Position of the color between the starting and end points -->
+                <xs:attribute name="fraction" type="xs:float" />
+
+            </xs:extension>
+
+        </xs:simpleContent>
+    </xs:complexType>
+
+</xs:schema>

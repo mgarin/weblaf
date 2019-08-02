@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.painter.decoration.shape.Sides -->
+    <xs:simpleType name="Sides">
+        <xs:restriction base="xs:string">
+
+            <!-- Display state for any side -->
+            <xs:pattern value="^(top|left|bottom|right)$" />
+
+            <!-- Display state for two sides -->
+            <xs:pattern value="^(top|left|bottom|right),(top|left|bottom|right)$" />
+
+            <!-- Display state for three sides -->
+            <xs:pattern value="^(top|left|bottom|right),(top|left|bottom|right),(top|left|bottom|right)$" />
+
+            <!-- Display state for all four sides -->
+            <xs:pattern value="^(top|left|bottom|right),(top|left|bottom|right),(top|left|bottom|right),(top|left|bottom|right)$" />
+
+            <!-- Display state for all sides -->
+            <xs:pattern value="^(0|1)$" />
+
+            <!-- Display state for top+bottom and left+right sides -->
+            <xs:pattern value="^(0|1),(0|1)$" />
+
+            <!-- Display state for top, left+right and bottom sides -->
+            <xs:pattern value="^(0|1),(0|1),(0|1)$" />
+
+            <!-- Display state for all separate sides -->
+            <xs:pattern value="^(0|1),(0|1),(0|1),(0|1)$" />
+
+            <!-- Display state for all sides -->
+            <xs:pattern value="^(false|true)$" />
+
+            <!-- Display state for top+bottom and left+right sides -->
+            <xs:pattern value="^(false|true),(false|true)$" />
+
+            <!-- Display state for top, left+right and bottom sides -->
+            <xs:pattern value="^(false|true),(false|true),(false|true)$" />
+
+            <!-- Display state for all separate sides -->
+            <xs:pattern value="^(false|true),(false|true),(false|true),(false|true)$" />
+
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

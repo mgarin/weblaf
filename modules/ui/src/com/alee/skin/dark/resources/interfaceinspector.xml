@@ -1,0 +1,58 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.inspector.InterfaceInspector -->
+
+    <!-- Inspector -->
+    <style type="panel" id="inspector" extends="transparent">
+
+        <!-- Tree filter field -->
+        <style type="textfield" id="filter" extends="treefilterfield-non-opaque" padding="6">
+
+            <!-- Settings menu button -->
+            <style type="button" id="settings" padding="0,2,0,6" />
+
+            <!-- Lookup button -->
+            <style type="togglebutton" id="inspect" extends="undecorated" padding="0,6,0,2">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Filter and tree separator -->
+        <style type="separator" id="separator" extends="horizontal" />
+
+        <!-- Components tree scroll pane -->
+        <style type="scrollpane" id="scroll" extends="transparent-hovering">
+
+            <!-- Components tree -->
+            <style type="tree" id="tree" extends="non-opaque" />
+
+        </style>
+
+    </style>
+
+    <!-- Popover inspector -->
+    <style type="panel" id="inspector-popover" extends="inspector">
+
+        <!-- Tree filter field -->
+        <style type="textfield" id="filter" extends="treefilterfield-transparent" padding="6" />
+
+        <!-- Components tree scroll pane -->
+        <style type="scrollpane" id="scroll" extends="transparent-buttonless">
+
+            <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless">
+                <painter>
+                    <thumbRound>4</thumbRound>
+                </painter>
+            </style>
+
+            <!-- Components tree -->
+            <style type="tree" id="tree" extends="transparent" />
+
+        </style>
+
+    </style>
+
+</skin>

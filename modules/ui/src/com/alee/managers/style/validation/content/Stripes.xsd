@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContent.xsd" />
+    <xs:include schemaLocation="../ext/Stripe.xsd" />
+    <xs:include schemaLocation="../ext/Orientation.xsd" />
+    <xs:include schemaLocation="../ext/BoxOrientation.xsd" />
+
+    <!-- com.alee.painter.decoration.content.Stripes -->
+    <xs:complexType name="Stripes">
+        <xs:complexContent>
+            <xs:extension base="AbstractContent">
+
+                <!-- Line colors -->
+                <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                    <xs:element name="Stripe" type="Stripe" />
+                </xs:sequence>
+
+                <!-- Line orientation -->
+                <xs:attribute name="orientation" type="Orientation" />
+
+                <!-- Line alignment -->
+                <xs:attribute name="align" type="BoxOrientation" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

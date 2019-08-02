@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractShape.xsd" />
+    <xs:include schemaLocation="../ext/Round.xsd" />
+    <xs:include schemaLocation="../ext/Sides.xsd" />
+
+    <!-- com.alee.painter.decoration.shape.WebShape -->
+    <xs:complexType name="WebShape">
+        <xs:complexContent>
+            <xs:extension base="AbstractShape">
+
+                <!-- Decoration corners rounding -->
+                <xs:attribute name="round" type="Round" />
+
+                <!-- Displayed decoration sides -->
+                <xs:attribute name="sides" type="Sides" />
+
+                <!-- Displayed decoration side lines -->
+                <xs:attribute name="lines" type="Sides" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="ColorBackground.xsd" />
+    <xs:include schemaLocation="GradientBackground.xsd" />
+    <xs:include schemaLocation="PresetTextureBackground.xsd" />
+    <xs:include schemaLocation="AlphaLayerBackground.xsd" />
+    <xs:include schemaLocation="MovingHighlightBackground.xsd" />
+    <xs:include schemaLocation="BreadcrumbProgressBackground.xsd" />
+
+    <!-- IBackground implementations -->
+    <xs:group name="Backgrounds">
+        <xs:choice>
+            <xs:choice minOccurs="1" maxOccurs="1">
+
+                <!-- Basic supported backgrounds -->
+                <xs:element name="ColorBackground" type="ColorBackground" />
+                <xs:element name="GradientBackground" type="GradientBackground" />
+                <xs:element name="PresetTextureBackground" type="PresetTextureBackground" />
+                <xs:element name="AlphaLayerBackground" type="AlphaLayerBackground" />
+                <xs:element name="MovingHighlightBackground" type="MovingHighlightBackground" />
+                <xs:element name="BreadcrumbProgressBackground" type="BreadcrumbProgressBackground" />
+
+                <!-- Any custom backgrounds -->
+                <xs:any processContents="skip" />
+
+            </xs:choice>
+        </xs:choice>
+    </xs:group>
+
+</xs:schema>

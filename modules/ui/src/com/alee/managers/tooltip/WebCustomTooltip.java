@@ -17,15 +17,16 @@
 
 package com.alee.managers.tooltip;
 
-import com.alee.laf.WebFonts;
+import com.alee.extended.label.WebStyledLabel;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.language.data.TooltipWay;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.TextUtils;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.managers.style.ShapeMethods;
+import com.alee.managers.style.ShapeMethodsImpl;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.*;
+import com.alee.utils.laf.ShadeType;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.FadeStateType;
 import com.alee.utils.swing.WebTimer;
@@ -46,42 +47,110 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
-public class WebCustomTooltip extends JComponent implements ShapeProvider
+public class WebCustomTooltip extends JComponent implements ShapeMethods
 {
+    /**
+     * todo 1. Make this a custom styleable component
+     * todo 2. Move all painting into painter
+     */
+
     /**
      * Tooltip constants.
      */
     private static final String ID_PREFIX = "WCT";
-    private static final int fadeFps = WebCustomTooltipStyle.fadeFps;
-    private static final long fadeTime = WebCustomTooltipStyle.fadeTime;
-    private static final int cornerLength = WebCustomTooltipStyle.cornerLength;
-    private static final int cornerSideX = WebCustomTooltipStyle.cornerSideX;
+    private static final int fadeFps = 24;
+    private static final long fadeTime = 200;
+    private static final int cornerLength = 8;
+    private static final int cornerSideX = 7;
 
     /**
-     * Tooltip settings.
+     * Default tooltip display way.
+     * If set to null - best display way will be calculated each time tooltip shown.
      */
-    private final String id;
-    private final WeakReference<Component> component;
-    private JComponent tooltip;
-    private Point displayLocation;
-    private Rectangle relativeToBounds;
-    private WeakReference<Component> relativeToComponent;
-    private TooltipWay displayWay = WebCustomTooltipStyle.displayWay;
-    private boolean showHotkey = WebCustomTooltipStyle.showHotkey;
-    private int hotkeyLocation = WebCustomTooltipStyle.hotkeyLocation;
-    private boolean defaultCloseBehavior = WebCustomTooltipStyle.defaultCloseBehavior;
-    private int contentSpacing = WebCustomTooltipStyle.contentSpacing;
-    private int leftRightSpacing = WebCustomTooltipStyle.leftRightSpacing;
-    private int windowSideSpacing = WebCustomTooltipStyle.windowSideSpacing;
-    private int round = WebCustomTooltipStyle.round;
-    private int shadeWidth = WebCustomTooltipStyle.shadeWidth;
-    private Color shadeColor = WebCustomTooltipStyle.shadeColor;
-    private Color borderColor = WebCustomTooltipStyle.borderColor;
-    private Color topBgColor = WebCustomTooltipStyle.topBgColor;
-    private Color bottomBgColor = WebCustomTooltipStyle.bottomBgColor;
-    private Color textColor = WebCustomTooltipStyle.textColor;
-    private float trasparency = WebCustomTooltipStyle.trasparency;
+    private TooltipWay displayWay = null;
+
+    /**
+     * Whether to show component hotkeys information at the right side of the tooltip or not.
+     * Only non-hidden hotkeys information will be displayed.
+     */
+    private boolean showHotkey = true;
+
+    /**
+     * Hotkey location inside the tooltip.
+     * It might have either SwingConstants.LEFT, RIGHT, LEADING or TRAILING value.
+     */
+    private int hotkeyLocation = SwingConstants.TRAILING;
+
+    /**
+     * Whether tooltip should use default close behavior () or allow user to define his own close behavior.
+     * Default behavior is when tooltip closes when cursor leave component area, or when any mouse/key press occurs.
+     */
+    private boolean defaultCloseBehavior = true;
+
+    /**
+     * Spacing between tooltip border and tooltip content.
+     */
+    private int contentSpacing = 4;
+
+    /**
+     * Additional left and right sides content spacing.
+     * This is basically used to improve text readability in tooltips.
+     */
+    private int leftRightSpacing = 0;
+
+    /**
+     * Minimal spacing between window edge and tooltip.
+     * Used to avoid tooltips falling behind the window edge when shown close to it.
+     */
+    private int windowSideSpacing = 5;
+
+    /**
+     * Tooltip corners rounding.
+     */
+    private int round = 4;
+
+    /**
+     * Decoration shade type.
+     */
+    private ShadeType shadeType = ShadeType.gradient;
+
+    /**
+     * Decoration shade width.
+     */
+    private int shadeWidth = 0;
+
+    /**
+     * Decoration shade color.
+     */
+    private Color shadeColor = Color.GRAY;
+
+    /**
+     * Tooltip border color.
+     * When set to null border won't be drawn at all.
+     */
+    private Color borderColor = null;
+
+    /**
+     * Tooltip top background color.
+     * When set to null background won't be drawn at all.
+     */
+    private Color topBgColor = Color.BLACK;
+
+    /**
+     * Tooltip bottom background color.
+     * When set to null background will be filled with topBgColor.
+     */
+    private Color bottomBgColor = Color.BLACK;
+
+    /**
+     * Tooltip text color.
+     */
+    private Color textColor = Color.WHITE;
+
+    /**
+     * Tooltip background opacity.
+     */
+    private float opacity = 0.85f;
 
     /**
      * Tooltip listeners.
@@ -96,7 +165,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     /**
      * Tooltip variables.
      */
-    private final HotkeyTipLabel hotkey;
+    private final WebLabel hotkey;
     private int cornerPeak = 0;
 
     /**
@@ -105,6 +174,16 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     private final WebTimer fadeTimer;
     private FadeStateType fadeStateType;
     private float fade = 0;
+
+    /**
+     * Runtime variables.
+     */
+    private final String id;
+    private final WeakReference<Component> component;
+    private JComponent tooltip;
+    private Point displayLocation;
+    private Rectangle relativeToBounds;
+    private WeakReference<Component> relativeToComponent;
 
     public WebCustomTooltip ( final Component component, final String tooltip )
     {
@@ -149,17 +228,17 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip )
     {
-        this ( component, tooltip, WebCustomTooltipStyle.displayWay );
+        this ( component, tooltip, null );
     }
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay )
     {
-        this ( component, tooltip, tooltipWay, WebCustomTooltipStyle.showHotkey );
+        this ( component, tooltip, tooltipWay, true );
     }
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip, final boolean showHotkey )
     {
-        this ( component, tooltip, WebCustomTooltipStyle.displayWay, showHotkey );
+        this ( component, tooltip, null, showHotkey );
     }
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay, final boolean showHotkey )
@@ -186,8 +265,8 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         this.displayWay = tooltipWay;
 
         // Tooltip hotkey preview component
-        hotkey = new HotkeyTipLabel ();
-        hotkey.setFont ( WebFonts.getSystemAcceleratorFont () );
+        hotkey = new WebLabel ( StyleId.customtooltipHotkeyLabel );
+        hotkey.setFont ( WebLookAndFeel.globalMenuSmallFont );
 
         // Components placement on tooltip
         setLayout ( new BorderLayout ( 6, 6 ) );
@@ -310,13 +389,13 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         // Check various conditions of displaying hotkey
         if ( showHotkey )
         {
-            final Component c = getComponent ();
-            if ( c instanceof JComponent )
+            final Component component = getComponent ();
+            if ( component != null && component instanceof JComponent )
             {
-                final String hotkeyText = HotkeyManager.getComponentHotkeysString ( ( JComponent ) c );
+                final String hotkeyText = HotkeyManager.getComponentHotkeysString ( ( JComponent ) component );
                 if ( !TextUtils.isEmpty ( hotkeyText ) )
                 {
-                    // Updatings hotkey
+                    // Updating hotkey
                     hotkey.setText ( hotkeyText );
 
                     // Adding or re-adding hotkey label to tooltip
@@ -378,7 +457,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     public void destroyTooltip ()
     {
         final Component component = getComponent ();
-        if ( component instanceof JComponent )
+        if ( component != null && component instanceof JComponent )
         {
             ( ( JComponent ) component ).removeAncestorListener ( ancestorListener );
         }
@@ -394,23 +473,30 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         final Component component = getComponent ();
         if ( displayWay != null )
         {
-            if ( displayWay.equals ( TooltipWay.leading ) || displayWay.equals ( TooltipWay.trailing ) )
+            if ( displayWay == TooltipWay.leading || displayWay == TooltipWay.trailing )
             {
-                final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-                if ( displayWay.equals ( TooltipWay.leading ) && ltr || displayWay.equals ( TooltipWay.trailing ) && !ltr )
+                if ( component != null )
                 {
-                    return TooltipWay.left;
+                    final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+                    if ( ltr ? displayWay == TooltipWay.leading : displayWay == TooltipWay.trailing )
+                    {
+                        return TooltipWay.left;
+                    }
+                    else
+                    {
+                        return TooltipWay.right;
+                    }
                 }
                 else
                 {
-                    return TooltipWay.right;
+                    return displayWay == TooltipWay.leading ? TooltipWay.left : TooltipWay.right;
                 }
             }
             return displayWay;
         }
         else
         {
-            if ( !component.isShowing () )
+            if ( component == null || !component.isShowing () )
             {
                 return TooltipWay.down;
             }
@@ -422,7 +508,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             }
 
             final Dimension rootSize = glassPane.getSize ();
-            final Rectangle componentBounds = SwingUtils.getRelativeBounds ( component, glassPane );
+            final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
             final Dimension ps = WebCustomTooltip.this.getPreferredSize ();
 
             if ( componentBounds.y + getTooltipPoint ( component, TooltipWay.down ).y + ps.height < rootSize.height - windowSideSpacing )
@@ -453,15 +539,15 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     {
         if ( displayLocation == null )
         {
-            if ( tooltipWay.equals ( TooltipWay.down ) )
+            if ( tooltipWay == TooltipWay.down )
             {
                 return new Point ( component.getWidth () / 2, component.getHeight () - cornerLength / 2 + shadeWidth );
             }
-            else if ( tooltipWay.equals ( TooltipWay.up ) )
+            else if ( tooltipWay == TooltipWay.up )
             {
                 return new Point ( component.getWidth () / 2, cornerLength / 2 - shadeWidth );
             }
-            else if ( tooltipWay.equals ( TooltipWay.left ) )
+            else if ( tooltipWay == TooltipWay.left )
             {
                 return new Point ( cornerLength / 2 - shadeWidth, getHeight () / 2 );
             }
@@ -485,21 +571,17 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         final TooltipWay displayWay = getActualDisplayWay ();
 
         // Default margins
-        final int leftSpacing = shadeWidth + contentSpacing + leftRightSpacing +
-                ( displayWay.equals ( TooltipWay.right ) ? cornerLength : 0 );
-        final int rightSpacing = shadeWidth + contentSpacing + leftRightSpacing +
-                ( displayWay.equals ( TooltipWay.left ) ? cornerLength : 0 );
-        final int topSpacing = shadeWidth +
-                contentSpacing + ( displayWay.equals ( TooltipWay.down ) ? cornerLength : 0 );
-        final int bottomSpacing = shadeWidth +
-                contentSpacing + ( displayWay.equals ( TooltipWay.up ) ? cornerLength : 0 );
+        final int leftSpacing = shadeWidth + contentSpacing + leftRightSpacing + ( displayWay == TooltipWay.right ? cornerLength : 0 );
+        final int rightSpacing = shadeWidth + contentSpacing + leftRightSpacing + ( displayWay == TooltipWay.left ? cornerLength : 0 );
+        final int topSpacing = shadeWidth + contentSpacing + ( displayWay == TooltipWay.down ? cornerLength : 0 );
+        final int bottomSpacing = shadeWidth + contentSpacing + ( displayWay == TooltipWay.up ? cornerLength : 0 );
 
         // Additional hotkey margins
         final Insets hm = getHotkeyMargins ();
 
         // Updating border
-        setBorder ( BorderFactory
-                .createEmptyBorder ( topSpacing + hm.top, leftSpacing + hm.left, bottomSpacing + hm.bottom, rightSpacing + hm.right ) );
+        setBorder ( new WebBorder ( topSpacing + hm.top, leftSpacing + hm.left,
+                bottomSpacing + hm.bottom, rightSpacing + hm.right ) );
         revalidate ();
     }
 
@@ -563,17 +645,18 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     public void updateLocation ()
     {
         final Component component = getComponent ();
-        if ( getParent () != null && getParent ().isShowing () && component.isShowing () )
+        final Container parent = getParent ();
+        if ( component != null && component.isShowing () && parent != null && parent.isShowing () )
         {
             final TooltipWay displayWay = getActualDisplayWay ();
-            final Point p = getParent ().getLocationOnScreen ();
-            final Point c = component.getLocationOnScreen ();
+            final Point p = CoreSwingUtils.locationOnScreen ( parent );
+            final Point c = CoreSwingUtils.locationOnScreen ( component );
             final Dimension ps = getPreferredSize ();
 
             final int x0 = c.x - p.x;
             final int y0 = c.y - p.y;
 
-            if ( displayWay.equals ( TooltipWay.up ) || displayWay.equals ( TooltipWay.down ) )
+            if ( displayWay == TooltipWay.up || displayWay == TooltipWay.down )
             {
                 final int compMiddle;
                 final int compTipY;
@@ -585,29 +668,29 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                         if ( rtc == null )
                         {
                             compMiddle = x0 + component.getWidth () / 2;
-                            compTipY = y0 + ( displayWay.equals ( TooltipWay.up ) ? ( cornerLength / 2 - shadeWidth - ps.height ) :
-                                    ( component.getHeight () - cornerLength / 2 + shadeWidth ) );
+                            compTipY = y0 + ( displayWay == TooltipWay.up ? cornerLength / 2 - shadeWidth - ps.height :
+                                    component.getHeight () - cornerLength / 2 + shadeWidth );
                         }
                         else
                         {
-                            final Rectangle b = SwingUtils.getRelativeBounds ( rtc, component );
+                            final Rectangle b = CoreSwingUtils.getRelativeBounds ( rtc, component );
                             compMiddle = x0 + b.x + b.width / 2;
-                            compTipY = y0 + b.y + ( displayWay.equals ( TooltipWay.up ) ? ( cornerLength / 2 - shadeWidth - ps.height ) :
-                                    ( b.height - cornerLength / 2 + shadeWidth ) );
+                            compTipY = y0 + b.y + ( displayWay == TooltipWay.up ? cornerLength / 2 - shadeWidth - ps.height :
+                                    b.height - cornerLength / 2 + shadeWidth );
                         }
                     }
                     else
                     {
                         final Rectangle b = relativeToBounds;
                         compMiddle = x0 + b.x + b.width / 2;
-                        compTipY = y0 + b.y + ( displayWay.equals ( TooltipWay.up ) ? ( cornerLength / 2 - shadeWidth - ps.height ) :
-                                ( b.height - cornerLength / 2 + shadeWidth ) );
+                        compTipY = y0 + b.y + ( displayWay.equals ( TooltipWay.up ) ? cornerLength / 2 - shadeWidth - ps.height :
+                                b.height - cornerLength / 2 + shadeWidth );
                     }
                 }
                 else
                 {
                     compMiddle = x0 + displayLocation.x;
-                    compTipY = y0 + displayLocation.y - ( displayWay.equals ( TooltipWay.up ) ? ps.height : 0 );
+                    compTipY = y0 + displayLocation.y - ( displayWay == TooltipWay.up ? ps.height : 0 );
                 }
 
                 if ( compMiddle - ps.width / 2 < windowSideSpacing )
@@ -616,11 +699,11 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                     cornerPeak = Math.max ( shadeWidth + round + cornerSideX + 1, getWidth () / 2 - cw );
                     setLocation ( windowSideSpacing, compTipY );
                 }
-                else if ( compMiddle + ps.width / 2 > getParent ().getWidth () - windowSideSpacing )
+                else if ( compMiddle + ps.width / 2 > parent.getWidth () - windowSideSpacing )
                 {
-                    final int cw = ( compMiddle + ps.width / 2 ) - ( getParent ().getWidth () - windowSideSpacing );
+                    final int cw = compMiddle + ps.width / 2 - ( parent.getWidth () - windowSideSpacing );
                     cornerPeak = Math.min ( ps.width - shadeWidth - round - cornerSideX - 1, getWidth () / 2 + cw );
-                    setLocation ( getParent ().getWidth () - windowSideSpacing - ps.width, compTipY );
+                    setLocation ( parent.getWidth () - windowSideSpacing - ps.width, compTipY );
                 }
                 else
                 {
@@ -628,7 +711,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                     setLocation ( compMiddle - ps.width / 2, compTipY );
                 }
             }
-            else if ( displayWay.equals ( TooltipWay.left ) || displayWay.equals ( TooltipWay.right ) )
+            else if ( displayWay == TooltipWay.left || displayWay == TooltipWay.right )
             {
                 final int compMiddle;
                 final int compTipX;
@@ -640,29 +723,29 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                         if ( rtc == null )
                         {
                             compMiddle = y0 + component.getHeight () / 2;
-                            compTipX = x0 + ( displayWay.equals ( TooltipWay.left ) ? ( cornerLength / 2 - shadeWidth - ps.width ) :
-                                    ( component.getWidth () - cornerLength / 2 + shadeWidth ) );
+                            compTipX = x0 + ( displayWay == TooltipWay.left ? cornerLength / 2 - shadeWidth - ps.width :
+                                    component.getWidth () - cornerLength / 2 + shadeWidth );
                         }
                         else
                         {
-                            final Rectangle b = SwingUtils.getRelativeBounds ( rtc, component );
+                            final Rectangle b = CoreSwingUtils.getRelativeBounds ( rtc, component );
                             compMiddle = y0 + b.y + b.height / 2;
-                            compTipX = x0 + b.x + ( displayWay.equals ( TooltipWay.left ) ? ( cornerLength / 2 - shadeWidth - ps.width ) :
-                                    ( b.width - cornerLength / 2 + shadeWidth ) );
+                            compTipX = x0 + b.x + ( displayWay == TooltipWay.left ? cornerLength / 2 - shadeWidth - ps.width :
+                                    b.width - cornerLength / 2 + shadeWidth );
                         }
                     }
                     else
                     {
                         final Rectangle b = relativeToBounds;
                         compMiddle = y0 + b.y + b.height / 2;
-                        compTipX = x0 + b.x + ( displayWay.equals ( TooltipWay.left ) ? ( cornerLength / 2 - shadeWidth - ps.width ) :
-                                ( b.width - cornerLength / 2 + shadeWidth ) );
+                        compTipX = x0 + b.x + ( displayWay == TooltipWay.left ? cornerLength / 2 - shadeWidth - ps.width :
+                                b.width - cornerLength / 2 + shadeWidth );
                     }
                 }
                 else
                 {
                     compMiddle = y0 + displayLocation.y;
-                    compTipX = x0 + displayLocation.x - ( displayWay.equals ( TooltipWay.left ) ? ps.width : 0 );
+                    compTipX = x0 + displayLocation.x - ( displayWay == TooltipWay.left ? ps.width : 0 );
                 }
 
                 if ( compMiddle - ps.height / 2 < windowSideSpacing )
@@ -671,11 +754,11 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                     cornerPeak = Math.max ( shadeWidth + round + cornerSideX + 1, getHeight () / 2 - cw );
                     setLocation ( compTipX, windowSideSpacing );
                 }
-                else if ( compMiddle + ps.height / 2 > getParent ().getHeight () - windowSideSpacing )
+                else if ( compMiddle + ps.height / 2 > parent.getHeight () - windowSideSpacing )
                 {
-                    final int cw = ( compMiddle + ps.height / 2 ) - ( getParent ().getHeight () - windowSideSpacing );
+                    final int cw = compMiddle + ps.height / 2 - ( parent.getHeight () - windowSideSpacing );
                     cornerPeak = Math.min ( ps.height - shadeWidth - round - cornerSideX - 1, getHeight () / 2 + cw );
-                    setLocation ( compTipX, getParent ().getHeight () - windowSideSpacing - ps.height );
+                    setLocation ( compTipX, parent.getHeight () - windowSideSpacing - ps.height );
                 }
                 else
                 {
@@ -777,6 +860,20 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     {
         this.round = round;
         updateLocation ();
+    }
+
+    /**
+     * Tooltip shade type
+     */
+
+    public ShadeType getShadeType ()
+    {
+        return shadeType;
+    }
+
+    public void setShadeType ( ShadeType shadeType )
+    {
+        this.shadeType = shadeType;
     }
 
     /**
@@ -999,17 +1096,17 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     }
 
     /**
-     * Tooltip background transparency
+     * Tooltip background opacity
      */
 
-    public float getTrasparency ()
+    public float getOpacity ()
     {
-        return trasparency;
+        return opacity;
     }
 
-    public void setTrasparency ( final float trasparency )
+    public void setOpacity ( final float opacity )
     {
-        this.trasparency = trasparency;
+        this.opacity = opacity;
     }
 
     /**
@@ -1017,9 +1114,21 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      */
 
     @Override
-    public Shape provideShape ()
+    public Shape getShape ()
     {
         return getTooltipShape ( getActualDisplayWay (), true );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
     /**
@@ -1035,15 +1144,15 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         final Graphics2D g2d = ( Graphics2D ) g;
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
-        // Fade animation and transparency
+        // Fade animation and opacity
         if ( fade < 1f )
         {
             GraphicsUtils.setupAlphaComposite ( g2d, fade );
         }
         Composite oc = null;
-        if ( trasparency < 1f )
+        if ( opacity < 1f )
         {
-            oc = GraphicsUtils.setupAlphaComposite ( g2d, trasparency );
+            oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity );
         }
 
         // Tooltip settings
@@ -1057,7 +1166,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         }
 
         // Shade
-        GraphicsUtils.drawShade ( g2d, bs, WebCustomTooltipStyle.shadeType, shadeColor, shadeWidth );
+        GraphicsUtils.drawShade ( g2d, bs, shadeType, shadeColor, shadeWidth );
 
         // Background
         if ( topBgColor != null )
@@ -1065,7 +1174,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             if ( bottomBgColor != null )
             {
                 // Gradient background
-                if ( displayWay.equals ( TooltipWay.down ) )
+                if ( displayWay == TooltipWay.down )
                 {
                     g2d.setPaint ( new GradientPaint ( 0, getHeight () * 2 / 3, topBgColor, 0, getHeight (), bottomBgColor ) );
                 }
@@ -1109,37 +1218,35 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
         // Content area shape
         final float widthMinus =
-                ( displayWay.equals ( TooltipWay.left ) || displayWay.equals ( TooltipWay.right ) ? cornerLength + 1 : 1 ) - fillExtend +
-                        shadeWidth * 2;
+                ( displayWay == TooltipWay.left || displayWay == TooltipWay.right ? cornerLength + 1 : 1 ) - fillExtend + shadeWidth * 2;
         final float heightMinus =
-                ( displayWay.equals ( TooltipWay.up ) || displayWay.equals ( TooltipWay.down ) ? cornerLength + 1 : 1 ) - fillExtend +
-                        shadeWidth * 2;
-        borderShape = new Area ( new RoundRectangle2D.Double ( shadeWidth + ( displayWay.equals ( TooltipWay.right ) ? cornerLength : 0 ),
-                shadeWidth + ( displayWay.equals ( TooltipWay.down ) ? cornerLength : 0 ), getWidth () - widthMinus,
-                getHeight () - heightMinus, round * 2, round * 2 ) );
+                ( displayWay == TooltipWay.up || displayWay == TooltipWay.down ? cornerLength + 1 : 1 ) - fillExtend + shadeWidth * 2;
+        borderShape = new Area ( new RoundRectangle2D.Double ( shadeWidth + ( displayWay == TooltipWay.right ? cornerLength : 0 ),
+                shadeWidth + ( displayWay == TooltipWay.down ? cornerLength : 0 ), getWidth () - widthMinus, getHeight () - heightMinus,
+                round * 2, round * 2 ) );
 
         // Corner shape
         fillExtend = fill ? 0.5f : 0;
         final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        if ( displayWay.equals ( TooltipWay.up ) )
+        if ( displayWay == TooltipWay.up )
         {
             gp.moveTo ( cornerPeak + fillExtend, getHeight () - shadeWidth - 1 );
             gp.lineTo ( cornerPeak - cornerSideX + fillExtend, getHeight () - shadeWidth - 1 - cornerLength );
             gp.lineTo ( cornerPeak + cornerSideX + fillExtend, getHeight () - shadeWidth - 1 - cornerLength );
         }
-        else if ( displayWay.equals ( TooltipWay.down ) )
+        else if ( displayWay == TooltipWay.down )
         {
             gp.moveTo ( cornerPeak, shadeWidth );
             gp.lineTo ( cornerPeak - cornerSideX, shadeWidth + cornerLength );
             gp.lineTo ( cornerPeak + cornerSideX, shadeWidth + cornerLength );
         }
-        else if ( displayWay.equals ( TooltipWay.left ) )
+        else if ( displayWay == TooltipWay.left )
         {
             gp.moveTo ( getWidth () - shadeWidth - 1, cornerPeak + fillExtend );
             gp.lineTo ( getWidth () - shadeWidth - 1 - cornerLength, cornerPeak + fillExtend - cornerSideX );
             gp.lineTo ( getWidth () - shadeWidth - 1 - cornerLength, cornerPeak + fillExtend + cornerSideX );
         }
-        else if ( displayWay.equals ( TooltipWay.right ) )
+        else if ( displayWay == TooltipWay.right )
         {
             gp.moveTo ( shadeWidth, cornerPeak );
             gp.lineTo ( shadeWidth + cornerLength, cornerPeak - cornerSideX );
@@ -1202,11 +1309,10 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         }
     }
 
-    public static WebLabel createDefaultComponent ( final Icon icon, final String tooltip )
+    public static WebStyledLabel createDefaultComponent ( final Icon icon, final String tooltip )
     {
-        final WebLabel label = new WebLabel ( tooltip, icon );
-        label.setStyleId ( "custom-tooltip-label" );
-        label.setFont ( WebFonts.getSystemTooltipFont () );
+        final WebStyledLabel label = new WebStyledLabel ( StyleId.customtooltipLabel, tooltip, icon );
+        label.setFont ( WebLookAndFeel.toolTipFont != null ? WebLookAndFeel.toolTipFont : WebLookAndFeel.globalTooltipFont );
         return label;
     }
 }

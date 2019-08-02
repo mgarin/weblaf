@@ -32,9 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 27.10.11 Time: 14:58
+ * @author Mikle Garin
  */
-
 public class ImageTransition extends JComponent implements ActionListener
 {
     // Transition listeners
@@ -148,7 +147,7 @@ public class ImageTransition extends JComponent implements ActionListener
 
     public void setTransitionEffect ( final TransitionEffect transitionEffect )
     {
-        transitionEffects = transitionEffect != null ? CollectionUtils.copy ( transitionEffect ) : null;
+        transitionEffects = transitionEffect != null ? CollectionUtils.asList ( transitionEffect ) : null;
     }
 
     public void setTransitionEffects ( final List<TransitionEffect> transitionEffects )
@@ -158,7 +157,7 @@ public class ImageTransition extends JComponent implements ActionListener
 
     public void setTransitionEffects ( final TransitionEffect... transitionEffects )
     {
-        this.transitionEffects = transitionEffects != null ? CollectionUtils.copy ( transitionEffects ) : null;
+        this.transitionEffects = transitionEffects != null ? CollectionUtils.asList ( transitionEffects ) : null;
     }
 
     public void destroy ()

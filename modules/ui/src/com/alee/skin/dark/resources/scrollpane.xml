@@ -1,0 +1,198 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.scroll.WebScrollPane -->
+
+    <!-- Scroll pane -->
+    <style type="scrollpane">
+        <component>
+            <opaque>false</opaque>
+            <background>68,68,68</background>
+            <layout class="WebScrollPaneLayout$UIResource">
+                <Vertical leading="false" trailing="false" hovering="false" extending="true" />
+                <Horizontal leading="false" trailing="false" hovering="false" extending="true" />
+            </layout>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="77,81,83" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Viewport -->
+        <style type="viewport" id="viewport" />
+
+        <!-- Scroll bars -->
+        <style type="scrollbar" id="scrollbar" extends="decorated" />
+        <style type="scrollbar" id="vertical" extends="scrollbar" />
+        <style type="scrollbar" id="horizontal" extends="scrollbar" />
+
+        <!-- Corners -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,0,0" />
+                        <LineBorder color="20,20,20" />
+                        <ColorBackground color="106,110,112" />
+                    </decoration>
+                    <decoration states="lowerLeading">
+                        <WebShape sides="1,0,0,1" />
+                    </decoration>
+                    <decoration states="lowerTrailing">
+                        <WebShape sides="1,1,0,0" />
+                    </decoration>
+                    <decoration states="upperTrailing">
+                        <WebShape sides="0,1,1,0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Undecorated scroll pane -->
+    <style type="scrollpane" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Scroll pane with no focus display -->
+    <style type="scrollpane" id="nofocus">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="20,20,20" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent scroll pane -->
+    <style type="scrollpane" id="transparent" extends="undecorated">
+        <component>
+            <opaque>false</opaque>
+        </component>
+
+        <!-- Transprent viewport -->
+        <style type="viewport" id="viewport" extends="transparent" />
+
+        <!-- Undecorated scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="undecorated" />
+
+    </style>
+
+    <!-- Buttonless scroll pane -->
+    <style type="scrollpane" id="buttonless">
+
+        <!-- Transparent scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="buttonless" />
+
+    </style>
+
+    <!-- Undecorated buttonless scroll pane -->
+    <style type="scrollpane" id="undecorated-buttonless" extends="undecorated">
+
+        <!-- Undecorated scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="buttonless" />
+
+    </style>
+
+    <!-- Transparent buttonless scroll pane -->
+    <style type="scrollpane" id="transparent-buttonless" extends="transparent">
+
+        <!-- Transparent scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless" />
+
+    </style>
+
+    <!-- Hovering scroll pane -->
+    <style type="scrollpane" id="hovering">
+        <component>
+            <layout class="WebScrollPaneLayout$UIResource">
+                <Vertical leading="false" trailing="true" hovering="true" extending="false" />
+                <Horizontal leading="false" trailing="false" hovering="true" extending="true" />
+            </layout>
+        </component>
+
+        <!-- Scroll bars -->
+        <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless">
+            <painter>
+                <thumbRound>0</thumbRound>
+                <thumbMargin>0,0,0,0</thumbMargin>
+                <scrollBarWidth>9</scrollBarWidth>
+                <thumbBorderColor>20,20,20</thumbBorderColor>
+                <thumbBackgroundColor>210,210,210,48</thumbBackgroundColor>
+                <thumbDisabledBorderColor>68,72,74</thumbDisabledBorderColor>
+                <thumbDisabledBackgroundColor>210,210,210,24</thumbDisabledBackgroundColor>
+                <thumbRolloverBorderColor>20,20,20</thumbRolloverBorderColor>
+                <thumbRolloverBackgroundColor>240,240,240,64</thumbRolloverBackgroundColor>
+                <thumbPressedBorderColor>20,20,20</thumbPressedBorderColor>
+                <thumbPressedBackgroundColor>250,250,250,86</thumbPressedBackgroundColor>
+            </painter>
+        </style>
+        <style type="scrollbar" id="vertical" extends="scrollbar" padding="2,0,2,2" />
+        <style type="scrollbar" id="horizontal" extends="scrollbar" padding="2,2,2,2" />
+
+        <!-- Corners -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations overwrite="true" />
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Hovering scroll pane -->
+    <style type="scrollpane" id="transparent-hovering" extends="hovering">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+
+        <!-- Transprent viewport -->
+        <style type="viewport" id="viewport" extends="transparent" />
+
+    </style>
+
+    <!-- Popup scroll pane -->
+    <style type="scrollpane" id="popup" extends="transparent-hovering">
+        <component>
+            <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
+            <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
+        </component>
+
+        <!-- Popup list scrollbar -->
+        <style type="scrollbar" id="vertical" extends="undecorated-buttonless">
+            <painter>
+                <thumbRound>2</thumbRound>
+                <thumbMargin>0,0,0,3</thumbMargin>
+                <scrollBarWidth>10</scrollBarWidth>
+                <thumbBorderColor>20,20,20</thumbBorderColor>
+                <thumbBackgroundColor>210,210,210,48</thumbBackgroundColor>
+                <thumbDisabledBorderColor>68,72,74</thumbDisabledBorderColor>
+                <thumbDisabledBackgroundColor>210,210,210,24</thumbDisabledBackgroundColor>
+                <thumbRolloverBorderColor>20,20,20</thumbRolloverBorderColor>
+                <thumbRolloverBackgroundColor>240,240,240,64</thumbRolloverBackgroundColor>
+                <thumbPressedBorderColor>20,20,20</thumbPressedBorderColor>
+                <thumbPressedBackgroundColor>250,250,250,86</thumbPressedBackgroundColor>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

@@ -21,15 +21,14 @@ import java.awt.*;
 import java.awt.geom.*;
 
 /**
- * User: mgarin Date: 13.06.11 Time: 15:47
+ * @author Mikle Garin
  */
-
 public class ShapeStroke implements Stroke
 {
-    private Shape shapes[];
-    private float advance;
-    private boolean repeat = true;
-    private AffineTransform t = new AffineTransform ();
+    private final Shape shapes[];
+    private final float advance;
+    private final boolean repeat = true;
+    private final AffineTransform t = new AffineTransform ();
     private static final float FLATNESS = 1;
 
     public ShapeStroke ()
@@ -37,30 +36,30 @@ public class ShapeStroke implements Stroke
         this ( new Shape[]{ new Ellipse2D.Float ( 0, 0, 4, 4 ) }, 8f );
     }
 
-    public ShapeStroke ( Shape shapes, float advance )
+    public ShapeStroke ( final Shape shapes, final float advance )
     {
         this ( new Shape[]{ shapes }, advance );
     }
 
-    public ShapeStroke ( Shape shapes[], float advance )
+    public ShapeStroke ( final Shape[] shapes, final float advance )
     {
         this.advance = advance;
         this.shapes = new Shape[ shapes.length ];
 
         for ( int i = 0; i < this.shapes.length; i++ )
         {
-            Rectangle2D bounds = shapes[ i ].getBounds2D ();
+            final Rectangle2D bounds = shapes[ i ].getBounds2D ();
             t.setToTranslation ( -bounds.getCenterX (), -bounds.getCenterY () );
             this.shapes[ i ] = t.createTransformedShape ( shapes[ i ] );
         }
     }
 
     @Override
-    public Shape createStrokedShape ( Shape shape )
+    public Shape createStrokedShape ( final Shape shape )
     {
-        GeneralPath result = new GeneralPath ();
-        PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
-        float points[] = new float[ 6 ];
+        final GeneralPath result = new GeneralPath ();
+        final PathIterator it = new FlatteningPathIterator ( shape.getPathIterator ( null ), FLATNESS );
+        final float[] points = new float[ 6 ];
         float moveX = 0;
         float moveY = 0;
         float lastX = 0;
@@ -70,7 +69,7 @@ public class ShapeStroke implements Stroke
         int type;
         float next = 0;
         int currentShape = 0;
-        int length = shapes.length;
+        final int length = shapes.length;
 
         while ( currentShape < length && !it.isDone () )
         {
@@ -92,17 +91,17 @@ public class ShapeStroke implements Stroke
                 case PathIterator.SEG_LINETO:
                     thisX = points[ 0 ];
                     thisY = points[ 1 ];
-                    float dx = thisX - lastX;
-                    float dy = thisY - lastY;
-                    float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
+                    final float dx = thisX - lastX;
+                    final float dy = thisY - lastY;
+                    final float distance = ( float ) Math.sqrt ( dx * dx + dy * dy );
                     if ( distance >= next )
                     {
-                        float r = 1.0f / distance;
-                        float angle = ( float ) Math.atan2 ( dy, dx );
+                        final float r = 1.0f / distance;
+                        final float angle = ( float ) Math.atan2 ( dy, dx );
                         while ( currentShape < length && distance >= next )
                         {
-                            float x = lastX + next * dx * r;
-                            float y = lastY + next * dy * r;
+                            final float x = lastX + next * dx * r;
+                            final float y = lastY + next * dy * r;
                             t.setToTranslation ( x, y );
                             t.rotate ( angle );
                             result.append ( t.createTransformedShape ( shapes[ currentShape ] ), false );
@@ -121,8 +120,6 @@ public class ShapeStroke implements Stroke
             }
             it.next ();
         }
-
         return result;
     }
-
 }

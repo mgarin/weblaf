@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema targetNamespace="http://weblookandfeel.com/XmlSkinExtension"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.lang="java.lang"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="ext/Resource.xsd" />
+    <xs:include schemaLocation="ComponentStyle.xsd" />
+
+    <!-- com.alee.managers.style.XmlSkinExtension -->
+    <xs:element name="skin">
+
+        <!-- com.alee.managers.style.data.SkinInfo -->
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+
+                <!-- Unique extension identifier -->
+                <xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+                <!-- Extension base class -->
+                <xs:element name="class" type="java.lang:Class" minOccurs="0" maxOccurs="1" />
+
+                <!-- Identifiers of skins that are extended -->
+                <xs:element name="extends" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+
+                <!-- Extension description -->
+                <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+                <!-- Extension author -->
+                <xs:element name="author" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+                <!-- Elements which position can be mixed -->
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+                    <!-- Icon sets-->
+                    <xs:element name="iconSet" type="java.lang:Class" />
+
+                    <!-- Includes -->
+                    <xs:element name="include" type="Resource" />
+
+                    <!-- Styles -->
+                    <xs:element name="style" type="ComponentStyle" />
+
+                </xs:choice>
+
+            </xs:sequence>
+        </xs:complexType>
+
+    </xs:element>
+
+</xs:schema>

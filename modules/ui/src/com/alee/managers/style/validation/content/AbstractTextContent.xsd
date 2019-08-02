@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractContent.xsd" />
+    <xs:include schemaLocation="../ext/TextRasterization.xsd" />
+
+    <!-- com.alee.painter.decoration.content.AbstractTextContent -->
+    <xs:complexType name="AbstractTextContent">
+        <xs:complexContent>
+            <xs:extension base="AbstractContent">
+
+                <!-- Preferred text antialias option -->
+                <xs:attribute name="rasterization" type="TextRasterization" />
+
+                <!-- Text foreground color -->
+                <xs:attribute name="color" type="java.awt:Color" />
+
+                <!-- Horizontal text alignment -->
+                <xs:attribute name="halign" type="xs:integer" />
+
+                <!-- Vertical text alignment -->
+                <xs:attribute name="valign" type="xs:integer" />
+
+                <!-- Whether or not text should be truncated when it gets outside of the available bounds -->
+                <xs:attribute name="truncate" type="xs:boolean" />
+
+                <!-- Whether or not should paint text shadow -->
+                <xs:attribute name="shadow" type="xs:boolean" />
+
+                <!-- Text shadow color -->
+                <xs:attribute name="shadowColor" type="java.awt:Color" />
+
+                <!-- Text shadow size -->
+                <xs:attribute name="shadowSize" type="xs:integer" />
+
+                <!-- Text shadow opacity -->
+                <xs:attribute name="shadowOpacity" type="xs:float" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

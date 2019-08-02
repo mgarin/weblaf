@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- com.alee.managers.language.data.Text -->
+    <xs:complexType name="Text">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+
+                <!-- Text state -->
+                <xs:attribute name="state" type="xs:string" use="optional"/>
+
+                <!-- Text mnemonic -->
+                <xs:attribute name="mnemonic" type="xs:string" use="optional"/>
+
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+</xs:schema>

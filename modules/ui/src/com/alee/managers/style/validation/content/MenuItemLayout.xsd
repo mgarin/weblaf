@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractMenuItemLayout.xsd" />
+
+    <!-- com.alee.laf.menu.MenuItemLayout -->
+    <xs:complexType name="MenuItemLayout">
+        <xs:complexContent>
+            <xs:extension base="AbstractMenuItemLayout">
+
+                <!-- Whether or not menu items text should be aligned by maximum icon size -->
+                <xs:attribute name="alignTextByIcons" type="xs:boolean" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>
