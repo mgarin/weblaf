@@ -26,6 +26,7 @@ import com.alee.managers.language.data.Dictionary;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.SystemUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -55,16 +56,19 @@ public final class ComponentInstantiationTest
     @BeforeClass
     public static void initialize ()
     {
-        CoreSwingUtils.invokeAndWait ( new Runnable ()
+        if ( !SystemUtils.isHeadlessEnvironment () )
         {
-            @Override
-            public void run ()
+            CoreSwingUtils.invokeAndWait ( new Runnable ()
             {
-                WebLookAndFeel.setForceSingleEventsThread ( true );
-                WebLookAndFeel.install ();
-                LanguageManager.addDictionary ( new Dictionary ( ComponentInstantiationTest.class, "resources/language.xml" ) );
-            }
-        } );
+                @Override
+                public void run ()
+                {
+                    WebLookAndFeel.setForceSingleEventsThread ( true );
+                    WebLookAndFeel.install ();
+                    LanguageManager.addDictionary ( new Dictionary ( ComponentInstantiationTest.class, "resources/language.xml" ) );
+                }
+            } );
+        }
     }
 
     /**
@@ -73,17 +77,20 @@ public final class ComponentInstantiationTest
     @Test
     public void canvas ()
     {
-        CoreSwingUtils.invokeAndWait ( new Runnable ()
+        if ( !SystemUtils.isHeadlessEnvironment () )
         {
-            @Override
-            public void run ()
+            CoreSwingUtils.invokeAndWait ( new Runnable ()
             {
-                new WebCanvas ();
-                new WebCanvas ( DecorationState.hover );
-                new WebCanvas ( StyleId.canvasGripperC );
-                new WebCanvas ( StyleId.canvasGripperC, DecorationState.hover );
-            }
-        } );
+                @Override
+                public void run ()
+                {
+                    new WebCanvas ();
+                    new WebCanvas ( DecorationState.hover );
+                    new WebCanvas ( StyleId.canvasGripperC );
+                    new WebCanvas ( StyleId.canvasGripperC, DecorationState.hover );
+                }
+            } );
+        }
     }
 
     /**
@@ -92,29 +99,32 @@ public final class ComponentInstantiationTest
     @Test
     public void image ()
     {
-        CoreSwingUtils.invokeAndWait ( new Runnable ()
+        if ( !SystemUtils.isHeadlessEnvironment () )
         {
-            @Override
-            public void run ()
+            CoreSwingUtils.invokeAndWait ( new Runnable ()
             {
-                new WebImage ();
-                new WebImage ( ComponentInstantiationTest.class, "resources/image.png" );
-                new WebImage ( ComponentInstantiationTest.class.getResource ( "resources/image.png" ) );
-                new WebImage ( icon16 () );
-                new WebImage ( imageIcon16 () );
-                new WebImage ( image16 () );
-                new WebImage ( renderedImage16 () );
-                new WebImage ( bufferedImage16 () );
-                new WebImage ( StyleId.imagePortrait );
-                new WebImage ( StyleId.imagePortrait, ComponentInstantiationTest.class, "resources/image.png" );
-                new WebImage ( StyleId.imagePortrait, ComponentInstantiationTest.class.getResource ( "resources/image.png" ) );
-                new WebImage ( StyleId.imagePortrait, icon16 () );
-                new WebImage ( StyleId.imagePortrait, imageIcon16 () );
-                new WebImage ( StyleId.imagePortrait, image16 () );
-                new WebImage ( StyleId.imagePortrait, renderedImage16 () );
-                new WebImage ( StyleId.imagePortrait, bufferedImage16 () );
-            }
-        } );
+                @Override
+                public void run ()
+                {
+                    new WebImage ();
+                    new WebImage ( ComponentInstantiationTest.class, "resources/image.png" );
+                    new WebImage ( ComponentInstantiationTest.class.getResource ( "resources/image.png" ) );
+                    new WebImage ( icon16 () );
+                    new WebImage ( imageIcon16 () );
+                    new WebImage ( image16 () );
+                    new WebImage ( renderedImage16 () );
+                    new WebImage ( bufferedImage16 () );
+                    new WebImage ( StyleId.imagePortrait );
+                    new WebImage ( StyleId.imagePortrait, ComponentInstantiationTest.class, "resources/image.png" );
+                    new WebImage ( StyleId.imagePortrait, ComponentInstantiationTest.class.getResource ( "resources/image.png" ) );
+                    new WebImage ( StyleId.imagePortrait, icon16 () );
+                    new WebImage ( StyleId.imagePortrait, imageIcon16 () );
+                    new WebImage ( StyleId.imagePortrait, image16 () );
+                    new WebImage ( StyleId.imagePortrait, renderedImage16 () );
+                    new WebImage ( StyleId.imagePortrait, bufferedImage16 () );
+                }
+            } );
+        }
     }
 
     /**
@@ -123,31 +133,34 @@ public final class ComponentInstantiationTest
     @Test
     public void label ()
     {
-        CoreSwingUtils.invokeAndWait ( new Runnable ()
+        if ( !SystemUtils.isHeadlessEnvironment () )
         {
-            @Override
-            public void run ()
+            CoreSwingUtils.invokeAndWait ( new Runnable ()
             {
-                new WebLabel ();
-                new WebLabel ( WebLabel.CENTER );
-                new WebLabel ( icon16 () );
-                new WebLabel ( icon16 (), WebLabel.CENTER );
-                new WebLabel ( "Sample text" );
-                new WebLabel ( "weblaf.test.sample" );
-                new WebLabel ( "weblaf.test.sample", WebLabel.CENTER );
-                new WebLabel ( "weblaf.test.sample", icon16 () );
-                new WebLabel ( "weblaf.test.sample", icon16 (), WebLabel.CENTER );
-                new WebLabel ( StyleId.labelShadow );
-                new WebLabel ( StyleId.labelShadow, WebLabel.CENTER );
-                new WebLabel ( StyleId.labelShadow, icon16 () );
-                new WebLabel ( StyleId.labelShadow, icon16 (), WebLabel.CENTER );
-                new WebLabel ( StyleId.labelShadow, "Sample text" );
-                new WebLabel ( StyleId.labelShadow, "weblaf.test.sample" );
-                new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", WebLabel.CENTER );
-                new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", icon16 () );
-                new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", icon16 (), WebLabel.CENTER );
-            }
-        } );
+                @Override
+                public void run ()
+                {
+                    new WebLabel ();
+                    new WebLabel ( WebLabel.CENTER );
+                    new WebLabel ( icon16 () );
+                    new WebLabel ( icon16 (), WebLabel.CENTER );
+                    new WebLabel ( "Sample text" );
+                    new WebLabel ( "weblaf.test.sample" );
+                    new WebLabel ( "weblaf.test.sample", WebLabel.CENTER );
+                    new WebLabel ( "weblaf.test.sample", icon16 () );
+                    new WebLabel ( "weblaf.test.sample", icon16 (), WebLabel.CENTER );
+                    new WebLabel ( StyleId.labelShadow );
+                    new WebLabel ( StyleId.labelShadow, WebLabel.CENTER );
+                    new WebLabel ( StyleId.labelShadow, icon16 () );
+                    new WebLabel ( StyleId.labelShadow, icon16 (), WebLabel.CENTER );
+                    new WebLabel ( StyleId.labelShadow, "Sample text" );
+                    new WebLabel ( StyleId.labelShadow, "weblaf.test.sample" );
+                    new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", WebLabel.CENTER );
+                    new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", icon16 () );
+                    new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", icon16 (), WebLabel.CENTER );
+                }
+            } );
+        }
     }
 
     /**
@@ -206,13 +219,16 @@ public final class ComponentInstantiationTest
     @AfterClass
     public static void destroy ()
     {
-        CoreSwingUtils.invokeAndWait ( new Runnable ()
+        if ( !SystemUtils.isHeadlessEnvironment () )
         {
-            @Override
-            public void run ()
+            CoreSwingUtils.invokeAndWait ( new Runnable ()
             {
-                WebLookAndFeel.uninstall ();
-            }
-        } );
+                @Override
+                public void run ()
+                {
+                    WebLookAndFeel.uninstall ();
+                }
+            } );
+        }
     }
 }
