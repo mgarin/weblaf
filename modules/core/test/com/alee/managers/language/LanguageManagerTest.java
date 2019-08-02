@@ -398,8 +398,8 @@ public final class LanguageManagerTest
         if ( !languageFor ( code, country ).containsText ( key ) )
         {
             throw new LanguageException ( String.format (
-                    "Translation for lang[%s] country[%s] key[%s] still exists",
-                    code, country, key
+                "Translation for lang[%s] country[%s] key[%s] still exists",
+                code, country, key
             ) );
         }
     }
@@ -416,8 +416,8 @@ public final class LanguageManagerTest
         if ( !result.equals ( expected ) )
         {
             throw new LanguageException ( String.format (
-                    "Unexpected translation for key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
-                    key, expected, result
+                "Unexpected translation for key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
+                key, expected, result
             ) );
         }
     }
@@ -436,8 +436,8 @@ public final class LanguageManagerTest
         if ( !result.equals ( expected ) )
         {
             throw new LanguageException ( String.format (
-                    "Unexpected translation for lang[%s] country[%s] key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
-                    code, country, key, expected, result
+                "Unexpected translation for lang[%s] country[%s] key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
+                code, country, key, expected, result
             ) );
         }
     }
@@ -454,8 +454,8 @@ public final class LanguageManagerTest
         if ( languageFor ( code, country ).containsText ( key ) )
         {
             throw new LanguageException ( String.format (
-                    "Translation for lang[%s] country[%s] key[%s] still exists",
-                    code, country, key
+                "Translation for lang[%s] country[%s] key[%s] still exists",
+                code, country, key
             ) );
         }
     }

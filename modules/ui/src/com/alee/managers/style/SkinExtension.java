@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.set.IconSet;
 
 import javax.swing.*;
@@ -40,6 +41,7 @@ public interface SkinExtension extends Identifiable
      *
      * @return unique extension ID
      */
+    @NotNull
     @Override
     public String getId ();
 

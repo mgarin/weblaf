@@ -17,18 +17,21 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
  * Adapter for {@link MultiSplitExpansionListener}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
+ * @see WebMultiSplitPane
  */
-
 public abstract class MultiSplitExpansionAdapter implements MultiSplitExpansionListener
 {
     @Override
-    public void viewExpanded ( final WebMultiSplitPane multiSplitPane, final Component view )
+    public void viewExpanded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
     {
         /**
          * Do nothing by default.
@@ -36,7 +39,7 @@ public abstract class MultiSplitExpansionAdapter implements MultiSplitExpansionL
     }
 
     @Override
-    public void viewCollapsed ( final WebMultiSplitPane multiSplitPane, final Component view )
+    public void viewCollapsed ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
     {
         /**
          * Do nothing by default.

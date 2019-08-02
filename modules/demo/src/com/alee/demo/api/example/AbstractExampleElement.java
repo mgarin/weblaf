@@ -28,7 +28,6 @@ import java.net.URL;
 /**
  * @author Mikle Garin
  */
-
 public abstract class AbstractExampleElement implements ExampleElement
 {
     /**

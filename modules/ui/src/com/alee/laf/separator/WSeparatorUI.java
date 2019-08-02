@@ -37,6 +37,12 @@ public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI imp
     protected C separator;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Separator.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving separator reference
@@ -62,12 +68,6 @@ public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI imp
         separator = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Separator.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI imp
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI imp
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

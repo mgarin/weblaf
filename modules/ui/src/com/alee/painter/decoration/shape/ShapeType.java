@@ -22,7 +22,6 @@ package com.alee.painter.decoration.shape;
  *
  * @author Mikle Garin
  */
-
 public enum ShapeType
 {
     /**

@@ -28,7 +28,6 @@ import com.alee.managers.style.StyleId;
 /**
  * @author Mikle Garin
  */
-
 public class LanguageEditor extends WebPanel
 {
     private final DictionariesTree dictionariesTree;

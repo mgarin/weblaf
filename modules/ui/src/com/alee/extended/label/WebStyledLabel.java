@@ -19,7 +19,7 @@ package com.alee.extended.label;
 
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -123,21 +123,21 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param icon icon
-     */
-    public WebStyledLabel ( final Icon icon )
-    {
-        this ( StyleId.auto, icon );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param horizontalAlignment horizontal alignment
      */
     public WebStyledLabel ( final int horizontalAlignment )
     {
         this ( StyleId.auto, horizontalAlignment );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param icon icon
+     */
+    public WebStyledLabel ( final Icon icon )
+    {
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -210,23 +210,23 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
-     * @param icon icon
-     */
-    public WebStyledLabel ( final StyleId id, final Icon icon )
-    {
-        this ( id, null, icon, LEADING, LM.emptyData );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param id                  style ID
      * @param horizontalAlignment horizontal alignment
      */
     public WebStyledLabel ( final StyleId id, final int horizontalAlignment )
     {
         this ( id, null, null, horizontalAlignment, LM.emptyData );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param icon icon
+     */
+    public WebStyledLabel ( final StyleId id, final Icon icon )
+    {
+        this ( id, null, icon, LEADING, LM.emptyData );
     }
 
     /**

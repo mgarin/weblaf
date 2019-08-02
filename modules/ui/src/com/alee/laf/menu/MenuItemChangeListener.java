@@ -30,7 +30,6 @@ import java.beans.PropertyChangeListener;
  *
  * @author Mikle Garin
  */
-
 public class MenuItemChangeListener implements ChangeListener, PropertyChangeListener
 {
     /**

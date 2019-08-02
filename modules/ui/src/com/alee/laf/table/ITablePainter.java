@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ITablePainter<C extends JTable, U extends WebTableUI> extends SpecificPainter<C, U>
 {
     /**

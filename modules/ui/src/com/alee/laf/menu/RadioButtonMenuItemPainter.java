@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class RadioButtonMenuItemPainter<C extends JRadioButtonMenuItem, U extends WebRadioButtonMenuItemUI, D extends IDecoration<C, D>>
         extends AbstractStateMenuItemPainter<C, U, D> implements IRadioButtonMenuItemPainter<C, U>
 {

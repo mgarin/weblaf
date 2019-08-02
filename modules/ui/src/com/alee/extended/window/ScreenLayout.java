@@ -25,7 +25,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public interface ScreenLayout<W extends Window, C>
 {
     /**

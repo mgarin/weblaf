@@ -22,7 +22,6 @@ package com.alee.extended.image;
  *
  * @author Mikle Garin
  */
-
 public enum DisplayType
 {
     /**

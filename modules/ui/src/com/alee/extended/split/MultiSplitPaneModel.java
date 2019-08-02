@@ -17,6 +17,9 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
@@ -30,7 +33,6 @@ import java.util.List;
  * @see WebMultiSplitPaneModel
  * @see WebMultiSplitPane
  */
-
 public interface MultiSplitPaneModel extends LayoutManager, Serializable
 {
     /**
@@ -40,14 +42,15 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param views          initial {@link MultiSplitView}s
      * @param dividers       initial {@link WebMultiSplitPaneDivider}s
      */
-    public void install ( WebMultiSplitPane multiSplitPane, List<MultiSplitView> views, List<WebMultiSplitPaneDivider> dividers );
+    public void install ( @NotNull WebMultiSplitPane multiSplitPane, @Nullable List<MultiSplitView> views,
+                          @Nullable List<WebMultiSplitPaneDivider> dividers );
 
     /**
      * Uninstalls this {@link MultiSplitPaneModel} from the specified {@link WebMultiSplitPane}.
      *
      * @param multiSplitPane {@link WebMultiSplitPane} this model should be uninstalled from
      */
-    public void uninstall ( WebMultiSplitPane multiSplitPane );
+    public void uninstall ( @NotNull WebMultiSplitPane multiSplitPane );
 
     /**
      * Adds {@link MultiSplitView} based on specified {@link Component} and constraints.
@@ -55,7 +58,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param component   {@link MultiSplitView} {@link Component}
      * @param constraints {@link MultiSplitView} constraints
      */
-    public void addComponent ( Component component, Object constraints );
+    public void addComponent ( @NotNull Component component, @Nullable Object constraints );
 
     /**
      * Moves {@link MultiSplitView} containing specified {@link Component} to the specified index.
@@ -63,14 +66,14 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param component {@link MultiSplitView} {@link Component}
      * @param index     index to move {@link MultiSplitView} to
      */
-    public void moveComponent ( Component component, int index );
+    public void moveComponent ( @NotNull Component component, int index );
 
     /**
      * Removes {@link MultiSplitView} containing specified {@link Component}.
      *
      * @param component {@link MultiSplitView} {@link Component}
      */
-    public void removeComponent ( Component component );
+    public void removeComponent ( @NotNull Component component );
 
     /**
      * Returns amount of all {@link MultiSplitView}s contained in {@link MultiSplitPaneModel}.
@@ -84,6 +87,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      *
      * @return copy of the {@link List} of all {@link MultiSplitView}s contained in {@link MultiSplitPaneModel}
      */
+    @Nullable
     public List<MultiSplitView> getViews ();
 
     /**
@@ -92,14 +96,16 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param component {@link Component} contained in {@link MultiSplitView}
      * @return index of the {@link MultiSplitView} that contains specified {@link Component}
      */
-    public int getViewIndex ( Component component );
+    public int getViewIndex ( @NotNull Component component );
 
     /**
      * Returns {@link Component} from {@link MultiSplitView} at the specified index.
      *
      * @param index {@link MultiSplitView} index
      * @return {@link Component} from {@link MultiSplitView} at the specified index
+     * @throws IndexOutOfBoundsException if there is no view at the specified index
      */
+    @NotNull
     public Component getViewComponent ( int index );
 
     /**
@@ -107,6 +113,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      *
      * @return copy of the {@link List} of all {@link Component}s from {@link MultiSplitView}s in {@link MultiSplitPaneModel}
      */
+    @NotNull
     public List<Component> getViewComponents ();
 
     /**
@@ -114,6 +121,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      *
      * @return copy of the {@link List} of all {@link WebMultiSplitPaneDivider}s used by {@link WebMultiSplitPane}
      */
+    @NotNull
     public List<WebMultiSplitPaneDivider> getDividers ();
 
     /**
@@ -122,13 +130,14 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param divider {@link WebMultiSplitPaneDivider} to find
      * @return index of the specified {@link WebMultiSplitPaneDivider}
      */
-    public int getDividerIndex ( WebMultiSplitPaneDivider divider );
+    public int getDividerIndex ( @NotNull WebMultiSplitPaneDivider divider );
 
     /**
      * Returns {@link MultiSplitState} describing current {@link WebMultiSplitPane} state.
      *
      * @return {@link MultiSplitState} describing current {@link WebMultiSplitPane} state
      */
+    @Nullable
     public MultiSplitState getMultiSplitState ();
 
     /**
@@ -136,7 +145,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      *
      * @param state{@link MultiSplitState} to update {@link WebMultiSplitPane} with
      */
-    public void setMultiSplitState ( MultiSplitState state );
+    public void setMultiSplitState ( @NotNull MultiSplitState state );
 
     /**
      * Resets {@link MultiSplitViewState}s to the initial ones dictated by {@link MultiSplitConstraints}.
@@ -182,15 +191,17 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * Toggles expansion state for the view positioned to the left of the {@link WebMultiSplitPaneDivider}.
      *
      * @param divider {@link WebMultiSplitPaneDivider} to determine toggle index
+     * @throws IndexOutOfBoundsException if specified {@link WebMultiSplitPaneDivider} isn't added to the {@link WebMultiSplitPane}
      */
-    public void toggleViewToLeft ( WebMultiSplitPaneDivider divider );
+    public void toggleViewToLeft ( @NotNull WebMultiSplitPaneDivider divider );
 
     /**
      * Toggles expansion state for the view positioned to the right of the {@link WebMultiSplitPaneDivider}.
      *
      * @param divider {@link WebMultiSplitPaneDivider} to determine toggle index
+     * @throws IndexOutOfBoundsException if specified {@link WebMultiSplitPaneDivider} isn't added to the {@link WebMultiSplitPane}
      */
-    public void toggleViewToRight ( WebMultiSplitPaneDivider divider );
+    public void toggleViewToRight ( @NotNull WebMultiSplitPaneDivider divider );
 
     /**
      * Returns whether or not drag for the specified {@link WebMultiSplitPaneDivider} is available.
@@ -198,13 +209,14 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param divider {@link WebMultiSplitPaneDivider} to check drag availability for
      * @return {@code true} if drag for the specified {@link WebMultiSplitPaneDivider} is available, {@code false} otherwise
      */
-    public boolean isDragAvailable ( WebMultiSplitPaneDivider divider );
+    public boolean isDragAvailable ( @NotNull WebMultiSplitPaneDivider divider );
 
     /**
      * Returns currently dragged {@link WebMultiSplitPaneDivider} or {@code null} if no drag operation is happening at the time.
      *
      * @return currently dragged {@link WebMultiSplitPaneDivider} or {@code null} if no drag operation is happening at the time
      */
+    @Nullable
     public WebMultiSplitPaneDivider getDraggedDivider ();
 
     /**
@@ -213,7 +225,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param divider {@link WebMultiSplitPaneDivider} that is being dragged
      * @param e       {@link MouseEvent}
      */
-    public void dividerDragStarted ( WebMultiSplitPaneDivider divider, MouseEvent e );
+    public void dividerDragStarted ( @NotNull WebMultiSplitPaneDivider divider, @NotNull MouseEvent e );
 
     /**
      * Performs {@link WebMultiSplitPaneDivider} drag.
@@ -221,7 +233,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param divider {@link WebMultiSplitPaneDivider} that is being dragged
      * @param e       {@link MouseEvent}
      */
-    public void dividerDragged ( WebMultiSplitPaneDivider divider, MouseEvent e );
+    public void dividerDragged ( @NotNull WebMultiSplitPaneDivider divider, @NotNull MouseEvent e );
 
     /**
      * Cleans up resources used for {@link WebMultiSplitPaneDivider} drag.
@@ -229,5 +241,5 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
      * @param divider {@link WebMultiSplitPaneDivider} that is being dragged
      * @param e       {@link MouseEvent}
      */
-    public void dividerDragEnded ( WebMultiSplitPaneDivider divider, MouseEvent e );
+    public void dividerDragEnded ( @NotNull WebMultiSplitPaneDivider divider, @NotNull MouseEvent e );
 }

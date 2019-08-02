@@ -26,7 +26,6 @@ package com.alee.api.ui;
  * @see TextBridge
  * @see ForegroundBridge
  */
-
 public interface RenderingBridge
 {
     /**

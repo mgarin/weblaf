@@ -30,7 +30,6 @@ import java.awt.image.BufferedImage;
 /**
  * @author Mikle Garin
  */
-
 public class CurtainTransitionEffect extends DefaultTransitionEffect
 {
     private static final String CURTAIN_SIZE = "CURTAIN_SIZE";

@@ -26,7 +26,6 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStepProgress">How to use WebStepProgress</a>
  * @see com.alee.extended.progress.WebStepProgress
  */
-
 public final class WebStepProgressStyle
 {
     /**

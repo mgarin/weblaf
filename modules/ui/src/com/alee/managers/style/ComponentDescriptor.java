@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -32,7 +33,6 @@ import javax.swing.plaf.ComponentUI;
  * @see StyleManager
  * @see StyleManager#registerComponentDescriptor(ComponentDescriptor)
  * @see StyleManager#unregisterComponentDescriptor(ComponentDescriptor)
- * @see StyleManager#initializeDescriptors()
  * @see AbstractComponentDescriptor
  */
 public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI> extends Identifiable
@@ -49,6 +49,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return UI class ID
      */
+    @NotNull
     public String getUIClassId ();
 
     /**
@@ -88,6 +89,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return component identifier
      */
+    @NotNull
     @Override
     public String getId ();
 

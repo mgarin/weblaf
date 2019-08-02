@@ -28,7 +28,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface ITableCellPainter<C extends JTable, U extends WebTableUI> extends SectionPainter<C, U>
 {
     /**

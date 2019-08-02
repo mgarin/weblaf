@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
@@ -39,7 +40,6 @@ import java.util.Map;
  * @see StyleManager
  * @see StyleManager#registerComponentDescriptor(ComponentDescriptor)
  * @see StyleManager#unregisterComponentDescriptor(ComponentDescriptor)
- * @see StyleManager#initializeDescriptors()
  */
 public abstract class AbstractComponentDescriptor<C extends JComponent, U extends ComponentUI> implements ComponentDescriptor<C, U>
 {
@@ -68,6 +68,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     /**
      * Component UI class identifier.
      */
+    @NotNull
     protected final String uiClassId;
 
     /**
@@ -95,7 +96,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
      * @param uiClass        UI class applied to the component by default
      * @param defaultStyleId component default style ID
      */
-    public AbstractComponentDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
+    public AbstractComponentDescriptor ( final String id, final Class<C> componentClass, @NotNull final String uiClassId,
                                          final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
     {
         super ();
@@ -113,6 +114,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         return componentClass;
     }
 
+    @NotNull
     @Override
     public String getUIClassId ()
     {
@@ -153,6 +155,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         return styleId;
     }
 
+    @NotNull
     @Override
     public String getId ()
     {
@@ -279,7 +282,8 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     @Override
     public String toString ()
     {
-        final String parameters = TextUtils.arrayToString ( ", ", componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        final Object[] data = { componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId };
+        final String parameters = TextUtils.arrayToString ( ", ", data );
         return getId () + "[" + parameters + "]";
     }
 }

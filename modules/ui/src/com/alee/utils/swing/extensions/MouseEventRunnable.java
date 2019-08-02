@@ -24,7 +24,6 @@ import java.awt.event.MouseEvent;
  *
  * @author Mikle Garin
  */
-
 public interface MouseEventRunnable
 {
     /**

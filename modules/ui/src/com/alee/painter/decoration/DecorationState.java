@@ -164,9 +164,15 @@ public interface DecorationState
     public static final String empty = "empty";
 
     /**
+     * Used to provide state for components that might have an icon.
+     *
+     * @see com.alee.extended.collapsible.WebCollapsiblePane.TitleLabel#getStates()
+     */
+    public static final String hasIcon = "has-icon";
+
+    /**
      * Used to provide component collapsed state.
      *
-     * @see com.alee.extended.panel.WebCollapsiblePane.HeaderPanel#getStates()
      * @see com.alee.laf.combobox.WebComboBoxRenderer#getStates()
      * @see com.alee.laf.combobox.ComboBoxPainter#getDecorationStates()
      * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxButton#getStates()
@@ -175,13 +181,14 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     * @see com.alee.extended.collapsible.WebCollapsiblePane.TitleLabel#getStates()
+     * @see com.alee.extended.collapsible.WebCollapsiblePane.HeaderPanel#getStates()
      */
     public static final String collapsed = "collapsed";
 
     /**
      * Used to provide component expanded state.
      *
-     * @see com.alee.extended.panel.WebCollapsiblePane.HeaderPanel#getStates()
      * @see com.alee.laf.combobox.WebComboBoxRenderer#getStates()
      * @see com.alee.laf.combobox.ComboBoxPainter#getDecorationStates()
      * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxButton#getStates()
@@ -190,6 +197,8 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     * @see com.alee.extended.collapsible.WebCollapsiblePane.TitleLabel#getStates()
+     * @see com.alee.extended.collapsible.WebCollapsiblePane.HeaderPanel#getStates()
      */
     public static final String expanded = "expanded";
 

@@ -17,7 +17,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public abstract class AbstractSeparatorPainter<C extends JSeparator, U extends SeparatorUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IAbstractSeparatorPainter<C, U>
 {

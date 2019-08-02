@@ -26,7 +26,6 @@ import javax.swing.tree.TreeCellRenderer;
  *
  * @author Mikle Garin
  */
-
 public interface CheckBoxTreeCellRenderer extends TreeCellRenderer
 {
     /**

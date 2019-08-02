@@ -31,7 +31,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptivePopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> extends AdaptivePainter<C, U>
         implements IPopupMenuPainter<C, U>
 {
@@ -54,6 +53,8 @@ public final class AdaptivePopupMenuPainter<C extends JPopupMenu, U extends WPop
     @Override
     public void configurePopup ( final C popupMenu, final Component invoker, final int x, final int y, final Popup popup )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

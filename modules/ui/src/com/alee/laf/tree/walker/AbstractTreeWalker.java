@@ -32,7 +32,6 @@ import javax.swing.tree.TreeNode;
  * @param <M> tree model type
  * @author Mikle Garin
  */
-
 public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel> implements TreeWalker<N>
 {
     /**

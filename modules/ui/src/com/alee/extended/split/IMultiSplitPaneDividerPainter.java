@@ -28,7 +28,6 @@ import com.alee.painter.SpecificPainter;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
  */
-
 public interface IMultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U extends WMultiSplitPaneDividerUI>
         extends SpecificPainter<C, U>
 {

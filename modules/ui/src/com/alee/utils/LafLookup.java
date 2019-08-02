@@ -51,7 +51,7 @@ public final class LafLookup
     public static InputMap getInputMap ( final JComponent component, final int condition )
     {
         final ComponentUI ui = LafUtils.getUI ( component );
-        if ( ui != null && ui instanceof WebUI )
+        if ( ui instanceof WebUI )
         {
             final WebUI webUI = ( WebUI ) ui;
             final String key;
@@ -84,8 +84,7 @@ public final class LafLookup
     public static int getInt ( final JComponent component, final ComponentUI ui, final String key, final int defaultValue )
     {
         final Object iValue = get ( component, ui, key );
-
-        if ( iValue == null || !( iValue instanceof Number ) )
+        if ( !( iValue instanceof Number ) )
         {
             return defaultValue;
         }
@@ -117,8 +116,7 @@ public final class LafLookup
     public static Insets getInsets ( final JComponent component, final ComponentUI ui, final String key, final Insets defaultValue )
     {
         final Object iValue = get ( component, ui, key );
-
-        if ( iValue == null || !( iValue instanceof Insets ) )
+        if ( !( iValue instanceof Insets ) )
         {
             return defaultValue;
         }
@@ -150,7 +148,7 @@ public final class LafLookup
     public static boolean getBoolean ( final JComponent component, final ComponentUI ui, final String key, final boolean defaultValue )
     {
         final Object iValue = get ( component, ui, key );
-        if ( iValue == null || !( iValue instanceof Boolean ) )
+        if ( !( iValue instanceof Boolean ) )
         {
             return defaultValue;
         }
@@ -183,8 +181,7 @@ public final class LafLookup
                                    final Color defaultValue )
     {
         final Object iValue = get ( component, ui, key );
-
-        if ( iValue == null || !( iValue instanceof Color ) )
+        if ( !( iValue instanceof Color ) )
         {
             return defaultValue;
         }
@@ -216,7 +213,7 @@ public final class LafLookup
     public static Icon getIcon ( final JComponent component, final ComponentUI ui, final String key, final Icon defaultValue )
     {
         final Object iValue = get ( component, ui, key );
-        if ( iValue == null || !( iValue instanceof Icon ) )
+        if ( !( iValue instanceof Icon ) )
         {
             return defaultValue;
         }
@@ -248,7 +245,7 @@ public final class LafLookup
     public static Border getBorder ( final JComponent component, final ComponentUI ui, final String key, final Border defaultValue )
     {
         final Object iValue = get ( component, ui, key );
-        if ( iValue == null || !( iValue instanceof Border ) )
+        if ( !( iValue instanceof Border ) )
         {
             return defaultValue;
         }

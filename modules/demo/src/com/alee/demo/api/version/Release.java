@@ -22,7 +22,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public abstract class Release
 {
     /**

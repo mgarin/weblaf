@@ -35,7 +35,6 @@ import java.io.IOException;
 /**
  * @author Mikle Garin
  */
-
 public class DictionariesTransferHandler extends TransferHandler
 {
     private final DataFlavor[] flavors = new DataFlavor[]{ DataFlavor.stringFlavor };

@@ -22,7 +22,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.UILanguageManager;
-import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
@@ -45,7 +45,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class WebFileDrop extends WebPanel implements LanguageMethods
 {
     protected static final BasicStroke dashStroke =

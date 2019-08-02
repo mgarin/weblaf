@@ -35,7 +35,6 @@ import java.util.List;
  * @see AbstractTreeTransferHandler#getDropHandler(javax.swing.TransferHandler.TransferSupport, com.alee.laf.tree.WebTree,
  * com.alee.laf.tree.WebTreeModel, com.alee.laf.tree.UniqueNode)
  */
-
 public interface TreeDropHandler<N extends UniqueNode, T extends WebTree<N>, M extends WebTreeModel<N>>
 {
     /**

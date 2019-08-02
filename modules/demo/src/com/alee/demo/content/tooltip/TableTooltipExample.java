@@ -17,14 +17,15 @@
 
 package com.alee.demo.content.tooltip;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
+import com.alee.laf.table.TableCellArea;
 import com.alee.laf.table.TableCellParameters;
 import com.alee.laf.table.TableToolTipProvider;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.table.renderers.WebTableCellRenderer;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.tooltip.ComponentArea;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
@@ -35,6 +36,7 @@ import java.util.List;
  */
 public class TableTooltipExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {
@@ -82,6 +84,7 @@ public class TableTooltipExample extends AbstractStylePreviewExample
         protected List<? extends JComponent> createPreviewElements ()
         {
             final JTable table = new JTable ( SampleData.createShortTableModel ( false ) );
+            table.setPreferredScrollableViewportSize ( table.getPreferredSize () );
             table.setDefaultRenderer ( String.class, new WebTableCellRenderer ()
             {
                 @Override
@@ -91,7 +94,7 @@ public class TableTooltipExample extends AbstractStylePreviewExample
                     setToolTipText ( textForValue ( parameters ) );
                 }
             } );
-            return CollectionUtils.asList ( table );
+            return CollectionUtils.asList ( new JScrollPane ( table ) );
         }
     }
 
@@ -115,15 +118,16 @@ public class TableTooltipExample extends AbstractStylePreviewExample
         protected List<? extends JComponent> createPreviewElements ()
         {
             final WebTable table = new WebTable ( SampleData.createShortTableModel ( false ) );
-            table.setToolTipProvider ( new TableToolTipProvider ()
+            table.setVisibleRowCount ( table.getModel ().getRowCount () );
+            table.setToolTipProvider ( new TableToolTipProvider<Object> ()
             {
                 @Override
-                protected String getToolTipText ( final JComponent component, final Object value, final ComponentArea area )
+                protected String getToolTipText ( final JTable component, final TableCellArea<Object, JTable> area )
                 {
-                    return String.valueOf ( value );
+                    return String.valueOf ( area.getValue ( component ) );
                 }
             } );
-            return CollectionUtils.asList ( table );
+            return CollectionUtils.asList (  new JScrollPane ( table ) );
         }
     }
 }

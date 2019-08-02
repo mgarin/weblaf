@@ -28,7 +28,6 @@ import com.alee.painter.Painter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptiveSplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WSplitPaneDividerUI>
         extends AdaptivePainter<C, U> implements ISplitPaneDividerPainter<C, U>
 {

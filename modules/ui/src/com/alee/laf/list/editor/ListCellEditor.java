@@ -28,7 +28,6 @@ import java.awt.*;
  * @param <T> Editor value type
  * @author Mikle Garin
  */
-
 public interface ListCellEditor<C extends Component, T>
 {
     /**

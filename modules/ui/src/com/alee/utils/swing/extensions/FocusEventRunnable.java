@@ -24,7 +24,6 @@ import java.awt.event.FocusEvent;
  *
  * @author Mikle Garin
  */
-
 public interface FocusEventRunnable
 {
     /**

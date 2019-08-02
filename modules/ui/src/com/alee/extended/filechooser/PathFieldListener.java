@@ -28,7 +28,6 @@ import java.util.EventListener;
  * @author Mikle Garin
  * @see WebPathField
  */
-
 public interface PathFieldListener extends EventListener
 {
     /**

@@ -29,7 +29,6 @@ import java.io.Serializable;
  * @see com.alee.managers.plugin.PluginManager
  * @see com.alee.managers.plugin.Plugin
  */
-
 @XStreamAlias ( "PluginLibrary" )
 public class PluginLibrary implements Serializable
 {

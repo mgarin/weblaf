@@ -35,7 +35,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 public class WebComponentPane extends WebPanel
 {
     private final List<ComponentReorderListener> listeners = new ArrayList<ComponentReorderListener> ( 1 );

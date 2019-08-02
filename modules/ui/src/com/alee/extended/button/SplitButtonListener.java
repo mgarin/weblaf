@@ -21,24 +21,23 @@ import java.awt.event.ActionEvent;
 import java.util.EventListener;
 
 /**
- * Custom listener for WebSplitButton component.
+ * {@link WebSplitButton} events listener.
  *
  * @author Mikle Garin
  */
-
 public interface SplitButtonListener extends EventListener
 {
     /**
      * Invoked when the button part is clicked.
      *
-     * @param e occured action event
+     * @param e occured {@link ActionEvent}
      */
     public void buttonClicked ( ActionEvent e );
 
     /**
      * Invoked when split part is clicked.
      *
-     * @param e occured action event
+     * @param e occured {@link ActionEvent}
      */
     public void splitButtonClicked ( ActionEvent e );
 }

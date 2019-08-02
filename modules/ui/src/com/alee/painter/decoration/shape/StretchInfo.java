@@ -26,7 +26,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 public class StretchInfo implements Serializable
 {
     /**

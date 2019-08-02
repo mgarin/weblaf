@@ -25,7 +25,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 public class Line implements Serializable
 {
     /**

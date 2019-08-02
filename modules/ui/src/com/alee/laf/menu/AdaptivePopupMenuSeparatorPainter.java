@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptivePopupMenuSeparatorPainter<C extends JPopupMenu.Separator, U extends WPopupMenuSeparatorUI>
         extends AdaptivePainter<C, U> implements IPopupMenuSeparatorPainter<C, U>
 {

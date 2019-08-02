@@ -29,7 +29,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
 {
     /**

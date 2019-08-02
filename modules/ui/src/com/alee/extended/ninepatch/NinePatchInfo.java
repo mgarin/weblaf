@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "NinePatchInfo" )
 public class NinePatchInfo implements Serializable
 {

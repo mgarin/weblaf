@@ -30,7 +30,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public abstract class AbstractLabelPainter<C extends JLabel, U extends WLabelUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IAbstractLabelPainter<C, U>
 {

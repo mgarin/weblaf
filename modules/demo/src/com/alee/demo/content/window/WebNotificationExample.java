@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.window;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.extended.image.WebImage;
@@ -40,6 +41,7 @@ import java.util.List;
  */
 public class WebNotificationExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {

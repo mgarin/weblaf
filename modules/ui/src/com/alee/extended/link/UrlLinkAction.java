@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
-
 public class UrlLinkAction extends AsyncLinkAction
 {
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.extended.WebContainer;
@@ -1136,6 +1137,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

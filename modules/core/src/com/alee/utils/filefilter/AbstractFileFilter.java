@@ -32,7 +32,6 @@ import java.io.FileFilter;
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFilter
         implements FileFilter, Filter<File>, IconBridge<RenderingParameters>, TextBridge<RenderingParameters>
 {

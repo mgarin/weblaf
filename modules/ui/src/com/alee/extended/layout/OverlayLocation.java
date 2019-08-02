@@ -20,7 +20,6 @@ package com.alee.extended.layout;
 /**
  * @author Mikle Garin
  */
-
 public enum OverlayLocation
 {
     fill,

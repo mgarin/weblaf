@@ -9,7 +9,6 @@ import javax.swing.*;
  *
  * @author Alexandr Zernov
  */
-
 public interface ScrollPaneCornerProvider
 {
     /**

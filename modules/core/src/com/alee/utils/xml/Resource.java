@@ -30,7 +30,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "Resource" )
 public class Resource implements Serializable
 {

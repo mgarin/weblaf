@@ -25,7 +25,6 @@ import com.alee.managers.style.ChildStyleId;
  * @param <P> {@link RenderingParameters} type
  * @author Mikle Garin
  */
-
 public interface ChildStyleIdBridge<P extends RenderingParameters> extends RenderingBridge
 {
     /**

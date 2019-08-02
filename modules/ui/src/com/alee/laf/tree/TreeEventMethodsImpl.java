@@ -30,7 +30,6 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  * @see com.alee.laf.tree.TreeEventMethods
  */
-
 public final class TreeEventMethodsImpl
 {
     /**

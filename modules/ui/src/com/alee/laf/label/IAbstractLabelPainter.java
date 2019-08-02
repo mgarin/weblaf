@@ -28,7 +28,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IAbstractLabelPainter<C extends JLabel, U extends WLabelUI> extends SpecificPainter<C, U>
 {
     /**

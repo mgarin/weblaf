@@ -36,7 +36,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class SliderLabels extends Hashtable implements PropertyChangeListener
 {
     /**

@@ -20,15 +20,16 @@ package com.alee.utils.swing;
 /**
  * Adapter for {@link HoverListener}.
  *
+ * @param <E> object type
  * @author Mikle Garin
- * @see HoverListener
  */
-
 public abstract class HoverAdapter<E> implements HoverListener<E>
 {
     @Override
     public void hoverChanged ( final E previous, final E current )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

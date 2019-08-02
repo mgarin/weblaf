@@ -29,7 +29,6 @@ import com.alee.painter.decoration.IDecoration;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class StatusBarPainter<C extends WebStatusBar, U extends WStatusBarUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IStatusBarPainter<C, U>
 {

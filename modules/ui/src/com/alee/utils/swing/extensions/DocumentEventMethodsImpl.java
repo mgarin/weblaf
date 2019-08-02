@@ -29,7 +29,6 @@ import javax.swing.text.JTextComponent;
  * @see DocumentChangeBehavior
  * @see com.alee.utils.swing.extensions.DocumentEventMethods
  */
-
 public final class DocumentEventMethodsImpl
 {
     /**

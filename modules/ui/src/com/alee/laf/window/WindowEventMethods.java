@@ -31,7 +31,6 @@ import java.awt.event.WindowAdapter;
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see WindowEventMethodsImpl
  */
-
 public interface WindowEventMethods extends MethodExtension
 {
     /**

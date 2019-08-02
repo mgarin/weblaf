@@ -81,7 +81,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     /**
      * Dragged component initial bounds.
      */
-    protected Rectangle initialBounds = null;
+    protected Rectangle initialBounds;
 
     /**
      * Constructs new component move adapter that alows source component parent window dragging.
@@ -220,7 +220,9 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected void componentMoveStarted ( final Point mouse, final Point location )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -231,7 +233,9 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected void componentMoved ( final Point mouse, final Point location )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -242,7 +246,9 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected void componentMoveEnded ( final Point mouse, final Point location )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

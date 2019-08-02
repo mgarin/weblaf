@@ -17,10 +17,7 @@
 
 package com.alee.api.merge.behavior;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Runtime annotation for clearing object field value used by {@link ReflectionMergeBehavior}.
@@ -30,6 +27,7 @@ import java.lang.annotation.Target;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Merge">How to use Merge</a>
  * @see com.alee.api.merge.Merge
  */
+@Documented
 @Retention ( RetentionPolicy.RUNTIME )
 @Target ( ElementType.FIELD )
 public @interface OmitOnMerge

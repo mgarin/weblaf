@@ -36,7 +36,6 @@ import java.awt.event.KeyEvent;
 /**
  * @author Mikle Garin
  */
-
 public class DictionariesTree extends WebTree
 {
     private DefaultMutableTreeNode root;

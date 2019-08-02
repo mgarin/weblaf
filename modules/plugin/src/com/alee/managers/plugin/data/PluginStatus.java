@@ -29,7 +29,6 @@ import javax.swing.*;
  * @see com.alee.managers.plugin.PluginManager
  * @see com.alee.managers.plugin.Plugin
  */
-
 public enum PluginStatus
 {
     /**

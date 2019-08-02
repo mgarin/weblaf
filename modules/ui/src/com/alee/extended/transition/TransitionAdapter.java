@@ -18,20 +18,25 @@
 package com.alee.extended.transition;
 
 /**
+ * Adapter for {@link TransitionListener}.
+ *
  * @author Mikle Garin
  */
-
 public abstract class TransitionAdapter implements TransitionListener
 {
     @Override
     public void transitionStarted ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void transitionFinished ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

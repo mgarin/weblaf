@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class ToggleButtonPainter<C extends JToggleButton, U extends WToggleButtonUI, D extends IDecoration<C, D>>
         extends AbstractButtonPainter<C, U, D> implements IToggleButtonPainter<C, U>
 {

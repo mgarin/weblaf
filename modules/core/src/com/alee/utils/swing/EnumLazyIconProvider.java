@@ -28,7 +28,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public final class EnumLazyIconProvider
 {
     /**

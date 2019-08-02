@@ -25,7 +25,6 @@ import java.util.List;
  * @param <T> graph nodes type
  * @author Mikle Garin
  */
-
 public interface TopologicalGraphProvider<T>
 {
     /**

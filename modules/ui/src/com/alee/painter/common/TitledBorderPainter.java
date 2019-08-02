@@ -38,7 +38,6 @@ import java.util.Map;
  * @see com.alee.painter.AbstractPainter
  * @see com.alee.painter.Painter
  */
-
 public class TitledBorderPainter<C extends JComponent, U extends ComponentUI> extends BorderPainter<C, U> implements SwingConstants
 {
     /**

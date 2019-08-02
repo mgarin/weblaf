@@ -167,7 +167,10 @@ public abstract class AbstractUnits
                     final String amount = units.toString ( value );
                     if ( amount != null )
                     {
-                        result.append ( result.length () > 0 ? " " : "" );
+                        if ( result.length () > 0 )
+                        {
+                            result.append ( " " );
+                        }
                         result.append ( amount );
                     }
                 }

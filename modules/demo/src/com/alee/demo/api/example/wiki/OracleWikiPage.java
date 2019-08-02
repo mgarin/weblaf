@@ -33,7 +33,6 @@ import javax.swing.*;
  *
  * @author Mikle Garin
  */
-
 public class OracleWikiPage implements WikiPage
 {
     /**

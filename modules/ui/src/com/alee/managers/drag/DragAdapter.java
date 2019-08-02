@@ -26,7 +26,6 @@ import java.awt.dnd.DragSourceEvent;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-DragManager">How to use DragManager</a>
- * @see DragListener
  * @see DragManager
  */
 public abstract class DragAdapter implements DragListener

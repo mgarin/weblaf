@@ -13,7 +13,6 @@ import javax.swing.plaf.ButtonUI;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IAbstractButtonPainter<C extends AbstractButton, U extends ButtonUI> extends SpecificPainter<C, U>
 {
     /**

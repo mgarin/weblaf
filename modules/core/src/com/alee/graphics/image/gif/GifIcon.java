@@ -30,7 +30,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 public class GifIcon implements Icon
 {
     private RepaintListener repaintListener;

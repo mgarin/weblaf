@@ -27,7 +27,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @see com.alee.laf.window.WindowMethods
  */
-
 public final class WindowMethodsImpl
 {
     /**

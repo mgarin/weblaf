@@ -29,7 +29,6 @@ import java.awt.event.*;
 /**
  * @author Mikle Garin
  */
-
 public class WebFadeDialog extends WebDialog implements ActionListener, WindowFocusListener, WindowListener
 {
     private float maximumOpacity = 0.9f;

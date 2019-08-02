@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
  *
  * @author Mikle Garin
  */
-
 public final class AsyncTreeQueue
 {
     /**

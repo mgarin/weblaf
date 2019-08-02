@@ -38,7 +38,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public class LanguageChooser extends WebComboBox
 {
     /**

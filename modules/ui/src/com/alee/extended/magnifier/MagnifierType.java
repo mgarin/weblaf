@@ -23,7 +23,6 @@ package com.alee.extended.magnifier;
  *
  * @author Mikle Garin
  */
-
 public enum MagnifierType
 {
     /**

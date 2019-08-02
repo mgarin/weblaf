@@ -24,7 +24,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public interface ExampleGroup extends ExampleElement
 {
     /**

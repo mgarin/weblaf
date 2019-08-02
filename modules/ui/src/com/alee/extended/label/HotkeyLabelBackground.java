@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.AbstractBackground;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -65,6 +66,7 @@ public class HotkeyLabelBackground<C extends WebHotkeyLabel, D extends IDecorati
     @XStreamAsAttribute
     protected Color color;
 
+    @NotNull
     @Override
     public String getId ()
     {

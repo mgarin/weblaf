@@ -29,7 +29,6 @@ import java.util.List;
  * @param <N> nodes type
  * @author Mikle Garin
  */
-
 public interface NodesDropCallback<N extends UniqueNode> extends EventListener
 {
     /**

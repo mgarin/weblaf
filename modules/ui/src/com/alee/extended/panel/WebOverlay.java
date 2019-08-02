@@ -34,7 +34,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class WebOverlay extends WebPanel implements SwingConstants
 {
     private JComponent component;

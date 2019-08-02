@@ -32,7 +32,6 @@ import java.util.List;
  * @param <N> nodes type
  * @author Mikle Garin
  */
-
 public class NodesTransferable<N extends UniqueNode> implements Transferable, Serializable
 {
     /**

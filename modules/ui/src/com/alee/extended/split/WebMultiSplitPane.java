@@ -17,12 +17,15 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Orientation;
 import com.alee.extended.WebContainer;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,6 +83,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     /**
      * {@link MultiSplitPaneModel} implementation.
      */
+    @Nullable
     protected MultiSplitPaneModel model;
 
     /**
@@ -95,7 +99,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param orientation split {@link Orientation}
      */
-    public WebMultiSplitPane ( final Orientation orientation )
+    public WebMultiSplitPane ( @Nullable final Orientation orientation )
     {
         this ( StyleId.auto, orientation );
     }
@@ -105,7 +109,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param id style ID
      */
-    public WebMultiSplitPane ( final StyleId id )
+    public WebMultiSplitPane ( @NotNull final StyleId id )
     {
         this ( id, Orientation.horizontal );
     }
@@ -116,7 +120,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param id          style ID
      * @param orientation split {@link Orientation}
      */
-    public WebMultiSplitPane ( final StyleId id, final Orientation orientation )
+    public WebMultiSplitPane ( @NotNull final StyleId id, @Nullable final Orientation orientation )
     {
         super ();
         setOrientation ( orientation );
@@ -139,9 +143,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return split {@link Orientation}
      */
+    @NotNull
     public Orientation getOrientation ()
     {
-        return orientation;
+        return orientation != null ? orientation : Orientation.horizontal;
     }
 
     /**
@@ -150,7 +155,8 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param orientation new split {@link Orientation}
      * @return this {@link WebMultiSplitPane}
      */
-    public WebMultiSplitPane setOrientation ( final Orientation orientation )
+    @NotNull
+    public WebMultiSplitPane setOrientation ( @Nullable final Orientation orientation )
     {
         if ( this.orientation != orientation )
         {
@@ -177,6 +183,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param continuousLayout whether or not split pane layout should be continuously updated on resize operations
      * @return this {@link WebMultiSplitPane}
      */
+    @NotNull
     public WebMultiSplitPane setContinuousLayout ( final boolean continuousLayout )
     {
         if ( this.continuousLayout != continuousLayout )
@@ -204,6 +211,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param size divider size in pixels
      * @return this {@link WebMultiSplitPane}
      */
+    @NotNull
     public WebMultiSplitPane setDividerSize ( final int size )
     {
         if ( this.dividerSize != size )
@@ -231,6 +239,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param oneTouchExpandable whether or not split pane should display one-touch-expand buttons on dividers
      * @return this {@link WebMultiSplitPane}
      */
+    @NotNull
     public WebMultiSplitPane setOneTouchExpandable ( final boolean oneTouchExpandable )
     {
         if ( this.oneTouchExpandable != oneTouchExpandable )
@@ -247,6 +256,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return {@link MultiSplitPaneModel} implementation
      */
+    @Nullable
     public MultiSplitPaneModel getModel ()
     {
         return model;
@@ -257,6 +267,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return default {@link MultiSplitPaneModel} implementation to be used
      */
+    @NotNull
     protected MultiSplitPaneModel createModel ()
     {
         return new WebMultiSplitPaneModel ();
@@ -268,7 +279,8 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param model new {@link MultiSplitPaneModel} implementation
      * @return this {@link WebMultiSplitPane}
      */
-    public WebMultiSplitPane setModel ( final MultiSplitPaneModel model )
+    @NotNull
+    public WebMultiSplitPane setModel ( @Nullable final MultiSplitPaneModel model )
     {
         if ( this.model != model )
         {
@@ -299,6 +311,26 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
         return this;
     }
 
+    @Override
+    public void setLayout ( @Nullable final LayoutManager layout )
+    {
+        if ( layout == null || layout instanceof MultiSplitPaneModel )
+        {
+            super.setLayout ( layout );
+        }
+        else
+        {
+            throw new IllegalArgumentException ( "Only MultiSplitPaneModel instances are supported" );
+        }
+    }
+
+    @Nullable
+    @Override
+    public MultiSplitPaneModel getLayout ()
+    {
+        return ( MultiSplitPaneModel ) super.getLayout ();
+    }
+
     /**
      * Returns amount of view {@link Component}s.
      *
@@ -306,7 +338,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      */
     public int getViewCount ()
     {
-        return getModel ().getViewCount ();
+        return getModel () != null ? getModel ().getViewCount () : 0;
     }
 
     /**
@@ -314,9 +346,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return copy of the {@link List} of all {@link MultiSplitView}s contained in {@link MultiSplitPaneModel}
      */
+    @Nullable
     public List<MultiSplitView> getViews ()
     {
-        return getModel ().getViews ();
+        return getModel () != null ? getModel ().getViews () : null;
     }
 
     /**
@@ -325,9 +358,9 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param component {@link Component} contained in {@link MultiSplitView}
      * @return index of the {@link MultiSplitView} that contains specified {@link Component}
      */
-    public int getViewIndex ( final Component component )
+    public int getViewIndex ( @NotNull final Component component )
     {
-        return getModel ().getViewIndex ( component );
+        return getModel () != null ? getModel ().getViewIndex ( component ) : -1;
     }
 
     /**
@@ -336,9 +369,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param index {@link MultiSplitView} index
      * @return {@link Component} from {@link MultiSplitView} at the specified index
      */
+    @Nullable
     public Component getViewComponent ( final int index )
     {
-        return getModel ().getViewComponent ( index );
+        return getModel () != null ? getModel ().getViewComponent ( index ) : null;
     }
 
     /**
@@ -346,9 +380,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return {@link List} of view {@link Component}s
      */
+    @NotNull
     public List<Component> getViewComponents ()
     {
-        return getModel ().getViewComponents ();
+        return getModel () != null ? getModel ().getViewComponents () : new ArrayList<Component> ();
     }
 
     /**
@@ -356,9 +391,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return copy of the {@link List} of all {@link WebMultiSplitPaneDivider}s used by {@link WebMultiSplitPane}
      */
+    @NotNull
     public List<WebMultiSplitPaneDivider> getDividers ()
     {
-        return getModel ().getDividers ();
+        return getModel () != null ? getModel ().getDividers () : new ArrayList<WebMultiSplitPaneDivider> ();
     }
 
     /**
@@ -366,6 +402,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return default {@link WebMultiSplitPaneDivider} to be used
      */
+    @NotNull
     protected WebMultiSplitPaneDivider createDivider ()
     {
         final StyleId styleId = StyleId.multisplitpaneContinuousDivider.at ( this );
@@ -377,9 +414,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return {@link MultiSplitState} describing current {@link WebMultiSplitPane} state
      */
+    @Nullable
     public MultiSplitState getMultiSplitState ()
     {
-        return getModel ().getMultiSplitState ();
+        return getModel () != null ? getModel ().getMultiSplitState () : null;
     }
 
     /**
@@ -387,9 +425,12 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param state{@link MultiSplitState} to update {@link WebMultiSplitPane} with
      */
-    public void setMultiSplitState ( final MultiSplitState state )
+    public void setMultiSplitState ( @NotNull final MultiSplitState state )
     {
-        getModel ().setMultiSplitState ( state );
+        if ( getModel () != null )
+        {
+            getModel ().setMultiSplitState ( state );
+        }
     }
 
     /**
@@ -399,7 +440,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      */
     public void resetViewSizes ()
     {
-        getModel ().resetViewStates ();
+        if ( getModel () != null )
+        {
+            getModel ().resetViewStates ();
+        }
     }
 
     /**
@@ -409,7 +453,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      */
     public boolean isAnyViewExpanded ()
     {
-        return getModel ().isAnyViewExpanded ();
+        return getModel () != null && getModel ().isAnyViewExpanded ();
     }
 
     /**
@@ -420,7 +464,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      */
     public int getExpandedViewIndex ()
     {
-        return getModel ().getExpandedViewIndex ();
+        return getModel () != null ? getModel ().getExpandedViewIndex () : -1;
     }
 
     /**
@@ -430,7 +474,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      */
     public void expandView ( final int index )
     {
-        getModel ().expandView ( index );
+        if ( getModel () != null )
+        {
+            getModel ().expandView ( index );
+        }
     }
 
     /**
@@ -438,7 +485,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      */
     public void collapseExpandedView ()
     {
-        getModel ().collapseExpandedView ();
+        if ( getModel () != null )
+        {
+            getModel ().collapseExpandedView ();
+        }
     }
 
     /**
@@ -448,11 +498,14 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      */
     public void toggleViewExpansion ( final int index )
     {
-        getModel ().toggleViewExpansion ( index );
+        if ( getModel () != null )
+        {
+            getModel ().toggleViewExpansion ( index );
+        }
     }
 
     @Override
-    public Component add ( final Component component )
+    public Component add ( @NotNull final Component component )
     {
         if ( component instanceof WebMultiSplitPaneDivider )
         {
@@ -463,7 +516,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     }
 
     @Override
-    public Component add ( final String constraints, final Component component )
+    public Component add ( @Nullable final String constraints, @NotNull final Component component )
     {
         if ( component instanceof WebMultiSplitPaneDivider )
         {
@@ -474,7 +527,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     }
 
     @Override
-    public Component add ( final Component component, final int index )
+    public Component add ( @NotNull final Component component, final int index )
     {
         if ( component instanceof WebMultiSplitPaneDivider )
         {
@@ -489,7 +542,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     }
 
     @Override
-    public void add ( final Component component, final Object constraints )
+    public void add ( @NotNull final Component component, @Nullable final Object constraints )
     {
         if ( component instanceof WebMultiSplitPaneDivider )
         {
@@ -499,7 +552,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     }
 
     @Override
-    public void add ( final Component component, final Object constraints, final int index )
+    public void add ( @NotNull final Component component, @Nullable final Object constraints, final int index )
     {
         if ( component instanceof WebMultiSplitPaneDivider )
         {
@@ -516,13 +569,13 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * Overriden for accessibility.
      */
     @Override
-    protected void addImpl ( final Component component, final Object constraints, final int index )
+    protected void addImpl ( @NotNull final Component component, @Nullable final Object constraints, final int index )
     {
         super.addImpl ( component, constraints, index );
     }
 
     @Override
-    public void setComponentZOrder ( final Component component, final int index )
+    public void setComponentZOrder ( @NotNull final Component component, final int index )
     {
         if ( component instanceof WebMultiSplitPaneDivider )
         {
@@ -533,7 +586,10 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
             throw new IndexOutOfBoundsException ( "Illegal view component index" );
         }
         setComponentZOrderImpl ( component, index );
-        getModel ().moveComponent ( component, index );
+        if ( getModel () != null )
+        {
+            getModel ().moveComponent ( component, index );
+        }
     }
 
     /**
@@ -543,7 +599,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      * @param component {@link Component} to change z-order for
      * @param index     z-order index
      */
-    protected void setComponentZOrderImpl ( final Component component, final int index )
+    protected void setComponentZOrderImpl ( @NotNull final Component component, final int index )
     {
         super.setComponentZOrder ( component, index );
     }
@@ -589,7 +645,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param listener {@link MultiSplitExpansionListener} to add
      */
-    public void addResizeListener ( final MultiSplitResizeListener listener )
+    public void addResizeListener ( @NotNull final MultiSplitResizeListener listener )
     {
         listenerList.add ( MultiSplitResizeListener.class, listener );
     }
@@ -599,7 +655,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param listener {@link MultiSplitExpansionListener} to remove
      */
-    public void removeResizeListener ( final MultiSplitResizeListener listener )
+    public void removeResizeListener ( @NotNull final MultiSplitResizeListener listener )
     {
         listenerList.remove ( MultiSplitResizeListener.class, listener );
     }
@@ -609,7 +665,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param divider {@link WebMultiSplitPaneDivider} that is being pressed
      */
-    public void fireViewResizeStarted ( final WebMultiSplitPaneDivider divider )
+    public void fireViewResizeStarted ( @NotNull final WebMultiSplitPaneDivider divider )
     {
         for ( final MultiSplitResizeListener listener : listenerList.getListeners ( MultiSplitResizeListener.class ) )
         {
@@ -622,7 +678,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param divider {@link WebMultiSplitPaneDivider} that is being dragged
      */
-    public void fireViewResized ( final WebMultiSplitPaneDivider divider )
+    public void fireViewResized ( @NotNull final WebMultiSplitPaneDivider divider )
     {
         for ( final MultiSplitResizeListener listener : listenerList.getListeners ( MultiSplitResizeListener.class ) )
         {
@@ -635,7 +691,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param divider {@link WebMultiSplitPaneDivider} that is being released
      */
-    public void fireViewResizeEnded ( final WebMultiSplitPaneDivider divider )
+    public void fireViewResizeEnded ( @NotNull final WebMultiSplitPaneDivider divider )
     {
         for ( final MultiSplitResizeListener listener : listenerList.getListeners ( MultiSplitResizeListener.class ) )
         {
@@ -659,7 +715,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param listener {@link MultiSplitExpansionListener} to add
      */
-    public void addExpansionListener ( final MultiSplitExpansionListener listener )
+    public void addExpansionListener ( @NotNull final MultiSplitExpansionListener listener )
     {
         listenerList.add ( MultiSplitExpansionListener.class, listener );
     }
@@ -669,7 +725,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param listener {@link MultiSplitExpansionListener} to remove
      */
-    public void removeExpansionListener ( final MultiSplitExpansionListener listener )
+    public void removeExpansionListener ( @NotNull final MultiSplitExpansionListener listener )
     {
         listenerList.remove ( MultiSplitExpansionListener.class, listener );
     }
@@ -679,7 +735,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param view expanded view {@link Component}
      */
-    public void fireViewExpanded ( final Component view )
+    public void fireViewExpanded ( @NotNull final Component view )
     {
         for ( final MultiSplitExpansionListener listener : listenerList.getListeners ( MultiSplitExpansionListener.class ) )
         {
@@ -692,7 +748,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param view collapsed view {@link Component}
      */
-    public void fireViewCollapsed ( final Component view )
+    public void fireViewCollapsed ( @NotNull final Component view )
     {
         for ( final MultiSplitExpansionListener listener : listenerList.getListeners ( MultiSplitExpansionListener.class ) )
         {
@@ -705,6 +761,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @return the {@link WMultiSplitPaneUI} object that renders this component
      */
+    @Nullable
     public WMultiSplitPaneUI getUI ()
     {
         return ( WMultiSplitPaneUI ) ui;
@@ -715,7 +772,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
      *
      * @param ui {@link WMultiSplitPaneUI}
      */
-    public void setUI ( final WMultiSplitPaneUI ui )
+    public void setUI ( @Nullable final WMultiSplitPaneUI ui )
     {
         super.setUI ( ui );
     }
@@ -726,6 +783,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

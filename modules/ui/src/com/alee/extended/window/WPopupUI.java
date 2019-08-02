@@ -37,6 +37,12 @@ public abstract class WPopupUI<C extends WebPopup> extends ComponentUI implement
     protected C popup;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Popup.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving popup reference
@@ -62,12 +68,6 @@ public abstract class WPopupUI<C extends WebPopup> extends ComponentUI implement
         popup = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Popup.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WPopupUI<C extends WebPopup> extends ComponentUI implement
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WPopupUI<C extends WebPopup> extends ComponentUI implement
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

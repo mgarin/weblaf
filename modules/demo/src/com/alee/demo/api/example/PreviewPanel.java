@@ -17,6 +17,7 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.laf.panel.WebPanel;
 import com.alee.painter.decoration.DecorationUtils;
@@ -29,7 +30,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public final class PreviewPanel extends WebPanel implements Stateful
 {
     /**
@@ -61,6 +61,7 @@ public final class PreviewPanel extends WebPanel implements Stateful
         return state;
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

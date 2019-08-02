@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -51,6 +52,7 @@ public abstract class AbstractBackground<C extends JComponent, D extends IDecora
     @XStreamAsAttribute
     protected Float opacity;
 
+    @NotNull
     @Override
     public String getId ()
     {
@@ -66,13 +68,17 @@ public abstract class AbstractBackground<C extends JComponent, D extends IDecora
     @Override
     public void activate ( final C c, final D d )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void deactivate ( final C c, final D d )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

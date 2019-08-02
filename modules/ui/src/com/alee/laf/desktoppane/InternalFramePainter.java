@@ -20,7 +20,6 @@ import static javax.swing.JInternalFrame.*;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class InternalFramePainter<C extends JInternalFrame, U extends WebInternalFrameUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IInternalFramePainter<C, U>
 {

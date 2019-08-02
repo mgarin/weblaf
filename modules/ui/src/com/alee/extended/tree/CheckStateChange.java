@@ -27,7 +27,6 @@ import javax.swing.tree.MutableTreeNode;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public final class CheckStateChange<N extends MutableTreeNode>
 {
     /**

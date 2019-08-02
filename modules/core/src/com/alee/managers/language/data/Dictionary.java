@@ -18,6 +18,7 @@
 package com.alee.managers.language.data;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
 import com.alee.managers.language.LanguageUtils;
@@ -200,6 +201,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
         XmlUtils.getXStream ().fromXML ( inputStream, this );
     }
 
+    @NotNull
     @Override
     public String getId ()
     {

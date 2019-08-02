@@ -22,7 +22,6 @@ package com.alee.extended.syntax;
  *
  * @author Mikle Garin
  */
-
 public enum SyntaxPanelStyle
 {
     /**

@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
  *
  * @author Mikle Garin
  */
-
 public final class JavaVersion
 {
     /**

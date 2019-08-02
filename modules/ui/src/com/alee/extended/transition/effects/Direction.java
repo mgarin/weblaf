@@ -20,7 +20,6 @@ package com.alee.extended.transition.effects;
 /**
  * @author Mikle Garin
  */
-
 public enum Direction
 {
     // Any random direction each time (always first in enum)

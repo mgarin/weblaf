@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IFileChooserPainter<C extends JFileChooser, U extends WFileChooserUI> extends SpecificPainter<C, U>
 {
     /**

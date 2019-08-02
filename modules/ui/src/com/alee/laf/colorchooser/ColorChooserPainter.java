@@ -14,7 +14,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class ColorChooserPainter<C extends JColorChooser, U extends WColorChooserUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IColorChooserPainter<C, U>
 {

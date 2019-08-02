@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class LineColorChooser extends WebPanel
 {
     private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );

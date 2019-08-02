@@ -29,7 +29,6 @@ import javax.swing.plaf.ComponentUI;
  * @param <U> {@link ComponentUI} type
  * @author Mikle Garin
  */
-
 public abstract class AbstractUIInputListener<C extends JComponent, U extends ComponentUI> implements UIInputListener<C>
 {
     /**

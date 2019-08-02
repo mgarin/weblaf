@@ -26,13 +26,15 @@ import java.util.Enumeration;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends AbstractPainter<C, U> implements ISliderPainter<C, U>
 {
     /**
      * todo 1. Split into proper AbstractDecorationPainter & AbstractSectionDecorationPainter implementations
      */
 
+    /**
+     * Max rollover darkness.
+     */
     public static final int MAX_DARKNESS = 5;
 
     /**

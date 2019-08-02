@@ -17,6 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
@@ -166,7 +168,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         final String value = ( String ) constraints;
         if ( !TextUtils.isBlank ( value ) && Objects.notEquals ( value, START, MIDDLE, FILL, END, TRIM ) )
@@ -217,7 +219,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         final String constraints = this.constraints.get ( component );
 
@@ -238,7 +240,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final int orientation = getOrientation ( container );
         final boolean horizontal = orientation == HORIZONTAL;
@@ -571,7 +573,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return preferredLayoutSize ( container, new HashMap<Component, Dimension> () );
     }

@@ -46,7 +46,6 @@ import java.net.URL;
  * @see MenuGenerator
  * @see PopupMenuGenerator
  */
-
 public abstract class AbstractMenuGenerator<C extends JComponent>
 {
     /**

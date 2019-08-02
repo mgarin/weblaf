@@ -98,7 +98,7 @@ public final class PainterSupport
      */
     public static <P extends Painter> P getPainter ( final Painter painter )
     {
-        return ( P ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
+        return ( P ) ( painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
     }
 
     /**
@@ -386,7 +386,7 @@ public final class PainterSupport
      */
     public static Shape getShape ( final JComponent component, final Painter painter )
     {
-        if ( painter != null && painter instanceof PainterShapeProvider )
+        if ( painter instanceof PainterShapeProvider )
         {
             return ( ( PainterShapeProvider ) painter ).provideShape ( component, BoundsType.margin.bounds ( component ) );
         }
@@ -501,27 +501,27 @@ public final class PainterSupport
     public static Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent component, final ComponentUI ui,
                                                                                final Painter painter )
     {
-        // Default behavior
-        Component.BaselineResizeBehavior behavior = Component.BaselineResizeBehavior.OTHER;
-
-        // Painter baseline behavior support
+        final Component.BaselineResizeBehavior behavior;
         if ( painter != null )
         {
-            // Retrieving baseline behavior provided by painter
-            return painter.getBaselineResizeBehavior ( component, ui );
+            // Painter baseline behavior support
+            behavior = painter.getBaselineResizeBehavior ( component, ui );
         }
-
-        // Border baseline behavior support
-        // Taken from JPanel baseline implementation
-        if ( behavior == Component.BaselineResizeBehavior.OTHER )
+        else
         {
             final Border border = component.getBorder ();
             if ( border instanceof AbstractBorder )
             {
-                behavior = ( ( AbstractBorder ) border ).getBaselineResizeBehavior ( component );
+                // Border baseline behavior support
+                final AbstractBorder abstractBorder = ( AbstractBorder ) border;
+                behavior = abstractBorder.getBaselineResizeBehavior ( component );
+            }
+            else
+            {
+                // Default baseline behavior
+                behavior = Component.BaselineResizeBehavior.OTHER;
             }
         }
-
         return behavior;
     }
 
@@ -595,7 +595,7 @@ public final class PainterSupport
             final JComponent jComponent = ( JComponent ) component;
             final ComponentStyle style = StyleManager.getSkin ( jComponent ).getStyle ( jComponent );
             final Painter painter = style != null ? style.getPainter ( jComponent ) : null;
-            return painter != null && painter instanceof AbstractDecorationPainter;
+            return painter instanceof AbstractDecorationPainter;
             // todo Add additional decoration conditions? For: && ((AbstractDecorationPainter)painter)...
         }
         else

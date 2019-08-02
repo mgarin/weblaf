@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ISpinnerPainter<C extends JSpinner, U extends WebSpinnerUI> extends SpecificPainter<C, U>
 {
     /**

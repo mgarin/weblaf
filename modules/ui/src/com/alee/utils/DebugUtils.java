@@ -33,7 +33,6 @@ import java.text.NumberFormat;
  *
  * @author Mikle Garin
  */
-
 public final class DebugUtils
 {
     /**

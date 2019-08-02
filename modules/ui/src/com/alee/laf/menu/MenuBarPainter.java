@@ -15,7 +15,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class MenuBarPainter<C extends JMenuBar, U extends WebMenuBarUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IMenuBarPainter<C, U>
 {

@@ -24,7 +24,6 @@ import java.awt.image.BufferedImage;
  *
  * @author Jerry Huxtable
  */
-
 public class BoxBlurFilter extends AbstractBufferedImageOp
 {
     private int hRadius;

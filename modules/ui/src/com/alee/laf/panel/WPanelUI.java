@@ -37,6 +37,12 @@ public abstract class WPanelUI<C extends JPanel> extends PanelUI implements WebU
     protected C panel;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Panel.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving panel reference
@@ -62,12 +68,6 @@ public abstract class WPanelUI<C extends JPanel> extends PanelUI implements WebU
         panel = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Panel.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WPanelUI<C extends JPanel> extends PanelUI implements WebU
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WPanelUI<C extends JPanel> extends PanelUI implements WebU
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

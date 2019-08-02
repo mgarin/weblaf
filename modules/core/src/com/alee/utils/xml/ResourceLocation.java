@@ -26,7 +26,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "ResourceLocation" )
 public enum ResourceLocation implements Serializable
 {

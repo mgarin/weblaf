@@ -17,6 +17,7 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.SwingUtils;
@@ -28,12 +29,13 @@ import java.awt.*;
  * Layout for the divider involves appropriately moving the left/right buttons around.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
+ * @see WebMultiSplitPane
  */
-
 public class MultiSplitPaneDividerLayout extends AbstractLayoutManager
 {
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final WebMultiSplitPaneDivider divider = ( WebMultiSplitPaneDivider ) container;
         final WebButton leftButton = divider.getLeftOneTouchButton ();
@@ -91,7 +93,7 @@ public class MultiSplitPaneDividerLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container container )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         return preferredLayoutSize ( container );
     }
@@ -101,7 +103,7 @@ public class MultiSplitPaneDividerLayout extends AbstractLayoutManager
      * I leave a proper implementation for this method in hopes of using it at some point instead of workarounds.
      */
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final WebMultiSplitPaneDivider divider = ( WebMultiSplitPaneDivider ) container;
         final WebButton leftButton = divider.getLeftOneTouchButton ();

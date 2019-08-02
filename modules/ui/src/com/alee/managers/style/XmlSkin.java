@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
@@ -87,6 +88,7 @@ public class XmlSkin extends AbstractSkin
         return skinInfo;
     }
 
+    @NotNull
     @Override
     public String getId ()
     {

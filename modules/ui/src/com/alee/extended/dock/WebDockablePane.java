@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.WebContainer;
@@ -650,6 +651,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

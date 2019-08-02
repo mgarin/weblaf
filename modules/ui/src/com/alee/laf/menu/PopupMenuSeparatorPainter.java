@@ -14,7 +14,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class PopupMenuSeparatorPainter<C extends JPopupMenu.Separator, U extends WPopupMenuSeparatorUI, D extends IDecoration<C, D>>
         extends AbstractSeparatorPainter<C, U, D> implements IPopupMenuSeparatorPainter<C, U>
 {

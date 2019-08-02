@@ -17,7 +17,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class SplitPanePainter<C extends JSplitPane, U extends WSplitPaneUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements ISplitPanePainter<C, U>
 {

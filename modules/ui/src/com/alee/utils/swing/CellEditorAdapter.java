@@ -21,7 +21,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 
 /**
- * Adapter class for Swing CellEditorListener.
+ * Adapter for {@link CellEditorListener}.
  *
  * @author Mikle Garin
  */

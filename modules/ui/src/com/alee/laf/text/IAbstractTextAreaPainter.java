@@ -10,7 +10,6 @@ import javax.swing.text.JTextComponent;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IAbstractTextAreaPainter<C extends JTextComponent, U extends BasicTextUI> extends IAbstractTextEditorPainter<C, U>
 {
     /**

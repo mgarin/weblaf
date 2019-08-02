@@ -33,6 +33,8 @@
             <xs:enumeration value="multisplitpanedivider" />
             <xs:enumeration value="multisplitpane" />
             <xs:enumeration value="popup" />
+            <xs:enumeration value="collapsiblepane" />
+            <xs:enumeration value="accordion" />
             <xs:enumeration value="rootpane" />
             <xs:enumeration value="toolbar" />
             <xs:enumeration value="toolbarseparator" />

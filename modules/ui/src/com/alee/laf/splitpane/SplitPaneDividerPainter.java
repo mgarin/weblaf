@@ -36,7 +36,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class SplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WSplitPaneDividerUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements ISplitPaneDividerPainter<C, U>
 {

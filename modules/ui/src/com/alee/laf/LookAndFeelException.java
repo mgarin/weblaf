@@ -22,7 +22,6 @@ package com.alee.laf;
  *
  * @author Mikle Garin
  */
-
 public final class LookAndFeelException extends RuntimeException
 {
     /**

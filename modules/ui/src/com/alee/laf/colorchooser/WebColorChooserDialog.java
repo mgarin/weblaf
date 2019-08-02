@@ -30,7 +30,6 @@ import java.awt.event.WindowEvent;
 /**
  * @author Mikle Garin
  */
-
 public class WebColorChooserDialog extends WebDialog implements DialogOptions
 {
     public static final ImageIcon COLOR_CHOOSER_ICON =

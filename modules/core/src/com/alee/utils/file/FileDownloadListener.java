@@ -26,7 +26,6 @@ import java.util.EventListener;
  *
  * @author Mikle Garin
  */
-
 public interface FileDownloadListener extends EventListener
 {
     /**

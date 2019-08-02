@@ -41,7 +41,6 @@ import java.beans.PropertyChangeListener;
  * @author Arnaud Weber
  * @author Mikle Garin
  */
-
 public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
         extends AbstractUIInputListener<C, U> implements MouseListener, MouseMotionListener, FocusListener, PropertyChangeListener
 {

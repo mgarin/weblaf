@@ -136,6 +136,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
 
     /**
      * Returns newly created previewed elements container layout.
+     * todo Use a non-stretching (vertically) layout
      *
      * @return newly created previewed elements container layout
      */

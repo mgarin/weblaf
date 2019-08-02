@@ -38,7 +38,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebImageGallery extends JComponent
 {
     private final int spacing = 20;

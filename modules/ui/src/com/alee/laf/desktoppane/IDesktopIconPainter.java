@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IDesktopIconPainter<C extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI> extends SpecificPainter<C, U>
 {
     /**

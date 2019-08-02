@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveToolBarSeparatorPainter<C extends JToolBar.Separator, U extends WToolBarSeparatorUI>
         extends AdaptivePainter<C, U> implements IToolBarSeparatorPainter<C, U>
 {

@@ -31,7 +31,6 @@ import java.awt.event.MouseAdapter;
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.utils.swing.extensions.EventMethodsImpl
  */
-
 public interface EventMethods extends MethodExtension
 {
     /**

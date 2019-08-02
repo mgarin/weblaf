@@ -34,7 +34,6 @@ import java.awt.*;
  * @see com.alee.painter.AbstractPainter
  * @see com.alee.painter.Painter
  */
-
 public class ColorPainter<C extends JComponent, U extends ComponentUI> extends AbstractPainter<C, U>
 {
     /**

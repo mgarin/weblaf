@@ -25,7 +25,6 @@ import com.alee.managers.style.StyleId;
  * @param <P> {@link RenderingParameters} type
  * @author Mikle Garin
  */
-
 public interface StyleIdBridge<P extends RenderingParameters> extends RenderingBridge
 {
     /**

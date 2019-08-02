@@ -18,10 +18,10 @@
 package com.alee.utils;
 
 import com.alee.api.jdk.Objects;
+import com.alee.extended.collapsible.WebCollapsiblePane;
 import com.alee.extended.date.WebCalendar;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.filechooser.WebFileChooserField;
-import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.extended.pathfield.WebPathField;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
@@ -30,8 +30,8 @@ import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.swing.extensions.SizeMethods;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import javax.swing.FocusManager;
+import javax.swing.*;
 import javax.swing.event.AncestorListener;
 import javax.swing.plaf.UIResource;
 import javax.swing.table.DefaultTableColumnModel;
@@ -50,8 +50,8 @@ import java.beans.PropertyChangeListener;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.text.AttributedString;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * This class provides a set of utilities to work with Swing components, their settings and events.
@@ -720,6 +720,24 @@ public final class SwingUtils
      * @param components components to process
      * @return maximum component width
      */
+    public static Dimension maxSize ( final Component... components )
+    {
+        final Dimension max = new Dimension ( 0, 0 );
+        for ( final Component component : components )
+        {
+            final Dimension ps = component.getPreferredSize ();
+            max.width = Math.max ( max.width, ps.width );
+            max.height = Math.max ( max.height, ps.height );
+        }
+        return max;
+    }
+
+    /**
+     * Returns maximum component width.
+     *
+     * @param components components to process
+     * @return maximum component width
+     */
     public static int maxWidth ( final Component... components )
     {
         int max = 0;
@@ -991,6 +1009,7 @@ public final class SwingUtils
      * @param insets2 second insets
      * @return maximum insets
      */
+    @SuppressWarnings ( "RedundantIfStatement" )
     public static Insets max ( final Insets insets1, final Insets insets2 )
     {
         if ( insets1 != null && insets2 != null )
@@ -1019,6 +1038,7 @@ public final class SwingUtils
      * @param insets2 second insets
      * @return minimum insets
      */
+    @SuppressWarnings ( "RedundantIfStatement" )
     public static Insets min ( final Insets insets1, final Insets insets2 )
     {
         if ( insets1 != null && insets2 != null )
@@ -1269,7 +1289,7 @@ public final class SwingUtils
         if ( component instanceof JComponent )
         {
             final Object property = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
-            handlesEnabledState = property != null && property instanceof Boolean && ( Boolean ) property;
+            handlesEnabledState = property instanceof Boolean && ( Boolean ) property;
         }
         else
         {
@@ -2033,7 +2053,8 @@ public final class SwingUtils
             else if ( component instanceof WebCollapsiblePane )
             {
                 // Check header panel for text
-                if ( findComponentsWithText ( text, ( ( WebCollapsiblePane ) component ).getHeaderPanel () ).size () > 0 )
+                final WebCollapsiblePane collapsiblePane = ( WebCollapsiblePane ) component;
+                if ( findComponentsWithText ( text, collapsiblePane.getTitleComponent () ).size () > 0 )
                 {
                     components.add ( component );
                 }
@@ -2042,26 +2063,30 @@ public final class SwingUtils
             {
                 // todo Check each renderer for text
                 final JComboBox comboBox = ( JComboBox ) component;
-                if ( comboBox.getSelectedItem ().toString ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
+                final Object selectedItem = comboBox.getSelectedItem ();
+                if ( selectedItem != null )
                 {
-                    components.add ( component );
-                }
-                else
-                {
-                    if ( comboBox.isEditable () )
+                    if ( selectedItem.toString ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                     {
-                        if ( findComponentsWithText ( text, comboBox.getEditor ().getEditorComponent () ).size () > 0 )
-                        {
-                            components.add ( component );
-                        }
+                        components.add ( component );
                     }
                     else
                     {
-                        if ( findComponentsWithText ( text,
-                                comboBox.getRenderer ().getListCellRendererComponent ( null, comboBox.getSelectedItem (), -1, true, true ) )
-                                .size () > 0 )
+                        if ( comboBox.isEditable () )
                         {
-                            components.add ( component );
+                            if ( findComponentsWithText ( text, comboBox.getEditor ().getEditorComponent () ).size () > 0 )
+                            {
+                                components.add ( component );
+                            }
+                        }
+                        else
+                        {
+                            if ( findComponentsWithText ( text,
+                                    comboBox.getRenderer ().getListCellRendererComponent ( null, selectedItem, -1, true, true ) )
+                                    .size () > 0 )
+                            {
+                                components.add ( component );
+                            }
                         }
                     }
                 }
@@ -2476,7 +2501,7 @@ public final class SwingUtils
         {
             return true;
         }
-        else if ( component == null && child != null || component != null && child == null )
+        else if ( component == null || child == null )
         {
             return false;
         }

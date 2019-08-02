@@ -17,6 +17,7 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationState;
@@ -29,8 +30,9 @@ import java.util.List;
  * Default one-touch button implementation for {@link WebMultiSplitPaneDivider}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
+ * @see WebMultiSplitPane
  */
-
 public class OneTouchButton extends WebButton implements Stateful
 {
     /**
@@ -50,6 +52,7 @@ public class OneTouchButton extends WebButton implements Stateful
         this.divider = divider;
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

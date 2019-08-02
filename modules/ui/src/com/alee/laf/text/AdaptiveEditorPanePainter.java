@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveEditorPanePainter<C extends JEditorPane, U extends WEditorPaneUI> extends AdaptivePainter<C, U>
         implements IEditorPanePainter<C, U>
 {

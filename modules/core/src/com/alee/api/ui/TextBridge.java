@@ -23,7 +23,6 @@ package com.alee.api.ui;
  * @param <P> {@link RenderingParameters} type
  * @author Mikle Garin
  */
-
 public interface TextBridge<P extends RenderingParameters> extends RenderingBridge
 {
     /**

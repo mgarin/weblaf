@@ -45,7 +45,6 @@ import java.util.Arrays;
 /**
  * @author Mikle Garin
  */
-
 public class WebFileBreadcrumb extends WebBreadcrumb
 {
     public static ImageIcon typeIcon = new ImageIcon ( WebFileBreadcrumb.class.getResource ( "icons/file/type.png" ) );

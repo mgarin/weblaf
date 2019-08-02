@@ -25,7 +25,6 @@ import javax.swing.*;
  * @param <P> {@link RenderingParameters} type
  * @author Mikle Garin
  */
-
 public interface IconBridge<P extends RenderingParameters> extends RenderingBridge
 {
     /**

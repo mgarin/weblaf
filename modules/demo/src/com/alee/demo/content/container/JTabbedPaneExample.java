@@ -20,7 +20,6 @@ package com.alee.demo.content.container;
 /**
  * @author Mikle Garin
  */
-
 public class JTabbedPaneExample
 {
 }

@@ -28,7 +28,6 @@ import java.util.Comparator;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  * @see StyleRange
  */
-
 public class StyleRangeComparator implements Comparator<StyleRange>
 {
     @Override

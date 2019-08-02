@@ -37,6 +37,12 @@ public abstract class WCanvasUI<C extends WebCanvas> extends ComponentUI impleme
     protected C canvas;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Canvas.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving canvas reference
@@ -62,12 +68,6 @@ public abstract class WCanvasUI<C extends WebCanvas> extends ComponentUI impleme
         canvas = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Canvas.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WCanvasUI<C extends WebCanvas> extends ComponentUI impleme
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WCanvasUI<C extends WebCanvas> extends ComponentUI impleme
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

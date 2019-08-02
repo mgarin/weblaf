@@ -31,7 +31,6 @@ import com.alee.managers.settings.SettingsManager;
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.proxy.ProxyManager
  */
-
 public final class CoreManagers
 {
     /**

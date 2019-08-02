@@ -25,7 +25,6 @@ package com.alee.painter;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.painter.Painter
  */
-
 public interface Paintable
 {
     /**

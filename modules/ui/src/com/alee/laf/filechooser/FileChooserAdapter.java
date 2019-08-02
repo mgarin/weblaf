@@ -22,28 +22,33 @@ import java.io.File;
 import java.util.List;
 
 /**
- * File chooser events listener adapter.
+ * Adapter for {@link FileChooserListener}.
  *
  * @author Mikle Garin
  */
-
 public abstract class FileChooserAdapter implements FileChooserListener
 {
     @Override
     public void directoryChanged ( final File newDirectory )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void selectionChanged ( final List<File> selectedFiles )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void fileFilterChanged ( final FileFilter oldFilter, final FileFilter newFilter )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

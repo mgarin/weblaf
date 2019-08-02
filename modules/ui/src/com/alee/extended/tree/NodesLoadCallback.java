@@ -25,7 +25,6 @@ import java.util.List;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public interface NodesLoadCallback<N extends AsyncUniqueNode>
 {
     /**

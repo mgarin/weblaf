@@ -29,7 +29,6 @@ import java.io.IOException;
  *
  * @author Mikle Garin
  */
-
 public enum SyntaxTheme
 {
     /**

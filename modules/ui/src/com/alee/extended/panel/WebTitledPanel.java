@@ -25,7 +25,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class WebTitledPanel extends WebPanel
 {
     private final WebPanel title;

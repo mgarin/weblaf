@@ -35,7 +35,6 @@ import java.net.URL;
  * @author Timothy Prinzing
  * @author Mikle Garin
  */
-
 public final class BasicHTML
 {
     /**

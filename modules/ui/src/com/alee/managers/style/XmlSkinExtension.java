@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
@@ -93,6 +94,7 @@ public class XmlSkinExtension implements SkinExtension
         this.extensionInfo = getMetaData ();
     }
 
+    @NotNull
     @Override
     public String getId ()
     {

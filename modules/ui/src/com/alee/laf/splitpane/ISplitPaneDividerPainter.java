@@ -26,7 +26,6 @@ import com.alee.painter.SpecificPainter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface ISplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WSplitPaneDividerUI> extends SpecificPainter<C, U>
 {
     /**

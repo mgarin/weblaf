@@ -35,7 +35,6 @@ import java.util.ArrayList;
  * @param <T> Editor value type
  * @author Mikle Garin
  */
-
 public abstract class AbstractListCellEditor<C extends Component, T> implements ListCellEditor<C, T>
 {
     /**

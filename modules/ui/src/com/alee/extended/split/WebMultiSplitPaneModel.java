@@ -17,6 +17,8 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.utils.CollectionUtils;
@@ -94,7 +96,6 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
      */
     public WebMultiSplitPaneModel ()
     {
-        super ();
         this.views = new ArrayList<MultiSplitView> ();
         this.dividers = new ArrayList<WebMultiSplitPaneDivider> ( 2 );
         this.listeners = new EventListenerList ();
@@ -112,8 +113,8 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void install ( final WebMultiSplitPane multiSplitPane, final List<MultiSplitView> views,
-                          final List<WebMultiSplitPaneDivider> dividers )
+    public void install ( @NotNull final WebMultiSplitPane multiSplitPane, @Nullable final List<MultiSplitView> views,
+                          @Nullable final List<WebMultiSplitPaneDivider> dividers )
     {
         if ( this.multiSplitPane == null )
         {
@@ -138,18 +139,14 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
         {
             throw new IllegalStateException ( "This MultiSplitPaneModel is already installed in specified WebMultiSplitPane" );
         }
-        else if ( this.multiSplitPane != null )
-        {
-            throw new IllegalStateException ( "MultiSplitPaneModel can only be installed into single WebMultiSplitPane at a time" );
-        }
         else
         {
-            throw new IllegalStateException ( "MultiSplitPaneModel data was not properly cleared" );
+            throw new IllegalStateException ( "MultiSplitPaneModel can only be installed into single WebMultiSplitPane at a time" );
         }
     }
 
     @Override
-    public void uninstall ( final WebMultiSplitPane multiSplitPane )
+    public void uninstall ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
         if ( this.multiSplitPane != null && this.multiSplitPane == multiSplitPane )
         {
@@ -187,7 +184,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         if ( !( component instanceof WebMultiSplitPaneDivider ) )
         {
@@ -279,7 +276,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void moveComponent ( final Component component, final int index )
+    public void moveComponent ( @NotNull final Component component, final int index )
     {
         if ( !( component instanceof WebMultiSplitPaneDivider ) )
         {
@@ -313,7 +310,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         if ( !( component instanceof WebMultiSplitPaneDivider ) )
         {
@@ -347,6 +344,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
         return views.size ();
     }
 
+    @Nullable
     @Override
     public List<MultiSplitView> getViews ()
     {
@@ -354,7 +352,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public int getViewIndex ( final Component component )
+    public int getViewIndex ( @NotNull final Component component )
     {
         int index = -1;
         for ( int i = 0; i < views.size (); i++ )
@@ -369,12 +367,14 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
         return index;
     }
 
+    @NotNull
     @Override
     public Component getViewComponent ( final int index )
     {
         return views.get ( index ).component ();
     }
 
+    @NotNull
     @Override
     public List<Component> getViewComponents ()
     {
@@ -386,6 +386,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
         return viewComponents;
     }
 
+    @NotNull
     @Override
     public List<WebMultiSplitPaneDivider> getDividers ()
     {
@@ -393,21 +394,19 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public int getDividerIndex ( final WebMultiSplitPaneDivider divider )
+    public int getDividerIndex ( @NotNull final WebMultiSplitPaneDivider divider )
     {
         return dividers.indexOf ( divider );
     }
 
+    @Nullable
     @Override
     public MultiSplitState getMultiSplitState ()
     {
         final MultiSplitState state;
         if ( initialized )
         {
-            // Creating new state object
             state = new MultiSplitState ();
-
-            // Views sizes
             final List<MultiSplitViewState> states = new ArrayList<MultiSplitViewState> ( views.size () );
             for ( final MultiSplitView view : views )
             {
@@ -417,14 +416,13 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
         }
         else
         {
-            // There is no state yet
             state = null;
         }
         return state;
     }
 
     @Override
-    public void setMultiSplitState ( final MultiSplitState state )
+    public void setMultiSplitState ( @NotNull final MultiSplitState state )
     {
         final List<MultiSplitViewState> states = state.states ();
         if ( states.size () == views.size () )
@@ -464,7 +462,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         if ( multiSplitPane.getWidth () > 0 && multiSplitPane.getHeight () > 0 && views.size () > 0 )
         {
@@ -852,19 +850,19 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return layoutSize ( SizeType.preferred );
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container container )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         return layoutSize ( SizeType.minimum );
     }
 
     @Override
-    public Dimension maximumLayoutSize ( final Container container )
+    public Dimension maximumLayoutSize ( @NotNull final Container container )
     {
         return layoutSize ( SizeType.maximum );
     }
@@ -875,7 +873,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
      * @param sizeType {@link SizeType}
      * @return layout size for the specified {@link SizeType}
      */
-    protected Dimension layoutSize ( final SizeType sizeType )
+    protected Dimension layoutSize ( @NotNull final SizeType sizeType )
     {
         // Calculating content size
         final Dimension contentSize;
@@ -1036,7 +1034,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
         }
         else
         {
-            throw new IllegalArgumentException ( "WebMultiSplitPane doesn't have a view under index: " + index );
+            throw new IndexOutOfBoundsException ( "WebMultiSplitPane doesn't have a view under index: " + index );
         }
     }
 
@@ -1085,23 +1083,24 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void toggleViewToLeft ( final WebMultiSplitPaneDivider divider )
+    public void toggleViewToLeft ( @NotNull final WebMultiSplitPaneDivider divider )
     {
         toggleViewExpansion ( dividers.indexOf ( divider ) );
     }
 
     @Override
-    public void toggleViewToRight ( final WebMultiSplitPaneDivider divider )
+    public void toggleViewToRight ( @NotNull final WebMultiSplitPaneDivider divider )
     {
         toggleViewExpansion ( dividers.indexOf ( divider ) + 1 );
     }
 
     @Override
-    public boolean isDragAvailable ( final WebMultiSplitPaneDivider divider )
+    public boolean isDragAvailable ( @NotNull final WebMultiSplitPaneDivider divider )
     {
         return multiSplitPane.isEnabled () && getExpandedViewIndex () == -1 && dividers.contains ( divider );
     }
 
+    @Nullable
     @Override
     public WebMultiSplitPaneDivider getDraggedDivider ()
     {
@@ -1109,7 +1108,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void dividerDragStarted ( final WebMultiSplitPaneDivider divider, final MouseEvent e )
+    public void dividerDragStarted ( @NotNull final WebMultiSplitPaneDivider divider, @NotNull final MouseEvent e )
     {
         // Updating last operation
         onOperation ( Operation.splitDividerDragged );
@@ -1129,7 +1128,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void dividerDragged ( final WebMultiSplitPaneDivider divider, final MouseEvent e )
+    public void dividerDragged ( @NotNull final WebMultiSplitPaneDivider divider, @NotNull final MouseEvent e )
     {
         // Updating last operation
         onOperation ( Operation.splitDividerDragged );
@@ -1188,7 +1187,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
     }
 
     @Override
-    public void dividerDragEnded ( final WebMultiSplitPaneDivider divider, final MouseEvent e )
+    public void dividerDragEnded ( @NotNull final WebMultiSplitPaneDivider divider, @NotNull final MouseEvent e )
     {
         // Updating last operation
         onOperation ( Operation.splitDividerDragEnded );
@@ -1206,7 +1205,7 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
      *
      * @param operation {@link Operation} type
      */
-    protected void onOperation ( final Operation operation )
+    protected void onOperation ( @NotNull final Operation operation )
     {
         // Reacting to various operations
         if ( lastOperation != Operation.splitPaneResized && operation == Operation.splitPaneResized ||

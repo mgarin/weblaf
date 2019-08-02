@@ -25,7 +25,6 @@ import java.awt.geom.*;
 /**
  * @author Mikle Garin
  */
-
 public class TextStroke implements Stroke
 {
     private final String text;

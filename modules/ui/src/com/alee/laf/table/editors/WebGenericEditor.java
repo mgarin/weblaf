@@ -27,7 +27,6 @@ import java.lang.reflect.Constructor;
 /**
  * @author Mikle Garin
  */
-
 public class WebGenericEditor extends WebDefaultCellEditor<GenericCellEditor>
 {
     private final Class[] argTypes = new Class[]{ String.class };

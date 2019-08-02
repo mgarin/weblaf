@@ -17,11 +17,16 @@
 
 package com.alee.demo.content.container;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.data.BoxOrientation;
 import com.alee.demo.api.example.*;
-import com.alee.extended.panel.WebCollapsiblePane;
+import com.alee.demo.skin.DemoIcons;
+import com.alee.extended.collapsible.WebCollapsiblePane;
+import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebTextArea;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.text.LoremIpsum;
 
 import javax.swing.*;
 import java.util.List;
@@ -32,6 +37,7 @@ import java.util.List;
  */
 public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {
@@ -54,47 +60,59 @@ public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         return CollectionUtils.<Preview>asList (
-                new BasicCollapsiblePanePreview ( WebCollapsiblePane.TOP ),
-                new BasicCollapsiblePanePreview ( WebCollapsiblePane.LEFT ),
-                new BasicCollapsiblePanePreview ( WebCollapsiblePane.RIGHT ),
-                new BasicCollapsiblePanePreview ( WebCollapsiblePane.BOTTOM )
+                new CollapsiblePanePreview ( BoxOrientation.top ),
+                new CollapsiblePanePreview ( BoxOrientation.left ),
+                new CollapsiblePanePreview ( BoxOrientation.right ),
+                new CollapsiblePanePreview ( BoxOrientation.bottom )
         );
     }
 
     /**
-     * Right WebCollapsiblePane Example
+     * {@link WebCollapsiblePane} preview.
      */
-    protected class BasicCollapsiblePanePreview extends AbstractStylePreview
+    protected class CollapsiblePanePreview extends AbstractStylePreview
     {
         /**
-         * Title pane position.
+         * Header position.
          */
-        private final int titlePosition;
+        protected final BoxOrientation headerPosition;
 
         /**
          * Constructs new style preview.
          *
-         * @param titlePosition title pane position
+         * @param headerPosition header position
          */
-        public BasicCollapsiblePanePreview ( final int titlePosition )
+        public CollapsiblePanePreview ( final BoxOrientation headerPosition )
         {
-            super ( WebCollapsiblePaneExample.this, "right", FeatureState.beta, StyleId.collapsiblepane );
-            this.titlePosition = titlePosition;
+            super ( WebCollapsiblePaneExample.this, headerPosition.name (), FeatureState.release, StyleId.collapsiblepane );
+            this.headerPosition = headerPosition;
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final String textKey = getExampleLanguageKey ( "data.text" );
-            final WebTextArea textArea = new WebTextArea ();
-            textArea.setLanguage ( textKey );
-            textArea.setPreferredSize ( 150, 100 );
-
+            final Icon icon = DemoIcons.fire16;
             final String titleKey = getExampleLanguageKey ( "data.title" );
-            final WebCollapsiblePane collapsiblePane = new WebCollapsiblePane ( titleKey, textArea );
-            collapsiblePane.setTitlePanePosition ( titlePosition );
-
+            final WebCollapsiblePane collapsiblePane = new WebCollapsiblePane ( getStyleId (), icon, titleKey, createContent () );
+            collapsiblePane.setHeaderPosition ( headerPosition );
             return CollectionUtils.asList ( collapsiblePane );
+        }
+
+        /**
+         * Returns {@link JComponent} content for {@link WebCollapsiblePane}.
+         * New {@link JComponent} is created upon every call to avoid any UI issues.
+         *
+         * @return {@link JComponent} content for {@link WebCollapsiblePane}
+         */
+        protected JComponent createContent ()
+        {
+            final String text = new LoremIpsum ().getParagraphs ( 3 );
+            final WebTextArea textArea = new WebTextArea ( StyleId.textareaNonOpaque, text );
+            textArea.setLineWrap ( true );
+            textArea.setWrapStyleWord ( true );
+            final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpaneTransparentHovering, textArea );
+            scrollPane.setPreferredSize ( 150, 100 );
+            return scrollPane;
         }
     }
 }

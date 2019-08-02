@@ -33,7 +33,6 @@ import java.awt.image.BufferedImage;
 /**
  * @author Mikle Garin
  */
-
 public class WebDecoratedImage extends JComponent implements SwingConstants, ShapeMethods
 {
     /**

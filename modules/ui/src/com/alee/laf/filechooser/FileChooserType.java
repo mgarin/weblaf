@@ -18,7 +18,7 @@
 package com.alee.laf.filechooser;
 
 /**
- * This enumeration represents all available file chooser types.
+ * This enumeration represents all available {@link javax.swing.JFileChooser} types.
  *
  * @author Mikle Garin
  */

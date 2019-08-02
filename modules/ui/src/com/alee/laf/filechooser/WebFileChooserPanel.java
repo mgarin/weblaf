@@ -57,6 +57,7 @@ import com.alee.utils.compare.Filter;
 import com.alee.utils.file.FileComparator;
 import com.alee.utils.filefilter.*;
 import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.CellEditorAdapter;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -889,7 +890,7 @@ public class WebFileChooserPanel extends WebPanel
                 }
             }
         } );
-        fileTable.getDefaultEditor ( File.class ).addCellEditorListener ( new CellEditorListener ()
+        fileTable.getDefaultEditor ( File.class ).addCellEditorListener ( new CellEditorAdapter ()
         {
             @Override
             public void editingStopped ( final ChangeEvent e )
@@ -903,12 +904,6 @@ public class WebFileChooserPanel extends WebPanel
 
                 // Updating list selection after edit
                 fileTable.setSelectedFile ( file );
-            }
-
-            @Override
-            public void editingCanceled ( final ChangeEvent e )
-            {
-                // Do nothing
             }
         } );
     }

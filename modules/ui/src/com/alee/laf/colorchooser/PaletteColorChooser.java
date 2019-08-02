@@ -37,7 +37,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class PaletteColorChooser extends WebPanel
 {
     public static final ImageIcon LOOP_ICON = new ImageIcon ( PaletteColorChooser.class.getResource ( "icons/loop.png" ) );

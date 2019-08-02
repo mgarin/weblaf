@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveProgressBarPainter<C extends JProgressBar, U extends WebProgressBarUI> extends AdaptivePainter<C, U>
         implements IProgressBarPainter<C, U>
 {

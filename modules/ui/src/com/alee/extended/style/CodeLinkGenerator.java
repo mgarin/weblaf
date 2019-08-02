@@ -57,7 +57,6 @@ import java.util.Locale;
 /**
  * @author Mikle Garin
  */
-
 public class CodeLinkGenerator implements LinkGenerator
 {
     /**

@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveTablePainter<C extends JTable, U extends WebTableUI> extends AdaptivePainter<C, U> implements ITablePainter<C, U>
 {
     /**

@@ -34,7 +34,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public abstract class AbstractStateMenuItemPainter<C extends JMenuItem, U extends MenuItemUI, D extends IDecoration<C, D>>
         extends AbstractStateButtonPainter<C, U, D> implements IAbstractMenuItemPainter<C, U>
 {

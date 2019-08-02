@@ -30,7 +30,6 @@ import java.beans.PropertyChangeListener;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public abstract class ContentPropertyListener<C extends JComponent, D extends IDecoration<C, D>> implements PropertyChangeListener
 {
     /**

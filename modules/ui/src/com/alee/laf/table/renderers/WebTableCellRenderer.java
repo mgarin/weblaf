@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.ui.*;
 import com.alee.extended.label.WebStyledLabel;
@@ -66,6 +67,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
         states = new ArrayList<String> ( 3 );
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

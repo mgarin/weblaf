@@ -67,7 +67,6 @@ import java.util.*;
  *
  * @author Mikle Garin
  */
-
 public class LibraryInfoDialog extends WebFrame
 {
     /**

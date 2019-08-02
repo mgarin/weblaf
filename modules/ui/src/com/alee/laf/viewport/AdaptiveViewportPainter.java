@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveViewportPainter<C extends JViewport, U extends WViewportUI> extends AdaptivePainter<C, U>
         implements IViewportPainter<C, U>
 {

@@ -24,7 +24,6 @@ import java.net.URL;
 /**
  * @author Mikle Garin
  */
-
 public class OrientedIcon extends ImageIcon
 {
     public OrientedIcon ()

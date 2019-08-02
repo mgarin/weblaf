@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.container;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
@@ -66,6 +67,7 @@ import java.util.List;
  */
 public class WebBreadcrumbExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {

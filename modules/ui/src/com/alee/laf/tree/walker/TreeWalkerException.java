@@ -22,7 +22,6 @@ package com.alee.laf.tree.walker;
  *
  * @author Mikle Garin
  */
-
 public final class TreeWalkerException extends RuntimeException
 {
     /**

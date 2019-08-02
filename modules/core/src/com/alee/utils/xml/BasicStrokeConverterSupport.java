@@ -31,7 +31,6 @@ import java.util.List;
  * @see BasicStroke
  * @see Stroke
  */
-
 public class BasicStrokeConverterSupport implements StrokeConverterSupport<BasicStroke>
 {
     /**

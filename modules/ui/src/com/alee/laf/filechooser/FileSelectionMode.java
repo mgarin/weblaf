@@ -23,9 +23,10 @@ import javax.swing.*;
 import java.io.File;
 
 /**
+ * This enumerations represents different types file selection options for {@link JFileChooser}.
+ *
  * @author Mikle Garin
  */
-
 public enum FileSelectionMode
 {
     /**

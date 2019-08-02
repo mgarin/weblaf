@@ -13,7 +13,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IAbstractStateButtonPainter<C extends AbstractButton, U extends ButtonUI> extends IAbstractButtonPainter<C, U>
 {
     /**

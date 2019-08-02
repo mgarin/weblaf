@@ -9,7 +9,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ITextFieldPainter<C extends JTextField, U extends WTextFieldUI> extends IAbstractTextFieldPainter<C, U>
 {
     /**

@@ -19,7 +19,6 @@ package com.alee.laf.table;
 
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -28,6 +27,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.GeometryUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
@@ -484,26 +484,30 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
         }
     }
 
+    /**
+     * Requesting focus to the editor component whenever it can provide us the editor {@link Component}.
+     */
     @Override
     public boolean editCellAt ( final int row, final int column, final EventObject event )
     {
         final boolean editingStarted = super.editCellAt ( row, column, event );
         if ( editingStarted )
         {
-            final CellEditor cellEditor = getCellEditor ();
             try
             {
-                // todo There should be a proper interface for that
-                //noinspection JavaReflectionMemberAccess
-                final Object o = cellEditor.getClass ().getMethod ( "getComponent" ).invoke ( cellEditor );
-                if ( o instanceof Component )
-                {
-                    ( ( Component ) o ).requestFocusInWindow ();
-                }
+                /**
+                 * todo There should be a proper interface for retrieving cell editor component
+                 */
+                final CellEditor cellEditor = getCellEditor ();
+                final Component editorComponent = ReflectUtils.callMethod ( cellEditor, "getComponent" );
+                editorComponent.requestFocusInWindow ();
             }
-            catch ( final Exception e )
+            catch ( final Exception ignored )
             {
-                // ignore
+                /**
+                 * We don't want any exceptions thrown if editor simply doesn't support method we are expecting.
+                 * That is why any exception here will simply be ignored until public API is available.
+                 */
             }
         }
         return editingStarted;

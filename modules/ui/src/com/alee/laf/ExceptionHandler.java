@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author Mikle Garin
  */
-
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler
 {
     @Override

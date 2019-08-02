@@ -31,7 +31,6 @@ import java.util.Locale;
  * @author Mikle Garin
  * @see com.alee.painter.decoration.content.LocaleTextContent
  */
-
 public class LanguageChooserRenderer extends WebComboBoxRenderer<Locale, JList, ComboBoxCellParameters<Locale, JList>>
 {
     @Override

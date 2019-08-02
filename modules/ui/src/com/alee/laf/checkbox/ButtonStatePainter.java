@@ -31,7 +31,6 @@ import javax.swing.plaf.basic.BasicToggleButtonUI;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class ButtonStatePainter<C extends AbstractButton, U extends BasicToggleButtonUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements IButtonStatePainter<C, U>
 {

@@ -31,7 +31,6 @@ import java.awt.event.*;
  * @author Mikle Garin
  * @see com.alee.utils.swing.extensions.EventMethods
  */
-
 public final class EventMethodsImpl
 {
     /**

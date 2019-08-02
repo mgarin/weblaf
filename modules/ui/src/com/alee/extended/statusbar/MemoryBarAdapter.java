@@ -18,22 +18,25 @@
 package com.alee.extended.statusbar;
 
 /**
- * Adapter for MemoryBarListener.
+ * Adapter for {@link MemoryBarListener}.
  *
  * @author Mikle Garin
  */
-
 public abstract class MemoryBarAdapter implements MemoryBarListener
 {
     @Override
     public void gcCalled ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void gcCompleted ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

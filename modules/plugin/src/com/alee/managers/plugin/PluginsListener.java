@@ -29,7 +29,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see PluginManager
  */
-
 public interface PluginsListener<P extends Plugin>
 {
     /**

@@ -14,7 +14,6 @@ import java.util.Hashtable;
  * @param <U> UI type
  * @author Alexandr Zernov
  */
-
 public interface ITreePainter<C extends JTree, U extends WTreeUI> extends SpecificPainter<C, U>
 {
     /**

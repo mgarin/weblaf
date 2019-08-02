@@ -25,7 +25,6 @@ import java.util.NoSuchElementException;
  *
  * @author Mikle Garin
  */
-
 public class ArrayListIterator<E> extends ArrayIterator<E> implements ListIterator<E>
 {
     /**

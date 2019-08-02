@@ -21,7 +21,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public abstract class AbstractStateButtonPainter<C extends AbstractButton, U extends ButtonUI, D extends IDecoration<C, D>>
         extends AbstractButtonPainter<C, U, D> implements IAbstractStateButtonPainter<C, U>
 {

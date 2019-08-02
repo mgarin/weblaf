@@ -9,7 +9,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ICheckBoxMenuItemPainter<C extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends IAbstractMenuItemPainter<C, U>
 {
     /**

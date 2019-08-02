@@ -36,7 +36,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebImageDrop extends JComponent
 {
     /**

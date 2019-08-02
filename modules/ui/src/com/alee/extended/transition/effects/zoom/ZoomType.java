@@ -20,7 +20,6 @@ package com.alee.extended.transition.effects.zoom;
 /**
  * @author Mikle Garin
  */
-
 public enum ZoomType
 {
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.WebComponent;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
@@ -273,6 +274,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

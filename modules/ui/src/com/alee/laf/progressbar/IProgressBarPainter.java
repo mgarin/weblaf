@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI> extends SpecificPainter<C, U>
 {
     /**

@@ -17,16 +17,19 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Adapter for {@link MultiSplitResizeListener}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
+ * @see WebMultiSplitPane
  */
-
 public abstract class MultiSplitResizeAdapter implements MultiSplitResizeListener
 {
     @Override
-    public void viewResizeStarted ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+    public void viewResizeStarted ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final WebMultiSplitPaneDivider divider )
     {
         /**
          * Do nothing by default.
@@ -34,7 +37,7 @@ public abstract class MultiSplitResizeAdapter implements MultiSplitResizeListene
     }
 
     @Override
-    public void viewResized ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+    public void viewResized ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final WebMultiSplitPaneDivider divider )
     {
         /**
          * Do nothing by default.
@@ -42,7 +45,7 @@ public abstract class MultiSplitResizeAdapter implements MultiSplitResizeListene
     }
 
     @Override
-    public void viewResizeEnded ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+    public void viewResizeEnded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final WebMultiSplitPaneDivider divider )
     {
         /**
          * Do nothing by default.
@@ -50,7 +53,7 @@ public abstract class MultiSplitResizeAdapter implements MultiSplitResizeListene
     }
 
     @Override
-    public void viewSizeAdjusted ( final WebMultiSplitPane multiSplitPane )
+    public void viewSizeAdjusted ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
         /**
          * Do nothing by default.

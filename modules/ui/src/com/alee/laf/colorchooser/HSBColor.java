@@ -25,7 +25,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "HSBColor" )
 public class HSBColor
 {

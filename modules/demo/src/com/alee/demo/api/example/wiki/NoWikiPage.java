@@ -29,7 +29,6 @@ import javax.swing.*;
 /**
  * @author Mikle Garin
  */
-
 public class NoWikiPage implements WikiPage
 {
     @Override

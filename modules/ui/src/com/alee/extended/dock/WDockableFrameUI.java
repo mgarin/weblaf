@@ -41,6 +41,12 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
     protected C frame;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "DockableFrame.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving dockable frame reference
@@ -64,12 +70,6 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
 
         // Removing dockable frame reference
         frame = null;
-    }
-
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "DockableFrame.";
     }
 
     /**
@@ -102,7 +102,9 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -110,7 +112,9 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

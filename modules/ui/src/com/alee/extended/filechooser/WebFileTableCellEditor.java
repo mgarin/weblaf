@@ -32,7 +32,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
 {
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.extended.canvas;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
@@ -72,6 +73,7 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
     @XStreamAsAttribute
     protected Color shadow;
 
+    @NotNull
     @Override
     public String getId ()
     {

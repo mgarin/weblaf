@@ -12,7 +12,6 @@ import javax.swing.table.JTableHeader;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ITableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends SpecificPainter<C, U>
 {
     /**

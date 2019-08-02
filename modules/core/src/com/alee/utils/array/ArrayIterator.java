@@ -26,7 +26,6 @@ import java.util.NoSuchElementException;
  * @param <E> data type
  * @author Mikle Garin
  */
-
 public class ArrayIterator<E> implements Iterator<E>
 {
     /**

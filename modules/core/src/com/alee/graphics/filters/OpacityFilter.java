@@ -21,7 +21,6 @@ package com.alee.graphics.filters;
  *
  * @author Jerry Huxtable
  */
-
 public class OpacityFilter extends PointFilter
 {
     private int opacity;

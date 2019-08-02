@@ -30,7 +30,6 @@ import java.util.ArrayList;
  * @author Kevin Weiner, FM Software; LZW decoder adapted from John Cristy's ImageMagick.
  * @version 1.01 July 2001
  */
-
 public class GifDecoder
 {
     /**

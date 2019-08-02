@@ -23,7 +23,6 @@ package com.alee.laf;
  *
  * @author Mikle Garin
  */
-
 public interface IInputPrompt
 {
     /**

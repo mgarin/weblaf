@@ -38,10 +38,13 @@ import java.awt.image.BufferedImage;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
         implements IImagePainter<C, U>
 {
+    /**
+     * todo 1. Move image painting into IContent or IBackground implementation
+     */
+
     /**
      * Last cached image size.
      * This is used to determine when image component was resized since last paint call.

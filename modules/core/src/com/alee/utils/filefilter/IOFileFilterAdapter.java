@@ -22,12 +22,11 @@ import java.io.File;
 import java.io.FileFilter;
 
 /**
- * {@link java.io.FileFilter} adapter class.
+ * {@link DescriptiveFileFilter} adapter for {@link java.io.FileFilter}.
  *
  * @author Mikle Garin
  */
-
-public class IOFileFilterAdapter extends AbstractFileFilterAdapter
+public class IOFileFilterAdapter extends DescriptiveFileFilter
 {
     /**
      * Adapted filter.

@@ -17,6 +17,7 @@
 
 package com.alee.managers.animation.transition;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.animation.AnimationException;
 import com.alee.managers.animation.framerate.FrameRate;
 import com.alee.utils.CollectionUtils;
@@ -129,7 +130,8 @@ public class QueueTransition<V> extends AbstractTransition<V>
     }
 
     /**
-     * Adds all specified transitions into queue.
+     * Adds all specified transitions for execution.
+     * Note that this will have no effect on the current transition if it is already playing.
      *
      * @param transitions transitions to add
      */
@@ -142,7 +144,8 @@ public class QueueTransition<V> extends AbstractTransition<V>
     }
 
     /**
-     * Adds all specified transitions into queue.
+     * Adds all specified transitions for execution.
+     * Note that this will have no effect on the current transition if it is already playing.
      *
      * @param transitions transitions to add
      */
@@ -151,6 +154,18 @@ public class QueueTransition<V> extends AbstractTransition<V>
         synchronized ( elementsLock )
         {
             elements.addAll ( transitions );
+        }
+    }
+
+    /**
+     * Removes all previously added transitions from execution.
+     * Note that this will have no effect on the current transition if it is already playing.
+     */
+    public void clear ()
+    {
+        synchronized ( elementsLock )
+        {
+            elements.clear ();
         }
     }
 
@@ -362,7 +377,7 @@ public class QueueTransition<V> extends AbstractTransition<V>
     }
 
     @Override
-    public int compareTo ( final Object object )
+    public int compareTo ( @NotNull final Object object )
     {
         return this == object ? 0 : -1;
     }

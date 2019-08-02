@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
 import com.alee.utils.SwingUtils;
@@ -36,6 +37,7 @@ import javax.swing.*;
 public class AcceleratorText<C extends JMenuItem, D extends IDecoration<C, D>, I extends AcceleratorText<C, D, I>>
         extends AbstractTextContent<C, D, I>
 {
+    @NotNull
     @Override
     public String getId ()
     {

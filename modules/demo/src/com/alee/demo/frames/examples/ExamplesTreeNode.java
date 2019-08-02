@@ -17,6 +17,8 @@
 
 package com.alee.demo.frames.examples;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.IconBridge;
 import com.alee.api.ui.TextBridge;
 import com.alee.demo.api.example.Example;
@@ -40,7 +42,6 @@ import static com.alee.demo.frames.examples.ExamplesTreeNodeType.group;
  *
  * @author Mikle Garin
  */
-
 public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, ExampleElement>
         implements Stateful, IconBridge<TreeNodeParameters<ExamplesTreeNode, JTree>>,
         TextBridge<TreeNodeParameters<ExamplesTreeNode, JTree>>
@@ -107,12 +108,14 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
         return ( Example ) getUserObject ();
     }
 
+    @NotNull
     @Override
     public String getId ()
     {
         return type == group ? getExampleGroup ().getId () : type == example ? getExample ().getId () : ROOT_ID;
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

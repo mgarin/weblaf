@@ -11,7 +11,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IAbstractTextFieldPainter<C extends JTextComponent, U extends BasicTextUI> extends IAbstractTextEditorPainter<C, U>
 {
     /**

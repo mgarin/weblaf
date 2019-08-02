@@ -24,7 +24,6 @@ import com.alee.managers.style.XmlSkin;
  *
  * @author Mikle Garin
  */
-
 public class FlatSkin extends XmlSkin
 {
     /**

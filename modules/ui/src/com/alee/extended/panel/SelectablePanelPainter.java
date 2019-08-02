@@ -13,7 +13,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "SelectablePanelPainter" )
 public class SelectablePanelPainter extends AbstractPainter<WebSelectablePanel, WebPanelUI>
 {
@@ -74,7 +73,7 @@ public class SelectablePanelPainter extends AbstractPainter<WebSelectablePanel, 
             final int minY = bounds.y + 2 + ( notFirst ? 1 : 0 );
             final int maxY = bounds.x + bounds.height - 2 - ( notLast ? 1 : 0 );
             final int x = ltr ? bounds.x + 3 : bounds.x + bounds.width - GRIPPER_SIZE + 2;
-            int y = minY + ( ( maxY - minY ) % SINGLE_GRIPPER_STEP ) / 2;
+            int y = minY + ( maxY - minY ) % SINGLE_GRIPPER_STEP / 2;
 
             // Painters
             final Paint light = new LinearGradientPaint ( x, minY, x, maxY, fractions, lightColors );

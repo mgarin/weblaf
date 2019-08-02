@@ -17,6 +17,8 @@
 
 package com.alee.laf.spinner;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.layout.AbstractLayoutManager;
 
 import java.awt.*;
@@ -28,7 +30,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebSpinnerLayout extends AbstractLayoutManager
 {
     /**
@@ -62,7 +63,7 @@ public class WebSpinnerLayout extends AbstractLayoutManager
     protected Component previousButton = null;
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         if ( EDITOR.equals ( constraints ) )
         {
@@ -79,7 +80,7 @@ public class WebSpinnerLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         if ( component == editor )
         {
@@ -96,7 +97,7 @@ public class WebSpinnerLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final Insets b = container.getInsets ();
         final Dimension s = container.getSize ();
@@ -122,7 +123,7 @@ public class WebSpinnerLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final Insets b = container.getInsets ();
         final Dimension ed = editor != null ? editor.getPreferredSize () : new Dimension ( 0, 0 );

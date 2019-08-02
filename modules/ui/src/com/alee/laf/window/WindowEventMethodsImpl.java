@@ -32,7 +32,6 @@ import java.awt.event.WindowEvent;
  * @author Mikle Garin
  * @see com.alee.laf.window.WindowEventMethods
  */
-
 public final class WindowEventMethodsImpl implements MethodExtension
 {
     /**

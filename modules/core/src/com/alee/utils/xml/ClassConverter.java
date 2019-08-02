@@ -25,7 +25,6 @@ import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
  *
  * @author Mikle Garin
  */
-
 public class ClassConverter extends AbstractSingleValueConverter
 {
     @Override

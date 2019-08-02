@@ -20,9 +20,9 @@ package com.alee.extended.tree;
 import java.util.List;
 
 /**
- * AsyncTreeModelListener adapter class.
+ * Adapter for {@link AsyncTreeModelListener}.
  *
- * @param <N> node type
+ * @param <N> {@link AsyncUniqueNode} type
  * @author Mikle Garin
  */
 public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implements AsyncTreeModelListener<N>

@@ -17,9 +17,9 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
-import com.alee.api.jdk.Objects;
 import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
@@ -64,6 +64,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
     @OverwriteOnMerge
     protected List<Stripe> stripes;
 
+    @NotNull
     @Override
     public String getId ()
     {
@@ -102,7 +103,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
         {
             if ( getOrientation ( c, d ).isVertical () )
             {
-                if ( Objects.equals ( align, BoxOrientation.left, BoxOrientation.center, BoxOrientation.right ) )
+                if ( align.isLeft () || align.isCenter () || align.isRight () )
                 {
                     return align;
                 }
@@ -113,7 +114,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
             }
             else
             {
-                if ( Objects.equals ( align, BoxOrientation.top, BoxOrientation.center, BoxOrientation.bottom ) )
+                if ( align.isTop () || align.isCenter () || align.isBottom () )
                 {
                     return align;
                 }
@@ -166,11 +167,11 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
             final int y2;
             if ( orientation.isVertical () )
             {
-                if ( ltr ? align == BoxOrientation.left : align == BoxOrientation.right )
+                if ( ltr ? align.isLeft () : align.isRight () )
                 {
                     x1 = x2 = bounds.x + i;
                 }
-                else if ( !ltr ? align == BoxOrientation.left : align == BoxOrientation.right )
+                else if ( !ltr ? align.isLeft () : align.isRight () )
                 {
                     x1 = x2 = bounds.x + bounds.width - i - 1;
                 }
@@ -183,11 +184,11 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
             }
             else
             {
-                if ( align == BoxOrientation.top )
+                if ( align.isTop () )
                 {
                     y1 = y2 = bounds.y + i;
                 }
-                else if ( align == BoxOrientation.bottom )
+                else if ( align.isBottom () )
                 {
                     y1 = y2 = bounds.y + bounds.height - stripes.size () + i;
                 }

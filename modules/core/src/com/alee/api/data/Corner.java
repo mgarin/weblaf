@@ -26,7 +26,6 @@ import static javax.swing.ScrollPaneConstants.*;
  *
  * @author Mikle Garin
  */
-
 public enum Corner
 {
     upperLeft ( UPPER_LEFT_CORNER ),

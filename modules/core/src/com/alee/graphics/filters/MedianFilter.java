@@ -23,7 +23,6 @@ import java.awt.*;
  *
  * @author Jerry Huxtable
  */
-
 public class MedianFilter extends WholeImageFilter
 {
     public MedianFilter ()

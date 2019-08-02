@@ -32,7 +32,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class ListPainter<C extends JList, U extends WListUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
         implements IListPainter<C, U>
 {

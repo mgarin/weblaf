@@ -37,6 +37,12 @@ public abstract class WToolTipUI<C extends JToolTip> extends ToolTipUI implement
     protected C toolTip = null;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "ToolTip.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving tooltip reference
@@ -62,12 +68,6 @@ public abstract class WToolTipUI<C extends JToolTip> extends ToolTipUI implement
         toolTip = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "ToolTip.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WToolTipUI<C extends JToolTip> extends ToolTipUI implement
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WToolTipUI<C extends JToolTip> extends ToolTipUI implement
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

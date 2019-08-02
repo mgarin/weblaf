@@ -22,7 +22,6 @@ package com.alee.utils.file;
  *
  * @author Mikle Garin
  */
-
 public class FileDescription
 {
     /**

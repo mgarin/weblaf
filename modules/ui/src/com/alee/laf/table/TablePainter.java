@@ -33,7 +33,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
         implements ITablePainter<C, U>
 {

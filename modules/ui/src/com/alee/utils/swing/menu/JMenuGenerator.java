@@ -28,7 +28,6 @@ import javax.swing.*;
  * @author Mikle Garin
  * @see AbstractMenuGenerator
  */
-
 public class JMenuGenerator extends AbstractMenuGenerator<JMenu>
 {
     /**

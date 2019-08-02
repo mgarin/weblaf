@@ -28,7 +28,6 @@ import java.awt.*;
  * @see MethodExtension
  * @see com.alee.utils.swing.extensions.SizeMethodsImpl
  */
-
 public interface SizeMethods<C extends JComponent> extends MethodExtension
 {
     /**

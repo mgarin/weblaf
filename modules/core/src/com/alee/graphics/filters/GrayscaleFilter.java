@@ -21,7 +21,6 @@ package com.alee.graphics.filters;
  *
  * @author Jerry Huxtable
  */
-
 public class GrayscaleFilter extends PointFilter
 {
     public GrayscaleFilter ()

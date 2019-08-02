@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveComboBoxPainter<C extends JComboBox, U extends WComboBoxUI> extends AdaptivePainter<C, U>
         implements IComboBoxPainter<C, U>
 {

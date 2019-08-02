@@ -31,7 +31,6 @@ import java.util.EventObject;
 /**
  * @author Mikle Garin
  */
-
 public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEditor implements TableCellEditor, TreeCellEditor
 {
     public static final String COMBOBOX_CELL_EDITOR = "JComboBox.isTableCellEditor";

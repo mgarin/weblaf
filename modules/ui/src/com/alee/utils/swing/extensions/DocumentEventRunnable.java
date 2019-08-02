@@ -27,7 +27,6 @@ import javax.swing.text.JTextComponent;
  * @param <C> {@link JTextComponent} type
  * @author Mikle Garin
  */
-
 public interface DocumentEventRunnable<C extends JTextComponent>
 {
     /**

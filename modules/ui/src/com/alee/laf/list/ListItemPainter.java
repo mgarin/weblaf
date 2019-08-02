@@ -34,7 +34,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class ListItemPainter<C extends JList, U extends WebListUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements IListItemPainter<C, U>
 {

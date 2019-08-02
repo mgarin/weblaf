@@ -25,7 +25,6 @@ import java.awt.image.WritableRaster;
  *
  * @author Jerry Huxtable
  */
-
 public class MiscCompositeContext implements CompositeContext
 {
 

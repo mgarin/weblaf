@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IToolBarSeparatorPainter<C extends JToolBar.Separator, U extends WToolBarSeparatorUI>
         extends IAbstractSeparatorPainter<C, U>
 {

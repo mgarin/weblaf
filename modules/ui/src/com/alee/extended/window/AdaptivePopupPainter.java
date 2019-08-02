@@ -28,7 +28,6 @@ import com.alee.painter.Painter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptivePopupPainter<C extends WebPopup, U extends WPopupUI> extends AdaptivePainter<C, U>
         implements IPopupPainter<C, U>
 {

@@ -22,7 +22,6 @@ package com.alee.painter.common;
  *
  * @author Mikle Garin
  */
-
 public enum TitlePosition
 {
     /**

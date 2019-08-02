@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class SeparatorPainter<C extends JSeparator, U extends WSeparatorUI, D extends IDecoration<C, D>>
         extends AbstractSeparatorPainter<C, U, D> implements ISeparatorPainter<C, U>
 {

@@ -46,7 +46,6 @@ public interface Styleable
     /**
      * Sets new component style ID.
      * If style for the specified ID cannot be found in skin then its default style will be used instead.
-     * This method forces component to instantly apply style with the specified ID to itself.
      *
      * @param id custom component style ID
      * @return previously used style ID
@@ -55,7 +54,6 @@ public interface Styleable
 
     /**
      * Resets style ID to default value.
-     * This method forces component to instantly apply style with the specified ID to itself.
      *
      * @return previously used style ID
      */

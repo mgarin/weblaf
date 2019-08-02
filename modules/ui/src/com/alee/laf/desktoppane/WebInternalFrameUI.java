@@ -17,6 +17,7 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Consumer;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.*;
@@ -256,7 +257,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     protected class InternalFrameLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container container )
+        public void layoutContainer ( @NotNull final Container container )
         {
             final Insets insets = frame.getInsets ();
             int cx = insets.left;
@@ -306,7 +307,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
         }
 
         @Override
-        public Dimension preferredLayoutSize ( final Container container )
+        public Dimension preferredLayoutSize ( @NotNull final Container container )
         {
             final Dimension ps = new Dimension ( frame.getRootPane ().getPreferredSize () );
 
@@ -354,7 +355,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
          * That allows you to resize the frames to the point where just the title pane is visible.
          */
         @Override
-        public Dimension minimumLayoutSize ( final Container container )
+        public Dimension minimumLayoutSize ( @NotNull final Container container )
         {
             final Dimension ms = getNorthPane () != null ? getNorthPane ().getMinimumSize () : new Dimension ();
 

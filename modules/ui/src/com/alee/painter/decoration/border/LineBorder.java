@@ -71,11 +71,11 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
     @Override
     public BorderWidth getWidth ()
     {
-        final float t = getOpacity ();
-        final Stroke s = getStroke ();
-        final float w = t > 0 ? s != null && s instanceof BasicStroke ? ( ( BasicStroke ) s ).getLineWidth () : 1 : 0;
-        final int bw = Math.round ( w );
-        return new BorderWidth ( bw, bw, bw, bw );
+        final float opacity = getOpacity ();
+        final Stroke stroke = getStroke ();
+        final float lineWidth = opacity > 0 ? stroke instanceof BasicStroke ? ( ( BasicStroke ) stroke ).getLineWidth () : 1 : 0;
+        final int width = Math.round ( lineWidth );
+        return new BorderWidth ( width, width, width, width );
     }
 
     @Override

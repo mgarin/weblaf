@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IOptionPanePainter<C extends JOptionPane, U extends WebOptionPaneUI> extends SpecificPainter<C, U>
 {
     /**

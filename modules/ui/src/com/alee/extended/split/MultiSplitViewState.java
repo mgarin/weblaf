@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @see WebMultiSplitPaneModel
  * @see WebMultiSplitPane
  */
-@XStreamAlias ( "ViewState" )
+@XStreamAlias ( "MultiSplitViewState" )
 public class MultiSplitViewState implements Cloneable, Serializable
 {
     /**

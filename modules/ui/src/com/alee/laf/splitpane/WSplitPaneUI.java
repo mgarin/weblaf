@@ -17,6 +17,7 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.UIInputListener;
@@ -127,6 +128,12 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     protected boolean dividerLocationIsSet;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "SplitPane.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving split pane reference
@@ -158,12 +165,6 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
 
         // Removing split pane reference
         splitPane = null;
-    }
-
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "SplitPane.";
     }
 
     /**
@@ -967,6 +968,7 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
             super ( StyleId.splitpaneNonContinuousDivider.at ( WSplitPaneUI.this.splitPane ) );
         }
 
+        @Nullable
         @Override
         public List<String> getStates ()
         {

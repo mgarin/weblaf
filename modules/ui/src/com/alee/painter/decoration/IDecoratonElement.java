@@ -30,7 +30,6 @@ import javax.swing.*;
  * @param <I> {@link IDecoratonElement} type
  * @author Mikle Garin
  */
-
 @SuppressWarnings ( "unused" )
 public interface IDecoratonElement<C extends JComponent, D extends IDecoration<C, D>, I extends IDecoratonElement<C, D, I>>
 {

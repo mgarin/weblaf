@@ -27,7 +27,6 @@ import java.awt.image.ColorModel;
  *
  * @author Jerry Huxtable
  */
-
 public class ShadowFilter extends AbstractBufferedImageOp
 {
     private float radius = 5;

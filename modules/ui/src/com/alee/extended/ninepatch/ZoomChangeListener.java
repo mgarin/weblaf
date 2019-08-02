@@ -22,7 +22,6 @@ import java.util.EventListener;
 /**
  * @author Mikle Garin
  */
-
 public interface ZoomChangeListener extends EventListener
 {
     public void zoomChanged ();

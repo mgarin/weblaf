@@ -22,7 +22,6 @@ package com.alee.utils.system;
  *
  * @author Mikle Garin
  */
-
 public enum SystemType
 {
     /**

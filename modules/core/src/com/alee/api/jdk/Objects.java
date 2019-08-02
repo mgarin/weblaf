@@ -17,6 +17,8 @@
 
 package com.alee.api.jdk;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.LM;
 import com.alee.utils.UtilityException;
 
@@ -46,7 +48,7 @@ public final class Objects
      * @return a hash value of the sequence of input values
      * @see Arrays#hashCode(Object[])
      */
-    public static int hash ( final Object... values )
+    public static int hash ( @Nullable final Object... values )
     {
         return Arrays.hashCode ( values );
     }
@@ -60,7 +62,7 @@ public final class Objects
      * @param compareWith objects to compare with
      * @return true if the first Object equals to any Object from the specified array, false otherwise
      */
-    public static boolean equals ( final Object object, final Object compareWith )
+    public static boolean equals ( @Nullable final Object object, @Nullable final Object compareWith )
     {
         return object == compareWith || object != null && object.equals ( compareWith );
     }
@@ -74,7 +76,7 @@ public final class Objects
      * @param compareWith object to compare with
      * @return true if the first Object equals to any Object from the specified array, false otherwise
      */
-    public static boolean equals ( final Object object, final Object... compareWith )
+    public static boolean equals ( @Nullable final Object object, @Nullable final Object... compareWith )
     {
         if ( compareWith != null && compareWith.length > 0 )
         {
@@ -98,7 +100,7 @@ public final class Objects
      * @param compareWith object to compare with
      * @return true if the first Object is not equals to any Object from the specified array, false otherwise
      */
-    public static boolean notEquals ( final Object object, final Object compareWith )
+    public static boolean notEquals ( @Nullable final Object object, @Nullable final Object compareWith )
     {
         return object != compareWith && ( object == null || !object.equals ( compareWith ) );
     }
@@ -112,7 +114,7 @@ public final class Objects
      * @param compareWith objects to compare with
      * @return true if the first Object is not equals to any Object from the specified array, false otherwise
      */
-    public static boolean notEquals ( final Object object, final Object... compareWith )
+    public static boolean notEquals ( @Nullable final Object object, @Nullable final Object... compareWith )
     {
         if ( compareWith != null && compareWith.length > 0 )
         {
@@ -136,7 +138,7 @@ public final class Objects
      * @param o2 second Object
      * @return true if the first Object equals to the second Object, false otherwise
      */
-    private static boolean equalsImpl ( final Object o1, final Object o2 )
+    private static boolean equalsImpl ( @Nullable final Object o1, @Nullable final Object o2 )
     {
         return o1 == o2 || o1 != null && o1.equals ( o2 );
     }
@@ -149,7 +151,8 @@ public final class Objects
      * @return {@link Object} if not {@code null}
      * @throws NullPointerException if {@link Object} is {@code null}
      */
-    public static <T> T requireNonNull ( final T object )
+    @NotNull
+    public static <T> T requireNonNull ( @Nullable final T object )
     {
         return requireNonNull ( object, "Object must not be null" );
     }
@@ -163,7 +166,8 @@ public final class Objects
      * @return {@link Object} if not {@code null}
      * @throws NullPointerException if {@link Object} is {@code null}
      */
-    public static <T> T requireNonNull ( final T object, final String message )
+    @NotNull
+    public static <T> T requireNonNull ( @Nullable final T object, @NotNull final String message )
     {
         if ( object == null )
         {
@@ -183,7 +187,8 @@ public final class Objects
      * @return {@link Object} if not {@code null}
      * @throws RuntimeException if {@link Object} is {@code null}
      */
-    public static <T> T requireNonNull ( final T object, final Supplier<RuntimeException> exceptionSupplier )
+    @NotNull
+    public static <T> T requireNonNull ( @Nullable final T object, @NotNull final Supplier<RuntimeException> exceptionSupplier )
     {
         if ( object == null )
         {

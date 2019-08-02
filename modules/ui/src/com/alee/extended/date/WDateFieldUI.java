@@ -37,6 +37,12 @@ public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI i
     protected C dateField;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "DateField.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving datefield reference
@@ -62,12 +68,6 @@ public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI i
         dateField = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "DateField.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI i
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI i
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

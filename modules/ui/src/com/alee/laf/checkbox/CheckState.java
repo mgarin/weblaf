@@ -22,7 +22,6 @@ package com.alee.laf.checkbox;
  *
  * @author Mikle Garin
  */
-
 public enum CheckState
 {
     /**

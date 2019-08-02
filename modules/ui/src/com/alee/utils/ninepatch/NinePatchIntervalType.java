@@ -22,7 +22,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "NinePatchIntervalType" )
 public enum NinePatchIntervalType
 {

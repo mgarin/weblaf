@@ -24,7 +24,6 @@ import java.lang.annotation.*;
  *
  * @author Mikle Garin
  */
-
 @Documented
 @Retention ( RetentionPolicy.RUNTIME )
 @Target ( ElementType.FIELD )

@@ -36,7 +36,6 @@ import java.util.concurrent.Executors;
  *
  * @author Mikle Garin
  */
-
 public class ThumbnailGenerator implements Runnable
 {
     /**

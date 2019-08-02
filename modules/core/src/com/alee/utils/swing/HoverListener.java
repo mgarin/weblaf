@@ -26,7 +26,6 @@ import java.util.EventListener;
  * @param <E> object type
  * @author Mikle Garin
  */
-
 public interface HoverListener<E> extends EventListener
 {
     /**

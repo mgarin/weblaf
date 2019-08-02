@@ -29,7 +29,6 @@ import javax.swing.plaf.ButtonUI;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IButtonStatePainter<C extends AbstractButton, U extends ButtonUI> extends SectionPainter<C, U>
 {
     /**

@@ -22,7 +22,6 @@ package com.alee.laf.grouping;
  *
  * @author Mikle Garin
  */
-
 public final class GroupPaneConstraints
 {
     /**

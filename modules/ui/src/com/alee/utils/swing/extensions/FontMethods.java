@@ -27,7 +27,6 @@ import java.awt.*;
  * @see MethodExtension
  * @see com.alee.utils.swing.extensions.FontMethodsImpl
  */
-
 public interface FontMethods<C extends Component> extends MethodExtension
 {
     /**

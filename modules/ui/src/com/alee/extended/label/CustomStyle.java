@@ -24,7 +24,6 @@ package com.alee.extended.label;
  * @see WebStyledLabel
  * @see StyleRange
  */
-
 public enum CustomStyle
 {
     /**

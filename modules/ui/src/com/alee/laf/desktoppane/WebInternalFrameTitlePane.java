@@ -43,7 +43,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 public class WebInternalFrameTitlePane extends WebPanel implements SwingConstants
 {
     /**

@@ -17,6 +17,9 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +30,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class StackLayout extends AbstractLayoutManager
 {
     /**
@@ -55,7 +57,7 @@ public class StackLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         final String value = ( String ) constraints;
         if ( value != null && !value.trim ().equals ( "" ) && !value.equals ( CONTENT ) && !value.equals ( HIDDEN ) )
@@ -66,13 +68,13 @@ public class StackLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         this.constraints.remove ( component );
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final Insets insets = container.getInsets ();
         final Dimension ps = new Dimension ( 0, 0 );
@@ -89,7 +91,7 @@ public class StackLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final Insets insets = container.getInsets ();
         for ( final Component component : container.getComponents () )

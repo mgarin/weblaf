@@ -21,7 +21,6 @@ import com.alee.laf.menu.PopupMenuWay;
 import com.alee.laf.menu.WebPopupMenuUI;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;

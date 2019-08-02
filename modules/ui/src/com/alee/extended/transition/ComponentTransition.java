@@ -37,7 +37,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class ComponentTransition extends WebPanel
 {
     // Transition listeners

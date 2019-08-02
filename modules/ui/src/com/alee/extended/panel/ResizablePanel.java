@@ -30,7 +30,6 @@ import static javax.swing.SwingConstants.*;
 /**
  * @author Mikle Garin
  */
-
 public class ResizablePanel extends WebPanel
 {
     public static final int SIZER = 12;

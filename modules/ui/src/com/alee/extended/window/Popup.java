@@ -18,9 +18,10 @@
 package com.alee.extended.window;
 
 /**
+ * Base interface for any popup implementations.
+ *
  * @author Mikle Garin
  */
-
 public interface Popup
 {
     /**

@@ -17,6 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.ArrayList;
 /**
  * @author Mikle Garin
  */
-
 public class WrapFlowLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**
@@ -153,21 +154,21 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         layoutContainer ( container );
         return new Dimension ( maxWidth, maxHeight );
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container container )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         layoutContainer ( container );
         return new Dimension ( 0, maxHeight );
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         // Ignore if no children
         if ( container.getComponentCount () == 0 )

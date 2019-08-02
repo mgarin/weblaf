@@ -22,7 +22,6 @@ package com.alee.utils.swing;
  *
  * @author Mikle Garin
  */
-
 public enum SizeType
 {
     /**

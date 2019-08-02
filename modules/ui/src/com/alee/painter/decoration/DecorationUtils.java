@@ -33,7 +33,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class DecorationUtils
 {
     /**
@@ -145,12 +144,15 @@ public final class DecorationUtils
     }
 
     /**
-     * Informs about {@link JComponent} decoration state changes.
+     * Informs about {@link Component} decoration states changes.
      *
-     * @param component {@link JComponent} decoration states changed for
+     * @param component {@link Component} decoration states changed for
      */
-    public static void fireStatesChanged ( final JComponent component )
+    public static void fireStatesChanged ( final Component component )
     {
-        SwingUtils.firePropertyChanged ( component, AbstractDecorationPainter.DECORATION_STATES_PROPERTY, null, null );
+        if ( component instanceof JComponent )
+        {
+            SwingUtils.firePropertyChanged ( component, AbstractDecorationPainter.DECORATION_STATES_PROPERTY, null, null );
+        }
     }
 }

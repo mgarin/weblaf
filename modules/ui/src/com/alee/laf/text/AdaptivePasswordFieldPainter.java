@@ -14,7 +14,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptivePasswordFieldPainter<C extends JPasswordField, U extends WPasswordFieldUI> extends AdaptivePainter<C, U>
         implements IPasswordFieldPainter<C, U>
 {

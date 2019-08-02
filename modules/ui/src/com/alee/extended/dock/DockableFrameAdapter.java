@@ -24,7 +24,6 @@ import com.alee.api.data.CompassDirection;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see DockableFrameListener
  * @see WebDockableFrame
  */
 public abstract class DockableFrameAdapter implements DockableFrameListener

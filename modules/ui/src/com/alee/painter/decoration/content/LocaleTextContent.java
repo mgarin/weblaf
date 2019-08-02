@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -35,6 +36,7 @@ import javax.swing.*;
 public class LocaleTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractTextContent<C, D, I>>
         extends AbstractTextContent<C, D, I>
 {
+    @NotNull
     @Override
     public String getId ()
     {

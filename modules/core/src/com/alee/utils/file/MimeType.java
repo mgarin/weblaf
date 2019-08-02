@@ -24,7 +24,6 @@ import java.util.Locale;
  *
  * @author Wytze van der Ploeg
  */
-
 public enum MimeType
 {
     /**

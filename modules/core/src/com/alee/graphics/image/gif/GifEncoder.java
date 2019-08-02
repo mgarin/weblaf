@@ -38,7 +38,6 @@ import java.io.OutputStream;
  *     e.finish();
  * </pre>
  */
-
 public class GifEncoder
 {
     protected int width; // image size

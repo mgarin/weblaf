@@ -40,6 +40,12 @@ public abstract class WMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivide
     protected C divider;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "MultiSplitPaneDivider.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving divider reference
@@ -65,12 +71,6 @@ public abstract class WMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivide
         divider = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "MultiSplitPaneDivider.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -92,7 +92,9 @@ public abstract class WMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivide
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -100,7 +102,9 @@ public abstract class WMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivide
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

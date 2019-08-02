@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public class AsyncTreeWalker<N extends AsyncUniqueNode> extends AbstractTreeWalker<N, AsyncTreeModel<N>>
 {
     /**

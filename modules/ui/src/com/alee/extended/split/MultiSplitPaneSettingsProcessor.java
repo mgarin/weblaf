@@ -17,6 +17,7 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -61,13 +62,13 @@ public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiS
         multiSplitResizeListener = new MultiSplitResizeAdapter ()
         {
             @Override
-            public void viewResizeEnded ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+            public void viewResizeEnded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final WebMultiSplitPaneDivider divider )
             {
                 save ();
             }
 
             @Override
-            public void viewSizeAdjusted ( final WebMultiSplitPane multiSplitPane )
+            public void viewSizeAdjusted ( @NotNull final WebMultiSplitPane multiSplitPane )
             {
                 save ();
             }
@@ -77,13 +78,13 @@ public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiS
         multiSplitExpansionListener = new MultiSplitExpansionAdapter ()
         {
             @Override
-            public void viewExpanded ( final WebMultiSplitPane multiSplitPane, final Component view )
+            public void viewExpanded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
             {
                 save ();
             }
 
             @Override
-            public void viewCollapsed ( final WebMultiSplitPane multiSplitPane, final Component view )
+            public void viewCollapsed ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
             {
                 save ();
             }

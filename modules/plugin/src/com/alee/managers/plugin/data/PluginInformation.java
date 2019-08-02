@@ -34,7 +34,6 @@ import java.util.List;
  * @see com.alee.managers.plugin.PluginManager
  * @see com.alee.managers.plugin.Plugin
  */
-
 @XStreamAlias ( "PluginInformation" )
 public class PluginInformation implements Serializable
 {

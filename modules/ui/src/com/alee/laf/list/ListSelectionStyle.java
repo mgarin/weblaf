@@ -22,7 +22,6 @@ package com.alee.laf.list;
  *
  * @author Mikle Garin
  */
-
 public enum ListSelectionStyle
 {
     /**

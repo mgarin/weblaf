@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.ChildStyleIdBridge;
 import com.alee.api.ui.StyleIdBridge;
 import com.alee.extended.checkbox.WebTristateCheckBox;
@@ -74,6 +75,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
         checkBox = new WebTristateCheckBox ();
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

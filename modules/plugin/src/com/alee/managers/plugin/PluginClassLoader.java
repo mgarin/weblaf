@@ -27,7 +27,6 @@ import java.net.URLStreamHandlerFactory;
  *
  * @author Mikle Garin
  */
-
 public class PluginClassLoader extends URLClassLoader
 {
     /**

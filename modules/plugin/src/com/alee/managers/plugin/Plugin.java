@@ -274,7 +274,9 @@ public abstract class Plugin<P extends Plugin<P>>
      */
     protected void disabled ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -309,7 +311,9 @@ public abstract class Plugin<P extends Plugin<P>>
      */
     protected void enabled ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

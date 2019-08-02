@@ -17,6 +17,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Circular easing implementation.
  *
@@ -35,6 +37,7 @@ public abstract class Circular extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Circular$In" )
     public static final class In extends Circular
     {
         @Override
@@ -54,6 +57,7 @@ public abstract class Circular extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Circular$Out" )
     public static final class Out extends Circular
     {
         @Override
@@ -74,6 +78,7 @@ public abstract class Circular extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Circular$InOut" )
     public static final class InOut extends Circular
     {
         @Override

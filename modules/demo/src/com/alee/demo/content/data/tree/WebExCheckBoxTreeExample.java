@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.data.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.demo.api.example.*;
@@ -37,6 +38,7 @@ import java.util.List;
  */
 public class WebExCheckBoxTreeExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {

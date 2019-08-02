@@ -28,7 +28,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IListItemPainter<C extends JList, U extends WebListUI> extends SectionPainter<C, U>
 {
     /**

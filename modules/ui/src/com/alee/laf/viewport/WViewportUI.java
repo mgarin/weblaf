@@ -37,6 +37,12 @@ public abstract class WViewportUI<C extends JViewport> extends ViewportUI implem
     protected C viewport;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Viewport.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving viewport reference
@@ -62,12 +68,6 @@ public abstract class WViewportUI<C extends JViewport> extends ViewportUI implem
         viewport = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Viewport.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WViewportUI<C extends JViewport> extends ViewportUI implem
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WViewportUI<C extends JViewport> extends ViewportUI implem
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

@@ -20,22 +20,25 @@ package com.alee.extended.button;
 import java.awt.event.ActionEvent;
 
 /**
- * Adapter for {@link com.alee.extended.button.SplitButtonListener}.
+ * Adapter for {@link SplitButtonListener}.
  *
  * @author Mikle Garin
  */
-
 public class SplitButtonAdapter implements SplitButtonListener
 {
     @Override
     public void buttonClicked ( final ActionEvent e )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void splitButtonClicked ( final ActionEvent e )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

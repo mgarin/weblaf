@@ -18,11 +18,10 @@
 package com.alee.laf.filechooser;
 
 /**
- * This enumerations represents different view types of file chooser.
+ * This enumerations represents different view types of {@link javax.swing.JFileChooser}.
  *
  * @author Mikle Garin
  */
-
 public enum FileChooserViewType
 {
     /**

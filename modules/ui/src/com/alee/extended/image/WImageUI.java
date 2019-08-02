@@ -37,6 +37,12 @@ public abstract class WImageUI<C extends WebImage> extends ComponentUI implement
     protected C image;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Image.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving image reference
@@ -60,12 +66,6 @@ public abstract class WImageUI<C extends WebImage> extends ComponentUI implement
 
         // Removing image reference
         image = null;
-    }
-
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Image.";
     }
 
     /**
@@ -93,7 +93,9 @@ public abstract class WImageUI<C extends WebImage> extends ComponentUI implement
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -101,6 +103,8 @@ public abstract class WImageUI<C extends WebImage> extends ComponentUI implement
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

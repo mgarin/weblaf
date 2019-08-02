@@ -30,7 +30,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class FileListModel extends WebListModel<FileElement>
 {
     /**

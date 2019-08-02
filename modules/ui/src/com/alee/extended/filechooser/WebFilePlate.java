@@ -49,7 +49,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebFilePlate extends WebPanel
 {
     protected final List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );

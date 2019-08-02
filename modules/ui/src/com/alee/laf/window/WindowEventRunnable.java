@@ -24,7 +24,6 @@ import java.awt.event.WindowEvent;
  *
  * @author Mikle Garin
  */
-
 public interface WindowEventRunnable
 {
     /**

@@ -23,27 +23,38 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 /**
+ * Adapter for {@link ComponentListener} and {@link WindowListener} that informs about window becoming invisible.
+ *
  * @author Mikle Garin
  */
-
 public abstract class WindowCloseAdapter implements ComponentListener, WindowListener
 {
+    /**
+     * todo 1. Replace with {@link com.alee.extended.behavior.VisibilityBehavior}
+     */
+
     @Override
     public void componentResized ( final ComponentEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void componentMoved ( final ComponentEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void componentShown ( final ComponentEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
@@ -55,13 +66,17 @@ public abstract class WindowCloseAdapter implements ComponentListener, WindowLis
     @Override
     public void windowOpened ( final WindowEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void windowClosing ( final WindowEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
@@ -73,25 +88,33 @@ public abstract class WindowCloseAdapter implements ComponentListener, WindowLis
     @Override
     public void windowIconified ( final WindowEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void windowDeiconified ( final WindowEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void windowActivated ( final WindowEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void windowDeactivated ( final WindowEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

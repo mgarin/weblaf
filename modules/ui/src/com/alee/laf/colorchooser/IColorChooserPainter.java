@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IColorChooserPainter<C extends JColorChooser, U extends WColorChooserUI> extends SpecificPainter<C, U>
 {
     /**

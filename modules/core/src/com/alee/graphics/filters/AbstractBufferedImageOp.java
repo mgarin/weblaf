@@ -28,7 +28,6 @@ import java.awt.image.ColorModel;
  *
  * @author Jerry Huxtable
  */
-
 public abstract class AbstractBufferedImageOp implements BufferedImageOp
 {
     @Override

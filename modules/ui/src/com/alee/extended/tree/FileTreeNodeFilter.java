@@ -27,7 +27,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class FileTreeNodeFilter implements Filter<FileTreeNode>
 {
     /**

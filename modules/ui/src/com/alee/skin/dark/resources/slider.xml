@@ -1,0 +1,44 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.laf.slider.WebSlider -->
+
+    <!-- Slider -->
+    <style type="slider" padding="0,2,0,2">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <trackHeight>9</trackHeight>
+            <trackRound>4</trackRound>
+            <trackShadeWidth>2</trackShadeWidth>
+            <progressRound>2</progressRound>
+            <progressShadeWidth>2</progressShadeWidth>
+            <thumbWidth>8</thumbWidth>
+            <thumbHeight>18</thumbHeight>
+            <thumbRound>2</thumbRound>
+            <thumbAngleLength>4</thumbAngleLength>
+            <trackBgTop>81,85,87</trackBgTop>
+            <trackBgBottom>47,51,53</trackBgBottom>
+            <progressTrackBgTop>87,91,93</progressTrackBgTop>
+            <progressTrackBgBottom>77,81,83</progressTrackBgBottom>
+            <progressBorderColor>20,20,20</progressBorderColor>
+            <thumbBgTop>87,91,93</thumbBgTop>
+            <thumbBgBottom>77,81,83</thumbBgBottom>
+            <drawProgress>true</drawProgress>
+            <drawThumb>true</drawThumb>
+            <angledThumb>true</angledThumb>
+            <sharpThumbAngle>true</sharpThumbAngle>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+            <animated>true</animated>
+        </painter>
+
+        <!-- Default labels -->
+        <style type="label" id="tick">
+            <component>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
+
+    </style>
+
+</skin>

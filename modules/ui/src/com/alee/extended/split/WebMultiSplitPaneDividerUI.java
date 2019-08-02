@@ -17,6 +17,7 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.Orientation;
 import com.alee.api.jdk.Consumer;
 import com.alee.extended.behavior.VisibilityBehavior;
@@ -117,6 +118,7 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
     @Override
     protected void installDefaults ()
     {
+        super.installDefaults ();
         updateCursor ();
         updateOneTouchButtons ();
     }
@@ -150,13 +152,13 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
         multiSplitExpansionListener = new MultiSplitExpansionListener ()
         {
             @Override
-            public void viewExpanded ( final WebMultiSplitPane multiSplitPane, final Component view )
+            public void viewExpanded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
             {
                 updateCursor ();
             }
 
             @Override
-            public void viewCollapsed ( final WebMultiSplitPane multiSplitPane, final Component view )
+            public void viewCollapsed ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
             {
                 updateCursor ();
             }
@@ -202,7 +204,11 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
                 if ( SwingUtils.isLeftMouseButton ( e ) && divider.isDragAvailable () )
                 {
                     dragged = true;
-                    divider.getMultiSplitPane ().getModel ().dividerDragStarted ( divider, e );
+                    final MultiSplitPaneModel model = divider.getMultiSplitPane ().getModel ();
+                    if ( model != null )
+                    {
+                        model.dividerDragStarted ( divider, e );
+                    }
                     e.consume ();
                 }
             }
@@ -212,7 +218,11 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
             {
                 if ( dragged )
                 {
-                    divider.getMultiSplitPane ().getModel ().dividerDragged ( divider, e );
+                    final MultiSplitPaneModel model = divider.getMultiSplitPane ().getModel ();
+                    if ( model != null )
+                    {
+                        model.dividerDragged ( divider, e );
+                    }
                     e.consume ();
                 }
             }
@@ -222,7 +232,11 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
             {
                 if ( dragged )
                 {
-                    divider.getMultiSplitPane ().getModel ().dividerDragEnded ( divider, e );
+                    final MultiSplitPaneModel model = divider.getMultiSplitPane ().getModel ();
+                    if ( model != null )
+                    {
+                        model.dividerDragEnded ( divider, e );
+                    }
                     dragged = false;
                     e.consume ();
                 }

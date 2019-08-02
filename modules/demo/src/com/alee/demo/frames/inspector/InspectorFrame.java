@@ -30,7 +30,6 @@ import com.alee.extended.inspector.InterfaceInspector;
  *
  * @author Mikle Garin
  */
-
 public final class InspectorFrame extends WebDockableFrame
 {
     /**

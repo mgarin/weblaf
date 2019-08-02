@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class ListSelectionPainter<C extends JList, U extends WebListUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements IListSelectionPainter<C, U>
 {

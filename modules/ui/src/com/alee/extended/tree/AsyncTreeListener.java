@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * This listener interface provide various asynchronous tree events.
  *
- * @param <N> custom node type
+ * @param <N> node type
  * @author Mikle Garin
  */
 public interface AsyncTreeListener<N extends AsyncUniqueNode> extends EventListener
@@ -38,7 +38,7 @@ public interface AsyncTreeListener<N extends AsyncUniqueNode> extends EventListe
     /**
      * Invoked when children load operation finishes.
      *
-     * @param parent node which children were loaded
+     * @param parent   node which children were loaded
      * @param children loaded child nodes
      */
     public void loadCompleted ( N parent, List<N> children );

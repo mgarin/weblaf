@@ -17,6 +17,7 @@
 
 package com.alee.extended.statusbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.WebContainer;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.toolbar.WhiteSpace;
@@ -40,7 +41,6 @@ import java.awt.*;
  * @see StatusBarPainter
  * @see WebContainer
  */
-
 public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
 {
     /**
@@ -210,6 +210,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

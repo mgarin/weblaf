@@ -30,7 +30,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class ProgressPainter<C extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements IProgressPainter<C, U>
 {

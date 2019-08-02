@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentMoveBehavior;
@@ -696,6 +697,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
             } );
         }
 
+        @Nullable
         @Override
         public List<String> getStates ()
         {

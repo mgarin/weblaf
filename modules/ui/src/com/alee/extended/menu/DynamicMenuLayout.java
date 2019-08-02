@@ -17,6 +17,7 @@
 
 package com.alee.extended.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.MathUtils;
@@ -30,11 +31,10 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class DynamicMenuLayout extends AbstractLayoutManager
 {
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final WebDynamicMenu menu = ( WebDynamicMenu ) container;
         final float displayProgress = MathUtils.sqr ( menu.getVisibilityProgress () );
@@ -228,7 +228,7 @@ public class DynamicMenuLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final WebDynamicMenu menu = ( WebDynamicMenu ) container;
         switch ( menu.getType () )

@@ -31,7 +31,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public final class LocaleConverter implements Converter
 {
     @Override

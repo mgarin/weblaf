@@ -17,6 +17,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Sinusoidal easing implementation.
  *
@@ -35,6 +37,7 @@ public abstract class Sinusoidal extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Sinusoidal$In" )
     public static final class In extends Sinusoidal
     {
         @Override
@@ -53,6 +56,7 @@ public abstract class Sinusoidal extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Sinusoidal$Out" )
     public static final class Out extends Sinusoidal
     {
         @Override
@@ -71,6 +75,7 @@ public abstract class Sinusoidal extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Sinusoidal$InOut" )
     public static final class InOut extends Sinusoidal
     {
         @Override

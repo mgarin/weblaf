@@ -54,4 +54,21 @@ public abstract class AbstractStylePreview extends AbstractTitledPreview
     {
         return styleId;
     }
+
+    /**
+     * todo Add more style info
+     * todo Requires some styles/panel/hor-flow-layout rework
+     */
+    /*@Override
+    protected JComponent createPreviewInfo ()
+    {
+        final WebPanel info = new WebPanel ( StyleId.panelTransparent, new VerticalFlowLayout ( VerticalFlowLayout.MIDDLE, true, false ) );
+
+        info.add ( super.createPreviewInfo () );
+
+        final StyleId styleId = DemoStyles.previewTitleLabel.at ( previewPanel );
+        info.add ( new WebStyledLabel ( styleId, getStyleId ().getId () ) );
+
+        return info;
+    }*/
 }

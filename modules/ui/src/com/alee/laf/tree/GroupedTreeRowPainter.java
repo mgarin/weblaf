@@ -35,7 +35,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class GroupedTreeRowPainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>> extends TreeRowPainter<C, U, D>
 {
     @Override

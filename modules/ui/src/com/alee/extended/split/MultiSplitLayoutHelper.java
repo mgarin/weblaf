@@ -33,7 +33,6 @@ import java.util.Map;
  * @see WebMultiSplitPaneModel
  * @see WebMultiSplitPane
  */
-
 public class MultiSplitLayoutHelper
 {
     /**

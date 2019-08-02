@@ -32,7 +32,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class TableColumnPainter<C extends JTable, U extends WebTableUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements ITableColumnPainter<C, U>
 {

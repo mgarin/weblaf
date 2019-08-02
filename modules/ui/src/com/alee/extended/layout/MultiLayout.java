@@ -17,6 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
@@ -87,7 +89,7 @@ public class MultiLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         for ( final LayoutManager layoutManager : layoutManagers )
         {
@@ -104,7 +106,7 @@ public class MultiLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         for ( final LayoutManager layoutManager : layoutManagers )
         {
@@ -113,7 +115,7 @@ public class MultiLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         Dimension ps = new Dimension ( 0, 0 );
         for ( final LayoutManager layoutManager : layoutManagers )
@@ -124,7 +126,7 @@ public class MultiLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container container )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         Dimension ms = new Dimension ( 0, 0 );
         for ( final LayoutManager layoutManager : layoutManagers )
@@ -135,7 +137,7 @@ public class MultiLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension maximumLayoutSize ( final Container container )
+    public Dimension maximumLayoutSize ( @NotNull final Container container )
     {
         Dimension ms = new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
         for ( final LayoutManager layoutManager : layoutManagers )
@@ -149,7 +151,7 @@ public class MultiLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void invalidateLayout ( final Container container )
+    public void invalidateLayout ( @NotNull final Container container )
     {
         for ( final LayoutManager layoutManager : layoutManagers )
         {
@@ -161,7 +163,7 @@ public class MultiLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         for ( final LayoutManager layoutManager : layoutManagers )
         {

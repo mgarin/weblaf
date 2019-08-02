@@ -113,7 +113,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public class StyleEditor extends WebFrame
 {
     /**

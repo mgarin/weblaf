@@ -34,7 +34,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class ImageTransition extends JComponent implements ActionListener
 {
     // Transition listeners

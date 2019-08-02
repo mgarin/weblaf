@@ -1,5 +1,7 @@
 package com.alee.laf.grouping;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.BoxOrientation;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
@@ -20,7 +22,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "GroupPaneLayout" )
 public class GroupPaneLayout extends AbstractGroupingLayout implements SwingConstants
 {
@@ -152,7 +153,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         // Saving constraints
         if ( constraints != null && !( constraints instanceof GroupPaneConstraints ) )
@@ -176,7 +177,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         // Performing basic operations
         super.removeComponent ( component );
@@ -186,7 +187,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         // Retrieving actual grid size
         final GridSize gridSize = getActualGridSize ( container );
@@ -225,7 +226,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         // Retrieving actual grid size
         final GridSize gridSize = getActualGridSize ( container );
@@ -496,8 +497,9 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         }
     }
 
+    @NotNull
     @Override
-    public Pair<String, String> getDescriptors ( final Container container, final Component component, final int index )
+    public Pair<String, String> getDescriptors ( @NotNull final Container container, @NotNull final Component component, final int index )
     {
         // Retrieving actual grid size
         final GridSize gridSize = getActualGridSize ( container );
@@ -597,7 +599,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
                                                final BoxOrientation direction )
     {
         final Component neighbour = getNeighbour ( container, gridSize, col, row, direction );
-        return neighbour != null && PainterSupport.isDecoratable ( neighbour );
+        return PainterSupport.isDecoratable ( neighbour );
     }
 
     /**
@@ -615,19 +617,19 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     {
         final Component neighbour;
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
-        if ( direction == BoxOrientation.top )
+        if ( direction.isTop () )
         {
             neighbour = row > 0 ? getComponentAt ( container, col, row - 1 ) : null;
         }
-        else if ( direction == BoxOrientation.bottom )
+        else if ( direction.isBottom () )
         {
             neighbour = row < gridSize.rows - 1 ? getComponentAt ( container, col, row + 1 ) : null;
         }
-        else if ( direction == ( ltr ? BoxOrientation.left : BoxOrientation.right ) )
+        else if ( ltr ? direction.isLeft () : direction.isRight () )
         {
             neighbour = col > 0 ? getComponentAt ( container, col - 1, row ) : null;
         }
-        else if ( direction == ( ltr ? BoxOrientation.right : BoxOrientation.left ) )
+        else if ( ltr ? direction.isRight () : direction.isLeft () )
         {
             neighbour = col < gridSize.columns - 1 ? getComponentAt ( container, col + 1, row ) : null;
         }
@@ -653,19 +655,19 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     {
         final boolean atBorder;
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
-        if ( direction == BoxOrientation.top )
+        if ( direction.isTop () )
         {
             atBorder = row == 0;
         }
-        else if ( direction == BoxOrientation.bottom )
+        else if ( direction.isBottom () )
         {
             atBorder = row == gridSize.rows - 1;
         }
-        else if ( direction == BoxOrientation.left )
+        else if ( direction.isLeft () )
         {
             atBorder = col == ( ltr ? 0 : gridSize.columns - 1 );
         }
-        else if ( direction == BoxOrientation.right )
+        else if ( direction.isRight () )
         {
             atBorder = col == ( ltr ? gridSize.columns - 1 : 0 );
         }

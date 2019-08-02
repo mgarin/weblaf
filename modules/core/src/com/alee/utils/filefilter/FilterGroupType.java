@@ -22,7 +22,6 @@ package com.alee.utils.filefilter;
  *
  * @author Mikle Garin
  */
-
 public enum FilterGroupType
 {
     /**

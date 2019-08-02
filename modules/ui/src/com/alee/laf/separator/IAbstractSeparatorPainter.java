@@ -12,7 +12,6 @@ import javax.swing.plaf.SeparatorUI;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IAbstractSeparatorPainter<C extends JSeparator, U extends SeparatorUI> extends SpecificPainter<C, U>
 {
     /**

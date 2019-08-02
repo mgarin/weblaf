@@ -17,6 +17,8 @@
 
 package com.alee.extended.canvas;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.WebComponent;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -80,7 +82,6 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      */
     public WebCanvas ( final StyleId id, final String... states )
     {
-        super ();
         this.states = new ArrayList<String> ( 1 );
         addStates ( states );
         updateUI ();
@@ -98,6 +99,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      *
      * @return custom {@link WebCanvas} states
      */
+    @Nullable
     @Override
     public List<String> getStates ()
     {
@@ -216,6 +218,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

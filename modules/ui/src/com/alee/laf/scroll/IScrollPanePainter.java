@@ -28,7 +28,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IScrollPanePainter<C extends JScrollPane, U extends WebScrollPaneUI> extends SpecificPainter<C, U>
 {
     /**

@@ -30,7 +30,6 @@ import java.io.Serializable;
  * @author Sven Jacobs
  * @version 1.0
  */
-
 public class LoremIpsum implements Serializable
 {
     /**

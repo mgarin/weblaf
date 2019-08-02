@@ -17,6 +17,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Exponential easing implementation.
  *
@@ -35,6 +37,7 @@ public abstract class Exponential extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Exponential$In" )
     public static final class In extends Exponential
     {
         @Override
@@ -64,6 +67,7 @@ public abstract class Exponential extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Exponential$Out" )
     public static final class Out extends Exponential
     {
         @Override
@@ -82,6 +86,7 @@ public abstract class Exponential extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Exponential$InOut" )
     public static final class InOut extends Exponential
     {
         @Override

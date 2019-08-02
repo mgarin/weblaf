@@ -27,7 +27,6 @@ import javax.swing.plaf.ActionMapUIResource;
  * @author Mikle Garin
  * @see UIAction
  */
-
 public class UIActionMap extends ActionMapUIResource
 {
     /**

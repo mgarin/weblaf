@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveFileChooserPainter<C extends JFileChooser, U extends WFileChooserUI> extends AdaptivePainter<C, U>
         implements IFileChooserPainter<C, U>
 {

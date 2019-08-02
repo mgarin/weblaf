@@ -11,7 +11,6 @@ import com.alee.painter.Painter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptiveSplitButtonPainter<C extends WebSplitButton, U extends WSplitButtonUI> extends AdaptivePainter<C, U>
         implements ISplitButtonPainter<C, U>
 {

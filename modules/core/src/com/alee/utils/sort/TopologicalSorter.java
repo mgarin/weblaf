@@ -25,7 +25,6 @@ import java.util.*;
  * @param <T> data type
  * @author Mikle Garin
  */
-
 public final class TopologicalSorter<T>
 {
     /**

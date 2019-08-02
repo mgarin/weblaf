@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.chooser.dialog;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
@@ -36,6 +37,7 @@ import java.util.List;
  */
 public class JColorChooserExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {

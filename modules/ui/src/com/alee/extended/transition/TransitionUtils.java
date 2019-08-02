@@ -31,7 +31,6 @@ import com.alee.utils.MathUtils;
  *
  * @author Mikle Garin
  */
-
 public final class TransitionUtils
 {
     /**

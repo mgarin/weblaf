@@ -32,7 +32,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebColorPicker extends JComponent
 {
     public static final ImageIcon DEFAULT_ICON = new ImageIcon ( WebColorPicker.class.getResource ( "icons/default.png" ) );

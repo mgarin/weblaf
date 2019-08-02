@@ -61,7 +61,6 @@ import java.io.Serializable;
  * @author Daniel E. Barbalace
  * @version 1.1 April 4, 2002
  */
-
 public class SingleFiledLayout implements LayoutManager, Serializable
 {
     /**

@@ -28,7 +28,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class PointConverter extends AbstractSingleValueConverter
 {
     @Override

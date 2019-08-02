@@ -24,7 +24,6 @@ import com.alee.managers.language.LM;
  *
  * @author Mikle Garin
  */
-
 public enum FeatureState
 {
     /**

@@ -28,7 +28,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface ITreeRowPainter<C extends JTree, U extends WTreeUI> extends SectionPainter<C, U>
 {
     /**

@@ -22,7 +22,6 @@ package com.alee.laf.menu;
  *
  * @author Mikle Garin
  */
-
 public enum PopupStyle
 {
     /**

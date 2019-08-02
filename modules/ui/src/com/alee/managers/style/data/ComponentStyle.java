@@ -120,14 +120,6 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     private transient ComponentStyle parent;
 
     /**
-     * Constructs new component style information.
-     */
-    public ComponentStyle ()
-    {
-        super ();
-    }
-
-    /**
      * Returns supported component type.
      *
      * @return supported component type
@@ -179,6 +171,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @return path for complete style ID
      * @see StyleId#getPathId(JComponent)
      */
+    @SuppressWarnings ( "JavadocReference" )
     private String getPathId ()
     {
         // Full identifier for this part of the path

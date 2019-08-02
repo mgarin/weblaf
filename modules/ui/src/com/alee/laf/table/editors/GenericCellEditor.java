@@ -22,7 +22,6 @@ import com.alee.laf.text.WebTextField;
 /**
  * @author Mikle Garin
  */
-
 public class GenericCellEditor extends WebTextField
 {
     private boolean invalidValue = false;

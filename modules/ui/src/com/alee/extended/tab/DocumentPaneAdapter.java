@@ -23,7 +23,6 @@ package com.alee.extended.tab;
  * @param <T> {@link DocumentData} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
- * @see DocumentPaneListener
  * @see WebDocumentPane
  */
 public abstract class DocumentPaneAdapter<T extends DocumentData> implements DocumentPaneListener<T>

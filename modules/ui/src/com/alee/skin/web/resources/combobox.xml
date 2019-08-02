@@ -85,26 +85,37 @@
             </painter>
         </style>
 
-        <!-- Popup list scrollpane -->
-        <style type="scrollpane" id="popup" extends="popup">
+        <!-- Popup menu -->
+        <style type="popupmenu" id="popup">
 
-            <!-- Popup list -->
-            <style type="list" id="popup" extends="transparent">
-                <painter>
+            <!-- Popup list scrollpane -->
+            <style type="scrollpane" id="scrollpane" extends="popup">
 
-                    <!-- Hide item background painter -->
-                    <itemPainter overwrite="true" />
+                <!-- Popup list -->
+                <style type="list" id="list" extends="transparent">
+                    <component class="com.alee.laf.list.WebList">
 
-                </painter>
+                        <!-- Solves problems with long list elements -->
+                        <preferredWidth>0</preferredWidth>
 
-                <!-- Default cell renderer label -->
-                <style type="styledlabel" id="renderer" />
+                    </component>
+                    <painter>
 
-                <!-- Selected value renderer label -->
-                <style type="styledlabel" id="box-renderer" extends="renderer" padding="2,4,2,4" />
+                        <!-- Hide item background painter -->
+                        <itemPainter overwrite="true" />
 
-                <!-- Popup list cell renderer label -->
-                <style type="styledlabel" id="list-renderer" extends="renderer" padding="4,6,4,6" />
+                    </painter>
+
+                    <!-- Default cell renderer label -->
+                    <style type="styledlabel" id="renderer" />
+
+                    <!-- Selected value renderer label -->
+                    <style type="styledlabel" id="box-renderer" extends="renderer" padding="2,4,2,4" />
+
+                    <!-- Popup list cell renderer label -->
+                    <style type="styledlabel" id="list-renderer" extends="renderer" padding="4,6,4,6" />
+
+                </style>
 
             </style>
 
@@ -129,6 +140,17 @@
         <!-- Separator -->
         <style type="separator" id="separator" extends="vertical">
             <painter>
+                <!-- todo Make it visible when "in-hovered-parent" -->
+                <decorations overwrite="true">
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Default editor -->
+        <style type="textfield" id="editor">
+            <painter>
+                <!-- todo Make it visible when "in-hovered-parent" -->
                 <decorations overwrite="true">
                     <decoration visible="false" />
                 </decorations>

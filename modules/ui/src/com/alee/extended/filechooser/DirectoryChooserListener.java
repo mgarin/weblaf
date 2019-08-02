@@ -27,7 +27,6 @@ import java.util.EventListener;
  * @see WebDirectoryChooserPanel
  * @see WebDirectoryChooser
  */
-
 public interface DirectoryChooserListener extends EventListener
 {
     /**

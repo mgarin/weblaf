@@ -17,6 +17,7 @@
 
 package com.alee.extended.statusbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.AbstractBackground;
 import com.alee.utils.GraphicsUtils;
@@ -63,6 +64,7 @@ public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C
     @XStreamAsAttribute
     protected Color allocatedMarkColor;
 
+    @NotNull
     @Override
     public String getId ()
     {

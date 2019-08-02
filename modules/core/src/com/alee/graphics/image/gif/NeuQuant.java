@@ -38,7 +38,6 @@ package com.alee.graphics.image.gif;
  *
  * @author K Weiner
  */
-
 @SuppressWarnings ( "JavaDoc" )
 public class NeuQuant
 {

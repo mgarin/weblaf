@@ -42,7 +42,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Mikle Garin
  */
-
 public class HeatMap extends JComponent
 {
     /**

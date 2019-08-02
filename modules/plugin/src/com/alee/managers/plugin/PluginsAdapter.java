@@ -29,30 +29,37 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see PluginManager
  */
-
 public abstract class PluginsAdapter<P extends Plugin> implements PluginsListener<P>
 {
     @Override
     public void pluginsCheckStarted ( final String directory, final boolean recursive )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void pluginsCheckEnded ( final String directory, final boolean recursive )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void pluginsDetected ( final List<DetectedPlugin<P>> plugins )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void pluginsInitialized ( final List<P> plugins )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

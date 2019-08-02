@@ -9,7 +9,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IPasswordFieldPainter<C extends JPasswordField, U extends WPasswordFieldUI> extends IAbstractTextFieldPainter<C, U>
 {
     /**

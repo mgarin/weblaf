@@ -9,7 +9,6 @@ import com.alee.laf.button.IAbstractButtonPainter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface ISplitButtonPainter<C extends WebSplitButton, U extends WSplitButtonUI> extends IAbstractButtonPainter<C, U>
 {
     /**

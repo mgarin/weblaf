@@ -22,7 +22,6 @@ package com.alee.extended.colorchooser;
  *
  * @author Mikle Garin
  */
-
 public enum ColorDisplayType
 {
     /**

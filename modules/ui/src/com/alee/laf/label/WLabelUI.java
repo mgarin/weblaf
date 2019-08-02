@@ -37,6 +37,12 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
     protected C label;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Label.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving label reference
@@ -62,12 +68,6 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
         label = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Label.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

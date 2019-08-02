@@ -17,6 +17,7 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Mergeable;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.scroll.layout.ScrollBarSettings;
@@ -43,7 +44,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
      * @throws AWTError if the target isn't the container specified to the {@code BoxLayout} constructor
      */
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final JViewport viewport = ( JViewport ) container;
         final Component view = viewport.getView ();
@@ -181,7 +182,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final JViewport viewport = ( JViewport ) container;
         final Component view = viewport.getView ();
@@ -246,7 +247,7 @@ public class WebViewportLayout extends AbstractLayoutManager implements Mergeabl
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container container )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         return new Dimension ( 4, 4 );
     }

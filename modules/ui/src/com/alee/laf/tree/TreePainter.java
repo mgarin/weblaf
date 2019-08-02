@@ -43,7 +43,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
         implements ITreePainter<C, U>
 {

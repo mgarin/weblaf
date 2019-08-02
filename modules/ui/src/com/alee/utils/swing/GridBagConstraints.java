@@ -24,7 +24,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class GridBagConstraints extends java.awt.GridBagConstraints
 {
     /**

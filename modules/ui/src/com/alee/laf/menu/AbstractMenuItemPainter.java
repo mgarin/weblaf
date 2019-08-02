@@ -15,7 +15,6 @@ import javax.swing.plaf.MenuItemUI;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public abstract class AbstractMenuItemPainter<C extends JMenuItem, U extends MenuItemUI, D extends IDecoration<C, D>>
         extends AbstractButtonPainter<C, U, D> implements IAbstractMenuItemPainter<C, U>
 {

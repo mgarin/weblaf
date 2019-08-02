@@ -17,6 +17,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Quadratic easing implementation.
  *
@@ -35,6 +37,7 @@ public abstract class Quadratic extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Quadratic$In" )
     public static final class In extends Quadratic
     {
         @Override
@@ -54,6 +57,7 @@ public abstract class Quadratic extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Quadratic$Out" )
     public static final class Out extends Quadratic
     {
         @Override
@@ -73,6 +77,7 @@ public abstract class Quadratic extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Quadratic$InOut" )
     public static final class InOut extends Quadratic
     {
         @Override

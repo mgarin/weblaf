@@ -17,6 +17,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Quintic easing implementation.
  *
@@ -35,6 +37,7 @@ public abstract class Quintic extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Quintic$In" )
     public static final class In extends Quintic
     {
         @Override
@@ -54,6 +57,7 @@ public abstract class Quintic extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Quintic$Out" )
     public static final class Out extends Quintic
     {
         @Override
@@ -74,6 +78,7 @@ public abstract class Quintic extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Quintic$InOut" )
     public static final class InOut extends Quintic
     {
         @Override

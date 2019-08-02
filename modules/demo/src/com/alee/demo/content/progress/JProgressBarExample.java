@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.progress;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -39,6 +40,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
      */
     private QueueTransition<Integer> progressAnimator;
 
+    @NotNull
     @Override
     public String getId ()
     {

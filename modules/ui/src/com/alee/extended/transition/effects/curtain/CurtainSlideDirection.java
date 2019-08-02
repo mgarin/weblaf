@@ -22,7 +22,6 @@ package com.alee.extended.transition.effects.curtain;
  *
  * @author Mikle Garin
  */
-
 public enum CurtainSlideDirection
 {
     /**

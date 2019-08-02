@@ -22,7 +22,6 @@ import javax.swing.*;
 /**
  * @author Mikle Garin
  */
-
 public class WebNumberEditor extends WebGenericEditor
 {
     public WebNumberEditor ()

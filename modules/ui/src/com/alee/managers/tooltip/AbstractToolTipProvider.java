@@ -51,18 +51,20 @@ public abstract class AbstractToolTipProvider<V, C extends JComponent, A extends
     }
 
     @Override
-    public Rectangle getSourceBounds ( final C component, final V value, final A area )
+    public Rectangle getSourceBounds ( final C component, final A area )
     {
         final Rectangle bounds = area.getBounds ( component );
         return bounds.intersection ( component.getVisibleRect () );
     }
 
     @Override
-    public WebCustomTooltip getToolTip ( final C component, final V value, final A area )
+    public WebCustomTooltip getToolTip ( final C component, final A area )
     {
-        final TooltipWay direction = getDirection ( component, value, area );
-        final String text = getToolTipText ( component, value, area );
-        return new WebCustomTooltip ( component, text, direction );
+        return new WebCustomTooltip (
+                component,
+                getToolTipText ( component, area ),
+                getDirection ( component, area )
+        );
     }
 
     @Override
@@ -108,14 +110,11 @@ public abstract class AbstractToolTipProvider<V, C extends JComponent, A extends
      */
     protected void showTooltip ( final C component, final A area )
     {
-        // Retrieving value for specified component area
-        final V value = getValue ( component, area );
-
         // Retrieving tooltip component
-        tooltip = getToolTip ( component, value, area );
+        tooltip = getToolTip ( component, area );
 
         // Updating tooltip bounds
-        tooltip.setRelativeToBounds ( getSourceBounds ( component, value, area ) );
+        tooltip.setRelativeToBounds ( getSourceBounds ( component, area ) );
 
         // Displaying one-time tooltip
         TooltipManager.showOneTimeTooltip ( tooltip );
@@ -137,11 +136,10 @@ public abstract class AbstractToolTipProvider<V, C extends JComponent, A extends
      * Returns tooltip direction based on value and {@link ComponentArea}.
      *
      * @param component component to provide tooltip direction for
-     * @param value     value
      * @param area      {@link ComponentArea}
      * @return tooltip direction based on value and {@link ComponentArea}
      */
-    protected TooltipWay getDirection ( final C component, final V value, final A area )
+    protected TooltipWay getDirection ( final C component, final A area )
     {
         return TooltipWay.trailing;
     }
@@ -150,9 +148,8 @@ public abstract class AbstractToolTipProvider<V, C extends JComponent, A extends
      * Returns tooltip text for the specified value and {@link ComponentArea}.
      *
      * @param component component to provide tooltip for
-     * @param value     value
      * @param area      {@link ComponentArea}
      * @return tooltip text for the specified value and {@link ComponentArea}
      */
-    protected abstract String getToolTipText ( C component, V value, A area );
+    protected abstract String getToolTipText ( C component, A area );
 }

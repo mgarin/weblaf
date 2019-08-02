@@ -40,7 +40,6 @@ import java.util.List;
  * @see com.alee.extended.syntax.SyntaxPreset
  * @see com.alee.extended.syntax.SyntaxTheme
  */
-
 public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMethods<WebSyntaxArea>, EventMethods
 {
     /**

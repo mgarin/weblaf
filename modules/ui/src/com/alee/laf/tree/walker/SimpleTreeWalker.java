@@ -27,7 +27,6 @@ import javax.swing.tree.TreeNode;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public class SimpleTreeWalker<N extends TreeNode> extends AbstractTreeWalker<N, TreeModel>
 {
     /**

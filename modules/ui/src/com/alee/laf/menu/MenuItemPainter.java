@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class MenuItemPainter<C extends JMenuItem, U extends WebMenuItemUI, D extends IDecoration<C, D>>
         extends AbstractMenuItemPainter<C, U, D> implements IMenuItemPainter<C, U>
 {

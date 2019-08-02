@@ -26,7 +26,6 @@ import javax.swing.*;
  * @param <C> {@link JComponent} type
  * @author Mikle Garin
  */
-
 public interface UIInputListener<C extends JComponent>
 {
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 
 import java.awt.*;
@@ -26,7 +27,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class TextFieldLayout extends AbstractLayoutManager
 {
     /**
@@ -46,7 +46,7 @@ public class TextFieldLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final Insets b = container.getInsets ();
         final Component leading = painter.getLeadingComponent ();
@@ -57,7 +57,7 @@ public class TextFieldLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final Insets b = container.getInsets ();
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();

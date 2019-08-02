@@ -17,6 +17,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Cubic easing implementation.
  *
@@ -35,6 +37,7 @@ public abstract class Cubic extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Cubic$In" )
     public static final class In extends Cubic
     {
         @Override
@@ -54,6 +57,7 @@ public abstract class Cubic extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Cubic$Out" )
     public static final class Out extends Cubic
     {
         @Override
@@ -74,6 +78,7 @@ public abstract class Cubic extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Cubic$InOut" )
     public static final class InOut extends Cubic
     {
         @Override

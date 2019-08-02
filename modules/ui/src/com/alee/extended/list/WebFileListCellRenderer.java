@@ -17,6 +17,7 @@
 
 package com.alee.extended.list;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
@@ -297,7 +298,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
     protected class FileCellLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container container )
+        public void layoutContainer ( @NotNull final Container container )
         {
             // Constants for further layout calculations
             final Dimension cellSize = getSize ();
@@ -357,7 +358,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
         }
 
         @Override
-        public Dimension preferredLayoutSize ( final Container container )
+        public Dimension preferredLayoutSize ( @NotNull final Container container )
         {
             final Insets i = container.getInsets ();
             final Dimension is = iconLabel.getPreferredSize ();

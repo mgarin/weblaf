@@ -17,6 +17,7 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
@@ -321,6 +322,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
             setEnabled ( scrollbar != null && scrollbar.isEnabled () );
         }
 
+        @Nullable
         @Override
         public List<String> getStates ()
         {

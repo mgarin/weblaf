@@ -24,7 +24,6 @@ import com.alee.managers.style.XmlSkinExtension;
  *
  * @author Mikle Garin
  */
-
 public final class DarkSkinExtension extends XmlSkinExtension
 {
     /**

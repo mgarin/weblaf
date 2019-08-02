@@ -32,7 +32,6 @@ import java.awt.event.MouseAdapter;
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.laf.tree.TreeEventMethodsImpl
  */
-
 public interface TreeEventMethods<N extends MutableTreeNode> extends MethodExtension
 {
     /**

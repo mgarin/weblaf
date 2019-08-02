@@ -17,6 +17,8 @@
 
 package com.alee.extended.button;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.layout.AbstractLayoutManager;
 
 import java.awt.*;
@@ -28,7 +30,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class WebSwitchLayout extends AbstractLayoutManager
 {
     public static final String LEFT = "LEFT";
@@ -38,7 +39,7 @@ public class WebSwitchLayout extends AbstractLayoutManager
     private final Map<Component, String> constraints = new HashMap<Component, String> ();
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         final String value = ( String ) constraints;
         if ( value == null || !value.equals ( LEFT ) && !value.equals ( RIGHT ) && !value.equals ( GRIPPER ) )
@@ -49,13 +50,13 @@ public class WebSwitchLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         this.constraints.remove ( component );
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         int maxWidth = 0;
         int maxHeight = 0;
@@ -70,7 +71,7 @@ public class WebSwitchLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         if ( container instanceof WebSwitch )
         {

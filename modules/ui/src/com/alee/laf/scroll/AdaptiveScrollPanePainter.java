@@ -30,7 +30,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptiveScrollPanePainter<C extends JScrollPane, U extends WebScrollPaneUI> extends AdaptivePainter<C, U>
         implements IScrollPanePainter<C, U>
 {

@@ -5,7 +5,6 @@ package com.alee.laf.grouping;
  *
  * @author Mikle Garin
  */
-
 public class GridSize
 {
     /**

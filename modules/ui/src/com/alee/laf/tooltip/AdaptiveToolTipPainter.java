@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveToolTipPainter<C extends JToolTip, U extends WToolTipUI> extends AdaptivePainter<C, U>
         implements IToolTipPainter<C, U>
 {

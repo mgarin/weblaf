@@ -21,7 +21,7 @@ import com.alee.extended.panel.WebOverlay;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.EmptyMouseAdapter;
+import com.alee.utils.swing.NoOpMouseListener;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -33,7 +33,6 @@ import java.awt.geom.GeneralPath;
 /**
  * @author Mikle Garin
  */
-
 public class WebProgressOverlay extends WebOverlay
 {
     public static final String ANIMATOR_ID = "WebProgressOverlay.animator";
@@ -128,7 +127,7 @@ public class WebProgressOverlay extends WebOverlay
         {
             super ();
             SwingUtils.setOrientation ( this );
-            EmptyMouseAdapter.install ( this );
+            NoOpMouseListener.install ( this );
         }
 
         @Override

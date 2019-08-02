@@ -40,7 +40,6 @@ import java.util.Set;
  * @param <U> {@link WSplitPaneUI} type
  * @author Mikle Garin
  */
-
 public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
         extends AbstractUIInputListener<C, U> implements PropertyChangeListener, FocusListener
 {

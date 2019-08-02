@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.WebContainer;
 import com.alee.extended.breadcrumb.element.BreadcrumbElementData;
 import com.alee.extended.breadcrumb.element.BreadcrumbElementPainter;
@@ -417,6 +418,7 @@ public class WebBreadcrumb extends WebContainer<WebBreadcrumb, WBreadcrumbUI>
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

@@ -29,7 +29,6 @@ import java.awt.*;
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.laf.window.WindowMethodsImpl
  */
-
 public interface WindowMethods<W extends Window> extends MethodExtension
 {
     /**

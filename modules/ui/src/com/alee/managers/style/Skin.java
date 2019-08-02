@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.ComponentStyle;
 
@@ -45,6 +46,7 @@ public interface Skin extends Identifiable
      *
      * @return unique skin ID
      */
+    @NotNull
     @Override
     public String getId ();
 

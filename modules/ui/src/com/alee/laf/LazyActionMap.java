@@ -38,7 +38,6 @@ import java.awt.event.KeyEvent;
  * @see com.alee.laf.UIAction
  * @see sun.swing.UIAction
  */
-
 @Deprecated
 public final class LazyActionMap extends UIActionMap
 {

@@ -27,6 +27,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Elastic easing implementation.
  *
@@ -47,6 +49,7 @@ public abstract class Elastic extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Elastic$In" )
     public static final class In extends Elastic
     {
         @Override
@@ -85,6 +88,7 @@ public abstract class Elastic extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Elastic$Out" )
     public static final class Out extends Elastic
     {
         @Override
@@ -123,6 +127,7 @@ public abstract class Elastic extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Elastic$InOut" )
     public static final class InOut extends Elastic
     {
         @Override

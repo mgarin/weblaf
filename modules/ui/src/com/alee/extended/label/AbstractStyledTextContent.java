@@ -272,9 +272,6 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
                     {
                         switch ( va )
                         {
-                            case TOP:
-                                break;
-
                             case CENTER:
                                 y += Math.ceil ( ( bounds.height - th ) / 2.0 );
                                 break;
@@ -374,15 +371,14 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
             }
             else if ( nextRowStartIndex == 0 || nextRowStartIndex < textRange.text.length () )
             {
-                String s = textRange.text.substring ( nextRowStartIndex, textRange.text.length () );
+                String s = textRange.text.substring ( nextRowStartIndex );
 
                 int strWidth = cfm.stringWidth ( s );
                 final int widthLeft = endX - x;
 
                 if ( wrapType != TextWrap.none && widthLeft < strWidth && widthLeft >= 0 )
                 {
-                    if ( ( maximumRows <= 0 || maximumRows > 0 && rowCount < maximumRows ) &&
-                            y + maxRowHeight + Math.max ( 0, rowGap ) <= endY )
+                    if ( ( maximumRows <= 0 || rowCount < maximumRows ) && y + maxRowHeight + Math.max ( 0, rowGap ) <= endY )
                     {
                         int availLength = ( int ) ( ( long ) s.length () * widthLeft / strWidth ) + 1; // Optimistic prognoses
                         int firstWordOffset = Math.max ( 0, TextUtils.findFirstWordFromIndex ( s, 0 ) );
@@ -441,7 +437,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
                         }
                         while ( strWidth > widthLeft && availLength > 0 );
 
-                        if ( nextRowStartInSubString > 0 && ( availLength > 0 || availLength <= 0 && row.isEmpty () ) )
+                        if ( nextRowStartInSubString > 0 && ( availLength > 0 || row.isEmpty () ) )
                         {
                             // Extracting wrapped text fragment
                             s = s.substring ( 0, Math.min ( nextRowStartInSubString, s.length () ) );

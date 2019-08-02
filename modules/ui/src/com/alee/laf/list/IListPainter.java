@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IListPainter<C extends JList, U extends WListUI> extends SpecificPainter<C, U>
 {
     /**

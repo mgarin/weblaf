@@ -34,7 +34,6 @@ import javax.swing.plaf.ComponentUI;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
- * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
 public abstract class AbstractPopupMenuSeparatorDescriptor<C extends JPopupMenu.Separator, U extends WPopupMenuSeparatorUI>
         extends AbstractComponentDescriptor<C, U>

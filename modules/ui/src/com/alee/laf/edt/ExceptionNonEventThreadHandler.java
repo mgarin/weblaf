@@ -23,7 +23,6 @@ package com.alee.laf.edt;
  *
  * @author Mikle Garin
  */
-
 public class ExceptionNonEventThreadHandler implements NonEventThreadHandler
 {
     @Override

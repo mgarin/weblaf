@@ -17,6 +17,7 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
@@ -28,7 +29,6 @@ import java.awt.event.ActionListener;
 /**
  * @author Mikle Garin
  */
-
 public class SlidingLayout extends AbstractLayoutManager
 {
     protected int slideY = 0;
@@ -111,7 +111,7 @@ public class SlidingLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         Dimension ps = new Dimension ( 0, 0 );
         for ( final Component c : container.getComponents () )
@@ -123,7 +123,7 @@ public class SlidingLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         for ( final Component c : container.getComponents () )
         {

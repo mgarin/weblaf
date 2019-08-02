@@ -17,6 +17,7 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.utils.MathUtils;
 
@@ -31,19 +32,19 @@ import java.awt.*;
 public class WebRootPaneLayout extends AbstractLayoutManager
 {
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return calculateSize ( container, true );
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container container )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         return calculateSize ( container, false );
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final JRootPane root = ( JRootPane ) container;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();

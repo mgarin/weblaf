@@ -17,6 +17,9 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -28,7 +31,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class GroupLayout extends AbstractLayoutManager implements SwingConstants
 {
     public static final String PREFERRED = "PREFERRED";
@@ -77,31 +79,31 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         this.constraints.put ( component, ( String ) constraints );
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         this.constraints.remove ( component );
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return getLayoutSize ( container, false );
     }
 
     @Override
-    public Dimension minimumLayoutSize ( final Container container )
+    public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         return getLayoutSize ( container, true );
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         // Gathering component sizes
         int fillCount = 0;

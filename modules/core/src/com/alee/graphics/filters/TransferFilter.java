@@ -21,7 +21,6 @@ import java.awt.image.BufferedImage;
 /**
  * @author Jerry Huxtable
  */
-
 public abstract class TransferFilter extends PointFilter
 {
     protected int[] rTable, gTable, bTable;

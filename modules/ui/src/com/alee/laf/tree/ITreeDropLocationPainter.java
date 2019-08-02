@@ -29,7 +29,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface ITreeDropLocationPainter<C extends JTree, U extends WTreeUI> extends SectionPainter<C, U>
 {
     /**

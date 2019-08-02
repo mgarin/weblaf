@@ -27,7 +27,6 @@ import java.util.StringTokenizer;
  *
  * @author Mikle Garin
  */
-
 public class RectangleConverter extends AbstractSingleValueConverter
 {
     /**

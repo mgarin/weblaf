@@ -31,7 +31,6 @@ import com.alee.painter.decoration.IDecoration;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
  */
-
 public class MultiSplitPanePainter<C extends WebMultiSplitPane, U extends WMultiSplitPaneUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IMultiSplitPanePainter<C, U>
 {

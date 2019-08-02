@@ -27,7 +27,6 @@ import java.awt.image.ImageObserver;
  *
  * @author Mikle Garin
  */
-
 public class NodeImageObserver implements ImageObserver
 {
     /**

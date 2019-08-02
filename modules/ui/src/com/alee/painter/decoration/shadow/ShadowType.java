@@ -20,7 +20,6 @@ package com.alee.painter.decoration.shadow;
 /**
  * @author Mikle Garin
  */
-
 public enum ShadowType
 {
     /**

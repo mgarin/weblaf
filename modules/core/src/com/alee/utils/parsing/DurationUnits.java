@@ -32,7 +32,6 @@ package com.alee.utils.parsing;
  *
  * @author Mikle Garin
  */
-
 public class DurationUnits extends AbstractUnits
 {
     /**

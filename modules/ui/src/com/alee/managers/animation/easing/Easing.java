@@ -17,6 +17,10 @@
 
 package com.alee.managers.animation.easing;
 
+import com.alee.api.merge.Overwriting;
+
+import java.io.Serializable;
+
 /**
  * Base interface for all kinds of transition easing.
  * For calculation convenience all values have `double` type.
@@ -31,7 +35,7 @@ package com.alee.managers.animation.easing;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
  * @see com.alee.managers.animation.AnimationManager
  */
-public interface Easing
+public interface Easing extends Overwriting, Cloneable, Serializable
 {
     /**
      * Returns easing implementation title.

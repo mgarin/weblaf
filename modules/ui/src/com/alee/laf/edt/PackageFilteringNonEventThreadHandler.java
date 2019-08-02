@@ -31,7 +31,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public abstract class PackageFilteringNonEventThreadHandler implements NonEventThreadHandler
 {
     /**

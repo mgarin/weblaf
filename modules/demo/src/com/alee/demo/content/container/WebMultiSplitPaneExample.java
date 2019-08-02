@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.container;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.Orientation;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
@@ -40,6 +41,7 @@ import java.util.List;
  */
 public class WebMultiSplitPaneExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {
@@ -68,14 +70,14 @@ public class WebMultiSplitPaneExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         return CollectionUtils.<Preview>asList (
-                new MultiSplitPanePreview ( "basic", FeatureState.beta, StyleId.multisplitpane, false, true, true ),
-                new MultiSplitPanePreview ( "basic", FeatureState.beta, StyleId.multisplitpane, false, true, false ),
-                new MultiSplitPanePreview ( "transparent", FeatureState.beta, StyleId.multisplitpaneTransparent, true, false, true ),
-                new MultiSplitPanePreview ( "transparent", FeatureState.beta, StyleId.multisplitpaneTransparent, true, false, false ),
-                new MultiSplitPanePreview ( "decorated", FeatureState.beta, StyleId.multisplitpaneDecorated, false, true, true ),
-                new MultiSplitPanePreview ( "decorated", FeatureState.beta, StyleId.multisplitpaneDecorated, false, true, false ),
-                new MultiSplitPanePreview ( "focusable", FeatureState.beta, StyleId.multisplitpaneFocusable, false, true, false ),
-                new MultiSplitPanePreview ( "focusable", FeatureState.beta, StyleId.multisplitpaneFocusable, true, false, false )
+                new MultiSplitPanePreview ( "basic", StyleId.multisplitpane, false, true, true ),
+                new MultiSplitPanePreview ( "basic", StyleId.multisplitpane, false, true, false ),
+                new MultiSplitPanePreview ( "transparent", StyleId.multisplitpaneTransparent, true, false, true ),
+                new MultiSplitPanePreview ( "transparent", StyleId.multisplitpaneTransparent, true, false, false ),
+                new MultiSplitPanePreview ( "decorated", StyleId.multisplitpaneDecorated, false, true, true ),
+                new MultiSplitPanePreview ( "decorated", StyleId.multisplitpaneDecorated, false, true, false ),
+                new MultiSplitPanePreview ( "focusable", StyleId.multisplitpaneFocusable, false, true, false ),
+                new MultiSplitPanePreview ( "focusable", StyleId.multisplitpaneFocusable, true, false, false )
         );
     }
 
@@ -103,16 +105,15 @@ public class WebMultiSplitPaneExample extends AbstractStylePreviewExample
          * Constructs new {@link MultiSplitPanePreview}.
          *
          * @param id                 preview ID
-         * @param featureState       feature state
          * @param styleId            preview style ID
          * @param continuous         whether or not should use continuous layout
          * @param oneTouchExpandable whether or not should be one-touch expandable
          * @param simpleContent      whether or not should use simple sides content
          */
-        public MultiSplitPanePreview ( final String id, final FeatureState featureState, final StyleId styleId, final boolean continuous,
+        public MultiSplitPanePreview ( final String id, final StyleId styleId, final boolean continuous,
                                        final boolean oneTouchExpandable, final boolean simpleContent )
         {
-            super ( WebMultiSplitPaneExample.this, id, featureState, styleId );
+            super ( WebMultiSplitPaneExample.this, id, FeatureState.release, styleId );
             this.continuous = continuous;
             this.oneTouchExpandable = oneTouchExpandable;
             this.simpleContent = simpleContent;

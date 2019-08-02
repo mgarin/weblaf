@@ -26,7 +26,6 @@ import java.util.*;
  * @param <E> elements type
  * @author Mikle Garin
  */
-
 public class WeakHashSet<E> extends AbstractSet<E>
 {
     /**

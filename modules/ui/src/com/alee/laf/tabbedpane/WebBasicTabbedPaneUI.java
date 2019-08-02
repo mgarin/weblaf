@@ -27,7 +27,6 @@ import java.util.Vector;
  *
  * @author Alexandr Zernov
  */
-
 public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 {
     // Instance variables initialized at installation

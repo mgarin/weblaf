@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveRadioButtonMenuItemPainter<C extends JMenuItem, U extends WebRadioButtonMenuItemUI> extends AdaptivePainter<C, U>
         implements IRadioButtonMenuItemPainter<C, U>
 {

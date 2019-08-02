@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.ui.*;
 import com.alee.extended.label.WebStyledLabel;
@@ -65,6 +66,7 @@ public class WebListCellRenderer<V, C extends JList, P extends ListCellParameter
         states = new ArrayList<String> ( 3 );
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

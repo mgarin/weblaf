@@ -40,7 +40,6 @@ import java.awt.event.MouseEvent;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> extends AbstractPainter<C, U>
         implements IScrollBarPainter<C, U>
 {

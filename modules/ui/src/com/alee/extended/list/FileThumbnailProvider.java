@@ -29,7 +29,6 @@ import java.io.FileFilter;
  *
  * @author Mikle Garin
  */
-
 public interface FileThumbnailProvider extends Filter<File>, FileFilter
 {
     /**

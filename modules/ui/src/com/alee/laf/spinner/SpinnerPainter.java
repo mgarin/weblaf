@@ -14,7 +14,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class SpinnerPainter<C extends JSpinner, U extends WebSpinnerUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements ISpinnerPainter<C, U>
 {

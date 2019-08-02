@@ -20,7 +20,6 @@ package com.alee.graphics.image.gif;
 /**
  * @author Mikle Garin
  */
-
 public interface RepaintListener
 {
     /**

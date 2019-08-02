@@ -9,7 +9,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ISeparatorPainter<C extends JSeparator, U extends WSeparatorUI> extends IAbstractSeparatorPainter<C, U>
 {
     /**

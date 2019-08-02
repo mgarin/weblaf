@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.data.Orientation;
 import com.alee.api.jdk.Objects;
@@ -488,7 +489,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         // Base settings
         final WebDockablePane dockablePane = ( WebDockablePane ) container;
@@ -876,14 +877,15 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         // todo Use structure to recursively go through sizes
         return new Dimension ( 0, 0 );
     }
 
+    @NotNull
     @Override
-    public Pair<String, String> getDescriptors ( final Container container, final Component component, final int index )
+    public Pair<String, String> getDescriptors ( @NotNull final Container container, @NotNull final Component component, final int index )
     {
         // todo Group buttons for grouped frames (tabs) when grouping is available
         // todo Group frames in case it is enabled here (simply group up the whole center area)

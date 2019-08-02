@@ -33,7 +33,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public class LanguageChooserModel extends WebComboBoxModel<Locale> implements LanguageListener, DictionaryListener
 {
     /**

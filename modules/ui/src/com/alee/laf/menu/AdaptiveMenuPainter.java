@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveMenuPainter<C extends JMenu, U extends WebMenuUI> extends AdaptivePainter<C, U> implements IMenuPainter<C, U>
 {
     /**

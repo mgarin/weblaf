@@ -1,0 +1,32 @@
+<Dictionary name="WebLaF tests" prefix="weblaf" xmlns="http://weblookandfeel.com/Dictionary">
+    <Dictionary prefix="test">
+        <record key="sample">
+            <value lang="en">Sample text</value>
+            <value lang="ru">Образец текста</value>
+            <value lang="pl">Przykładowy tekst</value>
+            <value lang="ar">نص بسيط</value>
+            <value lang="es">Texto de ejemplo</value>
+            <value lang="fr">Exemple de texte</value>
+            <value lang="pt">Texto de amostra</value>
+            <value lang="de">Beispieltext</value>
+            <value lang="it">Testo di esempio</value>
+            <value lang="tr">Örnek yazı</value>
+            <value lang="vi">Văn bản mẫu</value>
+            <value lang="hu">Minta szöveg</value>
+        </record>
+    </Dictionary>
+    <Translations>
+        <Translation lang="en" title="English" author="mgarin" />
+        <Translation lang="ru" title="Русский" author="mgarin" />
+        <Translation lang="pl" title="Polski" author="Google Translate" />
+        <Translation lang="ar" title="العربية" author="Google Translate" />
+        <Translation lang="es" title="Español" author="Google Translate" />
+        <Translation lang="fr" title="Français" author="Google Translate" />
+        <Translation lang="pt" title="Português" author="Google Translate" />
+        <Translation lang="de" title="Deutsch" author="Google Translate" />
+        <Translation lang="it" title="Italiano" author="Google Translate" />
+        <Translation lang="tr" title="Turkish" author="Google Translate" />
+        <Translation lang="vi" title="Tiếng Việt" author="Google Translate" />
+        <Translation lang="hu" title="Magyar" author="Google Translate" />
+    </Translations>
+</Dictionary>

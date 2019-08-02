@@ -34,7 +34,6 @@ import java.awt.geom.Ellipse2D;
  *
  * @author Mikle Garin
  */
-
 public class WebDynamicMenuItem extends JComponent
 {
     /**

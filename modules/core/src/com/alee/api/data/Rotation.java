@@ -8,7 +8,6 @@ import java.awt.*;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public enum Rotation
 {
     /**

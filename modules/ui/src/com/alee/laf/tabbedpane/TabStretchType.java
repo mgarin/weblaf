@@ -20,7 +20,6 @@ package com.alee.laf.tabbedpane;
 /**
  * @author Mikle Garin
  */
-
 public enum TabStretchType
 {
     never,

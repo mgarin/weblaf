@@ -32,7 +32,6 @@ import static com.alee.extended.syntax.SyntaxPreset.*;
  *
  * @author Mikle Garin
  */
-
 public class WebSyntaxPanel extends WebPanel
 {
     /**

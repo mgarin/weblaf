@@ -29,7 +29,6 @@ import com.alee.painter.decoration.IDecoration;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class PopupPainter<C extends WebPopup, U extends WPopupUI, D extends IDecoration<C, D>> extends AbstractContainerPainter<C, U, D>
         implements IPopupPainter<C, U>
 {

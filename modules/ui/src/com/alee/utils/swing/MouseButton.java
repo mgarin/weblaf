@@ -26,7 +26,6 @@ import java.awt.event.MouseEvent;
  *
  * @author Mikle Garin
  */
-
 public enum MouseButton
 {
     left ( MouseEvent.BUTTON1 ),

@@ -32,7 +32,6 @@ import java.util.Comparator;
  * @param <N> nodes type
  * @author Mikle Garin
  */
-
 public class NodesPositionComparator<N extends MutableTreeNode> implements Comparator<N>
 {
     @Override

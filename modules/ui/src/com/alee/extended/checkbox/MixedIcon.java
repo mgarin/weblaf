@@ -17,6 +17,7 @@
 
 package com.alee.extended.checkbox;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
@@ -62,6 +63,7 @@ public class MixedIcon<C extends AbstractButton, D extends IDecoration<C, D>, I 
     @XStreamAsAttribute
     protected Color rightColor;
 
+    @NotNull
     @Override
     public String getId ()
     {

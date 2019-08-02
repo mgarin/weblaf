@@ -16,7 +16,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class MenuPainter<C extends JMenu, U extends WebMenuUI, D extends IDecoration<C, D>> extends AbstractMenuItemPainter<C, U, D>
         implements IMenuPainter<C, U>
 {

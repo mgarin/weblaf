@@ -35,7 +35,6 @@ import javax.swing.table.JTableHeader;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
- * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
 public abstract class AbstractTableHeaderDescriptor<C extends JTableHeader, U extends WebTableHeaderUI>
         extends AbstractComponentDescriptor<C, U>

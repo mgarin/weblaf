@@ -24,7 +24,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public interface SystemFileListener
 {
     /**

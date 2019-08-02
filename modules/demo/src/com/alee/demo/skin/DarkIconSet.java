@@ -24,7 +24,6 @@ import com.alee.managers.icon.set.XmlIconSet;
  *
  * @author Mikle Garin
  */
-
 public final class DarkIconSet extends XmlIconSet
 {
     /**

@@ -18,6 +18,7 @@
 package com.alee.managers.icon.set;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.data.AbstractIconData;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -60,6 +61,7 @@ public final class IconSetData implements Identifiable, Serializable
     @XStreamImplicit
     protected List<AbstractIconData> icons;
 
+    @NotNull
     @Override
     public String getId ()
     {

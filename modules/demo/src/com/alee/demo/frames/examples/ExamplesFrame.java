@@ -51,7 +51,6 @@ import java.awt.event.MouseEvent;
  *
  * @author Mikle Garin
  */
-
 public final class ExamplesFrame extends WebDockableFrame
 {
     /**

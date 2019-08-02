@@ -38,7 +38,6 @@ import java.awt.geom.RoundRectangle2D;
  * @see AbstractPainter
  * @see com.alee.painter.Painter
  */
-
 public class BorderPainter<C extends JComponent, U extends ComponentUI> extends AbstractPainter<C, U>
 {
     /**

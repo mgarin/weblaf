@@ -28,7 +28,6 @@ import com.alee.painter.Painter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptiveImagePainter<C extends WebImage, U extends WebImageUI> extends AdaptivePainter<C, U>
         implements IImagePainter<C, U>
 {

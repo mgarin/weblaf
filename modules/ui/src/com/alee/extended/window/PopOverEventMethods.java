@@ -26,7 +26,6 @@ import com.alee.utils.swing.extensions.MethodExtension;
  * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.extended.window.PopOverEventMethodsImpl
  */
-
 public interface PopOverEventMethods extends MethodExtension
 {
     /**

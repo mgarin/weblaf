@@ -31,7 +31,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public abstract class AbstractExampleGroup extends AbstractExampleElement implements ExampleGroup
 {
     protected List<ExampleGroup> groups;

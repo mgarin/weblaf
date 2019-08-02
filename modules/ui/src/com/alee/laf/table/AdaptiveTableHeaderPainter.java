@@ -14,7 +14,6 @@ import javax.swing.table.JTableHeader;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveTableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends AdaptivePainter<C, U>
         implements ITableHeaderPainter<C, U>
 {

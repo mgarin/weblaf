@@ -25,7 +25,6 @@ import java.awt.*;
  * @param <T> {@link Stroke} type
  * @author Mikle Garin
  */
-
 public interface StrokeConverterSupport<T extends Stroke>
 {
     /**

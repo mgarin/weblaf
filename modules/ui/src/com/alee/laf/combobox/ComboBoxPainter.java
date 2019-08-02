@@ -25,7 +25,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IComboBoxPainter<C, U>, EditabilityListener, VisibilityListener
 {

@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IToolTipPainter<C extends JToolTip, U extends WToolTipUI> extends SpecificPainter<C, U>
 {
     /**

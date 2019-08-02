@@ -1428,36 +1428,68 @@
                 </record>
                 <Dictionary prefix="data">
                     <record key="title">
-                        <value lang="en">Panel title</value>
-                        <value lang="ru">Заголовок панели</value>
-                    </record>
-                    <record key="content">
-                        <value lang="en">Sample\nmultiline\ntext</value>
-                        <value lang="ru">Простой\nмультистрочный\nтекст</value>
-                    </record>
-                </Dictionary>
-                <Dictionary prefix="left">
-                    <record key="title">
-                        <value lang="en">Left WebCollapsiblePane</value>
-                        <value lang="ru">Left WebCollapsiblePane</value>
-                    </record>
-                </Dictionary>
-                <Dictionary prefix="right">
-                    <record key="title">
-                        <value lang="en">Right WebCollapsiblePane</value>
-                        <value lang="ru">Right WebCollapsiblePane</value>
+                        <value lang="en">Collapsible pane</value>
+                        <value lang="ru">Сворачиваемая панель</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="top">
                     <record key="title">
-                        <value lang="en">Top WebCollapsiblePane</value>
-                        <value lang="ru">Top WebCollapsiblePane</value>
+                        <value lang="en">Title at top</value>
+                        <value lang="ru">Заголовок сверху</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="left">
+                    <record key="title">
+                        <value lang="en">Title at left</value>
+                        <value lang="ru">Заголовок слева</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="right">
+                    <record key="title">
+                        <value lang="en">Title at right</value>
+                        <value lang="ru">Заголовок справа</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="bottom">
                     <record key="title">
-                        <value lang="en">Bottom WebCollapsiblePane</value>
-                        <value lang="ru">Bottom WebCollapsiblePane</value>
+                        <value lang="en">Title at bottom</value>
+                        <value lang="ru">Заголовок снизу</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="accordion">
+                <record key="title">
+                    <value lang="en">WebAccordion</value>
+                    <value lang="ru">WebAccordion</value>
+                </record>
+                <Dictionary prefix="data">
+                    <record key="title">
+                        <value lang="en">Accordion pane</value>
+                        <value lang="ru">Панель аккордиона</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="top">
+                    <record key="title">
+                        <value lang="en">Top header</value>
+                        <value lang="ru">Заголовок сверху</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="bottom">
+                    <record key="title">
+                        <value lang="en">Bottom header</value>
+                        <value lang="ru">Заголовок снизу</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="left">
+                    <record key="title">
+                        <value lang="en">Left header</value>
+                        <value lang="ru">Заголовок слева</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="right">
+                    <record key="title">
+                        <value lang="en">Right header</value>
+                        <value lang="ru">Заголовок справа</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -1549,6 +1581,84 @@
                 <value lang="en">Data view</value>
                 <value lang="ru">Просмотр данных</value>
             </record>
+            <Dictionary prefix="comboboxes">
+                <record key="title">
+                    <value lang="en">Comboboxes</value>
+                    <value lang="ru">Комбобоксы</value>
+                </record>
+                <Dictionary prefix="jcombobox">
+                    <record key="title">
+                        <value lang="en">JComboBox</value>
+                        <value lang="ru">JComboBox</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="hover">
+                        <record key="title">
+                            <value lang="en">Hover</value>
+                            <value lang="ru">Видимый при наведении</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="undecorated">
+                        <record key="title">
+                            <value lang="en">Undecorated</value>
+                            <value lang="ru">Без декорации</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webcombobox">
+                    <record key="title">
+                        <value lang="en">WebComboBox</value>
+                        <value lang="ru">WebComboBox</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="hover">
+                        <record key="title">
+                            <value lang="en">Hover</value>
+                            <value lang="ru">Видимый при наведении</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="undecorated">
+                        <record key="title">
+                            <value lang="en">Undecorated</value>
+                            <value lang="ru">Без декорации</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="languagechooser">
+                    <record key="title">
+                        <value lang="en">LanguageChooser</value>
+                        <value lang="ru">LanguageChooser</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="hover">
+                        <record key="title">
+                            <value lang="en">Hover</value>
+                            <value lang="ru">Видимый при наведении</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="undecorated">
+                        <record key="title">
+                            <value lang="en">Undecorated</value>
+                            <value lang="ru">Без декорации</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+            </Dictionary>
             <Dictionary prefix="lists">
                 <record key="title">
                     <value lang="en">Lists</value>

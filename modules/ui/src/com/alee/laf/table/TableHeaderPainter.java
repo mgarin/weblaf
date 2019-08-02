@@ -23,7 +23,6 @@ import java.awt.*;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends AbstractPainter<C, U>
         implements ITableHeaderPainter<C, U>
 {

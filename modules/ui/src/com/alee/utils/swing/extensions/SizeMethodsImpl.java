@@ -30,7 +30,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @see SizeMethods
  */
-
 public final class SizeMethodsImpl
 {
     /**

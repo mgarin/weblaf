@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.Nullable;
+
 import java.util.List;
 
 /**
@@ -27,7 +29,6 @@ import java.util.List;
  * @see AbstractDecorationPainter#getDecorationStates()
  * @see AbstractDecorationPainter#collectDecorationStates()
  */
-
 public interface Stateful
 {
     /**
@@ -41,6 +42,7 @@ public interface Stateful
      *
      * @return current decoratable states or {@code null} if no additional states are available at the time
      */
+    @Nullable
     public List<String> getStates ();
 
     //    /**

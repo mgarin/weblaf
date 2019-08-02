@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class TreeSelectionPainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements ITreeSelectionPainter<C, U>
 {

@@ -20,7 +20,6 @@ package com.alee.demo.api.version;
 /**
  * @author Mikle Garin
  */
-
 public abstract class Module
 {
 }

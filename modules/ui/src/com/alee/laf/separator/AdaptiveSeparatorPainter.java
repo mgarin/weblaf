@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveSeparatorPainter<C extends JSeparator, U extends WSeparatorUI> extends AdaptivePainter<C, U>
         implements ISeparatorPainter<C, U>
 {

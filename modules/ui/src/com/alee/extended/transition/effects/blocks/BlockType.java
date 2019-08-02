@@ -20,7 +20,6 @@ package com.alee.extended.transition.effects.blocks;
 /**
  * @author Mikle Garin
  */
-
 public enum BlockType
 {
     /**

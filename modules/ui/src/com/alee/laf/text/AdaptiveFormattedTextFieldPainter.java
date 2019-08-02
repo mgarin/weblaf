@@ -14,7 +14,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveFormattedTextFieldPainter<C extends JFormattedTextField, U extends WFormattedTextFieldUI>
         extends AdaptivePainter<C, U> implements IFormattedTextFieldPainter<C, U>
 {

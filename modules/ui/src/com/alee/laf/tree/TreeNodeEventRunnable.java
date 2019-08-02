@@ -25,7 +25,6 @@ import javax.swing.tree.MutableTreeNode;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public interface TreeNodeEventRunnable<N extends MutableTreeNode>
 {
     /**

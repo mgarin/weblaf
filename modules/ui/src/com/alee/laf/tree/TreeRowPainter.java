@@ -35,7 +35,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class TreeRowPainter<C extends JTree, U extends WTreeUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements ITreeRowPainter<C, U>
 {

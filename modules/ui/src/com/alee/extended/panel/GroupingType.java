@@ -23,7 +23,6 @@ package com.alee.extended.panel;
  * @author Mikle Garin
  * @see GroupPanel
  */
-
 public enum GroupingType
 {
     // Uses default fill settings

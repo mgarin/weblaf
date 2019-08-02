@@ -22,7 +22,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class CompositeStroke implements Stroke
 {
     private final Stroke stroke1;

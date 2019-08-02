@@ -12,7 +12,6 @@ import javax.swing.plaf.MenuItemUI;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IAbstractMenuItemPainter<C extends JMenuItem, U extends MenuItemUI> extends SpecificPainter<C, U>
 {
     /**

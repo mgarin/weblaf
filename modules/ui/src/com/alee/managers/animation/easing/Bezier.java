@@ -17,6 +17,9 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 /**
  * Bezier easing implementation.
  *
@@ -24,26 +27,31 @@ package com.alee.managers.animation.easing;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
  * @see com.alee.managers.animation.AnimationManager
  */
+@XStreamAlias ( "Bezier" )
 public final class Bezier extends AbstractEasing
 {
     /**
      * First curve control X coordinate.
      */
+    @XStreamAsAttribute
     private final double x1;
 
     /**
      * First curve control Y coordinate.
      */
+    @XStreamAsAttribute
     private final double y1;
 
     /**
      * Second curve control X coordinate.
      */
+    @XStreamAsAttribute
     private final double x2;
 
     /**
      * Second curve control Y coordinate.
      */
+    @XStreamAsAttribute
     private final double y2;
 
     /**

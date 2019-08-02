@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
@@ -60,6 +61,7 @@ public class WebTableBooleanCellRenderer<C extends JTable, P extends TableCellPa
         states = new ArrayList<String> ( 3 );
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

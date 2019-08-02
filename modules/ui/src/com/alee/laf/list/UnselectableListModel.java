@@ -20,23 +20,30 @@ package com.alee.laf.list;
 import javax.swing.*;
 
 /**
- * Custom list selection model that disables empty selection.
+ * {@link ListSelectionModel} that doesn't allow empty selected elements case.
  *
  * @author Mikle Garin
  */
-
 public class UnselectableListModel extends DefaultListSelectionModel
 {
+    /**
+     * Does nothing as we do not want a case when nothingis selected.
+     */
     @Override
     public void clearSelection ()
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
+    /**
+     * Checks that at least some selection will be left after this action.
+     * Otherwise action is not allowed and selection is preserved
+     */
     @Override
     public void removeSelectionInterval ( final int index0, final int index1 )
     {
-        // Check that at least some selection will be left after this action
         if ( index0 > getMinSelectionIndex () || index1 < getMaxSelectionIndex () )
         {
             super.removeSelectionInterval ( index0, index1 );

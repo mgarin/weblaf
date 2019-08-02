@@ -40,6 +40,12 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
     protected C pane;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "DockablePane.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving dockable pane reference
@@ -63,12 +69,6 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
 
         // Removing dockable pane reference
         pane = null;
-    }
-
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "DockablePane.";
     }
 
     /**
@@ -98,7 +98,9 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -106,7 +108,9 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

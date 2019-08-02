@@ -43,6 +43,12 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
     protected C button;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "Button.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving label reference
@@ -68,12 +74,6 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
         button = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "Button.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -95,7 +95,7 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
      */
     protected void installListeners ()
     {
-        inputListener = createInputListener ();
+        inputListener = createUIInputListener ();
         inputListener.install ( button );
     }
 
@@ -113,7 +113,7 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
      *
      * @return {@link UIInputListener} for the button
      */
-    protected UIInputListener createInputListener ()
+    protected UIInputListener createUIInputListener ()
     {
         return new WButtonListener ();
     }

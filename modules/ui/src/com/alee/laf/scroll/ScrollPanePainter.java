@@ -31,7 +31,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public class ScrollPanePainter<C extends JScrollPane, U extends WebScrollPaneUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IScrollPanePainter<C, U>
 {

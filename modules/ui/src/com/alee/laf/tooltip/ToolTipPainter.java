@@ -14,7 +14,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class ToolTipPainter<C extends JToolTip, U extends WToolTipUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IToolTipPainter<C, U>
 {

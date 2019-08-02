@@ -17,14 +17,17 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.EventListener;
 
 /**
  * Special listener for tracking {@link WebMultiSplitPane} view resize.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
+ * @see WebMultiSplitPane
  */
-
 public interface MultiSplitResizeListener extends EventListener
 {
     /**
@@ -33,7 +36,7 @@ public interface MultiSplitResizeListener extends EventListener
      * @param multiSplitPane {@link WebMultiSplitPane}
      * @param divider        {@link WebMultiSplitPaneDivider} that is being pressed
      */
-    public void viewResizeStarted ( WebMultiSplitPane multiSplitPane, WebMultiSplitPaneDivider divider );
+    public void viewResizeStarted ( @NotNull WebMultiSplitPane multiSplitPane, @NotNull WebMultiSplitPaneDivider divider );
 
     /**
      * Informs about occurred view resize due to the specified {@link WebMultiSplitPaneDivider} being dragged.
@@ -41,7 +44,7 @@ public interface MultiSplitResizeListener extends EventListener
      * @param multiSplitPane {@link WebMultiSplitPane}
      * @param divider        {@link WebMultiSplitPaneDivider} that is being dragged
      */
-    public void viewResized ( WebMultiSplitPane multiSplitPane, WebMultiSplitPaneDivider divider );
+    public void viewResized ( @NotNull WebMultiSplitPane multiSplitPane, @NotNull WebMultiSplitPaneDivider divider );
 
     /**
      * Informs about view resize being finished due to the specified {@link WebMultiSplitPaneDivider} being released.
@@ -49,12 +52,12 @@ public interface MultiSplitResizeListener extends EventListener
      * @param multiSplitPane {@link WebMultiSplitPane}
      * @param divider        {@link WebMultiSplitPaneDivider} that is being released
      */
-    public void viewResizeEnded ( WebMultiSplitPane multiSplitPane, WebMultiSplitPaneDivider divider );
+    public void viewResizeEnded ( @NotNull WebMultiSplitPane multiSplitPane, @NotNull WebMultiSplitPaneDivider divider );
 
     /**
      * Informs about view size adjustments occurred due to {@link WebMultiSplitPane} size or settings changes.
      *
      * @param multiSplitPane {@link WebMultiSplitPane}
      */
-    public void viewSizeAdjusted ( WebMultiSplitPane multiSplitPane );
+    public void viewSizeAdjusted ( @NotNull WebMultiSplitPane multiSplitPane );
 }

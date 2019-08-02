@@ -31,7 +31,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 public class LineColorChooserPaint implements Paint
 {
     private boolean webSafe = false;

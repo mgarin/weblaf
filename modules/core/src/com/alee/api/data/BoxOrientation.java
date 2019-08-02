@@ -25,7 +25,6 @@ import javax.swing.*;
  *
  * @author Mikle Garin
  */
-
 public enum BoxOrientation implements SwingConstants
 {
     center ( CENTER ),
@@ -57,6 +56,56 @@ public enum BoxOrientation implements SwingConstants
     public int getValue ()
     {
         return value;
+    }
+
+    /**
+     * Returns whether or not this is a {@link #center} literal.
+     *
+     * @return {@code true} if this is a {@link #center} literal, {@code false} otherwise
+     */
+    public boolean isCenter ()
+    {
+        return this == center;
+    }
+
+    /**
+     * Returns whether or not this is a {@link #top} literal.
+     *
+     * @return {@code true} if this is a {@link #top} literal, {@code false} otherwise
+     */
+    public boolean isTop ()
+    {
+        return this == top;
+    }
+
+    /**
+     * Returns whether or not this is a {@link #left} literal.
+     *
+     * @return {@code true} if this is a {@link #left} literal, {@code false} otherwise
+     */
+    public boolean isLeft ()
+    {
+        return this == left;
+    }
+
+    /**
+     * Returns whether or not this is a {@link #bottom} literal.
+     *
+     * @return {@code true} if this is a {@link #bottom} literal, {@code false} otherwise
+     */
+    public boolean isBottom ()
+    {
+        return this == bottom;
+    }
+
+    /**
+     * Returns whether or not this is a {@link #right} literal.
+     *
+     * @return {@code true} if this is a {@link #right} literal, {@code false} otherwise
+     */
+    public boolean isRight ()
+    {
+        return this == right;
     }
 
     /**

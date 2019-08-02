@@ -32,7 +32,6 @@ import com.thoughtworks.xstream.mapper.Mapper;
  *
  * @author Mikle Garin
  */
-
 public class NinePatchIconConverter extends ReflectionConverter
 {
     /**

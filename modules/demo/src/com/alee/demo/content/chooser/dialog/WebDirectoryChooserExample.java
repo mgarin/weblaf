@@ -18,6 +18,7 @@
 package com.alee.demo.content.chooser.dialog;
 
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Function;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
@@ -53,6 +54,7 @@ public class WebDirectoryChooserExample extends AbstractStylePreviewExample
         }
     };
 
+    @NotNull
     @Override
     public String getId ()
     {

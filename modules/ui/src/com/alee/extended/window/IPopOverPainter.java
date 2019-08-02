@@ -31,7 +31,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IPopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends IRootPanePainter<C, U>
 {
     /**

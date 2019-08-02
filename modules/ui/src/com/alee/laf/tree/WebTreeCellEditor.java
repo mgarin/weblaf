@@ -88,7 +88,9 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
     @Override
     public void focusGained ( final FocusEvent e )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override

@@ -26,7 +26,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class CenterPanel extends WebPanel
 {
     public CenterPanel ( final Component component )

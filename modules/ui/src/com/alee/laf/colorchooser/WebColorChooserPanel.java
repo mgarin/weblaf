@@ -51,7 +51,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class WebColorChooserPanel extends WebPanel implements DialogOptions
 {
     private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );

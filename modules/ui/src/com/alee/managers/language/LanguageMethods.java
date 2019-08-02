@@ -17,7 +17,6 @@
 
 package com.alee.managers.language;
 
-import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.utils.swing.extensions.MethodExtension;
 
 /**

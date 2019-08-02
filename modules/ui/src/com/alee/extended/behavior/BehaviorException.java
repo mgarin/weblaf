@@ -22,7 +22,6 @@ package com.alee.extended.behavior;
  *
  * @author Mikle Garin
  */
-
 public final class BehaviorException extends RuntimeException
 {
     /**

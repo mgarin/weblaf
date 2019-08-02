@@ -30,7 +30,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 @Deprecated
 public class NeoTabbedPaneUI extends BasicTabbedPaneUI
 {

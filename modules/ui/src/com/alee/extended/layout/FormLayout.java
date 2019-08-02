@@ -17,6 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -27,7 +29,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 public class FormLayout extends AbstractLayoutManager
 {
     /**
@@ -302,7 +303,7 @@ public class FormLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         // Adding default constraints if needed (left side components aligned to right, right side components fill the space)
         final Container container = component.getParent ();
@@ -326,13 +327,13 @@ public class FormLayout extends AbstractLayoutManager
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         layoutConstraints.remove ( component );
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final int cc = container.getComponentCount ();
         if ( cc > 0 )
@@ -528,7 +529,7 @@ public class FormLayout extends AbstractLayoutManager
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final int cc = container.getComponentCount ();
         final Insets i = container.getInsets ();

@@ -33,7 +33,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public class WebProgressDialog extends WebDialog
 {
     private int preferredProgressWidth = 0;

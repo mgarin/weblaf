@@ -21,29 +21,33 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 /**
- * Adapter to support notification when changes occur to a JComponent or one of its ancestors. These include movement and when the
- * component becomes visible or invisible, either by the setVisible() method or by being added or removed from the component hierarchy.
+ * Adapter for {@link AncestorListener}.
  *
  * @author Mikle Garin
  */
-
 public abstract class AncestorAdapter implements AncestorListener
 {
     @Override
     public void ancestorAdded ( final AncestorEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void ancestorRemoved ( final AncestorEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void ancestorMoved ( final AncestorEvent event )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

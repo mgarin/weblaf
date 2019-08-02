@@ -17,6 +17,7 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.splitpane.WebSplitPaneDivider;
 import com.alee.painter.decoration.AbstractDecorationPainter;
@@ -38,7 +39,6 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
  */
-
 public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U extends WMultiSplitPaneDividerUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IMultiSplitPaneDividerPainter<C, U>
 {
@@ -111,13 +111,13 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
             multiSplitExpansionListener = new MultiSplitExpansionListener ()
             {
                 @Override
-                public void viewExpanded ( final WebMultiSplitPane multiSplitPane, final Component view )
+                public void viewExpanded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
                 {
                     updateDecorationState ();
                 }
 
                 @Override
-                public void viewCollapsed ( final WebMultiSplitPane multiSplitPane, final Component view )
+                public void viewCollapsed ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
                 {
                     updateDecorationState ();
                 }
@@ -127,13 +127,15 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
             multiSplitResizeListener = new MultiSplitResizeAdapter ()
             {
                 @Override
-                public void viewResizeStarted ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+                public void viewResizeStarted ( @NotNull final WebMultiSplitPane multiSplitPane,
+                                                @NotNull final WebMultiSplitPaneDivider divider )
                 {
                     updateDecorationState ();
                 }
 
                 @Override
-                public void viewResizeEnded ( final WebMultiSplitPane multiSplitPane, final WebMultiSplitPaneDivider divider )
+                public void viewResizeEnded ( @NotNull final WebMultiSplitPane multiSplitPane,
+                                              @NotNull final WebMultiSplitPaneDivider divider )
                 {
                     updateDecorationState ();
                 }
@@ -179,26 +181,31 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
             states.add ( DecorationState.oneTouch );
         }
 
-        // Dragged state
-        if ( multiSplitPane.getModel ().getDraggedDivider () == component )
+        // Model-related states
+        final MultiSplitPaneModel model = multiSplitPane.getModel ();
+        if ( model != null )
         {
-            states.add ( DecorationState.dragged );
-        }
-
-        // Start or end position
-        if ( multiSplitPane.isAnyViewExpanded () )
-        {
-            final int expanded = multiSplitPane.getExpandedViewIndex ();
-            final int index = multiSplitPane.getModel ().getDividerIndex ( component );
-            if ( index < expanded )
+            // Dragged state
+            if ( model.getDraggedDivider () == component )
             {
-                // Divider is at the very start of the multi split pane
-                states.add ( DecorationState.start );
+                states.add ( DecorationState.dragged );
             }
-            else
+
+            // Start or end position
+            if ( multiSplitPane.isAnyViewExpanded () )
             {
-                // Divider is at the very end of the multi split pane
-                states.add ( DecorationState.end );
+                final int expanded = multiSplitPane.getExpandedViewIndex ();
+                final int index = model.getDividerIndex ( component );
+                if ( index < expanded )
+                {
+                    // Divider is at the very start of the multi split pane
+                    states.add ( DecorationState.start );
+                }
+                else
+                {
+                    // Divider is at the very end of the multi split pane
+                    states.add ( DecorationState.end );
+                }
             }
         }
 

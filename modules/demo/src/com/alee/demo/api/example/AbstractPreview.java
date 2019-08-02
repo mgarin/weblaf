@@ -17,13 +17,14 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import java.util.List;
 
 /**
  * @author Mikle Garin
  */
-
 public abstract class AbstractPreview implements Preview
 {
     /**
@@ -78,6 +79,7 @@ public abstract class AbstractPreview implements Preview
         return example;
     }
 
+    @NotNull
     @Override
     public String getId ()
     {

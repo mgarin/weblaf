@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.ui.*;
 import com.alee.extended.label.WebStyledLabel;
@@ -80,6 +81,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
         states = new ArrayList<String> ( 5 );
     }
 
+    @Nullable
     @Override
     public List<String> getStates ()
     {

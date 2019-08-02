@@ -27,7 +27,6 @@ import java.util.List;
  * @param <P> {@link Plugin} type
  * @author Mikle Garin
  */
-
 public interface DetectedPluginsRunnable<P extends Plugin>
 {
     /**

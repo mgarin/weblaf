@@ -29,7 +29,6 @@ import java.util.Date;
 /**
  * @author Mikle Garin
  */
-
 public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
 {
     public WebDateEditor ()

@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.tooltip;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
 import com.alee.laf.list.*;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 public class ListTooltipExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {
@@ -77,8 +79,9 @@ public class ListTooltipExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JList table = new JList ( SampleData.createListModel () );
-            table.setCellRenderer ( new WebListCellRenderer ()
+            final JList list = new JList ( SampleData.createListModel () );
+            list.setVisibleRowCount ( list.getModel ().getSize () );
+            list.setCellRenderer ( new WebListCellRenderer ()
             {
                 @Override
                 protected void updateView ( final ListCellParameters parameters )
@@ -87,7 +90,7 @@ public class ListTooltipExample extends AbstractStylePreviewExample
                     setToolTipText ( textForValue ( parameters ) );
                 }
             } );
-            return CollectionUtils.asList ( table );
+            return CollectionUtils.asList ( new JScrollPane ( list ) );
         }
     }
 
@@ -110,17 +113,18 @@ public class ListTooltipExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebList table = new WebList ( SampleData.createListModel () );
-            table.setToolTipProvider ( new ListToolTipProvider<SampleData.ListItem> ()
+            final WebList list = new WebList ( SampleData.createListModel () );
+            list.setVisibleRowCount ( list.getModel ().getSize () );
+            list.setToolTipProvider ( new ListToolTipProvider<SampleData.ListItem> ()
             {
                 @Override
-                protected String getToolTipText ( final JList list, final SampleData.ListItem value,
+                protected String getToolTipText ( final JList list,
                                                   final ListCellArea<SampleData.ListItem, JList> area )
                 {
-                    return value.getText ( new ListCellParameters<SampleData.ListItem, JList> ( list, area ) );
+                    return area.getValue ( list ).getText ( new ListCellParameters<SampleData.ListItem, JList> ( list, area ) );
                 }
             } );
-            return CollectionUtils.asList ( table );
+            return CollectionUtils.asList ( new JScrollPane ( list ) );
         }
     }
 }

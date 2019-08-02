@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ISliderPainter<C extends JSlider, U extends WebSliderUI> extends SpecificPainter<C, U>
 {
     /**

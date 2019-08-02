@@ -25,7 +25,6 @@ import javax.swing.*;
  *
  * @author Mikle Garin
  */
-
 public enum Orientation implements SwingConstants
 {
     /**

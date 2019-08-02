@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 /**
  * @author Mikle Garin
  */
-
 public class WebSelectablePanel extends WebPanel
 {
     private final WebComponentPane componentPane;

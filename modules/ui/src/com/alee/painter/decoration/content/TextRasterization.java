@@ -30,7 +30,6 @@ import java.util.Map;
  * @author Mikle Garin
  * @see <a href="https://en.wikipedia.org/wiki/Font_rasterization">Font rasterization</a>
  */
-
 public enum TextRasterization
 {
     /**

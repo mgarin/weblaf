@@ -239,7 +239,6 @@ import java.util.ListIterator;
  * @author Daniel E. Barbalace
  * @version 4.0 September 14, 2005
  */
-
 public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, TableLayoutConstants
 {
     /*

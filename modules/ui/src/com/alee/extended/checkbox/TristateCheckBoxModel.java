@@ -30,7 +30,6 @@ import java.awt.event.ItemEvent;
  *
  * @author Mikle Garin
  */
-
 public class TristateCheckBoxModel extends JToggleButton.ToggleButtonModel
 {
     /**

@@ -26,7 +26,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class FadeTransitionEffect extends DefaultTransitionEffect
 {
     private static final String FADE_MINIMUM_SPEED = "FADE_MINIMUM_SPEED";

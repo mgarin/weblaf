@@ -34,7 +34,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, FileElement>
 {
     /**

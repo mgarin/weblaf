@@ -22,7 +22,6 @@ package com.alee.managers.plugin;
  *
  * @author Mikle Garin
  */
-
 public enum ClassLoaderType
 {
     /**

@@ -23,7 +23,6 @@ import java.util.EventListener;
 /**
  * @author Mikle Garin
  */
-
 public interface ComponentReorderListener extends EventListener
 {
     public void componentOrderChanged ( Component component, int oldIndex, int newIndex );

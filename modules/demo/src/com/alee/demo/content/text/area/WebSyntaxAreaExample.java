@@ -20,7 +20,6 @@ package com.alee.demo.content.text.area;
 /**
  * @author Mikle Garin
  */
-
 public class WebSyntaxAreaExample
 {
 }

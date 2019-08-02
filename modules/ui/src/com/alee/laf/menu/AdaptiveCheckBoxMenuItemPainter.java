@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveCheckBoxMenuItemPainter<C extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends AdaptivePainter<C, U>
         implements ICheckBoxMenuItemPainter<C, U>
 {

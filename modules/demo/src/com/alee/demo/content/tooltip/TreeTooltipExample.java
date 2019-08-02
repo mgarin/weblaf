@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.tooltip;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.tree.*;
@@ -24,7 +25,6 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.List;
 
@@ -33,6 +33,7 @@ import java.util.List;
  */
 public class TreeTooltipExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {
@@ -152,13 +153,13 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
         {
             final WebTree tree = new WebTree ();
             tree.setVisibleRowCount ( 8 );
-            tree.setToolTipProvider ( new TreeToolTipProvider<MutableTreeNode> ()
+            tree.setToolTipProvider ( new TreeToolTipProvider<UniqueNode> ()
             {
                 @Override
-                protected String getToolTipText ( final JTree component, final MutableTreeNode value,
-                                                  final TreeCellArea<MutableTreeNode, JTree> area )
+                protected String getToolTipText ( final JTree component,
+                                                  final TreeCellArea<UniqueNode, JTree> area )
                 {
-                    return String.valueOf ( value );
+                    return String.valueOf ( area.getValue ( component ).getUserObject () );
                 }
             } );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );

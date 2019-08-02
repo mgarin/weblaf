@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class CheckBoxMenuItemPainter<C extends JCheckBoxMenuItem, U extends WebCheckBoxMenuItemUI, D extends IDecoration<C, D>>
         extends AbstractStateMenuItemPainter<C, U, D> implements ICheckBoxMenuItemPainter<C, U>
 {

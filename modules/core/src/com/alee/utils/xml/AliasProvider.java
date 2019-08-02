@@ -24,7 +24,6 @@ package com.alee.utils.xml;
  *
  * @author Mikle Garin
  */
-
 public interface AliasProvider
 {
     /**

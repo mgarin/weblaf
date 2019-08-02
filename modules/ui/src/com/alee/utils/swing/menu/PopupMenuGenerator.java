@@ -26,7 +26,6 @@ import com.alee.managers.style.StyleId;
  * @author Mikle Garin
  * @see AbstractMenuGenerator
  */
-
 public class PopupMenuGenerator extends AbstractMenuGenerator<WebPopupMenu>
 {
     /**

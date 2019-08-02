@@ -17,6 +17,8 @@
 
 package com.alee.laf.grouping;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
@@ -25,7 +27,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @see com.alee.laf.grouping.GroupPaneLayout
  */
-
 public interface GroupingLayout extends LayoutManager2
 {
     /**
@@ -41,7 +42,7 @@ public interface GroupingLayout extends LayoutManager2
      * @param component painted component
      * @return descriptor for painted component sides
      */
-    public String getSides ( Component component );
+    public String getSides ( @NotNull Component component );
 
     /**
      * Returns descriptor for painted component lines.
@@ -49,5 +50,5 @@ public interface GroupingLayout extends LayoutManager2
      * @param component painted component
      * @return descriptor for painted component lines
      */
-    public String getLines ( Component component );
+    public String getLines ( @NotNull Component component );
 }

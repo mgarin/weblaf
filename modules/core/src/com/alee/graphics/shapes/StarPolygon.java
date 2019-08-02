@@ -22,7 +22,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class StarPolygon extends Polygon
 {
     public StarPolygon ( final int x, final int y, final int r, final int innerR, final int vertexCount )

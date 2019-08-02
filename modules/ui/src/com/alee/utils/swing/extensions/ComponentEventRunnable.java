@@ -24,7 +24,6 @@ import java.awt.event.ComponentEvent;
  *
  * @author Mikle Garin
  */
-
 public interface ComponentEventRunnable
 {
     /**

@@ -17,6 +17,8 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.layout.AbstractLayoutManager;
@@ -477,7 +479,10 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             @Override
             protected JScrollPane createScroller ()
             {
-                final WebScrollPane scroll = new WebScrollPane ( StyleId.comboboxPopupScrollPane.at ( comboBox ), list );
+                // todo This should be better implemented later on in a custom popup
+                StyleId.comboboxPopup.at ( comboBox ).set ( this );
+
+                final WebScrollPane scroll = new WebScrollPane ( StyleId.comboboxPopupScrollPane.at ( this ), list );
                 scroll.setHorizontalScrollBar ( null );
 
                 // Custom list styling
@@ -814,7 +819,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     protected class WebComboBoxLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container container )
+        public void layoutContainer ( @NotNull final Container container )
         {
             // Arrow button
             if ( arrowButton != null )
@@ -836,13 +841,13 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         }
 
         @Override
-        public Dimension minimumLayoutSize ( final Container container )
+        public Dimension minimumLayoutSize ( @NotNull final Container container )
         {
             return container.getMinimumSize ();
         }
 
         @Override
-        public Dimension preferredLayoutSize ( final Container container )
+        public Dimension preferredLayoutSize ( @NotNull final Container container )
         {
             return container.getPreferredSize ();
         }
@@ -891,6 +896,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             DecorationUtils.fireStatesChanged ( this );
         }
 
+        @Nullable
         @Override
         public List<String> getStates ()
         {
@@ -955,6 +961,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             DecorationUtils.fireStatesChanged ( this );
         }
 
+        @Nullable
         @Override
         public List<String> getStates ()
         {

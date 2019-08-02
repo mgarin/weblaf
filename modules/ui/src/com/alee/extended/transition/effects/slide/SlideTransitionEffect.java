@@ -28,7 +28,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class SlideTransitionEffect extends DefaultTransitionEffect
 {
     private static final String SLIDE_MINIMUM_SPEED = "SLIDE_MINIMUM_SPEED";

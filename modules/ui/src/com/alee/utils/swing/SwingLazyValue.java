@@ -31,7 +31,6 @@ import java.lang.reflect.Method;
  * @author Mikle Garin
  * @see javax.swing.UIDefaults.ProxyLazyValue
  */
-
 public final class SwingLazyValue implements UIDefaults.LazyValue
 {
     /**

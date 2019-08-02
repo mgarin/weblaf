@@ -32,7 +32,6 @@ import java.util.Vector;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> extends AbstractPainter<C, U>
         implements ITabbedPanePainter<C, U>
 {

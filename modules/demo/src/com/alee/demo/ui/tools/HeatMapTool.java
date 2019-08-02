@@ -34,7 +34,6 @@ import java.awt.event.ActionListener;
  *
  * @author Mikle Garin
  */
-
 public class HeatMapTool extends WebPanel
 {
     /**

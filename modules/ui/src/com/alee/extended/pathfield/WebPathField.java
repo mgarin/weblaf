@@ -60,7 +60,6 @@ import java.util.Locale;
  * @author Mikle Garin
  * @author Michka Popoff
  */
-
 public class WebPathField extends WebPanel
 {
     /**

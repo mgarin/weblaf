@@ -29,7 +29,6 @@ import java.util.Map;
  * @see com.alee.utils.XmlUtils
  * @see com.thoughtworks.xstream.converters.DataHolder
  */
-
 public class XStreamContext extends MapBackedDataHolder
 {
     /**

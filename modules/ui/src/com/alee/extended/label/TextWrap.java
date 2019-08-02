@@ -23,7 +23,6 @@ package com.alee.extended.label;
  * @author Alexandr Zernov
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel">How to use WebStyledLabel</a>
  */
-
 public enum TextWrap
 {
     /**

@@ -1,6 +1,7 @@
 package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.CoreSwingUtils;
 
@@ -16,6 +17,8 @@ import java.lang.ref.WeakReference;
  * This class also contains all identifiers for basic basic styles you might find in any of default skins.
  * Almost all these identifiers are used by various WebLaF components and complex component parts.
  * They are provided to allow restyling those parts without affecting default component style.
+ *
+ * todo Separate each component-related set of styles into subclasses for visibility/convenience?
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -78,6 +81,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.image.WebImage} style identifiers.
      */
     public static final StyleId image = StyleId.of ( "image" );
+    public static final StyleId imagePortrait = StyleId.of ( "portrait" );
 
     /**
      * {@link com.alee.laf.label.WebLabel} style identifiers.
@@ -500,8 +504,9 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId comboboxEditor = ChildStyleId.of ( "editor" );
     public static final ChildStyleId comboboxSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId comboboxArrowButton = ChildStyleId.of ( "arrow" );
-    public static final ChildStyleId comboboxPopupScrollPane = ChildStyleId.of ( "popup" );
-    public static final ChildStyleId comboboxPopupList = ChildStyleId.of ( "popup" );
+    public static final ChildStyleId comboboxPopup = ChildStyleId.of ( "popup" );
+    public static final ChildStyleId comboboxPopupScrollPane = ChildStyleId.of ( "scrollpane" );
+    public static final ChildStyleId comboboxPopupList = ChildStyleId.of ( "list" );
     public static final ChildStyleId comboboxBoxRenderer = ChildStyleId.of ( "box-renderer" );
     public static final ChildStyleId comboboxListRenderer = ChildStyleId.of ( "list-renderer" );
 
@@ -774,23 +779,21 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId filedropPlateRemoveButton = ChildStyleId.of ( "remove" );
 
     /**
-     * {@link com.alee.extended.panel.WebCollapsiblePane} style identifiers.
+     * {@link com.alee.extended.collapsible.WebCollapsiblePane} style identifiers.
      */
     public static final StyleId collapsiblepane = StyleId.of ( "collapsiblepane" );
     public static final ChildStyleId collapsiblepaneHeaderPanel = ChildStyleId.of ( "header" );
     public static final ChildStyleId collapsiblepaneTitleLabel = ChildStyleId.of ( "title" );
-    public static final ChildStyleId collapsiblepaneTopTitleLabel = ChildStyleId.of ( "title-top" );
-    public static final ChildStyleId collapsiblepaneLeftTitleLabel = ChildStyleId.of ( "title-left" );
-    public static final ChildStyleId collapsiblepaneBottomTitleLabel = ChildStyleId.of ( "title-bottom" );
-    public static final ChildStyleId collapsiblepaneRightTitleLabel = ChildStyleId.of ( "title-right" );
-    public static final ChildStyleId collapsiblepaneExpandButton = ChildStyleId.of ( "expand" );
-    public static final ChildStyleId collapsiblepaneContentPanel = ChildStyleId.of ( "content" );
+    public static final ChildStyleId collapsiblepaneControlButton = ChildStyleId.of ( "control" );
 
     /**
-     * {@link com.alee.extended.panel.WebAccordion} style identifiers.
+     * {@link com.alee.extended.accordion.WebAccordion} style identifiers.
      */
     public static final StyleId accordion = StyleId.of ( "accordion" );
     public static final ChildStyleId accordionPane = ChildStyleId.of ( "pane" );
+    public static final ChildStyleId accordionPaneHeaderPanel = ChildStyleId.of ( "header" );
+    public static final ChildStyleId accordionPaneTitleLabel = ChildStyleId.of ( "title" );
+    public static final ChildStyleId accordionPaneControlButton = ChildStyleId.of ( "control" );
 
     /**
      * {@link com.alee.managers.popup.WebInnerPopup} style identifiers.
@@ -1004,6 +1007,7 @@ public final class StyleId implements Identifiable
      *
      * @return style identifier
      */
+    @NotNull
     @Override
     public String getId ()
     {
@@ -1041,6 +1045,7 @@ public final class StyleId implements Identifiable
      * @return path for complete style identifier
      * @see com.alee.managers.style.data.ComponentStyle#getPathId()
      */
+    @SuppressWarnings ( "JavadocReference" )
     private String getPathId ( final JComponent component )
     {
         // Full identifier for this part of the path

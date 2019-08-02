@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Mergeable;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -110,7 +111,7 @@ public class BreadcrumbLayout extends AbstractLayoutManager implements Mergeable
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final Insets insets = container.getInsets ();
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
@@ -220,7 +221,7 @@ public class BreadcrumbLayout extends AbstractLayoutManager implements Mergeable
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final Dimension ps = new Dimension ( 0, 0 );
 

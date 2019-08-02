@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.features;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.label.WebStyledLabel;
@@ -47,6 +48,7 @@ import java.util.List;
  */
 public class ShapeDetectionExample extends AbstractPreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {

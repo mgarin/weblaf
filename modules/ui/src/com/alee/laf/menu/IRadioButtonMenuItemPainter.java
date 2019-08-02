@@ -9,7 +9,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IRadioButtonMenuItemPainter<C extends JMenuItem, U extends WebRadioButtonMenuItemUI> extends IAbstractMenuItemPainter<C, U>
 {
     /**

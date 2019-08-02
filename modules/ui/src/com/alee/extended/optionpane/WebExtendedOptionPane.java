@@ -45,7 +45,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebExtendedOptionPane extends WebDialog
 {
     public static final ImageIcon INFORMATION_ICON = new ImageIcon ( WebExtendedOptionPane.class.getResource ( "icons/information.png" ) );

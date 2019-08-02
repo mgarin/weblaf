@@ -28,7 +28,6 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  * @see com.alee.painter.decoration.background.PresetTextureBackground
  */
-
 @XStreamAlias ( "TextureType" )
 public enum TextureType
 {

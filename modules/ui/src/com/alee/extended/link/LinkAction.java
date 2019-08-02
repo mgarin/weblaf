@@ -38,7 +38,6 @@ import java.util.EventListener;
  * @see EmailLinkAction
  * @see FileLinkAction
  */
-
 public interface LinkAction extends EventListener
 {
     /**

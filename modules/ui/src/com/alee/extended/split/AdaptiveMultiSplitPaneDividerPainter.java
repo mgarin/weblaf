@@ -30,7 +30,6 @@ import com.alee.painter.Painter;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
  */
-
 public final class AdaptiveMultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U extends WMultiSplitPaneDividerUI>
         extends AdaptivePainter<C, U> implements IMultiSplitPaneDividerPainter<C, U>
 {

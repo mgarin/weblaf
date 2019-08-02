@@ -27,7 +27,6 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
  *
  * @author Mikle Garin
  */
-
 public class WebComboBoxEditor extends BasicComboBoxEditor
 {
     @Override

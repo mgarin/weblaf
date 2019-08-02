@@ -27,7 +27,6 @@ import java.util.Comparator;
  * @author Mikle Garin
  * @see FileComparator
  */
-
 public class FileTreeNodeComparator implements Comparator<FileTreeNode>
 {
     /**

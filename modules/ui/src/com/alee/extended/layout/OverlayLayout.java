@@ -17,6 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.utils.SwingUtils;
 
@@ -30,7 +32,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public class OverlayLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**
@@ -104,7 +105,7 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         final String value = ( String ) constraints;
         if ( value == null || !value.equals ( COMPONENT ) && !value.equals ( OVERLAY ) )
@@ -115,13 +116,13 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         this.constraints.remove ( component );
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final Insets bi = container.getInsets ();
         final Insets ci = getActualComponentInsets ( container );
@@ -147,7 +148,7 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final Insets bi = container.getInsets ();
         final Insets ci = getActualComponentInsets ( container );

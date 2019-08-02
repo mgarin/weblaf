@@ -20,29 +20,33 @@ package com.alee.extended.filechooser;
 import java.io.File;
 
 /**
- * Adapter for DirectoryChooserListener interface.
+ * Adapter for {@link DirectoryChooserListener}.
  *
  * @author Mikle Garin
- * @see com.alee.extended.filechooser.DirectoryChooserListener
  */
-
 public abstract class DirectoryChooserAdapter implements DirectoryChooserListener
 {
     @Override
     public void selectionChanged ( final File file )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void accepted ( final File file )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void cancelled ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

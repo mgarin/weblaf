@@ -30,7 +30,6 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
- * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
 public final class DockableFrameDescriptor extends AbstractDockableFrameDescriptor<WebDockableFrame, WDockableFrameUI>
 {

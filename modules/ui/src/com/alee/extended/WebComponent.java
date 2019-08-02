@@ -17,9 +17,10 @@
 
 package com.alee.extended;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -770,6 +771,7 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
     @Override
     public abstract void updateUI ();
 
+    @NotNull
     @Override
     public abstract String getUIClassID ();
 }

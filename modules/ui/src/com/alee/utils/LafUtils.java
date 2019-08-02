@@ -183,21 +183,30 @@ public final class LafUtils
      */
     public static Shape getShape ( final JComponent component )
     {
+        final Shape shape;
         if ( component instanceof ShapeSupport )
         {
             final ShapeSupport shapeSupport = ( ShapeSupport ) component;
-            return shapeSupport.getShape ();
+            shape = shapeSupport.getShape ();
+        }
+        else if ( hasUI ( component ) )
+        {
+            final ComponentUI ui = getUI ( component );
+            if ( ui instanceof ShapeSupport )
+            {
+                final ShapeSupport shapeSupport = ( ShapeSupport ) ui;
+                shape = shapeSupport.getShape ();
+            }
+            else
+            {
+                shape = BoundsType.margin.bounds ( component );
+            }
         }
         else
         {
-            final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof ShapeSupport )
-            {
-                final ShapeSupport shapeSupport = ( ShapeSupport ) ui;
-                return shapeSupport.getShape ();
-            }
+            shape = BoundsType.margin.bounds ( component );
         }
-        return BoundsType.margin.bounds ( component );
+        return shape;
     }
 
     /**

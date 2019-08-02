@@ -34,7 +34,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class WebDirectoryChooser extends WebDialog implements DialogOptions
 {
     /**

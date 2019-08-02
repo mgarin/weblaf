@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.tooltip;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.button.WebButton;
@@ -38,6 +39,7 @@ import java.util.List;
  */
 public class WebCustomTooltipExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {

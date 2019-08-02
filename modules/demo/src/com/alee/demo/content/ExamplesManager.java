@@ -49,7 +49,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class ExamplesManager
 {
     /**

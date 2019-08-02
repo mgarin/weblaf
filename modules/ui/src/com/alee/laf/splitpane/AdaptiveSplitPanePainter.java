@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveSplitPanePainter<C extends JSplitPane, U extends WSplitPaneUI> extends AdaptivePainter<C, U>
         implements ISplitPanePainter<C, U>
 {

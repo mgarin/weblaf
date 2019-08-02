@@ -30,7 +30,6 @@ import javax.swing.text.JTextComponent;
  * @see DocumentChangeBehavior
  * @see com.alee.utils.swing.extensions.DocumentEventMethodsImpl
  */
-
 public interface DocumentEventMethods<C extends JTextComponent> extends MethodExtension
 {
     /**

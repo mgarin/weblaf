@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.text.area;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebTextPane;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 public class WebTextPaneExample extends AbstractStylePreviewExample
 {
+    @NotNull
     @Override
     public String getId ()
     {

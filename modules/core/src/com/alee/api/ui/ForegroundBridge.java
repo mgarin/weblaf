@@ -25,7 +25,6 @@ import java.awt.*;
  * @param <P> {@link RenderingParameters} type
  * @author Mikle Garin
  */
-
 public interface ForegroundBridge<P extends RenderingParameters> extends RenderingBridge
 {
     /**

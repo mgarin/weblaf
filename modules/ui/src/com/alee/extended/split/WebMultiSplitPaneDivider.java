@@ -17,6 +17,7 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.Orientation;
 import com.alee.extended.WebContainer;
 import com.alee.laf.button.WebButton;
@@ -39,7 +40,6 @@ import java.awt.event.ActionListener;
  * @see WebMultiSplitPane
  * @see WebMultiSplitPaneModel
  */
-
 public class WebMultiSplitPaneDivider extends WebContainer<WebMultiSplitPaneDivider, WMultiSplitPaneDividerUI>
 {
     /**
@@ -193,6 +193,7 @@ public class WebMultiSplitPaneDivider extends WebContainer<WebMultiSplitPaneDivi
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

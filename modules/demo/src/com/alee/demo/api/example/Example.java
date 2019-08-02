@@ -39,6 +39,7 @@ public interface Example extends ExampleElement
     /**
      * Returns wiki page referenced in this example.
      * Simply return {@code null} in case there is no wiki article related.
+     * todo Return {@link List} of {@link WikiPage}s instead to allow multiple articles
      *
      * @return wiki page referenced in this example
      */

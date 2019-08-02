@@ -33,7 +33,6 @@ import javax.swing.text.JTextComponent;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
- * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
 public class AbstractTextComponentDescriptor<C extends JTextComponent, U extends TextUI> extends AbstractComponentDescriptor<C, U>
 {

@@ -35,7 +35,6 @@ import java.util.List;
  * @param <M> tree model type
  * @author Mikle Garin
  */
-
 public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M extends WebTreeModel<N>> implements TreeDropHandler<N, T, M>
 {
     /**

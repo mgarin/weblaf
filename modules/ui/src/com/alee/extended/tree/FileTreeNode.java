@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.ui.TextBridge;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.utils.FileUtils;
@@ -52,6 +53,7 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
         super ( file );
     }
 
+    @NotNull
     @Override
     public String getId ()
     {

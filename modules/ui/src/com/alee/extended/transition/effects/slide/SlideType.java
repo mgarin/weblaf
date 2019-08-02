@@ -20,7 +20,6 @@ package com.alee.extended.transition.effects.slide;
 /**
  * @author Mikle Garin
  */
-
 public enum SlideType
 {
     /**

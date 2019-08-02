@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveTextPanePainter<C extends JTextPane, U extends WTextPaneUI> extends AdaptivePainter<C, U>
         implements ITextPanePainter<C, U>
 {

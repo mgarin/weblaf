@@ -34,7 +34,6 @@ import java.util.List;
  * @see IDecoration
  * @see Painter
  */
-
 public interface IDecorationPainter<C extends JComponent, U extends ComponentUI, D extends IDecoration<C, D>>
         extends Painter<C, U>
 {

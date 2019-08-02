@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.Rotation;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.IDecoration;
@@ -94,6 +95,7 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     @XStreamAsAttribute
     protected Float opacity;
 
+    @NotNull
     @Override
     public String getId ()
     {
@@ -109,13 +111,17 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     @Override
     public void activate ( final C c, final D d )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void deactivate ( final C c, final D d )
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override

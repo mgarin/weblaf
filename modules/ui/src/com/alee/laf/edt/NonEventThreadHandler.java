@@ -24,7 +24,6 @@ import java.util.EventListener;
  *
  * @author Mikle Garin
  */
-
 public interface NonEventThreadHandler extends EventListener
 {
     /**

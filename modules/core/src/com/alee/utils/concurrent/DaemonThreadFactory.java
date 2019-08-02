@@ -10,7 +10,6 @@ import java.util.concurrent.ThreadFactory;
  * @author Adolph C.
  * @author Mikle Garin
  */
-
 public class DaemonThreadFactory implements ThreadFactory
 {
     /**

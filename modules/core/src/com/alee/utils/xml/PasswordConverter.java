@@ -25,7 +25,6 @@ import com.thoughtworks.xstream.converters.basic.StringConverter;
  *
  * @author Mikle Garin
  */
-
 public class PasswordConverter extends StringConverter
 {
     @Override

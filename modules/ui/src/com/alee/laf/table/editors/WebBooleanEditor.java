@@ -27,7 +27,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class WebBooleanEditor extends WebDefaultCellEditor<WebCheckBox>
 {
     public WebBooleanEditor ()

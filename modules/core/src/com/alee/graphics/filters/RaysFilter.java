@@ -22,7 +22,6 @@ import java.awt.image.BufferedImage;
 /**
  * @author Jerry Huxtable
  */
-
 public class RaysFilter extends MotionBlurFilter
 {
     private float opacity = 1.0f;

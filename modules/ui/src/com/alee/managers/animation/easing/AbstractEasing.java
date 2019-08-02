@@ -27,6 +27,12 @@ package com.alee.managers.animation.easing;
 public abstract class AbstractEasing implements Easing
 {
     @Override
+    public boolean isOverwrite ()
+    {
+        return true;
+    }
+
+    @Override
     public double calculate ( final double start, final double distance, final double current, final double total )
     {
         if ( current <= 0 )

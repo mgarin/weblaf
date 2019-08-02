@@ -19,6 +19,9 @@ package com.alee.managers.style;
 
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Function;
+import com.alee.extended.accordion.AccordionDescriptor;
+import com.alee.extended.accordion.AccordionLayout;
+import com.alee.extended.accordion.AccordionPaneLayout;
 import com.alee.extended.breadcrumb.BreadcrumbDescriptor;
 import com.alee.extended.breadcrumb.BreadcrumbElementShape;
 import com.alee.extended.breadcrumb.BreadcrumbLayout;
@@ -29,6 +32,8 @@ import com.alee.extended.canvas.CanvasDescriptor;
 import com.alee.extended.canvas.Gripper;
 import com.alee.extended.checkbox.MixedIcon;
 import com.alee.extended.checkbox.TristateCheckBoxDescriptor;
+import com.alee.extended.collapsible.CollapsiblePaneDescriptor;
+import com.alee.extended.collapsible.CollapsiblePaneLayout;
 import com.alee.extended.date.DateFieldDescriptor;
 import com.alee.extended.dock.DockableFrameDescriptor;
 import com.alee.extended.dock.DockablePaneDescriptor;
@@ -90,6 +95,7 @@ import com.alee.laf.tooltip.ToolTipText;
 import com.alee.laf.tree.TreeDescriptor;
 import com.alee.laf.viewport.ViewportDescriptor;
 import com.alee.laf.viewport.WebViewportLayout;
+import com.alee.managers.animation.easing.*;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
@@ -344,6 +350,46 @@ public final class StyleManager
         XmlUtils.processAnnotations ( WebViewportLayout.UIResource.class );
         XmlUtils.processAnnotations ( BreadcrumbLayout.class );
         XmlUtils.processAnnotations ( BreadcrumbLayout.UIResource.class );
+        XmlUtils.processAnnotations ( CollapsiblePaneLayout.class );
+        XmlUtils.processAnnotations ( CollapsiblePaneLayout.UIResource.class );
+        XmlUtils.processAnnotations ( AccordionLayout.class );
+        XmlUtils.processAnnotations ( AccordionLayout.UIResource.class );
+        XmlUtils.processAnnotations ( AccordionPaneLayout.class );
+        XmlUtils.processAnnotations ( AccordionPaneLayout.UIResource.class );
+
+        // Easing annotations
+        XmlUtils.processAnnotations ( Linear.class );
+        XmlUtils.processAnnotations ( Sinusoidal.In.class );
+        XmlUtils.processAnnotations ( Sinusoidal.Out.class );
+        XmlUtils.processAnnotations ( Sinusoidal.InOut.class );
+        XmlUtils.processAnnotations ( Quadratic.In.class );
+        XmlUtils.processAnnotations ( Quadratic.Out.class );
+        XmlUtils.processAnnotations ( Quadratic.InOut.class );
+        XmlUtils.processAnnotations ( Cubic.In.class );
+        XmlUtils.processAnnotations ( Cubic.Out.class );
+        XmlUtils.processAnnotations ( Cubic.InOut.class );
+        XmlUtils.processAnnotations ( Quartic.In.class );
+        XmlUtils.processAnnotations ( Quartic.Out.class );
+        XmlUtils.processAnnotations ( Quartic.InOut.class );
+        XmlUtils.processAnnotations ( Quintic.In.class );
+        XmlUtils.processAnnotations ( Quintic.Out.class );
+        XmlUtils.processAnnotations ( Quintic.InOut.class );
+        XmlUtils.processAnnotations ( Exponential.In.class );
+        XmlUtils.processAnnotations ( Exponential.Out.class );
+        XmlUtils.processAnnotations ( Exponential.InOut.class );
+        XmlUtils.processAnnotations ( Circular.In.class );
+        XmlUtils.processAnnotations ( Circular.Out.class );
+        XmlUtils.processAnnotations ( Circular.InOut.class );
+        XmlUtils.processAnnotations ( Back.In.class );
+        XmlUtils.processAnnotations ( Back.Out.class );
+        XmlUtils.processAnnotations ( Back.InOut.class );
+        XmlUtils.processAnnotations ( Elastic.In.class );
+        XmlUtils.processAnnotations ( Elastic.Out.class );
+        XmlUtils.processAnnotations ( Elastic.InOut.class );
+        XmlUtils.processAnnotations ( Bounce.In.class );
+        XmlUtils.processAnnotations ( Bounce.Out.class );
+        XmlUtils.processAnnotations ( Bounce.InOut.class );
+        XmlUtils.processAnnotations ( Bezier.class );
 
         // Workaround for ScrollPaneLayout due to neccessity of its usage
         XmlUtils.omitField ( ScrollPaneLayout.class, "viewport" );
@@ -415,6 +461,8 @@ public final class StyleManager
         registerComponentDescriptor ( new MultiSplitPaneDividerDescriptor () );
         registerComponentDescriptor ( new MultiSplitPaneDescriptor () );
         registerComponentDescriptor ( new PopupDescriptor () );
+        registerComponentDescriptor ( new CollapsiblePaneDescriptor () );
+        registerComponentDescriptor ( new AccordionDescriptor () );
 
         /**
          * Rootpane-related components.
@@ -952,10 +1000,7 @@ public final class StyleManager
             currentSkin = skin;
 
             // Installing new skin
-            if ( skin != null )
-            {
-                skin.install ();
-            }
+            skin.install ();
 
             // Applying new skin to all existing skinnable components
             styleData.forEach ( new BiConsumer<JComponent, StyleData> ()
@@ -1057,7 +1102,6 @@ public final class StyleManager
 
     /**
      * Resets style ID to default value.
-     * This method forces component to instantly apply style with the specified ID to itself.
      *
      * @param component component to reset style ID for
      * @return previously used style ID

@@ -35,7 +35,6 @@ import java.util.zip.ZipFile;
  *
  * @author Mikle Garin
  */
-
 public class JarEntry
 {
     /**

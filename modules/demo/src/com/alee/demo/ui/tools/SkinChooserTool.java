@@ -39,7 +39,6 @@ import java.awt.event.ActionListener;
  *
  * @author Mikle Garin
  */
-
 public final class SkinChooserTool extends WebPanel
 {
     /**

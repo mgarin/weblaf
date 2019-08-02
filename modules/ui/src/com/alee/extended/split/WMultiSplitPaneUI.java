@@ -39,6 +39,12 @@ public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends Com
     protected C multisplitpane;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "MultiSplitPane.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving component reference
@@ -64,12 +70,6 @@ public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends Com
         multisplitpane = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "MultiSplitPane.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -91,7 +91,9 @@ public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends Com
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -99,6 +101,8 @@ public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends Com
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

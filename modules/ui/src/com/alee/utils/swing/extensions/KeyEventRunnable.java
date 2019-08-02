@@ -24,7 +24,6 @@ import java.awt.event.KeyEvent;
  *
  * @author Mikle Garin
  */
-
 public interface KeyEventRunnable
 {
     /**

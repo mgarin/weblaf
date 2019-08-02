@@ -21,7 +21,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.*;
-import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -273,8 +273,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Hotkey manager methods
      */
-
-    public HotkeyInfo addHotkey ( final Integer keyCode )
+public HotkeyInfo addHotkey ( final Integer keyCode )
     {
         return addHotkey ( new HotkeyData ( keyCode ) );
     }

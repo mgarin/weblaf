@@ -17,6 +17,7 @@
 
 package com.alee.managers.animation.transition;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.animation.AnimationException;
 import com.alee.managers.animation.AnimationManager;
@@ -227,7 +228,7 @@ public abstract class AbstractTransition<V> implements Transition<V>
     }
 
     @Override
-    public int compareTo ( final Object object )
+    public int compareTo ( @NotNull final Object object )
     {
         return this == object ? 0 : -1;
     }

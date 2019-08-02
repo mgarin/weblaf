@@ -22,7 +22,6 @@ package com.alee.extended.time;
  *
  * @author Mikle Garin
  */
-
 public enum ClockType
 {
     /**

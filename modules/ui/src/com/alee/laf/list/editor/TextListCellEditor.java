@@ -30,9 +30,9 @@ import java.awt.event.KeyEvent;
 /**
  * Simple {@link ListCellEditor} implementation for editing text values.
  *
+ * @param <T> editor value type
  * @author Mikle Garin
  */
-
 public abstract class TextListCellEditor<T> extends AbstractListCellEditor<WebTextField, T>
 {
     @Override

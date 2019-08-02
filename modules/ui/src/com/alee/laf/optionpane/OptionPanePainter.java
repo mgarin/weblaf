@@ -14,7 +14,6 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-
 public class OptionPanePainter<C extends JOptionPane, U extends WebOptionPaneUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IOptionPanePainter<C, U>
 {

@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptiveToggleButtonPainter<C extends JToggleButton, U extends WebToggleButtonUI> extends AdaptivePainter<C, U>
         implements IToggleButtonPainter<C, U>
 {

@@ -22,7 +22,6 @@ package com.alee.extended.tree;
  *
  * @author Mikle Garin
  */
-
 public interface AsyncUpdateListener
 {
     /**

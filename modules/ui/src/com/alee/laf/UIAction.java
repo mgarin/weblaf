@@ -32,7 +32,6 @@ import java.beans.PropertyChangeListener;
  *
  * @author Mikle Garin
  */
-
 public abstract class UIAction<C extends JComponent> implements Action
 {
     /**

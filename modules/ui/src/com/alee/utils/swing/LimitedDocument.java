@@ -27,7 +27,6 @@ import java.util.Locale;
  *
  * @author Mikle Garin
  */
-
 public class LimitedDocument extends PlainDocument
 {
     /**

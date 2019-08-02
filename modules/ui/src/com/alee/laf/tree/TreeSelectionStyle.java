@@ -22,7 +22,6 @@ package com.alee.laf.tree;
  *
  * @author Mikle Garin
  */
-
 public enum TreeSelectionStyle
 {
     /**

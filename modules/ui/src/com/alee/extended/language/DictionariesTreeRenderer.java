@@ -34,7 +34,6 @@ import javax.swing.tree.TreeCellRenderer;
  *
  * @author Mikle Garin
  */
-
 public class DictionariesTreeRenderer extends WebStyledLabel implements TreeCellRenderer
 {
     /**

@@ -9,7 +9,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IFormattedTextFieldPainter<C extends JFormattedTextField, U extends WFormattedTextFieldUI>
         extends IAbstractTextFieldPainter<C, U>
 {

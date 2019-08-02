@@ -14,7 +14,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveTextFieldPainter<C extends JTextField, U extends WTextFieldUI> extends AdaptivePainter<C, U>
         implements ITextFieldPainter<C, U>
 {

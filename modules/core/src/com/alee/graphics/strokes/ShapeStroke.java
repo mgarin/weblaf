@@ -23,7 +23,6 @@ import java.awt.geom.*;
 /**
  * @author Mikle Garin
  */
-
 public class ShapeStroke implements Stroke
 {
     private final Shape shapes[];

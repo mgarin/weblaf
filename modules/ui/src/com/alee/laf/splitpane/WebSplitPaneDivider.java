@@ -17,6 +17,8 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.WebContainer;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.button.WebButton;
@@ -390,6 +392,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {
@@ -411,6 +414,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
             super ( id );
         }
 
+        @Nullable
         @Override
         public List<String> getStates ()
         {
@@ -795,7 +799,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
     protected class DividerLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container container )
+        public void layoutContainer ( @NotNull final Container container )
         {
             if ( leftButton != null && rightButton != null && container == WebSplitPaneDivider.this )
             {
@@ -850,7 +854,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
         }
 
         @Override
-        public Dimension minimumLayoutSize ( final Container container )
+        public Dimension minimumLayoutSize ( @NotNull final Container container )
         {
             return preferredLayoutSize ( container );
         }
@@ -860,7 +864,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
          * I leave a proper implementation for this method in hopes of using it at some point instead of workarounds.
          */
         @Override
-        public Dimension preferredLayoutSize ( final Container container )
+        public Dimension preferredLayoutSize ( @NotNull final Container container )
         {
             final Dimension ps;
             if ( container == WebSplitPaneDivider.this && splitPane != null )

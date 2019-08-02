@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveListPainter<C extends JList, U extends WListUI> extends AdaptivePainter<C, U> implements IListPainter<C, U>
 {
     /**

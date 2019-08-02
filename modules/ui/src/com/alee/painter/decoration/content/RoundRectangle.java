@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.IBackground;
@@ -60,6 +61,7 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
     @XStreamImplicit
     protected List<IBackground> backgrounds;
 
+    @NotNull
     @Override
     public String getId ()
     {

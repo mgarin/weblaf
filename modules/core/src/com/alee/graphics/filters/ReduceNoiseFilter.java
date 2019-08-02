@@ -24,7 +24,6 @@ import java.awt.*;
  *
  * @author Jerry Huxtable
  */
-
 public class ReduceNoiseFilter extends WholeImageFilter
 {
     public ReduceNoiseFilter ()

@@ -37,6 +37,12 @@ public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI i
     protected C statusBar;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "StatusBar.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving statusbar reference
@@ -62,12 +68,6 @@ public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI i
         statusBar = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "StatusBar.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI i
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI i
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

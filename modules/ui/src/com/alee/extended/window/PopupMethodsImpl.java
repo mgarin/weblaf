@@ -23,7 +23,6 @@ package com.alee.extended.window;
  * @author Mikle Garin
  * @see com.alee.extended.window.PopupMethods
  */
-
 public final class PopupMethodsImpl
 {
     /**

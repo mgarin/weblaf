@@ -28,7 +28,6 @@ package com.alee.extended.tree;
  *
  * @author Mikle Garin
  */
-
 public enum AsyncNodeState
 {
     /**

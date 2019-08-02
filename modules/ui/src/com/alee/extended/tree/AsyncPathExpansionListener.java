@@ -20,10 +20,9 @@ package com.alee.extended.tree;
 /**
  * This custom listener is used to track async tree path expansion action.
  *
- * @param <N> node type
+ * @param <N> {@link AsyncUniqueNode} type
  * @author Mikle Garin
  */
-
 public interface AsyncPathExpansionListener<N extends AsyncUniqueNode>
 {
     /**

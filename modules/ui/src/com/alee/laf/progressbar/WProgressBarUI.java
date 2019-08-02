@@ -37,6 +37,12 @@ public abstract class WProgressBarUI<C extends JProgressBar> extends ProgressBar
     protected C progressBar;
 
     @Override
+    public String getPropertyPrefix ()
+    {
+        return "ProgressBar.";
+    }
+
+    @Override
     public void installUI ( final JComponent c )
     {
         // Saving progress bar reference
@@ -62,12 +68,6 @@ public abstract class WProgressBarUI<C extends JProgressBar> extends ProgressBar
         progressBar = null;
     }
 
-    @Override
-    public String getPropertyPrefix ()
-    {
-        return "ProgressBar.";
-    }
-
     /**
      * Installs default component settings.
      */
@@ -89,7 +89,9 @@ public abstract class WProgressBarUI<C extends JProgressBar> extends ProgressBar
      */
     protected void installListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -97,6 +99,8 @@ public abstract class WProgressBarUI<C extends JProgressBar> extends ProgressBar
      */
     protected void uninstallListeners ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

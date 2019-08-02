@@ -17,6 +17,7 @@
 
 package com.alee.extended.progress;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.ShapeMethods;
 import com.alee.utils.CollectionUtils;
@@ -50,7 +51,6 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStepProgress">How to use WebStepProgress</a>
  */
-
 public class WebStepProgress extends JComponent implements SwingConstants, ShapeMethods, SizeMethods<WebStepProgress>
 {
     /**
@@ -1483,7 +1483,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     protected class ProgressLayout extends AbstractLayoutManager
     {
         @Override
-        public void layoutContainer ( final Container container )
+        public void layoutContainer ( @NotNull final Container container )
         {
             final boolean ltr = getComponentOrientation ().isLeftToRight ();
             for ( int i = 0; i < steps.size (); i++ )
@@ -1526,7 +1526,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
 
         @Override
-        public Dimension preferredLayoutSize ( final Container container )
+        public Dimension preferredLayoutSize ( @NotNull final Container container )
         {
             final Dimension max = getMaximumComponentSize ();
             final Dimension maxSide = getMaximumSideComponentSize ();

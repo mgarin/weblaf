@@ -25,7 +25,6 @@ import java.awt.geom.PathIterator;
 /**
  * @author Mikle Garin
  */
-
 public class ZigzagStroke implements Stroke
 {
     private float amplitude = 10.0f;

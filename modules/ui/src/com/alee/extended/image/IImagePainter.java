@@ -26,7 +26,6 @@ import com.alee.painter.SpecificPainter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IImagePainter<C extends WebImage, U extends WImageUI> extends SpecificPainter<C, U>
 {
     /**

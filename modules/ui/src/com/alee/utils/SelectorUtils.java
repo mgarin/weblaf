@@ -39,6 +39,9 @@ public final class SelectorUtils
      * This method is pretty slow and should not be used for multiple selections presentation.
      */
 
+    /**
+     * Painting constants.
+     */
     public static int halfButton = 4;
     public static int halfSelector = 2;
     public static int halfLine = 1;

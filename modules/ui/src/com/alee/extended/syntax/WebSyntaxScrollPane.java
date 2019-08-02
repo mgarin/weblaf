@@ -41,7 +41,6 @@ import java.awt.*;
  * @see WebScrollPaneUI
  * @see com.alee.laf.scroll.ScrollPanePainter
  */
-
 public class WebSyntaxScrollPane extends RTextScrollPane
         implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, SizeMethods<WebSyntaxScrollPane>
 {

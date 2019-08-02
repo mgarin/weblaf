@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveToolBarPainter<C extends JToolBar, U extends WebToolBarUI> extends AdaptivePainter<C, U>
         implements IToolBarPainter<C, U>
 {

@@ -28,7 +28,6 @@ import java.awt.image.Kernel;
  *
  * @author Jerry Huxtable
  */
-
 public class ConvolveFilter extends AbstractBufferedImageOp
 {
     public static int ZERO_EDGES = 0;

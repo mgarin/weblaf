@@ -27,6 +27,8 @@
 
 package com.alee.managers.animation.easing;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * Bounce easing implementation.
  *
@@ -90,6 +92,7 @@ public abstract class Bounce extends AbstractEasing
     /**
      * Accelerating from zero velocity.
      */
+    @XStreamAlias ( "Bounce$In" )
     public static final class In extends Bounce
     {
         @Override
@@ -108,6 +111,7 @@ public abstract class Bounce extends AbstractEasing
     /**
      * Decelerating to zero velocity.
      */
+    @XStreamAlias ( "Bounce$Out" )
     public static final class Out extends Bounce
     {
         @Override
@@ -126,6 +130,7 @@ public abstract class Bounce extends AbstractEasing
     /**
      * Accelerating until halfway, then decelerating.
      */
+    @XStreamAlias ( "Bounce$InOut" )
     public static final class InOut extends Bounce
     {
         @Override

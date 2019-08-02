@@ -50,7 +50,6 @@ import java.beans.PropertyChangeListener;
  *
  * @author Mikle Garin
  */
-
 public class WebColorChooserField extends WebTextField
 {
     /**

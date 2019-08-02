@@ -9,7 +9,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface ITextPanePainter<C extends JTextPane, U extends WTextPaneUI> extends IAbstractTextAreaPainter<C, U>
 {
     /**

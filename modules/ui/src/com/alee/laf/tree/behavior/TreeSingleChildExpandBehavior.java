@@ -56,7 +56,9 @@ public class TreeSingleChildExpandBehavior implements TreeExpansionListener, Beh
     @Override
     public void treeCollapsed ( final TreeExpansionEvent event )
     {
-        // Do nothing
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

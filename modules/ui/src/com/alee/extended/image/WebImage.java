@@ -17,6 +17,7 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.WebComponent;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
@@ -44,7 +45,6 @@ import java.net.URL;
  * @see ImagePainter
  * @see WebComponent
  */
-
 public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingConstants
 {
     /**
@@ -486,6 +486,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {

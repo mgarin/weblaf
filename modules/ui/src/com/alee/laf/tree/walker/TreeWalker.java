@@ -30,7 +30,6 @@ import javax.swing.tree.TreeNode;
  * @param <N> node type
  * @author Mikle Garin
  */
-
 public interface TreeWalker<N extends TreeNode>
 {
     /**

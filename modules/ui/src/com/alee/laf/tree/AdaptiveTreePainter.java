@@ -16,7 +16,6 @@ import java.util.Hashtable;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveTreePainter<C extends JTree, U extends WTreeUI> extends AdaptivePainter<C, U> implements ITreePainter<C, U>
 {
     /**

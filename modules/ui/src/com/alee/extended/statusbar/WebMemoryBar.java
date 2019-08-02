@@ -37,7 +37,6 @@ import java.lang.management.MemoryUsage;
 /**
  * @author Mikle Garin
  */
-
 public class WebMemoryBar extends WebButton
 {
     /**

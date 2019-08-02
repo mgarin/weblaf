@@ -44,7 +44,6 @@ import static java.awt.ComponentOrientation.RIGHT_TO_LEFT;
  *
  * @author Mikle Garin
  */
-
 public final class OrientationChooserTool extends WebPanel
 {
     /**

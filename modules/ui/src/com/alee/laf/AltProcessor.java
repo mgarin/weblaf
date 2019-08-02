@@ -29,7 +29,6 @@ import java.awt.event.KeyEvent;
  *
  * @author Mikle Garin
  */
-
 public class AltProcessor implements KeyEventPostProcessor
 {
     /**

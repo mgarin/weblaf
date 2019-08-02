@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.text;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.demo.content.text.area.TextAreasGroup;
 import com.alee.demo.content.text.field.TextFieldsGroup;
@@ -27,9 +28,9 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class TextComponentsGroup extends AbstractExampleGroup
 {
+    @NotNull
     @Override
     public String getId ()
     {

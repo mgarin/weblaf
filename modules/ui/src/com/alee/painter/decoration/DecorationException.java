@@ -22,7 +22,6 @@ package com.alee.painter.decoration;
  *
  * @author Mikle Garin
  */
-
 public final class DecorationException extends RuntimeException
 {
     /**

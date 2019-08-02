@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IMenuPainter<C extends JMenu, U extends WebMenuUI> extends SpecificPainter<C, U>
 {
     /**

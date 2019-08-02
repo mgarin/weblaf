@@ -11,7 +11,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public interface IInternalFramePainter<C extends JInternalFrame, U extends WebInternalFrameUI> extends SpecificPainter<C, U>
 {
     /**

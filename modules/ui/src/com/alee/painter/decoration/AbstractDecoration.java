@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.CollectionUtils;
@@ -102,6 +103,7 @@ public abstract class AbstractDecoration<C extends JComponent, I extends Abstrac
      */
     protected transient Cursor previousCursor;
 
+    @NotNull
     @Override
     public String getId ()
     {

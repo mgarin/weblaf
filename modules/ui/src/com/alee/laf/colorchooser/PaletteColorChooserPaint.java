@@ -31,7 +31,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 public class PaletteColorChooserPaint implements Paint
 {
     private Color cornerColor = Color.RED;

@@ -29,7 +29,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IProgressTextPainter<C extends JProgressBar, U extends WebProgressBarUI> extends SectionPainter<C, U>
 {
     /**

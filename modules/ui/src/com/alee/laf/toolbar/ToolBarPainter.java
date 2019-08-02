@@ -23,7 +23,6 @@ import java.util.List;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-
 public class ToolBarPainter<C extends JToolBar, U extends WebToolBarUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IToolBarPainter<C, U>
 {

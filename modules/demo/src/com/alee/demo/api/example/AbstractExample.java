@@ -123,7 +123,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected void displayed ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**
@@ -131,7 +133,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected void hidden ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     /**

@@ -26,7 +26,6 @@ import javax.swing.*;
  *
  * @author Mikle Garin
  */
-
 public enum JarEntryType
 {
     /**

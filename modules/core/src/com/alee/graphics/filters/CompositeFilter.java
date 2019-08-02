@@ -25,7 +25,6 @@ import java.awt.image.BufferedImage;
  *
  * @author Jerry Huxtable
  */
-
 public class CompositeFilter extends AbstractBufferedImageOp
 {
     private Composite composite;

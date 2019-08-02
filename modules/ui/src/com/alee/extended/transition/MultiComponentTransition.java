@@ -20,7 +20,6 @@ package com.alee.extended.transition;
 /**
  * @author Mikle Garin
  */
-
 public class MultiComponentTransition extends ComponentTransition
 {
     public MultiComponentTransition ()

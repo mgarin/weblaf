@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveSpinnerPainter<C extends JSpinner, U extends WebSpinnerUI> extends AdaptivePainter<C, U>
         implements ISpinnerPainter<C, U>
 {

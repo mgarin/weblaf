@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.image.svg;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.utils.CollectionUtils;
 
@@ -25,9 +26,9 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class SvgGroup extends AbstractExampleGroup
 {
+    @NotNull
     @Override
     public String getId ()
     {

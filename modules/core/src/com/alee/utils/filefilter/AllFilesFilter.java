@@ -28,7 +28,6 @@ import java.io.File;
  *
  * @author Mikle Garin
  */
-
 public class AllFilesFilter extends AbstractFileFilter
 {
     /**

@@ -29,7 +29,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> extends SpecificPainter<C, U>
 {
     /**

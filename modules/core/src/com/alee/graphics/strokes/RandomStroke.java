@@ -25,7 +25,6 @@ import java.awt.geom.PathIterator;
 /**
  * @author Mikle Garin
  */
-
 public class RandomStroke implements Stroke
 {
     private float detail = 2;

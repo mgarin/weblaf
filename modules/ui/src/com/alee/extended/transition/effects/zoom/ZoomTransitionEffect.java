@@ -27,7 +27,6 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  */
-
 public class ZoomTransitionEffect extends DefaultTransitionEffect
 {
     private static final String ZOOM_MINIMUM_SPEED = "ZOOM_MINIMUM_SPEED";

@@ -20,7 +20,7 @@ package com.alee.laf.label;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.UILanguageManager;
-import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -68,21 +68,21 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param icon icon
-     */
-    public WebLabel ( final Icon icon )
-    {
-        this ( StyleId.auto, icon );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param horizontalAlignment horizontal alignment
      */
     public WebLabel ( final int horizontalAlignment )
     {
         this ( StyleId.auto, horizontalAlignment );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param icon icon
+     */
+    public WebLabel ( final Icon icon )
+    {
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -155,23 +155,23 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
-     * @param icon icon
-     */
-    public WebLabel ( final StyleId id, final Icon icon )
-    {
-        this ( id, null, icon, CENTER );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param id                  style ID
      * @param horizontalAlignment horizontal alignment
      */
     public WebLabel ( final StyleId id, final int horizontalAlignment )
     {
         this ( id, "", null, horizontalAlignment );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param icon icon
+     */
+    public WebLabel ( final StyleId id, final Icon icon )
+    {
+        this ( id, null, icon, CENTER );
     }
 
     /**

@@ -26,7 +26,6 @@ import com.alee.painter.SpecificPainter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IPopupPainter<C extends WebPopup, U extends WPopupUI> extends SpecificPainter<C, U>
 {
     /**

@@ -22,7 +22,6 @@ package com.alee.demo.frames.examples;
  *
  * @author Mikle Garin
  */
-
 public enum ExamplesTreeNodeType
 {
     root,

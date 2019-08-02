@@ -31,7 +31,6 @@ import java.io.Writer;
  *
  * @author Mikle Garin
  */
-
 public class XmlDriver extends StaxDriver
 {
     @Override

@@ -44,21 +44,19 @@ public interface ToolTipProvider<V, C extends JComponent, A extends ComponentAre
      * Tooltip will be displayed relative to these bounds using provided {@link TooltipWay}.
      *
      * @param component component to provide tooltip for
-     * @param value     value
      * @param area      {@link ComponentArea}
      * @return tooltip source bounds
      */
-    public Rectangle getSourceBounds ( C component, V value, A area );
+    public Rectangle getSourceBounds ( C component, A area );
 
     /**
      * Return {@link WebCustomTooltip} for the specified value and {@link ComponentArea}.
      *
      * @param component component to provide tooltip for
-     * @param value     value
      * @param area      {@link ComponentArea}
      * @return {@link WebCustomTooltip} for the specified value and {@link ComponentArea}
      */
-    public WebCustomTooltip getToolTip ( C component, V value, A area );
+    public WebCustomTooltip getToolTip ( C component, A area );
 
     /**
      * Informs about hover area changes.

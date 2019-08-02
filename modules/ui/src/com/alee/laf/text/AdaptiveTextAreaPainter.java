@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveTextAreaPainter<C extends JTextArea, U extends WTextAreaUI> extends AdaptivePainter<C, U>
         implements ITextAreaPainter<C, U>
 {

@@ -22,7 +22,6 @@ package com.alee.painter;
  *
  * @author Mikle Garin
  */
-
 public final class PainterException extends RuntimeException
 {
     /**

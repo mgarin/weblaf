@@ -21,7 +21,6 @@ package com.alee.graphics.filters;
  *
  * @author Jerry Huxtable
  */
-
 public final class ImageMath
 {
     public final static float PI = ( float ) Math.PI;

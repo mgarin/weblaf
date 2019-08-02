@@ -27,7 +27,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  */
-
 @XStreamAlias ( "PluginDependency" )
 public class PluginDependency implements Serializable
 {

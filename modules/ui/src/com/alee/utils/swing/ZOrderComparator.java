@@ -26,7 +26,6 @@ import java.util.Comparator;
  *
  * @author Mikle Garin
  */
-
 public final class ZOrderComparator implements Comparator<Component>, Serializable
 {
     @Override

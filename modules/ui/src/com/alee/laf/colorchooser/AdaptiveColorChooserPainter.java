@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveColorChooserPainter<C extends JColorChooser, U extends WColorChooserUI> extends AdaptivePainter<C, U>
         implements IColorChooserPainter<C, U>
 {

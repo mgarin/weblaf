@@ -17,6 +17,8 @@
 
 package com.alee.managers.notification;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.BoundsType;
 
@@ -45,7 +47,7 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
     protected final Object lock = new Object ();
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         synchronized ( lock )
         {
@@ -57,7 +59,7 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         synchronized ( lock )
         {
@@ -69,13 +71,13 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return null;
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         synchronized ( lock )
         {

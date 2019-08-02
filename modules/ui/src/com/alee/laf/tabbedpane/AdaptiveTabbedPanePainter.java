@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveTabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> extends AdaptivePainter<C, U>
         implements ITabbedPanePainter<C, U>
 {

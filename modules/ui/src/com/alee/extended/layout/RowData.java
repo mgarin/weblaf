@@ -24,7 +24,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class RowData
 {
     private int width = 0;

@@ -26,7 +26,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-
 public enum CompassDirection implements SwingConstants
 {
     center ( CENTER ),

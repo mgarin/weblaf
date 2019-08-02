@@ -35,7 +35,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 public class DoubleColorField extends WebPanel
 {
     private final List<DoubleColorFieldListener> listeners = new ArrayList<DoubleColorFieldListener> ( 1 );

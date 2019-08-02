@@ -19,7 +19,6 @@ package com.alee.graphics.filters;
 /**
  * @author Jerry Huxtable
  */
-
 public class RGBAdjustFilter extends PointFilter
 {
     public float rFactor;

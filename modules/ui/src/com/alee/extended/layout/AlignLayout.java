@@ -17,6 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.collection.ImmutableList;
 
@@ -195,7 +197,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     @Override
-    public void addComponent ( final Component component, final Object constraints )
+    public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
         String align = ( String ) constraints;
         if ( align != null && !align.trim ().equals ( "" ) )
@@ -230,13 +232,13 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     @Override
-    public void removeComponent ( final Component component )
+    public void removeComponent ( @NotNull final Component component )
     {
         constraints.remove ( component );
     }
 
     @Override
-    public void layoutContainer ( final Container container )
+    public void layoutContainer ( @NotNull final Container container )
     {
         final Insets insets = container.getInsets ();
         final int cw = container.getWidth () - insets.left - insets.right;
@@ -315,7 +317,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     }
 
     @Override
-    public Dimension preferredLayoutSize ( final Container container )
+    public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         final Dimension ps;
         if ( container.getComponentCount () > 1 )

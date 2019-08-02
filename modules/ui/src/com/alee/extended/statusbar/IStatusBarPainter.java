@@ -26,7 +26,6 @@ import com.alee.painter.SpecificPainter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IStatusBarPainter<C extends WebStatusBar, U extends WStatusBarUI> extends SpecificPainter<C, U>
 {
     /**

@@ -31,7 +31,7 @@ import javax.swing.*;
 public abstract class TableToolTipProvider<V> extends AbstractToolTipProvider<V, JTable, TableCellArea<V, JTable>>
 {
     @Override
-    public TooltipWay getDirection ( final JTable component, final V value, final TableCellArea<V, JTable> area )
+    public TooltipWay getDirection ( final JTable component, final TableCellArea<V, JTable> area )
     {
         return TooltipWay.down;
     }

@@ -28,7 +28,6 @@ import java.util.StringTokenizer;
  *
  * @author Mikle Garin
  */
-
 public class FontConverter extends AbstractSingleValueConverter
 {
     /**

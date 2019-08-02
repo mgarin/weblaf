@@ -13,7 +13,6 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-
 public final class AdaptiveOptionPanePainter<C extends JOptionPane, U extends WebOptionPaneUI> extends AdaptivePainter<C, U>
         implements IOptionPanePainter<C, U>
 {

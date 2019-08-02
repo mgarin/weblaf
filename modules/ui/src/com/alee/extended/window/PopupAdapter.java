@@ -18,36 +18,41 @@
 package com.alee.extended.window;
 
 /**
- * Adapter for {@link com.alee.extended.window.PopupListener}.
+ * Adapter for {@link PopupListener}.
  *
  * @author Mikle Garin
- * @see com.alee.extended.window.WebPopup
- * @see com.alee.managers.popup.WebInnerPopup
  */
-
 public abstract class PopupAdapter implements PopupListener
 {
     @Override
     public void popupWillBeOpened ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void popupOpened ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void popupWillBeClosed ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 
     @Override
     public void popupClosed ()
     {
-        // Do nothing by default
+        /**
+         * Do nothing by default.
+         */
     }
 }

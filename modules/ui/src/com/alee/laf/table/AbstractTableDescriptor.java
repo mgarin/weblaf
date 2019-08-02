@@ -41,7 +41,6 @@ import java.util.Hashtable;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
- * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
 public abstract class AbstractTableDescriptor<C extends JTable, U extends WebTableUI> extends AbstractComponentDescriptor<C, U>
 {

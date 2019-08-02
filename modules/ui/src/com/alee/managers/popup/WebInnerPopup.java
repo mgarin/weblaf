@@ -30,7 +30,7 @@ import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
-import com.alee.utils.swing.EmptyMouseAdapter;
+import com.alee.utils.swing.NoOpMouseListener;
 import com.alee.utils.swing.FadeStateType;
 import com.alee.utils.swing.WebTimer;
 
@@ -98,7 +98,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
         setFocusCycleRoot ( true );
 
         // Listeners to block events passing to underlying components
-        EmptyMouseAdapter.install ( this );
+        NoOpMouseListener.install ( this );
 
         // Fade in-out timer
         fadeTimer = new WebTimer ( "WebPopup.fade", 1000 / fadeFps );

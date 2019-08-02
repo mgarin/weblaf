@@ -26,7 +26,6 @@ import java.awt.image.WritableRaster;
  *
  * @author Jerry Huxtable
  */
-
 public abstract class WholeImageFilter extends AbstractBufferedImageOp
 {
     /**

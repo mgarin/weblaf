@@ -23,7 +23,6 @@ package com.alee.graphics.filters;
  *
  * @author Jerry Huxtable
  */
-
 public interface Colormap
 {
     /**

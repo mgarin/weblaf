@@ -25,7 +25,6 @@ import java.awt.image.Kernel;
  *
  * @author Jerry Huxtable
  */
-
 public class GaussianFilter extends ConvolveFilter
 {
     protected float radius;

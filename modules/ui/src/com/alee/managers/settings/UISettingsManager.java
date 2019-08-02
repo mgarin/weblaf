@@ -18,6 +18,13 @@
 package com.alee.managers.settings;
 
 import com.alee.api.jdk.BiConsumer;
+import com.alee.extended.accordion.AccordionPaneState;
+import com.alee.extended.accordion.AccordionSettingsProcessor;
+import com.alee.extended.accordion.AccordionState;
+import com.alee.extended.accordion.WebAccordion;
+import com.alee.extended.collapsible.CollapsiblePaneSettingsProcessor;
+import com.alee.extended.collapsible.CollapsiblePaneState;
+import com.alee.extended.collapsible.WebCollapsiblePane;
 import com.alee.extended.colorchooser.*;
 import com.alee.extended.date.DateFieldSettingsProcessor;
 import com.alee.extended.date.DateFieldState;
@@ -29,7 +36,6 @@ import com.alee.extended.dock.data.AbstractDockableElement;
 import com.alee.extended.dock.data.DockableContentElement;
 import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.extended.dock.data.DockableListContainer;
-import com.alee.extended.panel.*;
 import com.alee.extended.split.MultiSplitPaneSettingsProcessor;
 import com.alee.extended.split.MultiSplitState;
 import com.alee.extended.split.WebMultiSplitPane;
@@ -88,7 +94,7 @@ public final class UISettingsManager
     /**
      * todo 1. Add component-bound listeners (current ones may cause memory leaks)
      * todo 2. JListSettingsProcessor
-     * todo 3. JTableSettingsProcessorw
+     * todo 3. JTableSettingsProcessor
      * todo 4. JScrollPaneSettingsProcessor
      */
 
@@ -96,13 +102,13 @@ public final class UISettingsManager
      * Registered settings processor classes.
      */
     private static final Map<Class<? extends JComponent>, Class<? extends SettingsProcessor>> settingsProcessorClasses =
-            new LinkedHashMap<Class<? extends JComponent>, Class<? extends SettingsProcessor>> ();
+        new LinkedHashMap<Class<? extends JComponent>, Class<? extends SettingsProcessor>> ();
 
     /**
      * Registered component settings processors.
      */
     private static final WeakComponentData<JComponent, SettingsProcessor> settingsProcessors =
-            new WeakComponentData<JComponent, SettingsProcessor> ( "UISettingsManager.SettingsProcessor", 10 );
+        new WeakComponentData<JComponent, SettingsProcessor> ( "UISettingsManager.SettingsProcessor", 10 );
 
     /**
      * Whether SettingsManager is initialized or not.
@@ -134,6 +140,7 @@ public final class UISettingsManager
             XmlUtils.processAnnotations ( WindowState.class );
             XmlUtils.processAnnotations ( CollapsiblePaneState.class );
             XmlUtils.processAnnotations ( AccordionState.class );
+            XmlUtils.processAnnotations ( AccordionPaneState.class );
             XmlUtils.processAnnotations ( MultiSplitState.class );
             XmlUtils.processAnnotations ( TabbedPaneState.class );
             XmlUtils.processAnnotations ( DocumentPaneState.class );
@@ -186,7 +193,7 @@ public final class UISettingsManager
                         {
                             final Configuration configuration = processor.configuration ();
                             if ( configuration.isApplySettingsChanges () &&
-                                    group.equals ( configuration.group () ) && key.equals ( configuration.key () ) )
+                                group.equals ( configuration.group () ) && key.equals ( configuration.key () ) )
                             {
                                 processor.load ();
                             }

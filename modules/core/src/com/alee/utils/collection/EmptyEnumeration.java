@@ -26,7 +26,6 @@ import java.util.NoSuchElementException;
  * @param <E> element type
  * @author Mikle Garin
  */
-
 public final class EmptyEnumeration<E> implements Enumeration<E>
 {
     /**

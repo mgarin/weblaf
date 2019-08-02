@@ -29,7 +29,6 @@ import javax.swing.text.JTextComponent;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public interface IAbstractTextEditorPainter<C extends JTextComponent, U extends BasicTextUI> extends SpecificPainter<C, U>
 {
     /**

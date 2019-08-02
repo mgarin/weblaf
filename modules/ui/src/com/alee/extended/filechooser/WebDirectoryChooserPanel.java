@@ -59,7 +59,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public class WebDirectoryChooserPanel extends WebPanel
 {
     /**

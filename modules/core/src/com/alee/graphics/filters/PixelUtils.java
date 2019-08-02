@@ -26,7 +26,6 @@ import java.awt.*;
  *
  * @author Jerry Huxtable
  */
-
 public final class PixelUtils
 {
     public final static int REPLACE = 0;

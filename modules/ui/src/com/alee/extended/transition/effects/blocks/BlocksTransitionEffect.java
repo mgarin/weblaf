@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-
 public class BlocksTransitionEffect extends DefaultTransitionEffect
 {
     private static final String BLOCK_TYPE = "BLOCK_TYPE";

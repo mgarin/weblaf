@@ -31,7 +31,6 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-
 public final class AdaptiveScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> extends AdaptivePainter<C, U>
         implements IScrollBarPainter<C, U>
 {

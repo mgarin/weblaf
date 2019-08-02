@@ -22,7 +22,6 @@ import java.awt.image.ColorModel;
 /**
  * @author Jerry Huxtable
  */
-
 public final class MiscComposite implements Composite
 {
 

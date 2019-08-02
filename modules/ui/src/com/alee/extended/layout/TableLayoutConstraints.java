@@ -60,7 +60,6 @@ import java.util.StringTokenizer;
  * @author Daniel E. Barbalace
  * @version 2.0 March 14, 2004
  */
-
 public class TableLayoutConstraints implements TableLayoutConstants
 {
     /**

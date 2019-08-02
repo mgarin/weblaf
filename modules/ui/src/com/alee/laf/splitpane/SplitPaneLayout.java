@@ -29,7 +29,6 @@ import java.awt.*;
  * @author Ralph Kar
  * @author Mikle Garin
  */
-
 public class SplitPaneLayout implements LayoutManager2
 {
     /**

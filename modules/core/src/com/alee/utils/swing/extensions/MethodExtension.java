@@ -22,7 +22,6 @@ package com.alee.utils.swing.extensions;
  *
  * @author Mikle Garin
  */
-
 public interface MethodExtension
 {
     /**
