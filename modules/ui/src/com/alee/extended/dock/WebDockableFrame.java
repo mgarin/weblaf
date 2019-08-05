@@ -737,9 +737,9 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     }
 
     /**
-     * Adds new {@link com.alee.extended.dock.DockableFrameListener}.
+     * Adds new {@link DockableFrameListener}.
      *
-     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to add
+     * @param listener {@link DockableFrameListener} to add
      */
     public void addFrameListener ( final DockableFrameListener listener )
     {
@@ -747,9 +747,9 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     }
 
     /**
-     * Removes specified {@link com.alee.extended.dock.DockableFrameListener}.
+     * Removes specified {@link DockableFrameListener}.
      *
-     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to remove
+     * @param listener {@link DockableFrameListener} to remove
      */
     public void removeFrameListener ( final DockableFrameListener listener )
     {

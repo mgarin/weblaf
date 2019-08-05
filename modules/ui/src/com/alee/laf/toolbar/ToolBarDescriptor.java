@@ -23,7 +23,7 @@ import javax.swing.*;
 
 /**
  * Basic descriptor for {@link JToolBar} component.
- * For creating custom {@link JToolTip} descriptor {@link AbstractToolTipDescriptor} class can be extended.
+ * For creating custom {@link JToolTip} descriptor {@link AbstractToolBarDescriptor} class can be extended.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>

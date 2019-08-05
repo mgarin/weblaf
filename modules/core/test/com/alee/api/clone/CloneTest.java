@@ -195,7 +195,7 @@ public final class CloneTest
     public static class TestObject implements Cloneable
     {
         /**
-         * Sample {@link boolean} data.
+         * Sample {@code boolean} data.
          */
         @OmitOnClone
         private final boolean bool;
@@ -219,7 +219,7 @@ public final class CloneTest
         /**
          * Constructs new {@link TestObject}.
          *
-         * @param bool   sample {@link boolean} data
+         * @param bool   sample {@code boolean} data
          * @param text   sample {@link String} data
          * @param number sample {@link Integer} data
          * @param list   sample {@link List} data

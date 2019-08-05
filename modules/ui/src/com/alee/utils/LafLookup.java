@@ -26,7 +26,7 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Lookup created to replace proprietary {@link sun.swing.DefaultLookup} class.
+ * Lookup created to replace proprietary {@code sun.swing.DefaultLookup} class.
  * This class does basically the same except not allowing to change the way lookup works.
  *
  * @author Mikle Garin
@@ -73,13 +73,13 @@ public final class LafLookup
     }
 
     /**
-     * Returns default {@link int} value for the specified {@code key}.
+     * Returns default {@code int} value for the specified {@code key}.
      *
      * @param component    {@link JComponent} to return value for
      * @param ui           {@link ComponentUI} to return value for
      * @param key          value key
      * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@link int} value for the specified {@code key}
+     * @return default {@code int} value for the specified {@code key}
      */
     public static int getInt ( final JComponent component, final ComponentUI ui, final String key, final int defaultValue )
     {
@@ -92,12 +92,12 @@ public final class LafLookup
     }
 
     /**
-     * Returns default {@link int} value for the specified {@code key}.
+     * Returns default {@code int} value for the specified {@code key}.
      *
      * @param component {@link JComponent} to return value for
      * @param ui        {@link ComponentUI} to return value for
      * @param key       value key
-     * @return default {@link int} value for the specified {@code key}
+     * @return default {@code int} value for the specified {@code key}
      */
     public static int getInt ( final JComponent component, final ComponentUI ui, final String key )
     {
@@ -137,13 +137,13 @@ public final class LafLookup
     }
 
     /**
-     * Returns default {@link boolean} value for the specified {@code key}.
+     * Returns default {@code boolean} value for the specified {@code key}.
      *
      * @param component    {@link JComponent} to return value for
      * @param ui           {@link ComponentUI} to return value for
      * @param key          value key
      * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@link boolean} value for the specified {@code key}
+     * @return default {@code boolean} value for the specified {@code key}
      */
     public static boolean getBoolean ( final JComponent component, final ComponentUI ui, final String key, final boolean defaultValue )
     {
@@ -156,12 +156,12 @@ public final class LafLookup
     }
 
     /**
-     * Returns default {@link boolean} value for the specified {@code key}.
+     * Returns default {@code boolean} value for the specified {@code key}.
      *
      * @param component {@link JComponent} to return value for
      * @param ui        {@link ComponentUI} to return value for
      * @param key       value key
-     * @return default {@link boolean} value for the specified {@code key}
+     * @return default {@code boolean} value for the specified {@code key}
      */
     public static boolean getBoolean ( final JComponent component, final ComponentUI ui, final String key )
     {

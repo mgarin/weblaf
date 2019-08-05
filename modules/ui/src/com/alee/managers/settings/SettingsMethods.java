@@ -20,14 +20,10 @@ package com.alee.managers.settings;
 import com.alee.utils.swing.extensions.MethodExtension;
 
 import javax.swing.*;
-import java.io.Serializable;
 
 /**
  * This interface provides a set of methods for {@link JComponent}s supported by {@link UISettingsManager}.
  *
- * @param <C> {@link JComponent} type
- * @param <V> {@link Serializable} data type
- * @param <K> {@link Configuration} type
  * @author Mikle Garin
  * @see UISettingsManager
  * @see SettingsManager

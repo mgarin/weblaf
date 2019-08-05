@@ -242,7 +242,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     /**
      * Returns {@link SectionPainter}s used by this painter or {@code null} if none are used.
      * Do not return any {@code null} {@link SectionPainter}s here, it will cause an exception.
-     * You can use {@link #asList(SectionPainter[])} method to conveniently form a list filtering out {@link null}s.
+     * You can use {@link #asList(SectionPainter[])} method to conveniently form a list filtering out {@code null}s.
      *
      * @return {@link SectionPainter}s used by this painter or {@code null} if none are used
      */
@@ -608,7 +608,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     }
 
     /**
-     * Custom check is written to avoid {@link Component#inside(int, int)} deprecated method usage.
+     * Custom check is written to avoid {@code Component#inside(int, int)} deprecated method usage.
      * Default implementation simply checks that point is within component bounds.
      */
     @Override

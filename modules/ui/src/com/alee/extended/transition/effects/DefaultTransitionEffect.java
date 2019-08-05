@@ -26,7 +26,6 @@ import java.util.Map;
 /**
  * @author Mikle Garin
  */
-
 public abstract class DefaultTransitionEffect implements TransitionEffect
 {
     protected static final String DIRECTION = "DIRECTION";

@@ -856,7 +856,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     /**
      * Custom combobox separator placed between renderer/editor and button.
      */
-    protected class ComboBoxSeparator extends WebSeparator implements Stateful, EditabilityListener, VisibilityListener
+    public class ComboBoxSeparator extends WebSeparator implements Stateful, EditabilityListener, VisibilityListener
     {
         /**
          * Constructs new combobox separator.
@@ -913,7 +913,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     /**
      * Custom combobox button used to display popup menu arrow.
      */
-    protected class ComboBoxButton extends WebButton implements Stateful, EditabilityListener, VisibilityListener
+    public class ComboBoxButton extends WebButton implements Stateful, EditabilityListener, VisibilityListener
     {
         /**
          * Constructs new combobox button.

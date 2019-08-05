@@ -36,7 +36,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractLineLayout extends AbstractLayoutManager implements SwingConstants
 {
     /**

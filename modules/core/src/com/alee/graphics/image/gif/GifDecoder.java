@@ -162,7 +162,7 @@ public class GifDecoder
      * Gets the image contents of frame n.
      *
      * @param n frame number
-     * @return {@link BufferedImage} representation of frame, or {@link null} if n is invalid
+     * @return {@link BufferedImage} representation of frame, or {@code null} if n is invalid
      */
     public BufferedImage getFrame ( final int n )
     {

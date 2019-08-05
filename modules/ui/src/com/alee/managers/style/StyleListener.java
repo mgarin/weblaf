@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import javax.swing.*;
+import java.util.EventListener;
 
 /**
  * Custom listener that can be installed into {@link Styleable} components to listen to style changes.
@@ -27,7 +28,7 @@ import javax.swing.*;
  * @see Styleable
  * @see StyleManager
  */
-public interface StyleListener
+public interface StyleListener extends EventListener
 {
     /**
      * Informs about component skin change.

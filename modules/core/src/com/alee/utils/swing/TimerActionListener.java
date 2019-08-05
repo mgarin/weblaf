@@ -26,7 +26,6 @@ import java.awt.event.ActionListener;
  * @author Mikle Garin
  * @see com.alee.utils.swing.WebTimer
  */
-
 public abstract class TimerActionListener implements ActionListener
 {
     @Override

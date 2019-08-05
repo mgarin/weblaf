@@ -402,7 +402,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
     /**
      * Custom one-touch button.
      */
-    protected class OneTouchButton extends WebButton implements Stateful
+    public class OneTouchButton extends WebButton implements Stateful
     {
         /**
          * Constructs new {@link OneTouchButton}.
@@ -447,7 +447,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
     /**
      * MouseHandler is responsible for converting mouse events (released, dragged...) into the appropriate DragController methods.
      */
-    protected class MouseHandler extends MouseAdapter implements MouseMotionListener
+    protected class MouseHandler extends MouseAdapter
     {
         /**
          * Starts the dragging session by creating the appropriate instance of DragController.

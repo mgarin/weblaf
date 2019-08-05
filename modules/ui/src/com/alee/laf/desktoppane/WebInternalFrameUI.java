@@ -250,9 +250,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
 
     /**
      * Custom {@link LayoutManager} for {@link JInternalFrame}.
-     * Also unlike {@link BasicInternalFrameUI.Handler} you can easily override this one.
-     *
-     * @see BasicInternalFrameUI.Handler
+     * Also unlike {@code BasicInternalFrameUI.Handler} you can easily override this one.
      */
     protected class InternalFrameLayout extends AbstractLayoutManager
     {

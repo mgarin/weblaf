@@ -34,7 +34,6 @@ import java.util.List;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-
 public abstract class AbstractSectionDecorationPainter<C extends JComponent, U extends ComponentUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements SectionPainter<C, U>
 {

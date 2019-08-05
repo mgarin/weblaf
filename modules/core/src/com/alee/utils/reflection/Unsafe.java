@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * {@link sun.misc.Unsafe} wrapper.
+ * {@code sun.misc.Unsafe} wrapper.
  *
  * @author Mikle Garin
  * @author Joe Walnes
@@ -39,8 +39,8 @@ public final class Unsafe
 
     /**
      * Returns new {@link Class} instance.
-     * Uses {@link sun.misc.Unsafe} whenever it is possible to avoid using {@link Class} constructor.
-     * If unable to access {@link sun.misc.Unsafe} - {@link Class} will be instantiated through other means.
+     * Uses {@code sun.misc.Unsafe} whenever it is possible to avoid using {@link Class} constructor.
+     * If unable to access {@code sun.misc.Unsafe} - {@link Class} will be instantiated through other means.
      *
      * @param clazz {@link Class} to be instantiated
      * @param <T>   {@link Class} type
@@ -89,17 +89,17 @@ public final class Unsafe
     }
 
     /**
-     * Returns new {@link Class} instance created using {@link sun.misc.Unsafe}.
+     * Returns new {@link Class} instance created using {@code sun.misc.Unsafe}.
      * This will allow us to skip constructors usage to avoid unwanted behavior.
      *
      * @param clazz {@link Class} to be instantiated
      * @param <T>   {@link Class} type
-     * @return new {@link Class} instance created using {@link sun.misc.Unsafe}
-     * @throws ClassNotFoundException    if {@link sun.misc.Unsafe} class cannot be found
-     * @throws NoSuchFieldException      if {@link sun.misc.Unsafe#theUnsafe} field cannot be found
+     * @return new {@link Class} instance created using {@code sun.misc.Unsafe}
+     * @throws ClassNotFoundException    if {@code sun.misc.Unsafe} class cannot be found
+     * @throws NoSuchFieldException      if {@code sun.misc.Unsafe#theUnsafe} field cannot be found
      * @throws IllegalAccessException    if access was denied for one of the reflection calls
-     * @throws NoSuchMethodException     if {@link sun.misc.Unsafe#allocateInstance(Class)} cannot be found
-     * @throws InvocationTargetException if {@link sun.misc.Unsafe#allocateInstance(Class)} invocation failed
+     * @throws NoSuchMethodException     if {@code sun.misc.Unsafe#allocateInstance(Class)} cannot be found
+     * @throws InvocationTargetException if {@code sun.misc.Unsafe#allocateInstance(Class)} invocation failed
      */
     private static <T> T allocateInstanceThroughUnsafe ( final Class<T> clazz )
             throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
@@ -111,7 +111,7 @@ public final class Unsafe
 
     /**
      * Returns new {@link Class} instance created using default constructor if available.
-     * This is not a perfect solution, but might be necessary if {@link sun.misc.Unsafe} is not available.
+     * This is not a perfect solution, but might be necessary if {@code sun.misc.Unsafe} is not available.
      *
      * @param clazz {@link Class} to be instantiated
      * @param <T>   {@link Class} type
@@ -129,7 +129,7 @@ public final class Unsafe
 
     /**
      * Returns new {@link Class} instance using JDK serialization-deserialization.
-     * This might work in a similar way {@link sun.misc.Unsafe} allocation works depending on implementation.
+     * This might work in a similar way {@code sun.misc.Unsafe} allocation works depending on implementation.
      * This method was borrowed from XStream {@link com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider}.
      *
      * @param clazz {@link Class} to be instantiated

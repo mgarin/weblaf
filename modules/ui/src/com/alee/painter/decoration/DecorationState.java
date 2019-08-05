@@ -166,7 +166,7 @@ public interface DecorationState
     /**
      * Used to provide state for components that might have an icon.
      *
-     * @see com.alee.extended.collapsible.WebCollapsiblePane.TitleLabel#getStates()
+     * @see com.alee.extended.collapsible.AbstractTitleLabel#getStates()
      */
     public static final String hasIcon = "has-icon";
 
@@ -181,8 +181,8 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
-     * @see com.alee.extended.collapsible.WebCollapsiblePane.TitleLabel#getStates()
-     * @see com.alee.extended.collapsible.WebCollapsiblePane.HeaderPanel#getStates()
+     * @see com.alee.extended.collapsible.AbstractTitleLabel#getStates()
+     * @see com.alee.extended.collapsible.AbstractHeaderPanel#getStates()
      */
     public static final String collapsed = "collapsed";
 
@@ -197,8 +197,8 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
-     * @see com.alee.extended.collapsible.WebCollapsiblePane.TitleLabel#getStates()
-     * @see com.alee.extended.collapsible.WebCollapsiblePane.HeaderPanel#getStates()
+     * @see com.alee.extended.collapsible.AbstractTitleLabel#getStates()
+     * @see com.alee.extended.collapsible.AbstractHeaderPanel#getStates()
      */
     public static final String expanded = "expanded";
 

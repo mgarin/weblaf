@@ -37,7 +37,7 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     /**
      * {@link DockableFrameListener} for tracking {@link WebDockablePane} frames location and state changes.
      */
-    protected transient DockableFrameListener dockableFrameListener;
+    protected transient DockablePaneListener dockablePaneListener;
 
     /**
      * Constructs new {@link DockablePaneSettingsProcessor}.
@@ -53,7 +53,7 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     @Override
     protected void register ( final WebDockablePane dockablePane )
     {
-        dockableFrameListener = new DockableFrameAdapter ()
+        dockablePaneListener = new DockablePaneAdapter ()
         {
             @Override
             public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState,
@@ -68,14 +68,14 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
                 save ();
             }
         };
-        dockablePane.addFrameListener ( dockableFrameListener );
+        dockablePane.addDockablePaneListener ( dockablePaneListener );
     }
 
     @Override
     protected void unregister ( final WebDockablePane dockablePane )
     {
-        dockablePane.removeFrameListener ( dockableFrameListener );
-        dockableFrameListener = null;
+        dockablePane.removeDockablePaneListener ( dockablePaneListener );
+        dockablePaneListener = null;
     }
 
     @Override

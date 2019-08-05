@@ -31,7 +31,6 @@ import java.util.concurrent.Executors;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
  */
-
 public abstract class AsyncLinkAction extends AbstractLinkAction
 {
     /**

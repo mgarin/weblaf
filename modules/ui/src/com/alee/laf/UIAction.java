@@ -22,14 +22,15 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Replacement for the {@link sun.swing.UIAction} due to it being proprietary Sun API.
- * Unlike {@link sun.swing.UIAction} it is not used globally and instead contain {@link JComponent} reference.
+ * Replacement for the {@code sun.swing.UIAction} due to it being proprietary Sun API.
+ * Unlike {@code sun.swing.UIAction} it is not used globally and instead contain {@link JComponent} reference.
  *
- * This replacement must be used carefully as it lacks {@link sun.swing.UIAction#isEnabled(Object)} method.
+ * This replacement must be used carefully as it lacks {@code sun.swing.UIAction#isEnabled(Object)} method.
  * That method is referenced within {@link SwingUtilities#notifyAction(Action, KeyStroke, KeyEvent, Object, int)} to provide sender object
  * for convenience, but that convenience costs us full rework of every action whenever we want to provide a custom UI implementation.
  * Maybe it will be exposed as public API in the future JDK versions so we can use default implementation then.
  *
+ * @param <C> {@link JComponent} type
  * @author Mikle Garin
  */
 public abstract class UIAction<C extends JComponent> implements Action

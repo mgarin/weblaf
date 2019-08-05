@@ -527,23 +527,23 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Adds new {@link com.alee.extended.dock.DockableFrameListener}.
+     * Adds new {@link DockablePaneListener}.
      *
-     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to add
+     * @param listener {@link DockablePaneListener} to add
      */
-    public void addFrameListener ( final DockableFrameListener listener )
+    public void addDockablePaneListener ( final DockablePaneListener listener )
     {
-        listenerList.add ( DockableFrameListener.class, listener );
+        listenerList.add ( DockablePaneListener.class, listener );
     }
 
     /**
-     * Removes specified {@link com.alee.extended.dock.DockableFrameListener}.
+     * Removes specified {@link DockablePaneListener}.
      *
-     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to remove
+     * @param listener {@link DockablePaneListener} to remove
      */
-    public void removeFrameListener ( final DockableFrameListener listener )
+    public void removeDockablePaneListener ( final DockablePaneListener listener )
     {
-        listenerList.remove ( DockableFrameListener.class, listener );
+        listenerList.remove ( DockablePaneListener.class, listener );
     }
 
     /**
@@ -554,7 +554,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      */
     public void fireFrameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
-        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
             listener.frameAdded ( frame, dockablePane );
         }
@@ -569,7 +569,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      */
     public void fireFrameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState, final DockableFrameState newState )
     {
-        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
             listener.frameStateChanged ( frame, oldState, newState );
         }
@@ -583,7 +583,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      */
     public void fireFrameMoved ( final WebDockableFrame frame, final CompassDirection position )
     {
-        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
             listener.frameMoved ( frame, position );
         }
@@ -597,7 +597,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      */
     public void fireFrameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
-        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
             listener.frameRemoved ( frame, dockablePane );
         }

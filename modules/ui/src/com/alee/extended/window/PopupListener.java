@@ -21,6 +21,7 @@ import java.util.EventListener;
 
 /**
  * Basic listener for popup components.
+ * todo Pass popup & window into all methods?
  *
  * @author Mikle Garin
  */

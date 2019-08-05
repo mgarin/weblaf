@@ -52,7 +52,8 @@ public interface DockableContainer extends DockableElement
     /**
      * Returns child element with the specified ID or {@code null}.
      *
-     * @param id element ID
+     * @param id  element ID
+     * @param <E> {@link DockableElement} type
      * @return child element with the specified ID or {@code null}
      */
     public <E extends DockableElement> E get ( String id );

@@ -27,7 +27,7 @@ import java.awt.event.KeyEvent;
  * The contents are populated by invoking the {@code loadActionMap} method on the passed in Object.
  *
  * Note that this implementation is not used anymore as there are issues with using {@link com.alee.laf.UIAction} globally as replacement
- * for {@link sun.swing.UIAction} which is proprietary API. The problem is that {@link sun.swing.UIAction#isEnabled(Object)} is being
+ * for {@code sun.swing.UIAction} which is proprietary API. The problem is that {@code sun.swing.UIAction#isEnabled(Object)} is being
  * explicitely called by {@link javax.swing.SwingUtilities#notifyAction(Action, KeyStroke, KeyEvent, Object, int)} and there can be no
  * workaround for that specific case except making all actions non-global (per component/UI instance).
  *

@@ -423,7 +423,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     /**
      * Updates {@link WebMultiSplitPane} using specified {@link MultiSplitState}.
      *
-     * @param state{@link MultiSplitState} to update {@link WebMultiSplitPane} with
+     * @param state {@link MultiSplitState} to update {@link WebMultiSplitPane} with
      */
     public void setMultiSplitState ( @NotNull final MultiSplitState state )
     {

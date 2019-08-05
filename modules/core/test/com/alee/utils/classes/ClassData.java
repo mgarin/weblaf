@@ -31,7 +31,7 @@ public interface ClassData
 
     /**
      * Returns class construction data or {@code null} if construction failed.
-     * This data is used to confirm that class constructor was called and it wasn't some workaround through {@link sun.misc.Unsafe}.
+     * This data is used to confirm that class constructor was called and it wasn't some workaround through {@code sun.misc.Unsafe}.
      *
      * @return class construction data or {@code null} if construction failed
      */

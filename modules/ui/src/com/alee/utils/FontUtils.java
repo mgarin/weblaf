@@ -56,7 +56,7 @@ public final class FontUtils
     public static final int MAX_LAYOUT_CHARCODE = 0x206F;
 
     /**
-     * Temporary constants moved from {@link sun.font.CharToGlyphMapper}.
+     * Temporary constants moved from {@code sun.font.CharToGlyphMapper} class.
      */
     public static final int HI_SURROGATE_START = 55296;
     public static final int LO_SURROGATE_END = 57343;
@@ -74,10 +74,7 @@ public final class FontUtils
      */
     public static void clearDerivedFontsCache ()
     {
-        if ( derivedFontsCache != null )
-        {
-            derivedFontsCache.clear ();
-        }
+        derivedFontsCache.clear ();
     }
 
     /**
@@ -275,7 +272,7 @@ public final class FontUtils
             // directional control
             complex = true;
         }
-        else if ( code >= 0x206a && code <= 0x206f )
+        else if ( code >= 0x206a )
         {
             // directional control
             complex = true;

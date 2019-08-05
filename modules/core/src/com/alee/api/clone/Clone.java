@@ -92,10 +92,11 @@ public final class Clone implements Serializable
 
     /**
      * Returns clone of the specified object.
-     * New {@link InternalClone} instance is used for every separate clone operation.
-     * That is necessary because {@link InternalClone} stores cloned object references internally to preserve object links.
+     * New {@link Clone.InternalClone} instance is used for every separate clone operation.
+     * That is necessary because {@link Clone.InternalClone} stores cloned object references internally to preserve object links.
      *
      * @param object object to clone, should never be {@code null}
+     * @param <T>    cloned object type
      * @return clone of the specified object
      */
     public <T> T clone ( final T object )

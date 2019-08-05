@@ -17,7 +17,7 @@
 
 package com.alee.laf.splitpane;
 
-import com.alee.api.annotations.Nullable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.UIInputListener;
@@ -958,7 +958,7 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     /**
      * Custom non-continuous divider.
      */
-    protected class NonContinuousDivider extends WebCanvas
+    public class NonContinuousDivider extends WebCanvas
     {
         /**
          * Constructs new {@link NonContinuousDivider}.
@@ -968,7 +968,7 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
             super ( StyleId.splitpaneNonContinuousDivider.at ( WSplitPaneUI.this.splitPane ) );
         }
 
-        @Nullable
+        @NotNull
         @Override
         public List<String> getStates ()
         {

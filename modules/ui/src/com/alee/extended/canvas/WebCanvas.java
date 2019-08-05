@@ -18,7 +18,6 @@
 package com.alee.extended.canvas;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.extended.WebComponent;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -99,7 +98,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      *
      * @return custom {@link WebCanvas} states
      */
-    @Nullable
+    @NotNull
     @Override
     public List<String> getStates ()
     {

@@ -308,7 +308,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     /**
      * Customized button class.
      */
-    protected class ScrollBarButton extends WebButton implements Stateful
+    public class ScrollBarButton extends WebButton implements Stateful
     {
         /**
          * Constructs new scroll bar button wit the specified style.

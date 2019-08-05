@@ -143,7 +143,7 @@ public interface MultiSplitPaneModel extends LayoutManager, Serializable
     /**
      * Updates {@link WebMultiSplitPane} using specified {@link MultiSplitState}.
      *
-     * @param state{@link MultiSplitState} to update {@link WebMultiSplitPane} with
+     * @param state {@link MultiSplitState} to update {@link WebMultiSplitPane} with
      */
     public void setMultiSplitState ( @NotNull MultiSplitState state );
 

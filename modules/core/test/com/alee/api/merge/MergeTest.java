@@ -549,7 +549,7 @@ public final class MergeTest
     public static class TestObject implements Mergeable, Cloneable
     {
         /**
-         * Sample {@link boolean} data.
+         * Sample {@code boolean} data.
          */
         @PreserveOnMerge
         private final boolean bool;
@@ -560,7 +560,7 @@ public final class MergeTest
         protected final String text;
 
         /**
-         * Sample {@link int} data.
+         * Sample {@code int} data.
          */
         final int number;
 
@@ -572,9 +572,9 @@ public final class MergeTest
         /**
          * Constructs new {@link TestObject}.
          *
-         * @param bool   sample {@link boolean} data
+         * @param bool   sample {@code boolean} data
          * @param text   sample {@link String} data
-         * @param number sample {@link int} data
+         * @param number sample {@code int} data
          * @param list   sample {@link List} data
          */
         public TestObject ( final boolean bool, final String text, final int number, final List<String> list )
@@ -619,9 +619,9 @@ public final class MergeTest
         /**
          * Constructs new {@link TestObject}.
          *
-         * @param bool   sample {@link boolean} data
+         * @param bool   sample {@code boolean} data
          * @param text   sample {@link String} data
-         * @param number sample {@link int} data
+         * @param number sample {@code int} data
          * @param list   sample {@link List} data
          * @param data   sample array data
          */
@@ -649,49 +649,49 @@ public final class MergeTest
     public static class OmitTestObject implements Mergeable, Cloneable
     {
         /**
-         * Omitted {@link boolean} field.
+         * Omitted {@code boolean} field.
          */
         @OmitOnMerge
         private final boolean v1;
 
         /**
-         * Omitted {@link int} field.
+         * Omitted {@code int} field.
          */
         @OmitOnMerge
         private final int v2;
 
         /**
-         * Omitted {@link char} field.
+         * Omitted {@code char} field.
          */
         @OmitOnMerge
         private final char v3;
 
         /**
-         * Omitted {@link byte} field.
+         * Omitted {@code byte} field.
          */
         @OmitOnMerge
         private final byte v4;
 
         /**
-         * Omitted {@link short} field.
+         * Omitted {@code short} field.
          */
         @OmitOnMerge
         private final short v5;
 
         /**
-         * Omitted {@link long} field.
+         * Omitted {@code long} field.
          */
         @OmitOnMerge
         private final long v6;
 
         /**
-         * Omitted {@link float} field.
+         * Omitted {@code float} field.
          */
         @OmitOnMerge
         private final float v7;
 
         /**
-         * Omitted {@link double} field.
+         * Omitted {@code double} field.
          */
         @OmitOnMerge
         private final double v8;
@@ -710,14 +710,14 @@ public final class MergeTest
         /**
          * Constructs new {@link OmitTestObject}.
          *
-         * @param v1      {@link boolean}
-         * @param v2      {@link int}
-         * @param v3      {@link char}
-         * @param v4      {@link byte}
-         * @param v5      {@link short}
-         * @param v6      {@link long}
-         * @param v7      {@link float}
-         * @param v8      {@link double}
+         * @param v1      {@code boolean}
+         * @param v2      {@code int}
+         * @param v3      {@code char}
+         * @param v4      {@code byte}
+         * @param v5      {@code short}
+         * @param v6      {@code long}
+         * @param v7      {@code float}
+         * @param v8      {@code double}
          * @param object  {@link Object}
          * @param object2 {@link Object}
          */

@@ -24,9 +24,12 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
+ * Abstract {@link ScreenLayout} that implements addition and removal of {@link Window}s.
+ *
+ * @param <W> {@link Window} type
+ * @param <C> constraints type
  * @author Mikle Garin
  */
-
 public abstract class AbstractScreenLayout<W extends Window, C> implements ScreenLayout<W, C>
 {
     /**

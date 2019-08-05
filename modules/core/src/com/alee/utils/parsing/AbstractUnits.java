@@ -25,11 +25,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Abstract class providing convenient conversion suport between user-friendly unit-based text values and single {@link long} value.
+ * Abstract class providing convenient conversion suport between user-friendly unit-based text values and single {@code long} value.
  *
  * @author Mikle Garin
  */
-
 public abstract class AbstractUnits
 {
     /**
@@ -60,10 +59,10 @@ public abstract class AbstractUnits
     }
 
     /**
-     * Returns single {@link long} value parsed from user-friendly unit-based text.
+     * Returns single {@code long} value parsed from user-friendly unit-based text.
      *
      * @param text user-friendly unit-based text
-     * @return single {@link long} value parsed from user-friendly unit-based text
+     * @return single {@code long} value parsed from user-friendly unit-based text
      */
     public long fromString ( final String text )
     {
@@ -122,7 +121,7 @@ public abstract class AbstractUnits
                 if ( hasUnit && ( next == null || Character.isDigit ( next ) || next == '.' ) )
                 {
                     final String part = string.substring ( start, i + 1 );
-                    final double value = Double.parseDouble ( part.substring ( 0, unitStart ) );
+                    final String value = part.substring ( 0, unitStart );
                     final String unit = part.substring ( unitStart );
                     for ( final Unit units : this.units )
                     {
@@ -149,10 +148,10 @@ public abstract class AbstractUnits
     }
 
     /**
-     * Returns user-friendly unit-based text of the {@link long} value.
+     * Returns user-friendly unit-based text of the {@code long} value.
      *
-     * @param value {@link long} value
-     * @return user-friendly unit-based text of the {@link long} value
+     * @param value {@code long} value
+     * @return user-friendly unit-based text of the {@code long} value
      */
     public String toString ( final long value )
     {
@@ -269,21 +268,21 @@ public abstract class AbstractUnits
         }
 
         /**
-         * Returns base {@link long} value calculated from the unit {@link long} value.
+         * Returns base {@code long} value calculated from the unit {@link String} value.
          *
-         * @param value unit {@link long} value
-         * @return base {@link long} value calculated from the unit {@link long} value
+         * @param value unit {@link String} value
+         * @return base {@code long} value calculated from the unit {@link String} value
          */
-        public long fromString ( final double value )
+        public long fromString ( final String value )
         {
-            return Math.round ( value * amount );
+            return Math.round ( Double.parseDouble ( value ) * amount );
         }
 
         /**
-         * Returns user-friendly unit-based text of the base {@link long} value.
+         * Returns user-friendly unit-based {@link String} of the base {@code double} value.
          *
-         * @param value base {@link long} value
-         * @return user-friendly unit-based text of the base {@link long} value
+         * @param value base {@code double} value
+         * @return user-friendly unit-based {@link String} of the base {@code double} value
          */
         public String toString ( final long value )
         {

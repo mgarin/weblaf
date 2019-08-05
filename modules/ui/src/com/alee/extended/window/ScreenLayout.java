@@ -23,6 +23,8 @@ import java.awt.*;
  * Special layout manager which handles window positions and sizes.
  * It is similar to Swing layout managers but it handles windows only.
  *
+ * @param <W> {@link Window} type
+ * @param <C> constraints type
  * @author Mikle Garin
  */
 public interface ScreenLayout<W extends Window, C>

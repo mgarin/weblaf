@@ -31,7 +31,6 @@ import javax.swing.*;
  * @see EmailLinkAction
  * @see FileLinkAction
  */
-
 public abstract class AbstractLinkAction implements LinkAction
 {
     /**
