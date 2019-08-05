@@ -24,6 +24,7 @@ import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
@@ -345,6 +346,9 @@ public class WebLink extends WebStyledLabel
             action.linkExecuted ( event );
         }
 
+        // Firing action event
+        fireActionPerformed ( event );
+
         // Marking link as visited
         setVisited ( true );
     }
@@ -353,6 +357,39 @@ public class WebLink extends WebStyledLabel
     public StyleId getDefaultStyleId ()
     {
         return StyleId.link;
+    }
+
+    /**
+     * Adds {@link ActionListener}.
+     *
+     * @param listener {@link ActionListener} to add
+     */
+    public void addActionListener ( final ActionListener listener )
+    {
+        listenerList.add ( ActionListener.class, listener );
+    }
+
+    /**
+     * Removes {@link ActionListener}.
+     *
+     * @param listener {@link ActionListener} to remove
+     */
+    public void removeActionListener ( final ActionListener listener )
+    {
+        listenerList.remove ( ActionListener.class, listener );
+    }
+
+    /**
+     * Fires action performed event on all added {@link ActionListener}s.
+     *
+     * @param event {@link ActionEvent}
+     */
+    public void fireActionPerformed ( final ActionEvent event )
+    {
+        for ( final ActionListener listener : listenerList.getListeners ( ActionListener.class ) )
+        {
+            listener.actionPerformed ( event );
+        }
     }
 
     /**
