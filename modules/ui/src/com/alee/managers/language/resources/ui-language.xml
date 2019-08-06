@@ -29,33 +29,19 @@
                 <value lang="vi">Thông tin chung</value>
                 <value lang="hu">Általános</value>
             </record>
-            <record key="updated">
-                <value lang="en">Updated: %s</value>
-                <value lang="ru">Обновлена: %s</value>
-                <value lang="pl">Zaktualizowano: %s</value>
-                <value lang="ar">تحديث: %s</value>
-                <value lang="es">Actualizado: %s</value>
-                <value lang="fr">Mise à jour: %s</value>
-                <value lang="pt">Actualizado: %s</value>
-                <value lang="de">Aktualisiert: %s</value>
-                <value lang="it">Aggiornato: %s</value>
-                <value lang="tr">Güncellenmiş: %s</value>
-                <value lang="vi">Cập nhật: %s</value>
-                <value lang="hu">Frissítve: %s</value>
-            </record>
             <record key="java.version">
-                <value lang="en">Java v.%s</value>
-                <value lang="ru">Java v.%s</value>
-                <value lang="pl">Java v.%s</value>
-                <value lang="ar">Java v.%s</value>
-                <value lang="es">Java v.%s</value>
-                <value lang="fr">Java v.%s</value>
-                <value lang="pt">Java v.%s</value>
-                <value lang="de">Java v.%s</value>
-                <value lang="it">Java v.%s</value>
-                <value lang="tr">Java v.%s</value>
-                <value lang="vi">Java v.%s</value>
-                <value lang="hu">Java v.%s</value>
+                <value lang="en">Java %s</value>
+                <value lang="ru">Java %s</value>
+                <value lang="pl">Java %s</value>
+                <value lang="ar">Java %s</value>
+                <value lang="es">Java %s</value>
+                <value lang="fr">Java %s</value>
+                <value lang="pt">Java %s</value>
+                <value lang="de">Java %s</value>
+                <value lang="it">Java %s</value>
+                <value lang="tr">Java %s</value>
+                <value lang="vi">Java %s</value>
+                <value lang="hu">Java %s</value>
             </record>
             <record key="os.arch">
                 <value lang="en">Architecture: %s</value>

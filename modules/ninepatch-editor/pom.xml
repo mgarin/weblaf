@@ -9,43 +9,28 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <artifactId>weblaf-ui</artifactId>
+    <artifactId>weblaf-ninepatch-editor</artifactId>
     <packaging>jar</packaging>
 
-    <name>WebLaF ui library</name>
-    <description>WebLaF UI components</description>
+    <name>NinePatch Editor</name>
+    <description>Visual editor for 9-patch images</description>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>weblaf-core</artifactId>
+            <artifactId>weblaf-ui</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.kitfox.svg</groupId>
-            <artifactId>svg-salamander</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fifesoft</groupId>
-            <artifactId>rsyntaxtextarea</artifactId>
-            <version>2.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
         </dependency>
     </dependencies>
 
     <build>
         <sourceDirectory>${basedir}/src</sourceDirectory>
         <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
             <resource>
                 <filtering>false</filtering>
                 <directory>${basedir}/src</directory>
@@ -54,16 +39,6 @@
                 </excludes>
             </resource>
         </resources>
-        <testSourceDirectory>${basedir}/test</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>${basedir}/test</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -71,7 +46,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.alee.laf.information.LibraryInfoDialog</mainClass>
+                            <mainClass>com.alee.extended.ninepatch.NinePatchEditorFrame</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

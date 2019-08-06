@@ -15,22 +15,37 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.skin;
-
-import com.alee.managers.style.XmlSkinExtension;
+package com.alee.api.version;
 
 /**
- * Light skin extension.
+ * Enumeration of possible semantic versioning suffixes.
  *
  * @author Mikle Garin
  */
-public final class LightSkinExtension extends XmlSkinExtension
+public enum VersionType
 {
     /**
-     * Constructs new light skin extension.
+     * Release deployment-ready version.
      */
-    public LightSkinExtension ()
-    {
-        super ( LightSkinExtension.class, "resources/light/extension.xml" );
-    }
+    release,
+
+    /**
+     * Release candidate version.
+     */
+    rc,
+
+    /**
+     * Beta version.
+     */
+    beta,
+
+    /**
+     * Alpha version.
+     */
+    alpha,
+
+    /**
+     * Snapshot version.
+     */
+    snapshot
 }

@@ -1,4 +1,9 @@
-<skin xmlns="http://weblookandfeel.com/XmlSkin">
+<skin xmlns="http://weblookandfeel.com/XmlSkinExtension">
+
+    <!-- Extension settings -->
+    <id>weblaf.ninepatch.editor.web.extension</id>
+    <class>com.alee.extended.ninepatch.skin.LightSkinExtension</class>
+    <extends>weblaf.web.skin</extends>
 
     <!-- com.alee.extended.ninepatch.NinePatchEditor -->
 

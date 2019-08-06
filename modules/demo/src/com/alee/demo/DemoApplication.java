@@ -19,6 +19,7 @@ package com.alee.demo;
 
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.SerializableSupplier;
+import com.alee.api.version.Version;
 import com.alee.demo.api.example.Example;
 import com.alee.demo.api.example.ExampleData;
 import com.alee.demo.content.ExamplesManager;
@@ -58,7 +59,6 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.version.VersionManager;
 import com.alee.skin.dark.DarkSkin;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
@@ -297,7 +297,7 @@ public final class DemoApplication extends WebFrame
     public void updateTitle ()
     {
         final DocumentData doc = examplesPane != null ? examplesPane.getSelectedDocument () : null;
-        final String version = VersionManager.getLibraryVersion ().toString ();
+        final String version = new Version ( DemoApplication.class ).toString ();
         setTitle ( version + ( doc != null ? " - " + LM.get ( doc.getTitle () ) : "" ) );
     }
 

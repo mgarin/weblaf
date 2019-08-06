@@ -18,6 +18,7 @@
 package com.alee.laf.information;
 
 import com.alee.api.jdk.Objects;
+import com.alee.api.version.Version;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.VerticalFlowLayout;
@@ -34,17 +35,15 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.text.WebTextArea;
+import com.alee.laf.window.WebDialog;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.icon.LazyIcon;
 import com.alee.managers.language.LM;
-import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.version.VersionInfo;
-import com.alee.managers.version.VersionManager;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.JarUtils;
@@ -59,7 +58,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -127,18 +125,16 @@ public class LibraryInfoDialog extends WebFrame
      */
     private WebPanel createLibraryVersionPanel ()
     {
-        final VersionInfo versionInfo = VersionManager.getLibraryVersion ();
+        final Version version = new Version ( LibraryInfoDialog.class );
 
         final WebImage icon = new WebImage ( WebLookAndFeel.getIcon ( 32 ) );
 
-        final WebLink version = new WebLink ( versionInfo.toString (), new UrlLinkAction ( "http://weblookandfeel.com" ) );
-        version.setBoldFont ();
+        final WebLink versionNumber = new WebLink ( version.toString (), new UrlLinkAction ( "http://weblookandfeel.com" ) );
+        versionNumber.setBoldFont ();
 
-        final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy", Locale.getDefault () );
-        final WebLabel date = new WebLabel ();
-        date.setLanguage ( "weblaf.info.general.updated", sdf.format ( new Date ( versionInfo.getDate () ) ) );
+        final WebLabel versionName = new WebLabel ( version.name () );
 
-        return new GroupPanel ( StyleId.panelTransparent, 15, icon, new GroupPanel ( false, version, date ) );
+        return new GroupPanel ( StyleId.panelTransparent, 15, icon, new GroupPanel ( false, versionNumber, versionName ) );
     }
 
     /**
@@ -224,17 +220,23 @@ public class LibraryInfoDialog extends WebFrame
                                 try
                                 {
                                     final String license = FileUtils.readToString ( structure.getEntryInputStream ( child ) );
-                                    final WebInnerPopup licensePopup = new WebInnerPopup ();
+
+                                    final WebDialog licenseDialog = new WebDialog ( LibraryInfoDialog.this, child.getName () );
+
                                     final WebTextArea textArea = new WebTextArea ( StyleId.textareaNonOpaque, license );
                                     textArea.setEditable ( false );
-                                    licensePopup.add ( new WebScrollPane ( StyleId.scrollpaneTransparentHovering, textArea ) );
-                                    licensePopup.showPopupAsModal ( ( Component ) event.getSource (), true, true );
+                                    licenseDialog.add ( new WebScrollPane ( StyleId.scrollpaneTransparentHovering, textArea ) );
+
+                                    licenseDialog.setSize ( 800, 600 );
+                                    licenseDialog.setLocationRelativeTo ( LibraryInfoDialog.this );
+                                    licenseDialog.setVisible ( true );
+
                                     HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
                                     {
                                         @Override
                                         public void run ( final KeyEvent e )
                                         {
-                                            licensePopup.hidePopup ();
+                                            licenseDialog.dispose ();
                                         }
                                     } );
                                 }

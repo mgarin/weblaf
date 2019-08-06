@@ -1,5 +1,5 @@
 <code_scheme name="Alee Software Java Code Style" version="173">
-  <option name="LINE_SEPARATOR" value="&#xA;" />
+  <option name="LINE_SEPARATOR" value="&#10;" />
   <option name="INSERT_OVERRIDE_ANNOTATION" value="false" />
   <option name="RIGHT_MARGIN" value="140" />
   <option name="JD_P_AT_EMPTY_LINES" value="false" />
@@ -8,9 +8,6 @@
   <option name="KEEP_LINE_BREAKS" value="false" />
   <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
   <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
-  <option name="BRACE_STYLE" value="2" />
-  <option name="CLASS_BRACE_STYLE" value="2" />
-  <option name="METHOD_BRACE_STYLE" value="2" />
   <option name="ELSE_ON_NEW_LINE" value="true" />
   <option name="WHILE_ON_NEW_LINE" value="true" />
   <option name="CATCH_ON_NEW_LINE" value="true" />
@@ -50,6 +47,9 @@
   <option name="VARIABLE_ANNOTATION_WRAP" value="1" />
   <option name="SPACE_WITHIN_ANNOTATION_PARENTHESES" value="true" />
   <option name="ENUM_CONSTANTS_WRAP" value="1" />
+  <option name="BRACE_STYLE" value="2" />
+  <option name="CLASS_BRACE_STYLE" value="2" />
+  <option name="METHOD_BRACE_STYLE" value="2" />
   <HTMLCodeStyleSettings>
     <option name="HTML_TEXT_WRAP" value="0" />
   </HTMLCodeStyleSettings>
@@ -228,10 +228,6 @@
     <option name="SPACE_WITHIN_METHOD_PARENTHESES" value="true" />
     <option name="SPACE_BEFORE_METHOD_CALL_PARENTHESES" value="true" />
     <option name="SPACE_BEFORE_METHOD_PARENTHESES" value="true" />
-    <indentOptions>
-      <option name="CONTINUATION_INDENT_SIZE" value="8" />
-      <option name="TAB_SIZE" value="4" />
-    </indentOptions>
   </codeStyleSettings>
   <codeStyleSettings language="TypeScript">
     <option name="KEEP_LINE_BREAKS" value="false" />

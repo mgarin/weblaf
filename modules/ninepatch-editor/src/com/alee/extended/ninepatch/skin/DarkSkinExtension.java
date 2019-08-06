@@ -15,22 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.skin;
+package com.alee.extended.ninepatch.skin;
 
 import com.alee.managers.style.XmlSkinExtension;
 
 /**
- * Light skin extension.
+ * Dark skin extension.
  *
  * @author Mikle Garin
  */
-public final class LightSkinExtension extends XmlSkinExtension
+public final class DarkSkinExtension extends XmlSkinExtension
 {
     /**
-     * Constructs new light skin extension.
+     * Constructs new dark skin extension.
      */
-    public LightSkinExtension ()
+    public DarkSkinExtension ()
     {
-        super ( LightSkinExtension.class, "resources/light/extension.xml" );
+        super ( DarkSkinExtension.class, "resources/dark/extension.xml" );
     }
 }

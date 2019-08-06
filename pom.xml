@@ -38,6 +38,7 @@
         <module>modules/core</module>
         <module>modules/plugin</module>
         <module>modules/ui</module>
+        <module>modules/ninepatch-editor</module>
         <module>modules/demo</module>
     </modules>
 
@@ -118,10 +119,16 @@
                                 <useUniqueVersions>false</useUniqueVersions>
                             </manifest>
                             <manifestEntries>
+                                <Name>${project.name}</Name>
                                 <Package-Title>${project.groupId}</Package-Title>
-                                <Package-Vendor>Mikle Garin</Package-Vendor>
                                 <Package-Version>${project.version}</Package-Version>
-                                <Product-Name>${project.name}</Product-Name>
+                                <Package-Vendor>Mikle Garin</Package-Vendor>
+                                <Specification-Title>${project.name}</Specification-Title>
+                                <Specification-Version>${project.version}</Specification-Version>
+                                <Specification-Vendor>Mikle Garin</Specification-Vendor>
+                                <Implementation-Title>${project.artifactId}</Implementation-Title>
+                                <Implementation-Version>${project.version}</Implementation-Version>
+                                <Implementation-Vendor>Mikle Garin</Implementation-Vendor>
                             </manifestEntries>
                         </archive>
                     </configuration>
@@ -136,9 +143,9 @@
             <activation>
                 <jdk>[1.8,)</jdk>
             </activation>
-                <properties>
-                    <javadoc.opts>-Xdoclint:none</javadoc.opts>
-                </properties>
+            <properties>
+                <javadoc.opts>-Xdoclint:none</javadoc.opts>
+            </properties>
         </profile>
         <profile>
             <id>release</id>

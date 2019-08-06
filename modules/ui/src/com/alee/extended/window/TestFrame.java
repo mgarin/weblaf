@@ -20,7 +20,6 @@ package com.alee.extended.window;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.version.VersionManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;
 
@@ -28,8 +27,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class provides a quick way to open frame with the specified content and some other settings.
- * It suits best for writing UI test applications.
+ * This class provides a quick way to open frame with a few UI elements, specific layout and side margins.
+ * It is intended mostly for test use and isn't recommended for use in any real applications.
  *
  * @author Mikle Garin
  */
@@ -673,26 +672,8 @@ public class TestFrame extends JFrame
      */
     public static String getFrameTitle ( final Component component )
     {
-        // Tested class name
-        final String className = ( component != null ? ReflectUtils.getClassName ( component.getClass () ) : "TestFrame" ) + " ";
-
-        // WebLaF version
-        String libVersion = "";
-        try
-        {
-            libVersion = "[ " + VersionManager.getLibraryVersion ().toString () + " ] ";
-        }
-        catch ( final Exception ignored )
-        {
-            // Cannot load version now
-        }
-
-        // Undelying OS name and version
-        final String osVersion = "[ " + SystemUtils.getOsName () + " " + SystemUtils.getOsArch () + " ] ";
-
-        // JRE version
-        final String jreVersion = "[ JRE " + SystemUtils.getJavaVersionString () + " " + SystemUtils.getJreArch () + "-bit ]";
-
-        return className + libVersion + osVersion + jreVersion;
+        return ( component != null ? ReflectUtils.getClassName ( component.getClass () ) : "TestFrame" ) + " " +
+                "[ " + SystemUtils.getOsName () + " " + SystemUtils.getOsArch () + " ] " +
+                "[ Java " + SystemUtils.getJavaVersionString () + " " + SystemUtils.getJreArch () + "-bit ]";
     }
 }

@@ -20,14 +20,14 @@ package com.alee.demo.skin;
 import com.alee.managers.style.XmlSkinExtension;
 
 /**
- * Adaptive demo skin extension for any skin.
+ * Adaptive skin extension for any skin.
  *
  * @author Mikle Garin
  */
 public class AdaptiveExtension extends XmlSkinExtension
 {
     /**
-     * Constructs new adaptive demo skin extension.
+     * Constructs new adaptive skin extension.
      */
     public AdaptiveExtension ()
     {

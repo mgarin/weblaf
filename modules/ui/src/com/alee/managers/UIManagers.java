@@ -28,7 +28,6 @@ import com.alee.managers.proxy.UIProxyManager;
 import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.version.VersionManager;
 import com.alee.utils.XmlUtils;
 
 /**
@@ -37,7 +36,6 @@ import com.alee.utils.XmlUtils;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
- * @see VersionManager
  * @see UILanguageManager
  * @see UISettingsManager
  * @see HotkeyManager
@@ -63,7 +61,6 @@ public final class UIManagers
 
         // Initializing managers
         XmlUtils.getXStream ();
-        VersionManager.initialize ();
         UILanguageManager.initialize ();
         UISettingsManager.initialize ();
         HotkeyManager.initialize ();

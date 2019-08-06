@@ -18,11 +18,14 @@
 package com.alee.extended.ninepatch;
 
 import com.alee.api.jdk.Supplier;
+import com.alee.extended.ninepatch.skin.DarkSkinExtension;
+import com.alee.extended.ninepatch.skin.LightSkinExtension;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WindowState;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ImageUtils;
 
@@ -153,6 +156,9 @@ public class NinePatchEditorFrame extends WebFrame
             {
                 // Installing WebLaF
                 WebLookAndFeel.install ();
+
+                // Adding skin extensions
+                StyleManager.addExtensions ( new LightSkinExtension (), new DarkSkinExtension () );
 
                 // Initializing editor dialog
                 final NinePatchEditorFrame npe;
