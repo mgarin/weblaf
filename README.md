@@ -111,7 +111,7 @@ Licensing
 
 WebLaF is available under GPLv3 license for any non-commercial open-source projects. Commercial license is available as an alternative option and intended for closed-source and/or commercial projects. It removes restrictions dictated by GPLv3 license and can either be used for a single or any amounts of projects, depending on the commercial license sub-type.
 
-I know how much frustration license policies could cause, that is why here is a short compillation of restrictions of each available WebLaF license: 
+I know how much frustration license policies could cause, that is why here is a short compilation of restrictions of each available WebLaF license: 
 
 1. **GPLv3 license [ [weblaf-gpl.txt](licenses/weblaf-gpl.txt) ]**
 
