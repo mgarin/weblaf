@@ -623,12 +623,12 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         size.width += insets.left + insets.right;
 
         // Arrow button width
-        if ( arrowButton != null )
+        if ( arrowButton != null && arrowButton.isVisible () )
         {
             size.width += arrowButton.getPreferredSize ().width;
 
             // Separator width
-            if ( separator != null )
+            if ( separator != null && separator.isVisible () )
             {
                 size.width += separator.getPreferredSize ().width;
             }
@@ -685,10 +685,10 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
 
         int side = 0;
-        if ( arrowButton != null )
+        if ( arrowButton != null && arrowButton.isVisible () )
         {
             side += arrowButton.getPreferredSize ().width;
-            if ( separator != null )
+            if ( separator != null && separator.isVisible () )
             {
                 side += separator.getPreferredSize ().width;
             }
@@ -711,7 +711,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         final int sep = separator.getPreferredSize ().width;
 
         int button = 0;
-        if ( arrowButton != null )
+        if ( arrowButton != null && arrowButton.isVisible () )
         {
             button += arrowButton.getPreferredSize ().width;
         }
@@ -822,12 +822,12 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         public void layoutContainer ( @NotNull final Container container )
         {
             // Arrow button
-            if ( arrowButton != null )
+            if ( arrowButton != null && arrowButton.isVisible () )
             {
                 arrowButton.setBounds ( getArrowButtonBounds () );
 
                 // Separator
-                if ( separator != null )
+                if ( separator != null && separator.isVisible () )
                 {
                     separator.setBounds ( getSeparatorBounds () );
                 }
