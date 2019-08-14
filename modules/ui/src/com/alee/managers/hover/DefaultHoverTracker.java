@@ -41,6 +41,13 @@ public abstract class DefaultHoverTracker implements HoverTracker
     protected final JComponent component;
 
     /**
+     * Whether or not should only track direct hover cases.
+     * Direct hover is when cursor is within component bounds and there are no other UI elements on top of the component.
+     * Indirect hover is when cursor is within component bounds but there is at least one other UI element on top of it under the cursor.
+     */
+    protected boolean directHoverOnly;
+
+    /**
      * Whether or not tracking is currently enabled.
      */
     protected boolean enabled;
@@ -53,13 +60,39 @@ public abstract class DefaultHoverTracker implements HoverTracker
     /**
      * Constructs new {@link DefaultHoverTracker}.
      *
-     * @param component tracked {@link JComponent}
+     * @param component       tracked {@link JComponent}
+     * @param directHoverOnly whether or not should only track direct hover cases
      */
-    public DefaultHoverTracker ( @NotNull final JComponent component )
+    public DefaultHoverTracker ( @NotNull final JComponent component, final boolean directHoverOnly )
     {
         this.component = component;
+        this.directHoverOnly = directHoverOnly;
         this.enabled = true;
         this.hovered = isInvolved ( component, HoverManager.getHoverOwner () );
+    }
+
+    /**
+     * Returns whether or not only tracking direct hover cases.
+     * Direct hover is when cursor is within component bounds and there are no other UI elements on top of the component.
+     * Indirect hover is when cursor is within component bounds but there is at least one other UI element on top of it under the cursor.
+     *
+     * @return {@code true} if only tracking direct hover cases, {@code false} otherwise
+     */
+    public boolean isDirectHoverOnly ()
+    {
+        return directHoverOnly;
+    }
+
+    /**
+     * Sets whether or not only tracking direct hover cases.
+     * Direct hover is when cursor is within component bounds and there are no other UI elements on top of the component.
+     * Indirect hover is when cursor is within component bounds but there is at least one other UI element on top of it under the cursor.
+     *
+     * @param directHoverOnly whether or not only tracking direct hover cases
+     */
+    public void setDirectHoverOnly ( final boolean directHoverOnly )
+    {
+        this.directHoverOnly = directHoverOnly;
     }
 
     @Override
@@ -89,6 +122,6 @@ public abstract class DefaultHoverTracker implements HoverTracker
     @Override
     public boolean isInvolved ( @NotNull final JComponent tracked, @Nullable final Component component )
     {
-        return tracked == component || CoreSwingUtils.isAncestorOf ( tracked, component );
+        return tracked == component || !directHoverOnly && CoreSwingUtils.isAncestorOf ( tracked, component );
     }
 }

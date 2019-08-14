@@ -440,7 +440,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         if ( usesHoverView () )
         {
-            hoverStateTracker = new DefaultHoverTracker ( component )
+            hoverStateTracker = new DefaultHoverTracker ( component, false )
             {
                 @Override
                 public void hoverChanged ( final boolean hover )

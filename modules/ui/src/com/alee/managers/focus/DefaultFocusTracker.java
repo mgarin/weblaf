@@ -49,19 +49,10 @@ public abstract class DefaultFocusTracker implements FocusTracker
     protected final JComponent component;
 
     /**
-     * Whether or not tracking is currently enabled.
-     */
-    protected boolean enabled;
-
-    /**
      * Whether or not tracked {@link JComponent} and its children should be counted as a single focusable unit.
+     * In case component and its children are counted as one unit - focus changes between them will be ignored by tracker.
      */
     protected boolean uniteWithChildren;
-
-    /**
-     * Whether or not tracked {@link JComponent} is currently focused according to this tracker settings.
-     */
-    protected boolean focused;
 
     /**
      * Additional focusable children which should be tracked in addition to the main tracked {@link JComponent}.
@@ -70,6 +61,16 @@ public abstract class DefaultFocusTracker implements FocusTracker
      */
     @Nullable
     protected Set<Component> focusableChildren;
+
+    /**
+     * Whether or not tracking is currently enabled.
+     */
+    protected boolean enabled;
+
+    /**
+     * Whether or not tracked {@link JComponent} is currently focused according to this tracker settings.
+     */
+    protected boolean focused;
 
     /**
      * Constructs new {@link DefaultFocusTracker}.
@@ -81,33 +82,10 @@ public abstract class DefaultFocusTracker implements FocusTracker
     {
         super ();
         this.component = component;
-        this.enabled = true;
         this.uniteWithChildren = uniteWithChildren;
+        this.focusableChildren = null;
+        this.enabled = true;
         this.focused = isInvolved ( component, FocusManager.getCurrentManager ().getFocusOwner () );
-    }
-
-    @Override
-    public boolean isEnabled ()
-    {
-        return enabled && component.isShowing ();
-    }
-
-    @Override
-    public void setEnabled ( final boolean enabled )
-    {
-        this.enabled = enabled;
-    }
-
-    @Override
-    public boolean isFocused ()
-    {
-        return focused;
-    }
-
-    @Override
-    public void setFocused ( final boolean focused )
-    {
-        this.focused = focused;
     }
 
     /**
@@ -171,6 +149,30 @@ public abstract class DefaultFocusTracker implements FocusTracker
         {
             focusableChildren.remove ( child );
         }
+    }
+
+    @Override
+    public boolean isEnabled ()
+    {
+        return enabled && component.isShowing ();
+    }
+
+    @Override
+    public void setEnabled ( final boolean enabled )
+    {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean isFocused ()
+    {
+        return focused;
+    }
+
+    @Override
+    public void setFocused ( final boolean focused )
+    {
+        this.focused = focused;
     }
 
     @Override
