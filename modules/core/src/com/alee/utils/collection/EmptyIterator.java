@@ -17,6 +17,9 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.util.Iterator;
 
 /**
@@ -30,6 +33,7 @@ public final class EmptyIterator<E> implements Iterator<E>
     /**
      * {@link EmptyIterator} singleton instance.
      */
+    @Nullable
     private static EmptyIterator instance;
 
     /**
@@ -38,6 +42,7 @@ public final class EmptyIterator<E> implements Iterator<E>
      * @param <E> elements type
      * @return {@link EmptyIterator} instance
      */
+    @NotNull
     public static <E> EmptyIterator<E> instance ()
     {
         if ( instance == null )
@@ -67,6 +72,7 @@ public final class EmptyIterator<E> implements Iterator<E>
         return false;
     }
 
+    @Nullable
     @Override
     public E next ()
     {

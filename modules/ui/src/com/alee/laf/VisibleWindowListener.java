@@ -17,6 +17,8 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 import java.util.EventListener;
 
@@ -36,12 +38,12 @@ public interface VisibleWindowListener extends EventListener
      *
      * @param window {@link Window}
      */
-    public void windowDisplayed ( Window window );
+    public void windowDisplayed ( @NotNull Window window );
 
     /**
      * Informs about {@link Window} becoming hidden or disposed.
      *
      * @param window {@link Window}
      */
-    public void windowHidden ( Window window );
+    public void windowHidden ( @NotNull Window window );
 }

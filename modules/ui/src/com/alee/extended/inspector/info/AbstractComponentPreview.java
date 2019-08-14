@@ -18,6 +18,7 @@
 package com.alee.extended.inspector.info;
 
 import com.alee.utils.ImageUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.xml.InsetsConverter;
 
@@ -107,11 +108,22 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
     }
 
     /**
-     * Creates and returns insets text.
+     * Creates and returns {@link LayoutManager} text.
      *
-     * @param insets insets to render
+     * @param layout {@link LayoutManager}
+     * @return {@link LayoutManager} text
+     */
+    protected String renderLayout ( final LayoutManager layout )
+    {
+        return layout != null ? " {[" + ReflectUtils.getClassName ( layout ) + "]:b}" : "";
+    }
+
+    /**
+     * Creates and returns {@link Insets} text.
+     *
+     * @param insets {@link Insets} to render
      * @param color  text color
-     * @return insets text
+     * @return {@link Insets} text
      */
     protected String renderInsets ( final Insets insets, final String color )
     {

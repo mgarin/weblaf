@@ -17,6 +17,9 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.util.*;
 
 /**
@@ -31,12 +34,14 @@ public class WeakHashSet<E> extends AbstractSet<E>
     /**
      * {@link WeakHashMap} that backs this {@link WeakHashSet}.
      */
-    protected WeakHashMap<E, Boolean> map;
+    @NotNull
+    protected final WeakHashMap<E, Boolean> map;
 
     /**
      * {@link Set} of keys.
      */
-    protected transient Set<E> keySet;
+    @NotNull
+    protected final transient Set<E> keySet;
 
     /**
      * Constructs new {@link WeakHashSet} with default initial capacity.
@@ -53,7 +58,6 @@ public class WeakHashSet<E> extends AbstractSet<E>
      */
     public WeakHashSet ( final int initialCapacity )
     {
-        super ();
         map = new WeakHashMap<E, Boolean> ( initialCapacity );
         keySet = map.keySet ();
     }
@@ -77,46 +81,61 @@ public class WeakHashSet<E> extends AbstractSet<E>
     }
 
     @Override
-    public boolean contains ( final Object o )
+    public boolean contains ( @Nullable final Object o )
     {
         return map.containsKey ( o );
     }
 
     @Override
-    public boolean remove ( final Object o )
+    public boolean remove ( @Nullable final Object o )
     {
         return map.remove ( o ) != null;
     }
 
     @Override
-    public boolean add ( final E e )
+    public boolean add ( @Nullable final E e )
     {
         return map.put ( e, Boolean.TRUE ) == null;
     }
 
+    @NotNull
     @Override
     public Iterator<E> iterator ()
     {
         return keySet.iterator ();
     }
 
+    @NotNull
     @Override
     public Object[] toArray ()
     {
         return keySet.toArray ();
     }
 
+    @NotNull
     @Override
-    public <T> T[] toArray ( final T[] a )
+    @SuppressWarnings ( "SuspiciousToArrayCall" )
+    public <T> T[] toArray ( @NotNull final T[] a )
     {
-        //noinspection SuspiciousToArrayCall
         return keySet.toArray ( a );
     }
 
     @Override
-    public String toString ()
+    public boolean containsAll ( @NotNull final Collection<?> c )
     {
-        return keySet.toString ();
+        return keySet.containsAll ( c );
+    }
+
+    @Override
+    public boolean removeAll ( @NotNull final Collection<?> c )
+    {
+        return keySet.removeAll ( c );
+    }
+
+    @Override
+    public boolean retainAll ( @NotNull final Collection<?> c )
+    {
+        return keySet.retainAll ( c );
     }
 
     @Override
@@ -126,26 +145,15 @@ public class WeakHashSet<E> extends AbstractSet<E>
     }
 
     @Override
-    public boolean equals ( final Object o )
+    public boolean equals ( @Nullable final Object o )
     {
         return o == this || o instanceof Set && keySet.equals ( o );
     }
 
+    @NotNull
     @Override
-    public boolean containsAll ( final Collection<?> c )
+    public String toString ()
     {
-        return keySet.containsAll ( c );
-    }
-
-    @Override
-    public boolean removeAll ( final Collection<?> c )
-    {
-        return keySet.removeAll ( c );
-    }
-
-    @Override
-    public boolean retainAll ( final Collection<?> c )
-    {
-        return keySet.retainAll ( c );
+        return keySet.toString ();
     }
 }

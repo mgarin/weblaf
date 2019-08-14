@@ -17,6 +17,9 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.lang.reflect.Array;
 
 /**
@@ -41,7 +44,7 @@ public final class ArrayUtils
      * @param <T>  data type
      * @return {@code true} if data is empty, {@code false} otherwise
      */
-    public static <T> boolean isEmpty ( final T... data )
+    public static <T> boolean isEmpty ( @Nullable final T... data )
     {
         return data == null || data.length == 0;
     }
@@ -53,7 +56,7 @@ public final class ArrayUtils
      * @param <T>  data type
      * @return {@code true} if data is not empty, {@code false} otherwise
      */
-    public static <T> boolean notEmpty ( final T... data )
+    public static <T> boolean notEmpty ( @Nullable final T... data )
     {
         return data != null && data.length > 0;
     }
@@ -65,7 +68,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
-    public static boolean contains ( final int number, final int[] array )
+    public static boolean contains ( final int number, @NotNull final int[] array )
     {
         return indexOf ( number, array ) != -1;
     }
@@ -77,7 +80,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
-    public static boolean contains ( final long number, final long[] array )
+    public static boolean contains ( final long number, @NotNull final long[] array )
     {
         return indexOf ( number, array ) != -1;
     }
@@ -89,7 +92,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
-    public static boolean contains ( final float number, final float[] array )
+    public static boolean contains ( final float number, @NotNull final float[] array )
     {
         return indexOf ( number, array ) != -1;
     }
@@ -101,7 +104,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return {@code true} if array contains the specified number, {@code false} otherwise
      */
-    public static boolean contains ( final double number, final double[] array )
+    public static boolean contains ( final double number, @NotNull final double[] array )
     {
         return indexOf ( number, array ) != -1;
     }
@@ -113,7 +116,7 @@ public final class ArrayUtils
      * @param array     array to process
      * @return {@code true} if array contains the specified character, {@code false} otherwise
      */
-    public static boolean contains ( final char character, final char[] array )
+    public static boolean contains ( final char character, @NotNull final char[] array )
     {
         return indexOf ( character, array ) != -1;
     }
@@ -121,11 +124,11 @@ public final class ArrayUtils
     /**
      * Returns whether array contains the specified byte or not.
      *
-     * @param data byte to find
-     * @param array  array to process
+     * @param data  byte to find
+     * @param array array to process
      * @return {@code true} if array contains the specified byte, {@code false} otherwise
      */
-    public static boolean contains ( final byte data, final byte[] array )
+    public static boolean contains ( final byte data, @NotNull final byte[] array )
     {
         return indexOf ( data, array ) != -1;
     }
@@ -133,11 +136,11 @@ public final class ArrayUtils
     /**
      * Returns whether array contains the specified text or not.
      *
-     * @param text text to find
-     * @param array  array to process
+     * @param text  text to find
+     * @param array array to process
      * @return {@code true} if array contains the specified text, {@code false} otherwise
      */
-    public static boolean contains ( final String text, final String[] array )
+    public static boolean contains ( @Nullable final String text, @NotNull final String[] array )
     {
         return indexOf ( text, array ) != -1;
     }
@@ -149,7 +152,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return {@code true} if array contains the specified object, {@code false} otherwise
      */
-    public static boolean contains ( final Object object, final Object[] array )
+    public static boolean contains ( @Nullable final Object object, @NotNull final Object[] array )
     {
         return indexOf ( object, array ) != -1;
     }
@@ -161,7 +164,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return index of specified int in array
      */
-    public static int indexOf ( final int number, final int[] array )
+    public static int indexOf ( final int number, @NotNull final int[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
@@ -180,7 +183,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return index of specified long in array
      */
-    public static int indexOf ( final long number, final long[] array )
+    public static int indexOf ( final long number, @NotNull final long[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
@@ -199,7 +202,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return index of specified float in array
      */
-    public static int indexOf ( final float number, final float[] array )
+    public static int indexOf ( final float number, @NotNull final float[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
@@ -218,7 +221,7 @@ public final class ArrayUtils
      * @param array  array to process
      * @return index of specified double in array
      */
-    public static int indexOf ( final double number, final double[] array )
+    public static int indexOf ( final double number, @NotNull final double[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
@@ -237,7 +240,7 @@ public final class ArrayUtils
      * @param array     array to process
      * @return index of specified character in array
      */
-    public static int indexOf ( final char character, final char[] array )
+    public static int indexOf ( final char character, @NotNull final char[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
@@ -256,7 +259,7 @@ public final class ArrayUtils
      * @param array array to process
      * @return index of specified byte in array
      */
-    public static int indexOf ( final byte data, final byte[] array )
+    public static int indexOf ( final byte data, @NotNull final byte[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
@@ -275,7 +278,7 @@ public final class ArrayUtils
      * @param array array to process
      * @return index of specified text in array
      */
-    public static int indexOf ( final String text, final String[] array )
+    public static int indexOf ( @Nullable final String text, @NotNull final String[] array )
     {
         return indexOf ( text, array, false );
     }
@@ -288,7 +291,7 @@ public final class ArrayUtils
      * @param ignoreCase whether ignore text case or not
      * @return index of specified text in array
      */
-    public static int indexOf ( final String text, final String[] array, final boolean ignoreCase )
+    public static int indexOf ( @Nullable final String text, @NotNull final String[] array, final boolean ignoreCase )
     {
         for ( int i = 0; i < array.length; i++ )
         {
@@ -309,12 +312,12 @@ public final class ArrayUtils
      * @param array  array to process
      * @return index of specified object in array
      */
-    public static int indexOf ( final Object object, final Object[] array )
+    public static int indexOf ( @Nullable final Object object, @NotNull final Object[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
             final Object obj = array[ i ];
-            if ( obj == null && object == null || obj != null && object != null && obj.equals ( object ) )
+            if ( obj == null && object == null || obj != null && obj.equals ( object ) )
             {
                 return i;
             }
@@ -329,12 +332,12 @@ public final class ArrayUtils
      * @param array  array to process
      * @return last index of specified object in array
      */
-    public static int lastIndexOf ( final Object object, final Object[] array )
+    public static int lastIndexOf ( @Nullable final Object object, @NotNull final Object[] array )
     {
         for ( int i = array.length - 1; i >= 0; i-- )
         {
             final Object obj = array[ i ];
-            if ( obj == null && object == null || obj != null && object != null && obj.equals ( object ) )
+            if ( obj == null && object == null || obj != null && obj.equals ( object ) )
             {
                 return i;
             }
@@ -350,7 +353,8 @@ public final class ArrayUtils
      * @param <T>    data type
      * @return new array with the specified object removed
      */
-    public static <T> T[] remove ( final T[] array, final T object )
+    @NotNull
+    public static <T> T[] remove ( @NotNull final T[] array, @Nullable final T object )
     {
         final T[] newArray = createArray ( array, array.length - 1 );
         int mod = 0;
@@ -375,7 +379,8 @@ public final class ArrayUtils
      * @param index index of int to remove
      * @return new array with the int under specified index removed
      */
-    public static int[] remove ( final int[] array, final int index )
+    @NotNull
+    public static int[] remove ( @NotNull final int[] array, final int index )
     {
         final int[] newArray = new int[ array.length - 1 ];
         int mod = 0;
@@ -400,7 +405,8 @@ public final class ArrayUtils
      * @param index index of float to remove
      * @return new array with the float under specified index removed
      */
-    public static float[] remove ( final float[] array, final int index )
+    @NotNull
+    public static float[] remove ( @NotNull final float[] array, final int index )
     {
         final float[] newArray = new float[ array.length - 1 ];
         int mod = 0;
@@ -425,7 +431,8 @@ public final class ArrayUtils
      * @param index index of double to remove
      * @return new array with the double under specified index removed
      */
-    public static double[] remove ( final double[] array, final int index )
+    @NotNull
+    public static double[] remove ( @NotNull final double[] array, final int index )
     {
         final double[] newArray = new double[ array.length - 1 ];
         int mod = 0;
@@ -450,7 +457,8 @@ public final class ArrayUtils
      * @param index index of char to remove
      * @return new array with the char under specified index removed
      */
-    public static char[] remove ( final char[] array, final int index )
+    @NotNull
+    public static char[] remove ( @NotNull final char[] array, final int index )
     {
         final char[] newArray = new char[ array.length - 1 ];
         int mod = 0;
@@ -475,7 +483,8 @@ public final class ArrayUtils
      * @param index index of byte to remove
      * @return new array with the byte under specified index removed
      */
-    public static byte[] remove ( final byte[] array, final int index )
+    @NotNull
+    public static byte[] remove ( @NotNull final byte[] array, final int index )
     {
         final byte[] newArray = new byte[ array.length - 1 ];
         int mod = 0;
@@ -500,7 +509,8 @@ public final class ArrayUtils
      * @param index index of boolean to remove
      * @return new array with the boolean under specified index removed
      */
-    public static boolean[] remove ( final boolean[] array, final int index )
+    @NotNull
+    public static boolean[] remove ( @NotNull final boolean[] array, final int index )
     {
         final boolean[] newArray = new boolean[ array.length - 1 ];
         int mod = 0;
@@ -526,7 +536,8 @@ public final class ArrayUtils
      * @param <T>   data type
      * @return new array with the object under specified index removed
      */
-    public static <T> T[] remove ( final T[] array, final int index )
+    @NotNull
+    public static <T> T[] remove ( @NotNull final T[] array, final int index )
     {
         final T[] newArray = createArray ( array, array.length - 1 );
         int mod = 0;
@@ -552,7 +563,8 @@ public final class ArrayUtils
      * @param object int to insert
      * @return new array with int inserted at the specified index
      */
-    public static int[] insert ( final int[] array, final int index, final int object )
+    @NotNull
+    public static int[] insert ( @NotNull final int[] array, final int index, final int object )
     {
         final int[] newArray = new int[ array.length + 1 ];
         int mod = 0;
@@ -576,7 +588,8 @@ public final class ArrayUtils
      * @param object float to insert
      * @return new array with float inserted at the specified index
      */
-    public static float[] insert ( final float[] array, final int index, final float object )
+    @NotNull
+    public static float[] insert ( @NotNull final float[] array, final int index, final float object )
     {
         final float[] newArray = new float[ array.length + 1 ];
         int mod = 0;
@@ -600,7 +613,8 @@ public final class ArrayUtils
      * @param object double to insert
      * @return new array with double inserted at the specified index
      */
-    public static double[] insert ( final double[] array, final int index, final double object )
+    @NotNull
+    public static double[] insert ( @NotNull final double[] array, final int index, final double object )
     {
         final double[] newArray = new double[ array.length + 1 ];
         int mod = 0;
@@ -624,7 +638,8 @@ public final class ArrayUtils
      * @param object char to insert
      * @return new array with char inserted at the specified index
      */
-    public static char[] insert ( final char[] array, final int index, final char object )
+    @NotNull
+    public static char[] insert ( @NotNull final char[] array, final int index, final char object )
     {
         final char[] newArray = new char[ array.length + 1 ];
         int mod = 0;
@@ -648,7 +663,8 @@ public final class ArrayUtils
      * @param object byte to insert
      * @return new array with byte inserted at the specified index
      */
-    public static byte[] insert ( final byte[] array, final int index, final byte object )
+    @NotNull
+    public static byte[] insert ( @NotNull final byte[] array, final int index, final byte object )
     {
         final byte[] newArray = new byte[ array.length + 1 ];
         int mod = 0;
@@ -672,7 +688,8 @@ public final class ArrayUtils
      * @param object boolean to insert
      * @return new array with boolean inserted at the specified index
      */
-    public static boolean[] insert ( final boolean[] array, final int index, final boolean object )
+    @NotNull
+    public static boolean[] insert ( @NotNull final boolean[] array, final int index, final boolean object )
     {
         final boolean[] newArray = new boolean[ array.length + 1 ];
         int mod = 0;
@@ -697,7 +714,8 @@ public final class ArrayUtils
      * @param <T>    data type
      * @return new array with object inserted at the specified index
      */
-    public static <T> T[] insert ( final T[] array, final int index, final T object )
+    @NotNull
+    public static <T> T[] insert ( @NotNull final T[] array, final int index, @Nullable final T object )
     {
         final T[] newArray = createArray ( array, array.length + 1 );
         int mod = 0;
@@ -721,7 +739,8 @@ public final class ArrayUtils
      * @param <T>    data type
      * @return new array with the component class type from the specified array
      */
-    public static <T> T[] createArray ( final T[] array, final int length )
+    @NotNull
+    public static <T> T[] createArray ( @NotNull final T[] array, final int length )
     {
         return createArray ( ( Class<T> ) array.getClass ().getComponentType (), length );
     }
@@ -734,7 +753,8 @@ public final class ArrayUtils
      * @param <T>       data type
      * @return new array with the specified component class type
      */
-    public static <T> T[] createArray ( final Class<T> classType, final int length )
+    @NotNull
+    public static <T> T[] createArray ( @NotNull final Class<T> classType, final int length )
     {
         return ( T[] ) Array.newInstance ( classType, length );
     }
@@ -746,7 +766,7 @@ public final class ArrayUtils
      * @param array2 second array
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static boolean equals ( final int[] array1, final int[] array2 )
+    public static boolean equals ( @Nullable final int[] array1, @Nullable final int[] array2 )
     {
         if ( array1 == null && array2 == null )
         {
@@ -776,7 +796,7 @@ public final class ArrayUtils
      * @param array2 second array
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static boolean equals ( final long[] array1, final long[] array2 )
+    public static boolean equals ( @Nullable final long[] array1, @Nullable final long[] array2 )
     {
         if ( array1 == null && array2 == null )
         {
@@ -806,7 +826,7 @@ public final class ArrayUtils
      * @param array2 second array
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static boolean equals ( final float[] array1, final float[] array2 )
+    public static boolean equals ( @Nullable final float[] array1, @Nullable final float[] array2 )
     {
         if ( array1 == null && array2 == null )
         {
@@ -836,7 +856,7 @@ public final class ArrayUtils
      * @param array2 second array
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static boolean equals ( final double[] array1, final double[] array2 )
+    public static boolean equals ( @Nullable final double[] array1, @Nullable final double[] array2 )
     {
         if ( array1 == null && array2 == null )
         {
@@ -866,7 +886,7 @@ public final class ArrayUtils
      * @param array2 second array
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static boolean equals ( final char[] array1, final char[] array2 )
+    public static boolean equals ( @Nullable final char[] array1, @Nullable final char[] array2 )
     {
         if ( array1 == null && array2 == null )
         {
@@ -896,7 +916,7 @@ public final class ArrayUtils
      * @param array2 second array
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static boolean equals ( final byte[] array1, final byte[] array2 )
+    public static boolean equals ( @Nullable final byte[] array1, @Nullable final byte[] array2 )
     {
         if ( array1 == null && array2 == null )
         {
@@ -926,7 +946,7 @@ public final class ArrayUtils
      * @param array2 second array
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static boolean equals ( final String[] array1, final String[] array2 )
+    public static boolean equals ( @Nullable final String[] array1, @Nullable final String[] array2 )
     {
         if ( array1 == null && array2 == null )
         {
@@ -957,7 +977,7 @@ public final class ArrayUtils
      * @param <T>    data type
      * @return {@code true} if arrays are equal, {@code false} otherwise
      */
-    public static <T> boolean equals ( final T[] array1, final T[] array2 )
+    public static <T> boolean equals ( @Nullable final T[] array1, @Nullable final T[] array2 )
     {
         if ( array1 == null && array2 == null )
         {

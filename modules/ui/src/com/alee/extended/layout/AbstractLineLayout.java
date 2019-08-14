@@ -41,36 +41,45 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     /**
      * Positions component at the leading side of the container.
      */
+    @NotNull
     public static final String START = "START";
 
     /**
      * Positions component in the middle between leading and trailing sides.
+     * Note that this constraint overlaps with {@link #FILL} constraint.
      */
+    @NotNull
     public static final String MIDDLE = "MIDDLE";
 
     /**
      * Forces component to fill all the space left between leading and trailing sides.
+     * Note that this constraint overlaps with {@link #MIDDLE} constraint.
      */
+    @NotNull
     public static final String FILL = "FILL";
 
     /**
      * Positions component at the trailing side of the container.
      */
+    @NotNull
     public static final String END = "END";
 
     /**
      * Special position for an element displayed at the end of the container whenever its size is less than preferred size.
      */
+    @NotNull
     public static final String TRIM = "TRIM";
 
     /**
      * Lazy instance of {@link ZOrderComparator}.
      */
+    @NotNull
     protected static final ZOrderComparator COMPONENTS_COMPARATOR = new ZOrderComparator ();
 
     /**
      * Bounds used to hide components.
      */
+    @NotNull
     protected static final Rectangle HIDE_BOUNDS = new Rectangle ( -1, -1, 0, 0 );
 
     /**
@@ -86,30 +95,14 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     /**
      * Saved layout constraints.
      */
+    @NotNull
     protected transient Map<Component, String> constraints;
 
     /**
      * Mapped components.
      */
+    @NotNull
     protected transient Map<String, List<Component>> components;
-
-    /**
-     * Constructs new {@link AbstractLineLayout}.
-     */
-    public AbstractLineLayout ()
-    {
-        this ( 2 );
-    }
-
-    /**
-     * Constructs new {@link AbstractLineLayout}.
-     *
-     * @param spacing spacing between layout elements
-     */
-    public AbstractLineLayout ( final int spacing )
-    {
-        this ( spacing, 20 );
-    }
 
     /**
      * Constructs new {@link AbstractLineLayout}.
@@ -119,7 +112,6 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      */
     public AbstractLineLayout ( final int spacing, final int partsSpacing )
     {
-        super ();
         this.spacing = spacing;
         this.partsSpacing = partsSpacing;
         this.constraints = new HashMap<Component, String> ( 10 );
@@ -446,9 +438,9 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param available   available space bounds
      * @param cache       {@link Map} containing {@link Component} size caches
      */
-    protected void placeComponents ( final String c, final Point point,
+    protected void placeComponents ( @NotNull final String c, @NotNull final Point point,
                                      final int orientation, final boolean ltr, final int lineWidth,
-                                     final Rectangle available, final Map<Component, Dimension> cache )
+                                     @NotNull final Rectangle available, @NotNull final Map<Component, Dimension> cache )
     {
         final String constraints = constraints ( c, orientation, ltr );
         final boolean horizontal = orientation == HORIZONTAL;
@@ -466,7 +458,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
         if ( ltr || !horizontal )
         {
             /**
-             * Direct components placement order.
+             * Direct components placement order for horizontal or vertical layout.
              */
             for ( final Component component : components )
             {
@@ -492,7 +484,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
         else
         {
             /**
-             * Reversed (RTL) components placement order.
+             * Reversed (RTL) components placement order for horizontal layout.
              */
             for ( int i = components.size () - 1; i >= 0; i-- )
             {
@@ -501,8 +493,8 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
                 final Rectangle bounds = new Rectangle (
                         point.x,
                         point.y,
-                        horizontal ? cps.width : lineWidth,
-                        horizontal ? lineWidth : cps.height
+                        cps.width,
+                        lineWidth
                 );
                 if ( available.contains ( bounds ) )
                 {
@@ -512,8 +504,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
                 {
                     component.setBounds ( HIDE_BOUNDS );
                 }
-                point.x += horizontal ? bounds.width + spacing : 0;
-                point.y += horizontal ? 0 : bounds.height + spacing;
+                point.x += bounds.width + spacing;
             }
         }
         point.x -= horizontal ? spacing : 0;
@@ -526,7 +517,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param bounds    {@link #FILL} bounds
      * @param available available space bounds
      */
-    protected void placeFillComponent ( final Rectangle bounds, final Rectangle available )
+    protected void placeFillComponent ( @NotNull final Rectangle bounds, @NotNull final Rectangle available )
     {
         /**
          * Placing single {@link #FILL} component.
@@ -551,8 +542,8 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param available   available space bounds
      * @param fit         whether or not layout size is larger or equal to its preferred
      */
-    protected void placeTrimComponent ( final Dimension trimSize, final int orientation, final boolean ltr,
-                                        final Rectangle available, final boolean fit )
+    protected void placeTrimComponent ( @NotNull final Dimension trimSize, final int orientation, final boolean ltr,
+                                        @NotNull final Rectangle available, final boolean fit )
     {
         if ( !fit )
         {
@@ -584,7 +575,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param cache     {@link Map} containing {@link Component} size caches
      * @return preferred layout size
      */
-    protected Dimension preferredLayoutSize ( final Container container, final Map<Component, Dimension> cache )
+    protected Dimension preferredLayoutSize ( @NotNull final Container container, @NotNull final Map<Component, Dimension> cache )
     {
         final Dimension ps = new Dimension ( 0, 0 );
 
@@ -621,9 +612,8 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param ltr         layout component orientation
      * @param cache       {@link Map} containing {@link Component} size caches
      */
-    protected void expandSizeFromPart ( final Dimension size, final String constraints, final int spacing,
-                                        final int orientation, final boolean ltr,
-                                        final Map<Component, Dimension> cache )
+    protected void expandSizeFromPart ( @NotNull final Dimension size, @NotNull final String constraints, final int spacing,
+                                        final int orientation, final boolean ltr, @NotNull final Map<Component, Dimension> cache )
     {
         final Dimension partSize = preferredPartSize ( constraints, orientation, ltr, cache );
         if ( partSize.width > 0 )
@@ -645,8 +635,9 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param cache       {@link Map} containing {@link Component} size caches
      * @return preferred size of {@link Component}s under the specified constraints
      */
-    protected Dimension preferredPartSize ( final String c, final int orientation, final boolean ltr,
-                                            final Map<Component, Dimension> cache )
+    @NotNull
+    protected Dimension preferredPartSize ( @NotNull final String c, final int orientation, final boolean ltr,
+                                            @NotNull final Map<Component, Dimension> cache )
     {
         final Dimension ps = new Dimension ( 0, 0 );
         final String constraints = constraints ( c, orientation, ltr );
@@ -683,7 +674,8 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param cache     {@link Map} containing {@link Component} size caches
      * @return cached {@link Component} preferred size
      */
-    protected Dimension preferredSize ( final Component component, final Map<Component, Dimension> cache )
+    @NotNull
+    protected Dimension preferredSize ( @NotNull final Component component, @NotNull final Map<Component, Dimension> cache )
     {
         Dimension ps = cache.get ( component );
         if ( ps == null )
@@ -702,7 +694,8 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param ltr         layout component orientation
      * @return actual constraints based on the layout orientation and component orientation
      */
-    protected String constraints ( final String constraints, final int orientation, final boolean ltr )
+    @NotNull
+    protected String constraints ( @NotNull final String constraints, final int orientation, final boolean ltr )
     {
         final String c;
         if ( Objects.equals ( constraints, START ) )
@@ -726,5 +719,5 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
      * @param container {@link Container} to retrieve orientation for
      * @return either {@link #HORIZONTAL} or {@link #VERTICAL} orientation for {@link Container}
      */
-    public abstract int getOrientation ( Container container );
+    public abstract int getOrientation ( @NotNull Container container );
 }

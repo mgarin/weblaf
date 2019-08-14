@@ -19,6 +19,7 @@ package com.alee.managers.style.data;
 
 import com.alee.api.merge.Merge;
 import com.alee.managers.icon.set.IconSet;
+import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleException;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
@@ -62,11 +63,11 @@ public final class SkinInfoConverter extends ReflectionConverter
      */
     public static final String ID_NODE = "id";
     public static final String CLASS_NODE = "class";
+    public static final String SUPPORTED_SYSTEMS_NODE = "supportedSystems";
     public static final String ICON_NODE = "icon";
     public static final String TITLE_NODE = "title";
     public static final String DESCRIPTION_NODE = "description";
     public static final String AUTHOR_NODE = "author";
-    public static final String SUPPORTED_SYSTEMS_NODE = "supportedSystems";
     public static final String EXTENDS_NODE = "extends";
     public static final String INCLUDE_NODE = "include";
     public static final String ICON_SET_NODE = "iconSet";
@@ -155,6 +156,9 @@ public final class SkinInfoConverter extends ReflectionConverter
                     // Reading skin class canonical name
                     final String skinClass = reader.getValue ();
 
+                    // Validating skin class existance
+                    getSkinClass ( skinClass );
+
                     // Saving skin class into skin information
                     skinInfo.setSkinClass ( skinClass );
 
@@ -163,12 +167,24 @@ public final class SkinInfoConverter extends ReflectionConverter
                     // This way we can provide it into {@link com.alee.managers.style.data.ComponentStyleConverter}
                     context.put ( SKIN_CLASS, skinClass );
                 }
+                else if ( nodeName.equals ( SUPPORTED_SYSTEMS_NODE ) )
+                {
+                    // Reading OS systems supported by this skin
+                    skinInfo.setSupportedSystems ( reader.getValue () );
+                }
                 else if ( nodeName.equals ( ICON_NODE ) )
                 {
                     // Reading skin icon
                     // It is always located near skin class
-                    final Class<?> skinClass = ReflectUtils.getClassSafely ( skinInfo.getSkinClass () );
-                    skinInfo.setIcon ( new ImageIcon ( skinClass.getResource ( reader.getValue () ) ) );
+                    if ( skinInfo.getSkinClass () != null )
+                    {
+                        final Class<? extends Skin> skinClass = getSkinClass ( skinInfo.getSkinClass () );
+                        skinInfo.setIcon ( new ImageIcon ( skinClass.getResource ( reader.getValue () ) ) );
+                    }
+                    else
+                    {
+                        throw new StyleException ( "Skin class must be specified before icon" );
+                    }
                 }
                 else if ( nodeName.equals ( TITLE_NODE ) )
                 {
@@ -184,11 +200,6 @@ public final class SkinInfoConverter extends ReflectionConverter
                 {
                     // Reading skin author
                     skinInfo.setAuthor ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( SUPPORTED_SYSTEMS_NODE ) )
-                {
-                    // Reading OS systems supported by this skin
-                    skinInfo.setSupportedSystems ( reader.getValue () );
                 }
                 else if ( nodeName.equals ( EXTENDS_NODE ) )
                 {
@@ -256,13 +267,31 @@ public final class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
+     * Returns {@link Skin} class for the specified canonical name.
+     *
+     * @param skinClass {@link Skin} class canonical name
+     * @return {@link Skin} class for the specified canonical name
+     */
+    private Class<? extends Skin> getSkinClass ( final String skinClass )
+    {
+        try
+        {
+            return ReflectUtils.getClass ( skinClass );
+        }
+        catch ( final ClassNotFoundException e )
+        {
+            throw new StyleException ( "Unable to find skin class: " + skinClass, e );
+        }
+    }
+
+    /**
      * Returns included skin information.
      *
      * @param skinInfo skin information
      * @param resource included resourse file
      * @return included skin information
      */
-    protected SkinInfo readInclude ( final SkinInfo skinInfo, final Resource resource )
+    private SkinInfo readInclude ( final SkinInfo skinInfo, final Resource resource )
     {
         // Replacing null relative class with skin class
         if ( resource.getClassName () == null )
@@ -286,7 +315,7 @@ public final class SkinInfoConverter extends ReflectionConverter
      * @param className icon set class
      * @return icon set created using specified icon set class
      */
-    protected IconSet readIconSet ( final Class<? extends IconSet> className )
+    private IconSet readIconSet ( final Class<? extends IconSet> className )
     {
         try
         {
@@ -307,7 +336,7 @@ public final class SkinInfoConverter extends ReflectionConverter
      * @param resource XML resource file
      * @return loaded SkinInfo
      */
-    protected SkinInfo loadSkinInfo ( final SkinInfo skinInfo, final Resource resource )
+    private SkinInfo loadSkinInfo ( final SkinInfo skinInfo, final Resource resource )
     {
         try
         {

@@ -286,7 +286,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
                 disabledCacheKey = !enabled ? "leaf." + state : null;
             }
         }
-        return enabled ? icon : ImageUtils.getDisabledCopy ( disabledCacheKey, icon );
+        return icon == null || enabled ? icon : ImageUtils.getDisabledCopy ( disabledCacheKey, icon );
     }
 
     /**

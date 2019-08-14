@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Consumer;
 import com.alee.laf.list.behavior.ListItemHoverBehavior;
 import com.alee.managers.style.*;
@@ -85,7 +86,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
         hoverCellTracker = new ListItemHoverBehavior<JList> ( list, true )
         {
             @Override
-            public void hoverChanged ( final Integer previous, final Integer current )
+            public void hoverChanged ( @NotNull final Integer previous, @NotNull final Integer current )
             {
                 // Updating hover row
                 final int previousIndex = hoverIndex;

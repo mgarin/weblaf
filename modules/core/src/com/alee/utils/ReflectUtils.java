@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.reflection.ModifierType;
 import com.alee.utils.reflection.ReflectionException;
@@ -33,8 +35,9 @@ import java.util.*;
 public final class ReflectUtils
 {
     /**
-     * todo 1. Rework this utility class into an object that is only instantiated when needed
-     * todo 2. Add implemenetation for vararg search
+     * todo 1. Remove all "safe" methods
+     * todo 2. Rework this utility class into an object that is only instantiated when needed
+     * todo 3. Add implemenetation for vararg search
      */
 
     /**
@@ -89,7 +92,8 @@ public final class ReflectUtils
      * @param <T>           class type
      * @return class for the specified canonical name
      */
-    public static <T> Class<T> getClassSafely ( final String canonicalName )
+    @Nullable
+    public static <T> Class<T> getClassSafely ( @NotNull final String canonicalName )
     {
         try
         {
@@ -114,7 +118,8 @@ public final class ReflectUtils
      * @return class for the specified canonical name
      * @throws ClassNotFoundException if class was not found
      */
-    public static <T> Class<T> getClass ( final String canonicalName ) throws ClassNotFoundException
+    @NotNull
+    public static <T> Class<T> getClass ( @NotNull final String canonicalName ) throws ClassNotFoundException
     {
         return ( Class<T> ) Class.forName ( canonicalName );
     }
@@ -1022,6 +1027,7 @@ public final class ReflectUtils
      *
      * @param classType class type
      * @param fieldName class field name
+     * @param <T>       returned value type
      * @return static field value from the specified class
      */
     public static <T> T getStaticFieldValueSafely ( final Class classType, final String fieldName )
@@ -1046,6 +1052,7 @@ public final class ReflectUtils
      *
      * @param classType class type
      * @param fieldName class field name
+     * @param <T>       returned value type
      * @return static field value from the specified class
      * @throws NoSuchFieldException   if field was not found
      * @throws IllegalAccessException if field is inaccessible
@@ -1064,7 +1071,8 @@ public final class ReflectUtils
      * @param classObject object of class type
      * @return class name with ".java" extension in the end
      */
-    public static String getJavaClassName ( final Object classObject )
+    @NotNull
+    public static String getJavaClassName ( @NotNull final Object classObject )
     {
         return getJavaClassName ( classObject.getClass () );
     }
@@ -1075,7 +1083,8 @@ public final class ReflectUtils
      * @param classType class type
      * @return class name with ".java" extension in the end
      */
-    public static String getJavaClassName ( final Class classType )
+    @NotNull
+    public static String getJavaClassName ( @NotNull final Class classType )
     {
         return getClassName ( classType ) + ".java";
     }
@@ -1086,7 +1095,8 @@ public final class ReflectUtils
      * @param classObject object of class type
      * @return class name with ".class" extension in the end
      */
-    public static String getClassFileName ( final Object classObject )
+    @NotNull
+    public static String getClassFileName ( @NotNull final Object classObject )
     {
         return getClassFileName ( classObject.getClass () );
     }
@@ -1097,7 +1107,8 @@ public final class ReflectUtils
      * @param classType class type
      * @return class name with ".class" extension in the end
      */
-    public static String getClassFileName ( final Class classType )
+    @NotNull
+    public static String getClassFileName ( @NotNull final Class classType )
     {
         return ReflectUtils.getClassName ( classType ) + ".class";
     }
@@ -1108,7 +1119,8 @@ public final class ReflectUtils
      * @param classObject object of class type
      * @return class name
      */
-    public static String getClassName ( final Object classObject )
+    @NotNull
+    public static String getClassName ( @NotNull final Object classObject )
     {
         return getClassName ( classObject.getClass () );
     }
@@ -1119,12 +1131,39 @@ public final class ReflectUtils
      * @param classType class type
      * @return class name
      */
-    public static String getClassName ( final Class classType )
+    @NotNull
+    public static String getClassName ( @NotNull final Class classType )
     {
         final String canonicalName = classType.getCanonicalName ();
         final String fullName = canonicalName != null ? canonicalName : classType.toString ();
         final int dot = fullName.lastIndexOf ( "." );
         return dot != -1 ? fullName.substring ( dot + 1 ) : fullName;
+    }
+
+    /**
+     * Returns complete class name that includes enclosing class name if one exists.
+     *
+     * @param classObject object of class type
+     * @return complete class name that includes enclosing class name if one exists
+     */
+    @NotNull
+    public static String getCompleteClassName ( @NotNull final Object classObject )
+    {
+        return getCompleteClassName ( classObject.getClass () );
+    }
+
+    /**
+     * Returns complete class name that includes enclosing class name if one exists.
+     *
+     * @param classType class type
+     * @return complete class name that includes enclosing class name if one exists
+     */
+    @NotNull
+    public static String getCompleteClassName ( @NotNull final Class classType )
+    {
+        final String name = getClassName ( classType );
+        final Class enclosingClass = classType.getEnclosingClass ();
+        return enclosingClass != null ? getCompleteClassName ( enclosingClass ) + "$" + name : name;
     }
 
     /**
@@ -1165,6 +1204,7 @@ public final class ReflectUtils
      *
      * @param canonicalClassName canonical class name
      * @param arguments          class constructor arguments
+     * @param <T>                class instance type
      * @return newly created class instance
      */
     public static <T> T createInstanceSafely ( final String canonicalClassName, final Object... arguments )
@@ -1189,6 +1229,7 @@ public final class ReflectUtils
      *
      * @param canonicalClassName canonical class name
      * @param arguments          class constructor arguments
+     * @param <T>                class instance type
      * @return newly created class instance
      * @throws ClassNotFoundException    if class was not found
      * @throws InvocationTargetException if method throws an exception
@@ -1207,6 +1248,7 @@ public final class ReflectUtils
      *
      * @param theClass  class to process
      * @param arguments class constructor arguments
+     * @param <T>       class instance type
      * @return newly created class instance
      */
     public static <T> T createInstanceSafely ( final Class theClass, final Object... arguments )
@@ -1231,6 +1273,7 @@ public final class ReflectUtils
      *
      * @param theClass  class to process
      * @param arguments class constructor arguments
+     * @param <T>       class instance type
      * @return newly created class instance
      * @throws InstantiationException    if the class is abstract
      * @throws NoSuchMethodException     if method was not found
@@ -1354,6 +1397,7 @@ public final class ReflectUtils
      * @param canonicalClassName canonical class name
      * @param methodName         static method name
      * @param arguments          method arguments
+     * @param <T>                method result type
      * @return result of called static method
      */
     public static <T> T callStaticMethodSafely ( final String canonicalClassName, final String methodName, final Object... arguments )
@@ -1380,6 +1424,7 @@ public final class ReflectUtils
      * @param canonicalClassName canonical class name
      * @param methodName         static method name
      * @param arguments          method arguments
+     * @param <T>                method result type
      * @return result of called static method
      * @throws ClassNotFoundException    if class was not found
      * @throws NoSuchMethodException     if method was not found
@@ -1399,6 +1444,7 @@ public final class ReflectUtils
      * @param theClass   class to process
      * @param methodName static method name
      * @param arguments  method arguments
+     * @param <T>        method result type
      * @return result of called static method
      */
     public static <T> T callStaticMethodSafely ( final Class theClass, final String methodName, final Object... arguments )
@@ -1425,6 +1471,7 @@ public final class ReflectUtils
      * @param theClass   class to process
      * @param methodName static method name
      * @param arguments  static method arguments
+     * @param <T>        method result type
      * @return result given by called static method
      * @throws NoSuchMethodException     if method was not found
      * @throws InvocationTargetException if method throws an exception
@@ -1443,6 +1490,7 @@ public final class ReflectUtils
      * @param objects    objects to call methods on
      * @param methodName method name
      * @param arguments  method arguments
+     * @param <T>        method result type
      * @return list of results returned by called methods
      */
     public static <T> List<T> callMethodsSafely ( final List objects, final String methodName, final Object... arguments )
@@ -1468,6 +1516,7 @@ public final class ReflectUtils
      * @param objects    objects to call methods on
      * @param methodName method name
      * @param arguments  method arguments
+     * @param <T>        method result type
      * @return list of results returned by called methods
      * @throws NoSuchMethodException     if method was not found
      * @throws InvocationTargetException if method throws an exception
@@ -1537,6 +1586,7 @@ public final class ReflectUtils
      * @param object     object instance
      * @param methodName method name
      * @param arguments  method arguments
+     * @param <T>        method result type
      * @return result given by called method
      */
     public static <T> T callMethodSafely ( final Object object, final String methodName, final Object... arguments )
@@ -1564,6 +1614,7 @@ public final class ReflectUtils
      * @param object     object instance
      * @param methodName method name
      * @param arguments  method arguments
+     * @param <T>        method result type
      * @return result given by called method
      * @throws NoSuchMethodException       if method was not found
      * @throws InvocationTargetException   if method throws an exception
@@ -1731,12 +1782,10 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return object's method with the specified name and arguments
-     * @throws NoSuchMethodException     if method was not found
-     * @throws InvocationTargetException if method throws an exception
-     * @throws IllegalAccessException    if method is inaccessible
+     * @throws NoSuchMethodException if method was not found
      */
     public static Method getMethod ( final Object object, final String methodName, final Object... arguments )
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+            throws NoSuchMethodException
     {
         return getMethod ( object.getClass (), methodName, arguments );
     }
@@ -1756,12 +1805,10 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return object's method with the specified name and arguments
-     * @throws NoSuchMethodException     if method was not found
-     * @throws InvocationTargetException if method throws an exception
-     * @throws IllegalAccessException    if method is inaccessible
+     * @throws NoSuchMethodException if method was not found
      */
     public static Method getMethod ( final Class aClass, final String methodName, final Object... arguments )
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+            throws NoSuchMethodException
     {
         // Method key
         final Class[] classTypes = getClassTypes ( arguments );
@@ -1798,12 +1845,10 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return object's method with the specified name and arguments
-     * @throws NoSuchMethodException     if method was not found
-     * @throws InvocationTargetException if method throws an exception
-     * @throws IllegalAccessException    if method is inaccessible
+     * @throws NoSuchMethodException if method was not found
      */
     private static Method getMethodImpl ( final Class aClass, final String methodName, final Object[] arguments )
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+            throws NoSuchMethodException
     {
         // This enhancement was a bad idea and was disabled
         // In case method is protected/private or located in one of superclasses it won't be found

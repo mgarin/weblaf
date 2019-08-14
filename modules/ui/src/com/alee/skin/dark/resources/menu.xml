@@ -16,7 +16,7 @@
                         <ButtonText constraints="text" color="245,245,245" />
                     </MenuItemLayout>
                 </decoration>
-                <decoration states="menubar,hover">
+                <decoration states="menubar,enabled,hover">
                     <GradientBackground>
                         <color>55,55,55,96</color>
                         <color>25,25,25,96</color>

@@ -17,6 +17,9 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -31,6 +34,7 @@ public final class EmptyEnumeration<E> implements Enumeration<E>
     /**
      * {@link EmptyEnumeration} singleton instance.
      */
+    @Nullable
     private static Enumeration instance;
 
     /**
@@ -39,6 +43,7 @@ public final class EmptyEnumeration<E> implements Enumeration<E>
      * @param <E> elements type
      * @return {@link EmptyEnumeration} instance
      */
+    @NotNull
     public static synchronized <E> Enumeration<E> instance ()
     {
         if ( instance == null )
@@ -62,6 +67,7 @@ public final class EmptyEnumeration<E> implements Enumeration<E>
         return false;
     }
 
+    @Nullable
     @Override
     public E nextElement ()
     {

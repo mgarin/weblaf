@@ -54,6 +54,9 @@ public class WComponentPreview<C extends JComponent> extends AbstractComponentPr
     {
         final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
 
+        final LayoutManager layoutManager = component.getLayout ();
+        final String layout = renderLayout ( layoutManager );
+
         final boolean wlui = LafUtils.hasWebLafUI ( component );
         final String style = wlui ? " {[ " + StyleId.get ( component ).getCompleteId () + " ]:b;c(" + styleIdColor + ")}" : "";
 
@@ -63,6 +66,6 @@ public class WComponentPreview<C extends JComponent> extends AbstractComponentPr
         final Insets padding = PainterSupport.getPadding ( component );
         final String ptext = renderInsets ( padding, paddingColor );
 
-        return title + style + mtext + ptext;
+        return title + layout + style + mtext + ptext;
     }
 }

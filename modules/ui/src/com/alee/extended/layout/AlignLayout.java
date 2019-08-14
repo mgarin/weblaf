@@ -295,7 +295,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                 }
                 else if ( valign == CENTER )
                 {
-                    y = insets.top + ch / 2 - Math.min ( ps.width / 2, ch / 2 );
+                    y = insets.top + ch / 2 - Math.min ( ps.height / 2, ch / 2 );
                 }
                 else if ( valign == BOTTOM )
                 {

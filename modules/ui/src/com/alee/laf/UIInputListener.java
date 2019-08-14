@@ -17,6 +17,8 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 
 /**
@@ -33,12 +35,12 @@ public interface UIInputListener<C extends JComponent>
      *
      * @param component {@link JComponent}
      */
-    public void install ( C component );
+    public void install ( @NotNull C component );
 
     /**
      * Uninstalls input settings and listeners.
      *
      * @param component {@link JComponent}
      */
-    public void uninstall ( C component );
+    public void uninstall ( @NotNull C component );
 }

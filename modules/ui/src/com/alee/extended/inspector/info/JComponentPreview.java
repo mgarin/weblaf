@@ -51,4 +51,10 @@ public class JComponentPreview<C extends JComponent> extends AWTComponentPreview
             return super.getIconImpl ( component );
         }
     }
+
+    @Override
+    public String getText ( final C component )
+    {
+        return super.getText ( component ) + renderLayout ( component.getLayout () );
+    }
 }

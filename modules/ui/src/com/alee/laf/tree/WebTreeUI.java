@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
@@ -106,7 +107,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         hoverNodeTracker = new TreePathHoverBehavior<JTree> ( tree, true )
         {
             @Override
-            public void hoverChanged ( final TreePath previous, final TreePath current )
+            public void hoverChanged ( @Nullable final TreePath previous, @Nullable final TreePath current )
             {
                 // Updating hover row
                 final int previousRow = hoverRow;

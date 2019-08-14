@@ -17,6 +17,7 @@
 
 package com.alee.laf.list.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.behavior.AbstractObjectHoverBehavior;
 
 import javax.swing.*;
@@ -36,7 +37,7 @@ public abstract class ListItemHoverBehavior<C extends JList> extends AbstractObj
      *
      * @param list list into which this behavior is installed
      */
-    public ListItemHoverBehavior ( final C list )
+    public ListItemHoverBehavior ( @NotNull final C list )
     {
         this ( list, true );
     }
@@ -47,13 +48,14 @@ public abstract class ListItemHoverBehavior<C extends JList> extends AbstractObj
      * @param list        {@link JList} into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover events when list is enabled
      */
-    public ListItemHoverBehavior ( final C list, final boolean enabledOnly )
+    public ListItemHoverBehavior ( @NotNull final C list, final boolean enabledOnly )
     {
         super ( list, enabledOnly );
     }
 
+    @NotNull
     @Override
-    protected Integer getObjectAt ( final Point location )
+    protected Integer getObjectAt ( @NotNull final Point location )
     {
         // Retrieving index for location
         int index = component.locationToIndex ( location );
@@ -66,9 +68,19 @@ public abstract class ListItemHoverBehavior<C extends JList> extends AbstractObj
         return index;
     }
 
+    @NotNull
     @Override
     protected Integer getEmptyObject ()
     {
         return -1;
     }
+
+    /**
+     * Informs when hover object changes.
+     *
+     * @param previous previous hover index
+     * @param current  current hover index
+     */
+    @Override
+    public abstract void hoverChanged ( @NotNull Integer previous, @NotNull Integer current );
 }

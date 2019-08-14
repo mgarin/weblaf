@@ -22,6 +22,7 @@ import com.alee.managers.animation.AnimationManager;
 import com.alee.managers.drag.DragManager;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
+import com.alee.managers.hover.HoverManager;
 import com.alee.managers.icon.IconManager;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.proxy.UIProxyManager;
@@ -65,6 +66,7 @@ public final class UIManagers
         UISettingsManager.initialize ();
         HotkeyManager.initialize ();
         FocusManager.initialize ();
+        HoverManager.initialize ();
         TooltipManager.initialize ();
         IconManager.initialize ();
         StyleManager.initialize ();

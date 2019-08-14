@@ -17,6 +17,8 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
@@ -63,7 +65,7 @@ public abstract class ParentChangeBehavior<C extends JComponent> extends Abstrac
      * @param initTriggers     whether or not should artificially trigger events on {@link #install()} and {@link #uninstall()}
      * @param directParentOnly whether or not only direct {@link Component} parent or it's whole tree should be tracked
      */
-    public ParentChangeBehavior ( final C component, final boolean initTriggers, final boolean directParentOnly )
+    public ParentChangeBehavior ( @NotNull final C component, final boolean initTriggers, final boolean directParentOnly )
     {
         super ( component );
         this.initTriggers = initTriggers;
@@ -75,6 +77,7 @@ public abstract class ParentChangeBehavior<C extends JComponent> extends Abstrac
      *
      * @return {@link List} of {@link Container}s parent to the {@link Component} this behavior is installed into
      */
+    @NotNull
     protected List<Container> getParents ()
     {
         final List<Container> parents;
@@ -129,19 +132,19 @@ public abstract class ParentChangeBehavior<C extends JComponent> extends Abstrac
     }
 
     @Override
-    public void ancestorAdded ( final AncestorEvent event )
+    public void ancestorAdded ( @NotNull final AncestorEvent event )
     {
         ancestorChanged ( event );
     }
 
     @Override
-    public void ancestorRemoved ( final AncestorEvent event )
+    public void ancestorRemoved ( @NotNull final AncestorEvent event )
     {
         ancestorChanged ( event );
     }
 
     @Override
-    public void ancestorMoved ( final AncestorEvent event )
+    public void ancestorMoved ( @NotNull final AncestorEvent event )
     {
         ancestorChanged ( event );
     }
@@ -151,7 +154,7 @@ public abstract class ParentChangeBehavior<C extends JComponent> extends Abstrac
      *
      * @param event {@link AncestorEvent}
      */
-    protected void ancestorChanged ( final AncestorEvent event )
+    protected void ancestorChanged ( @NotNull final AncestorEvent event )
     {
         if ( directParentOnly )
         {
@@ -183,5 +186,5 @@ public abstract class ParentChangeBehavior<C extends JComponent> extends Abstrac
      * @param oldParent old parent {@link Container}
      * @param newParent new parent {@link Container}
      */
-    public abstract void parentChanged ( Container oldParent, Container newParent );
+    public abstract void parentChanged ( @Nullable Container oldParent, @Nullable Container newParent );
 }

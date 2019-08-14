@@ -21,7 +21,6 @@ import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.Behavior;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.SwingUtils;
 
 import java.awt.*;
 import java.awt.event.AWTEventListener;
@@ -87,7 +86,7 @@ public final class ComponentInspectBehavior implements Behavior
                     // Limiting affected area of UI elements by the root
                     final MouseEvent mouseEvent = ( MouseEvent ) event;
                     final Component source = ( Component ) event.getSource ();
-                    final Component component = SwingUtils.getTopComponentAt ( source, mouseEvent.getPoint () );
+                    final Component component = CoreSwingUtils.getTopComponentAt ( source, mouseEvent.getPoint () );
                     if ( component != null && component.isShowing () && ( ComponentInspectBehavior.this.root == null ||
                             CoreSwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) ) )
                     {
@@ -95,14 +94,7 @@ public final class ComponentInspectBehavior implements Behavior
                         if ( Objects.equals ( eventId, MouseEvent.MOUSE_PRESSED ) )
                         {
                             // Firing events
-                            if ( component != null )
-                            {
-                                listener.inspected ( component );
-                            }
-                            else
-                            {
-                                listener.cancelled ();
-                            }
+                            listener.inspected ( component );
 
                             // Uninstalling behavior
                             uninstall ();

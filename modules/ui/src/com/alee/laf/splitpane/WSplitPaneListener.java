@@ -17,6 +17,8 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.AbstractUIInputListener;
 import com.alee.laf.UIAction;
 import com.alee.laf.UIActionMap;
@@ -54,7 +56,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
     protected Set managingFocusBackwardTraversalKeys;
 
     @Override
-    public void install ( final C component )
+    public void install ( @NotNull final C component )
     {
         super.install ( component );
 
@@ -88,7 +90,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
     }
 
     @Override
-    public void uninstall ( final C component )
+    public void uninstall ( @NotNull final C component )
     {
         // Uninstalling InputMap
         SwingUtilities.replaceUIInputMap ( component, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null );
@@ -110,7 +112,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent event )
+    public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
         if ( event.getSource () == component )
         {
@@ -145,13 +147,13 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
     }
 
     @Override
-    public void focusGained ( final FocusEvent event )
+    public void focusGained ( @NotNull final FocusEvent event )
     {
         componentUI.setDividerKeyboardResize ( true );
     }
 
     @Override
-    public void focusLost ( final FocusEvent event )
+    public void focusLost ( @NotNull final FocusEvent event )
     {
         componentUI.setDividerKeyboardResize ( false );
     }
@@ -181,13 +183,13 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          * @param splitPane {@link JSplitPane}
          * @param name      {@link Action} name
          */
-        public Action ( final S splitPane, final String name )
+        public Action ( @NotNull final S splitPane, @NotNull final String name )
         {
             super ( splitPane, name );
         }
 
         @Override
-        public void actionPerformed ( final ActionEvent event )
+        public void actionPerformed ( @NotNull final ActionEvent event )
         {
             final S splitPane = getComponent ();
             final WSplitPaneUI splitPaneUI = LafUtils.getUI ( splitPane );
@@ -266,7 +268,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          * @param splitPane {@link JSplitPane}
          * @param direction focus move direction
          */
-        protected void moveFocus ( final S splitPane, final int direction )
+        protected void moveFocus ( @NotNull final S splitPane, final int direction )
         {
             Container rootAncestor = splitPane.getFocusCycleRootAncestor ();
             FocusTraversalPolicy policy = rootAncestor.getFocusTraversalPolicy ();
@@ -298,7 +300,7 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          *
          * @param splitPane {@link JSplitPane}
          */
-        protected void toggleFocus ( final S splitPane )
+        protected void toggleFocus ( @NotNull final S splitPane )
         {
             final Component left = splitPane.getLeftComponent ();
             final Component right = splitPane.getRightComponent ();
@@ -326,7 +328,8 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          * @param focus     {@link Component} focus owner
          * @return next available side {@link Component}
          */
-        protected Component getNextSide ( final JSplitPane splitPane, final Component focus )
+        @Nullable
+        protected Component getNextSide ( @NotNull final JSplitPane splitPane, @Nullable final Component focus )
         {
             final Component left = splitPane.getLeftComponent ();
             final Component right = splitPane.getRightComponent ();
@@ -364,7 +367,8 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
          * @param component {@link Component} to search in
          * @return first available {@link Component}
          */
-        protected Component getFirstAvailableComponent ( Component component )
+        @Nullable
+        protected Component getFirstAvailableComponent ( @Nullable Component component )
         {
             if ( component != null && component instanceof JSplitPane )
             {

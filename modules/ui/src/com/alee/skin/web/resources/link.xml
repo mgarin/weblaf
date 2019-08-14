@@ -23,7 +23,7 @@
                 <decoration states="visited,enabled,focused">
                     <DashFocus color="100,0,0" />
                 </decoration>
-                <decoration states="hover">
+                <decoration states="enabled,hover">
                     <LabelLayout>
                         <StyledLabelText ignoreStyleColors="true" globalStyle="u" />
                     </LabelLayout>

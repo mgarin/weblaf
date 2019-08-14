@@ -19,7 +19,6 @@
  * This package contains various utility and utility-related classes provided by 'core' module.
  *
  * @author Mikle Garin
- * @see com.alee.utils.AnimationUtils
  * @see com.alee.utils.ArrayUtils
  * @see com.alee.utils.CollectionUtils
  * @see com.alee.utils.ColorUtils

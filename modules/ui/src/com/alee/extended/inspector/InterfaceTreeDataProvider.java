@@ -17,6 +17,7 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 import com.alee.laf.VisibleWindowListener;
 import com.alee.laf.WebLookAndFeel;
@@ -98,7 +99,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
             WebLookAndFeel.addVisibleWindowListener ( tree, new VisibleWindowListener ()
             {
                 @Override
-                public void windowDisplayed ( final Window window )
+                public void windowDisplayed ( @NotNull final Window window )
                 {
                     if ( window.isShowing () )
                     {
@@ -109,7 +110,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
                 }
 
                 @Override
-                public void windowHidden ( final Window window )
+                public void windowHidden ( @NotNull final Window window )
                 {
                     final InterfaceTreeNode root = tree.getRootNode ();
                     for ( int i = 0; i < root.getChildCount (); i++ )

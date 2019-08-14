@@ -17,6 +17,7 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.AbstractComponentBehavior;
 import com.alee.extended.behavior.Behavior;
@@ -58,7 +59,7 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
      *
      * @param table {@link JTable} this behavior is attached to
      */
-    public TableRowHeightOptimizer ( final JTable table )
+    public TableRowHeightOptimizer ( @NotNull final JTable table )
     {
         super ( table );
     }
@@ -92,7 +93,7 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent event )
+    public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
         final String propertyName = event.getPropertyName ();
         if ( Objects.equals ( propertyName, WebLookAndFeel.MODEL_PROPERTY ) )
@@ -120,7 +121,7 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
     }
 
     @Override
-    public void tableChanged ( final TableModelEvent event )
+    public void tableChanged ( @NotNull final TableModelEvent event )
     {
         /**
          * This call must be made later due to the way {@link javax.swing.table.TableRowSorter} is implemented.

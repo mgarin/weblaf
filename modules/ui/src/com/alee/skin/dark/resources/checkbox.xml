@@ -74,14 +74,9 @@
         <painter>
             <decorations>
                 <decoration cursor="hand" />
-                <decoration states="hover">
+                <decoration states="enabled,hover">
                     <ButtonLayout>
                         <StyledButtonText globalStyle="u" />
-                    </ButtonLayout>
-                </decoration>
-                <decoration states="disabled">
-                    <ButtonLayout>
-                        <StyledButtonText globalStyle="" />
                     </ButtonLayout>
                 </decoration>
             </decorations>

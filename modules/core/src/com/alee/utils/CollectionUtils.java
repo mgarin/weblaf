@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Supplier;
@@ -45,7 +47,7 @@ public final class CollectionUtils
      * @param collection {@link Collection} to process
      * @return {@code true} if specified {@link Collection} is empty, {@code false} otherwise
      */
-    public static boolean isEmpty ( final Collection collection )
+    public static boolean isEmpty ( @Nullable final Collection collection )
     {
         return collection == null || collection.isEmpty ();
     }
@@ -56,7 +58,7 @@ public final class CollectionUtils
      * @param collection {@link Collection} to process
      * @return {@code true} if specified {@link Collection} is not empty, {@code false} otherwise
      */
-    public static boolean notEmpty ( final Collection collection )
+    public static boolean notEmpty ( @Nullable final Collection collection )
     {
         return !isEmpty ( collection );
     }
@@ -68,7 +70,7 @@ public final class CollectionUtils
      * @param <T>  elements type
      * @return non-{@code null} {@link List} that is either specified {@code list} or new empty {@link ArrayList}
      */
-    public static <T> List<T> nonNull ( final List<T> list )
+    public static <T> List<T> nonNull ( @Nullable final List<T> list )
     {
         return list != null ? list : new ArrayList<T> ( 0 );
     }
@@ -82,7 +84,7 @@ public final class CollectionUtils
      * @param <T>   object type
      * @return list with limited amount of objects from the initial list
      */
-    public static <T> List<T> limit ( final List<T> list, final int limit )
+    public static <T> List<T> limit ( @NotNull final List<T> list, final int limit )
     {
         return list.size () <= limit ? list : copySubList ( list, 0, limit );
     }
@@ -96,7 +98,8 @@ public final class CollectionUtils
      * @param <T>        collection element type
      * @return maximum element of the {@link Collection} according to {@link Comparator}
      */
-    public static <T> T max ( final Collection<T> collection, final Comparator<T> comparator )
+    @Nullable
+    public static <T> T max ( @Nullable final Collection<T> collection, @NotNull final Comparator<T> comparator )
     {
         final T result;
         if ( CollectionUtils.isEmpty ( collection ) )
@@ -123,7 +126,8 @@ public final class CollectionUtils
      * @param <T>       data type
      * @return sub list with copied values
      */
-    public static <T> ArrayList<T> copySubList ( final List<T> list, final int fromIndex, final int toIndex )
+    @NotNull
+    public static <T> ArrayList<T> copySubList ( @NotNull final List<T> list, final int fromIndex, final int toIndex )
     {
         return new ArrayList<T> ( list.subList ( fromIndex, toIndex ) );
     }
@@ -134,7 +138,8 @@ public final class CollectionUtils
      * @param data booleans array
      * @return booleans list
      */
-    public static ArrayList<Boolean> asList ( final boolean[] data )
+    @NotNull
+    public static ArrayList<Boolean> asList ( @NotNull final boolean[] data )
     {
         final ArrayList<Boolean> list = new ArrayList<Boolean> ( data.length );
         for ( final boolean i : data )
@@ -150,7 +155,8 @@ public final class CollectionUtils
      * @param data integers array
      * @return integers list
      */
-    public static ArrayList<Integer> asList ( final int[] data )
+    @NotNull
+    public static ArrayList<Integer> asList ( @NotNull final int[] data )
     {
         final ArrayList<Integer> list = new ArrayList<Integer> ( data.length );
         for ( final int i : data )
@@ -166,7 +172,8 @@ public final class CollectionUtils
      * @param data characters array
      * @return characters list
      */
-    public static ArrayList<Character> asList ( final char[] data )
+    @NotNull
+    public static ArrayList<Character> asList ( @NotNull final char[] data )
     {
         final ArrayList<Character> list = new ArrayList<Character> ( data.length );
         for ( final char i : data )
@@ -182,7 +189,8 @@ public final class CollectionUtils
      * @param data bytes array
      * @return bytes list
      */
-    public static ArrayList<Byte> asList ( final byte[] data )
+    @NotNull
+    public static ArrayList<Byte> asList ( @NotNull final byte[] data )
     {
         final ArrayList<Byte> list = new ArrayList<Byte> ( data.length );
         for ( final byte i : data )
@@ -198,7 +206,8 @@ public final class CollectionUtils
      * @param data shorts array
      * @return shorts list
      */
-    public static ArrayList<Short> asList ( final short[] data )
+    @NotNull
+    public static ArrayList<Short> asList ( @NotNull final short[] data )
     {
         final ArrayList<Short> list = new ArrayList<Short> ( data.length );
         for ( final short i : data )
@@ -214,7 +223,8 @@ public final class CollectionUtils
      * @param data longs array
      * @return longs list
      */
-    public static ArrayList<Long> asList ( final long[] data )
+    @NotNull
+    public static ArrayList<Long> asList ( @NotNull final long[] data )
     {
         final ArrayList<Long> list = new ArrayList<Long> ( data.length );
         for ( final long i : data )
@@ -230,7 +240,8 @@ public final class CollectionUtils
      * @param data floats array
      * @return floats list
      */
-    public static ArrayList<Float> asList ( final float[] data )
+    @NotNull
+    public static ArrayList<Float> asList ( @NotNull final float[] data )
     {
         final ArrayList<Float> list = new ArrayList<Float> ( data.length );
         for ( final float i : data )
@@ -246,7 +257,8 @@ public final class CollectionUtils
      * @param data doubles array
      * @return doubles list
      */
-    public static ArrayList<Double> asList ( final double[] data )
+    @NotNull
+    public static ArrayList<Double> asList ( @NotNull final double[] data )
     {
         final ArrayList<Double> list = new ArrayList<Double> ( data.length );
         for ( final double i : data )
@@ -263,7 +275,8 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <T> ArrayList<T> asList ( final T... data )
+    @NotNull
+    public static <T> ArrayList<T> asList ( @NotNull final T... data )
     {
         final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
@@ -277,7 +290,8 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <T> ArrayList<T> asList ( final Iterator<T> data )
+    @NotNull
+    public static <T> ArrayList<T> asList ( @NotNull final Iterator<T> data )
     {
         final ArrayList<T> list = new ArrayList<T> ();
         while ( data.hasNext () )
@@ -294,17 +308,15 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return non-null data list
      */
-    public static <T> ArrayList<T> asNonNullList ( final T... data )
+    @NotNull
+    public static <T> ArrayList<T> asNonNullList ( @NotNull final T... data )
     {
         final ArrayList<T> list = new ArrayList<T> ( data.length );
-        if ( data != null )
+        for ( final T object : data )
         {
-            for ( final T object : data )
+            if ( object != null )
             {
-                if ( object != null )
-                {
-                    list.add ( object );
-                }
+                list.add ( object );
             }
         }
         return list;
@@ -317,7 +329,7 @@ public final class CollectionUtils
      * @param <T>        {@link Collection} element type
      * @return {@code true} if all {@link Collection} elements are unique, {@code false} otherwise
      */
-    public static <T> boolean areAllUnique ( final Collection<T> collection )
+    public static <T> boolean areAllUnique ( @NotNull final Collection<T> collection )
     {
         return new HashSet<T> ( collection ).size () == collection.size ();
     }
@@ -329,7 +341,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Boolean> collection, final boolean[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Boolean> collection, @NotNull final boolean[] objects )
     {
         boolean result = false;
         for ( final boolean object : objects )
@@ -349,7 +361,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Integer> collection, final int[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Integer> collection, @NotNull final int[] objects )
     {
         boolean result = false;
         for ( final int object : objects )
@@ -369,7 +381,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Character> collection, final char[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Character> collection, @NotNull final char[] objects )
     {
         boolean result = false;
         for ( final char object : objects )
@@ -389,7 +401,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Byte> collection, final byte[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Byte> collection, @NotNull final byte[] objects )
     {
         boolean result = false;
         for ( final byte object : objects )
@@ -409,7 +421,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Short> collection, final short[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Short> collection, @NotNull final short[] objects )
     {
         boolean result = false;
         for ( final short object : objects )
@@ -429,7 +441,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Long> collection, final long[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Long> collection, @NotNull final long[] objects )
     {
         boolean result = false;
         for ( final long object : objects )
@@ -449,7 +461,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Float> collection, final float[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Float> collection, @NotNull final float[] objects )
     {
         boolean result = false;
         for ( final float object : objects )
@@ -469,7 +481,7 @@ public final class CollectionUtils
      * @param objects    objects
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static boolean addUnique ( final Collection<Double> collection, final double[] objects )
+    public static boolean addUnique ( @NotNull final Collection<Double> collection, @NotNull final double[] objects )
     {
         boolean result = false;
         for ( final double object : objects )
@@ -490,7 +502,7 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addUnique ( final Collection<T> collection, final T... objects )
+    public static <T> boolean addUnique ( @NotNull final Collection<T> collection, @NotNull final T... objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -511,7 +523,7 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addUnique ( final Collection<T> collection, final Collection<T> objects )
+    public static <T> boolean addUnique ( @NotNull final Collection<T> collection, @NotNull final Collection<T> objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -532,7 +544,7 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addUniqueNonNull ( final Collection<T> collection, final T... objects )
+    public static <T> boolean addUniqueNonNull ( @NotNull final Collection<T> collection, @NotNull final T... objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -553,7 +565,7 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean addUniqueNonNull ( final Collection<T> collection, final Collection<T> objects )
+    public static <T> boolean addUniqueNonNull ( @NotNull final Collection<T> collection, @NotNull final Collection<T> objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -574,7 +586,7 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean removeAll ( final Collection<T> collection, final T... objects )
+    public static <T> boolean removeAll ( @NotNull final Collection<T> collection, @NotNull final T... objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -592,7 +604,7 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return {@code true} if list changed as the result of this operation, {@code false} otherwise
      */
-    public static <T> boolean removeAll ( final Collection<T> collection, final Collection<T> objects )
+    public static <T> boolean removeAll ( @NotNull final Collection<T> collection, @NotNull final Collection<T> objects )
     {
         boolean result = false;
         for ( final T object : objects )
@@ -610,7 +622,8 @@ public final class CollectionUtils
      * @param <T>         collection type
      * @return collection that contains elements from all specified collections
      */
-    public static <T> ArrayList<T> join ( final Collection<T>... collections )
+    @NotNull
+    public static <T> ArrayList<T> join ( @Nullable final Collection<T>... collections )
     {
         // Calculating final collection size
         int size = 0;
@@ -645,13 +658,10 @@ public final class CollectionUtils
      * @param <T>        list type
      * @return copy of the specified list
      */
-    public static <T> ArrayList<T> copy ( final Collection<T> collection )
+    @Nullable
+    public static <T> ArrayList<T> copy ( @Nullable final Collection<T> collection )
     {
-        if ( collection == null )
-        {
-            return null;
-        }
-        return new ArrayList<T> ( collection );
+        return collection != null ? new ArrayList<T> ( collection ) : null;
     }
 
     /**
@@ -661,17 +671,17 @@ public final class CollectionUtils
      * @param <T>  list type
      * @return refactored list
      */
-    public static <T> List<T> removeNulls ( final List<T> list )
+    @Nullable
+    public static <T> List<T> removeNulls ( @Nullable final List<T> list )
     {
-        if ( list == null )
+        if ( list != null )
         {
-            return null;
-        }
-        for ( int i = list.size () - 1; i >= 0; i-- )
-        {
-            if ( list.get ( i ) == null )
+            for ( int i = list.size () - 1; i >= 0; i-- )
             {
-                list.remove ( i );
+                if ( list.get ( i ) == null )
+                {
+                    list.remove ( i );
+                }
             }
         }
         return list;
@@ -684,7 +694,7 @@ public final class CollectionUtils
      * @param collection2 second {@link Collection}
      * @return {@code true} if {@link Collection}s are equal, {@code false} otherwise
      */
-    public static boolean equals ( final Collection collection1, final Collection collection2 )
+    public static boolean equals ( @NotNull final Collection collection1, @NotNull final Collection collection2 )
     {
         boolean equal = collection1.size () == collection2.size ();
         if ( equal )
@@ -709,7 +719,7 @@ public final class CollectionUtils
      * @param strictIndices whether or not {@link List}s should have same elements at the same indices
      * @return {@code true} if {@link List}s are equal, {@code false} otherwise
      */
-    public static boolean equals ( final List list1, final List list2, final boolean strictIndices )
+    public static boolean equals ( @Nullable final List list1, @Nullable final List list2, final boolean strictIndices )
     {
         if ( list1 == null && list2 == null )
         {
@@ -758,7 +768,8 @@ public final class CollectionUtils
      * @param collection {@link Collection} of {@link Integer}s
      * @return {@code int[]} array created using {@link Collection} of {@link Integer}s
      */
-    public static int[] toIntArray ( final Collection<Integer> collection )
+    @NotNull
+    public static int[] toIntArray ( @NotNull final Collection<Integer> collection )
     {
         final int[] array = new int[ collection.size () ];
         int index = 0;
@@ -776,7 +787,8 @@ public final class CollectionUtils
      * @param collection {@link Collection} of {@link Object}s
      * @return {@code Object[]} array created using {@link Collection} of {@link Object}s
      */
-    public static Object[] toObjectArray ( final Collection collection )
+    @NotNull
+    public static Object[] toObjectArray ( @NotNull final Collection collection )
     {
         final Object[] array = new Object[ collection.size () ];
         int index = 0;
@@ -796,7 +808,8 @@ public final class CollectionUtils
      * @param <T>          {@link List} elements type
      * @return {@link List} of {@link String}s extracted from the specified elements {@link List}
      */
-    public static <T> ArrayList<String> toStringList ( final List<T> list, final Function<T, String> textProvider )
+    @NotNull
+    public static <T> ArrayList<String> toStringList ( @NotNull final List<T> list, @NotNull final Function<T, String> textProvider )
     {
         final ArrayList<String> stringList = new ArrayList<String> ( list.size () );
         for ( final T element : list )
@@ -813,7 +826,8 @@ public final class CollectionUtils
      * @param <T>   array elements type
      * @return {@link List} of {@link Object}s converted from array
      */
-    public static <T> ArrayList<T> toList ( final T[] array )
+    @NotNull
+    public static <T> ArrayList<T> toList ( @NotNull final T[] array )
     {
         final ArrayList<T> list = new ArrayList<T> ( array.length );
         Collections.addAll ( list, array );
@@ -827,7 +841,8 @@ public final class CollectionUtils
      * @param <T>        {@link Collection} elements type
      * @return {@link List} of objects converted from {@link Collection}
      */
-    public static <T> ArrayList<T> toList ( final Collection<T> collection )
+    @NotNull
+    public static <T> ArrayList<T> toList ( @NotNull final Collection<T> collection )
     {
         return new ArrayList<T> ( collection );
     }
@@ -839,7 +854,8 @@ public final class CollectionUtils
      * @param <T>        data type
      * @return a vector of objects converted from collection
      */
-    public static <T> Vector<T> toVector ( final Collection<T> collection )
+    @NotNull
+    public static <T> Vector<T> toVector ( @NotNull final Collection<T> collection )
     {
         return new Vector<T> ( collection );
     }
@@ -851,7 +867,8 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return a vector of objects converted from data
      */
-    public static <T> Vector<T> asVector ( final T... data )
+    @NotNull
+    public static <T> Vector<T> asVector ( @NotNull final T... data )
     {
         final Vector<T> vector = new Vector<T> ( data.length );
         Collections.addAll ( vector, data );
@@ -866,7 +883,8 @@ public final class CollectionUtils
      * @param <T>        elements type
      * @return list of elements filtered from collection
      */
-    public static <T> ArrayList<T> filter ( final Collection<T> collection, final Filter<T> filter )
+    @NotNull
+    public static <T> ArrayList<T> filter ( @NotNull final Collection<T> collection, @Nullable final Filter<T> filter )
     {
         final ArrayList<T> filtered;
         if ( filter != null )
@@ -895,7 +913,8 @@ public final class CollectionUtils
      * @param <T>        elements type
      * @return list of elements filtered from collection
      */
-    public static <T> ArrayList<T> filter ( final Collection<T> collection, final Filter<T>... filters )
+    @NotNull
+    public static <T> ArrayList<T> filter ( @NotNull final Collection<T> collection, @NotNull final Filter<T>... filters )
     {
         final ArrayList<T> filtered = new ArrayList<T> ( collection.size () );
         for ( final T element : collection )
@@ -923,7 +942,8 @@ public final class CollectionUtils
      * @param <T>  elements type
      * @return same {@link List} with non-distinct elements removed
      */
-    public static <T> List<T> distinct ( final List<T> list )
+    @NotNull
+    public static <T> List<T> distinct ( @NotNull final List<T> list )
     {
         final Set<T> seen = new HashSet<T> ( list.size () );
         final Iterator<T> iterator = list.iterator ();
@@ -950,7 +970,8 @@ public final class CollectionUtils
      * @param <T>        elements type
      * @return same {@link List} but sorted according to the specified {@link Comparator}
      */
-    public static <T> List<T> sort ( final List<T> list, final Comparator<T> comparator )
+    @NotNull
+    public static <T> List<T> sort ( @NotNull final List<T> list, @Nullable final Comparator<T> comparator )
     {
         if ( comparator != null )
         {
@@ -974,7 +995,8 @@ public final class CollectionUtils
      * @param <T>         elements type
      * @return same {@link List} but sorted according to the specified {@link Comparator}
      */
-    public static <T> List<T> sort ( final List<T> list, final Comparator<T>... comparators )
+    @NotNull
+    public static <T> List<T> sort ( @NotNull final List<T> list, @NotNull final Comparator<T>... comparators )
     {
         for ( final Comparator<T> comparator : comparators )
         {
@@ -994,7 +1016,8 @@ public final class CollectionUtils
      * @param <V> value object type
      * @return map keys list
      */
-    public static <K, V> ArrayList<K> keysList ( final Map<K, V> map )
+    @NotNull
+    public static <K, V> ArrayList<K> keysList ( @NotNull final Map<K, V> map )
     {
         return new ArrayList<K> ( map.keySet () );
     }
@@ -1007,7 +1030,8 @@ public final class CollectionUtils
      * @param <V> value object type
      * @return map values list
      */
-    public static <K, V> ArrayList<V> valuesList ( final Map<K, V> map )
+    @NotNull
+    public static <K, V> ArrayList<V> valuesList ( @NotNull final Map<K, V> map )
     {
         return new ArrayList<V> ( map.values () );
     }
@@ -1020,7 +1044,8 @@ public final class CollectionUtils
      * @param <V> value object type
      * @return map values summary list with unique elements only
      */
-    public static <K, V> ArrayList<V> valuesSummaryList ( final Map<K, List<V>> map )
+    @NotNull
+    public static <K, V> ArrayList<V> valuesSummaryList ( @NotNull final Map<K, List<V>> map )
     {
         final ArrayList<V> summary = new ArrayList<V> ( 0 );
         for ( final Map.Entry<K, List<V>> entry : map.entrySet () )
@@ -1046,7 +1071,8 @@ public final class CollectionUtils
      * @param <T>         elements type
      * @return {@link List} filled with data provided by index mapping {@link Function}
      */
-    public static <T> List<T> fillList ( final int size, final Function<Integer, T> indexMapper )
+    @NotNull
+    public static <T> List<T> fillList ( final int size, @NotNull final Function<Integer, T> indexMapper )
     {
         final List<T> list = new ArrayList<T> ( size );
         for ( int i = 0; i < size; i++ )
@@ -1063,7 +1089,8 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data {@link HashSet}
      */
-    public static <T> HashSet<T> asHashSet ( final Collection<T> data )
+    @NotNull
+    public static <T> HashSet<T> asHashSet ( @NotNull final Collection<T> data )
     {
         return new HashSet<T> ( data );
     }
@@ -1075,7 +1102,8 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data {@link HashSet}
      */
-    public static <T> HashSet<T> asHashSet ( final T... data )
+    @NotNull
+    public static <T> HashSet<T> asHashSet ( @NotNull final T... data )
     {
         final HashSet<T> set = new HashSet<T> ( data.length );
         Collections.addAll ( set, data );
@@ -1089,6 +1117,7 @@ public final class CollectionUtils
      * @param to   last range integer, inclusive
      * @return new {@link List} filled with {@link Integer}s in the specified range
      */
+    @NotNull
     public static List<Integer> intRange ( final int from, final int to )
     {
         final List<Integer> range = new ArrayList<Integer> ( Math.max ( from, to ) - Math.min ( from, to ) + 1 );
@@ -1109,7 +1138,9 @@ public final class CollectionUtils
      * @return {@link Collection} if not empty
      * @throws RuntimeException if {@link Collection} is empty
      */
-    public static <T extends Collection<?>> T requireNotEmpty ( final T collection, final Supplier<RuntimeException> exceptionSupplier )
+    @NotNull
+    public static <T extends Collection<?>> T requireNotEmpty ( @Nullable final T collection,
+                                                                @NotNull final Supplier<RuntimeException> exceptionSupplier )
     {
         if ( isEmpty ( collection ) )
         {

@@ -17,6 +17,8 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.array.ArrayIterator;
@@ -38,6 +40,7 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
     /**
      * {@link List} data.
      */
+    @NotNull
     @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
     protected final E[] data;
 
@@ -46,12 +49,8 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
      *
      * @param data data array
      */
-    public ImmutableList ( final E... data )
+    public ImmutableList ( @NotNull final E... data )
     {
-        if ( data == null )
-        {
-            throw new NullPointerException ( "ImmutableList data must not be null" );
-        }
         this.data = data;
     }
 
@@ -60,12 +59,8 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
      *
      * @param collection data {@link Collection}
      */
-    public ImmutableList ( final Collection<? extends E> collection )
+    public ImmutableList ( @NotNull final Collection<? extends E> collection )
     {
-        if ( collection == null )
-        {
-            throw new NullPointerException ( "ImmutableList data must not be null" );
-        }
         this.data = ( E[] ) collection.toArray ();
     }
 
@@ -82,20 +77,22 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
     }
 
     @Override
-    public boolean contains ( final Object element )
+    public boolean contains ( @Nullable final Object element )
     {
         return ArrayUtils.contains ( element, data );
     }
 
+    @NotNull
     @Override
     public Object[] toArray ()
     {
         return data;
     }
 
-    @SuppressWarnings ( "SuspiciousSystemArraycopy" )
+    @NotNull
     @Override
-    public <T> T[] toArray ( final T[] array )
+    @SuppressWarnings ( "SuspiciousSystemArraycopy" )
+    public <T> T[] toArray ( @NotNull final T[] array )
     {
         final int size = size ();
         if ( array.length < size () )
@@ -113,6 +110,7 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
         }
     }
 
+    @NotNull
     @Override
     public Iterator<E> iterator ()
     {
@@ -127,19 +125,19 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
     }
 
     @Override
-    public boolean add ( final E element )
+    public boolean add ( @Nullable final E element )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean remove ( final Object element )
+    public boolean remove ( @Nullable final Object element )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean containsAll ( final Collection<?> collection )
+    public boolean containsAll ( @NotNull final Collection<?> collection )
     {
         for ( final Object element : collection )
         {
@@ -152,19 +150,19 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
     }
 
     @Override
-    public boolean addAll ( final Collection<? extends E> collection )
+    public boolean addAll ( @NotNull final Collection<? extends E> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean removeAll ( final Collection<?> collection )
+    public boolean removeAll ( @NotNull final Collection<?> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean retainAll ( final Collection<?> collection )
+    public boolean retainAll ( @NotNull final Collection<?> collection )
     {
         throw createModificationException ();
     }
@@ -175,24 +173,27 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
         throw createModificationException ();
     }
 
+    @Nullable
     @Override
     public E get ( final int index )
     {
         return data[ index ];
     }
 
+    @Nullable
     @Override
-    public E set ( final int index, final E element )
+    public E set ( final int index, @Nullable final E element )
     {
         throw new UnsupportedOperationException ();
     }
 
     @Override
-    public void add ( final int index, final E element )
+    public void add ( final int index, @Nullable final E element )
     {
         throw new UnsupportedOperationException ();
     }
 
+    @Nullable
     @Override
     public E remove ( final int index )
     {
@@ -200,29 +201,31 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
     }
 
     @Override
-    public int indexOf ( final Object o )
+    public int indexOf ( @Nullable final Object o )
     {
         return ArrayUtils.indexOf ( o, data );
     }
 
     @Override
-    public int lastIndexOf ( final Object o )
+    public int lastIndexOf ( @Nullable final Object o )
     {
         return ArrayUtils.lastIndexOf ( o, data );
     }
 
     @Override
-    public boolean addAll ( final int index, final Collection<? extends E> c )
+    public boolean addAll ( final int index, @NotNull final Collection<? extends E> c )
     {
         throw new UnsupportedOperationException ();
     }
 
+    @NotNull
     @Override
     public ListIterator<E> listIterator ()
     {
         return listIterator ( 0 );
     }
 
+    @NotNull
     @Override
     public ListIterator<E> listIterator ( final int index )
     {
@@ -242,6 +245,7 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
         };
     }
 
+    @NotNull
     @Override
     public List<E> subList ( final int fromIndex, final int toIndex )
     {
@@ -253,6 +257,7 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
      *
      * @return new {@link UnsupportedOperationException} instance specific for this implementation
      */
+    @NotNull
     protected UnsupportedOperationException createModificationException ()
     {
         return new UnsupportedOperationException ( "ImmutableList is unmodifiable" );
@@ -265,7 +270,7 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
     }
 
     @Override
-    public boolean equals ( final Object o )
+    public boolean equals ( @Nullable final Object o )
     {
         if ( o == this )
         {
@@ -282,6 +287,7 @@ public class ImmutableList<E> implements List<E>, Cloneable, Serializable
         }
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

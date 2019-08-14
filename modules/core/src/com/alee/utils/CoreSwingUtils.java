@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -71,24 +73,34 @@ public final class CoreSwingUtils
      * @param component component to process
      * @return window ancestor for specified component or {@code null} if it doesn't exist
      */
-    public static Window getWindowAncestor ( final Component component )
+    @Nullable
+    public static Window getWindowAncestor ( @Nullable final Component component )
     {
-        if ( component == null )
+        final Window window;
+        if ( component != null )
         {
-            return null;
-        }
-        if ( component instanceof Window )
-        {
-            return ( Window ) component;
-        }
-        for ( Container p = component.getParent (); p != null; p = p.getParent () )
-        {
-            if ( p instanceof Window )
+            if ( !( component instanceof Window ) )
             {
-                return ( Window ) p;
+                Container parent;
+                for ( parent = component.getParent (); parent != null; parent = parent.getParent () )
+                {
+                    if ( parent instanceof Window )
+                    {
+                        break;
+                    }
+                }
+                window = ( Window ) parent;
+            }
+            else
+            {
+                window = ( Window ) component;
             }
         }
-        return null;
+        else
+        {
+            window = null;
+        }
+        return window;
     }
 
     /**
@@ -97,36 +109,39 @@ public final class CoreSwingUtils
      * @param component component to look under
      * @return root pane for the specified component or {@code null} if it doesn't exist
      */
-    public static JRootPane getRootPane ( final Component component )
+    @Nullable
+    public static JRootPane getRootPane ( @Nullable final Component component )
     {
+        final JRootPane rootPane;
         if ( component == null )
         {
-            return null;
+            rootPane = null;
         }
         else if ( component instanceof JFrame )
         {
-            return ( ( JFrame ) component ).getRootPane ();
+            rootPane = ( ( JFrame ) component ).getRootPane ();
         }
         else if ( component instanceof JDialog )
         {
-            return ( ( JDialog ) component ).getRootPane ();
+            rootPane = ( ( JDialog ) component ).getRootPane ();
         }
         else if ( component instanceof JWindow )
         {
-            return ( ( JWindow ) component ).getRootPane ();
+            rootPane = ( ( JWindow ) component ).getRootPane ();
         }
         else if ( component instanceof JApplet )
         {
-            return ( ( JApplet ) component ).getRootPane ();
+            rootPane = ( ( JApplet ) component ).getRootPane ();
         }
         else if ( component instanceof JRootPane )
         {
-            return ( JRootPane ) component;
+            rootPane = ( JRootPane ) component;
         }
         else
         {
-            return getRootPane ( component.getParent () );
+            rootPane = getRootPane ( component.getParent () );
         }
+        return rootPane;
     }
 
     /**
@@ -136,7 +151,7 @@ public final class CoreSwingUtils
      * @param component {@link Component} to check visibility on screen for
      * @return {@code true} if specified {@link Component} is actually visible on screen, {@code false} otherwise
      */
-    public static boolean isVisibleOnScreen ( final Component component )
+    public static boolean isVisibleOnScreen ( @NotNull final Component component )
     {
         final boolean visible;
         if ( component.isShowing () )
@@ -160,23 +175,15 @@ public final class CoreSwingUtils
      * @param visibleOnly whether or not only visible {@link Component} part bounds should be returned
      * @return {@link Component} bounds on screen, either only visible or complete ones
      */
-    public static Rectangle getBoundsOnScreen ( final Component component, final boolean visibleOnly )
+    @NotNull
+    public static Rectangle getBoundsOnScreen ( @NotNull final Component component, final boolean visibleOnly )
     {
         final Rectangle bounds;
         final Point los = locationOnScreen ( component );
         final Dimension size = component.getSize ();
         if ( visibleOnly )
         {
-            final Rectangle visible;
-            if ( component instanceof JComponent )
-            {
-                visible = ( ( JComponent ) component ).getVisibleRect ();
-            }
-            else
-            {
-                visible = new Rectangle ();
-                computeVisibleRect ( component, visible );
-            }
+            final Rectangle visible = getVisibleRect ( component );
             bounds = new Rectangle ( los.x + visible.x, los.y + visible.y, visible.width, visible.height );
         }
         else
@@ -193,10 +200,28 @@ public final class CoreSwingUtils
      * @param component component to process
      * @return component bounds inside its window
      */
-    public static Rectangle getBoundsInWindow ( final Component component )
+    @Nullable
+    public static Rectangle getBoundsInWindow ( @NotNull final Component component )
     {
-        return component instanceof Window || component instanceof JApplet ? getRootPane ( component ).getBounds () :
-            getRelativeBounds ( component, getRootPane ( component ) );
+        final Rectangle boundsInWindow;
+        final JRootPane rootPane = getRootPane ( component );
+        if ( rootPane != null )
+        {
+            if ( component instanceof Window || component instanceof JApplet )
+            {
+                boundsInWindow = rootPane.getBounds ();
+            }
+            else
+            {
+                boundsInWindow = getRelativeBounds ( component, rootPane );
+            }
+        }
+        else
+        {
+            boundsInWindow = null;
+        }
+        return boundsInWindow;
+
     }
 
     /**
@@ -206,7 +231,8 @@ public final class CoreSwingUtils
      * @param relativeTo component relative to which bounds will be returned
      * @return component bounds relative to another component
      */
-    public static Rectangle getRelativeBounds ( final Component component, final Component relativeTo )
+    @NotNull
+    public static Rectangle getRelativeBounds ( @NotNull final Component component, @NotNull final Component relativeTo )
     {
         return new Rectangle ( getRelativeLocation ( component, relativeTo ), component.getSize () );
     }
@@ -218,7 +244,8 @@ public final class CoreSwingUtils
      * @param relativeTo component relative to which location will be returned
      * @return component location relative to another component
      */
-    public static Point getRelativeLocation ( final Component component, final Component relativeTo )
+    @NotNull
+    public static Point getRelativeLocation ( @NotNull final Component component, @NotNull final Component relativeTo )
     {
         final Point los = locationOnScreen ( component );
         final Point rt = locationOnScreen ( relativeTo );
@@ -232,7 +259,7 @@ public final class CoreSwingUtils
      * @param component child component
      * @return {@code true} if specified {@code ancestor} is an ancestor of {@code component}, {@code false} otherwise
      */
-    public static boolean isAncestorOf ( final Component ancestor, final Component component )
+    public static boolean isAncestorOf ( @Nullable final Component ancestor, @Nullable final Component component )
     {
         return ancestor instanceof Container && ( ( Container ) ancestor ).isAncestorOf ( component );
     }
@@ -244,7 +271,7 @@ public final class CoreSwingUtils
      * @param component2 second component
      * @return true if specified components have the same ancestor, false otherwise
      */
-    public static boolean isSameAncestor ( final Component component1, final Component component2 )
+    public static boolean isSameAncestor ( @Nullable final Component component1, @Nullable final Component component2 )
     {
         return getWindowAncestor ( component1 ) == getWindowAncestor ( component2 );
     }
@@ -255,22 +282,23 @@ public final class CoreSwingUtils
      * @param window window to retrieve insets for
      * @return window decoration insets
      */
-    public static Insets getWindowDecorationInsets ( final Window window )
+    @NotNull
+    public static Insets getWindowDecorationInsets ( @Nullable final Window window )
     {
         final Insets insets = new Insets ( 0, 0, 0, 0 );
         if ( window instanceof Dialog || window instanceof Frame )
         {
-            final JRootPane rootPane = CoreSwingUtils.getRootPane ( window );
+            final JRootPane rootPane = getRootPane ( window );
             if ( rootPane != null )
             {
                 if ( window.isShowing () )
                 {
                     if ( window instanceof Dialog && !( ( Dialog ) window ).isUndecorated () ||
-                        window instanceof Frame && !( ( Frame ) window ).isUndecorated () )
+                            window instanceof Frame && !( ( Frame ) window ).isUndecorated () )
                     {
                         // Calculating exact decoration insets based on root pane insets
-                        final Rectangle wlos = CoreSwingUtils.getBoundsOnScreen ( window, false );
-                        final Rectangle rlos = CoreSwingUtils.getBoundsOnScreen ( rootPane, false );
+                        final Rectangle wlos = getBoundsOnScreen ( window, false );
+                        final Rectangle rlos = getBoundsOnScreen ( rootPane, false );
                         insets.top = rlos.y - wlos.y;
                         insets.left = rlos.x - wlos.x;
                         insets.bottom = wlos.y + wlos.height - rlos.y - rlos.height;
@@ -300,7 +328,7 @@ public final class CoreSwingUtils
      * @param component component to process
      * @return true if specified component is placed on a fullscreen window, false otherwise
      */
-    public static boolean isFullScreen ( final Component component )
+    public static boolean isFullScreen ( @Nullable final Component component )
     {
         final Window window = getWindowAncestor ( component );
         if ( window != null )
@@ -322,6 +350,7 @@ public final class CoreSwingUtils
      *
      * @return pointer information
      */
+    @NotNull
     public static PointerInfo getPointerInfo ()
     {
         PointerInfo pointerInfo = MouseInfo.getPointerInfo ();
@@ -333,13 +362,22 @@ public final class CoreSwingUtils
          */
         if ( pointerInfo == null )
         {
-            /**
-             * Unfortunately {@link PointerInfo} constructor is not accessible so we have to resort to Reflection.
-             * In the worst case if {@link PointerInfo} constructor changes - this will result in {@code null}.
-             */
-            final GraphicsDevice device = SystemUtils.getDefaultScreenDevice ();
-            final Point location = new Point ( 0, 0 );
-            pointerInfo = ReflectUtils.createInstanceSafely ( PointerInfo.class, device, location );
+            try
+            {
+                /**
+                 * Unfortunately {@link PointerInfo} constructor is not accessible so we have to resort to Reflection.
+                 * In the worst case if {@link PointerInfo} constructor changes - this will result in {@code null}.
+                 */
+                pointerInfo = ReflectUtils.createInstance (
+                        PointerInfo.class,
+                        SystemUtils.getDefaultScreenDevice (),
+                        new Point ( 0, 0 )
+                );
+            }
+            catch ( final Exception e )
+            {
+                throw new RuntimeException ( "Unable to create empty PointerInfo", e );
+            }
         }
 
         return pointerInfo;
@@ -350,6 +388,7 @@ public final class CoreSwingUtils
      *
      * @return mouse location on the screen
      */
+    @NotNull
     public static Point getMouseLocation ()
     {
         return getPointerInfo ().getLocation ();
@@ -361,7 +400,8 @@ public final class CoreSwingUtils
      * @param component component
      * @return mouse location on the screen relative to specified component
      */
-    public static Point getMouseLocation ( final Component component )
+    @NotNull
+    public static Point getMouseLocation ( @NotNull final Component component )
     {
         final Point mouse = getMouseLocation ();
         final Point los = locationOnScreen ( component );
@@ -374,7 +414,7 @@ public final class CoreSwingUtils
      * @param component {@link Component}
      * @return {@code true} if specified {@link Component} is currently hovered, {@code false} otherwise
      */
-    public static boolean isHovered ( final Component component )
+    public static boolean isHovered ( @NotNull final Component component )
     {
         boolean hover = false;
 
@@ -382,8 +422,7 @@ public final class CoreSwingUtils
         if ( component.isShowing () )
         {
             // Ensure component have non-zero visible width and height
-            final Rectangle vr = computeVisibleRect ( component, new Rectangle () );
-            if ( vr.width > 0 && vr.height > 0 )
+            if ( !getVisibleRect ( component ).isEmpty () )
             {
                 // Ensure that mouse is hovering the component right now
                 if ( getBoundsOnScreen ( component, true ).contains ( getMouseLocation () ) )
@@ -397,29 +436,64 @@ public final class CoreSwingUtils
     }
 
     /**
-     * Returns intersection of the visible rectangles for the component and all of its ancestors.
-     * Return value is also stored in {@code visibleRect}.
+     * Returns top component inside the specified container component at the specified point.
      *
-     * @param component   {@link Component}
-     * @param visibleRect {@code Rectangle} containing intersection of the visible rectangles for the component and all of its ancestors
-     * @return intersection of the visible rectangles for the component and all of its ancestors
+     * @param component container component to process
+     * @param point     point on the component
+     * @return top component inside the specified container component at the specified point
      */
-    private static Rectangle computeVisibleRect ( final Component component, final Rectangle visibleRect )
+    @Nullable
+    public static Component getTopComponentAt ( @Nullable final Component component, @NotNull final Point point )
     {
-        final Container p = component.getParent ();
-        final Rectangle bounds = component.getBounds ();
-        if ( p == null || p instanceof Window || p instanceof Applet )
+        return getTopComponentAt ( component, point.x, point.y );
+    }
+
+    /**
+     * Returns top component inside the specified container component at the specified point.
+     *
+     * @param component container component to process
+     * @param x         X coordinate on the component
+     * @param y         Y coordinate on the component
+     * @return top component inside the specified container component at the specified point
+     */
+    @Nullable
+    public static Component getTopComponentAt ( @Nullable final Component component, final int x, final int y )
+    {
+        final Component top;
+        if ( component != null && component.isVisible () && component.contains ( x, y ) )
         {
-            visibleRect.setBounds ( 0, 0, bounds.width, bounds.height );
+            if ( component instanceof Container )
+            {
+                Component topInChild = null;
+                final Container container = ( Container ) component;
+                for ( int i = 0; i < container.getComponentCount (); i++ )
+                {
+                    final Component child = container.getComponent ( i );
+                    topInChild = getTopComponentAt ( child, x - child.getX (), y - child.getY () );
+                    if ( topInChild != null )
+                    {
+                        break;
+                    }
+                }
+                if ( topInChild != null )
+                {
+                    top = topInChild;
+                }
+                else
+                {
+                    top = component;
+                }
+            }
+            else
+            {
+                top = component;
+            }
         }
         else
         {
-            computeVisibleRect ( p, visibleRect );
-            visibleRect.x -= bounds.x;
-            visibleRect.y -= bounds.y;
-            SwingUtilities.computeIntersection ( 0, 0, bounds.width, bounds.height, visibleRect );
+            top = null;
         }
-        return visibleRect;
+        return top;
     }
 
     /**
@@ -429,7 +503,8 @@ public final class CoreSwingUtils
      * @param component {@link Component} to determine locatin on screen for
      * @return {@link Component} location on screen
      */
-    public static Point locationOnScreen ( final Component component )
+    @NotNull
+    public static Point locationOnScreen ( @NotNull final Component component )
     {
         try
         {
@@ -449,6 +524,7 @@ public final class CoreSwingUtils
      *
      * @return {@link List} of displayed {@link JPopupMenu}s
      */
+    @NotNull
     public static List<JPopupMenu> getPopupMenus ()
     {
         final MenuElement[] selected = MenuSelectionManager.defaultManager ().getSelectedPath ();
@@ -469,7 +545,7 @@ public final class CoreSwingUtils
      * @param event {@link InputEvent}
      * @return {@code true} if specified {@link InputEvent} contains a menu shortcut key, {@code false} otherwise
      */
-    public static boolean isMenuShortcutKeyDown ( final InputEvent event )
+    public static boolean isMenuShortcutKeyDown ( @NotNull final InputEvent event )
     {
         return ( event.getModifiers () & Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask () ) != 0;
     }
@@ -490,7 +566,7 @@ public final class CoreSwingUtils
      *
      * @param runnable {@link Runnable} to execute
      */
-    public static void invokeLater ( final Runnable runnable )
+    public static void invokeLater ( @NotNull final Runnable runnable )
     {
         SwingUtilities.invokeLater ( runnable );
     }
@@ -502,7 +578,7 @@ public final class CoreSwingUtils
      *
      * @param runnable {@link Runnable} to execute
      */
-    public static void invokeAndWait ( final Runnable runnable )
+    public static void invokeAndWait ( @NotNull final Runnable runnable )
     {
         invokeAndWait ( runnable, false );
     }
@@ -515,7 +591,7 @@ public final class CoreSwingUtils
      * @param runnable         {@link Runnable} to execute
      * @param ignoreInterrupts whether or not {@link InterruptedException}s should be ignored
      */
-    public static void invokeAndWait ( final Runnable runnable, final boolean ignoreInterrupts )
+    public static void invokeAndWait ( @NotNull final Runnable runnable, final boolean ignoreInterrupts )
     {
         try
         {
@@ -543,5 +619,47 @@ public final class CoreSwingUtils
                 throw new UtilityException ( e );
             }
         }
+    }
+
+    /**
+     * Returns intersection of the visible rectangles for the component and all of its ancestors.
+     *
+     * @param component {@link Component}
+     * @return intersection of the visible rectangles for the component and all of its ancestors
+     */
+    @NotNull
+    public static Rectangle getVisibleRect ( @NotNull final Component component )
+    {
+        return component instanceof JComponent ?
+                ( ( JComponent ) component ).getVisibleRect () :
+                computeVisibleRect ( component, new Rectangle () );
+    }
+
+    /**
+     * Returns intersection of the visible rectangles for the component and all of its ancestors.
+     * Return value is also stored in {@code visibleRect}.
+     * This is a copy of private {@code JComponent#computeVisibleRect(Component, Rectangle)} method.
+     *
+     * @param component   {@link Component}
+     * @param visibleRect {@code Rectangle} containing intersection of the visible rectangles for the component and all of its ancestors
+     * @return intersection of the visible rectangles for the component and all of its ancestors
+     */
+    @NotNull
+    private static Rectangle computeVisibleRect ( @NotNull final Component component, @NotNull final Rectangle visibleRect )
+    {
+        final Container p = component.getParent ();
+        final Rectangle bounds = component.getBounds ();
+        if ( p == null || p instanceof Window || p instanceof Applet )
+        {
+            visibleRect.setBounds ( 0, 0, bounds.width, bounds.height );
+        }
+        else
+        {
+            computeVisibleRect ( p, visibleRect );
+            visibleRect.x -= bounds.x;
+            visibleRect.y -= bounds.y;
+            SwingUtilities.computeIntersection ( 0, 0, bounds.width, bounds.height, visibleRect );
+        }
+        return visibleRect;
     }
 }

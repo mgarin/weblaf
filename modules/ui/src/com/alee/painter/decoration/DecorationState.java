@@ -78,6 +78,8 @@ public interface DecorationState
 
     /**
      * Used to provide component parent focused state.
+     * Note that this state might heavily affect UI performance if used incorrectly.
+     * Check {@link AbstractDecorationPainter#updateInFocusedParent()} for usage tips.
      *
      * @see AbstractDecorationPainter#getDecorationStates()
      */
@@ -94,6 +96,15 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      */
     public static final String hover = "hover";
+
+    /**
+     * Used to provide component parent focused state.
+     * Note that this state might heavily affect UI performance if used incorrectly.
+     * Check {@link AbstractDecorationPainter#updateInHoveredParent()} for usage tips.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
+    public static final String inHoveredParent = "in-hovered-parent";
 
     /**
      * Used to provide component pressed state.

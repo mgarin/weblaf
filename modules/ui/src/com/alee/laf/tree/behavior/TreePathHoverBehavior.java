@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.AbstractObjectHoverBehavior;
 import com.alee.laf.tree.WebTreeUI;
 
@@ -39,7 +41,7 @@ public abstract class TreePathHoverBehavior<C extends JTree> extends AbstractObj
      *
      * @param tree tree into which this behavior is installed
      */
-    public TreePathHoverBehavior ( final C tree )
+    public TreePathHoverBehavior ( @NotNull final C tree )
     {
         this ( tree, true );
     }
@@ -50,13 +52,14 @@ public abstract class TreePathHoverBehavior<C extends JTree> extends AbstractObj
      * @param tree        {@link JTree} into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover events when tree is enabled
      */
-    public TreePathHoverBehavior ( final C tree, final boolean enabledOnly )
+    public TreePathHoverBehavior ( @NotNull final C tree, final boolean enabledOnly )
     {
         super ( tree, enabledOnly );
     }
 
+    @Nullable
     @Override
-    protected TreePath getObjectAt ( final Point location )
+    protected TreePath getObjectAt ( @NotNull final Point location )
     {
         final TreeUI treeUI = component.getUI ();
         final int index;
@@ -73,9 +76,19 @@ public abstract class TreePathHoverBehavior<C extends JTree> extends AbstractObj
         return component.getPathForRow ( index );
     }
 
+    @Nullable
     @Override
     protected TreePath getEmptyObject ()
     {
         return null;
     }
+
+    /**
+     * Informs when hover object changes.
+     *
+     * @param previous previous hover {@link TreePath}
+     * @param current  current hover {@link TreePath}
+     */
+    @Override
+    public abstract void hoverChanged ( @Nullable TreePath previous, @Nullable TreePath current );
 }

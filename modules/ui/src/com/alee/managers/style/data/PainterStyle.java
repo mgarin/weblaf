@@ -54,14 +54,6 @@ public final class PainterStyle implements Overwriting, Cloneable, Serializable
      */
     private LinkedHashMap<String, Object> properties;
 
-    /**
-     * Constructs new painter style information.
-     */
-    public PainterStyle ()
-    {
-        super ();
-    }
-
     @Override
     public boolean isOverwrite ()
     {

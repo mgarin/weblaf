@@ -17,6 +17,7 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
@@ -42,16 +43,15 @@ public abstract class AbstractUIInputListener<C extends JComponent, U extends Co
     protected U componentUI;
 
     @Override
-    public void install ( final C component )
+    public void install ( @NotNull final C component )
     {
         // Saving references to component and UI
         this.component = component;
         this.componentUI = LafUtils.getUI ( component );
-
     }
 
     @Override
-    public void uninstall ( final C component )
+    public void uninstall ( @NotNull final C component )
     {
         // Cleaning up references to component and UI
         this.componentUI = null;

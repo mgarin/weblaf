@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.focus;
+package com.alee.managers.hover;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
@@ -24,15 +24,15 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Implementations of this interface can be used to track {@link JComponent} and its children focus state.
- * There is also a {@link DefaultFocusTracker} implementation with all basic methods and which also contains a few additional features.
+ * Implementations of this interface can be used to track {@link JComponent} and its children hover state.
+ * There is also a {@link DefaultHoverTracker} implementation with all basic methods and which also contains a few additional features.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-FocusManager">How to use FocusManager</a>
- * @see DefaultFocusTracker
- * @see FocusManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HoverManager">How to use HoverManager</a>
+ * @see DefaultHoverTracker
+ * @see HoverManager
  */
-public interface FocusTracker
+public interface HoverTracker
 {
     /**
      * Returns whether or not tracking is currently enabled.
@@ -49,22 +49,22 @@ public interface FocusTracker
     public void setEnabled ( boolean enabled );
 
     /**
-     * Returns whether or not tracked component is currently focused according to this tracker settings.
+     * Returns whether or not tracked component is currently hovered according to this tracker settings.
      *
-     * @return {@code true} if tracked component is currently focused according to this tracker settings, {@code false} otherwise
+     * @return {@code true} if tracked component is currently hovered according to this tracker settings, {@code false} otherwise
      */
-    public boolean isFocused ();
+    public boolean isHovered ();
 
     /**
-     * Sets tracked component focused state.
+     * Sets tracked component hovered state.
      *
-     * @param focused component focused state
+     * @param hovered component hovered state
      */
-    public void setFocused ( boolean focused );
+    public void setHovered ( boolean hovered );
 
     /**
      * Returns whether specified {@link Component} is involved with this tracked {@link JComponent} or not.
-     * It basically says whether or not specified {@link Component} counts towards tracked {@link JComponent} focus changes.
+     * It basically says whether or not specified {@link Component} counts towards tracked {@link JComponent} hover changes.
      *
      * @param tracked   tracked {@link JComponent}
      * @param component {@link Component} to check for involvement
@@ -73,9 +73,9 @@ public interface FocusTracker
     public boolean isInvolved ( @NotNull JComponent tracked, @Nullable Component component );
 
     /**
-     * Informs about tracked {@link JComponent} focus changes depending on tracker settings.
+     * Informs about tracked {@link JComponent} hover changes depending on tracker settings.
      *
-     * @param focused whether tracked {@link JComponent} is focused or not
+     * @param hover whether tracked {@link JComponent} is hovered or not
      */
-    public void focusChanged ( boolean focused );
+    public void hoverChanged ( boolean hover );
 }

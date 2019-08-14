@@ -17,6 +17,7 @@
 
 package com.alee.extended.panel;
 
+import com.alee.api.data.Orientation;
 import com.alee.extended.layout.GroupLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
@@ -27,12 +28,11 @@ import java.awt.*;
 /**
  * This panel allows you to quickly place a small group of components into a row or a column.
  * You can specify grouping type, orientation and gap between components.
- * <p>
+ *
  * If specified grouping type is not "none" then components will be placed according to that grouping type.
  * Otherwise whether component should fill all the space left or not is determined by its FILL_CELL client property.
- * <p>
+ *
  * Orientation determines whether components should be placed horizontally or vertically.
- * <p>
  * Gap determines the spacing between the components in pixels.
  *
  * @author Mikle Garin
@@ -238,7 +238,7 @@ public class GroupPanel extends WebPanel
     public GroupPanel ( final StyleId id, final GroupingType groupingType, final int gap, final boolean horizontal,
                         final Component... components )
     {
-        super ( id, new GroupLayout ( horizontal ? GroupLayout.HORIZONTAL : GroupLayout.VERTICAL, gap ) );
+        super ( id, new GroupLayout ( horizontal ? Orientation.horizontal : Orientation.vertical, gap ) );
 
         // Placing components
         for ( int i = 0; i < components.length; i++ )
@@ -301,20 +301,21 @@ public class GroupPanel extends WebPanel
      *
      * @return layout orientation
      */
-    public int getOrientation ()
+    public Orientation getOrientation ()
     {
         return getActualLayout ().getOrientation ();
     }
 
     /**
-     * Sets the layout orientation to either {@code SwingConstants.HORIZONTAL} or {@code SwingConstants.VERTICAL}.
+     * Sets the layout orientation.
      *
-     * @param orientation new layout orientation
+     * @param orientation layout orientation
      */
-    public void setOrientation ( final int orientation )
+    public void setOrientation ( final Orientation orientation )
     {
         getActualLayout ().setOrientation ( orientation );
         revalidate ();
+        repaint ();
     }
 
     /**
@@ -336,6 +337,7 @@ public class GroupPanel extends WebPanel
     {
         getActualLayout ().setGap ( gap );
         revalidate ();
+        repaint ();
     }
 
     /**
@@ -346,14 +348,17 @@ public class GroupPanel extends WebPanel
      */
     public static boolean isFill ( final Component component )
     {
+        final boolean fill;
         if ( component instanceof JComponent )
         {
-            final Boolean b = ( Boolean ) ( ( JComponent ) component ).getClientProperty ( FILL_CELL );
-            if ( b != null && b )
-            {
-                return true;
-            }
+            final JComponent jComponent = ( JComponent ) component;
+            final Boolean b = ( Boolean ) jComponent.getClientProperty ( FILL_CELL );
+            fill = b != null && b;
         }
-        return false;
+        else
+        {
+            fill = false;
+        }
+        return fill;
     }
 }

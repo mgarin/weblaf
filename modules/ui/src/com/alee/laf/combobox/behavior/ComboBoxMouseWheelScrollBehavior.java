@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.behavior.AbstractComponentBehavior;
 import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
@@ -41,13 +42,13 @@ public class ComboBoxMouseWheelScrollBehavior extends AbstractComponentBehavior<
      *
      * @param comboBox combobox using this behavior
      */
-    public ComboBoxMouseWheelScrollBehavior ( final JComboBox comboBox )
+    public ComboBoxMouseWheelScrollBehavior ( @NotNull final JComboBox comboBox )
     {
         super ( comboBox );
     }
 
     @Override
-    public void mouseWheelMoved ( final MouseWheelEvent e )
+    public void mouseWheelMoved ( @NotNull final MouseWheelEvent e )
     {
         if ( component.isEnabled () && SwingUtils.hasFocusOwner ( component ) )
         {
@@ -67,7 +68,8 @@ public class ComboBoxMouseWheelScrollBehavior extends AbstractComponentBehavior<
      * @param comboBox combobox to modify
      * @return installed behavior
      */
-    public static ComboBoxMouseWheelScrollBehavior install ( final JComboBox comboBox )
+    @NotNull
+    public static ComboBoxMouseWheelScrollBehavior install ( @NotNull final JComboBox comboBox )
     {
         // Uninstalling old behavior first
         uninstall ( comboBox );
@@ -83,7 +85,7 @@ public class ComboBoxMouseWheelScrollBehavior extends AbstractComponentBehavior<
      *
      * @param comboBox combobox to modify
      */
-    public static void uninstall ( final JComboBox comboBox )
+    public static void uninstall ( @NotNull final JComboBox comboBox )
     {
         for ( final MouseWheelListener listener : comboBox.getMouseWheelListeners () )
         {
@@ -100,7 +102,7 @@ public class ComboBoxMouseWheelScrollBehavior extends AbstractComponentBehavior<
      * @param comboBox combobox to process
      * @return true if the specified combobox has any behaviors installed, false otherwise
      */
-    public static boolean isInstalled ( final JComboBox comboBox )
+    public static boolean isInstalled ( @NotNull final JComboBox comboBox )
     {
         for ( final MouseWheelListener listener : comboBox.getMouseWheelListeners () )
         {

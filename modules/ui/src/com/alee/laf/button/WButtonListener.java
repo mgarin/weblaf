@@ -17,6 +17,7 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.AbstractUIInputListener;
 import com.alee.laf.UIAction;
@@ -26,6 +27,8 @@ import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.plaf.ComponentInputMapUIResource;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -41,8 +44,8 @@ import java.beans.PropertyChangeListener;
  * @author Arnaud Weber
  * @author Mikle Garin
  */
-public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
-        extends AbstractUIInputListener<C, U> implements MouseListener, MouseMotionListener, FocusListener, PropertyChangeListener
+public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>> extends AbstractUIInputListener<C, U>
+        implements MouseListener, MouseMotionListener, FocusListener, AncestorListener, PropertyChangeListener
 {
     /**
      * Last button press timestamp.
@@ -55,7 +58,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     protected boolean shouldDiscardRelease = false;
 
     @Override
-    public void install ( final C component )
+    public void install ( @NotNull final C component )
     {
         super.install ( component );
 
@@ -63,6 +66,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
         component.addMouseListener ( this );
         component.addMouseMotionListener ( this );
         component.addFocusListener ( this );
+        component.addAncestorListener ( this );
         component.addPropertyChangeListener ( this );
 
         // Installing ActionMap
@@ -78,7 +82,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void uninstall ( final C component )
+    public void uninstall ( @NotNull final C component )
     {
         // Uninstalling InputMap
         SwingUtilities.replaceUIInputMap ( component, JComponent.WHEN_IN_FOCUSED_WINDOW, null );
@@ -89,6 +93,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
 
         // Uninstalling listeners
         component.removePropertyChangeListener ( this );
+        component.removeAncestorListener ( this );
         component.removeFocusListener ( this );
         component.removeMouseMotionListener ( this );
         component.removeMouseListener ( this );
@@ -101,7 +106,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
      *
      * @param button {@link AbstractButton} to update mnemonic binding for
      */
-    protected void updateMnemonicBinding ( final AbstractButton button )
+    protected void updateMnemonicBinding ( @NotNull final AbstractButton button )
     {
         final int m = button.getMnemonic ();
         if ( m != 0 )
@@ -128,7 +133,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent e )
+    public void propertyChange ( @NotNull final PropertyChangeEvent e )
     {
         final String prop = e.getPropertyName ();
         if ( prop.equals ( AbstractButton.MNEMONIC_CHANGED_PROPERTY ) )
@@ -138,7 +143,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void focusGained ( final FocusEvent e )
+    public void focusGained ( @NotNull final FocusEvent e )
     {
         final AbstractButton button = ( AbstractButton ) e.getSource ();
         if ( button instanceof JButton && ( ( JButton ) button ).isDefaultCapable () )
@@ -158,7 +163,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void focusLost ( final FocusEvent e )
+    public void focusLost ( @NotNull final FocusEvent e )
     {
         final AbstractButton button = ( AbstractButton ) e.getSource ();
         final JRootPane root = button.getRootPane ();
@@ -181,22 +186,22 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void mouseMoved ( final MouseEvent e )
+    public void mouseMoved ( @NotNull final MouseEvent e )
     {
     }
 
     @Override
-    public void mouseDragged ( final MouseEvent e )
+    public void mouseDragged ( @NotNull final MouseEvent e )
     {
     }
 
     @Override
-    public void mouseClicked ( final MouseEvent e )
+    public void mouseClicked ( @NotNull final MouseEvent e )
     {
     }
 
     @Override
-    public void mousePressed ( final MouseEvent e )
+    public void mousePressed ( @NotNull final MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
         {
@@ -233,7 +238,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void mouseReleased ( final MouseEvent e )
+    public void mouseReleased ( @NotNull final MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
         {
@@ -252,7 +257,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void mouseEntered ( final MouseEvent e )
+    public void mouseEntered ( @NotNull final MouseEvent e )
     {
         final AbstractButton b = ( AbstractButton ) e.getSource ();
         final ButtonModel model = b.getModel ();
@@ -267,7 +272,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
     }
 
     @Override
-    public void mouseExited ( final MouseEvent e )
+    public void mouseExited ( @NotNull final MouseEvent e )
     {
         final AbstractButton b = ( AbstractButton ) e.getSource ();
         final ButtonModel model = b.getModel ();
@@ -276,6 +281,24 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
             model.setRollover ( false );
         }
         model.setArmed ( false );
+    }
+
+    @Override
+    public void ancestorAdded ( @NotNull final AncestorEvent event )
+    {
+        component.getModel ().setRollover ( false );
+    }
+
+    @Override
+    public void ancestorRemoved ( @NotNull final AncestorEvent event )
+    {
+        component.getModel ().setRollover ( false );
+    }
+
+    @Override
+    public void ancestorMoved ( @NotNull final AncestorEvent event )
+    {
+        component.getModel ().setRollover ( false );
     }
 
     /**
@@ -297,13 +320,13 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>>
          * @param button {@link AbstractButton}
          * @param name   {@link Action} name
          */
-        public Action ( final B button, final String name )
+        public Action ( @NotNull final B button, @NotNull final String name )
         {
             super ( button, name );
         }
 
         @Override
-        public void actionPerformed ( final ActionEvent e )
+        public void actionPerformed ( @NotNull final ActionEvent e )
         {
             final B button = getComponent ();
             if ( Objects.equals ( getName (), PRESSED ) )

@@ -18,6 +18,7 @@
 package com.alee.extended.window;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.extended.WebContainer;
@@ -683,7 +684,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         focusListener = new GlobalFocusListener ()
         {
             @Override
-            public void focusChanged ( final Component oldFocus, final Component newFocus )
+            public void focusChanged ( @Nullable final Component oldFocus, @Nullable final Component newFocus )
             {
                 if ( isCloseOnOuterAction () && newFocus == null )
                 {

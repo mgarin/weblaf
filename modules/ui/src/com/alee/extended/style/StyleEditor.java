@@ -337,7 +337,7 @@ public class StyleEditor extends WebFrame
                             final Component c = e.getComponent ();
                             final Point click = e.getLocationOnScreen ();
                             final Point cloc = CoreSwingUtils.locationOnScreen ( c );
-                            final Component actual = SwingUtils.getTopComponentAt ( c, click.x - cloc.x, click.y - cloc.y );
+                            final Component actual = CoreSwingUtils.getTopComponentAt ( c, click.x - cloc.x, click.y - cloc.y );
 
                             // todo GLASSPANE USAGE
                             actual.repaint ();

@@ -17,6 +17,8 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
 
@@ -36,6 +38,7 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
     /**
      * {@link Set} data.
      */
+    @NotNull
     protected final HashSet<E> data;
 
     /**
@@ -43,12 +46,8 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
      *
      * @param data {@link Set} data
      */
-    public ImmutableSet ( final E... data )
+    public ImmutableSet ( @NotNull final E... data )
     {
-        if ( data == null )
-        {
-            throw new NullPointerException ( "ImmutableSet data must not be null" );
-        }
         this.data = CollectionUtils.asHashSet ( data );
     }
 
@@ -57,12 +56,8 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
      *
      * @param data {@link Set} data
      */
-    public ImmutableSet ( final Collection<? extends E> data )
+    public ImmutableSet ( @NotNull final Collection<? extends E> data )
     {
-        if ( data == null )
-        {
-            throw new NullPointerException ( "ImmutableSet data must not be null" );
-        }
         this.data = new HashSet<E> ( data );
     }
 
@@ -79,24 +74,27 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
     }
 
     @Override
-    public boolean contains ( final Object element )
+    public boolean contains ( @Nullable final Object element )
     {
         return data.contains ( element );
     }
 
+    @NotNull
     @Override
     public Object[] toArray ()
     {
         return data.toArray ();
     }
 
-    @SuppressWarnings ( "SuspiciousToArrayCall" )
+    @NotNull
     @Override
-    public <T> T[] toArray ( final T[] array )
+    @SuppressWarnings ( "SuspiciousToArrayCall" )
+    public <T> T[] toArray ( @NotNull final T[] array )
     {
         return data.toArray ( array );
     }
 
+    @NotNull
     @Override
     public Iterator<E> iterator ()
     {
@@ -104,37 +102,37 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
     }
 
     @Override
-    public boolean add ( final E element )
+    public boolean add ( @Nullable final E element )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean remove ( final Object element )
+    public boolean remove ( @Nullable final Object element )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean containsAll ( final Collection<?> collection )
+    public boolean containsAll ( @NotNull final Collection<?> collection )
     {
         return data.containsAll ( collection );
     }
 
     @Override
-    public boolean addAll ( final Collection<? extends E> collection )
+    public boolean addAll ( @NotNull final Collection<? extends E> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean removeAll ( final Collection<?> collection )
+    public boolean removeAll ( @NotNull final Collection<?> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean retainAll ( final Collection<?> collection )
+    public boolean retainAll ( @NotNull final Collection<?> collection )
     {
         throw createModificationException ();
     }
@@ -150,6 +148,7 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
      *
      * @return new {@link UnsupportedOperationException} instance specific for this implementation
      */
+    @NotNull
     protected UnsupportedOperationException createModificationException ()
     {
         return new UnsupportedOperationException ( "ImmutableSet is unmodifiable" );
@@ -162,7 +161,7 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
     }
 
     @Override
-    public boolean equals ( final Object o )
+    public boolean equals ( @Nullable final Object o )
     {
         if ( o == this )
         {
@@ -179,6 +178,7 @@ public class ImmutableSet<E> implements Set<E>, Cloneable, Serializable
         }
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

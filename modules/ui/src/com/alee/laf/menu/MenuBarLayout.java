@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLineLayout;
 
 import javax.swing.*;
@@ -34,11 +35,11 @@ public final class MenuBarLayout extends AbstractLineLayout
      */
     public MenuBarLayout ()
     {
-        super ( 0 );
+        super ( 0, 20 );
     }
 
     @Override
-    public int getOrientation ( final Container container )
+    public int getOrientation ( @NotNull final Container container )
     {
         return HORIZONTAL;
     }

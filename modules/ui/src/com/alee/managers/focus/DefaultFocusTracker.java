@@ -17,6 +17,8 @@
 
 package com.alee.managers.focus;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.window.WebPopup;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
@@ -26,6 +28,7 @@ import com.alee.utils.collection.WeakHashSet;
 import javax.swing.FocusManager;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +45,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
     /**
      * Tracked {@link JComponent}.
      */
+    @NotNull
     protected final JComponent component;
 
     /**
@@ -64,6 +68,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * Note that this {@link Set} is backed by {@link WeakHashSet} implementation to avoid any memory leaks.
      * So it is safe to add any components here, even ones that might be removed at some point.
      */
+    @Nullable
     protected Set<Component> focusableChildren;
 
     /**
@@ -72,7 +77,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * @param component         tracked {@link JComponent}
      * @param uniteWithChildren whether or not tracked {@link JComponent} and its children should be counted as a single focusable unit
      */
-    public DefaultFocusTracker ( final JComponent component, final boolean uniteWithChildren )
+    public DefaultFocusTracker ( @NotNull final JComponent component, final boolean uniteWithChildren )
     {
         super ();
         this.component = component;
@@ -133,9 +138,10 @@ public abstract class DefaultFocusTracker implements FocusTracker
      *
      * @return custom children which should be tracked together with this component
      */
+    @NotNull
     public List<Component> getFocusableChildren ()
     {
-        return new ImmutableList<Component> ( focusableChildren );
+        return new ImmutableList<Component> ( focusableChildren != null ? focusableChildren : new ArrayList<Component> () );
     }
 
     /**
@@ -144,7 +150,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      *
      * @param child focusable child {@link Component} to add
      */
-    public void addFocusableChild ( final Component child )
+    public void addFocusableChild ( @NotNull final Component child )
     {
         if ( focusableChildren == null )
         {
@@ -159,7 +165,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      *
      * @param child focusable child {@link Component} to remove
      */
-    public void removeFocusableChild ( final Component child )
+    public void removeFocusableChild ( @NotNull final Component child )
     {
         if ( focusableChildren != null )
         {
@@ -168,7 +174,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
     }
 
     @Override
-    public boolean isInvolved ( final JComponent tracked, final Component component )
+    public boolean isInvolved ( @NotNull final JComponent tracked, @Nullable final Component component )
     {
         // Focus left application
         if ( component == null )
@@ -205,7 +211,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * @param component involved {@link Component}
      * @return {@code true} if specified {@link Component} is involved with this tracked {@link Component}, {@code false} otherwise
      */
-    protected boolean isChildInvolved ( final Component tracked, final Component component )
+    protected boolean isChildInvolved ( @NotNull final Component tracked, @NotNull final Component component )
     {
         return isUniteWithChildren () ? isRelated ( tracked, component ) : isEqual ( tracked, component );
     }
@@ -219,7 +225,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * @param component involved {@link Component}
      * @return {@code true} if specified {@link Component} is equal to tracked {@link Component}, {@code false} otherwise
      */
-    protected boolean isRelated ( final Component tracked, final Component component )
+    protected boolean isRelated ( @NotNull final Component tracked, @NotNull final Component component )
     {
         boolean related;
 
@@ -280,7 +286,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * @param component involved {@link Component}
      * @return {@code true} if specified {@link Component} is equal to tracked {@link Component} or any of its children, {@code false} otherwise
      */
-    protected boolean isEqualOrChild ( final Component tracked, final Component component )
+    protected boolean isEqualOrChild ( @NotNull final Component tracked, @NotNull final Component component )
     {
         final boolean isEqualOrChild;
         if ( SwingUtils.isEqualOrChild ( tracked, component ) )
@@ -311,7 +317,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * @param component involved {@link Component}
      * @return {@code true} if specified {@link Component} is equal to tracked {@link Component}, {@code false} otherwise
      */
-    protected boolean isEqual ( final Component tracked, final Component component )
+    protected boolean isEqual ( @NotNull final Component tracked, @NotNull final Component component )
     {
         final boolean isEqual;
         if ( tracked == component )
@@ -341,7 +347,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * @param tracked tracked {@link Component}
      * @return {@code true} if tracked {@link Component} references an actual {@link Window} that should be tracked, {@code false} otherwise
      */
-    protected boolean isTrackingWindow ( final Component tracked )
+    protected boolean isTrackingWindow ( @NotNull final Component tracked )
     {
         return tracked instanceof JRootPane || tracked instanceof WebPopup;
     }

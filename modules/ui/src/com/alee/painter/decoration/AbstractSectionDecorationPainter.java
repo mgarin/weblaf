@@ -116,6 +116,18 @@ public abstract class AbstractSectionDecorationPainter<C extends JComponent, U e
      * @return {@code false}
      */
     @Override
+    protected boolean usesInHoveredParentView ()
+    {
+        return false;
+    }
+
+    /**
+     * We do not want {@link SectionPainter} to perform any default tracking as it is already done within {@link #origin}.
+     * Maybe in some rare cases in the future this will be enabled but so far there are none.
+     *
+     * @return {@code false}
+     */
+    @Override
     protected boolean usesHierarchyBasedView ()
     {
         return false;

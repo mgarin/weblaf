@@ -17,6 +17,7 @@
 
 package com.alee.extended.statusbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLineLayout;
 
 import java.awt.*;
@@ -33,11 +34,11 @@ public final class StatusBarLayout extends AbstractLineLayout
      */
     public StatusBarLayout ()
     {
-        super ( 2 );
+        super ( 2, 20 );
     }
 
     @Override
-    public int getOrientation ( final Container container )
+    public int getOrientation ( @NotNull final Container container )
     {
         return HORIZONTAL;
     }

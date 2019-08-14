@@ -17,6 +17,8 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.Collection;
 /**
  * Simple aggregator for convenient {@link ArrayList} creation.
  *
+ * @param <T> element type
  * @author Mikle Garin
  */
 public class ArrayListAggregator<T>
@@ -32,6 +35,7 @@ public class ArrayListAggregator<T>
     /**
      * Aggregated {@link ArrayList}.
      */
+    @NotNull
     private final ArrayList<T> list;
 
     /**
@@ -48,7 +52,8 @@ public class ArrayListAggregator<T>
      * @param element element to add
      * @return this {@link ArrayListAggregator}
      */
-    public ArrayListAggregator<T> add ( final T element )
+    @NotNull
+    public ArrayListAggregator<T> add ( @Nullable final T element )
     {
         list.add ( element );
         return this;
@@ -61,7 +66,8 @@ public class ArrayListAggregator<T>
      * @param element   element to add
      * @return this {@link ArrayListAggregator}
      */
-    public ArrayListAggregator<T> add ( final boolean condition, final T element )
+    @NotNull
+    public ArrayListAggregator<T> add ( final boolean condition, @Nullable final T element )
     {
         if ( condition )
         {
@@ -77,7 +83,8 @@ public class ArrayListAggregator<T>
      * @param element   element to add
      * @return this {@link ArrayListAggregator}
      */
-    public ArrayListAggregator<T> add ( final Supplier<Boolean> condition, final T element )
+    @NotNull
+    public ArrayListAggregator<T> add ( @NotNull final Supplier<Boolean> condition, @Nullable final T element )
     {
         if ( condition.get () )
         {
@@ -92,7 +99,8 @@ public class ArrayListAggregator<T>
      * @param collection {@link Collection} containing elements to add
      * @return this {@link ArrayListAggregator}
      */
-    public ArrayListAggregator<T> addAll ( final Collection<? extends T> collection )
+    @NotNull
+    public ArrayListAggregator<T> addAll ( @NotNull final Collection<? extends T> collection )
     {
         list.addAll ( collection );
         return this;
@@ -105,7 +113,8 @@ public class ArrayListAggregator<T>
      * @param collection {@link Collection} containing elements to add
      * @return this {@link ArrayListAggregator}
      */
-    public ArrayListAggregator<T> addAll ( final boolean condition, final Collection<? extends T> collection )
+    @NotNull
+    public ArrayListAggregator<T> addAll ( final boolean condition, @NotNull final Collection<? extends T> collection )
     {
         if ( condition )
         {
@@ -121,7 +130,8 @@ public class ArrayListAggregator<T>
      * @param collection {@link Collection} containing elements to add
      * @return this {@link ArrayListAggregator}
      */
-    public ArrayListAggregator<T> addAll ( final Supplier<Boolean> condition, final Collection<? extends T> collection )
+    @NotNull
+    public ArrayListAggregator<T> addAll ( @NotNull final Supplier<Boolean> condition, @NotNull final Collection<? extends T> collection )
     {
         if ( condition.get () )
         {
@@ -135,6 +145,7 @@ public class ArrayListAggregator<T>
      *
      * @return aggregated {@link ArrayList}
      */
+    @NotNull
     public ArrayList<T> toList ()
     {
         return list;

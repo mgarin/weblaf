@@ -17,6 +17,8 @@
 
 package com.alee.utils.collection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.array.ArrayIterator;
@@ -39,6 +41,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     /**
      * {@link Collection} data.
      */
+    @NotNull
     @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
     protected final E[] data;
 
@@ -47,12 +50,8 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
      *
      * @param data collection data
      */
-    public ImmutableCollection ( final E... data )
+    public ImmutableCollection ( @NotNull final E... data )
     {
-        if ( data == null )
-        {
-            throw new NullPointerException ( "ImmutableCollection data must not be null" );
-        }
         this.data = data;
     }
 
@@ -61,12 +60,8 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
      *
      * @param collection {@link Collection}
      */
-    public ImmutableCollection ( final Collection<? extends E> collection )
+    public ImmutableCollection ( @NotNull final Collection<? extends E> collection )
     {
-        if ( collection == null )
-        {
-            throw new NullPointerException ( "ImmutableCollection data must not be null" );
-        }
         this.data = ( E[] ) collection.toArray ();
     }
 
@@ -83,19 +78,21 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     }
 
     @Override
-    public boolean contains ( final Object element )
+    public boolean contains ( @Nullable final Object element )
     {
         return ArrayUtils.contains ( element, data );
     }
 
+    @NotNull
     @Override
     public Object[] toArray ()
     {
         return data;
     }
 
-    @SuppressWarnings ( "SuspiciousSystemArraycopy" )
+    @NotNull
     @Override
+    @SuppressWarnings ( "SuspiciousSystemArraycopy" )
     public <T> T[] toArray ( final T[] array )
     {
         final int size = size ();
@@ -114,6 +111,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
         }
     }
 
+    @NotNull
     @Override
     public Iterator<E> iterator ()
     {
@@ -128,19 +126,19 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     }
 
     @Override
-    public boolean add ( final E element )
+    public boolean add ( @Nullable final E element )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean remove ( final Object element )
+    public boolean remove ( @Nullable final Object element )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean containsAll ( final Collection<?> collection )
+    public boolean containsAll ( @NotNull final Collection<?> collection )
     {
         for ( final Object element : collection )
         {
@@ -153,19 +151,19 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     }
 
     @Override
-    public boolean addAll ( final Collection<? extends E> collection )
+    public boolean addAll ( @NotNull final Collection<? extends E> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean removeAll ( final Collection<?> collection )
+    public boolean removeAll ( @NotNull final Collection<?> collection )
     {
         throw createModificationException ();
     }
 
     @Override
-    public boolean retainAll ( final Collection<?> collection )
+    public boolean retainAll ( @NotNull final Collection<?> collection )
     {
         throw createModificationException ();
     }
@@ -181,6 +179,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
      *
      * @return new {@link UnsupportedOperationException} instance specific for this implementation
      */
+    @NotNull
     protected UnsupportedOperationException createModificationException ()
     {
         return new UnsupportedOperationException ( "ImmutableCollection is unmodifiable" );
@@ -193,7 +192,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
     }
 
     @Override
-    public boolean equals ( final Object o )
+    public boolean equals ( @Nullable final Object o )
     {
         if ( o == this )
         {
@@ -210,6 +209,7 @@ public class ImmutableCollection<E> implements Collection<E>, Cloneable, Seriali
         }
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

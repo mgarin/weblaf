@@ -17,6 +17,7 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLineLayout;
 
 import javax.swing.*;
@@ -34,7 +35,7 @@ public final class ToolbarLayout extends AbstractLineLayout
      */
     public ToolbarLayout ()
     {
-        super ( 2 );
+        this ( 2, 20 );
     }
 
     /**
@@ -44,7 +45,7 @@ public final class ToolbarLayout extends AbstractLineLayout
      */
     public ToolbarLayout ( final int spacing )
     {
-        super ( spacing );
+        this ( spacing, 20 );
     }
 
     /**
@@ -59,7 +60,7 @@ public final class ToolbarLayout extends AbstractLineLayout
     }
 
     @Override
-    public int getOrientation ( final Container container )
+    public int getOrientation ( @NotNull final Container container )
     {
         return ( ( JToolBar ) container ).getOrientation ();
     }

@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.focus;
+package com.alee.managers.hover;
 
 import com.alee.api.annotations.Nullable;
 
@@ -23,20 +23,20 @@ import java.awt.*;
 import java.util.EventListener;
 
 /**
- * Global focus tracking listener.
+ * Global hover tracking listener.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-FocusManager">How to use FocusManager</a>
- * @see FocusManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-HoverManager">How to use HoverManager</a>
+ * @see HoverManager
  */
-public interface GlobalFocusListener extends EventListener
+public interface GlobalHoverListener extends EventListener
 {
     /**
-     * Informs about global focus changes within the application.
-     * In case focus goes outside the application or comes from other application one of components might be {@code null}.
+     * Informs about global hover changes within the application.
+     * In case hover goes outside the application or comes from other application one of components might be {@code null}.
      *
-     * @param oldFocus previously focused {@link Component}
-     * @param newFocus currently focused {@link Component}
+     * @param oldHover previously hovered {@link Component}
+     * @param newHover currently hovered {@link Component}
      */
-    public void focusChanged ( @Nullable Component oldFocus, @Nullable Component newFocus );
+    public void hoverChanged ( @Nullable Component oldHover, @Nullable Component newHover );
 }

@@ -25,7 +25,7 @@
             <!-- Node background painter -->
             <nodePainter>
                 <decorations>
-                    <decoration states="unselected,hover" opacity="0.4">
+                    <decoration states="enabled,unselected,hover" opacity="0.4">
                         <WebShape round="0" />
                         <GradientBackground>
                             <color>55,55,55</color>

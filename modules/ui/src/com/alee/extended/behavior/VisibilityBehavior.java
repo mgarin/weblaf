@@ -17,6 +17,8 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -50,7 +52,7 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
      *
      * @param component {@link Component} into which this behavior is installed
      */
-    public VisibilityBehavior ( final C component )
+    public VisibilityBehavior ( @NotNull final C component )
     {
         this ( component, false );
     }
@@ -61,7 +63,7 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
      * @param component    {@link Component} into which this behavior is installed
      * @param initTriggers whether or not should artificially trigger events on {@link #install()} and {@link #uninstall()}
      */
-    public VisibilityBehavior ( final C component, final boolean initTriggers )
+    public VisibilityBehavior ( @NotNull final C component, final boolean initTriggers )
     {
         super ( component );
         this.initTriggers = initTriggers;
@@ -95,16 +97,6 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
     }
 
     /**
-     * Returns {@link Component} into which this behavior is installed.
-     *
-     * @return {@link Component} into which this behavior is installed
-     */
-    public C getComponent ()
-    {
-        return component;
-    }
-
-    /**
      * Returns whether or not {@link Component} is currently visible.
      *
      * @return {@code true} if {@link Component} is currently visible, {@code false} otherwise
@@ -115,7 +107,7 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
     }
 
     @Override
-    public void hierarchyChanged ( final HierarchyEvent e )
+    public void hierarchyChanged ( @NotNull final HierarchyEvent e )
     {
         if ( e.getID () == HierarchyEvent.HIERARCHY_CHANGED )
         {

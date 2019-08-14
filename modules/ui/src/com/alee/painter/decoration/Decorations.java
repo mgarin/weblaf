@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Overwriting;
 import com.alee.utils.collection.EmptyIterator;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -62,6 +63,7 @@ public final class Decorations<C extends JComponent, D extends IDecoration<C, D>
         return decorations != null ? decorations.size () : 0;
     }
 
+    @NotNull
     @Override
     public Iterator<D> iterator ()
     {

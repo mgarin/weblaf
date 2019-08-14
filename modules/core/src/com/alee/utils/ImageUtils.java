@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.xml.Resource;
@@ -33,8 +34,8 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * @author Mikle Garin
@@ -180,6 +181,7 @@ public final class ImageUtils
      * Returns Images list instead of ImageIcons list
      */
 
+    @NotNull
     public static List<Image> toImagesList ( final List<? extends ImageIcon> icons )
     {
         final List<Image> images = new ArrayList<Image> ( icons.size () );

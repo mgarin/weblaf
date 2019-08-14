@@ -128,9 +128,7 @@
         <painter>
             <decorations>
                 <decoration opacity="0" />
-                <decoration states="focused">
-                    <LineBorder color="20,20,20" />
-                </decoration>
+                <decoration states="focused" opacity="1" />
                 <decoration states="enabled,hover" opacity="1" />
                 <decoration states="enabled,pressed" opacity="1" />
                 <decoration states="enabled,expanded" opacity="1" />
@@ -138,11 +136,21 @@
         </painter>
 
         <!-- Separator -->
-        <style type="separator" id="separator" extends="vertical">
+        <style type="separator" id="separator">
             <painter>
-                <!-- todo Make it visible when "in-hovered-parent" -->
-                <decorations overwrite="true">
-                    <decoration visible="false" />
+                <decorations>
+                    <decoration>
+                        <SeparatorStripes opacity="0" />
+                    </decoration>
+                    <decoration states="in-hovered-parent">
+                        <SeparatorStripes opacity="1" />
+                    </decoration>
+                    <decoration states="in-focused-parent">
+                        <SeparatorStripes opacity="1" />
+                    </decoration>
+                    <decoration states="expanded">
+                        <SeparatorStripes opacity="1" />
+                    </decoration>
                 </decorations>
             </painter>
         </style>
@@ -150,9 +158,10 @@
         <!-- Default editor -->
         <style type="textfield" id="editor">
             <painter>
-                <!-- todo Make it visible when "in-hovered-parent" -->
-                <decorations overwrite="true">
-                    <decoration visible="false" />
+                <decorations>
+                    <decoration opacity="0" />
+                    <decoration states="in-hovered-parent" opacity="1" />
+                    <decoration states="in-focused-parent" opacity="1" />
                 </decorations>
             </painter>
         </style>
@@ -166,6 +175,18 @@
                 <decoration visible="false" />
             </decorations>
         </painter>
+
+        <!-- Default editor -->
+        <style type="textfield" id="editor">
+            <painter>
+                <decorations>
+                    <decoration states="in-focused-parent">
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
     </style>
 
 </skin>

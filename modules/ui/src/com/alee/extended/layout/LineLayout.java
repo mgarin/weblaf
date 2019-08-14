@@ -17,6 +17,8 @@
 
 package com.alee.extended.layout;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
@@ -29,6 +31,7 @@ public class LineLayout extends AbstractLineLayout
     /**
      * Layout orientation.
      * Can either be {@link #HORIZONTAL} or {@link #VERTICAL}.
+     * todo Replace with {@link com.alee.api.data.Orientation}
      */
     protected int orientation;
 
@@ -39,8 +42,7 @@ public class LineLayout extends AbstractLineLayout
      */
     public LineLayout ( final int orientation )
     {
-        super ();
-        this.orientation = orientation;
+        this ( orientation, 2, 20 );
     }
 
     /**
@@ -51,8 +53,7 @@ public class LineLayout extends AbstractLineLayout
      */
     public LineLayout ( final int orientation, final int spacing )
     {
-        super ( spacing );
-        this.orientation = orientation;
+        this ( orientation, spacing, 20 );
     }
 
     /**
@@ -69,7 +70,7 @@ public class LineLayout extends AbstractLineLayout
     }
 
     @Override
-    public int getOrientation ( final Container container )
+    public int getOrientation ( @NotNull final Container container )
     {
         return orientation;
     }

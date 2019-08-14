@@ -179,6 +179,12 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
+        // Updating focus listener
+        if ( Objects.equals ( property, WebLookAndFeel.FOCUSABLE_WINDOW_STATE_PROPERTY ) )
+        {
+            updateFocusListener ();
+        }
+
         // Updating decoration according to current state
         if ( Objects.equals ( property, WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
         {

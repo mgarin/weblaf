@@ -17,12 +17,13 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.DragListener;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -62,6 +63,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      * Current hover object.
      * It is saved explicitly to properly provide previous state object.
      */
+    @Nullable
     protected V hoverObject;
 
     /**
@@ -69,7 +71,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      *
      * @param component {@link JComponent} into which this behavior is installed
      */
-    public AbstractObjectHoverBehavior ( final C component )
+    public AbstractObjectHoverBehavior ( @NotNull final C component )
     {
         this ( component, true );
     }
@@ -80,7 +82,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      * @param component   {@link JComponent} into which this behavior is installed
      * @param enabledOnly whether or not behavior should only track hover events when component is enabled
      */
-    public AbstractObjectHoverBehavior ( final C component, final boolean enabledOnly )
+    public AbstractObjectHoverBehavior ( @NotNull final C component, final boolean enabledOnly )
     {
         super ( component );
         this.enabledOnly = enabledOnly;
@@ -115,7 +117,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void mouseClicked ( final MouseEvent event )
+    public void mouseClicked ( @NotNull final MouseEvent event )
     {
         /**
          * No extra updates required on this event.
@@ -123,7 +125,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void mousePressed ( final MouseEvent event )
+    public void mousePressed ( @NotNull final MouseEvent event )
     {
         /**
          * No extra updates required on this event.
@@ -131,7 +133,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void mouseReleased ( final MouseEvent event )
+    public void mouseReleased ( @NotNull final MouseEvent event )
     {
         /**
          * This is necessary for updating hover object after {@link #mouseDragged(MouseEvent)} has finished.
@@ -140,7 +142,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void mouseEntered ( final MouseEvent event )
+    public void mouseEntered ( @NotNull final MouseEvent event )
     {
         /**
          * Even though {@link #mouseMoved(MouseEvent)} event is always thrown along with this one when we are moving within window bounds,
@@ -151,7 +153,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void mouseExited ( final MouseEvent event )
+    public void mouseExited ( @NotNull final MouseEvent event )
     {
         /**
          * This should clear hover upon exiting component area or ALT-TAB-ing to another application.
@@ -160,7 +162,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void mouseMoved ( final MouseEvent event )
+    public void mouseMoved ( @NotNull final MouseEvent event )
     {
         /**
          * Upon simple mouse movements over the component we need to constantly update hover.
@@ -170,7 +172,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void mouseDragged ( final MouseEvent event )
+    public void mouseDragged ( @NotNull final MouseEvent event )
     {
         /**
          * Upon normal drag we keep hover updated just as we do with {@link #mouseMoved(MouseEvent)}.
@@ -181,7 +183,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void ancestorAdded ( final AncestorEvent event )
+    public void ancestorAdded ( @NotNull final AncestorEvent event )
     {
         /**
          * Updating hover properly upon component ancestor updates.
@@ -190,7 +192,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void ancestorRemoved ( final AncestorEvent event )
+    public void ancestorRemoved ( @NotNull final AncestorEvent event )
     {
         /**
          * Updating hover properly upon component ancestor updates.
@@ -199,7 +201,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void ancestorMoved ( final AncestorEvent event )
+    public void ancestorMoved ( @NotNull final AncestorEvent event )
     {
         /**
          * Updating hover properly upon component ancestor updates.
@@ -208,7 +210,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void componentResized ( final ComponentEvent event )
+    public void componentResized ( @NotNull final ComponentEvent event )
     {
         /**
          * Whenever component size or state changes we might have to update hover.
@@ -218,7 +220,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void componentMoved ( final ComponentEvent event )
+    public void componentMoved ( @NotNull final ComponentEvent event )
     {
         /**
          * Whenever component size or state changes we might have to update hover.
@@ -228,7 +230,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void componentShown ( final ComponentEvent event )
+    public void componentShown ( @NotNull final ComponentEvent event )
     {
         /**
          * Whenever component size or state changes we might have to update hover.
@@ -238,7 +240,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void componentHidden ( final ComponentEvent event )
+    public void componentHidden ( @NotNull final ComponentEvent event )
     {
         /**
          * Whenever component size or state changes we might have to update hover.
@@ -248,7 +250,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent event )
+    public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
         /**
          * Since hover state might be dependant on enabled state we have to update it properly.
@@ -267,7 +269,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void started ( final DragSourceDragEvent event )
+    public void started ( @NotNull final DragSourceDragEvent event )
     {
         /**
          * No extra updates required on this event.
@@ -275,7 +277,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void entered ( final DragSourceDragEvent event )
+    public void entered ( @NotNull final DragSourceDragEvent event )
     {
         /**
          * Updating hover on drag enter.
@@ -284,7 +286,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void moved ( final DragSourceDragEvent event )
+    public void moved ( @NotNull final DragSourceDragEvent event )
     {
         /**
          * No extra updates required on this event.
@@ -292,7 +294,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void exited ( final DragSourceEvent event )
+    public void exited ( @NotNull final DragSourceEvent event )
     {
         /**
          * Updating hover on drag exit.
@@ -301,7 +303,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void finished ( final DragSourceDropEvent event )
+    public void finished ( @NotNull final DragSourceDropEvent event )
     {
         /**
          * Updating hover on drag finish.
@@ -317,19 +319,26 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
         // Make sure component is visible on the screen and there is no ongoing D&D operation
         if ( component.isShowing () && !DragManager.isDragging () )
         {
-            // Ensure that this component is the top one under the mouse
-            // We have to do that to avoid displaying hover on components which recieve update events while not directly being hovered
-            // This case can be easily reproduced by using scroll pane with hovering scroll bars - draging the bars should not trigger hover
-            final JRootPane window = CoreSwingUtils.getRootPane ( component );
-            final Point windowPoint = CoreSwingUtils.getMouseLocation ( window );
-            final Component topComponentAt = SwingUtils.getTopComponentAt ( window, windowPoint );
-            if ( topComponentAt == component )
+            final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
+            if ( rootPane != null )
             {
-                // Ensure that mouse is directly hovering component visible area
-                final Point mouseLocation = CoreSwingUtils.getMouseLocation ( component );
-                if ( component.getVisibleRect ().contains ( mouseLocation ) )
+                // Ensure that this component is the top one under the mouse
+                // We have to do that to avoid displaying hover on components which recieve update events while not directly being hovered
+                // This case can be easily reproduced by using scroll pane with hovering scroll bars - draging the bars should not trigger hover
+                final Point windowPoint = CoreSwingUtils.getMouseLocation ( rootPane );
+                final Component topComponentAt = CoreSwingUtils.getTopComponentAt ( rootPane, windowPoint );
+                if ( topComponentAt == component )
                 {
-                    updateHover ( mouseLocation );
+                    // Ensure that mouse is directly hovering component visible area
+                    final Point mouseLocation = CoreSwingUtils.getMouseLocation ( component );
+                    if ( component.getVisibleRect ().contains ( mouseLocation ) )
+                    {
+                        updateHover ( mouseLocation );
+                    }
+                    else
+                    {
+                        clearHover ();
+                    }
                 }
                 else
                 {
@@ -352,7 +361,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      *
      * @param e mouse event
      */
-    protected void updateHover ( final MouseEvent e )
+    protected void updateHover ( @NotNull final MouseEvent e )
     {
         updateHover ( e.getPoint () );
     }
@@ -362,7 +371,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      *
      * @param point mouse position on the component
      */
-    protected void updateHover ( final Point point )
+    protected void updateHover ( @NotNull final Point point )
     {
         // Disabled components aren't affected
         if ( !enabledOnly || component.isEnabled () )
@@ -377,7 +386,8 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      * @param location hovered location
      * @return object at the specified location
      */
-    protected abstract V getObjectAt ( Point location );
+    @Nullable
+    protected abstract V getObjectAt ( @NotNull Point location );
 
     /**
      * Clears hover path.
@@ -392,6 +402,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      *
      * @return empty hover object value
      */
+    @Nullable
     protected abstract V getEmptyObject ();
 
     /**
@@ -399,7 +410,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      *
      * @param object hover object
      */
-    protected void checkHoverChange ( final V object )
+    protected void checkHoverChange ( @Nullable final V object )
     {
         if ( Objects.notEquals ( object, hoverObject ) )
         {

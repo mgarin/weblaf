@@ -17,16 +17,20 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Merge;
-import com.alee.extended.behavior.AbstractHoverBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.focus.GlobalFocusListener;
+import com.alee.managers.hover.DefaultHoverTracker;
+import com.alee.managers.hover.GlobalHoverListener;
+import com.alee.managers.hover.HoverManager;
+import com.alee.managers.hover.HoverTracker;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
@@ -42,8 +46,8 @@ import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Abstract decoration painter that can be used by any custom and specific painter.
@@ -72,7 +76,8 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      */
     protected transient FocusTracker focusStateTracker;
     protected transient GlobalFocusListener inFocusedParentTracker;
-    protected transient AbstractHoverBehavior<C> hoverStateTracker;
+    protected transient HoverTracker hoverStateTracker;
+    protected transient GlobalHoverListener inHoveredParentTracker;
     protected transient HierarchyListener hierarchyTracker;
     protected transient ContainerListener neighboursTracker;
 
@@ -86,6 +91,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     protected transient boolean focused;
     protected transient boolean inFocusedParent;
     protected transient boolean hover;
+    protected transient boolean inHoveredParent;
     protected transient Container ancestor;
 
     @Override
@@ -144,6 +150,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         installFocusListener ();
         installInFocusedParentListener ();
         installHoverListener ();
+        installInHoveredParentListener ();
         installHierarchyListener ();
     }
 
@@ -152,6 +159,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         // Uninstalling various extra listeners
         uninstallHierarchyListener ();
+        uninstallInHoveredParentListener ();
         uninstallHoverListener ();
         uninstallInFocusedParentListener ();
         uninstallFocusListener ();
@@ -203,6 +211,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Returns whether or not component has distinct focused view.
      * Note that this is exactly distinct view and not state, distinct focused state might actually be missing.
+     * todo Replace with {@link #usesState(String)} override
      *
      * @return {@code true} if component has distinct focused view, {@code false} otherwise
      */
@@ -225,7 +234,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 {
                     // Ensure component is still available
                     // This might happen if painter is replaced from another FocusTracker
-                    if ( component != null )
+                    if ( AbstractDecorationPainter.this.component != null )
                     {
                         AbstractDecorationPainter.this.focusChanged ( focused );
                     }
@@ -293,6 +302,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Returns whether or not component has distinct in-focused-parent view.
      * Note that this is exactly distinct view and not state, distinct in-focused-parent state might actually be missing.
+     * todo Replace with {@link #usesState(String)} override
      *
      * @return {@code true} if component has distinct in-focused-parent view, {@code false} otherwise
      */
@@ -312,11 +322,11 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
             inFocusedParentTracker = new GlobalFocusListener ()
             {
                 @Override
-                public void focusChanged ( final Component oldFocus, final Component newFocus )
+                public void focusChanged ( @Nullable final Component oldFocus, @Nullable final Component newFocus )
                 {
                     // Ensure component is still available
                     // This might happen if painter is replaced from another GlobalFocusListener
-                    if ( component != null )
+                    if ( AbstractDecorationPainter.this.component != null )
                     {
                         // Updating {@link #inFocusedParent} state
                         updateInFocusedParent ();
@@ -332,9 +342,10 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     /**
-     * Updates {@link #inFocusedParent} mark.
-     * For that we check whether or not any related component gained or lost focus.
+     * Updates {@link #inFocusedParent} state.
+     * For that we are checking whether or not any related component gained or lost focus.
      * Note that this method will only be fired when component {@link #usesInFocusedParentView()}.
+     * It is not recommended to use this state unless component's direct or close parent uses {@code 'focused'} state.
      *
      * @return {@code true} if component is placed within focused parent, {@code false} otherwise
      */
@@ -413,6 +424,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Returns whether or not component has distinct hover view.
      * Note that this is exactly distinct view and not state, distinct hover state might actually be missing.
+     * todo Replace with {@link #usesState(String)} override
      *
      * @return {@code true} if component has distinct hover view, {@code false} otherwise
      */
@@ -428,21 +440,21 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         if ( usesHoverView () )
         {
-            hover = CoreSwingUtils.isHovered ( component );
-            hoverStateTracker = new AbstractHoverBehavior<C> ( component, false )
+            hoverStateTracker = new DefaultHoverTracker ( component )
             {
                 @Override
                 public void hoverChanged ( final boolean hover )
                 {
                     // Ensure component is still available
-                    // This might happen if painter is replaced from another AbstractHoverBehavior
-                    if ( component != null )
+                    // This might happen if painter is replaced from another DefaultHoverTracker
+                    if ( AbstractDecorationPainter.this.component != null )
                     {
                         AbstractDecorationPainter.this.hoverChanged ( hover );
                     }
                 }
             };
-            hoverStateTracker.install ();
+            HoverManager.addHoverTracker ( component, hoverStateTracker );
+            this.hover = hoverStateTracker.isHovered ();
         }
         else
         {
@@ -479,7 +491,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         if ( hoverStateTracker != null )
         {
-            hoverStateTracker.uninstall ();
+            HoverManager.removeHoverTracker ( component, hoverStateTracker );
             hoverStateTracker = null;
             hover = false;
         }
@@ -497,6 +509,128 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         else
         {
             uninstallHoverListener ();
+        }
+    }
+
+    /**
+     * Returns whether or not component has distinct in-hovered-parent view.
+     * Note that this is exactly distinct view and not state, distinct in-hovered-parent state might actually be missing.
+     * todo Replace with {@link #usesState(String)} override
+     *
+     * @return {@code true} if component has distinct in-hovered-parent view, {@code false} otherwise
+     */
+    protected boolean usesInHoveredParentView ()
+    {
+        return usesState ( DecorationState.inHoveredParent );
+    }
+
+    /**
+     * Installs listener that performs decoration updates on hovered parent appearance and disappearance.
+     */
+    protected void installInHoveredParentListener ()
+    {
+        if ( usesInHoveredParentView () )
+        {
+            inHoveredParent = updateInHoveredParent ();
+            inHoveredParentTracker = new GlobalHoverListener ()
+            {
+                @Override
+                public void hoverChanged ( @Nullable final Component oldHover, @Nullable final Component newHover )
+                {
+                    // Ensure component is still available
+                    // This might happen if painter is replaced from another GlobalHoverListener
+                    if ( AbstractDecorationPainter.this.component != null )
+                    {
+                        // Updating {@link #inHoveredParent} state
+                        updateInHoveredParent ();
+                    }
+                }
+            };
+            HoverManager.registerGlobalHoverListener ( component, inHoveredParentTracker );
+        }
+        else
+        {
+            inHoveredParent = false;
+        }
+    }
+
+    /**
+     * Updates {@link #inHoveredParent} mark.
+     * For that we check whether or not any related component gained or lost hover.
+     * Note that this method will only be fired when component {@link #usesInHoveredParentView()}.
+     * It is not recommended to use this state unless component's direct or close parent uses {@code 'hover'} state.
+     *
+     * @return {@code true} if component is placed within hovered parent, {@code false} otherwise
+     */
+    protected boolean updateInHoveredParent ()
+    {
+        final boolean old = inHoveredParent;
+        inHoveredParent = false;
+        Container current = component;
+        while ( current != null )
+        {
+            if ( current == HoverManager.getHoverOwner () )
+            {
+                // Directly in a hovered parent
+                inHoveredParent = true;
+                break;
+            }
+            else if ( current != component && current instanceof JComponent )
+            {
+                // Ensure that component supports styling
+                final JComponent jComponent = ( JComponent ) current;
+                if ( LafUtils.hasWebLafUI ( jComponent ) )
+                {
+                    // In a parent that tracks children hover and visually displays it
+                    // This case is not obvious but really important for correct visual representation of the state
+                    final ComponentUI ui = LafUtils.getUI ( jComponent );
+                    if ( ui != null )
+                    {
+                        // todo Replace with proper painter retrieval upon Paintable interface implementation
+                        final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
+                        if ( painter != null && painter instanceof AbstractDecorationPainter )
+                        {
+                            final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
+                            if ( dp.usesHoverView () )
+                            {
+                                inHoveredParent = dp.isHover ();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            current = current.getParent ();
+        }
+        if ( Objects.notEquals ( old, inHoveredParent ) )
+        {
+            updateDecorationState ();
+        }
+        return inHoveredParent;
+    }
+
+    /**
+     * Returns whether or not one of this component parents displays hover state.
+     * Returns {@code true} if one of parents owns hover directly or indirectly due to one of its children being hover.
+     * Indirect hover ownership is only accepted from parents which use {@link DecorationState#hover} decoration state.
+     *
+     * @return {@code true} if one of this component parents displays hover state, {@code false} otherwise
+     */
+    protected boolean isInHoveredParent ()
+    {
+        return inHoveredParent;
+    }
+
+    /**
+     * Uninstalls global hover listener.
+     */
+    protected void uninstallInHoveredParentListener ()
+    {
+        if ( inHoveredParentTracker != null )
+        {
+            HoverManager.unregisterGlobalHoverListener ( component, inHoveredParentTracker );
+            inHoveredParentTracker = null;
+            inHoveredParent = false;
         }
     }
 
@@ -526,7 +660,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 {
                     // Ensure component is still available
                     // This might happen if painter is replaced from another ContainerListener
-                    if ( component != null )
+                    if ( AbstractDecorationPainter.this.component != null )
                     {
                         // Updating border when a child was added nearby
                         if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
@@ -541,7 +675,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 {
                     // Ensure component is still available
                     // This might happen if painter is replaced from another ContainerListener
-                    if ( component != null )
+                    if ( AbstractDecorationPainter.this.component != null )
                     {
                         // Updating border when a child was removed nearby
                         if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
@@ -558,7 +692,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 {
                     // Ensure component is still available
                     // This might happen if painter is replaced from another HierarchyListener
-                    if ( component != null )
+                    if ( AbstractDecorationPainter.this.component != null )
                     {
                         AbstractDecorationPainter.this.hierarchyChanged ( e );
                     }
@@ -678,6 +812,10 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         if ( isHover () )
         {
             states.add ( DecorationState.hover );
+        }
+        if ( isInHoveredParent () )
+        {
+            states.add ( DecorationState.inHoveredParent );
         }
         return states;
     }

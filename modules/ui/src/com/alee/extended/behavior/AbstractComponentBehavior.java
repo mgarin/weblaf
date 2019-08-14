@@ -17,6 +17,8 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
@@ -30,6 +32,7 @@ public abstract class AbstractComponentBehavior<C extends Component> implements 
     /**
      * {@link Component} into which this behavior is installed.
      */
+    @NotNull
     protected final C component;
 
     /**
@@ -37,8 +40,19 @@ public abstract class AbstractComponentBehavior<C extends Component> implements 
      *
      * @param component {@link Component} into which this behavior is installed
      */
-    public AbstractComponentBehavior ( final C component )
+    public AbstractComponentBehavior ( @NotNull final C component )
     {
         this.component = component;
+    }
+
+    /**
+     * Returns {@link Component} into which this behavior is installed.
+     *
+     * @return {@link Component} into which this behavior is installed
+     */
+    @NotNull
+    public C getComponent ()
+    {
+        return component;
     }
 }

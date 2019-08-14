@@ -17,6 +17,8 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.extended.svg.SvgIcon;
 import com.alee.graphics.image.gif.GifIcon;
@@ -46,8 +48,8 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * LaF class containing methods to conveniently install, configure and uninstall WebLaF.
@@ -93,6 +95,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
     public static final String TABLE_HEADER_PROPERTY = "tableHeader";
     public static final String FLOATABLE_PROPERTY = "floatable";
+    public static final String FOCUSABLE_WINDOW_STATE_PROPERTY = "focusableWindowState";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
     public static final String RESIZABLE_PROPERTY = "resizable";
     public static final String ICON_IMAGE_PROPERTY = "iconImage";
@@ -163,21 +166,26 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Forced Event Dispatch Thread lsiteners mix.
      */
+    @NotNull
     protected static final StrictEventThreadListeners STRICT_EDT_LISTENERS = new StrictEventThreadListeners ();
 
     /**
      * Special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
      */
+    @NotNull
     protected static NonEventThreadHandler nonEventThreadHandler = new ExceptionNonEventThreadHandler ();
 
     /**
      * {@link WebLookAndFeel} icons.
+     * todo Move somewhere else
      */
+    @Nullable
     protected static List<ImageIcon> icons = null;
 
     /**
      * Disabled icons cache.
      */
+    @NotNull
     protected static final Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
 
     /**
@@ -216,6 +224,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @see #addVisibleWindowListener(VisibleWindowListener)
      * @see #removeVisibleWindowListener(VisibleWindowListener)
      */
+    @NotNull
     protected static final EventListenerList globalListeners = new EventListenerList ();
 
     /**
@@ -237,6 +246,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @see #addVisibleWindowListener(JComponent, VisibleWindowListener)
      * @see #removeVisibleWindowListener(JComponent, VisibleWindowListener)
      */
+    @NotNull
     protected static final WeakComponentDataList<JComponent, VisibleWindowListener> visibleWindowListeners =
             new WeakComponentDataList<JComponent, VisibleWindowListener> ( "WebLookAndFeel.VisibleWindowListener", 50 );
 
@@ -444,7 +454,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param table {@link UIDefaults} table
      */
     @Override
-    protected void initClassDefaults ( final UIDefaults table )
+    protected void initClassDefaults ( @NotNull final UIDefaults table )
     {
         // Dynamically provided UI classes
         for ( final ComponentDescriptor descriptor : StyleManager.getDescriptors () )
@@ -461,7 +471,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param table UIDefaults table
      */
     @Override
-    protected void initSystemColorDefaults ( final UIDefaults table )
+    protected void initSystemColorDefaults ( @NotNull final UIDefaults table )
     {
         super.initSystemColorDefaults ( table );
 
@@ -489,7 +499,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param table UI defaults table
      */
     @Override
-    protected void initComponentDefaults ( final UIDefaults table )
+    protected void initComponentDefaults ( @NotNull final UIDefaults table )
     {
         super.initComponentDefaults ( table );
 
@@ -823,7 +833,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UIDefaults table
      */
-    protected static void initializeFonts ( final UIDefaults table )
+    protected static void initializeFonts ( @NotNull final UIDefaults table )
     {
         /**
          * @see ControlType#CONTROL
@@ -909,7 +919,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param font       custom font
      * @param globalFont global font
      */
-    protected static void initializeFont ( final UIDefaults table, final String key, final Font font, final Font globalFont )
+    protected static void initializeFont ( @NotNull final UIDefaults table, @NotNull final String key,
+                                           @Nullable final Font font, @NotNull final Font globalFont )
     {
         table.put ( key, createLazyFont ( font != null ? font : globalFont ) );
     }
@@ -920,7 +931,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param font font
      * @return SwingLazyValue for specified font
      */
-    protected static SwingLazyValue createLazyFont ( final Font font )
+    @NotNull
+    protected static SwingLazyValue createLazyFont ( @NotNull final Font font )
     {
         return new SwingLazyValue ( "javax.swing.plaf.FontUIResource", null, new Object[]{ font } );
     }
@@ -994,7 +1006,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param arguments {@link Skin} constructor arguments
      * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
      */
-    public static void install ( final Class<? extends Skin> skin, final Object... arguments ) throws LookAndFeelException
+    public static void install ( @NotNull final Class<? extends Skin> skin, @NotNull final Object... arguments ) throws LookAndFeelException
     {
         install ( new LazyInstance<Skin> ( skin, arguments ) );
     }
@@ -1005,7 +1017,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param skin {@link LazyInstance} for {@link Skin}
      * @throws LookAndFeelException when unable to install {@link WebLookAndFeel}
      */
-    public static void install ( final LazyInstance<? extends Skin> skin ) throws LookAndFeelException
+    public static void install ( @NotNull final LazyInstance<? extends Skin> skin ) throws LookAndFeelException
     {
         // Event Dispatch Thread check
         checkEventDispatchThread ();
@@ -1109,6 +1121,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
      */
+    @NotNull
     public static NonEventThreadHandler getNonEventThreadHandler ()
     {
         return nonEventThreadHandler;
@@ -1119,7 +1132,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param handler special handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
      */
-    public static void setNonEventThreadHandler ( final NonEventThreadHandler handler )
+    public static void setNonEventThreadHandler ( @NotNull final NonEventThreadHandler handler )
     {
         WebLookAndFeel.nonEventThreadHandler = handler;
     }
@@ -1131,12 +1144,14 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         if ( isForceSingleEventsThread () && !CoreSwingUtils.isEventDispatchThread () )
         {
-            final NonEventThreadHandler handler = getNonEventThreadHandler ();
-            if ( handler != null )
-            {
-                final String msg = "This operation is only permitted on the Event Dispatch Thread. Current thread is: %s";
-                handler.handle ( new LookAndFeelException ( String.format ( msg, Thread.currentThread ().getName () ) ) );
-            }
+            getNonEventThreadHandler ().handle (
+                    new LookAndFeelException (
+                            String.format (
+                                    "This operation is only permitted on the Event Dispatch Thread. Current thread is: %s",
+                                    Thread.currentThread ().getName ()
+                            )
+                    )
+            );
         }
     }
 
@@ -1145,7 +1160,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param component {@link Component}
      */
-    public static void installEventDispatchThreadCheckers ( final Component component )
+    public static void installEventDispatchThreadCheckers ( @NotNull final Component component )
     {
         WebLookAndFeel.checkEventDispatchThread ();
         if ( isForceSingleEventsThread () && isUseStrictEventThreadListeners () )
@@ -1166,7 +1181,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param component {@link Component}
      */
-    public static void uninstallEventDispatchThreadCheckers ( final Component component )
+    public static void uninstallEventDispatchThreadCheckers ( @NotNull final Component component )
     {
         WebLookAndFeel.checkEventDispatchThread ();
         if ( isForceSingleEventsThread () && isUseStrictEventThreadListeners () )
@@ -1187,10 +1202,19 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return list of square WebLookAndFeel images
      */
+    @NotNull
     public static List<Image> getImages ()
     {
         loadIcons ();
-        return ImageUtils.toImagesList ( icons );
+        final List<Image> images = new ArrayList<Image> ();
+        if ( icons != null )
+        {
+            for ( final ImageIcon icon : icons )
+            {
+                images.add ( icon.getImage () );
+            }
+        }
+        return images;
     }
 
     /**
@@ -1198,10 +1222,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return list of square WebLookAndFeel icons
      */
+    @NotNull
     public static List<ImageIcon> getIcons ()
     {
         loadIcons ();
-        return CollectionUtils.copy ( icons );
+        final List<ImageIcon> imageIcons = new ArrayList<ImageIcon> ();
+        if ( icons != null )
+        {
+            imageIcons.addAll ( icons );
+        }
+        return imageIcons;
     }
 
     /**
@@ -1210,9 +1240,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param size square WebLookAndFeel image size
      * @return square WebLookAndFeel image
      */
+    @Nullable
     public static Image getImage ( final int size )
     {
-        return getIcon ( size ).getImage ();
+        final ImageIcon icon = getIcon ( size );
+        return icon != null ? icon.getImage () : null;
     }
 
     /**
@@ -1221,17 +1253,23 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param size square WebLookAndFeel icon size
      * @return square WebLookAndFeel icon
      */
+    @Nullable
     public static ImageIcon getIcon ( final int size )
     {
         loadIcons ();
-        for ( final ImageIcon icon : icons )
+        ImageIcon imageIcon = null;
+        if ( icons != null )
         {
-            if ( icon.getIconWidth () == size )
+            for ( final ImageIcon icon : icons )
             {
-                return icon;
+                if ( icon.getIconWidth () == size )
+                {
+                    imageIcon = icon;
+                    break;
+                }
             }
         }
-        return null;
+        return imageIcon;
     }
 
     /**
@@ -1259,8 +1297,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param icon      normal icon
      * @return disabled icon
      */
+    @Nullable
     @Override
-    public Icon getDisabledIcon ( final JComponent component, final Icon icon )
+    public Icon getDisabledIcon ( @Nullable final JComponent component, @Nullable final Icon icon )
     {
         if ( icon != null && icon.getIconWidth () > 0 && icon.getIconHeight () > 0 )
         {
@@ -1313,6 +1352,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return custom WebLookAndFeel layout style
      */
+    @NotNull
     @Override
     public LayoutStyle getLayoutStyle ()
     {
@@ -1355,6 +1395,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return current global component orientation
      */
+    @NotNull
     public static ComponentOrientation getOrientation ()
     {
         if ( orientation != null )
@@ -1372,6 +1413,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return orientation opposite to current global component orientation
      */
+    @NotNull
     public static ComponentOrientation getOppositeOrientation ()
     {
         return isLeftToRight () ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT;
@@ -1392,7 +1434,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param orientation new global component orientation
      */
-    public static void setOrientation ( final ComponentOrientation orientation )
+    public static void setOrientation ( @NotNull final ComponentOrientation orientation )
     {
         WebLookAndFeel.orientation = orientation;
         SwingUtils.updateGlobalOrientation ();
@@ -1411,7 +1453,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param listener {@link VisibleWindowListener}
      */
-    public static void addVisibleWindowListener ( final VisibleWindowListener listener )
+    public static void addVisibleWindowListener ( @NotNull final VisibleWindowListener listener )
     {
         globalListeners.add ( VisibleWindowListener.class, listener );
     }
@@ -1421,7 +1463,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param listener {@link VisibleWindowListener}
      */
-    public static void removeVisibleWindowListener ( final VisibleWindowListener listener )
+    public static void removeVisibleWindowListener ( @NotNull final VisibleWindowListener listener )
     {
         globalListeners.remove ( VisibleWindowListener.class, listener );
     }
@@ -1432,7 +1474,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param component {@link JComponent} using the listener
      * @param listener  {@link VisibleWindowListener}
      */
-    public static void addVisibleWindowListener ( final JComponent component, final VisibleWindowListener listener )
+    public static void addVisibleWindowListener ( @NotNull final JComponent component, @NotNull final VisibleWindowListener listener )
     {
         visibleWindowListeners.add ( component, listener );
     }
@@ -1443,7 +1485,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param component {@link JComponent} using the listener
      * @param listener  {@link VisibleWindowListener}
      */
-    public static void removeVisibleWindowListener ( final JComponent component, final VisibleWindowListener listener )
+    public static void removeVisibleWindowListener ( @NotNull final JComponent component, @NotNull final VisibleWindowListener listener )
     {
         visibleWindowListeners.remove ( component, listener );
     }
@@ -1453,7 +1495,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param window {@link Window}
      */
-    public static void fireWindowDisplayed ( final Window window )
+    public static void fireWindowDisplayed ( @NotNull final Window window )
     {
         for ( final VisibleWindowListener listener : globalListeners.getListeners ( VisibleWindowListener.class ) )
         {
@@ -1462,7 +1504,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         visibleWindowListeners.forEachData ( new BiConsumer<JComponent, VisibleWindowListener> ()
         {
             @Override
-            public void accept ( final JComponent component, final VisibleWindowListener listener )
+            public void accept ( @NotNull final JComponent component, @NotNull final VisibleWindowListener listener )
             {
                 listener.windowDisplayed ( window );
             }
@@ -1474,7 +1516,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param window {@link Window}
      */
-    public static void fireWindowHidden ( final Window window )
+    public static void fireWindowHidden ( @NotNull final Window window )
     {
         for ( final VisibleWindowListener listener : globalListeners.getListeners ( VisibleWindowListener.class ) )
         {
@@ -1483,7 +1525,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         visibleWindowListeners.forEachData ( new BiConsumer<JComponent, VisibleWindowListener> ()
         {
             @Override
-            public void accept ( final JComponent component, final VisibleWindowListener listener )
+            public void accept ( @NotNull final JComponent component, @NotNull final VisibleWindowListener listener )
             {
                 listener.windowHidden ( window );
             }
