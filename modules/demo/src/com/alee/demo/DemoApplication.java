@@ -296,9 +296,19 @@ public final class DemoApplication extends WebFrame
      */
     public void updateTitle ()
     {
+        final StringBuilder title = new StringBuilder ();
+
+        // Title & version
+        title.append ( "WebLaF " ).append ( new Version ( DemoApplication.class ).toString () );
+
+        // Opened demo
         final DocumentData doc = examplesPane != null ? examplesPane.getSelectedDocument () : null;
-        final String version = new Version ( DemoApplication.class ).toString ();
-        setTitle ( version + ( doc != null ? " - " + LM.get ( doc.getTitle () ) : "" ) );
+        if ( doc != null )
+        {
+            title.append ( " - " ).append ( LM.get ( doc.getTitle () ) );
+        }
+
+        setTitle ( title.toString () );
     }
 
     /**
