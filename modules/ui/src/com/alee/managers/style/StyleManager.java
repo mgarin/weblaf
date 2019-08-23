@@ -276,6 +276,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( AbstractBorder.class );
         XmlUtils.processAnnotations ( LineBorder.class );
         XmlUtils.processAnnotations ( AbstractBackground.class );
+        XmlUtils.processAnnotations ( ComponentBackground.class );
         XmlUtils.processAnnotations ( AbstractClipBackground.class );
         XmlUtils.processAnnotations ( ColorBackground.class );
         XmlUtils.processAnnotations ( GradientBackground.class );
