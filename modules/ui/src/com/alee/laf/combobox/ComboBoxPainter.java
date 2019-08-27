@@ -1,5 +1,7 @@
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.Language;
@@ -55,7 +57,7 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -106,7 +108,7 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
         languageSensitive = new LanguageListener ()
         {
             @Override
-            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
             {
                 if ( isLanguageSensitive () )
                 {
@@ -157,6 +159,7 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
         languageSensitive = null;
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -170,13 +173,13 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
     }
 
     @Override
-    public void prepareToPaint ( final CellRendererPane currentValuePane )
+    public void prepareToPaint ( @NotNull final CellRendererPane currentValuePane )
     {
         this.currentValuePane = currentValuePane;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         // Selected non-editable value
         paintCurrentValue ( g2d, ui.getValueBounds () );
@@ -199,7 +202,7 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
      * @param g2d    graphics context
      * @param bounds bounds
      */
-    protected void paintCurrentValue ( final Graphics2D g2d, final Rectangle bounds )
+    protected void paintCurrentValue ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds )
     {
         if ( !component.isEditable () )
         {

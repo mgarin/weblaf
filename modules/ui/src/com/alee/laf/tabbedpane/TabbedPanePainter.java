@@ -1,7 +1,8 @@
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
@@ -86,13 +87,13 @@ public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> e
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating border upon style change
-        if ( Objects.equals ( property, WebLookAndFeel.TABBED_PANE_STYLE_PROPERTY ) )
+        if ( Objects.equals ( property, WebTabbedPane.TABBED_PANE_STYLE_PROPERTY ) )
         {
             updateBorder ();
         }
@@ -293,7 +294,7 @@ public class TabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> e
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
 

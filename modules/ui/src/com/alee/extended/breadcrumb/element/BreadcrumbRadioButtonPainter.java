@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.laf.radiobutton.RadioButtonPainter;
 import com.alee.laf.radiobutton.WRadioButtonUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbRadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI<C>, D extends IDecoration<C, D>>
         extends RadioButtonPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

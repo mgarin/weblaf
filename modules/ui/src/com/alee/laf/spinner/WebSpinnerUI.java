@@ -17,6 +17,8 @@
 
 package com.alee.laf.spinner;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.icon.Icons;
@@ -142,6 +144,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
         return prevButton;
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -160,6 +163,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
         PainterSupport.setShapeDetectionEnabled ( spinner, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -167,11 +171,12 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( spinner, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -179,7 +184,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( spinner, padding );
     }
@@ -202,7 +207,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( spinner, new Consumer<ISpinnerPainter> ()
+        PainterSupport.setPainter ( spinner, this, new Consumer<ISpinnerPainter> ()
         {
             @Override
             public void accept ( final ISpinnerPainter newPainter )

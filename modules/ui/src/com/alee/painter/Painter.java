@@ -17,6 +17,8 @@
 
 package com.alee.painter;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.Bounds;
 
 import javax.swing.*;
@@ -53,7 +55,7 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      * @param c  component this painter is being installed onto
      * @param ui component UI
      */
-    public void install ( C c, U ui );
+    public void install ( @NotNull C c, @NotNull U ui );
 
     /**
      * Called when painter is installed into some component.
@@ -62,7 +64,7 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      * @param c  component this painter is being uninstalled from
      * @param ui component UI
      */
-    public void uninstall ( C c, U ui );
+    public void uninstall ( @NotNull C c, @NotNull U ui );
 
     /**
      * Returns whether or not this painter is installed onto some component.
@@ -74,10 +76,11 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
     /**
      * Returns whether the view  provided by this painter is opaque or not.
      * Returned value might affect component opacity depending on painter support inside that component UI.
-     * Simply return null if you don't want to change default component opacity.
+     * Simply return {@code null} if you don't want to change default component opacity.
      *
-     * @return {@code true} if the view provided by this painter is opaque, {@code false} otherwise
+     * @return {@code true} if the view provided by this painter is opaque, {@code false} if not, {@code null} if not defined
      */
+    @Nullable
     public Boolean isOpaque ();
 
     /**
@@ -90,7 +93,7 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      * @param y      Y coordinate
      * @return {@code true} if specified (x,y) location is contained within the shape of the component, {@code false} otherwise
      */
-    public boolean contains ( C c, U ui, Bounds bounds, int x, int y );
+    public boolean contains ( @NotNull C c, @NotNull U ui, @NotNull Bounds bounds, int x, int y );
 
     /**
      * Returns component baseline within the specified bounds, measured from the top of the bounds.
@@ -102,7 +105,7 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      * @param bounds bounds to get the baseline for
      * @return component baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( C c, U ui, Bounds bounds );
+    public int getBaseline ( @NotNull C c, @NotNull U ui, @NotNull Bounds bounds );
 
     /**
      * Returns enum indicating how the baseline of the component changes as the size changes.
@@ -111,12 +114,11 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      * @param ui aligned component UI
      * @return enum indicating how the baseline of the component changes as the size changes
      */
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( C c, U ui );
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull C c, @NotNull U ui );
 
     /**
      * Paints the view using component graphics context.
      * Provided graphics context and component are taken directly from component UI paint method.
-     * <p>
      * It is highly recommended to honor provided painting bounds to avoid painting issues.
      * These bounds might be representing full component size or contain just a small portion of the component.
      *
@@ -125,7 +127,7 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      * @param ui     painted component UI
      * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, C c, U ui, Bounds bounds );
+    public void paint ( @NotNull Graphics2D g2d, @NotNull C c, @NotNull U ui, @NotNull Bounds bounds );
 
     /**
      * Returns preferred size required for proper painting of the view provided by this painter.
@@ -133,5 +135,6 @@ public interface Painter<C extends JComponent, U extends ComponentUI>
      *
      * @return preferred size required for proper painting of the view provided by this painter
      */
+    @NotNull
     public Dimension getPreferredSize ();
 }

@@ -18,6 +18,7 @@
 package com.alee.demo.content.tooltip;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.tree.*;
@@ -33,25 +34,28 @@ import java.util.List;
  */
 public class TreeTooltipExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "treetooltip";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "customtooltip";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

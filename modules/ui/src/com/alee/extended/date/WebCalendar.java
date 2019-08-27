@@ -17,6 +17,7 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.transition.ComponentTransition;
@@ -278,6 +279,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
         addLanguageListener ( this );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
@@ -285,7 +287,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
     }
 
     @Override
-    public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+    public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
     {
         if ( titleFormat instanceof SimpleDateFormat )
         {

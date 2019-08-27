@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
@@ -40,7 +42,8 @@ public final class MarginMethodsImpl
      * @param component component to retrieve margin from
      * @return current margin
      */
-    public static Insets getMargin ( final JComponent component )
+    @Nullable
+    public static Insets getMargin ( @NotNull final JComponent component )
     {
         final MarginSupport support = getMarginSupportUI ( component );
         return support != null ? support.getMargin () : MarginSupport.EMPTY;
@@ -50,9 +53,9 @@ public final class MarginMethodsImpl
      * Sets new margin.
      *
      * @param component component to set margin for
-     * @param margin   new margin
+     * @param margin    new margin
      */
-    public static void setMargin ( final JComponent component, final int margin )
+    public static void setMargin ( @NotNull final JComponent component, final int margin )
     {
         setMargin ( component, margin, margin, margin, margin );
     }
@@ -66,7 +69,7 @@ public final class MarginMethodsImpl
      * @param bottom    new bottom margin
      * @param right     new right margin
      */
-    public static void setMargin ( final JComponent component, final int top, final int left, final int bottom, final int right )
+    public static void setMargin ( @NotNull final JComponent component, final int top, final int left, final int bottom, final int right )
     {
         setMargin ( component, new Insets ( top, left, bottom, right ) );
     }
@@ -76,9 +79,9 @@ public final class MarginMethodsImpl
      * {@code null} can be provided to set an empty [0,0,0,0] margin.
      *
      * @param component component to set margin for
-     * @param margin   new margin
+     * @param margin    new margin
      */
-    public static void setMargin ( final JComponent component, final Insets margin )
+    public static void setMargin ( @NotNull final JComponent component, @Nullable final Insets margin )
     {
         final MarginSupport support = getMarginSupportUI ( component );
         if ( support != null )
@@ -93,7 +96,8 @@ public final class MarginMethodsImpl
      * @param component component to retrieve UI from
      * @return UI with margin support
      */
-    private static MarginSupport getMarginSupportUI ( final JComponent component )
+    @Nullable
+    private static MarginSupport getMarginSupportUI ( @NotNull final JComponent component )
     {
         final ComponentUI ui = LafUtils.getUI ( component );
         return ui != null && ui instanceof MarginSupport ? ( MarginSupport ) ui : null;

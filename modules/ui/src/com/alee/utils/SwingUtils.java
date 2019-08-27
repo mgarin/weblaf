@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.collapsible.WebCollapsiblePane;
 import com.alee.extended.date.WebCalendar;
@@ -897,12 +899,9 @@ public final class SwingUtils
      * @param amount increase amount
      * @return {@code insets} increased by amount specified in {@code amount}
      */
-    public static Insets increase ( final Insets insets, final Insets amount )
+    @NotNull
+    public static Insets increase ( @NotNull final Insets insets, @Nullable final Insets amount )
     {
-        if ( insets == null )
-        {
-            throw new NullPointerException ( "Insets cannot be null" );
-        }
         if ( amount != null )
         {
             insets.top += amount.top;
@@ -920,12 +919,9 @@ public final class SwingUtils
      * @param amount    increase amount
      * @return {@code dimension} increased by amount specified in {@code amount}
      */
-    public static Dimension increase ( final Dimension dimension, final Insets amount )
+    @NotNull
+    public static Dimension increase ( @NotNull final Dimension dimension, @Nullable final Insets amount )
     {
-        if ( dimension == null )
-        {
-            throw new NullPointerException ( "Dimension cannot be null" );
-        }
         if ( amount != null )
         {
             dimension.width += amount.left + amount.right;
@@ -941,12 +937,9 @@ public final class SwingUtils
      * @param amount decrease amount
      * @return {@code insets} decreased by amount specified in {@code amount}
      */
-    public static Insets decrease ( final Insets insets, final Insets amount )
+    @NotNull
+    public static Insets decrease ( @NotNull final Insets insets, @Nullable final Insets amount )
     {
-        if ( insets == null )
-        {
-            throw new NullPointerException ( "Insets cannot be null" );
-        }
         if ( amount != null )
         {
             insets.top -= amount.top;
@@ -964,26 +957,28 @@ public final class SwingUtils
      * @param insets2 second insets
      * @return maximum insets
      */
-    @SuppressWarnings ( "RedundantIfStatement" )
-    public static Insets max ( final Insets insets1, final Insets insets2 )
+    @Nullable
+    public static Insets max ( @Nullable final Insets insets1, @Nullable final Insets insets2 )
     {
+        final Insets max;
         if ( insets1 != null && insets2 != null )
         {
-            return new Insets ( Math.max ( insets1.top, insets2.top ), Math.max ( insets1.left, insets2.left ),
-                    Math.max ( insets1.bottom, insets2.bottom ), Math.max ( insets1.right, insets2.right ) );
+            max = new Insets (
+                    Math.max ( insets1.top, insets2.top ),
+                    Math.max ( insets1.left, insets2.left ),
+                    Math.max ( insets1.bottom, insets2.bottom ),
+                    Math.max ( insets1.right, insets2.right )
+            );
         }
         else if ( insets1 != null )
         {
-            return insets1;
-        }
-        else if ( insets2 != null )
-        {
-            return insets2;
+            max = insets1;
         }
         else
         {
-            return null;
+            max = insets2;
         }
+        return max;
     }
 
     /**
@@ -993,26 +988,28 @@ public final class SwingUtils
      * @param insets2 second insets
      * @return minimum insets
      */
-    @SuppressWarnings ( "RedundantIfStatement" )
-    public static Insets min ( final Insets insets1, final Insets insets2 )
+    @Nullable
+    public static Insets min ( @Nullable final Insets insets1, @Nullable final Insets insets2 )
     {
+        final Insets min;
         if ( insets1 != null && insets2 != null )
         {
-            return new Insets ( Math.min ( insets1.top, insets2.top ), Math.min ( insets1.left, insets2.left ),
-                    Math.min ( insets1.bottom, insets2.bottom ), Math.min ( insets1.right, insets2.right ) );
+            min = new Insets (
+                    Math.min ( insets1.top, insets2.top ),
+                    Math.min ( insets1.left, insets2.left ),
+                    Math.min ( insets1.bottom, insets2.bottom ),
+                    Math.min ( insets1.right, insets2.right )
+            );
         }
         else if ( insets1 != null )
         {
-            return insets1;
-        }
-        else if ( insets2 != null )
-        {
-            return insets2;
+            min = insets1;
         }
         else
         {
-            return null;
+            min = insets2;
         }
+        return min;
     }
 
     /**
@@ -1022,7 +1019,8 @@ public final class SwingUtils
      * @param component2 second component
      * @return maximum dimension
      */
-    public static Dimension max ( final Component component1, final Component component2 )
+    @Nullable
+    public static Dimension max ( @NotNull final Component component1, @NotNull final Component component2 )
     {
         return max ( component1.getPreferredSize (), component2.getPreferredSize () );
     }
@@ -1033,7 +1031,8 @@ public final class SwingUtils
      * @param components components
      * @return maximum dimension
      */
-    public static Dimension max ( final Component... components )
+    @Nullable
+    public static Dimension max ( @NotNull final Component... components )
     {
         Dimension max = components.length > 0 ? components[ 0 ].getPreferredSize () : new Dimension ( 0, 0 );
         for ( int i = 1; i < components.length; i++ )
@@ -1050,24 +1049,27 @@ public final class SwingUtils
      * @param dimension2 second dimension
      * @return maximum dimension
      */
-    public static Dimension max ( final Dimension dimension1, final Dimension dimension2 )
+    @Nullable
+    public static Dimension max ( @Nullable final Dimension dimension1, @Nullable final Dimension dimension2 )
     {
+        final Dimension max;
         if ( dimension1 == null && dimension2 == null )
         {
-            return null;
+            max = null;
         }
         else if ( dimension1 == null )
         {
-            return dimension2;
+            max = dimension2;
         }
         else if ( dimension2 == null )
         {
-            return dimension1;
+            max = dimension1;
         }
         else
         {
-            return new Dimension ( Math.max ( dimension1.width, dimension2.width ), Math.max ( dimension1.height, dimension2.height ) );
+            max = new Dimension ( Math.max ( dimension1.width, dimension2.width ), Math.max ( dimension1.height, dimension2.height ) );
         }
+        return max;
     }
 
     /**
@@ -1077,7 +1079,8 @@ public final class SwingUtils
      * @param component2 second component
      * @return minimum dimension
      */
-    public static Dimension min ( final Component component1, final Component component2 )
+    @Nullable
+    public static Dimension min ( @NotNull final Component component1, @NotNull final Component component2 )
     {
         return min ( component1.getPreferredSize (), component2.getPreferredSize () );
     }
@@ -1089,53 +1092,99 @@ public final class SwingUtils
      * @param dimension2 second dimension
      * @return minimum dimension
      */
-    public static Dimension min ( final Dimension dimension1, final Dimension dimension2 )
+    @Nullable
+    public static Dimension min ( @Nullable final Dimension dimension1, @Nullable final Dimension dimension2 )
     {
-        if ( dimension1 == null || dimension2 == null )
+        final Dimension min;
+        if ( dimension1 != null && dimension2 != null )
         {
-            return null;
+            min = new Dimension (
+                    Math.min ( dimension1.width, dimension2.width ),
+                    Math.min ( dimension1.height, dimension2.height )
+            );
         }
         else
         {
-            return new Dimension ( Math.min ( dimension1.width, dimension2.width ), Math.min ( dimension1.height, dimension2.height ) );
+            min = null;
         }
+        return min;
     }
 
     /**
      * Returns rectange shrunk by provided insets.
      *
-     * @param r rectange to shrink
-     * @param i insets used to shrink bounds
+     * @param rectangle rectange to shrink
+     * @param insets    insets used to shrink bounds
      * @return rectange shrunk by provided insets
      */
-    public static Rectangle shrink ( final Rectangle r, final Insets i )
+    @NotNull
+    public static Rectangle shrink ( @NotNull final Rectangle rectangle, @Nullable final Insets insets )
     {
-        return i != null ? new Rectangle ( r.x + i.left, r.y + i.top, r.width - i.left - i.right, r.height - i.top - i.bottom ) :
-                new Rectangle ( r );
+        final Rectangle result;
+        if ( insets != null )
+        {
+            result = new Rectangle (
+                    rectangle.x + insets.left,
+                    rectangle.y + insets.top,
+                    rectangle.width - insets.left - insets.right,
+                    rectangle.height - insets.top - insets.bottom
+            );
+        }
+        else
+        {
+            result = new Rectangle ( rectangle );
+        }
+        return result;
     }
 
     /**
      * Returns dimension shrunk by provided insets.
      *
-     * @param d dimension to shrink
-     * @param i insets used to shrink dimension
+     * @param dimension dimension to shrink
+     * @param insets    insets used to shrink dimension
      * @return dimension shrunk by provided insets
      */
-    public static Dimension shrink ( final Dimension d, final Insets i )
+    @NotNull
+    public static Dimension shrink ( @NotNull final Dimension dimension, @Nullable final Insets insets )
     {
-        return i != null ? new Dimension ( d.width - i.left - i.right, d.height - i.top - i.bottom ) : new Dimension ( d );
+        final Dimension result;
+        if ( insets != null )
+        {
+            result = new Dimension (
+                    dimension.width - insets.left - insets.right,
+                    dimension.height - insets.top - insets.bottom
+            );
+        }
+        else
+        {
+            result = new Dimension ( dimension );
+        }
+        return result;
     }
 
     /**
      * Returns dimension stretched by provided insets.
      *
-     * @param d dimension to stretch
-     * @param i insets used to stretch dimension
+     * @param dimension dimension to stretch
+     * @param insets    insets used to stretch dimension
      * @return dimension stretched by provided insets
      */
-    public static Dimension stretch ( final Dimension d, final Insets i )
+    @NotNull
+    public static Dimension stretch ( @NotNull final Dimension dimension, @Nullable final Insets insets )
     {
-        return i != null ? new Dimension ( d.width + i.left + i.right, d.height + i.top + i.bottom ) : new Dimension ( d );
+        final Dimension result;
+        if ( insets != null )
+        {
+            result = new Dimension (
+                    dimension.width + insets.left + insets.right,
+                    dimension.height + insets.top + insets.bottom
+            );
+        }
+        else
+        {
+            result = new Dimension ( dimension );
+        }
+        return result;
     }
 
     /**
@@ -2866,8 +2915,8 @@ public final class SwingUtils
      * @param oldValue  old value
      * @param newValue  new value
      */
-    public static void firePropertyChanged ( final Component component, final String property, final Object oldValue,
-                                             final Object newValue )
+    public static void firePropertyChanged ( @NotNull final Component component, @NotNull final String property,
+                                             @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         try
         {

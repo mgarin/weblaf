@@ -17,6 +17,8 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.DemoApplication;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.WebInnerNotification;
@@ -33,19 +35,27 @@ public abstract class AbstractExampleElement implements ExampleElement
     /**
      * Parent group reference.
      */
+    @Nullable
     protected ExampleGroup group;
 
+    @Nullable
     @Override
     public String getGroupId ()
     {
+        final String groupId;
         if ( group != null )
         {
-            final String groupId = group.getGroupId ();
-            return groupId != null ? groupId + "." + group.getId () : group.getId ();
+            final String parentGroupId = group.getGroupId ();
+            groupId = parentGroupId != null ? parentGroupId + "." + group.getId () : group.getId ();
         }
-        return null;
+        else
+        {
+            groupId = null;
+        }
+        return groupId;
     }
 
+    @NotNull
     @Override
     public String getTitle ()
     {
@@ -57,6 +67,7 @@ public abstract class AbstractExampleElement implements ExampleElement
      *
      * @return language prefix for this example element
      */
+    @NotNull
     protected String getExampleLanguagePrefix ()
     {
         final String groupId = getGroupId ();
@@ -69,7 +80,8 @@ public abstract class AbstractExampleElement implements ExampleElement
      * @param key language key part
      * @return complete language key for this example for the specified key part
      */
-    protected String getExampleLanguageKey ( final String key )
+    @NotNull
+    protected String getExampleLanguageKey ( @NotNull final String key )
     {
         return getExampleLanguagePrefix () + key;
     }
@@ -79,7 +91,7 @@ public abstract class AbstractExampleElement implements ExampleElement
      *
      * @param group parent group
      */
-    public void setGroup ( final ExampleGroup group )
+    public void setGroup ( @Nullable final ExampleGroup group )
     {
         this.group = group;
     }
@@ -90,7 +102,8 @@ public abstract class AbstractExampleElement implements ExampleElement
      * @param path icon path
      * @return icon retrieved from icons package
      */
-    protected ImageIcon loadIcon ( final String path )
+    @NotNull
+    protected ImageIcon loadIcon ( @NotNull final String path )
     {
         final String fullPath = "icons/" + path;
         final URL resource = getClass ().getResource ( fullPath );
@@ -107,7 +120,8 @@ public abstract class AbstractExampleElement implements ExampleElement
      * @param path icon path
      * @return icon retrieved from example-specific icons package
      */
-    protected ImageIcon loadExampleIcon ( final String path )
+    @NotNull
+    protected ImageIcon loadExampleIcon ( @NotNull final String path )
     {
         return loadIcon ( getId () + "/" + path );
     }
@@ -118,7 +132,8 @@ public abstract class AbstractExampleElement implements ExampleElement
      * @param message event message
      * @return displayed event notification
      */
-    protected static WebInnerNotification notifyAboutEvent ( final String message )
+    @NotNull
+    protected static WebInnerNotification notifyAboutEvent ( @NotNull final String message )
     {
         return notifyAboutEvent ( DemoApplication.getInstance (), message );
     }
@@ -130,7 +145,8 @@ public abstract class AbstractExampleElement implements ExampleElement
      * @param message event message
      * @return displayed event notification
      */
-    protected static WebInnerNotification notifyAboutEvent ( final Window parent, final String message )
+    @NotNull
+    protected static WebInnerNotification notifyAboutEvent ( @NotNull final Window parent, @NotNull final String message )
     {
         final WebInnerNotification notification = NotificationManager.showInnerNotification ( parent, message );
         notification.setDisplayTime ( 2000L );

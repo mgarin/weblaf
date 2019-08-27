@@ -64,6 +64,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.WebLookAndFeel;
@@ -102,7 +104,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -114,6 +116,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -154,7 +157,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         // Paints text highligher
         final Highlighter highlighter = component.getHighlighter ();
@@ -197,44 +200,47 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
      *
      * @param g2d graphics context
      */
-    protected void paintInputPrompt ( final Graphics2D g2d )
+    protected void paintInputPrompt ( @NotNull final Graphics2D g2d )
     {
         if ( isInputPromptVisible () )
         {
             final Rectangle b = getEditorRect ();
-            final Shape oc = GraphicsUtils.intersectClip ( g2d, b );
+            if ( b != null )
+            {
+                final Shape oc = GraphicsUtils.intersectClip ( g2d, b );
 
-            g2d.setFont ( inputPromptFont != null ? inputPromptFont : component.getFont () );
-            g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : component.getForeground () );
+                g2d.setFont ( inputPromptFont != null ? inputPromptFont : component.getFont () );
+                g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : component.getForeground () );
 
-            final String text = getInputPrompt ();
-            final FontMetrics fm = g2d.getFontMetrics ();
-            final int x;
-            if ( inputPromptHorizontalPosition == CENTER )
-            {
-                x = b.x + b.width / 2 - fm.stringWidth ( text ) / 2;
-            }
-            else if ( ltr && inputPromptHorizontalPosition == LEADING || !ltr && inputPromptHorizontalPosition == TRAILING ||
-                    inputPromptHorizontalPosition == LEFT )
-            {
-                x = b.x;
-            }
-            else
-            {
-                x = b.x + b.width - fm.stringWidth ( text );
-            }
-            final int y;
-            if ( inputPromptVerticalPosition == CENTER )
-            {
-                y = b.y + b.height / 2 + LafUtils.getTextCenterShiftY ( fm );
-            }
-            else
-            {
-                y = ui.getBaseline ( component, component.getWidth (), component.getHeight () );
-            }
-            g2d.drawString ( text, x, y );
+                final String text = getInputPrompt ();
+                final FontMetrics fm = g2d.getFontMetrics ();
+                final int x;
+                if ( inputPromptHorizontalPosition == CENTER )
+                {
+                    x = b.x + b.width / 2 - fm.stringWidth ( text ) / 2;
+                }
+                else if ( ltr && inputPromptHorizontalPosition == LEADING || !ltr && inputPromptHorizontalPosition == TRAILING ||
+                        inputPromptHorizontalPosition == LEFT )
+                {
+                    x = b.x;
+                }
+                else
+                {
+                    x = b.x + b.width - fm.stringWidth ( text );
+                }
+                final int y;
+                if ( inputPromptVerticalPosition == CENTER )
+                {
+                    y = b.y + b.height / 2 + LafUtils.getTextCenterShiftY ( fm );
+                }
+                else
+                {
+                    y = ui.getBaseline ( component, component.getWidth (), component.getHeight () );
+                }
+                g2d.drawString ( text, x, y );
 
-            GraphicsUtils.restoreClip ( g2d, oc );
+                GraphicsUtils.restoreClip ( g2d, oc );
+            }
         }
     }
 
@@ -244,6 +250,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
      *
      * @return the bounding box for the root view
      */
+    @Nullable
     protected Rectangle getEditorRect ()
     {
         final Rectangle editorBounds;

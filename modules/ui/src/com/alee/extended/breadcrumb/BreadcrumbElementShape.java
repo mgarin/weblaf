@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Supplier;
 import com.alee.graphics.shapes.RelativeGeneralPath;
 import com.alee.painter.decoration.DecorationException;
@@ -208,6 +209,7 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
         return visible;
     }
 
+    @NotNull
     @Override
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {

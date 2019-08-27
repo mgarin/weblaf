@@ -17,6 +17,7 @@
 
 package com.alee.demo.ui.tools;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.laf.WebLookAndFeel;
@@ -106,7 +107,7 @@ public final class OrientationChooserTool extends WebPanel
         }
 
         @Override
-        public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+        public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
         {
             super.fireContentsChanged ( this, 0, getSize () );
         }

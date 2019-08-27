@@ -17,6 +17,8 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -75,6 +77,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -93,6 +96,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
         PainterSupport.setShapeDetectionEnabled ( header, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -100,11 +104,12 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( header, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -112,7 +117,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( header, padding );
     }
@@ -135,7 +140,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( header, new Consumer<ITableHeaderPainter> ()
+        PainterSupport.setPainter ( header, this, new Consumer<ITableHeaderPainter> ()
         {
             @Override
             public void accept ( final ITableHeaderPainter newPainter )

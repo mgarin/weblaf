@@ -17,6 +17,8 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.DictionaryListener;
 import com.alee.managers.language.LanguageEventMethods;
@@ -47,12 +49,18 @@ import java.awt.event.MouseAdapter;
  *
  * @author Mikle Garin
  * @see JDesktopPane
+ * @see WDesktopPaneUI
  * @see WebDesktopPaneUI
  * @see DesktopPanePainter
  */
 public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
         EventMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebDesktopPane>, SizeMethods<WebDesktopPane>
 {
+    /**
+     * Component properties.
+     */
+    public static final String DESKTOP_MANAGER_PROPERTY = "desktopManager";
+
     /**
      * Constructs new desktop pane component.
      */
@@ -72,12 +80,14 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.desktoppane;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -150,6 +160,7 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -168,6 +179,7 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -187,11 +199,12 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -211,7 +224,7 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }
@@ -603,20 +616,20 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
     /**
      * Returns the look and feel (LaF) object that renders this component.
      *
-     * @return the {@link WebDesktopPaneUI} object that renders this component
+     * @return the {@link WDesktopPaneUI} object that renders this component
      */
     @Override
-    public WebDesktopPaneUI getUI ()
+    public WDesktopPaneUI getUI ()
     {
-        return ( WebDesktopPaneUI ) super.getUI ();
+        return ( WDesktopPaneUI ) super.getUI ();
     }
 
     /**
      * Sets the LaF object that renders this component.
      *
-     * @param ui {@link WebDesktopPaneUI}
+     * @param ui {@link WDesktopPaneUI}
      */
-    public void setUI ( final WebDesktopPaneUI ui )
+    public void setUI ( final WDesktopPaneUI ui )
     {
         super.setUI ( ui );
     }

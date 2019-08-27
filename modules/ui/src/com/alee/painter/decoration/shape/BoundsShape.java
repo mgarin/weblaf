@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.shadow.ShadowType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -36,6 +37,7 @@ import java.awt.*;
 @XStreamAlias ( "BoundsShape" )
 public class BoundsShape<C extends JComponent, D extends WebDecoration<C, D>, I extends BoundsShape<C, D, I>> extends AbstractShape<C, D, I>
 {
+    @NotNull
     @Override
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {

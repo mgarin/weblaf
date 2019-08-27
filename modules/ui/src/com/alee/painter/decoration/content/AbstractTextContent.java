@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.behavior.OmitOnMerge;
@@ -130,7 +131,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
     @OmitOnMerge
     protected transient View htmlView;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

@@ -17,6 +17,7 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
@@ -1113,6 +1114,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
      * Shape provider
      */
 
+    @NotNull
     @Override
     public Shape getShape ()
     {

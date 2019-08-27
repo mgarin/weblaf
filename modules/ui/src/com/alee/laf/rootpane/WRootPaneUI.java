@@ -29,6 +29,13 @@ import java.awt.*;
 public abstract class WRootPaneUI extends BasicRootPaneUI
 {
     /**
+     * Returns whether or not this {@link WRootPaneUI} provides custom window decoration.
+     *
+     * @return {@code true} if this {@link WRootPaneUI} provides custom window decoration, {@code false} otherwise
+     */
+    public abstract boolean isDecorated ();
+
+    /**
      * Installs window decorations.
      */
     public abstract void installWindowDecorations ();

@@ -17,6 +17,8 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -55,7 +57,7 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -64,7 +66,7 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( splitPane );
@@ -72,6 +74,7 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -90,6 +93,7 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
         PainterSupport.setShapeDetectionEnabled ( splitPane, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -97,11 +101,12 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( splitPane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -109,7 +114,7 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( splitPane, padding );
     }
@@ -132,7 +137,7 @@ public class WebSplitPaneUI<C extends JSplitPane> extends WSplitPaneUI<C> implem
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( splitPane, new Consumer<ISplitPanePainter> ()
+        PainterSupport.setPainter ( splitPane, this, new Consumer<ISplitPanePainter> ()
         {
             @Override
             public void accept ( final ISplitPanePainter newPainter )

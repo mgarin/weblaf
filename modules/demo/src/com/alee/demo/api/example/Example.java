@@ -17,6 +17,7 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.managers.style.Skin;
 
@@ -34,6 +35,7 @@ public interface Example extends ExampleElement
      *
      * @return type of the features displayed in this example
      */
+    @NotNull
     public FeatureType getFeatureType ();
 
     /**
@@ -43,6 +45,7 @@ public interface Example extends ExampleElement
      *
      * @return wiki page referenced in this example
      */
+    @NotNull
     public WikiPage getWikiPage ();
 
     /**
@@ -50,6 +53,7 @@ public interface Example extends ExampleElement
      *
      * @return source code for this example
      */
+    @NotNull
     public String getSourceCode ();
 
     /**
@@ -58,12 +62,14 @@ public interface Example extends ExampleElement
      * @param skin skin to retrieve style code for
      * @return style code for this example
      */
-    public String getStyleCode ( Skin skin );
+    @NotNull
+    public String getStyleCode ( @NotNull Skin skin );
 
     /**
      * Returns example content component.
      *
      * @return example content component
      */
+    @NotNull
     public JComponent createContent ();
 }

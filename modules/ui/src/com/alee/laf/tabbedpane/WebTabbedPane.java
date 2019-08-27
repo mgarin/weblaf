@@ -17,6 +17,8 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
@@ -51,6 +53,12 @@ import java.awt.event.MouseAdapter;
 public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
         LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebTabbedPane>, SizeMethods<WebTabbedPane>
 {
+    /**
+     * Component properties.
+     */
+    @Deprecated
+    public static final String TABBED_PANE_STYLE_PROPERTY = "tabbedPaneStyle";
+
     /**
      * Constructs new tabbed pane.
      */
@@ -196,12 +204,14 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
         getUI ().setTabStretchType ( tabStretchType );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.tabbedpane;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -274,6 +284,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -292,6 +303,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -311,11 +323,12 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -335,7 +348,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.laf.checkbox.CheckBoxPainter;
 import com.alee.laf.checkbox.WCheckBoxUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbCheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI<C>, D extends IDecoration<C, D>>
         extends CheckBoxPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

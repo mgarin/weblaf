@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.IInputPrompt;
 import com.alee.managers.hotkey.HotkeyData;
@@ -315,12 +317,14 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
         return getUI ().removeTrailingComponent ();
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.formattedtextfield;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -393,6 +397,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -411,6 +416,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -430,11 +436,12 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -454,7 +461,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

@@ -17,6 +17,8 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
@@ -83,12 +85,14 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
         this.invalidate ();
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.toolbarseparator;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -161,6 +165,7 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -179,6 +184,7 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -198,11 +204,12 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -222,7 +229,7 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

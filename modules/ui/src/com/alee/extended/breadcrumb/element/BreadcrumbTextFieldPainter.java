@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.laf.text.TextFieldPainter;
 import com.alee.laf.text.WTextFieldUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbTextFieldPainter<C extends JTextField, U extends WTextFieldUI, D extends IDecoration<C, D>>
         extends TextFieldPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

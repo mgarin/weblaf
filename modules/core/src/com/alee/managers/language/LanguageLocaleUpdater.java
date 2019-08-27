@@ -17,6 +17,8 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.Locale;
 
 /**
@@ -30,7 +32,7 @@ import java.util.Locale;
 public final class LanguageLocaleUpdater implements LanguageListener
 {
     @Override
-    public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+    public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
     {
         Locale.setDefault ( newLanguage.getLocale () );
     }

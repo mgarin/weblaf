@@ -87,6 +87,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

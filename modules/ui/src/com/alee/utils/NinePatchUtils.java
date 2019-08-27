@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
@@ -49,7 +50,8 @@ public final class NinePatchUtils
      * @param resource file description
      * @return NinePatchIcon
      */
-    public static NinePatchIcon getNinePatchIcon ( final Resource resource )
+    @NotNull
+    public static NinePatchIcon getNinePatchIcon ( @NotNull final Resource resource )
     {
         return new NinePatchIcon ( ImageUtils.getImageIcon ( resource ) );
     }
@@ -61,12 +63,14 @@ public final class NinePatchUtils
      * @param intervalType intervals type
      * @return list of nine-patch data intervals from the specified image
      */
-    public static List<NinePatchInterval> parseIntervals ( final BufferedImage image, final NinePatchIntervalType intervalType )
+    @NotNull
+    public static List<NinePatchInterval> parseIntervals ( @NotNull final BufferedImage image,
+                                                           @NotNull final NinePatchIntervalType intervalType )
     {
-        final boolean hv = intervalType.equals ( NinePatchIntervalType.horizontalStretch ) ||
-                intervalType.equals ( NinePatchIntervalType.verticalStretch );
-        final int l = ( intervalType.equals ( NinePatchIntervalType.horizontalStretch ) ||
-                intervalType.equals ( NinePatchIntervalType.horizontalContent ) ? image.getWidth () : image.getHeight () ) - 1;
+        final boolean hv = intervalType == NinePatchIntervalType.horizontalStretch ||
+                intervalType == NinePatchIntervalType.verticalStretch;
+        final int l = ( intervalType == NinePatchIntervalType.horizontalStretch ||
+                intervalType == NinePatchIntervalType.horizontalContent ? image.getWidth () : image.getHeight () ) - 1;
 
         final List<NinePatchInterval> intervals = new ArrayList<NinePatchInterval> ();
         NinePatchInterval interval = null;
@@ -104,7 +108,7 @@ public final class NinePatchUtils
                 // Enlarge interval
                 interval.setEnd ( i - 1 );
             }
-            else if ( pixelPart != interval.isPixel () )
+            else
             {
                 // Add pixel interval only for stretch types and non-pixel for any type
                 if ( hv || !interval.isPixel () )
@@ -132,7 +136,8 @@ public final class NinePatchUtils
      * @param filled pixels fill data
      * @return nine-patch stretch intervals
      */
-    public static List<NinePatchInterval> parseStretchIntervals ( final boolean[] filled )
+    @NotNull
+    public static List<NinePatchInterval> parseStretchIntervals ( @NotNull final boolean[] filled )
     {
         final List<NinePatchInterval> intervals = new ArrayList<NinePatchInterval> ();
         NinePatchInterval interval = null;
@@ -150,7 +155,7 @@ public final class NinePatchUtils
                 // Enlarge interval
                 interval.setEnd ( i );
             }
-            else if ( pixelPart != interval.isPixel () )
+            else
             {
                 intervals.add ( interval );
 
@@ -172,7 +177,8 @@ public final class NinePatchUtils
      * @param icon NinePatchIcon to rotate
      * @return rotated by 90 degrees clockwise NinePatchIcon
      */
-    public static NinePatchIcon rotateIcon90CW ( final NinePatchIcon icon )
+    @NotNull
+    public static NinePatchIcon rotateIcon90CW ( @NotNull final NinePatchIcon icon )
     {
         final BufferedImage rawImage = ImageUtils.rotateImage90CW ( icon.getRawImage () );
         final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
@@ -195,7 +201,8 @@ public final class NinePatchUtils
      * @param icon NinePatchIcon to rotate
      * @return rotated by 90 degrees counter-clockwise NinePatchIcon
      */
-    public static NinePatchIcon rotateIcon90CCW ( final NinePatchIcon icon )
+    @NotNull
+    public static NinePatchIcon rotateIcon90CCW ( @NotNull final NinePatchIcon icon )
     {
         final BufferedImage rawImage = ImageUtils.rotateImage90CCW ( icon.getRawImage () );
         final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
@@ -218,7 +225,8 @@ public final class NinePatchUtils
      * @param icon NinePatchIcon to rotate
      * @return rotated by 180 degrees NinePatchIcon
      */
-    public static NinePatchIcon rotateIcon180 ( final NinePatchIcon icon )
+    @NotNull
+    public static NinePatchIcon rotateIcon180 ( @NotNull final NinePatchIcon icon )
     {
         final BufferedImage rawImage = ImageUtils.rotateImage180 ( icon.getRawImage () );
         final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
@@ -242,6 +250,7 @@ public final class NinePatchUtils
      * @param shadeOpacity shade opacity
      * @return shade nine-patch icon
      */
+    @NotNull
     @Deprecated
     public static NinePatchIcon createShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {

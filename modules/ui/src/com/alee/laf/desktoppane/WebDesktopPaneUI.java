@@ -17,34 +17,31 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicDesktopPaneUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link JDesktopPane} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
-public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebDesktopPaneUI<C extends JDesktopPane> extends WDesktopPaneUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
     @DefaultPainter ( DesktopPanePainter.class )
     protected IDesktopPanePainter painter;
-
-    /**
-     * Runtime variables.
-     */
-    protected transient JDesktopPane desktopPane = null;
 
     /**
      * Returns an instance of the {@link WebDesktopPaneUI} for the specified component.
@@ -59,70 +56,67 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
-        // Saving desktop pane to local variable
-        desktopPane = ( JDesktopPane ) c;
-
         // Applying skin
-        StyleManager.installSkin ( desktopPane );
+        StyleManager.installSkin ( desktop );
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( desktopPane );
-
-        // Cleaning up reference
-        desktopPane = null;
+        StyleManager.uninstallSkin ( desktop );
 
         // Uninstalling UI
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( desktopPane, painter );
+        return PainterSupport.getShape ( desktop, painter );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( desktopPane, painter );
+        return PainterSupport.isShapeDetectionEnabled ( desktop, painter );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( desktopPane, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( desktop, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
-        return PainterSupport.getMargin ( desktopPane );
+        return PainterSupport.getMargin ( desktop );
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
-        PainterSupport.setMargin ( desktopPane, margin );
+        PainterSupport.setMargin ( desktop, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
-        return PainterSupport.getPadding ( desktopPane );
+        return PainterSupport.getPadding ( desktop );
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
-        PainterSupport.setPadding ( desktopPane, padding );
+        PainterSupport.setPadding ( desktop, padding );
     }
 
     /**
@@ -143,7 +137,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeSupport
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( desktopPane, new Consumer<IDesktopPanePainter> ()
+        PainterSupport.setPainter ( desktop, this, new Consumer<IDesktopPanePainter> ()
         {
             @Override
             public void accept ( final IDesktopPanePainter newPainter )

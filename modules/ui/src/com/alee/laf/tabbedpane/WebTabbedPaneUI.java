@@ -17,6 +17,8 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
@@ -97,6 +99,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -133,7 +136,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tabPane, new Consumer<ITabbedPanePainter> ()
+        PainterSupport.setPainter ( tabPane, this, new Consumer<ITabbedPanePainter> ()
         {
             @Override
             public void accept ( final ITabbedPanePainter newPainter )
@@ -154,7 +157,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     {
         final TabbedPaneStyle old = this.tabbedPaneStyle;
         this.tabbedPaneStyle = tabbedPaneStyle;
-        SwingUtils.firePropertyChanged ( tabPane, WebLookAndFeel.TABBED_PANE_STYLE_PROPERTY, old, tabbedPaneStyle );
+        SwingUtils.firePropertyChanged ( tabPane, WebTabbedPane.TABBED_PANE_STYLE_PROPERTY, old, tabbedPaneStyle );
     }
 
     @Override
@@ -331,6 +334,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
         }
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -338,11 +342,12 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( tabPane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -350,7 +355,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( tabPane, padding );
     }

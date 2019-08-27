@@ -31,14 +31,14 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class InternalFrameDescriptor extends AbstractInternalFrameDescriptor<JInternalFrame, WebInternalFrameUI>
+public final class InternalFrameDescriptor extends AbstractInternalFrameDescriptor<JInternalFrame, WInternalFrameUI>
 {
     /**
      * Constructs new descriptor for {@link JInternalFrame} component.
      */
     public InternalFrameDescriptor ()
     {
-        super ( "internalframe", JInternalFrame.class, "InternalFrameUI", WebInternalFrameUI.class, WebInternalFrameUI.class,
+        super ( "internalframe", JInternalFrame.class, "InternalFrameUI", WInternalFrameUI.class, WebInternalFrameUI.class,
                 StyleId.internalframe );
     }
 }

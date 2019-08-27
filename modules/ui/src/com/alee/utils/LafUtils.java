@@ -17,9 +17,11 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.rootpane.WebRootPaneUI;
+import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.managers.style.*;
 
 import javax.swing.*;
@@ -48,18 +50,19 @@ public final class LafUtils
      * @param component {@link Component} used to determine {@link Window} decoration state
      * @return true if {@link Window} in which specified {@link Component} located is decorated by LaF, false otherwise
      */
-    public static boolean isInDecoratedWindow ( final Component component )
+    public static boolean isInDecoratedWindow ( @Nullable final Component component )
     {
+        boolean result = false;
         final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         if ( rootPane != null )
         {
             final RootPaneUI ui = rootPane.getUI ();
-            if ( ui instanceof WebRootPaneUI )
+            if ( ui instanceof WRootPaneUI )
             {
-                return ( ( WebRootPaneUI ) ui ).isDecorated ();
+                result = ( ( WRootPaneUI ) ui ).isDecorated ();
             }
         }
-        return false;
+        return result;
     }
 
     /**
@@ -68,7 +71,7 @@ public final class LafUtils
      * @param component {@link JComponent} to check {@link ComponentUI} usage in
      * @return {@code true} if specified {@link JComponent} uses {@link ComponentUI}, {@code false} otherwise
      */
-    public static boolean hasUI ( final JComponent component )
+    public static boolean hasUI ( @NotNull final JComponent component )
     {
         return ReflectUtils.hasMethod ( component, "getUI" );
     }
@@ -80,7 +83,8 @@ public final class LafUtils
      * @param <U>       {@link ComponentUI} class type
      * @return {@link ComponentUI} or {@code null} if UI cannot be retrieved
      */
-    public static <U extends ComponentUI> U getUI ( final JComponent component )
+    @Nullable
+    public static <U extends ComponentUI> U getUI ( @NotNull final JComponent component )
     {
         try
         {
@@ -98,7 +102,7 @@ public final class LafUtils
      * @param component {@link JComponent} to setup {@link ComponentUI} for
      * @param ui        {@link ComponentUI}
      */
-    public static void setUI ( final JComponent component, final ComponentUI ui )
+    public static void setUI ( @NotNull final JComponent component, @Nullable final ComponentUI ui )
     {
         try
         {
@@ -116,7 +120,7 @@ public final class LafUtils
      * @param component {@link JComponent} to check WebLaF {@link ComponentUI} usage in
      * @return {@code true} if specified {@link JComponent} uses WebLaF {@link ComponentUI}, {@code false} otherwise
      */
-    public static boolean hasWebLafUI ( final JComponent component )
+    public static boolean hasWebLafUI ( @NotNull final JComponent component )
     {
         final boolean webUI;
         if ( StyleManager.isSupported ( component ) )
@@ -144,9 +148,13 @@ public final class LafUtils
      * @param text    text
      * @return X and Y shift for the specified text and font metrics
      */
-    public static Point getTextCenterShift ( final FontMetrics metrics, final String text )
+    @NotNull
+    public static Point getTextCenterShift ( @NotNull final FontMetrics metrics, @NotNull final String text )
     {
-        return new Point ( getTextCenterShiftX ( metrics, text ), getTextCenterShiftY ( metrics ) );
+        return new Point (
+                getTextCenterShiftX ( metrics, text ),
+                getTextCenterShiftY ( metrics )
+        );
     }
 
     /**
@@ -157,7 +165,7 @@ public final class LafUtils
      * @param text    text
      * @return X shift for the specified text and font metrics
      */
-    public static int getTextCenterShiftX ( final FontMetrics metrics, final String text )
+    public static int getTextCenterShiftX ( @NotNull final FontMetrics metrics, @NotNull final String text )
     {
         return -metrics.stringWidth ( text ) / 2;
     }
@@ -169,7 +177,7 @@ public final class LafUtils
      * @param metrics font metrics
      * @return Y shift for the specified font metrics
      */
-    public static int getTextCenterShiftY ( final FontMetrics metrics )
+    public static int getTextCenterShiftY ( @NotNull final FontMetrics metrics )
     {
         return ( metrics.getAscent () - metrics.getLeading () - metrics.getDescent () ) / 2;
     }
@@ -181,7 +189,8 @@ public final class LafUtils
      * @param component {@link JComponent} to process
      * @return {@link Shape} of the specified {@link JComponent}
      */
-    public static Shape getShape ( final JComponent component )
+    @NotNull
+    public static Shape getShape ( @NotNull final JComponent component )
     {
         final Shape shape;
         if ( component instanceof ShapeSupport )
@@ -215,7 +224,7 @@ public final class LafUtils
      * @param clazz LaF class
      * @throws LookAndFeelException when unable to install specified LaF
      */
-    public static void setupLookAndFeel ( final Class<? extends LookAndFeel> clazz ) throws LookAndFeelException
+    public static void setupLookAndFeel ( @NotNull final Class<? extends LookAndFeel> clazz ) throws LookAndFeelException
     {
         setupLookAndFeel ( clazz.getCanonicalName () );
     }
@@ -226,7 +235,7 @@ public final class LafUtils
      * @param className LaF canonical class name
      * @throws LookAndFeelException when unable to install specified LaF
      */
-    public static void setupLookAndFeel ( final String className ) throws LookAndFeelException
+    public static void setupLookAndFeel ( @NotNull final String className ) throws LookAndFeelException
     {
         try
         {
@@ -244,7 +253,7 @@ public final class LafUtils
      * @param component component to install default settings into
      * @param prefix    component type prefix
      */
-    public static void installDefaults ( final JComponent component, final String prefix )
+    public static void installDefaults ( @NotNull final JComponent component, @NotNull final String prefix )
     {
         if ( SwingUtils.isUIResource ( component.getFont () ) )
         {
@@ -265,7 +274,7 @@ public final class LafUtils
      *
      * @param component component to uninstall default settings from
      */
-    public static void uninstallDefaults ( final JComponent component )
+    public static void uninstallDefaults ( @NotNull final JComponent component )
     {
         if ( SwingUtils.isUIResource ( component.getForeground () ) )
         {

@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Overwriting;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.IDecoratonElement;
@@ -59,6 +60,7 @@ public interface IShape<C extends JComponent, D extends IDecoration<C, D>, I ext
      * @param d      painted decoration state
      * @return component shape of the specified type
      */
+    @NotNull
     public Shape getShape ( ShapeType type, Rectangle bounds, C c, D d );
 
     /**

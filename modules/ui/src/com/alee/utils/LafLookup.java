@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebUI;
 
@@ -29,6 +31,7 @@ import java.awt.*;
  * Lookup created to replace proprietary {@code sun.swing.DefaultLookup} class.
  * This class does basically the same except not allowing to change the way lookup works.
  *
+ * @author Scott Violet
  * @author Mikle Garin
  */
 public final class LafLookup
@@ -48,14 +51,22 @@ public final class LafLookup
      * @param condition event condition
      * @return {@link InputMap} for {@code condition} from the specified {@link JComponent}
      */
-    public static InputMap getInputMap ( final JComponent component, final int condition )
+    @Nullable
+    public static InputMap getInputMap ( @NotNull final JComponent component, final int condition )
     {
+        final InputMap inputMap;
         final ComponentUI ui = LafUtils.getUI ( component );
         if ( ui instanceof WebUI )
         {
             final WebUI webUI = ( WebUI ) ui;
+
+            // Retrieving input map settings key
             final String key;
-            if ( condition == JComponent.WHEN_FOCUSED )
+            if ( condition == JComponent.WHEN_IN_FOCUSED_WINDOW )
+            {
+                key = webUI.getPropertyPrefix () + "windowBindings";
+            }
+            else if ( condition == JComponent.WHEN_FOCUSED )
             {
                 key = webUI.getPropertyPrefix () + "focusInputMap";
             }
@@ -67,28 +78,25 @@ public final class LafLookup
             {
                 throw new LookAndFeelException ( "Unsupported InputMap condition: " + condition );
             }
-            return ( InputMap ) LafLookup.get ( component, ui, key );
-        }
-        return null;
-    }
 
-    /**
-     * Returns default {@code int} value for the specified {@code key}.
-     *
-     * @param component    {@link JComponent} to return value for
-     * @param ui           {@link ComponentUI} to return value for
-     * @param key          value key
-     * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@code int} value for the specified {@code key}
-     */
-    public static int getInt ( final JComponent component, final ComponentUI ui, final String key, final int defaultValue )
-    {
-        final Object iValue = get ( component, ui, key );
-        if ( !( iValue instanceof Number ) )
-        {
-            return defaultValue;
+            // Retrieving input map
+            if ( condition == JComponent.WHEN_IN_FOCUSED_WINDOW )
+            {
+                // Custom input map for window bindings
+                final Object[] bindings = ( Object[] ) LafLookup.get ( component, ui, key );
+                inputMap = bindings != null ? LookAndFeel.makeComponentInputMap ( component, bindings ) : null;
+            }
+            else
+            {
+                // Existing input map for key
+                inputMap = ( InputMap ) LafLookup.get ( component, ui, key );
+            }
         }
-        return ( ( Number ) iValue ).intValue ();
+        else
+        {
+            inputMap = null;
+        }
+        return inputMap;
     }
 
     /**
@@ -99,28 +107,35 @@ public final class LafLookup
      * @param key       value key
      * @return default {@code int} value for the specified {@code key}
      */
-    public static int getInt ( final JComponent component, final ComponentUI ui, final String key )
+    public static int getInt ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                               @NotNull final String key )
     {
         return getInt ( component, ui, key, -1 );
     }
 
     /**
-     * Returns default {@link Insets} value for the specified {@code key}.
+     * Returns default {@code int} value for the specified {@code key}.
      *
      * @param component    {@link JComponent} to return value for
      * @param ui           {@link ComponentUI} to return value for
      * @param key          value key
      * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@link Insets} value for the specified {@code key}
+     * @return default {@code int} value for the specified {@code key}
      */
-    public static Insets getInsets ( final JComponent component, final ComponentUI ui, final String key, final Insets defaultValue )
+    public static int getInt ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                               @NotNull final String key, final int defaultValue )
     {
+        final int result;
         final Object iValue = get ( component, ui, key );
-        if ( !( iValue instanceof Insets ) )
+        if ( iValue instanceof Number )
         {
-            return defaultValue;
+            result = ( ( Number ) iValue ).intValue ();
         }
-        return ( Insets ) iValue;
+        else
+        {
+            result = defaultValue;
+        }
+        return result;
     }
 
     /**
@@ -131,28 +146,37 @@ public final class LafLookup
      * @param key       value key
      * @return default {@link Insets} value for the specified {@code key}
      */
-    public static Insets getInsets ( final JComponent component, final ComponentUI ui, final String key )
+    @Nullable
+    public static Insets getInsets ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                     @NotNull final String key )
     {
         return getInsets ( component, ui, key, null );
     }
 
     /**
-     * Returns default {@code boolean} value for the specified {@code key}.
+     * Returns default {@link Insets} value for the specified {@code key}.
      *
      * @param component    {@link JComponent} to return value for
      * @param ui           {@link ComponentUI} to return value for
      * @param key          value key
      * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@code boolean} value for the specified {@code key}
+     * @return default {@link Insets} value for the specified {@code key}
      */
-    public static boolean getBoolean ( final JComponent component, final ComponentUI ui, final String key, final boolean defaultValue )
+    @Nullable
+    public static Insets getInsets ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                     @NotNull final String key, @Nullable final Insets defaultValue )
     {
+        final Insets result;
         final Object iValue = get ( component, ui, key );
-        if ( !( iValue instanceof Boolean ) )
+        if ( iValue instanceof Insets )
         {
-            return defaultValue;
+            result = ( Insets ) iValue;
         }
-        return ( Boolean ) iValue;
+        else
+        {
+            result = defaultValue;
+        }
+        return result;
     }
 
     /**
@@ -163,29 +187,35 @@ public final class LafLookup
      * @param key       value key
      * @return default {@code boolean} value for the specified {@code key}
      */
-    public static boolean getBoolean ( final JComponent component, final ComponentUI ui, final String key )
+    public static boolean getBoolean ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                       @NotNull final String key )
     {
         return getBoolean ( component, ui, key, false );
     }
 
     /**
-     * Returns default {@link Color} value for the specified {@code key}.
+     * Returns default {@code boolean} value for the specified {@code key}.
      *
      * @param component    {@link JComponent} to return value for
      * @param ui           {@link ComponentUI} to return value for
      * @param key          value key
      * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@link Color} value for the specified {@code key}
+     * @return default {@code boolean} value for the specified {@code key}
      */
-    public static Color getColor ( final JComponent component, final ComponentUI ui, final String key,
-                                   final Color defaultValue )
+    public static boolean getBoolean ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                       @NotNull final String key, final boolean defaultValue )
     {
+        final boolean result;
         final Object iValue = get ( component, ui, key );
-        if ( !( iValue instanceof Color ) )
+        if ( iValue instanceof Boolean )
         {
-            return defaultValue;
+            result = ( Boolean ) iValue;
         }
-        return ( Color ) iValue;
+        else
+        {
+            result = defaultValue;
+        }
+        return result;
     }
 
     /**
@@ -196,28 +226,37 @@ public final class LafLookup
      * @param key       value key
      * @return default {@link Color} value for the specified {@code key}
      */
-    public static Color getColor ( final JComponent component, final ComponentUI ui, final String key )
+    @Nullable
+    public static Color getColor ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                   @NotNull final String key )
     {
         return getColor ( component, ui, key, null );
     }
 
     /**
-     * Returns default {@link Icon} value for the specified {@code key}.
+     * Returns default {@link Color} value for the specified {@code key}.
      *
      * @param component    {@link JComponent} to return value for
      * @param ui           {@link ComponentUI} to return value for
      * @param key          value key
      * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@link Icon} value for the specified {@code key}
+     * @return default {@link Color} value for the specified {@code key}
      */
-    public static Icon getIcon ( final JComponent component, final ComponentUI ui, final String key, final Icon defaultValue )
+    @Nullable
+    public static Color getColor ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                   @NotNull final String key, @Nullable final Color defaultValue )
     {
+        final Color result;
         final Object iValue = get ( component, ui, key );
-        if ( !( iValue instanceof Icon ) )
+        if ( iValue instanceof Color )
         {
-            return defaultValue;
+            result = ( Color ) iValue;
         }
-        return ( Icon ) iValue;
+        else
+        {
+            result = defaultValue;
+        }
+        return result;
     }
 
     /**
@@ -228,28 +267,37 @@ public final class LafLookup
      * @param key       value key
      * @return default {@link Icon} value for the specified {@code key}
      */
-    public static Icon getIcon ( final JComponent component, final ComponentUI ui, final String key )
+    @Nullable
+    public static Icon getIcon ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                 @NotNull final String key )
     {
         return getIcon ( component, ui, key, null );
     }
 
     /**
-     * Returns default {@link Border} value for the specified {@code key}.
+     * Returns default {@link Icon} value for the specified {@code key}.
      *
      * @param component    {@link JComponent} to return value for
      * @param ui           {@link ComponentUI} to return value for
      * @param key          value key
      * @param defaultValue value used as default if there is no value provided for the key
-     * @return default {@link Border} value for the specified {@code key}
+     * @return default {@link Icon} value for the specified {@code key}
      */
-    public static Border getBorder ( final JComponent component, final ComponentUI ui, final String key, final Border defaultValue )
+    @Nullable
+    public static Icon getIcon ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                 @NotNull final String key, @Nullable final Icon defaultValue )
     {
+        final Icon result;
         final Object iValue = get ( component, ui, key );
-        if ( !( iValue instanceof Border ) )
+        if ( iValue instanceof Icon )
         {
-            return defaultValue;
+            result = ( Icon ) iValue;
         }
-        return ( Border ) iValue;
+        else
+        {
+            result = defaultValue;
+        }
+        return result;
     }
 
     /**
@@ -260,9 +308,37 @@ public final class LafLookup
      * @param key       value key
      * @return default {@link Border} value for the specified {@code key}
      */
-    public static Border getBorder ( final JComponent component, final ComponentUI ui, final String key )
+    @Nullable
+    public static Border getBorder ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                     @NotNull final String key )
     {
         return getBorder ( component, ui, key, null );
+    }
+
+    /**
+     * Returns default {@link Border} value for the specified {@code key}.
+     *
+     * @param component    {@link JComponent} to return value for
+     * @param ui           {@link ComponentUI} to return value for
+     * @param key          value key
+     * @param defaultValue value used as default if there is no value provided for the key
+     * @return default {@link Border} value for the specified {@code key}
+     */
+    @Nullable
+    public static Border getBorder ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                     @NotNull final String key, @Nullable final Border defaultValue )
+    {
+        final Border result;
+        final Object iValue = get ( component, ui, key );
+        if ( iValue instanceof Border )
+        {
+            result = ( Border ) iValue;
+        }
+        else
+        {
+            result = defaultValue;
+        }
+        return result;
     }
 
     /**
@@ -273,7 +349,9 @@ public final class LafLookup
      * @param key       value key
      * @return default {@link Object} value for the specified {@code key}
      */
-    public static Object get ( final JComponent component, final ComponentUI ui, final String key )
+    @Nullable
+    public static Object get ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                               @NotNull final String key )
     {
         return UIManager.get ( key, component.getLocale () );
     }

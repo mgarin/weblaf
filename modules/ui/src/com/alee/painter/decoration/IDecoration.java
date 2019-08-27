@@ -18,6 +18,7 @@
 package com.alee.painter.decoration;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Overwriting;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
@@ -77,7 +78,7 @@ public interface IDecoration<C extends JComponent, I extends IDecoration<C, I>>
      * @param states decoration states
      * @return true if this decoration is applicable to the specified states, false otherwise
      */
-    public boolean isApplicableTo ( List<String> states );
+    public boolean isApplicableTo ( @NotNull List<String> states );
 
     /**
      * Returns whether or not this decoration state provides any visible decoration parts.

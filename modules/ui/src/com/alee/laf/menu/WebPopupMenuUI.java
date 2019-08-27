@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -84,6 +86,7 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -102,6 +105,7 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
         PainterSupport.setShapeDetectionEnabled ( popupMenu, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -109,11 +113,12 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( popupMenu, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -121,7 +126,7 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( popupMenu, padding );
     }
@@ -156,7 +161,7 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( popupMenu, new Consumer<IPopupMenuPainter> ()
+        PainterSupport.setPainter ( popupMenu, this, new Consumer<IPopupMenuPainter> ()
         {
             @Override
             public void accept ( final IPopupMenuPainter newPainter )

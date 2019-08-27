@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -33,31 +34,35 @@ import java.util.List;
  */
 public class JTreeExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jtree";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "tree";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Trees", "tree" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

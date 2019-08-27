@@ -18,6 +18,7 @@
 package com.alee.demo.content.tooltip;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.button.WebButton;
@@ -39,25 +40,28 @@ import java.util.List;
  */
 public class WebCustomTooltipExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webcustomtooltip";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "customtooltip";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

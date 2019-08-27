@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.inspector.ComponentHighlighter;
 import com.alee.managers.style.BoundsType;
 
@@ -83,6 +84,7 @@ public final class DebugUtils
      *
      * @return deadlocked threads stack trace
      */
+    @NotNull
     public static String getDeadlockStackTrace ()
     {
         final ThreadMXBean bean = ManagementFactory.getThreadMXBean ();
@@ -119,7 +121,7 @@ public final class DebugUtils
      *
      * @param g graphics
      */
-    public static void paintTimeDebugInfo ( final Graphics g )
+    public static void paintTimeDebugInfo ( @NotNull final Graphics g )
     {
         if ( isGlobalDebugEnabled () )
         {
@@ -133,7 +135,7 @@ public final class DebugUtils
      *
      * @param g2d graphics
      */
-    public static void paintTimeDebugInfo ( final Graphics2D g2d )
+    public static void paintTimeDebugInfo ( @NotNull final Graphics2D g2d )
     {
         if ( isGlobalDebugEnabled () )
         {
@@ -146,7 +148,7 @@ public final class DebugUtils
      *
      * @param g2d graphics
      */
-    private static void paintDebugInfoImpl ( final Graphics2D g2d )
+    private static void paintDebugInfoImpl ( @NotNull final Graphics2D g2d )
     {
         final double ms = TimeUtils.getPassedNanoTime () / 1000000f;
         final String micro = "" + DEBUG_FORMAT.format ( ms );
@@ -177,7 +179,7 @@ public final class DebugUtils
      * @param g graphics
      * @param c component
      */
-    public static void paintBorderDebugInfo ( final Graphics g, final JComponent c )
+    public static void paintBorderDebugInfo ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
         Rectangle bounds = new Rectangle ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
         g.setColor ( ColorUtils.opaque ( ComponentHighlighter.marginColor ) );
@@ -215,7 +217,7 @@ public final class DebugUtils
      * @param g graphics
      * @param c component
      */
-    public static void paintBaselineDebugInfo ( final Graphics g, final JComponent c )
+    public static void paintBaselineDebugInfo ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
         paintBaselineDebugInfo ( g, c, Color.RED );
     }
@@ -228,7 +230,7 @@ public final class DebugUtils
      * @param c     component
      * @param color debug shape color
      */
-    public static void paintBaselineDebugInfo ( final Graphics g, final JComponent c, final Color color )
+    public static void paintBaselineDebugInfo ( @NotNull final Graphics g, @NotNull final JComponent c, @NotNull final Color color )
     {
         final int baseline = c.getBaseline ( c.getWidth (), c.getHeight () );
         g.setColor ( color );

@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.laf.button.ToggleButtonPainter;
 import com.alee.laf.button.WToggleButtonUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbToggleButtonPainter<C extends JToggleButton, U extends WToggleButtonUI, D extends IDecoration<C, D>>
         extends ToggleButtonPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

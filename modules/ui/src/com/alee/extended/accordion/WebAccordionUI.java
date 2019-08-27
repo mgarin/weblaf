@@ -18,6 +18,7 @@
 package com.alee.extended.accordion;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.collapsible.AbstractHeaderPanel;
@@ -76,7 +77,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -86,7 +87,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( accordion );
@@ -110,7 +111,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent event )
+    public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
         final String property = event.getPropertyName ();
         if ( Objects.equals ( property, WebAccordion.MODEL_PROPERTY ) )
@@ -171,7 +172,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
      *
      * @param pane {@link AccordionPane} to update decoration states for
      */
-    protected void updateDecorationStates ( final AccordionPane pane )
+    protected void updateDecorationStates ( @NotNull final AccordionPane pane )
     {
         // Updating pane decoration states
         DecorationUtils.fireStatesChanged ( pane );
@@ -189,6 +190,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
         }
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -207,6 +209,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
         PainterSupport.setShapeDetectionEnabled ( accordion, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -214,11 +217,12 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( accordion, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -226,7 +230,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( accordion, padding );
     }
@@ -249,7 +253,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( accordion, new Consumer<IAccordionPainter> ()
+        PainterSupport.setPainter ( accordion, this, new Consumer<IAccordionPainter> ()
         {
             @Override
             public void accept ( final IAccordionPainter newPainter )

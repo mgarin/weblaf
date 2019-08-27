@@ -17,6 +17,7 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.util.ExampleUtils;
 import com.alee.utils.ReflectUtils;
@@ -36,6 +37,7 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
     protected List<ExampleGroup> groups;
     protected List<Example> examples;
 
+    @NotNull
     @Override
     public Icon getIcon ()
     {
@@ -43,6 +45,7 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
         return resource != null ? new ImageIcon ( resource ) : DemoIcons.group16;
     }
 
+    @NotNull
     @Override
     public FeatureState getFeatureState ()
     {

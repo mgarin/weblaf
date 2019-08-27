@@ -19,6 +19,7 @@ package com.alee.extended.dock.drag;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.dock.data.DockableElement;
 import com.alee.api.data.CompassDirection;
 
@@ -70,7 +71,7 @@ public class FrameDropData implements Identifiable, Serializable
         this.direction = direction;
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

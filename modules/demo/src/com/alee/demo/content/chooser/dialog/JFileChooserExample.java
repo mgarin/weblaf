@@ -19,6 +19,7 @@ package com.alee.demo.content.chooser.dialog;
 
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
@@ -54,31 +55,35 @@ public class JFileChooserExample extends AbstractStylePreviewExample
         }
     };
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jfilechooser";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "filechooser";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use File Choosers", "filechooser" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

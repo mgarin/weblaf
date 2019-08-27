@@ -31,14 +31,14 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class DesktopIconDescriptor extends AbstractDesktopIconDescriptor<JInternalFrame.JDesktopIcon, WebDesktopIconUI>
+public final class DesktopIconDescriptor extends AbstractDesktopIconDescriptor<JInternalFrame.JDesktopIcon, WDesktopIconUI>
 {
     /**
      * Constructs new descriptor for {@link JInternalFrame.JDesktopIcon} component.
      */
     public DesktopIconDescriptor ()
     {
-        super ( "desktopicon", JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WebDesktopIconUI.class, WebDesktopIconUI.class,
+        super ( "desktopicon", JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WDesktopIconUI.class, WebDesktopIconUI.class,
                 StyleId.desktopicon );
     }
 }

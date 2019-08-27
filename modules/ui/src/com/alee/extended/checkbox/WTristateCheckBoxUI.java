@@ -17,6 +17,7 @@
 
 package com.alee.extended.checkbox;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.button.WButtonUI;
 
 /**
@@ -27,6 +28,7 @@ import com.alee.laf.button.WButtonUI;
  */
 public abstract class WTristateCheckBoxUI<C extends WebTristateCheckBox> extends WButtonUI<C>
 {
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {

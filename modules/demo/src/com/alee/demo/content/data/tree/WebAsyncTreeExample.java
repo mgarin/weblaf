@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -38,31 +39,35 @@ import java.util.List;
  */
 public class WebAsyncTreeExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "asynctree";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "tree";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new WebLafWikiPage ( "How to use WebAsyncTree" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

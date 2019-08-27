@@ -17,6 +17,7 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -36,6 +37,7 @@ public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI i
      */
     protected C dateField;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -43,7 +45,7 @@ public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI i
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving datefield reference
         dateField = ( C ) c;
@@ -56,7 +58,7 @@ public abstract class WDateFieldUI<C extends WebDateField> extends ComponentUI i
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();

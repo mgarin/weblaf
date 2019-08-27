@@ -1,5 +1,7 @@
 package com.alee.extended.button;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.AbstractButtonPainter;
@@ -139,7 +141,7 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -184,6 +186,7 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -238,6 +241,7 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
         return onMenu;
     }
 
+    @NotNull
     @Override
     protected Insets getBorder ()
     {
@@ -257,7 +261,7 @@ public class SplitButtonPainter<C extends WebSplitButton, U extends WSplitButton
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         // Painting menu button
         paintMenuButton ( g2d, bounds, c );

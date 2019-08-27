@@ -18,6 +18,7 @@
 package com.alee.demo.content.chooser.dialog;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
@@ -37,31 +38,35 @@ import java.util.List;
  */
 public class JColorChooserExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jcolorchooser";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "colorchooser";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Color Choosers", "colorchooser" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

@@ -134,7 +134,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                if ( Objects.equals ( evt.getPropertyName (), WebLookAndFeel.EDITOR_PROPERTY ) )
+                if ( Objects.equals ( evt.getPropertyName (), WebComboBox.EDITOR_PROPERTY ) )
                 {
                     updateEditor ( comboBox.getEditor () );
                 }
@@ -260,6 +260,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         }
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -278,6 +279,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         PainterSupport.setShapeDetectionEnabled ( comboBox, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -285,11 +287,12 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( comboBox, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -297,7 +300,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( comboBox, padding );
     }
@@ -322,7 +325,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     {
         comboBox.hidePopup ();
         resetRendererSize ();
-        PainterSupport.setPainter ( comboBox, new Consumer<IComboBoxPainter> ()
+        PainterSupport.setPainter ( comboBox, this, new Consumer<IComboBoxPainter> ()
         {
             @Override
             public void accept ( final IComboBoxPainter newPainter )

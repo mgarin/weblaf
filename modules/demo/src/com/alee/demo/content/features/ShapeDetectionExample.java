@@ -18,6 +18,7 @@
 package com.alee.demo.content.features;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.label.WebStyledLabel;
@@ -48,25 +49,28 @@ import java.util.List;
  */
 public class ShapeDetectionExample extends AbstractPreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "shapedetection";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.settings;
     }
 
+    @NotNull
     @Override
     protected LayoutManager createPreviewLayout ()
     {
         return new AlignLayout ();
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {
@@ -88,8 +92,9 @@ public class ShapeDetectionExample extends AbstractPreviewExample
             super ( ShapeDetectionExample.this, "preview", FeatureState.release );
         }
 
+        @NotNull
         @Override
-        protected JComponent createPreview ( final List<Preview> previews, final int index )
+        protected JComponent createPreview ( @NotNull final List<Preview> previews, final int index )
         {
             final double[] col = new double[]{ TableLayout.FILL, TableLayout.FILL };
             final double[] row = new double[]{ TableLayout.PREFERRED, TableLayout.PREFERRED,

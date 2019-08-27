@@ -17,6 +17,8 @@
 
 package com.alee.painter.common;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 
@@ -82,6 +84,7 @@ public class ColorPainter<C extends JComponent, U extends ComponentUI> extends A
         repaint ();
     }
 
+    @Nullable
     @Override
     public Boolean isOpaque ()
     {
@@ -90,7 +93,7 @@ public class ColorPainter<C extends JComponent, U extends ComponentUI> extends A
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         // Do not paint anything if color is not set
         final Color color = getCurrentColor ();

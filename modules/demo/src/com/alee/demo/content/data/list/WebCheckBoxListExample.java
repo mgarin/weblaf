@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.list;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.list.CheckBoxCellData;
 import com.alee.extended.list.CheckBoxListModel;
@@ -35,25 +36,28 @@ import java.util.List;
  */
 public class WebCheckBoxListExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webcheckboxlist";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "checkboxlist";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

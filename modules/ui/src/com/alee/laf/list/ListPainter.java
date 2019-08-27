@@ -1,5 +1,7 @@
 package com.alee.laf.list;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
@@ -69,6 +71,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     protected transient int cellHeight = -1;
     protected transient int[] cellHeights = null;
 
+    @Nullable
     @Override
     protected List<SectionPainter<C, U>> getSectionPainters ()
     {
@@ -131,7 +134,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
         languageSensitive = new LanguageListener ()
         {
             @Override
-            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
             {
                 if ( isLanguageSensitive () )
                 {
@@ -247,7 +250,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         // Painting hover cell background
         paintBackground ( g2d );

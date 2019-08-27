@@ -17,6 +17,8 @@
 
 package com.alee.managers.language.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageUtils;
@@ -57,6 +59,7 @@ public final class Value implements Cloneable, Serializable
     /**
      * {@link Text}s of this {@link Value}.
      */
+    @NotNull
     @XStreamImplicit
     private List<Text> texts;
 
@@ -66,7 +69,7 @@ public final class Value implements Cloneable, Serializable
      */
     public Value ()
     {
-        this ( Locale.getDefault () );
+        this ( Locale.getDefault (), new ArrayList<Text> ( 0 ) );
     }
 
     /**
@@ -74,7 +77,7 @@ public final class Value implements Cloneable, Serializable
      *
      * @param locale {@link Locale} for this {@link Value}
      */
-    public Value ( final Locale locale )
+    public Value ( @NotNull final Locale locale )
     {
         this ( locale, new ArrayList<Text> ( 0 ) );
     }
@@ -85,7 +88,7 @@ public final class Value implements Cloneable, Serializable
      * @param locale {@link Locale} for this {@link Value}
      * @param texts  {@link Text}s for this {@link Value}
      */
-    public Value ( final Locale locale, final Text... texts )
+    public Value ( @NotNull final Locale locale, @NotNull final Text... texts )
     {
         this ( locale, CollectionUtils.asList ( texts ) );
     }
@@ -96,9 +99,8 @@ public final class Value implements Cloneable, Serializable
      * @param locale {@link Locale} for this {@link Value}
      * @param texts  {@link Text}s for this {@link Value}
      */
-    public Value ( final Locale locale, final List<Text> texts )
+    public Value ( @NotNull final Locale locale, @NotNull final List<Text> texts )
     {
-        super ();
         this.locale = locale;
         this.texts = texts;
     }
@@ -108,6 +110,7 @@ public final class Value implements Cloneable, Serializable
      *
      * @return {@link Locale} of this {@link Value}
      */
+    @NotNull
     public Locale getLocale ()
     {
         return locale;
@@ -118,7 +121,7 @@ public final class Value implements Cloneable, Serializable
      *
      * @param locale new {@link Locale} for this {@link Value}
      */
-    public void setLocale ( final Locale locale )
+    public void setLocale ( @NotNull final Locale locale )
     {
         this.locale = locale;
     }
@@ -128,6 +131,7 @@ public final class Value implements Cloneable, Serializable
      *
      * @return {@link Text}s of this {@link Value}
      */
+    @NotNull
     public List<Text> getTexts ()
     {
         return texts;
@@ -138,7 +142,7 @@ public final class Value implements Cloneable, Serializable
      *
      * @param texts new {@link Text}s for this {@link Value}
      */
-    public void setTexts ( final List<Text> texts )
+    public void setTexts ( @NotNull final List<Text> texts )
     {
         this.texts = texts;
     }
@@ -147,16 +151,10 @@ public final class Value implements Cloneable, Serializable
      * Adds {@link Text} for this {@link Value}.
      *
      * @param text new {@link Text} for this {@link Value}
-     * @return added {@link Text}
      */
-    public Text addText ( final Text text )
+    public void addText ( @NotNull final Text text )
     {
-        if ( texts == null )
-        {
-            texts = new ArrayList<Text> ( 1 );
-        }
         texts.add ( text );
-        return text;
     }
 
     /**
@@ -164,12 +162,9 @@ public final class Value implements Cloneable, Serializable
      *
      * @param text {@link Text} to remove
      */
-    public void removeText ( final Text text )
+    public void removeText ( @NotNull final Text text )
     {
-        if ( texts != null )
-        {
-            texts.remove ( text );
-        }
+        texts.remove ( text );
     }
 
     /**
@@ -177,10 +172,7 @@ public final class Value implements Cloneable, Serializable
      */
     public void clearTexts ()
     {
-        if ( CollectionUtils.notEmpty ( texts ) )
-        {
-            texts.clear ();
-        }
+        texts.clear ();
     }
 
     /**
@@ -190,7 +182,7 @@ public final class Value implements Cloneable, Serializable
      */
     public int textsCount ()
     {
-        return texts != null ? texts.size () : 0;
+        return texts.size ();
     }
 
     /**
@@ -198,6 +190,7 @@ public final class Value implements Cloneable, Serializable
      *
      * @return {@link Text} for default state
      */
+    @Nullable
     public Text getText ()
     {
         return getText ( null );
@@ -209,48 +202,25 @@ public final class Value implements Cloneable, Serializable
      * @param state {@link Text} state
      * @return {@link Text} for the specified state
      */
-    public Text getText ( final String state )
+    @Nullable
+    public Text getText ( @Nullable final String state )
     {
         Text result = null;
-        if ( texts != null )
+        for ( final Text text : texts )
         {
-            for ( final Text text : texts )
+            if ( Objects.equals ( text.getState (), state ) )
             {
-                if ( Objects.equals ( text.getState (), state ) )
-                {
-                    result = text;
-                    break;
-                }
+                result = text;
+                break;
             }
         }
         return result;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
-        return LanguageUtils.toString ( getLocale () ) + " -> " + toString ( texts );
-    }
-
-    /**
-     * Returns text representation of {@link List} of {@link Text}s.
-     *
-     * @param texts {@link List} of {@link Text}
-     * @return text representation of {@link List} of {@link Text}s
-     */
-    private String toString ( final List<Text> texts )
-    {
-        if ( texts == null || texts.size () == 0 )
-        {
-            return "";
-        }
-        else if ( texts.size () == 1 )
-        {
-            return texts.get ( 0 ).toString ();
-        }
-        else
-        {
-            return "{" + TextUtils.listToString ( texts, ";" ) + "}";
-        }
+        return LanguageUtils.toString ( getLocale () ) + " -> {" + TextUtils.listToString ( texts, ";" ) + "}";
     }
 }

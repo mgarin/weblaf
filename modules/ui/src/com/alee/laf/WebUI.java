@@ -17,6 +17,8 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 
 /**
@@ -37,6 +39,7 @@ public interface WebUI<C extends JComponent>
      * @return component property prefix
      * @see WebLookAndFeel#initComponentDefaults(UIDefaults)
      */
+    @NotNull
     public String getPropertyPrefix ();
 
     /**
@@ -63,7 +66,7 @@ public interface WebUI<C extends JComponent>
      * @see javax.swing.JComponent#setUI
      * @see javax.swing.JComponent#updateUI
      */
-    public void installUI ( JComponent component );
+    public void installUI ( @NotNull JComponent component );
 
     /**
      * Reverses configuration which was done on the specified component during {@code installUI}.
@@ -86,5 +89,5 @@ public interface WebUI<C extends JComponent>
      * @see #installUI
      * @see javax.swing.JComponent#updateUI
      */
-    public void uninstallUI ( JComponent component );
+    public void uninstallUI ( @NotNull JComponent component );
 }

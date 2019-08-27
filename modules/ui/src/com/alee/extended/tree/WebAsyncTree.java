@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.style.StyleId;
@@ -201,6 +202,7 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
         }
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

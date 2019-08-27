@@ -102,6 +102,7 @@ public class WebBreadcrumb extends WebContainer<WebBreadcrumb, WBreadcrumbUI>
         return ( BreadcrumbLayout ) super.getLayout ();
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

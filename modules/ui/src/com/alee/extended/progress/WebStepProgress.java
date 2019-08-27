@@ -995,6 +995,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {

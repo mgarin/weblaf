@@ -42,8 +42,8 @@ import java.util.Set;
  * @param <U> {@link WSplitPaneUI} type
  * @author Mikle Garin
  */
-public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
-        extends AbstractUIInputListener<C, U> implements PropertyChangeListener, FocusListener
+public class WSplitPaneInputListener<C extends JSplitPane, U extends WSplitPaneUI<C>> extends AbstractUIInputListener<C, U>
+        implements SplitPaneInputListener<C>, PropertyChangeListener, FocusListener
 {
     /**
      * Keys to use for forward focus traversal when the JComponent is managing focus.
@@ -331,34 +331,33 @@ public class WSplitPaneListener<C extends JSplitPane, U extends WSplitPaneUI<C>>
         @Nullable
         protected Component getNextSide ( @NotNull final JSplitPane splitPane, @Nullable final Component focus )
         {
+            Component result = null;
             final Component left = splitPane.getLeftComponent ();
             final Component right = splitPane.getRightComponent ();
-            Component next;
             if ( focus != null && SwingUtilities.isDescendingFrom ( focus, left ) && right != null )
             {
-                next = getFirstAvailableComponent ( right );
-                if ( next != null )
+                result = getFirstAvailableComponent ( right );
+            }
+            if ( result == null )
+            {
+                final JSplitPane parentSplitPane = ( JSplitPane ) SwingUtilities.getAncestorOfClass ( JSplitPane.class, splitPane );
+                if ( parentSplitPane != null )
                 {
-                    return next;
+                    /**
+                     * Focus next side of the parent split pane.
+                     */
+                    result = getNextSide ( parentSplitPane, focus );
+                }
+                else
+                {
+                    result = getFirstAvailableComponent ( left );
+                    if ( result == null )
+                    {
+                        result = getFirstAvailableComponent ( right );
+                    }
                 }
             }
-            final JSplitPane parentSplitPane = ( JSplitPane ) SwingUtilities.getAncestorOfClass ( JSplitPane.class, splitPane );
-            if ( parentSplitPane != null )
-            {
-                /**
-                 * Focus next side of the parent split pane.
-                 */
-                next = getNextSide ( parentSplitPane, focus );
-            }
-            else
-            {
-                next = getFirstAvailableComponent ( left );
-                if ( next == null )
-                {
-                    next = getFirstAvailableComponent ( right );
-                }
-            }
-            return next;
+            return result;
         }
 
         /**

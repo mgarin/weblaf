@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.grid;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.filechooser.WebFileTable;
 import com.alee.laf.scroll.WebScrollPane;
@@ -35,25 +36,28 @@ import java.util.List;
  */
 public class WebFileTableExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webfiletable";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "filetable";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

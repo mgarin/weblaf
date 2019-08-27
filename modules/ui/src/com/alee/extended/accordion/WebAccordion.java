@@ -136,6 +136,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

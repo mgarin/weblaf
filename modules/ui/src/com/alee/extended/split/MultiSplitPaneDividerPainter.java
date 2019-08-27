@@ -18,6 +18,7 @@
 package com.alee.extended.split;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.splitpane.WebSplitPaneDivider;
 import com.alee.painter.decoration.AbstractDecorationPainter;
@@ -61,18 +62,24 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
     protected void installPropertiesAndListeners ()
     {
         super.installPropertiesAndListeners ();
-        installMultiSplitPaneListeners ( component.getMultiSplitPane () );
+        if ( component.getMultiSplitPane () != null )
+        {
+            installMultiSplitPaneListeners ( component.getMultiSplitPane () );
+        }
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
-        uninstallMultiSplitPaneListeners ( component.getMultiSplitPane () );
+        if ( component.getMultiSplitPane () != null )
+        {
+            uninstallMultiSplitPaneListeners ( component.getMultiSplitPane () );
+        }
         super.uninstallPropertiesAndListeners ();
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -80,8 +87,14 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
         // Updating split pane listeners
         if ( Objects.equals ( property, WebSplitPaneDivider.SPLIT_PANE_PROPERTY ) )
         {
-            uninstallMultiSplitPaneListeners ( ( WebMultiSplitPane ) oldValue );
-            installMultiSplitPaneListeners ( ( WebMultiSplitPane ) newValue );
+            if ( oldValue instanceof WebMultiSplitPane )
+            {
+                uninstallMultiSplitPaneListeners ( ( WebMultiSplitPane ) oldValue );
+            }
+            if ( newValue instanceof WebMultiSplitPane )
+            {
+                installMultiSplitPaneListeners ( ( WebMultiSplitPane ) newValue );
+            }
         }
     }
 
@@ -90,58 +103,55 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
      *
      * @param multiSplitPane {@link WebMultiSplitPane}, could be {@code null}
      */
-    protected void installMultiSplitPaneListeners ( final WebMultiSplitPane multiSplitPane )
+    protected void installMultiSplitPaneListeners ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
-        if ( multiSplitPane != null )
+        splitPanePropertyChangeListener = new PropertyChangeListener ()
         {
-            splitPanePropertyChangeListener = new PropertyChangeListener ()
+            @Override
+            public void propertyChange ( final PropertyChangeEvent event )
             {
-                @Override
-                public void propertyChange ( final PropertyChangeEvent event )
+                if ( Objects.equals ( event.getPropertyName (), WebMultiSplitPane.ORIENTATION_PROPERTY,
+                        WebMultiSplitPane.CONTINUOUS_LAYOUT_PROPERTY, WebMultiSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
                 {
-                    if ( Objects.equals ( event.getPropertyName (), WebMultiSplitPane.ORIENTATION_PROPERTY,
-                            WebMultiSplitPane.CONTINUOUS_LAYOUT_PROPERTY, WebMultiSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
-                    {
-                        updateDecorationState ();
-                    }
+                    updateDecorationState ();
                 }
-            };
-            multiSplitPane.addPropertyChangeListener ( splitPanePropertyChangeListener );
+            }
+        };
+        multiSplitPane.addPropertyChangeListener ( splitPanePropertyChangeListener );
 
-            multiSplitExpansionListener = new MultiSplitExpansionListener ()
+        multiSplitExpansionListener = new MultiSplitExpansionListener ()
+        {
+            @Override
+            public void viewExpanded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
             {
-                @Override
-                public void viewExpanded ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
-                {
-                    updateDecorationState ();
-                }
+                updateDecorationState ();
+            }
 
-                @Override
-                public void viewCollapsed ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
-                {
-                    updateDecorationState ();
-                }
-            };
-            multiSplitPane.addExpansionListener ( multiSplitExpansionListener );
-
-            multiSplitResizeListener = new MultiSplitResizeAdapter ()
+            @Override
+            public void viewCollapsed ( @NotNull final WebMultiSplitPane multiSplitPane, @NotNull final Component view )
             {
-                @Override
-                public void viewResizeStarted ( @NotNull final WebMultiSplitPane multiSplitPane,
-                                                @NotNull final WebMultiSplitPaneDivider divider )
-                {
-                    updateDecorationState ();
-                }
+                updateDecorationState ();
+            }
+        };
+        multiSplitPane.addExpansionListener ( multiSplitExpansionListener );
 
-                @Override
-                public void viewResizeEnded ( @NotNull final WebMultiSplitPane multiSplitPane,
-                                              @NotNull final WebMultiSplitPaneDivider divider )
-                {
-                    updateDecorationState ();
-                }
-            };
-            multiSplitPane.addResizeListener ( multiSplitResizeListener );
-        }
+        multiSplitResizeListener = new MultiSplitResizeAdapter ()
+        {
+            @Override
+            public void viewResizeStarted ( @NotNull final WebMultiSplitPane multiSplitPane,
+                                            @NotNull final WebMultiSplitPaneDivider divider )
+            {
+                updateDecorationState ();
+            }
+
+            @Override
+            public void viewResizeEnded ( @NotNull final WebMultiSplitPane multiSplitPane,
+                                          @NotNull final WebMultiSplitPaneDivider divider )
+            {
+                updateDecorationState ();
+            }
+        };
+        multiSplitPane.addResizeListener ( multiSplitResizeListener );
     }
 
     /**
@@ -149,19 +159,17 @@ public class MultiSplitPaneDividerPainter<C extends WebMultiSplitPaneDivider, U 
      *
      * @param multiSplitPane {@link WebMultiSplitPane}, could be {@code null}
      */
-    protected void uninstallMultiSplitPaneListeners ( final WebMultiSplitPane multiSplitPane )
+    protected void uninstallMultiSplitPaneListeners ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
-        if ( multiSplitPane != null )
-        {
-            multiSplitPane.removeResizeListener ( multiSplitResizeListener );
-            multiSplitResizeListener = null;
-            multiSplitPane.removeExpansionListener ( multiSplitExpansionListener );
-            multiSplitExpansionListener = null;
-            multiSplitPane.removePropertyChangeListener ( splitPanePropertyChangeListener );
-            splitPanePropertyChangeListener = null;
-        }
+        multiSplitPane.removeResizeListener ( multiSplitResizeListener );
+        multiSplitResizeListener = null;
+        multiSplitPane.removeExpansionListener ( multiSplitExpansionListener );
+        multiSplitExpansionListener = null;
+        multiSplitPane.removePropertyChangeListener ( splitPanePropertyChangeListener );
+        splitPanePropertyChangeListener = null;
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

@@ -14,7 +14,7 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-public class DesktopPanePainter<C extends JDesktopPane, U extends WebDesktopPaneUI, D extends IDecoration<C, D>>
+public class DesktopPanePainter<C extends JDesktopPane, U extends WDesktopPaneUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IDesktopPanePainter<C, U>
 {
     /**

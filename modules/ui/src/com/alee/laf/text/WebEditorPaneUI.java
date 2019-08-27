@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.style.*;
@@ -89,6 +91,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
         editorPane = null;
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -107,6 +110,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
         PainterSupport.setShapeDetectionEnabled ( editorPane, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -114,11 +118,12 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( editorPane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -126,7 +131,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( editorPane, padding );
     }
@@ -149,7 +154,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( editorPane, new Consumer<IEditorPanePainter> ()
+        PainterSupport.setPainter ( editorPane, this, new Consumer<IEditorPanePainter> ()
         {
             @Override
             public void accept ( final IEditorPanePainter newPainter )

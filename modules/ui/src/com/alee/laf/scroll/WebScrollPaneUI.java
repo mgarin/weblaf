@@ -17,6 +17,8 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Corner;
 import com.alee.api.jdk.Consumer;
 import com.alee.extended.canvas.WebCanvas;
@@ -127,7 +129,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                     removeCorners ();
                     updateCorners ();
                 }
-                else if ( property.equals ( WebLookAndFeel.VIEWPORT_PROPERTY ) )
+                else if ( property.equals ( WebScrollPane.VIEWPORT_PROPERTY ) )
                 {
                     // Updating old viewport style and removing listener
                     if ( evt.getOldValue () != null )
@@ -149,7 +151,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                     removeCorners ();
                     updateCorners ();
                 }
-                else if ( property.equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
+                else if ( property.equals ( WebScrollPane.VERTICAL_SCROLLBAR_PROPERTY ) )
                 {
                     final JScrollBar vsb = scrollpane.getVerticalScrollBar ();
                     if ( vsb != null )
@@ -157,7 +159,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
                         StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( vsb );
                     }
                 }
-                else if ( property.equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
+                else if ( property.equals ( WebScrollPane.HORIZONTAL_SCROLLBAR_PROPERTY ) )
                 {
                     final JScrollBar hsb = scrollpane.getHorizontalScrollBar ();
                     if ( hsb != null )
@@ -375,7 +377,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      * If {@code limitByBlock} is set to {@code true}, the scrollbar will scroll at least 1 unit increment,
      * but will not scroll farther than the block increment.
      *
-     * This is a full copy of {@link javax.swing.plaf.basic.BasicScrollBarUI#scrollByUnits(javax.swing.JScrollBar, int, int, boolean)}.
+     * This is a full copy of {@code javax.swing.plaf.basic.BasicScrollBarUI#scrollByUnits(javax.swing.JScrollBar, int, int, boolean)}.
      *
      * @param scrollbar    scroll bar
      * @param direction    scroll direction
@@ -445,7 +447,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      *
      * This method is called from {@link BasicScrollPaneUI} to implement wheel scrolling, and also from scrollByBlock().
      *
-     * This is a full copy of {@link javax.swing.plaf.basic.BasicScrollBarUI#scrollByBlock(javax.swing.JScrollBar, int)}.
+     * This is a full copy of {@code javax.swing.plaf.basic.BasicScrollBarUI#scrollByBlock(javax.swing.JScrollBar, int)}.
      *
      * @param scrollbar scroll bar
      * @param direction scroll direction
@@ -470,6 +472,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
         scrollbar.setValue ( newValue );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -488,6 +491,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
         PainterSupport.setShapeDetectionEnabled ( scrollpane, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -495,11 +499,12 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( scrollpane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -507,7 +512,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( scrollpane, padding );
     }
@@ -530,7 +535,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( scrollpane, new Consumer<IScrollPanePainter> ()
+        PainterSupport.setPainter ( scrollpane, this, new Consumer<IScrollPanePainter> ()
         {
             @Override
             public void accept ( final IScrollPanePainter newPainter )
@@ -635,7 +640,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        // return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
         return null;
     }
 }

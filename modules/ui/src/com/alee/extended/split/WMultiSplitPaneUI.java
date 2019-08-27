@@ -17,6 +17,7 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -38,6 +39,7 @@ public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends Com
      */
     protected C multisplitpane;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -45,7 +47,7 @@ public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends Com
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving component reference
         multisplitpane = ( C ) c;
@@ -58,7 +60,7 @@ public abstract class WMultiSplitPaneUI<C extends WebMultiSplitPane> extends Com
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();

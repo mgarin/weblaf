@@ -17,6 +17,8 @@
 
 package com.alee.laf.optionpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -225,12 +227,14 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.optionpane;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -303,6 +307,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -321,6 +326,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -340,11 +346,12 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -364,7 +371,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

@@ -17,7 +17,7 @@
 
 package com.alee.laf.button;
 
-import com.alee.laf.UIInputListener;
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -33,15 +33,16 @@ import javax.swing.plaf.ButtonUI;
 public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI implements WebUI<C>
 {
     /**
-     * {@link UIInputListener}.
+     * {@link ButtonInputListener} for the {@link AbstractButton}.
      */
-    protected UIInputListener inputListener;
+    protected ButtonInputListener<C> inputListener;
 
     /**
      * Runtime variables.
      */
     protected C button;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -49,9 +50,9 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
-        // Saving label reference
+        // Saving component reference
         button = ( C ) c;
 
         // Installing default component settings
@@ -62,7 +63,7 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();
@@ -70,7 +71,7 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
         // Uninstalling default component settings
         uninstallDefaults ();
 
-        // Removing label reference
+        // Removing component reference
         button = null;
     }
 
@@ -95,7 +96,7 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
      */
     protected void installListeners ()
     {
-        inputListener = createUIInputListener ();
+        inputListener = createButtonInputListener ();
         inputListener.install ( button );
     }
 
@@ -109,12 +110,12 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
     }
 
     /**
-     * Returns {@link UIInputListener} for the button.
+     * Returns {@link ButtonInputListener} for the {@link AbstractButton}.
      *
-     * @return {@link UIInputListener} for the button
+     * @return {@link ButtonInputListener} for the {@link AbstractButton}
      */
-    protected UIInputListener createUIInputListener ()
+    protected ButtonInputListener<C> createButtonInputListener ()
     {
-        return new WButtonListener ();
+        return new WButtonInputListener<C, WButtonUI<C>> ();
     }
 }

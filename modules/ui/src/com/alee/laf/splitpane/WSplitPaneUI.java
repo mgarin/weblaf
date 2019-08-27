@@ -20,7 +20,6 @@ package com.alee.laf.splitpane;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.canvas.WebCanvas;
-import com.alee.laf.UIInputListener;
 import com.alee.laf.WebUI;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
@@ -70,9 +69,9 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     protected ContainerListener containerListener;
 
     /**
-     * {@link UIInputListener} instance used for the {@link JSplitPane}.
+     * {@link SplitPaneInputListener} for the {@link JSplitPane}.
      */
-    protected UIInputListener inputListener;
+    protected SplitPaneInputListener<C> inputListener;
 
     /**
      * {@link PropertyChangeListener} for the {@link JSplitPane}.
@@ -127,6 +126,7 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     protected boolean dividerKeyboardResize;
     protected boolean dividerLocationIsSet;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -134,7 +134,7 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving split pane reference
         splitPane = ( C ) c;
@@ -153,7 +153,7 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling defaults and listeners
         uninstallListeners ();
@@ -391,13 +391,13 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     }
 
     /**
-     * Returns {@link UIInputListener} for the {@link JSplitPane}.
+     * Returns {@link SplitPaneInputListener} for the {@link JSplitPane}.
      *
-     * @return {@link UIInputListener} for the {@link JSplitPane}
+     * @return {@link SplitPaneInputListener} for the {@link JSplitPane}
      */
-    protected UIInputListener createInputListener ()
+    protected SplitPaneInputListener<C> createInputListener ()
     {
-        return new WSplitPaneListener ();
+        return new WSplitPaneInputListener<C, WSplitPaneUI<C>> ();
     }
 
     /**
@@ -796,31 +796,19 @@ public abstract class WSplitPaneUI<C extends JSplitPane> extends SplitPaneUI imp
     @Override
     public Dimension getPreferredSize ( final JComponent jc )
     {
-        if ( splitPane != null )
-        {
-            return layoutManager.preferredLayoutSize ( splitPane );
-        }
-        return new Dimension ( 0, 0 );
+        return splitPane != null ? layoutManager.preferredLayoutSize ( splitPane ) : new Dimension ( 0, 0 );
     }
 
     @Override
     public Dimension getMinimumSize ( final JComponent jc )
     {
-        if ( splitPane != null )
-        {
-            return layoutManager.minimumLayoutSize ( splitPane );
-        }
-        return new Dimension ( 0, 0 );
+        return splitPane != null ? layoutManager.minimumLayoutSize ( splitPane ) : new Dimension ( 0, 0 );
     }
 
     @Override
     public Dimension getMaximumSize ( final JComponent jc )
     {
-        if ( splitPane != null )
-        {
-            return layoutManager.maximumLayoutSize ( splitPane );
-        }
-        return new Dimension ( 0, 0 );
+        return splitPane != null ? layoutManager.maximumLayoutSize ( splitPane ) : new Dimension ( 0, 0 );
     }
 
     /**

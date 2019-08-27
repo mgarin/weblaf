@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.laf.tree.behavior.TreeHoverSelectionBehavior;
@@ -50,8 +52,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * {@link JTree} extension class.
@@ -70,6 +72,11 @@ import java.util.List;
 public class WebTree<N extends MutableTreeNode> extends JTree implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
         TreeEventMethods<N>, EventMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebTree<N>>, SizeMethods<WebTree<N>>
 {
+    /**
+     * Component properties.
+     */
+    public static final String DROP_LOCATION = "dropLocation";
+
     /**
      * Single selection mode.
      * Only one node can be selected.
@@ -1556,12 +1563,14 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         }
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.tree;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -1634,6 +1643,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -1652,6 +1662,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -1671,11 +1682,12 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -1695,7 +1707,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

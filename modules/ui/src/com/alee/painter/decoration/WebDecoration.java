@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.BorderWidth;
@@ -376,8 +377,9 @@ public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> 
         return contains;
     }
 
+    @NotNull
     @Override
-    public Shape provideShape ( final C component, final Rectangle bounds )
+    public Shape provideShape ( @NotNull final C component, @NotNull final Rectangle bounds )
     {
         // todo Add ShapeType into PainterShapeProvider interface
         return isVisible () ? getShape ().getShape ( ShapeType.background, bounds, component, this ) : bounds;

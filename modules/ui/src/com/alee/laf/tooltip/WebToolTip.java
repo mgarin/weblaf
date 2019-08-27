@@ -17,6 +17,8 @@
 
 package com.alee.laf.tooltip;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
@@ -43,6 +45,7 @@ import java.awt.*;
  *
  * @author Mikle Garin
  * @see JToolTip
+ * @see WToolTipUI
  * @see WebToolTipUI
  * @see ToolTipPainter
  */
@@ -68,12 +71,14 @@ public class WebToolTip extends JToolTip implements Styleable, Paintable, ShapeM
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.tooltip;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -146,6 +151,7 @@ public class WebToolTip extends JToolTip implements Styleable, Paintable, ShapeM
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -164,6 +170,7 @@ public class WebToolTip extends JToolTip implements Styleable, Paintable, ShapeM
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -183,11 +190,12 @@ public class WebToolTip extends JToolTip implements Styleable, Paintable, ShapeM
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -207,7 +215,7 @@ public class WebToolTip extends JToolTip implements Styleable, Paintable, ShapeM
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

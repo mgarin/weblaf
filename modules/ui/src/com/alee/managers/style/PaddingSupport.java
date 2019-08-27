@@ -1,5 +1,7 @@
 package com.alee.managers.style;
 
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 
 /**
@@ -22,6 +24,7 @@ public interface PaddingSupport
     /**
      * Empty padding.
      */
+    @Nullable
     public static Insets EMPTY = null;
 
     /**
@@ -30,6 +33,7 @@ public interface PaddingSupport
      *
      * @return current padding
      */
+    @Nullable
     public Insets getPadding ();
 
     /**
@@ -38,5 +42,5 @@ public interface PaddingSupport
      *
      * @param padding new padding
      */
-    public void setPadding ( Insets padding );
+    public void setPadding ( @Nullable Insets padding );
 }

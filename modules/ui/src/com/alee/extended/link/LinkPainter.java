@@ -17,6 +17,8 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -39,7 +41,7 @@ public class LinkPainter<C extends WebLink, U extends WLinkUI<C>, D extends IDec
         extends AbstractDecorationPainter<C, U, D> implements ILinkPainter<C, U>
 {
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -54,6 +56,7 @@ public class LinkPainter<C extends WebLink, U extends WLinkUI<C>, D extends IDec
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

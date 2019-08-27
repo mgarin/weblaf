@@ -120,6 +120,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
         setDate ( date );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

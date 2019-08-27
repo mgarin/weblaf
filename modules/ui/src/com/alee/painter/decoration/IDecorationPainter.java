@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
@@ -44,6 +46,7 @@ public interface IDecorationPainter<C extends JComponent, U extends ComponentUI,
      *
      * @return current component decoration states
      */
+    @NotNull
     public List<String> getDecorationStates ();
 
     /**
@@ -52,7 +55,7 @@ public interface IDecorationPainter<C extends JComponent, U extends ComponentUI,
      * @param state decoration state
      * @return {@code true} if component has decoration associated with specified state, {@code false} otherwise
      */
-    public boolean usesState ( String state );
+    public boolean usesState ( @NotNull String state );
 
     /**
      * Returns decoration matching current states.
@@ -61,6 +64,7 @@ public interface IDecorationPainter<C extends JComponent, U extends ComponentUI,
      *
      * @return decoration matching current states
      */
+    @Nullable
     public D getDecoration ();
 
     /**

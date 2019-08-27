@@ -17,6 +17,8 @@
 
 package com.alee.laf.window;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
@@ -425,12 +427,14 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
         getUI ().setDisplayMenuBar ( display );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return JFrame.isDefaultLookAndFeelDecorated () ? StyleId.frameDecorated : StyleId.frame;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -503,6 +507,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
         return StyleManager.resetCustomPainter ( getRootPane () );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -522,7 +527,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
@@ -749,6 +754,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
             super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
         }
 
+        @NotNull
         @Override
         public StyleId getDefaultStyleId ()
         {

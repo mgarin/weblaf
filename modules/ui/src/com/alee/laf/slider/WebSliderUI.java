@@ -17,6 +17,8 @@
 
 package com.alee.laf.slider;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -85,6 +87,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -103,6 +106,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
         PainterSupport.setShapeDetectionEnabled ( slider, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -110,11 +114,12 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( slider, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -122,7 +127,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( slider, padding );
     }
@@ -145,7 +150,7 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( slider, new Consumer<ISliderPainter> ()
+        PainterSupport.setPainter ( slider, this, new Consumer<ISliderPainter> ()
         {
             @Override
             public void accept ( final ISliderPainter newPainter )

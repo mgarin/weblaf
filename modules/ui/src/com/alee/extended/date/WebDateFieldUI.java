@@ -17,6 +17,8 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.window.PopOverAlignment;
@@ -95,7 +97,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -109,7 +111,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Destroying date field UI
         uninstallActions ();
@@ -438,6 +440,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         return date != null ? dateField.getDateFormat ().format ( date ) : "";
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -456,6 +459,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         PainterSupport.setShapeDetectionEnabled ( dateField, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -463,11 +467,12 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( dateField, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -475,7 +480,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( dateField, padding );
     }
@@ -498,7 +503,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( dateField, new Consumer<IDateFieldPainter> ()
+        PainterSupport.setPainter ( dateField, this, new Consumer<IDateFieldPainter> ()
         {
             @Override
             public void accept ( final IDateFieldPainter newPainter )

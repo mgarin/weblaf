@@ -17,6 +17,7 @@
 
 package com.alee.extended.language;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.combobox.WebComboBoxModel;
 import com.alee.managers.language.*;
 import com.alee.managers.language.data.Dictionary;
@@ -137,19 +138,19 @@ public class LanguageChooserModel extends WebComboBoxModel<Locale> implements La
     }
 
     @Override
-    public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+    public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
     {
         updateLocales ();
     }
 
     @Override
-    public void dictionaryAdded ( final Dictionary dictionary )
+    public void dictionaryAdded ( @NotNull final Dictionary dictionary )
     {
         updateLocales ();
     }
 
     @Override
-    public void dictionaryRemoved ( final Dictionary dictionary )
+    public void dictionaryRemoved ( @NotNull final Dictionary dictionary )
     {
         updateLocales ();
     }

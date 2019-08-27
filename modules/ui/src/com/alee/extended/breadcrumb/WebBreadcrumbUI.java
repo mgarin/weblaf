@@ -17,6 +17,8 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -54,7 +56,7 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -64,7 +66,7 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( breadcrumb );
@@ -83,6 +85,7 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
         return new BreadcrumbLayout ();
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -101,6 +104,7 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
         PainterSupport.setShapeDetectionEnabled ( breadcrumb, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -108,11 +112,12 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( breadcrumb, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -120,7 +125,7 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( breadcrumb, padding );
     }
@@ -143,7 +148,7 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( breadcrumb, new Consumer<IBreadcrumbPainter> ()
+        PainterSupport.setPainter ( breadcrumb, this, new Consumer<IBreadcrumbPainter> ()
         {
             @Override
             public void accept ( final IBreadcrumbPainter newPainter )

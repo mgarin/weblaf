@@ -17,6 +17,8 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.viewport.WebViewport;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.DictionaryListener;
@@ -54,6 +56,13 @@ import java.awt.event.MouseAdapter;
 public class WebScrollPane extends JScrollPane implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
         LanguageEventMethods, SettingsMethods, FontMethods<WebScrollPane>, SizeMethods<WebScrollPane>
 {
+    /**
+     * Component properties.
+     */
+    public static final String VIEWPORT_PROPERTY = "viewport";
+    public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
+    public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
+
     /**
      * Constructs new empty scrollpane.
      */
@@ -172,12 +181,14 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
         return ( WebScrollPaneBar ) super.getVerticalScrollBar ();
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.scrollpane;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -250,6 +261,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -268,6 +280,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -287,11 +300,12 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -311,7 +325,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

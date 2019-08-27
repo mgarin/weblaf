@@ -18,6 +18,7 @@
 package com.alee.demo.content.chooser;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.demo.content.chooser.dialog.DialogChoosersGroup;
 import com.alee.demo.content.chooser.field.FieldChoosersGroup;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public class ChoosersGroup extends AbstractExampleGroup
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

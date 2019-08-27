@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Supplier;
 import com.alee.painter.decoration.WebDecoration;
@@ -57,6 +58,7 @@ public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I e
         return direction != null ? direction.adjust ( c.getComponentOrientation () ) : CompassDirection.north;
     }
 
+    @NotNull
     @Override
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {

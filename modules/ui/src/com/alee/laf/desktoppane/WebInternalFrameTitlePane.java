@@ -1,22 +1,24 @@
 /*
-    * This file is part of WebLookAndFeel library.
-    *
-    * WebLookAndFeel library is free software: you can redistribute it and/or modify
-    * it under the terms of the GNU General Public License as published by
-    * the Free Software Foundation, either version 3 of the License, or
-    * (at your option) any later version.
-    *
-    * WebLookAndFeel library is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
-    */
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
@@ -46,37 +48,43 @@ import java.io.Serializable;
 public class WebInternalFrameTitlePane extends WebPanel implements SwingConstants
 {
     /**
-     * Action names.
+     * todo 1. Add action implementations from {@link javax.swing.plaf.basic.BasicInternalFrameTitlePane}
+     * todo 2. Add system menu from {@link javax.swing.plaf.basic.BasicInternalFrameTitlePane}
      */
-    protected static final String CLOSE_CMD = UIManager.getString ( "InternalFrameTitlePane.closeButtonText" );
-    protected static final String ICONIFY_CMD = UIManager.getString ( "InternalFrameTitlePane.minimizeButtonText" );
-    protected static final String RESTORE_CMD = UIManager.getString ( "InternalFrameTitlePane.restoreButtonText" );
-    protected static final String MAXIMIZE_CMD = UIManager.getString ( "InternalFrameTitlePane.maximizeButtonText" );
 
     /**
      * Title pane parent.
      * It is either {@link JInternalFrame} or {@link JInternalFrame.JDesktopIcon}.
      */
+    @NotNull
     protected final JComponent parent;
 
     /**
      * {@link JInternalFrame} for this title pane.
      */
+    @NotNull
     protected final JInternalFrame frame;
 
     /**
      * Title pane UI elements.
      */
+    @NotNull
     protected WebImage titleIcon;
+    @NotNull
     protected WebLabel titleLabel;
+    @NotNull
     protected GroupPane buttonsPanel;
+    @NotNull
     protected JButton minimizeButton;
+    @NotNull
     protected JButton maximizeButton;
+    @NotNull
     protected JButton closeButton;
 
     /**
      * Events handler.
      */
+    @Nullable
     protected Handler handler;
 
     /**
@@ -85,20 +93,11 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
      * @param parent either {@link JInternalFrame} or {@link JInternalFrame.JDesktopIcon}
      * @param frame  {@link JInternalFrame} for this title pane
      */
-    public WebInternalFrameTitlePane ( final JComponent parent, final JInternalFrame frame )
+    public WebInternalFrameTitlePane ( @NotNull final JComponent parent, @NotNull final JInternalFrame frame )
     {
-        super ( StyleId.internalframeTitlePanel.at ( parent ) );
+        super ( StyleId.internalframeTitlePanel.at ( parent ), new BorderLayout () );
         this.parent = parent;
         this.frame = frame;
-        initializeUI ();
-    }
-
-    /**
-     * Initializes title pane UI.
-     */
-    protected void initializeUI ()
-    {
-        setLayout ( new BorderLayout () );
 
         titleIcon = new WebImage ( StyleId.internalframeTitleIcon.at ( this ), frame.getFrameIcon () );
         add ( titleIcon, BorderLayout.LINE_START );
@@ -114,7 +113,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
             private final int initialAlignment = titleLabel.getHorizontalAlignment ();
 
             @Override
-            public void componentResized ( final ComponentEvent e )
+            public void componentResized ( @NotNull final ComponentEvent e )
             {
                 // Changing title horizontal alignment to avoid title jumping left/right
                 final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
@@ -133,7 +132,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
         minimizeButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 iconify ();
             }
@@ -144,7 +143,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
         maximizeButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 maximize ();
             }
@@ -155,7 +154,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 close ();
             }
@@ -212,7 +211,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
      *
      * @param button button to remove
      */
-    protected void removeButton ( final AbstractButton button )
+    protected void removeButton ( @NotNull final AbstractButton button )
     {
         buttonsPanel.remove ( button );
         revalidate ();
@@ -243,7 +242,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
     protected class Handler implements PropertyChangeListener, Serializable
     {
         @Override
-        public void propertyChange ( final PropertyChangeEvent evt )
+        public void propertyChange ( @NotNull final PropertyChangeEvent evt )
         {
             final String prop = evt.getPropertyName ();
             if ( Objects.equals ( prop, JInternalFrame.FRAME_ICON_PROPERTY ) )
@@ -282,7 +281,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
          * @param evt    property change event
          * @param button button to toggle availability for
          */
-        protected void toggleButton ( final PropertyChangeEvent evt, final JButton button )
+        protected void toggleButton ( @NotNull final PropertyChangeEvent evt, @NotNull final JButton button )
         {
             if ( evt.getOldValue () != evt.getNewValue () )
             {

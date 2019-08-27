@@ -17,6 +17,7 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -36,6 +37,7 @@ public abstract class WViewportUI<C extends JViewport> extends ViewportUI implem
      */
     protected C viewport;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -43,7 +45,7 @@ public abstract class WViewportUI<C extends JViewport> extends ViewportUI implem
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving viewport reference
         viewport = ( C ) c;
@@ -56,7 +58,7 @@ public abstract class WViewportUI<C extends JViewport> extends ViewportUI implem
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();

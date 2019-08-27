@@ -1,5 +1,6 @@
 package com.alee.laf.separator;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -20,6 +21,7 @@ import java.util.List;
 public abstract class AbstractSeparatorPainter<C extends JSeparator, U extends SeparatorUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IAbstractSeparatorPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

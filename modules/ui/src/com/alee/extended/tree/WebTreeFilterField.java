@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Function;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -187,6 +188,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
         setTree ( tree );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

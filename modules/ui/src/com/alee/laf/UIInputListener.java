@@ -22,8 +22,9 @@ import com.alee.api.annotations.NotNull;
 import javax.swing.*;
 
 /**
- * Base interface for all custom WebLaF input listeners.
- * These listeners are used to streamline all input settings and listeners and enclose them into one simple class.
+ * Base interface for all WebLaF UI input listeners.
+ * These listeners are used to streamline all component input settings and listeners and enclose them into single simple class.
+ * Each component has it's own extension of this interface that defines any additional public methods it's implementations must have.
  *
  * @param <C> {@link JComponent} type
  * @author Mikle Garin

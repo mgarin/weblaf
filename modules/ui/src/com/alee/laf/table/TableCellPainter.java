@@ -17,6 +17,7 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.*;
 
 import javax.swing.*;
@@ -55,6 +56,7 @@ public class TableCellPainter<C extends JTable, U extends WebTableUI, D extends 
         return false;
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

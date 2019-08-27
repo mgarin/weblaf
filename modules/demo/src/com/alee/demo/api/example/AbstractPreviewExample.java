@@ -17,6 +17,8 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.util.ExampleUtils;
 import com.alee.extended.layout.VerticalFlowLayout;
@@ -38,18 +40,22 @@ public abstract class AbstractPreviewExample extends AbstractExample
     /**
      * Static propeperty listened to keep component size updated.
      */
+    @NotNull
     protected static final List<String> TEXT_PROPERTY = new ImmutableList<String> ( AbstractButton.TEXT_CHANGED_PROPERTY );
 
     /**
      * Previews cache.
      */
+    @Nullable
     protected List<Preview> previews;
 
     /**
      * Preview pane.
      */
+    @Nullable
     protected WebPanel examplesPane;
 
+    @NotNull
     @Override
     public final FeatureState getFeatureState ()
     {
@@ -62,6 +68,7 @@ public abstract class AbstractPreviewExample extends AbstractExample
         return ExampleUtils.getResultingState ( states );
     }
 
+    @NotNull
     @Override
     protected JComponent createContentImpl ()
     {
@@ -73,6 +80,7 @@ public abstract class AbstractPreviewExample extends AbstractExample
      *
      * @return previous layout
      */
+    @NotNull
     protected LayoutManager createPreviewLayout ()
     {
         return new VerticalFlowLayout ( 0, -25, true, false );
@@ -83,6 +91,7 @@ public abstract class AbstractPreviewExample extends AbstractExample
      *
      * @return preview content
      */
+    @NotNull
     protected JComponent getPreviewContent ()
     {
         if ( examplesPane == null )
@@ -117,6 +126,7 @@ public abstract class AbstractPreviewExample extends AbstractExample
      *
      * @return cached previews
      */
+    @NotNull
     protected List<Preview> getPreviews ()
     {
         if ( previews == null )
@@ -131,5 +141,6 @@ public abstract class AbstractPreviewExample extends AbstractExample
      *
      * @return all example previews
      */
+    @NotNull
     protected abstract List<Preview> createPreviews ();
 }

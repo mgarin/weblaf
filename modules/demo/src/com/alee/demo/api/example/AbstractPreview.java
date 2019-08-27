@@ -18,6 +18,7 @@
 package com.alee.demo.api.example;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -30,21 +31,25 @@ public abstract class AbstractPreview implements Preview
     /**
      * Example this preview belongs to.
      */
+    @NotNull
     protected Example example;
 
     /**
      * Preview identifier.
      */
+    @NotNull
     protected final String id;
 
     /**
      * Feature state.
      */
+    @NotNull
     protected final FeatureState state;
 
     /**
      * Cached preview component.
      */
+    @Nullable
     protected JComponent preview;
 
     /**
@@ -53,7 +58,7 @@ public abstract class AbstractPreview implements Preview
      * @param example example this preview belongs to
      * @param id      preview id
      */
-    public AbstractPreview ( final Example example, final String id )
+    public AbstractPreview ( @NotNull final Example example, @NotNull final String id )
     {
         this ( example, id, FeatureState.common );
     }
@@ -65,7 +70,7 @@ public abstract class AbstractPreview implements Preview
      * @param id      preview id
      * @param state   feature state
      */
-    public AbstractPreview ( final Example example, final String id, final FeatureState state )
+    public AbstractPreview ( @NotNull final Example example, @NotNull final String id, @NotNull final FeatureState state )
     {
         super ();
         this.example = example;
@@ -73,6 +78,7 @@ public abstract class AbstractPreview implements Preview
         this.state = state;
     }
 
+    @NotNull
     @Override
     public Example getExample ()
     {
@@ -86,12 +92,14 @@ public abstract class AbstractPreview implements Preview
         return id;
     }
 
+    @NotNull
     @Override
     public FeatureState getFeatureState ()
     {
         return state;
     }
 
+    @NotNull
     @Override
     public String getTitle ()
     {
@@ -103,6 +111,7 @@ public abstract class AbstractPreview implements Preview
      *
      * @return language prefix for this preview
      */
+    @NotNull
     protected String getPreviewLanguagePrefix ()
     {
         return "demo.example." + getExample ().getGroupId () + "." + getExample ().getId () + "." + getId () + ".";
@@ -114,13 +123,15 @@ public abstract class AbstractPreview implements Preview
      * @param key language key part
      * @return complete language key for this preview for the specified key part
      */
+    @NotNull
     protected String getPreviewLanguageKey ( final String key )
     {
         return getPreviewLanguagePrefix () + key;
     }
 
+    @NotNull
     @Override
-    public JComponent getPreview ( final List<Preview> previews, final int index )
+    public JComponent getPreview ( @NotNull final List<Preview> previews, final int index )
     {
         if ( preview == null )
         {
@@ -137,8 +148,10 @@ public abstract class AbstractPreview implements Preview
      * @param index    index of this preview
      * @return preview component
      */
-    protected abstract JComponent createPreview ( List<Preview> previews, int index );
+    @NotNull
+    protected abstract JComponent createPreview ( @NotNull List<Preview> previews, int index );
 
+    @Nullable
     @Override
     public JComponent getEqualizableWidthComponent ()
     {

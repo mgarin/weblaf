@@ -2,6 +2,7 @@ package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.CoreSwingUtils;
 
@@ -18,7 +19,9 @@ import java.lang.ref.WeakReference;
  * Almost all these identifiers are used by various WebLaF components and complex component parts.
  * They are provided to allow restyling those parts without affecting default component style.
  *
- * todo Separate each component-related set of styles into subclasses for visibility/convenience?
+ * todo Separate each component-related set of styles somewhere for visibility/convenience?
+ * todo For instance button-related styles can go into {@link com.alee.laf.button.WebButton} class
+ * todo This way you will know how to look for a particular style and names can potentially be shortened
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -58,6 +61,8 @@ public final class StyleId implements Identifiable
      * {@link StyleId} representing basic (aka default) style of any component.
      * Used to avoid providing {@code null} within component constructors.
      * It can be provided into any component to reset its {@link StyleId} to default value.
+     * todo Avoid using {@code null} since it is identifier?
+     * todo Maybe use {@code "auto"} style instead as a default
      *
      * @see com.alee.managers.style.StyleData#setStyleId(StyleId)
      */
@@ -909,16 +914,6 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId directorychooserCancelButton = ChildStyleId.of ( "cancel" );
 
     /**
-     * {@link com.alee.extended.ninepatch.NinePatchEditor} style identifiers.
-     */
-    public static final StyleId ninepatcheditor = StyleId.of ( "ninepatcheditor" );
-    public static final ChildStyleId ninepatcheditorToolbar = ChildStyleId.of ( "toolbar" );
-    public static final ChildStyleId ninepatcheditorZoomSlider = ChildStyleId.of ( "zoom" );
-    public static final ChildStyleId ninepatcheditorFloatEditorSlider = ChildStyleId.of ( "editor-float" );
-    public static final ChildStyleId ninepatcheditorPreviewField = ChildStyleId.of ( "preview" );
-    public static final ChildStyleId ninepatcheditorPreviewBackground = ChildStyleId.of ( "preview-background" );
-
-    /**
      * {@link com.alee.extended.tab.WebDocumentPane} style identifiers.
      */
     public static final StyleId documentpane = StyleId.of ( "documentpane" );
@@ -1007,7 +1002,7 @@ public final class StyleId implements Identifiable
      *
      * @return style identifier
      */
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
@@ -1092,17 +1087,20 @@ public final class StyleId implements Identifiable
         return equals;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
+        final String info;
         if ( this != auto )
         {
-            return String.format ( "StyleId [ id: '%s'; parent: %s ]", getCompleteId (), parent );
+            info = String.format ( "id: '%s'; parent: %s", getCompleteId (), parent );
         }
         else
         {
-            return "StyleId [ auto ]";
+            info = "auto";
         }
+        return "StyleId [ " + info + " ]";
     }
 
     /**
@@ -1168,7 +1166,8 @@ public final class StyleId implements Identifiable
      * @param component component to retrieve default {@link StyleId} for
      * @return default {@link StyleId} for the specified component
      */
-    public static StyleId getDefault ( final JComponent component )
+    @NotNull
+    public static StyleId getDefault ( @NotNull final JComponent component )
     {
         final ComponentDescriptor descriptor = StyleManager.getDescriptor ( component );
         return descriptor.getDefaultStyleId ( component );

@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -47,7 +48,7 @@ public abstract class AbstractShape<C extends JComponent, D extends IDecoration<
     @XStreamAsAttribute
     protected Boolean overwrite;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

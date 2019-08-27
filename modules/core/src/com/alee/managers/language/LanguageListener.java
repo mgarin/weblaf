@@ -17,6 +17,8 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.EventListener;
 
 /**
@@ -35,5 +37,5 @@ public interface LanguageListener extends EventListener
      * @param oldLanguage old {@link Language}
      * @param newLanguage new {@link Language}
      */
-    public void languageChanged ( Language oldLanguage, Language newLanguage );
+    public void languageChanged ( @NotNull Language oldLanguage, @NotNull Language newLanguage );
 }

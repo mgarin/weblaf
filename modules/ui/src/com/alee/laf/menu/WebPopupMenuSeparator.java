@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
@@ -68,12 +70,14 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator implements Style
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.popupmenuseparator;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -146,6 +150,7 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator implements Style
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -164,6 +169,7 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator implements Style
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -183,11 +189,12 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator implements Style
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -207,7 +214,7 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator implements Style
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

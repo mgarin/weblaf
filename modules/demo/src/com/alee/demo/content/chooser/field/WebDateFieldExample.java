@@ -18,6 +18,7 @@
 package com.alee.demo.content.chooser.field;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
@@ -36,25 +37,28 @@ import java.util.List;
  */
 public class WebDateFieldExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webdatefield";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "datefield";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

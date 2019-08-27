@@ -17,10 +17,10 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.BiPredicate;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.collection.ImmutableList;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param key             key used to place data list within {@link JComponent}
      * @param initialCapacity initial capacity for the {@link java.util.Set} of {@link JComponent}s
      */
-    public WeakComponentDataList ( final String key, final int initialCapacity )
+    public WeakComponentDataList ( @NotNull final String key, final int initialCapacity )
     {
         super ( key, initialCapacity );
     }
@@ -53,7 +53,7 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param component {@link JComponent} to check data in
      * @return size of data list stored within {@link JComponent}
      */
-    public synchronized int size ( final C component )
+    public synchronized int size ( @NotNull final C component )
     {
         final List<E> list = get ( component );
         return list != null ? list.size () : 0;
@@ -65,7 +65,7 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param component {@link JComponent} to check data in
      * @return {@code true} if {@link JComponent} has any data of this kind stored within, {@code false} otherwise
      */
-    public synchronized boolean containsData ( final C component )
+    public synchronized boolean containsData ( @NotNull final C component )
     {
         return CollectionUtils.notEmpty ( get ( component ) );
     }
@@ -77,17 +77,10 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param data      data to find
      * @return {@code true} if {@link JComponent} has specified data stored within, {@code false} otherwise
      */
-    public synchronized boolean containsData ( final C component, final E data )
+    public synchronized boolean containsData ( @NotNull final C component, @NotNull final E data )
     {
-        if ( data != null )
-        {
-            final List<E> list = get ( component );
-            return list != null && list.contains ( data );
-        }
-        else
-        {
-            return false;
-        }
+        final List<E> list = get ( component );
+        return list != null && list.contains ( data );
     }
 
     /**
@@ -96,22 +89,15 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param component {@link JComponent} to store data in
      * @param data      data to store
      */
-    public synchronized void add ( final C component, final E data )
+    public synchronized void add ( @NotNull final C component, @NotNull final E data )
     {
-        if ( data != null )
+        List<E> list = get ( component );
+        if ( list == null )
         {
-            List<E> list = get ( component );
-            if ( list == null )
-            {
-                list = new ArrayList<E> ( 1 );
-                set ( component, list );
-            }
-            list.add ( data );
+            list = new ArrayList<E> ( 1 );
+            set ( component, list );
         }
-        else
-        {
-            throw new NullPointerException ( "WeakComponentDataList is not designed to store null values" );
-        }
+        list.add ( data );
     }
 
     /**
@@ -120,18 +106,15 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param component {@link JComponent} to remove data from
      * @param data      data to remove
      */
-    public synchronized void remove ( final C component, final E data )
+    public synchronized void remove ( @NotNull final C component, @NotNull final E data )
     {
-        if ( data != null )
+        final List<E> list = get ( component );
+        if ( list != null )
         {
-            final List<E> list = get ( component );
-            if ( list != null )
+            list.remove ( data );
+            if ( list.size () == 0 )
             {
-                list.remove ( data );
-                if ( list.size () == 0 )
-                {
-                    clear ( component );
-                }
+                clear ( component );
             }
         }
     }
@@ -143,19 +126,17 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param data                data to remove
      * @param removedDataConsumer {@link BiConsumer} for removed data
      */
-    public synchronized void remove ( final C component, final E data, final BiConsumer<C, E> removedDataConsumer )
+    public synchronized void remove ( @NotNull final C component, @NotNull final E data,
+                                      @NotNull final BiConsumer<C, E> removedDataConsumer )
     {
-        if ( data != null )
+        final List<E> list = get ( component );
+        if ( list != null && list.contains ( data ) )
         {
-            final List<E> list = get ( component );
-            if ( list != null && list.contains ( data ) )
+            removedDataConsumer.accept ( component, data );
+            list.remove ( data );
+            if ( list.size () == 0 )
             {
-                removedDataConsumer.accept ( component, data );
-                list.remove ( data );
-                if ( list.size () == 0 )
-                {
-                    clear ( component );
-                }
+                clear ( component );
             }
         }
     }
@@ -165,18 +146,11 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      *
      * @param consumer {@link BiConsumer} for {@link JComponent} and data
      */
-    public synchronized void forEachData ( final BiConsumer<C, E> consumer )
+    public synchronized void forEachData ( @NotNull final BiConsumer<C, E> consumer )
     {
         for ( final C component : components () )
         {
-            // Copying data list for this operation
-            final List<E> mutableList = get ( component );
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
-            for ( final E data : dataList )
-            {
-                // Consuming data
-                consumer.accept ( component, data );
-            }
+            forEachData ( component, consumer );
         }
     }
 
@@ -186,17 +160,13 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param component {@link JComponent} to provide data pieces for
      * @param consumer  {@link BiConsumer} for {@link JComponent} and data
      */
-    public synchronized void forEachData ( final C component, final BiConsumer<C, E> consumer )
+    public synchronized void forEachData ( @NotNull final C component, @NotNull final BiConsumer<C, E> consumer )
     {
-        // Checking list existance
-        final List<E> mutableList = get ( component );
-        if ( mutableList != null )
+        final List<E> dataList = get ( component );
+        if ( dataList != null )
         {
-            // Copying data list for this operation
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
             for ( final E data : dataList )
             {
-                // Consuming data
                 consumer.accept ( component, data );
             }
         }
@@ -208,23 +178,18 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if at least one of the data pieces is accepted by specified {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean anyDataMatch ( final BiPredicate<C, E> predicate )
+    public synchronized boolean anyDataMatch ( @NotNull final BiPredicate<C, E> predicate )
     {
+        boolean anyDataMatch = false;
         for ( final C component : components () )
         {
-            // Copying data list for this operation
-            final List<E> mutableList = get ( component );
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
-            for ( final E data : dataList )
+            if ( anyDataMatch ( component, predicate ) )
             {
-                // Testing predicate
-                if ( predicate.test ( component, data ) )
-                {
-                    return true;
-                }
+                anyDataMatch = true;
+                break;
             }
         }
-        return false;
+        return anyDataMatch;
     }
 
     /**
@@ -234,24 +199,22 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if at least one of the data pieces is accepted by {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean anyDataMatch ( final C component, final BiPredicate<C, E> predicate )
+    public synchronized boolean anyDataMatch ( @NotNull final C component, @NotNull final BiPredicate<C, E> predicate )
     {
-        // Checking list existance
-        final List<E> mutableList = get ( component );
-        if ( mutableList != null )
+        boolean anyDataMatch = false;
+        final List<E> dataList = get ( component );
+        if ( dataList != null )
         {
-            // Copying data list for this operation
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
             for ( final E data : dataList )
             {
-                // Testing predicate
                 if ( predicate.test ( component, data ) )
                 {
-                    return true;
+                    anyDataMatch = true;
+                    break;
                 }
             }
         }
-        return false;
+        return anyDataMatch;
     }
 
     /**
@@ -260,23 +223,18 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if all of the data pieces are accepted by specified {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean allDataMatch ( final BiPredicate<C, E> predicate )
+    public synchronized boolean allDataMatch ( @NotNull final BiPredicate<C, E> predicate )
     {
+        boolean allDataMatch = true;
         for ( final C component : components () )
         {
-            // Copying data list for this operation
-            final List<E> mutableList = get ( component );
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
-            for ( final E data : dataList )
+            if ( !allDataMatch ( component, predicate ) )
             {
-                // Testing predicate
-                if ( !predicate.test ( component, data ) )
-                {
-                    return false;
-                }
+                allDataMatch = false;
+                break;
             }
         }
-        return true;
+        return allDataMatch;
     }
 
     /**
@@ -286,24 +244,22 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if all of the data pieces are accepted by {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean allDataMatch ( final C component, final BiPredicate<C, E> predicate )
+    public synchronized boolean allDataMatch ( @NotNull final C component, @NotNull final BiPredicate<C, E> predicate )
     {
-        // Checking list existance
-        final List<E> mutableList = get ( component );
-        if ( mutableList != null )
+        boolean allDataMatch = true;
+        final List<E> dataList = get ( component );
+        if ( dataList != null )
         {
-            // Copying data list for this operation
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
             for ( final E data : dataList )
             {
-                // Testing predicate
                 if ( !predicate.test ( component, data ) )
                 {
-                    return false;
+                    allDataMatch = false;
+                    break;
                 }
             }
         }
-        return true;
+        return allDataMatch;
     }
 
     /**
@@ -312,23 +268,18 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if none of the data pieces are accepted by specified {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean noneDataMatch ( final BiPredicate<C, E> predicate )
+    public synchronized boolean noneDataMatch ( @NotNull final BiPredicate<C, E> predicate )
     {
+        boolean noneDataMatch = true;
         for ( final C component : components () )
         {
-            // Copying data list for this operation
-            final List<E> mutableList = get ( component );
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
-            for ( final E data : dataList )
+            if ( !noneDataMatch ( component, predicate ) )
             {
-                // Testing predicate
-                if ( predicate.test ( component, data ) )
-                {
-                    return false;
-                }
+                noneDataMatch = false;
+                break;
             }
         }
-        return true;
+        return noneDataMatch;
     }
 
     /**
@@ -338,23 +289,21 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if none of the data pieces are accepted by specified {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean noneDataMatch ( final C component, final BiPredicate<C, E> predicate )
+    public synchronized boolean noneDataMatch ( @NotNull final C component, @NotNull final BiPredicate<C, E> predicate )
     {
-        // Checking list existance
-        final List<E> mutableList = get ( component );
-        if ( mutableList != null )
+        boolean noneDataMatch = true;
+        final List<E> dataList = get ( component );
+        if ( dataList != null )
         {
-            // Copying data list for this operation
-            final List<E> dataList = new ImmutableList<E> ( mutableList );
             for ( final E data : dataList )
             {
-                // Testing predicate
                 if ( predicate.test ( component, data ) )
                 {
-                    return false;
+                    noneDataMatch = false;
+                    break;
                 }
             }
         }
-        return true;
+        return noneDataMatch;
     }
 }

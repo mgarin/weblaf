@@ -19,6 +19,7 @@ package com.alee.managers.language.data;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
 import com.alee.managers.language.LanguageUtils;
@@ -27,6 +28,7 @@ import com.alee.utils.TextUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.collection.ImmutableSet;
+import com.alee.utils.compare.Filter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -54,18 +56,21 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
     /**
      * {@link Dictionary} identifier prefix.
      */
+    @NotNull
     private static final String ID_PREFIX = "DIC";
 
     /**
      * Unique {@link Dictionary} identifier.
      * It is used to distinct {@link Dictionary} instances in runtime.
      */
+    @NotNull
     private final transient String id;
 
     /**
      * {@link Dictionary} name.
      * This is optional infromation that can be missing.
      */
+    @Nullable
     @XStreamAsAttribute
     private String name;
 
@@ -74,6 +79,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * Prefix is optional and will simply be ignored if {@code null} or blank.
      * If prefix is specified it will be added in the final language key to all {@link Record}s and sub-{@link Dictionary}s.
      */
+    @Nullable
     @XStreamAsAttribute
     private String prefix;
 
@@ -82,13 +88,16 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * These are the main translation containers and provide all necessary information.
      * Though this {@link List} can be empty if this {@link Dictionary} only contains sub-{@link Dictionary}s.
      */
+    @Nullable
     @XStreamImplicit ( itemFieldName = "record" )
     private List<Record> records;
 
     /**
      * {@link List} of sub-{@link Dictionary}s available in this {@link Dictionary}.
+     * This {@link List} can be empty if this {@link Dictionary} only contains {@link Record}s.
      * Sub-{@link Dictionary}s can be provided to group nested {@link Record}s or simply for convenience.
      */
+    @Nullable
     @XStreamImplicit ( itemFieldName = "Dictionary" )
     private List<Dictionary> dictionaries;
 
@@ -96,28 +105,33 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * {@link List} of {@link TranslationInformation}s about translations available in this {@link Dictionary}.
      * This is optional infromation and it can be missing if not provided explicitely for this {@link Dictionary}.
      */
+    @Nullable
     @XStreamAlias ( "Translations" )
     private List<TranslationInformation> translations;
 
     /**
      * Cached {@link List} of all {@link Locale}s presented by this {@link Dictionary}.
      */
+    @Nullable
     private transient List<Locale> allLocales;
 
     /**
      * Cached {@link List} of all {@link Locale}s supported by this {@link Dictionary}.
      * {@link Locale} is supported only if all {@link Record}s within this {@link Dictionary} support it.
      */
+    @Nullable
     private transient List<Locale> supportedLocales;
 
     /**
      * {@link Map} containing {@link Record}s cached by their key.
      */
+    @Nullable
     private transient Map<String, Record> recordsCache;
 
     /**
      * {@link Map} containing {@link Dictionary}s cached by {@link Record} keys.
      */
+    @Nullable
     private transient Map<String, Dictionary> dictionariesCache;
 
     /**
@@ -133,7 +147,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param prefix {@link Dictionary} key prefix
      */
-    public Dictionary ( final String prefix )
+    public Dictionary ( @Nullable final String prefix )
     {
         this ( prefix, null );
     }
@@ -144,9 +158,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param prefix {@link Dictionary} key prefix
      * @param name   {@link Dictionary} name
      */
-    public Dictionary ( final String prefix, final String name )
+    public Dictionary ( @Nullable final String prefix, @Nullable final String name )
     {
-        super ();
         this.id = TextUtils.generateId ( ID_PREFIX );
         this.prefix = prefix;
         this.name = name;
@@ -158,9 +171,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param nearClass {@link Class} used to locale resource
      * @param resource  resource to load {@link Dictionary} from
      */
-    public Dictionary ( final Class nearClass, final String resource )
+    public Dictionary ( @NotNull final Class nearClass, @NotNull final String resource )
     {
-        super ();
         this.id = TextUtils.generateId ( ID_PREFIX );
         XmlUtils.getXStream ().fromXML ( nearClass.getResourceAsStream ( resource ), this );
     }
@@ -170,9 +182,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param url {@link URL} to load {@link Dictionary} from
      */
-    public Dictionary ( final URL url )
+    public Dictionary ( @NotNull final URL url )
     {
-        super ();
         this.id = TextUtils.generateId ( ID_PREFIX );
         XmlUtils.getXStream ().fromXML ( url, this );
     }
@@ -182,9 +193,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param file {@link File} to load {@link Dictionary} from
      */
-    public Dictionary ( final File file )
+    public Dictionary ( @NotNull final File file )
     {
-        super ();
         this.id = TextUtils.generateId ( ID_PREFIX );
         XmlUtils.getXStream ().fromXML ( file, this );
     }
@@ -194,9 +204,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param inputStream {@link InputStream} to load {@link Dictionary} from
      */
-    public Dictionary ( final InputStream inputStream )
+    public Dictionary ( @NotNull final InputStream inputStream )
     {
-        super ();
         this.id = TextUtils.generateId ( ID_PREFIX );
         XmlUtils.getXStream ().fromXML ( inputStream, this );
     }
@@ -213,6 +222,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link Dictionary} name
      */
+    @Nullable
     public String getName ()
     {
         return name;
@@ -223,7 +233,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param name new {@link Dictionary} name
      */
-    public synchronized void setName ( final String name )
+    public synchronized void setName ( @Nullable final String name )
     {
         this.name = name;
     }
@@ -233,6 +243,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link Dictionary} prefix
      */
+    @Nullable
     public String getPrefix ()
     {
         return prefix;
@@ -243,7 +254,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param prefix new {@link Dictionary} prefix
      */
-    public synchronized void setPrefix ( final String prefix )
+    public synchronized void setPrefix ( @Nullable final String prefix )
     {
         this.prefix = prefix;
     }
@@ -282,6 +293,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link List} of {@link Record}s this {@link Dictionary} contains
      */
+    @NotNull
     public synchronized List<Record> getRecords ()
     {
         return records != null ? new ImmutableList<Record> ( records ) : new ImmutableList<Record> ();
@@ -292,7 +304,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param records new {@link List} of {@link Record}s for this {@link Dictionary}
      */
-    public synchronized void setRecords ( final List<Record> records )
+    public synchronized void setRecords ( @Nullable final List<Record> records )
     {
         this.records = records;
     }
@@ -305,7 +317,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param locale {@link Locale}
      * @return {@link Record} for the specified language key
      */
-    public synchronized Record getRecord ( final String key, final Locale locale )
+    @Nullable
+    public synchronized Record getRecord ( @NotNull final String key, @NotNull final Locale locale )
     {
         final Record result;
         final String cacheKey = key + "." + LanguageUtils.toString ( locale );
@@ -318,62 +331,65 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
         {
             final String dicPrefix = usablePrefix ();
             final String subKey = key.startsWith ( dicPrefix ) ? key.substring ( dicPrefix.length () ) : null;
-            if ( dictionariesCache != null && dictionariesCache.containsKey ( cacheKey ) )
+            if ( subKey != null )
             {
-                // Cached dictionary that contains record
-                result = dictionariesCache.get ( cacheKey ).getRecord ( subKey, locale );
-            }
-            else if ( subKey != null )
-            {
-                Record record = null;
-                Dictionary source = this;
-
-                final Comparator<Record> comparator = new RecordCountryComparator ( locale );
-
-                // Resolving most fitting record within this dictionary
-                if ( CollectionUtils.notEmpty ( records ) )
+                if ( dictionariesCache != null && dictionariesCache.containsKey ( cacheKey ) )
                 {
-                    // Collecting records for the key
-                    final List<Record> fitting = collectLocalRecords ( subKey, new ArrayList<Record> ( 3 ) );
-
-                    // Resolving most fitting one
-                    record = CollectionUtils.max ( fitting, comparator );
-                }
-
-                // Resolving most fitting record within this dictionary and all sub-dictionaries
-                if ( CollectionUtils.notEmpty ( dictionaries ) )
-                {
-                    for ( final Dictionary dictionary : dictionaries )
-                    {
-                        // Resolving most fitting one from sub-dictionary
-                        final Record subRecord = dictionary.getRecord ( subKey, locale );
-
-                        // Resolving most fitting one
-                        if ( subRecord != null && ( record == null || comparator.compare ( record, subRecord ) > 0 ) )
-                        {
-                            record = subRecord;
-                            source = dictionary;
-                        }
-                    }
-                }
-                result = record;
-
-                // Caching result
-                if ( source == this )
-                {
-                    if ( recordsCache == null )
-                    {
-                        recordsCache = new HashMap<String, Record> ( recordsCount () );
-                    }
-                    recordsCache.put ( cacheKey, result );
+                    // Cached dictionary that contains record
+                    result = dictionariesCache.get ( cacheKey ).getRecord ( subKey, locale );
                 }
                 else
                 {
-                    if ( dictionariesCache == null )
+                    Record record = null;
+                    Dictionary source = this;
+
+                    final Comparator<Record> comparator = new RecordCountryComparator ( locale );
+
+                    // Resolving most fitting record within this dictionary
+                    if ( CollectionUtils.notEmpty ( records ) )
                     {
-                        dictionariesCache = new HashMap<String, Dictionary> ( dictionariesCount () * 5 );
+                        // Collecting records for the key
+                        final List<Record> fitting = collectLocalRecords ( subKey, new ArrayList<Record> ( 3 ) );
+
+                        // Resolving most fitting one
+                        record = CollectionUtils.max ( fitting, comparator );
                     }
-                    dictionariesCache.put ( cacheKey, source );
+
+                    // Resolving most fitting record within this dictionary and all sub-dictionaries
+                    if ( CollectionUtils.notEmpty ( dictionaries ) )
+                    {
+                        for ( final Dictionary dictionary : dictionaries )
+                        {
+                            // Resolving most fitting one from sub-dictionary
+                            final Record subRecord = dictionary.getRecord ( subKey, locale );
+
+                            // Resolving most fitting one
+                            if ( subRecord != null && ( record == null || comparator.compare ( record, subRecord ) > 0 ) )
+                            {
+                                record = subRecord;
+                                source = dictionary;
+                            }
+                        }
+                    }
+                    result = record;
+
+                    // Caching result
+                    if ( source == this )
+                    {
+                        if ( recordsCache == null )
+                        {
+                            recordsCache = new HashMap<String, Record> ( recordsCount () );
+                        }
+                        recordsCache.put ( cacheKey, result );
+                    }
+                    else
+                    {
+                        if ( dictionariesCache == null )
+                        {
+                            dictionariesCache = new HashMap<String, Dictionary> ( dictionariesCount () * 5 );
+                        }
+                        dictionariesCache.put ( cacheKey, source );
+                    }
                 }
             }
             else
@@ -392,7 +408,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param key {@link Record} language key
      * @return {@link List} of {@link Record}s for the specified language key
      */
-    private synchronized List<Record> getRecords ( final String key )
+    @NotNull
+    private synchronized List<Record> getRecords ( @NotNull final String key )
     {
         return getRecords ( key, new ArrayList<Record> () );
     }
@@ -405,7 +422,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param results {@link List} to collect {@link Record}s into
      * @return {@link List} of {@link Record}s for the specified language key
      */
-    private synchronized List<Record> getRecords ( final String key, final List<Record> results )
+    @NotNull
+    private synchronized List<Record> getRecords ( @NotNull final String key, @NotNull final List<Record> results )
     {
         final String dicPrefix = usablePrefix ();
         final String subKey = key.startsWith ( dicPrefix ) ? key.substring ( dicPrefix.length () ) : null;
@@ -431,7 +449,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param results {@link List} to collect {@link Record}s into
      * @return {@link List} of {@link Record}s from this {@link Dictionary} only for the specified language key
      */
-    private synchronized List<Record> collectLocalRecords ( final String key, final List<Record> results )
+    @NotNull
+    private synchronized List<Record> collectLocalRecords ( @NotNull final String key, @NotNull final List<Record> results )
     {
         if ( CollectionUtils.notEmpty ( records ) )
         {
@@ -450,9 +469,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * Adds new {@link Record} into this {@link Dictionary} and returns it.
      *
      * @param record {@link Record} to add
-     * @return added {@link Record}
      */
-    public synchronized Record addRecord ( final Record record )
+    public synchronized void addRecord ( @NotNull final Record record )
     {
         if ( records == null )
         {
@@ -464,8 +482,6 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
 
         // Destroying caches
         destroyRecordCaches ( record );
-
-        return record;
     }
 
     /**
@@ -473,7 +489,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param record {@link Record} to remove
      */
-    public synchronized void removeRecord ( final Record record )
+    public synchronized void removeRecord ( @NotNull final Record record )
     {
         if ( records != null )
         {
@@ -490,7 +506,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param key key of {@link Record} to remove
      */
-    public synchronized void removeRecord ( final String key )
+    public synchronized void removeRecord ( @NotNull final String key )
     {
         if ( CollectionUtils.notEmpty ( records ) )
         {
@@ -517,7 +533,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param record {@link Dictionary} to destroy caches for
      */
-    private void destroyRecordCaches ( final Record record )
+    private void destroyRecordCaches ( @NotNull final Record record )
     {
         // Clearing
         clearLocaleCaches ();
@@ -570,6 +586,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link Set} of all {@link Record} keys for this {@link Dictionary}
      */
+    @NotNull
     public synchronized Set<String> getKeys ()
     {
         return getKeys ( "" );
@@ -582,7 +599,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param prefix hierarchy prefix
      * @return {@link Set} of all {@link Record} keys for this {@link Dictionary}
      */
-    private Set<String> getKeys ( final String prefix )
+    @NotNull
+    private Set<String> getKeys ( @NotNull final String prefix )
     {
         return collectKeys ( prefix, new HashSet<String> ( totalRecordsCount () ) );
     }
@@ -595,7 +613,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param keys   {@link Set} to collect {@link Record} keys into
      * @return {@link Set} of all {@link Record} keys for this {@link Dictionary}
      */
-    private Set<String> collectKeys ( final String prefix, final Set<String> keys )
+    @NotNull
+    private Set<String> collectKeys ( @NotNull final String prefix, @NotNull final Set<String> keys )
     {
         final String p = prefix + usablePrefix ();
         if ( records != null )
@@ -630,6 +649,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link List} of {@link Dictionary}s this {@link Dictionary} contains
      */
+    @NotNull
     public synchronized List<Dictionary> getDictionaries ()
     {
         return dictionaries != null ? new ImmutableList<Dictionary> ( dictionaries ) : new ImmutableList<Dictionary> ();
@@ -640,7 +660,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param dictionaries new {@link List} of {@link Dictionary}s for this {@link Dictionary}
      */
-    public synchronized void setDictionaries ( final List<Dictionary> dictionaries )
+    public synchronized void setDictionaries ( @Nullable final List<Dictionary> dictionaries )
     {
         this.dictionaries = dictionaries;
     }
@@ -650,7 +670,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param dictionary child {@link Dictionary} to add
      */
-    public synchronized void addDictionary ( final Dictionary dictionary )
+    public synchronized void addDictionary ( @NotNull final Dictionary dictionary )
     {
         // Ensuring dictionaries list exists
         if ( dictionaries == null )
@@ -670,7 +690,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param dictionary child {@link Dictionary} to remove
      */
-    public synchronized void removeDictionary ( final Dictionary dictionary )
+    public synchronized void removeDictionary ( @NotNull final Dictionary dictionary )
     {
         if ( dictionaries != null )
         {
@@ -687,7 +707,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param dictionary {@link Dictionary} to destroy caches for
      */
-    private void destroyDictionaryCaches ( final Dictionary dictionary )
+    private void destroyDictionaryCaches ( @NotNull final Dictionary dictionary )
     {
         clearLocaleCaches ();
         if ( recordsCache != null || dictionariesCache != null )
@@ -727,7 +747,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param cachedKeys cached keys
      * @param keys       keys to remove from cache
      */
-    private void destroyKeys ( final Iterator<String> cachedKeys, final Set<String> keys )
+    private void destroyKeys ( @NotNull final Iterator<String> cachedKeys, @NotNull final Set<String> keys )
     {
         while ( cachedKeys.hasNext () )
         {
@@ -776,6 +796,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link List} of {@link TranslationInformation}s contained in this dictionary
      */
+    @NotNull
     public synchronized List<TranslationInformation> getTranslations ()
     {
         return translations != null ? new ImmutableList<TranslationInformation> ( translations ) :
@@ -787,7 +808,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param translations new {@link List} of {@link TranslationInformation}s for this dictionary
      */
-    public synchronized void setTranslations ( final List<TranslationInformation> translations )
+    public synchronized void setTranslations ( @Nullable final List<TranslationInformation> translations )
     {
         this.translations = translations;
     }
@@ -798,7 +819,8 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param locale {@link Locale}
      * @return {@link TranslationInformation} for the specified {@link Locale}
      */
-    public synchronized TranslationInformation getTranslation ( final Locale locale )
+    @Nullable
+    public synchronized TranslationInformation getTranslation ( @NotNull final Locale locale )
     {
         final List<TranslationInformation> translations = new ArrayList<TranslationInformation> ( 1 + dictionariesCount () );
 
@@ -838,7 +860,6 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
             // No fitting translations present in this dictionary for the specified locale
             info = null;
         }
-
         return info;
     }
 
@@ -848,7 +869,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      * @param locale       {@link Locale} to collect {@link TranslationInformation}s for
      * @param translations {@link List} to collect {@link TranslationInformation}s into
      */
-    private void collectLanguages ( final Locale locale, final List<TranslationInformation> translations )
+    private void collectLanguages ( @NotNull final Locale locale, @NotNull final List<TranslationInformation> translations )
     {
         if ( CollectionUtils.notEmpty ( this.translations ) )
         {
@@ -877,7 +898,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param locales {@link List} to collect supported {@link Locale}s into
      */
-    private void collectLocales ( final List<Locale> locales )
+    private void collectLocales ( @NotNull final List<Locale> locales )
     {
         if ( CollectionUtils.notEmpty ( records ) )
         {
@@ -917,7 +938,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param translation {@link TranslationInformation} to add
      */
-    public synchronized void addTranslation ( final TranslationInformation translation )
+    public synchronized void addTranslation ( @NotNull final TranslationInformation translation )
     {
         if ( translations == null )
         {
@@ -931,6 +952,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link List} of all {@link Locale} from this {@link Dictionary}
      */
+    @NotNull
     public synchronized List<Locale> getAllLocales ()
     {
         if ( allLocales == null )
@@ -946,7 +968,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @param locales {@link List} to put {@link Locale}s into
      */
-    private void collectAllLocales ( final List<Locale> locales )
+    private void collectAllLocales ( @NotNull final List<Locale> locales )
     {
         if ( CollectionUtils.notEmpty ( records ) )
         {
@@ -972,72 +994,95 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return {@link List} of {@link Locale} supported by this {@link Dictionary}
      */
+    @NotNull
     public synchronized List<Locale> getSupportedLocales ()
     {
         if ( supportedLocales == null )
         {
-            // Collecting all supported locales first
-            supportedLocales = new ArrayList<Locale> ( getAllLocales () );
-
-            // Collecting supported language codes
-            Set<String> supportedCodes = null;
-            final Set<String> keyCodes = new HashSet<String> ( supportedLocales.size () );
-            for ( final String key : getKeys () )
-            {
-                // Collecting unique locales for the key
-                final List<Locale> keyLocales = new ArrayList<Locale> ( 3 );
-                for ( final Record keyRecord : getRecords ( key ) )
-                {
-                    keyRecord.collectAllLocales ( keyLocales );
-                }
-
-                // Collecting unique language codes for this key
-                for ( final Locale keyLocale : keyLocales )
-                {
-                    final String code = keyLocale.getLanguage ();
-                    if ( !keyCodes.contains ( code ) )
-                    {
-                        keyCodes.add ( code );
-                    }
-                }
-
-                // Updating resulting language codes
-                if ( supportedCodes != null )
-                {
-                    // Filtering out language codes uns
-                    final Iterator<String> codesIterator = supportedCodes.iterator ();
-                    while ( codesIterator.hasNext () )
-                    {
-                        final String code = codesIterator.next ();
-                        if ( !keyCodes.contains ( code ) )
-                        {
-                            codesIterator.remove ();
-                        }
-                    }
-                }
-                else
-                {
-                    // Saving language codes from the first key we met as base set
-                    // It doesn't matter if first key we check has more or less locales supported since we are going to narrow it down
-                    supportedCodes = new HashSet<String> ( keyCodes );
-                }
-
-                // Clearing unique language codes for this key
-                keyCodes.clear ();
-            }
-
-            // Filtering out locales with unsupported language codes
-            final Iterator<Locale> localesIterator = supportedLocales.iterator ();
-            while ( localesIterator.hasNext () )
-            {
-                final Locale locale = localesIterator.next ();
-                if ( !supportedCodes.contains ( locale.getLanguage () ) )
-                {
-                    localesIterator.remove ();
-                }
-            }
+            supportedLocales = collectSupportedLocales ( null );
+        }
+        if ( supportedLocales == null )
+        {
+            supportedLocales = new ArrayList<Locale> ( 0 );
         }
         return new ImmutableList<Locale> ( supportedLocales );
+    }
+
+    /**
+     * Returns all {@link Locale}s from this {@link Dictionary} and all sub-{@link Dictionary} {@link Record}s.
+     * Note that {@link Locale}s intersection is only used across different {@link Dictionary}s.
+     * Singke {@link Dictionary} can have {@link Record} with varying {@link Locale}s but they will all be counted in for it.
+     * Basically any {@link Locale} found within single {@link Dictionary} is considered to be supported.
+     *
+     * @param locales {@link List} of {@link Locale}s collected so far, can be {@code null}
+     * @return all {@link Locale}s from this {@link Dictionary} and all sub-{@link Dictionary} {@link Record}s
+     */
+    @Nullable
+    protected List<Locale> collectSupportedLocales ( @Nullable List<Locale> locales )
+    {
+        if ( CollectionUtils.notEmpty ( records ) )
+        {
+            if ( locales == null )
+            {
+                locales = new ArrayList<Locale> ();
+                for ( final Record record : records )
+                {
+                    record.collectAllLocales ( locales );
+                }
+            }
+            else
+            {
+                locales = filterLocales ( locales );
+            }
+        }
+        if ( CollectionUtils.notEmpty ( dictionaries ) )
+        {
+            for ( final Dictionary dictionary : dictionaries )
+            {
+                locales = dictionary.collectSupportedLocales ( locales );
+            }
+        }
+        return locales;
+    }
+
+    /**
+     * Returns {@link List} of {@link Locale}s filtered by language codes in this {@link Dictionary}.
+     *
+     * @param locales unfiltered {@link List} of {@link Locale}s
+     * @return {@link List} of {@link Locale}s filtered by language codes in this {@link Dictionary}
+     */
+    @NotNull
+    private List<Locale> filterLocales ( @NotNull final List<Locale> locales )
+    {
+        final List<Locale> filtered;
+        if ( CollectionUtils.notEmpty ( records ) )
+        {
+            final List<String> languageCodes = new ArrayList<String> ();
+            for ( final Record record : records )
+            {
+                record.collectAllCodes ( languageCodes );
+            }
+            if ( languageCodes.size () > 0 )
+            {
+                filtered = CollectionUtils.filter ( locales, new Filter<Locale> ()
+                {
+                    @Override
+                    public boolean accept ( final Locale locale )
+                    {
+                        return languageCodes.contains ( locale.getLanguage () );
+                    }
+                } );
+            }
+            else
+            {
+                filtered = locales;
+            }
+        }
+        else
+        {
+            filtered = locales;
+        }
+        return filtered;
     }
 
     /**
@@ -1045,17 +1090,19 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      *
      * @return usable prefix for this {@link Dictionary}
      */
+    @NotNull
     private String usablePrefix ()
     {
         return TextUtils.notEmpty ( prefix ) ? prefix + "." : "";
     }
 
     @Override
-    public boolean equals ( final Object obj )
+    public boolean equals ( @Nullable final Object obj )
     {
         return obj != null && obj instanceof Dictionary && ( ( Dictionary ) obj ).getId ().equals ( getId () );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

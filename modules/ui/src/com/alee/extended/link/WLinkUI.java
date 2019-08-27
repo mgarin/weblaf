@@ -17,6 +17,7 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.label.WStyledLabelUI;
 import com.alee.managers.style.BoundsType;
 import com.alee.utils.SwingUtils;
@@ -39,6 +40,7 @@ public abstract class WLinkUI<C extends WebLink> extends WStyledLabelUI<C>
      */
     protected MouseAdapter linkExecutionListener;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {

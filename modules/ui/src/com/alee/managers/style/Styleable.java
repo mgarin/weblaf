@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * This interface is implemented by components and UIs which support styling through WebLaF skins.
  * It provides only two methods to allow default component style ID modifications.
@@ -34,6 +36,7 @@ public interface Styleable
      *
      * @return default component {@link com.alee.managers.style.StyleId}
      */
+    @NotNull
     public StyleId getDefaultStyleId ();
 
     /**
@@ -41,6 +44,7 @@ public interface Styleable
      *
      * @return component style ID
      */
+    @NotNull
     public StyleId getStyleId ();
 
     /**

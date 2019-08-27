@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.laf.text.PasswordFieldPainter;
 import com.alee.laf.text.WPasswordFieldUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbPasswordFieldPainter<C extends JPasswordField, U extends WPasswordFieldUI, D extends IDecoration<C, D>>
         extends PasswordFieldPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

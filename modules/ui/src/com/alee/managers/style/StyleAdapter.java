@@ -17,17 +17,24 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 
 /**
  * Adapter for {@link StyleListener}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see StyleListener
+ * @see Styleable
+ * @see StyleManager
  */
 public abstract class StyleAdapter implements StyleListener
 {
     @Override
-    public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
+    public void skinChanged ( @NotNull final JComponent component, @Nullable final Skin oldSkin, @NotNull final Skin newSkin )
     {
         /**
          * Do nothing by default.
@@ -35,7 +42,7 @@ public abstract class StyleAdapter implements StyleListener
     }
 
     @Override
-    public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
+    public void styleChanged ( @NotNull final JComponent component, @Nullable final StyleId oldStyleId, @NotNull final StyleId newStyleId )
     {
         /**
          * Do nothing by default.
@@ -43,7 +50,7 @@ public abstract class StyleAdapter implements StyleListener
     }
 
     @Override
-    public void skinUpdated ( final JComponent component, final StyleId styleId )
+    public void skinUpdated ( @NotNull final JComponent component, @NotNull final StyleId styleId )
     {
         /**
          * Do nothing by default.

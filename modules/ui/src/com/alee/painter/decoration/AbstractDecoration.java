@@ -18,6 +18,7 @@
 package com.alee.painter.decoration;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.CollectionUtils;
@@ -103,7 +104,7 @@ public abstract class AbstractDecoration<C extends JComponent, I extends Abstrac
      */
     protected transient Cursor previousCursor;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
@@ -146,27 +147,28 @@ public abstract class AbstractDecoration<C extends JComponent, I extends Abstrac
     }
 
     @Override
-    public boolean isApplicableTo ( final List<String> states )
+    public boolean isApplicableTo ( @NotNull final List<String> states )
     {
-        if ( CollectionUtils.isEmpty ( this.states ) )
+        boolean applicable = true;
+        if ( !CollectionUtils.isEmpty ( this.states ) )
         {
-            return true;
-        }
-        else if ( CollectionUtils.isEmpty ( states ) )
-        {
-            return false;
-        }
-        else
-        {
-            for ( final String state : this.states )
+            if ( CollectionUtils.isEmpty ( states ) )
             {
-                if ( !states.contains ( state ) )
+                applicable = false;
+            }
+            else
+            {
+                for ( final String state : this.states )
                 {
-                    return false;
+                    if ( !states.contains ( state ) )
+                    {
+                        applicable = false;
+                        break;
+                    }
                 }
             }
-            return true;
         }
+        return applicable;
     }
 
     @Override

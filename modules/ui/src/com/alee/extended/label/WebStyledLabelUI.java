@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -56,7 +58,7 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -66,7 +68,7 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( label );
@@ -75,6 +77,7 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -93,6 +96,7 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
         PainterSupport.setShapeDetectionEnabled ( label, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -100,11 +104,12 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( label, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -112,7 +117,7 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( label, padding );
     }
@@ -135,7 +140,7 @@ public class WebStyledLabelUI<C extends WebStyledLabel> extends WStyledLabelUI<C
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( label, new Consumer<IStyledLabelPainter> ()
+        PainterSupport.setPainter ( label, this, new Consumer<IStyledLabelPainter> ()
         {
             @Override
             public void accept ( final IStyledLabelPainter newPainter )

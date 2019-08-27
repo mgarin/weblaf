@@ -17,6 +17,8 @@
 
 package com.alee.demo.frames.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.ExampleData;
@@ -92,7 +94,7 @@ public final class StyleFrame extends WebDockableFrame
         StyleManager.addSkinListener ( new SkinListener ()
         {
             @Override
-            public void skinChanged ( final Skin previous, final Skin current )
+            public void skinChanged ( @Nullable final Skin previous, @NotNull final Skin current )
             {
                 // Obtaining active document
                 final ExampleData document = application.getExamplesPane ().getSelectedDocument ();

@@ -17,6 +17,8 @@
 
 package com.alee.extended.canvas;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -54,7 +56,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -64,7 +66,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( canvas );
@@ -73,6 +75,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -91,6 +94,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
         PainterSupport.setShapeDetectionEnabled ( canvas, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -98,11 +102,12 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( canvas, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -110,7 +115,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( canvas, padding );
     }
@@ -133,7 +138,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( canvas, new Consumer<ICanvasPainter> ()
+        PainterSupport.setPainter ( canvas, this, new Consumer<ICanvasPainter> ()
         {
             @Override
             public void accept ( final ICanvasPainter newPainter )

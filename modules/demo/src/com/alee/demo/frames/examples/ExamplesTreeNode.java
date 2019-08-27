@@ -108,29 +108,33 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
         return ( Example ) getUserObject ();
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return type == group ? getExampleGroup ().getId () : type == example ? getExample ().getId () : ROOT_ID;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> getStates ()
     {
-        if ( type == group )
+        final List<String> states;
+        switch ( type )
         {
-            return CollectionUtils.asList ( getExampleGroup ().getFeatureState ().name () );
+            case group:
+                states = CollectionUtils.asList ( getExampleGroup ().getFeatureState ().name () );
+                break;
+
+            case example:
+                states = CollectionUtils.asList ( getExample ().getFeatureState ().name () );
+                break;
+
+            default:
+                states = Collections.emptyList ();
+                break;
         }
-        else if ( type == example )
-        {
-            return CollectionUtils.asList ( getExample ().getFeatureState ().name () );
-        }
-        else
-        {
-            return Collections.emptyList ();
-        }
+        return states;
     }
 
     @Override
@@ -149,6 +153,7 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
 
             default:
                 icon = null;
+                break;
         }
         return icon;
     }
@@ -169,6 +174,7 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
 
             default:
                 title = null;
+                break;
         }
         return LM.get ( title );
     }

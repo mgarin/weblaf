@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Objects;
@@ -168,7 +169,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -794,6 +795,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         return states;
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -821,7 +823,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     @Override
-    public final boolean usesState ( final String state )
+    public final boolean usesState ( @NotNull final String state )
     {
         // Checking whether or not this painter uses this decoration state
         boolean usesState = usesState ( decorations, state );
@@ -877,26 +879,29 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * @param forStates decoration states to retrieve decoration for
      * @return decorations for the specified states
      */
-    protected final List<D> getDecorations ( final List<String> forStates )
+    @Nullable
+    protected final List<D> getDecorations ( @NotNull final List<String> forStates )
     {
+        final List<D> result;
         if ( decorations != null && decorations.size () > 0 )
         {
-            final List<D> d = new ArrayList<D> ( 1 );
+            result = new ArrayList<D> ( 1 );
             for ( final D decoration : decorations )
             {
                 if ( decoration.isApplicableTo ( forStates ) )
                 {
-                    d.add ( decoration );
+                    result.add ( decoration );
                 }
             }
-            return d;
         }
         else
         {
-            return null;
+            result = null;
         }
+        return result;
     }
 
+    @Nullable
     @Override
     public final D getDecoration ()
     {
@@ -1090,52 +1095,55 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         }
     }
 
+    @Nullable
     @Override
     protected Insets getBorder ()
     {
+        final Insets insets;
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
         {
-            // Return decoration border insets
-            return decoration.getBorderInsets ( component );
+            insets = decoration.getBorderInsets ( component );
         }
         else
         {
-            // Return {@code null} insets
-            return null;
+            insets = null;
         }
+        return insets;
     }
 
+    @NotNull
     @Override
-    public Shape provideShape ( final C component, final Rectangle bounds )
+    public Shape provideShape ( @NotNull final C component, @NotNull final Rectangle bounds )
     {
+        final Shape shape;
         final D decoration = getDecoration ();
-        if ( isDecorationAvailable ( decoration ) )
+        if ( decoration != null && isDecorationAvailable ( decoration ) )
         {
-            // Return shape provided by the decoration
-            return decoration.provideShape ( component, bounds );
+            shape = decoration.provideShape ( component, bounds );
         }
         else
         {
-            // Simply return bounds
-            return bounds;
+            shape = bounds;
         }
+        return shape;
     }
 
+    @Nullable
     @Override
     public Boolean isOpaque ()
     {
+        final Boolean opaque;
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
         {
-            // Decorated components opacity check
-            return isOpaqueDecorated ();
+            opaque = isOpaqueDecorated ();
         }
         else
         {
-            // Undecorated components opacity check
-            return isOpaqueUndecorated ();
+            opaque = isOpaqueUndecorated ();
         }
+        return opaque;
     }
 
     /**
@@ -1166,7 +1174,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     @Override
-    public boolean contains ( final C c, final U ui, final Bounds bounds, final int x, final int y )
+    public boolean contains ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds, final int x, final int y )
     {
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
@@ -1185,7 +1193,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     @Override
-    public int getBaseline ( final C c, final U ui, final Bounds bounds )
+    public int getBaseline ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
@@ -1204,7 +1212,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final U ui )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final C c, @NotNull final U ui )
     {
         final D decoration = getDecoration ();
         if ( isDecorationAvailable ( decoration ) )
@@ -1220,7 +1228,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         // Checking whether plain background is required
         if ( isPlainBackgroundRequired ( c ) )
@@ -1243,7 +1251,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         }
 
         // Painting content
-        paintContent ( g2d, bounds.get (), c, ui );
+        paintContent ( g2d, c, ui, bounds.get () );
     }
 
     /**
@@ -1251,13 +1259,15 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * todo This might eventually be removed if all contents will be painted within IContent implementations
      *
      * @param g2d    graphics context
-     * @param bounds painting bounds
      * @param c      painted component
      * @param ui     painted component UI
+     * @param bounds painting bounds
      */
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
-        // No content by default
+        /**
+         * No content available by default.
+         */
     }
 
     /**
@@ -1284,6 +1294,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         return decoration != null;
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

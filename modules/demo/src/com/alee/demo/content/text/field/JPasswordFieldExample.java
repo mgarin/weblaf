@@ -18,6 +18,7 @@
 package com.alee.demo.content.text.field;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -32,31 +33,35 @@ import java.util.List;
  */
 public class JPasswordFieldExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jpasswordfield";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "passwordfield";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Password Fields", "passwordfield" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

@@ -191,34 +191,36 @@ public final class Version implements Comparable<Version>, Serializable
     @Override
     public int compareTo ( final Version version )
     {
+        final int result;
         if ( major () < version.major () )
         {
-            return -1;
+            result = -1;
         }
         else if ( major () > version.major () )
         {
-            return 1;
+            result = 1;
         }
         else if ( minor () < version.minor () )
         {
-            return -1;
+            result = -1;
         }
-        if ( minor () > version.minor () )
+        else if ( minor () > version.minor () )
         {
-            return 1;
+            result = 1;
         }
         else if ( patch () < version.patch () )
         {
-            return -1;
+            result = -1;
         }
-        if ( patch () > version.patch () )
+        else if ( patch () > version.patch () )
         {
-            return 1;
+            result = 1;
         }
         else
         {
-            return new Integer ( version.type ().ordinal () ).compareTo ( type ().ordinal () );
+            result = new Integer ( version.type ().ordinal () ).compareTo ( type ().ordinal () );
         }
+        return result;
     }
 
     @NotNull

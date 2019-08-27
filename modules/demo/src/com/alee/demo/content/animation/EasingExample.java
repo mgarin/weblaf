@@ -18,6 +18,7 @@
 package com.alee.demo.content.animation;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -55,31 +56,35 @@ import java.util.List;
  */
 public class EasingExample extends AbstractPreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "easing";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.utility;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new WebLafWikiPage ( "How to use Easing" );
     }
 
+    @NotNull
     @Override
     protected LayoutManager createPreviewLayout ()
     {
         return new AlignLayout ();
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {
@@ -101,8 +106,9 @@ public class EasingExample extends AbstractPreviewExample
             super ( EasingExample.this, "graph", FeatureState.release );
         }
 
+        @NotNull
         @Override
-        protected JComponent createPreview ( final List<Preview> previews, final int index )
+        protected JComponent createPreview ( @NotNull final List<Preview> previews, final int index )
         {
             // Easing algorithm graph
             final EasingViewer easingGraph = new EasingViewer ();

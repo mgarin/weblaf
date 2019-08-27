@@ -17,6 +17,7 @@
 
 package com.alee.laf.separator;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -36,6 +37,7 @@ public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI imp
      */
     protected C separator;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -43,7 +45,7 @@ public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI imp
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving separator reference
         separator = ( C ) c;
@@ -56,7 +58,7 @@ public abstract class WSeparatorUI<C extends JSeparator> extends SeparatorUI imp
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();

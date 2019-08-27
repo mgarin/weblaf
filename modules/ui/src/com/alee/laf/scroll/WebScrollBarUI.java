@@ -17,6 +17,7 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -109,6 +110,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -127,6 +129,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
         PainterSupport.setShapeDetectionEnabled ( scrollbar, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -134,11 +137,12 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( scrollbar, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -146,7 +150,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( scrollbar, padding );
     }
@@ -197,7 +201,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( scrollbar, new Consumer<IScrollBarPainter> ()
+        PainterSupport.setPainter ( scrollbar, this, new Consumer<IScrollBarPainter> ()
         {
             @Override
             public void accept ( final IScrollBarPainter newPainter )

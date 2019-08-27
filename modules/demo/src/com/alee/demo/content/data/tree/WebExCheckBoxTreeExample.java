@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.demo.api.example.*;
@@ -38,25 +39,28 @@ import java.util.List;
  */
 public class WebExCheckBoxTreeExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "excheckboxtree";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "excheckboxtree";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

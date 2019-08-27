@@ -17,6 +17,8 @@
 
 package com.alee.laf.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.UILanguageManager;
@@ -238,12 +240,14 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.label;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -316,6 +320,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -334,6 +339,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -353,11 +359,12 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -377,7 +384,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

@@ -1,5 +1,7 @@
 package com.alee.laf.toolbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractContainerPainter;
@@ -46,18 +48,19 @@ public class ToolBarPainter<C extends JToolBar, U extends WebToolBarUI, D extend
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
         // Toolbar properties change listener for border and layout updates
-        if ( Objects.equals ( property, WebLookAndFeel.FLOATABLE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, WebToolBar.FLOATABLE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
         {
             updateDecorationState ();
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -93,7 +96,7 @@ public class ToolBarPainter<C extends JToolBar, U extends WebToolBarUI, D extend
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         //        // Painting gripper
         //        paintGripper ( g2d, c );

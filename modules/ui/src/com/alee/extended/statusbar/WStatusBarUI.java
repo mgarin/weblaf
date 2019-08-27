@@ -17,6 +17,7 @@
 
 package com.alee.extended.statusbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -36,6 +37,7 @@ public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI i
      */
     protected C statusBar;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -43,7 +45,7 @@ public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI i
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving statusbar reference
         statusBar = ( C ) c;
@@ -56,7 +58,7 @@ public abstract class WStatusBarUI<C extends WebStatusBar> extends ComponentUI i
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();

@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
@@ -399,12 +401,14 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
         setAccelerator ( SwingUtils.getAccelerator ( accelerator ) );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.radiobuttonmenuitem;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -477,6 +481,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -495,6 +500,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -514,11 +520,12 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -538,7 +545,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

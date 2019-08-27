@@ -17,6 +17,8 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
@@ -99,12 +101,14 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.tableheader;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -177,6 +181,7 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -195,6 +200,7 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -214,11 +220,12 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -238,7 +245,7 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

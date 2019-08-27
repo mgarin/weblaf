@@ -17,7 +17,7 @@
 
 package com.alee.api;
 
-import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 
 /**
  * Interface representing an object with unique identifier.
@@ -28,9 +28,10 @@ public interface Identifiable
 {
     /**
      * Returns unique object identifier.
+     * todo Probably change back to {@link com.alee.api.annotations.NotNull} in future
      *
      * @return unique object identifier
      */
-    @NotNull
+    @Nullable
     public String getId ();
 }

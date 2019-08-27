@@ -17,6 +17,8 @@
 
 package com.alee.laf.optionpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -90,6 +92,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -108,6 +111,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
         PainterSupport.setShapeDetectionEnabled ( optionPane, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -115,11 +119,12 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( optionPane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -127,7 +132,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( optionPane, padding );
     }
@@ -593,7 +598,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( optionPane, new Consumer<IOptionPanePainter> ()
+        PainterSupport.setPainter ( optionPane, this, new Consumer<IOptionPanePainter> ()
         {
             @Override
             public void accept ( final IOptionPanePainter newPainter )

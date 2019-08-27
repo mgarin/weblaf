@@ -105,8 +105,8 @@ public class AccordionPane extends WebPanel implements Identifiable
         add ( this.content );
     }
 
+    @Nullable
     @Override
-    @NotNull
     public String getId ()
     {
         return id;

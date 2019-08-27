@@ -18,6 +18,7 @@
 package com.alee.demo.content.text.field;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
@@ -36,25 +37,28 @@ import java.util.List;
  */
 public class WebFormattedTextFieldExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webformattedtextfield";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "formattedtextfield";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.button.SplitButtonPainter;
 import com.alee.extended.button.WSplitButtonUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbSplitButtonPainter<C extends WebSplitButton, U extends WSplitButtonUI<C>, D extends IDecoration<C, D>>
         extends SplitButtonPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

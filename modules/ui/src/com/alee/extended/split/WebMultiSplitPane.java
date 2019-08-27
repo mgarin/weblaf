@@ -132,6 +132,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

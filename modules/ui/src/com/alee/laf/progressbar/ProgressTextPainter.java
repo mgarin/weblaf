@@ -30,7 +30,7 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Mikle Garin
  */
-public class ProgressTextPainter<C extends JProgressBar, U extends WebProgressBarUI, D extends IDecoration<C, D>>
+public class ProgressTextPainter<C extends JProgressBar, U extends WProgressBarUI, D extends IDecoration<C, D>>
         extends AbstractSectionDecorationPainter<C, U, D> implements IProgressTextPainter<C, U>
 {
     @Override

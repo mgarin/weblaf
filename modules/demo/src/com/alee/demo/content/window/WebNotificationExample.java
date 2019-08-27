@@ -18,6 +18,7 @@
 package com.alee.demo.content.window;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.extended.image.WebImage;
@@ -41,25 +42,28 @@ import java.util.List;
  */
 public class WebNotificationExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webnotification";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "notification";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
@@ -67,6 +71,7 @@ public class WebNotificationExample extends AbstractStylePreviewExample
         return super.getWikiPage ();
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

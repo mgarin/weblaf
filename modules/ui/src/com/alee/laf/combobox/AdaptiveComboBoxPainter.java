@@ -1,5 +1,6 @@
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -27,7 +28,7 @@ public final class AdaptiveComboBoxPainter<C extends JComboBox, U extends WCombo
     }
 
     @Override
-    public void prepareToPaint ( final CellRendererPane currentValuePane )
+    public void prepareToPaint ( @NotNull final CellRendererPane currentValuePane )
     {
         // Ignore this method in adaptive class
     }

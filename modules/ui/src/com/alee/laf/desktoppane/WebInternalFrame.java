@@ -17,9 +17,10 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -29,7 +30,6 @@ import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,9 +46,12 @@ import java.beans.PropertyVetoException;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see JInternalFrame
+ * @see InternalFrameDescriptor
+ * @see WInternalFrameUI
  * @see WebInternalFrameUI
+ * @see IInternalFramePainter
  * @see InternalFramePainter
+ * @see JInternalFrame
  */
 public class WebInternalFrame extends JInternalFrame implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
         EventMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebInternalFrame>, SizeMethods<WebInternalFrame>
@@ -65,7 +68,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      */
     public WebInternalFrame ()
     {
-        this ( StyleId.auto );
+        this ( StyleId.auto, null, false, false, false, false );
     }
 
     /**
@@ -74,9 +77,9 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      *
      * @param title the non-{@code null} {@code String} to display in the title bar
      */
-    public WebInternalFrame ( final String title )
+    public WebInternalFrame ( @Nullable final String title )
     {
-        this ( StyleId.auto, title );
+        this ( StyleId.auto, title, false, false, false, false );
     }
 
     /**
@@ -85,9 +88,9 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param title     the {@code String} to display in the title bar
      * @param resizable if {@code true}, the internal frame can be resized
      */
-    public WebInternalFrame ( final String title, final boolean resizable )
+    public WebInternalFrame ( @Nullable final String title, final boolean resizable )
     {
-        this ( StyleId.auto, title, resizable );
+        this ( StyleId.auto, title, resizable, false, false, false );
     }
 
     /**
@@ -97,9 +100,9 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param resizable if {@code true}, the internal frame can be resized
      * @param closable  if {@code true}, the internal frame can be closed
      */
-    public WebInternalFrame ( final String title, final boolean resizable, final boolean closable )
+    public WebInternalFrame ( @Nullable final String title, final boolean resizable, final boolean closable )
     {
-        this ( StyleId.auto, title, resizable, closable );
+        this ( StyleId.auto, title, resizable, closable, false, false );
     }
 
     /**
@@ -110,9 +113,9 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param closable    if {@code true}, the internal frame can be closed
      * @param maximizable if {@code true}, the internal frame can be maximized
      */
-    public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable )
+    public WebInternalFrame ( @Nullable final String title, final boolean resizable, final boolean closable, final boolean maximizable )
     {
-        this ( StyleId.auto, title, resizable, closable, maximizable );
+        this ( StyleId.auto, title, resizable, closable, maximizable, false );
     }
 
     /**
@@ -124,7 +127,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param maximizable if {@code true}, the internal frame can be maximized
      * @param iconifiable if {@code true}, the internal frame can be iconified
      */
-    public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable,
+    public WebInternalFrame ( @Nullable final String title, final boolean resizable, final boolean closable, final boolean maximizable,
                               final boolean iconifiable )
     {
         this ( StyleId.auto, title, resizable, closable, maximizable, iconifiable );
@@ -135,9 +138,9 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      *
      * @param id style ID
      */
-    public WebInternalFrame ( final StyleId id )
+    public WebInternalFrame ( @NotNull final StyleId id )
     {
-        this ( id, "", false, false, false, false );
+        this ( id, null, false, false, false, false );
     }
 
     /**
@@ -147,7 +150,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param id    style ID
      * @param title the non-{@code null} {@code String} to display in the title bar
      */
-    public WebInternalFrame ( final StyleId id, final String title )
+    public WebInternalFrame ( @NotNull final StyleId id, @Nullable final String title )
     {
         this ( id, title, false, false, false, false );
     }
@@ -159,7 +162,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param title     the {@code String} to display in the title bar
      * @param resizable if {@code true}, the internal frame can be resized
      */
-    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable )
+    public WebInternalFrame ( @NotNull final StyleId id, @Nullable final String title, final boolean resizable )
     {
         this ( id, title, resizable, false, false, false );
     }
@@ -172,7 +175,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param resizable if {@code true}, the internal frame can be resized
      * @param closable  if {@code true}, the internal frame can be closed
      */
-    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable )
+    public WebInternalFrame ( @NotNull final StyleId id, @Nullable final String title, final boolean resizable, final boolean closable )
     {
         this ( id, title, resizable, closable, false, false );
     }
@@ -186,7 +189,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param closable    if {@code true}, the internal frame can be closed
      * @param maximizable if {@code true}, the internal frame can be maximized
      */
-    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
+    public WebInternalFrame ( @NotNull final StyleId id, @Nullable final String title, final boolean resizable, final boolean closable,
                               final boolean maximizable )
     {
         this ( id, title, resizable, closable, maximizable, false );
@@ -202,7 +205,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * @param maximizable if {@code true}, the internal frame can be maximized
      * @param iconifiable if {@code true}, the internal frame can be iconified
      */
-    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
+    public WebInternalFrame ( @NotNull final StyleId id, @Nullable final String title, final boolean resizable, final boolean closable,
                               final boolean maximizable, final boolean iconifiable )
     {
         super ( title, resizable, closable, maximizable, iconifiable );
@@ -218,7 +221,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
         }
         catch ( final PropertyVetoException e )
         {
-            LoggerFactory.getLogger ( WebInternalFrame.class ).error ( e.toString (), e );
+            throw new RuntimeException ( "Unable to iconify JInternalFrame", e );
         }
     }
 
@@ -233,7 +236,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
         }
         catch ( final PropertyVetoException e )
         {
-            LoggerFactory.getLogger ( WebInternalFrame.class ).error ( e.toString (), e );
+            throw new RuntimeException ( "Unable to close JInternalFrame", e );
         }
     }
 
@@ -249,16 +252,18 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
         }
         catch ( final PropertyVetoException e )
         {
-            LoggerFactory.getLogger ( WebInternalFrame.class ).error ( e.toString (), e );
+            throw new RuntimeException ( "Unable to open JInternalFrame", e );
         }
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.internalframe;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -331,6 +336,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -349,6 +355,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -368,11 +375,12 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -392,7 +400,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }
@@ -832,20 +840,20 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     /**
      * Returns the look and feel (LaF) object that renders this component.
      *
-     * @return the {@link WebInternalFrameUI} object that renders this component
+     * @return the {@link WInternalFrameUI} object that renders this component
      */
     @Override
-    public WebInternalFrameUI getUI ()
+    public WInternalFrameUI getUI ()
     {
-        return ( WebInternalFrameUI ) super.getUI ();
+        return ( WInternalFrameUI ) super.getUI ();
     }
 
     /**
      * Sets the LaF object that renders this component.
      *
-     * @param ui {@link WebInternalFrameUI}
+     * @param ui {@link WInternalFrameUI}
      */
-    public void setUI ( final WebInternalFrameUI ui )
+    public void setUI ( final WInternalFrameUI ui )
     {
         super.setUI ( ui );
     }

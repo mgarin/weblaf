@@ -18,8 +18,8 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
-import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -27,7 +27,6 @@ import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -35,9 +34,10 @@ import java.beans.PropertyChangeListener;
 /**
  * Custom UI for {@link JInternalFrame} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
-public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrameUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -59,26 +59,16 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
      */
     public static ComponentUI createUI ( final JComponent c )
     {
-        return new WebInternalFrameUI ( ( JInternalFrame ) c );
-    }
-
-    /**
-     * Constructs new internal frame UI.
-     *
-     * @param b internal frame to which this UI will be applied
-     */
-    public WebInternalFrameUI ( final JInternalFrame b )
-    {
-        super ( b );
+        return new WebInternalFrameUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.installSkin ( frame );
+        StyleManager.installSkin ( internalFrame );
 
         // Installing title pane
         if ( northPane instanceof WebInternalFrameTitlePane )
@@ -96,14 +86,14 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
                 updateRootPaneStyle ();
             }
         };
-        frame.addPropertyChangeListener ( JInternalFrame.ROOT_PANE_PROPERTY, rootPaneTracker );
+        internalFrame.addPropertyChangeListener ( JInternalFrame.ROOT_PANE_PROPERTY, rootPaneTracker );
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling listeners
-        frame.removePropertyChangeListener ( JInternalFrame.ROOT_PANE_PROPERTY, rootPaneTracker );
+        internalFrame.removePropertyChangeListener ( JInternalFrame.ROOT_PANE_PROPERTY, rootPaneTracker );
 
         // Uninstalling title pane
         if ( northPane instanceof WebInternalFrameTitlePane )
@@ -112,7 +102,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
         }
 
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( frame );
+        StyleManager.uninstallSkin ( internalFrame );
 
         super.uninstallUI ( c );
     }
@@ -122,49 +112,52 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
      */
     protected void updateRootPaneStyle ()
     {
-        StyleId.internalframeRootpane.at ( frame ).set ( frame.getRootPane () );
+        StyleId.internalframeRootpane.at ( internalFrame ).set ( internalFrame.getRootPane () );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( frame, painter );
+        return PainterSupport.getShape ( internalFrame, painter );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( frame, painter );
+        return PainterSupport.isShapeDetectionEnabled ( internalFrame, painter );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( frame, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( internalFrame, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
-        return PainterSupport.getMargin ( frame );
+        return PainterSupport.getMargin ( internalFrame );
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
-        PainterSupport.setMargin ( frame, margin );
+        PainterSupport.setMargin ( internalFrame, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
-        return PainterSupport.getPadding ( frame );
+        return PainterSupport.getPadding ( internalFrame );
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
-        PainterSupport.setPadding ( frame, padding );
+        PainterSupport.setPadding ( internalFrame, padding );
     }
 
     /**
@@ -185,7 +178,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( frame, new Consumer<IInternalFramePainter> ()
+        PainterSupport.setPainter ( internalFrame, this, new Consumer<IInternalFramePainter> ()
         {
             @Override
             public void accept ( final IInternalFramePainter newPainter )
@@ -193,12 +186,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
                 WebInternalFrameUI.this.painter = newPainter;
             }
         }, this.painter, painter, IInternalFramePainter.class, AdaptiveInternalFramePainter.class );
-    }
-
-    @Override
-    protected JComponent createNorthPane ( final JInternalFrame frame )
-    {
-        return new WebInternalFrameTitlePane ( frame, frame );
     }
 
     @Override
@@ -237,131 +224,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeSup
     @Override
     public Dimension getMinimumSize ( final JComponent c )
     {
-        // return frame.getLayout ().minimumLayoutSize ( c );
         return null;
     }
 
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        // return PainterSupport.getPreferredSize ( c, painter );
         return null;
-    }
-
-    /**
-     * Custom {@link LayoutManager} for {@link JInternalFrame}.
-     * Also unlike {@code BasicInternalFrameUI.Handler} you can easily override this one.
-     */
-    protected class InternalFrameLayout extends AbstractLayoutManager
-    {
-        @Override
-        public void layoutContainer ( @NotNull final Container container )
-        {
-            final Insets insets = frame.getInsets ();
-            int cx = insets.left;
-            int cy = insets.top;
-            int cw = frame.getWidth () - insets.left - insets.right;
-            int ch = frame.getHeight () - insets.top - insets.bottom;
-
-            final JComponent northPane = getNorthPane ();
-            if ( northPane != null )
-            {
-                final Dimension northSize = northPane.getPreferredSize ();
-                northPane.setBounds ( cx, cy, cw, northSize.height );
-                cy += northSize.height;
-                ch -= northSize.height;
-            }
-
-            final JComponent southPane = getSouthPane ();
-            if ( southPane != null )
-            {
-                final Dimension southSize = southPane.getPreferredSize ();
-                southPane.setBounds ( cx, frame.getHeight () - insets.bottom - southSize.height, cw, southSize.height );
-                ch -= southSize.height;
-            }
-
-            final JComponent westPane = getWestPane ();
-            if ( westPane != null )
-            {
-                final Dimension westSize = westPane.getPreferredSize ();
-                westPane.setBounds ( cx, cy, westSize.width, ch );
-                cw -= westSize.width;
-                cx += westSize.width;
-            }
-
-            final JComponent eastPane = getEastPane ();
-            if ( eastPane != null )
-            {
-                final Dimension eastSize = eastPane.getPreferredSize ();
-                eastPane.setBounds ( cw - eastSize.width, cy, eastSize.width, ch );
-                cw -= eastSize.width;
-            }
-
-            final JRootPane rootPane = frame.getRootPane ();
-            if ( rootPane != null )
-            {
-                rootPane.setBounds ( cx, cy, cw, ch );
-            }
-        }
-
-        @Override
-        public Dimension preferredLayoutSize ( @NotNull final Container container )
-        {
-            final Dimension ps = new Dimension ( frame.getRootPane ().getPreferredSize () );
-
-            final Insets insets = frame.getInsets ();
-            ps.width += insets.left + insets.right;
-            ps.height += insets.top + insets.bottom;
-
-            final JComponent northPane = getNorthPane ();
-            if ( northPane != null )
-            {
-                final Dimension north = northPane.getPreferredSize ();
-                ps.width = Math.max ( north.width, ps.width );
-                ps.height += north.height;
-            }
-
-            final JComponent southPane = getSouthPane ();
-            if ( southPane != null )
-            {
-                final Dimension south = southPane.getPreferredSize ();
-                ps.width = Math.max ( south.width, ps.width );
-                ps.height += south.height;
-            }
-
-            final JComponent eastPane = getEastPane ();
-            if ( eastPane != null )
-            {
-                final Dimension east = eastPane.getPreferredSize ();
-                ps.width += east.width;
-                ps.height = Math.max ( east.height, ps.height );
-            }
-
-            final JComponent westPane = getWestPane ();
-            if ( westPane != null )
-            {
-                final Dimension west = westPane.getPreferredSize ();
-                ps.width += west.width;
-                ps.height = Math.max ( west.height, ps.height );
-            }
-
-            return ps;
-        }
-
-        /**
-         * The minimum size of the internal frame only takes into account the title pane and internal frame insets.
-         * That allows you to resize the frames to the point where just the title pane is visible.
-         */
-        @Override
-        public Dimension minimumLayoutSize ( @NotNull final Container container )
-        {
-            final Dimension ms = getNorthPane () != null ? getNorthPane ().getMinimumSize () : new Dimension ();
-
-            final Insets insets = frame.getInsets ();
-            ms.width += insets.left + insets.right;
-            ms.height += insets.top + insets.bottom;
-
-            return ms;
-        }
     }
 }

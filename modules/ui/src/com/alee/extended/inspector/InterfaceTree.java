@@ -17,6 +17,7 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.tree.WebExTree;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
@@ -100,6 +101,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
         } );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

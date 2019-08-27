@@ -17,6 +17,8 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.hotkey.HotkeyData;
@@ -92,12 +94,14 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
         return glassPane;
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.rootpane;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -170,6 +174,7 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -188,6 +193,7 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -207,11 +213,12 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -231,7 +238,7 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

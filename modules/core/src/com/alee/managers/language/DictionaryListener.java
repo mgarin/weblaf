@@ -17,6 +17,7 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.language.data.Dictionary;
 
 /**
@@ -34,14 +35,14 @@ public interface DictionaryListener
      *
      * @param dictionary added {@link Dictionary}
      */
-    public void dictionaryAdded ( Dictionary dictionary );
+    public void dictionaryAdded ( @NotNull Dictionary dictionary );
 
     /**
      * Notifies when {@link Dictionary} was removed.
      *
      * @param dictionary removed {@link Dictionary}
      */
-    public void dictionaryRemoved ( Dictionary dictionary );
+    public void dictionaryRemoved ( @NotNull Dictionary dictionary );
 
     /**
      * Notifies when all {@link Dictionary}s were removed.

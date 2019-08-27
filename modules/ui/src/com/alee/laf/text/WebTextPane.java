@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.laf.IInputPrompt;
 import com.alee.managers.hotkey.HotkeyData;
@@ -127,12 +129,14 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
         getUI ().setInputPrompt ( text );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.textpane;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -205,6 +209,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -223,6 +228,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -242,11 +248,12 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -266,7 +273,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

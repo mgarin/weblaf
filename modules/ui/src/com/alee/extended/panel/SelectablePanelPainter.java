@@ -1,5 +1,7 @@
 package com.alee.extended.panel;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
@@ -26,12 +28,14 @@ public class SelectablePanelPainter extends AbstractPainter<WebSelectablePanel, 
     protected Color[] lightColors = { ColorUtils.transparent (), Color.WHITE, Color.WHITE, ColorUtils.transparent () };
     protected Color[] darkColors = { ColorUtils.transparent (), Color.GRAY, Color.GRAY, ColorUtils.transparent () };
 
+    @Nullable
     @Override
     public Boolean isOpaque ()
     {
         return true;
     }
 
+    @NotNull
     @Override
     protected Insets getBorder ()
     {
@@ -39,7 +43,7 @@ public class SelectablePanelPainter extends AbstractPainter<WebSelectablePanel, 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final WebSelectablePanel panel, final WebPanelUI ui, final Bounds b )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final WebSelectablePanel panel, @NotNull final WebPanelUI ui, @NotNull final Bounds b )
     {
         final boolean notFirst = panel.getIndex () > 0;
         final boolean notLast = panel.getIndex () < component.getTotal () - 1;

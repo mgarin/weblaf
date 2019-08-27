@@ -1,5 +1,6 @@
 package com.alee.laf.checkbox;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
@@ -18,6 +19,7 @@ import java.util.List;
 public class CheckBoxPainter<C extends JCheckBox, U extends WCheckBoxUI<C>, D extends IDecoration<C, D>>
         extends AbstractStateButtonPainter<C, U, D> implements ICheckBoxPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

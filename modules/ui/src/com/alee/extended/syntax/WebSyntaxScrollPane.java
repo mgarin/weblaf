@@ -17,6 +17,8 @@
 
 package com.alee.extended.syntax;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPaneBar;
 import com.alee.laf.scroll.WebScrollPaneUI;
@@ -133,6 +135,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
         setGutterStyleId ( StyleId.syntaxareaScrollGutter.at ( this ) );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
@@ -163,6 +166,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
         return ( WebScrollPaneBar ) super.getVerticalScrollBar ();
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -245,6 +249,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -263,6 +268,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -282,11 +288,12 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -306,7 +313,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

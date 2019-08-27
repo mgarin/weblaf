@@ -1,5 +1,7 @@
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractDecorationPainter;
@@ -38,7 +40,7 @@ public abstract class AbstractButtonPainter<C extends AbstractButton, U extends 
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -46,8 +48,14 @@ public abstract class AbstractButtonPainter<C extends AbstractButton, U extends 
         // Switching model change listener on button model change
         if ( Objects.equals ( property, WebLookAndFeel.MODEL_PROPERTY ) )
         {
-            ( ( ButtonModel ) oldValue ).removeChangeListener ( this );
-            ( ( ButtonModel ) newValue ).addChangeListener ( this );
+            if ( oldValue != null )
+            {
+                ( ( ButtonModel ) oldValue ).removeChangeListener ( this );
+            }
+            if ( newValue != null )
+            {
+                ( ( ButtonModel ) newValue ).addChangeListener ( this );
+            }
             updateDecorationState ();
         }
 
@@ -58,6 +66,7 @@ public abstract class AbstractButtonPainter<C extends AbstractButton, U extends 
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -86,7 +95,7 @@ public abstract class AbstractButtonPainter<C extends AbstractButton, U extends 
     }
 
     @Override
-    public void stateChanged ( final ChangeEvent e )
+    public void stateChanged ( @NotNull final ChangeEvent e )
     {
         // Ensure component is still available
         // This might happen if painter is replaced from another ChangeListener

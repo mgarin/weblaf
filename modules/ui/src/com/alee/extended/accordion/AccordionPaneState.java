@@ -19,6 +19,7 @@ package com.alee.extended.accordion;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -79,7 +80,7 @@ public class AccordionPaneState implements Identifiable, Cloneable, Serializable
         this.time = System.currentTimeMillis ();
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

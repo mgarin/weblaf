@@ -1,5 +1,6 @@
 package com.alee.laf.checkbox;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.button.AbstractButtonPainter;
 import com.alee.laf.radiobutton.IAbstractStateButtonPainter;
 import com.alee.painter.DefaultPainter;
@@ -35,6 +36,7 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
      */
     protected transient Rectangle iconBounds;
 
+    @Nullable
     @Override
     protected List<SectionPainter<C, U>> getSectionPainters ()
     {

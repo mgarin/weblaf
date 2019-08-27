@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.laf.combobox.ComboBoxPainter;
 import com.alee.laf.combobox.WComboBoxUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D extends IDecoration<C, D>>
         extends ComboBoxPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

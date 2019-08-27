@@ -13,7 +13,7 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public final class AdaptiveDesktopPanePainter<C extends JDesktopPane, U extends WebDesktopPaneUI> extends AdaptivePainter<C, U>
+public final class AdaptiveDesktopPanePainter<C extends JDesktopPane, U extends WDesktopPaneUI> extends AdaptivePainter<C, U>
         implements IDesktopPanePainter<C, U>
 {
     /**

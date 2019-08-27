@@ -1,5 +1,6 @@
 package com.alee.laf.grouping;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.UnselectableButtonGroup;
@@ -159,6 +160,7 @@ public class GroupPane extends WebPanel implements SwingConstants
         add ( components );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

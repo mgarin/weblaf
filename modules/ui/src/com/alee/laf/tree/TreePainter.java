@@ -1,10 +1,11 @@
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.jdk.Predicate;
 import com.alee.extended.tree.WebAsyncTree;
 import com.alee.extended.tree.WebExTree;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageSensitive;
@@ -31,8 +32,8 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Basic painter for {@link JTree} component.
@@ -119,6 +120,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     protected transient int editingRow = -1;
     protected transient int lastSelectionRow = -1;
 
+    @Nullable
     @Override
     protected List<SectionPainter<C, U>> getSectionPainters ()
     {
@@ -153,7 +155,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         treeSelectionListener = new TreeSelectionListener ()
         {
             @Override
-            public void valueChanged ( final TreeSelectionEvent e )
+            public void valueChanged ( @NotNull final TreeSelectionEvent e )
             {
                 // Ensure component is still available
                 // This might happen if painter is replaced from another TreeSelectionListener
@@ -184,7 +186,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         treeExpansionListener = new TreeExpansionListener ()
         {
             @Override
-            public void treeExpanded ( final TreeExpansionEvent event )
+            public void treeExpanded ( @NotNull final TreeExpansionEvent event )
             {
                 // Ensure component is still available
                 // This might happen if painter is replaced from another TreeExpansionListener
@@ -195,7 +197,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
             }
 
             @Override
-            public void treeCollapsed ( final TreeExpansionEvent event )
+            public void treeCollapsed ( @NotNull final TreeExpansionEvent event )
             {
                 // Ensure component is still available
                 // This might happen if painter is replaced from another TreeExpansionListener
@@ -225,7 +227,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void mousePressed ( @NotNull final MouseEvent e )
             {
                 // Ensure component is still available
                 // This might happen if painter is replaced from another MouseListener
@@ -317,7 +319,11 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
                                             // Adding all previously selected rows whenever CTRL modifier is pressed
                                             if ( ctrl )
                                             {
-                                                CollectionUtils.addUnique ( selected, component.getSelectionRows () );
+                                                final int[] selectionRows = component.getSelectionRows ();
+                                                if ( selectionRows != null )
+                                                {
+                                                    CollectionUtils.addUnique ( selected, selectionRows );
+                                                }
                                             }
 
                                             // Making sure we provide a proper lead selection row
@@ -398,7 +404,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
             }
 
             @Override
-            public void mouseDragged ( final MouseEvent e )
+            public void mouseDragged ( @NotNull final MouseEvent e )
             {
                 // Ensure component is still available
                 // This might happen if painter is replaced from another MouseMotionListener
@@ -430,7 +436,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
             }
 
             @Override
-            public void mouseReleased ( final MouseEvent e )
+            public void mouseReleased ( @NotNull final MouseEvent e )
             {
                 // Ensure component is still available
                 // This might happen if painter is replaced from another MouseListener
@@ -461,7 +467,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
              *
              * @param e mouse event
              */
-            private void validateSelection ( final MouseEvent e )
+            private void validateSelection ( @NotNull final MouseEvent e )
             {
                 // Selection rect
                 final Rectangle selection = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
@@ -534,6 +540,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
              *
              * @return selected rows list
              */
+            @NotNull
             private List<Integer> getSelectedRows ()
             {
                 final List<Integer> selection = new ArrayList<Integer> ();
@@ -579,7 +586,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         languageSensitive = new LanguageListener ()
         {
             @Override
-            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
             {
                 if ( isLanguageSensitive () )
                 {
@@ -637,13 +644,13 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
         // Update visual drop location
-        if ( Objects.equals ( property, WebLookAndFeel.DROP_LOCATION ) && dropLocationPainter != null )
+        if ( Objects.equals ( property, WebTree.DROP_LOCATION ) && dropLocationPainter != null )
         {
             // Repainting previous drop location
             final JTree.DropLocation oldLocation = ( JTree.DropLocation ) oldValue;
@@ -687,7 +694,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         // Updating tree layout cache
         treeLayoutCache = ui.getTreeLayoutCache ();
@@ -732,7 +739,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    protected void paintBackground ( final Graphics2D g2d )
+    protected void paintBackground ( @NotNull final Graphics2D g2d )
     {
         // Painting row background if one is available
         if ( rowPainter != null || nodePainter != null )
@@ -761,7 +768,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
                             // Note from Swing devs:
                             // This will only happen if the model changes out from under us (usually in another thread)
                             // Swing isn't multi-threaded, but I'll put this check in anyway
-                            return;
+                            break;
                         }
 
                         // Painting row background
@@ -823,7 +830,8 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param x    X coordinate
      * @param y    Y coordinate
      */
-    protected void paintCentered ( final Component c, final Graphics2D g2d, final Icon icon, final int x, final int y )
+    protected void paintCentered ( @NotNull final Component c, @NotNull final Graphics2D g2d,
+                                   @NotNull final Icon icon, final int x, final int y )
     {
         final int ix = findCenteredX ( x, icon.getIconWidth () );
         final int iy = y - icon.getIconHeight () / 2;
@@ -848,7 +856,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    protected void paintSelectedNodesBackground ( final Graphics2D g2d )
+    protected void paintSelectedNodesBackground ( @NotNull final Graphics2D g2d )
     {
         if ( selectionPainter != null && component.getSelectionCount () > 0 && ui.getSelectionStyle () != TreeSelectionStyle.none )
         {
@@ -868,70 +876,76 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      *
      * @return list of tree selections bounds
      */
+    @NotNull
     protected List<Rectangle> getSelectionRects ()
     {
-        // Return empty selection rects when custom selection painting is disabled
-        if ( ui.getSelectionStyle () == TreeSelectionStyle.none )
+        final List<Rectangle> selections;
+        if ( ui.getSelectionStyle () != TreeSelectionStyle.none )
         {
-            return Collections.emptyList ();
-        }
-
-        // Checking that selection exists
-        final int[] indices = component.getSelectionRows ();
-        if ( indices == null || indices.length == 0 )
-        {
-            return Collections.emptyList ();
-        }
-
-        // Sorting selected rows
-        Arrays.sort ( indices );
-
-        // Calculating selection rects
-        final List<Rectangle> selections = new ArrayList<Rectangle> ( indices.length );
-        final Insets insets = component.getInsets ();
-        Rectangle maxRect = null;
-        int lastRow = -1;
-        for ( final int index : indices )
-        {
-            if ( ui.getSelectionStyle () == TreeSelectionStyle.single )
+            final int[] indices = component.getSelectionRows ();
+            if ( indices != null && indices.length != 0 )
             {
-                // Required bounds
-                selections.add ( component.getRowBounds ( index ) );
+                // Sorting selected rows
+                Arrays.sort ( indices );
+
+                // Calculating selection rects
+                selections = new ArrayList<Rectangle> ( indices.length );
+                final Insets insets = component.getInsets ();
+                Rectangle maxRect = null;
+                int lastRow = -1;
+                for ( final int index : indices )
+                {
+                    if ( ui.getSelectionStyle () == TreeSelectionStyle.single )
+                    {
+                        // Required bounds
+                        selections.add ( component.getRowBounds ( index ) );
+                    }
+                    else
+                    {
+                        if ( lastRow != -1 && lastRow + 1 != index )
+                        {
+                            // Save determined group
+                            selections.add ( maxRect );
+
+                            // Reset counting
+                            maxRect = null;
+                            lastRow = -1;
+                        }
+                        if ( lastRow == -1 || lastRow + 1 == index )
+                        {
+                            // Required bounds
+                            final Rectangle b = component.getRowBounds ( index );
+
+                            // Increasing bounds to cover whole line
+                            if ( isFullLineSelection () )
+                            {
+                                b.x = insets.left;
+                                b.width = component.getWidth () - insets.left - insets.right;
+                            }
+
+                            // Increase rect
+                            maxRect = lastRow == -1 ? b : GeometryUtils.getContainingRect ( maxRect, b );
+
+                            // Remember last row
+                            lastRow = index;
+                        }
+                    }
+                }
+                if ( maxRect != null )
+                {
+                    selections.add ( maxRect );
+                }
             }
             else
             {
-                if ( lastRow != -1 && lastRow + 1 != index )
-                {
-                    // Save determined group
-                    selections.add ( maxRect );
-
-                    // Reset counting
-                    maxRect = null;
-                    lastRow = -1;
-                }
-                if ( lastRow == -1 || lastRow + 1 == index )
-                {
-                    // Required bounds
-                    final Rectangle b = component.getRowBounds ( index );
-
-                    // Increasing bounds to cover whole line
-                    if ( isFullLineSelection () )
-                    {
-                        b.x = insets.left;
-                        b.width = component.getWidth () - insets.left - insets.right;
-                    }
-
-                    // Increase rect
-                    maxRect = lastRow == -1 ? b : GeometryUtils.getContainingRect ( maxRect, b );
-
-                    // Remember last row
-                    lastRow = index;
-                }
+                // Return empty selection when nothing is selected
+                selections = Collections.emptyList ();
             }
         }
-        if ( maxRect != null )
+        else
         {
-            selections.add ( maxRect );
+            // Return empty selection rects when custom selection painting is disabled
+            selections = Collections.emptyList ();
         }
         return selections;
     }
@@ -957,7 +971,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    protected void paintTree ( final Graphics2D g2d )
+    protected void paintTree ( @NotNull final Graphics2D g2d )
     {
         final Rectangle paintBounds = g2d.getClipBounds ();
         final Insets insets = component.getInsets ();
@@ -1014,7 +1028,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
                         // Note from Swing devs:
                         // This will only happen if the model changes out from under us (usually in another thread).
                         // Swing isn't multi-threaded, but I'll put this check in anyway.
-                        return;
+                        break;
                     }
 
                     // See if the vertical line to the parent has been painted
@@ -1064,8 +1078,9 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @return {@code true} if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the
      * node at {@code row} does not represent a leaf, {@code false} otherwise
      */
-    protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
+    protected boolean isLocationInExpandControl ( @Nullable final TreePath path, final int mouseX, final int mouseY )
     {
+        final boolean inExpandControl;
         if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
         {
             final int boxWidth = ui.getExpandedIcon () != null ? ui.getExpandedIcon ().getIconWidth () : 8;
@@ -1078,9 +1093,13 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
 
             boxLeftX = findCenteredX ( boxLeftX, boxWidth );
 
-            return mouseX >= boxLeftX && mouseX < boxLeftX + boxWidth;
+            inExpandControl = mouseX >= boxLeftX && mouseX < boxLeftX + boxWidth;
         }
-        return false;
+        else
+        {
+            inExpandControl = false;
+        }
+        return inExpandControl;
     }
 
     /**
@@ -1097,9 +1116,9 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    protected void paintExpandControl ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
-                                        final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
-                                        final boolean isLeaf )
+    protected void paintExpandControl ( @NotNull final Graphics2D g2d, @NotNull final Rectangle clipBounds, @NotNull final Insets insets,
+                                        @NotNull final Rectangle bounds, @NotNull final TreePath path, final int row,
+                                        final boolean isExpanded, final boolean hasBeenExpanded, final boolean isLeaf )
     {
         final Object value = path.getLastPathComponent ();
 
@@ -1151,25 +1170,23 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    protected void paintRow ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
-                              final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
-                              final boolean isLeaf )
+    protected void paintRow ( @NotNull final Graphics2D g2d, @NotNull final Rectangle clipBounds, @NotNull final Insets insets,
+                              @NotNull final Rectangle bounds, @NotNull final TreePath path, final int row,
+                              final boolean isExpanded, final boolean hasBeenExpanded, final boolean isLeaf )
     {
         // Don't paint the renderer if editing this row.
-        if ( editingRow == row )
+        if ( editingRow != row )
         {
-            return;
+            // Retrieving row cell renderer
+            final Object value = path.getLastPathComponent ();
+            final boolean hasFocus = ( component.hasFocus () ? lastSelectionRow : -1 ) == row;
+            final boolean selected = component.isRowSelected ( row );
+            final Component rowComponent =
+                    currentCellRenderer.getTreeCellRendererComponent ( component, value, selected, isExpanded, isLeaf, row, hasFocus );
+
+            // Painting cell renderer
+            rendererPane.paintComponent ( g2d, rowComponent, component, bounds.x, bounds.y, bounds.width, bounds.height, true );
         }
-
-        // Retrieving row cell renderer
-        final Object value = path.getLastPathComponent ();
-        final boolean hasFocus = ( component.hasFocus () ? lastSelectionRow : -1 ) == row;
-        final boolean selected = component.isRowSelected ( row );
-        final Component rowComponent =
-                currentCellRenderer.getTreeCellRendererComponent ( component, value, selected, isExpanded, isLeaf, row, hasFocus );
-
-        // Painting cell renderer
-        rendererPane.paintComponent ( g2d, rowComponent, component, bounds.x, bounds.y, bounds.width, bounds.height, true );
     }
 
     /**
@@ -1182,16 +1199,21 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param isLeaf          whether node is leaf or not
      * @return {@code true} if the expand (toggle) control should be painted for the specified row, {@code false} otherwise
      */
-    protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
+    protected boolean shouldPaintExpandControl ( @NotNull final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
-        if ( isLeaf )
+        final boolean shouldPaint;
+        if ( !isLeaf )
         {
-            return false;
+            final int depth = path.getPathCount () - 1;
+            shouldPaint = !( ( depth == 0 || depth == 1 && !isRootVisible () ) && !getShowsRootHandles () );
+        }
+        else
+        {
+            shouldPaint = false;
         }
 
-        final int depth = path.getPathCount () - 1;
-        return !( ( depth == 0 || depth == 1 && !isRootVisible () ) && !getShowsRootHandles () );
+        return shouldPaint;
     }
 
     /**
@@ -1227,50 +1249,47 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    protected void paintHorizontalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
-                                              final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
-                                              final boolean isLeaf )
+    protected void paintHorizontalPartOfLeg ( @NotNull final Graphics2D g2d, @NotNull final Rectangle clipBounds,
+                                              @NotNull final Insets insets, @NotNull final Rectangle bounds,
+                                              @NotNull final TreePath path, final int row,
+                                              final boolean isExpanded, final boolean hasBeenExpanded, final boolean isLeaf )
     {
-        if ( !paintLines )
+        if ( paintLines )
         {
-            return;
-        }
-
-        // Don't paint the legs for the root node if the
-        final int depth = path.getPathCount () - 1;
-        if ( ( depth == 0 || depth == 1 && !isRootVisible () ) && !getShowsRootHandles () )
-        {
-            return;
-        }
-
-        final int clipLeft = clipBounds.x;
-        final int clipRight = clipBounds.x + clipBounds.width;
-        final int clipTop = clipBounds.y;
-        final int clipBottom = clipBounds.y + clipBounds.height;
-        final int lineY = bounds.y + bounds.height / 2;
-
-        if ( ltr )
-        {
-            final int leftX = bounds.x - ui.getRightChildIndent ();
-            final int nodeX = bounds.x - getHorizontalLegIndent ();
-
-            if ( lineY >= clipTop && lineY < clipBottom && nodeX >= clipLeft && leftX < clipRight && leftX < nodeX )
+            // Don't paint the legs for the root node if the
+            final int depth = path.getPathCount () - 1;
+            if ( depth != 0 && ( depth != 1 || isRootVisible () ) || getShowsRootHandles () )
             {
+                final int clipLeft = clipBounds.x;
+                final int clipRight = clipBounds.x + clipBounds.width;
+                final int clipTop = clipBounds.y;
+                final int clipBottom = clipBounds.y + clipBounds.height;
+                final int lineY = bounds.y + bounds.height / 2;
 
-                g2d.setPaint ( linesColor );
-                paintHorizontalLine ( g2d, lineY, leftX, nodeX - 1 );
-            }
-        }
-        else
-        {
-            final int nodeX = bounds.x + bounds.width + getHorizontalLegIndent ();
-            final int rightX = bounds.x + bounds.width + ui.getRightChildIndent ();
+                if ( ltr )
+                {
+                    final int leftX = bounds.x - ui.getRightChildIndent ();
+                    final int nodeX = bounds.x - getHorizontalLegIndent ();
 
-            if ( lineY >= clipTop && lineY < clipBottom && rightX >= clipLeft && nodeX < clipRight && nodeX < rightX )
-            {
+                    if ( lineY >= clipTop && lineY < clipBottom && nodeX >= clipLeft && leftX < clipRight && leftX < nodeX )
+                    {
 
-                g2d.setPaint ( linesColor );
-                paintHorizontalLine ( g2d, lineY, nodeX, rightX - 1 );
+                        g2d.setPaint ( linesColor );
+                        paintHorizontalLine ( g2d, lineY, leftX, nodeX - 1 );
+                    }
+                }
+                else
+                {
+                    final int nodeX = bounds.x + bounds.width + getHorizontalLegIndent ();
+                    final int rightX = bounds.x + bounds.width + ui.getRightChildIndent ();
+
+                    if ( lineY >= clipTop && lineY < clipBottom && rightX >= clipLeft && nodeX < clipRight && nodeX < rightX )
+                    {
+
+                        g2d.setPaint ( linesColor );
+                        paintHorizontalLine ( g2d, lineY, nodeX, rightX - 1 );
+                    }
+                }
             }
         }
     }
@@ -1293,80 +1312,75 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param insets     tree insets
      * @param path       tree path
      */
-    protected void paintVerticalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final TreePath path )
+    protected void paintVerticalPartOfLeg ( @NotNull final Graphics2D g2d, @NotNull final Rectangle clipBounds,
+                                            @NotNull final Insets insets, @NotNull final TreePath path )
     {
-        if ( !paintLines )
+        if ( paintLines )
         {
-            return;
-        }
-
-        final int depth = path.getPathCount () - 1;
-        if ( depth == 0 && !getShowsRootHandles () && !isRootVisible () )
-        {
-            return;
-        }
-        int lineX = getRowX ( -1, depth + 1 );
-        if ( ltr )
-        {
-            lineX = lineX - ui.getRightChildIndent () + insets.left;
-        }
-        else
-        {
-            lineX = component.getWidth () - lineX - insets.right + ui.getRightChildIndent () - 1;
-        }
-        final int clipLeft = clipBounds.x;
-        final int clipRight = clipBounds.x + clipBounds.width - 1;
-
-        if ( lineX >= clipLeft && lineX <= clipRight )
-        {
-            final int clipTop = clipBounds.y;
-            final int clipBottom = clipBounds.y + clipBounds.height;
-            Rectangle parentBounds = getPathBounds ( path );
-            final Rectangle lastChildBounds = getPathBounds ( getLastChildPath ( path ) );
-
-            if ( lastChildBounds == null )
-            // This shouldn't happen, but if the model is modified
-            // in another thread it is possible for this to happen.
-            // Swing isn't multi-threaded, but I'll add this check in
-            // anyway.
+            final int depth = path.getPathCount () - 1;
+            if ( depth != 0 || getShowsRootHandles () || isRootVisible () )
             {
-                return;
-            }
-
-            int top;
-
-            if ( parentBounds == null )
-            {
-                top = Math.max ( insets.top + getVerticalLegIndent (), clipTop );
-            }
-            else
-            {
-                top = Math.max ( parentBounds.y + parentBounds.height +
-                        getVerticalLegIndent (), clipTop );
-            }
-            if ( depth == 0 && !isRootVisible () )
-            {
-                if ( treeModel != null )
+                int lineX = getRowX ( -1, depth + 1 );
+                if ( ltr )
                 {
-                    final Object root = treeModel.getRoot ();
+                    lineX = lineX - ui.getRightChildIndent () + insets.left;
+                }
+                else
+                {
+                    lineX = component.getWidth () - lineX - insets.right + ui.getRightChildIndent () - 1;
+                }
+                final int clipLeft = clipBounds.x;
+                final int clipRight = clipBounds.x + clipBounds.width - 1;
 
-                    if ( treeModel.getChildCount ( root ) > 0 )
+                if ( lineX >= clipLeft && lineX <= clipRight )
+                {
+                    final int clipTop = clipBounds.y;
+                    final int clipBottom = clipBounds.y + clipBounds.height;
+                    Rectangle parentBounds = getPathBounds ( path );
+                    final Rectangle lastChildBounds = getPathBounds ( getLastChildPath ( path ) );
+
+                    // Note from Swing devs:
+                    // This shouldn't happen, but if the model is modified in another thread it is possible for this to happen.
+                    // Swing isn't multi-threaded, but I'll add this check in anyway.
+                    if ( lastChildBounds != null )
                     {
-                        parentBounds = getPathBounds ( path.pathByAddingChild ( treeModel.getChild ( root, 0 ) ) );
-                        if ( parentBounds != null )
+                        int top;
+
+                        if ( parentBounds == null )
                         {
-                            top = Math.max ( insets.top + getVerticalLegIndent (), parentBounds.y + parentBounds.height / 2 );
+                            top = Math.max ( insets.top + getVerticalLegIndent (), clipTop );
+                        }
+                        else
+                        {
+                            top = Math.max ( parentBounds.y + parentBounds.height +
+                                    getVerticalLegIndent (), clipTop );
+                        }
+                        if ( depth == 0 && !isRootVisible () )
+                        {
+                            if ( treeModel != null )
+                            {
+                                final Object root = treeModel.getRoot ();
+
+                                if ( treeModel.getChildCount ( root ) > 0 )
+                                {
+                                    parentBounds = getPathBounds ( path.pathByAddingChild ( treeModel.getChild ( root, 0 ) ) );
+                                    if ( parentBounds != null )
+                                    {
+                                        top = Math.max ( insets.top + getVerticalLegIndent (), parentBounds.y + parentBounds.height / 2 );
+                                    }
+                                }
+                            }
+                        }
+
+                        final int bottom = Math.min ( lastChildBounds.y + lastChildBounds.height / 2, clipBottom );
+
+                        if ( top <= bottom )
+                        {
+                            g2d.setPaint ( linesColor );
+                            paintVerticalLine ( g2d, lineX, top, bottom );
                         }
                     }
                 }
-            }
-
-            final int bottom = Math.min ( lastChildBounds.y + lastChildBounds.height / 2, clipBottom );
-
-            if ( top <= bottom )
-            {
-                g2d.setPaint ( linesColor );
-                paintVerticalLine ( g2d, lineX, top, bottom );
             }
         }
     }
@@ -1377,17 +1391,27 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param parent parent tree path
      * @return path to the last child of {@code parent}
      */
-    protected TreePath getLastChildPath ( final TreePath parent )
+    @Nullable
+    protected TreePath getLastChildPath ( @NotNull final TreePath parent )
     {
+        final TreePath lastChildPath;
         if ( treeModel != null )
         {
             final int childCount = treeModel.getChildCount ( parent.getLastPathComponent () );
             if ( childCount > 0 )
             {
-                return parent.pathByAddingChild ( treeModel.getChild ( parent.getLastPathComponent (), childCount - 1 ) );
+                lastChildPath = parent.pathByAddingChild ( treeModel.getChild ( parent.getLastPathComponent (), childCount - 1 ) );
+            }
+            else
+            {
+                lastChildPath = null;
             }
         }
-        return null;
+        else
+        {
+            lastChildPath = null;
+        }
+        return lastChildPath;
     }
 
     /**
@@ -1398,7 +1422,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param y1  start Y coordinate
      * @param y2  end Y coordinate
      */
-    protected void paintVerticalLine ( final Graphics2D g2d, final int x, final int y1, final int y2 )
+    protected void paintVerticalLine ( @NotNull final Graphics2D g2d, final int x, final int y1, final int y2 )
     {
         if ( dashedLines )
         {
@@ -1420,7 +1444,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param y1  start Y coordinate
      * @param y2  end Y coordinate
      */
-    protected void paintDashedVerticalLine ( final Graphics2D g2d, final int x, int y1, final int y2 )
+    protected void paintDashedVerticalLine ( @NotNull final Graphics2D g2d, final int x, int y1, final int y2 )
     {
         // Painting only even coordinates helps join line segments so they appear as one line
         // This can be defeated by translating the Graphics2D by an odd amount
@@ -1441,7 +1465,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param x1  start X coordinate
      * @param x2  end X coordinate
      */
-    protected void paintHorizontalLine ( final Graphics2D g2d, final int y, final int x1, final int x2 )
+    protected void paintHorizontalLine ( @NotNull final Graphics2D g2d, final int y, final int x1, final int x2 )
     {
         if ( dashedLines )
         {
@@ -1463,7 +1487,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param x1  start X coordinate
      * @param x2  end X coordinate
      */
-    protected void paintDashedHorizontalLine ( final Graphics2D g2d, final int y, int x1, final int x2 )
+    protected void paintDashedHorizontalLine ( @NotNull final Graphics2D g2d, final int y, int x1, final int x2 )
     {
         // Painting only even coordinates helps join line segments so they appear as one line
         // This can be defeated by translating the Graphics2D by an odd amount
@@ -1532,7 +1556,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    protected void paintDropLocation ( final Graphics2D g2d )
+    protected void paintDropLocation ( @NotNull final Graphics2D g2d )
     {
         // Checking drop location availability
         if ( dropLocationPainter != null )
@@ -1555,7 +1579,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    protected void paintMultiselector ( final Graphics2D g2d )
+    protected void paintMultiselector ( @NotNull final Graphics2D g2d )
     {
         if ( isSelectorAvailable () && selectionStart != null && selectionEnd != null )
         {
@@ -1588,13 +1612,19 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param path tree path
      * @return Rectangle enclosing the label portion that the last item in path will be painted into
      */
-    protected Rectangle getPathBounds ( final TreePath path )
+    @Nullable
+    protected Rectangle getPathBounds ( @Nullable final TreePath path )
     {
+        final Rectangle pathBounds;
         if ( component != null && treeLayoutCache != null )
         {
-            return getPathBounds ( path, component.getInsets (), new Rectangle () );
+            pathBounds = getPathBounds ( path, component.getInsets (), new Rectangle () );
         }
-        return null;
+        else
+        {
+            pathBounds = null;
+        }
+        return pathBounds;
     }
 
     /**
@@ -1605,7 +1635,8 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      * @param bounds bounds buffer
      * @return path bounds
      */
-    protected Rectangle getPathBounds ( final TreePath path, final Insets insets, Rectangle bounds )
+    @Nullable
+    protected Rectangle getPathBounds ( @Nullable final TreePath path, @NotNull final Insets insets, @NotNull Rectangle bounds )
     {
         bounds = treeLayoutCache.getBounds ( path, bounds );
         if ( bounds != null )
@@ -1640,7 +1671,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
      */
     protected boolean isDragAvailable ()
     {
-        return component != null && component.isEnabled () && component.getDragEnabled () && component.getTransferHandler () != null &&
-                component.getTransferHandler ().getSourceActions ( component ) > 0;
+        return component != null && component.isEnabled () && component.getDragEnabled () &&
+                component.getTransferHandler () != null && component.getTransferHandler ().getSourceActions ( component ) > 0;
     }
 }

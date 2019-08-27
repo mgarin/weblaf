@@ -70,6 +70,7 @@ public final class CollectionUtils
      * @param <T>  elements type
      * @return non-{@code null} {@link List} that is either specified {@code list} or new empty {@link ArrayList}
      */
+    @NotNull
     public static <T> List<T> nonNull ( @Nullable final List<T> list )
     {
         return list != null ? list : new ArrayList<T> ( 0 );
@@ -84,6 +85,7 @@ public final class CollectionUtils
      * @param <T>   object type
      * @return list with limited amount of objects from the initial list
      */
+    @NotNull
     public static <T> List<T> limit ( @NotNull final List<T> list, final int limit )
     {
         return list.size () <= limit ? list : copySubList ( list, 0, limit );
@@ -721,23 +723,26 @@ public final class CollectionUtils
      */
     public static boolean equals ( @Nullable final List list1, @Nullable final List list2, final boolean strictIndices )
     {
+        final boolean equals;
         if ( list1 == null && list2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( list1 == null || list2 == null || list1.size () != list2.size () )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             if ( strictIndices )
             {
                 for ( int i = 0; i < list1.size (); i++ )
                 {
                     if ( Objects.notEquals ( list1.get ( i ), list2.get ( i ) ) )
                     {
-                        return false;
+                        eq = false;
+                        break;
                     }
                 }
             }
@@ -747,19 +752,22 @@ public final class CollectionUtils
                 {
                     if ( !list2.contains ( object ) )
                     {
-                        return false;
+                        eq = false;
+                        break;
                     }
                 }
                 for ( final Object object : list2 )
                 {
                     if ( !list1.contains ( object ) )
                     {
-                        return false;
+                        eq = false;
+                        break;
                     }
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**

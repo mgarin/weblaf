@@ -18,6 +18,8 @@
 package com.alee.demo.api.example;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -31,6 +33,7 @@ public interface ExampleElement extends Identifiable
      *
      * @return parent group ID
      */
+    @Nullable
     public String getGroupId ();
 
     /**
@@ -38,6 +41,7 @@ public interface ExampleElement extends Identifiable
      *
      * @return example element icon
      */
+    @NotNull
     public Icon getIcon ();
 
     /**
@@ -45,6 +49,7 @@ public interface ExampleElement extends Identifiable
      *
      * @return example title
      */
+    @NotNull
     public String getTitle ();
 
     /**
@@ -52,5 +57,6 @@ public interface ExampleElement extends Identifiable
      *
      * @return example element features state
      */
+    @NotNull
     public FeatureState getFeatureState ();
 }

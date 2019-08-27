@@ -18,6 +18,7 @@
 package com.alee.demo.content.text.area;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebEditorPane;
@@ -32,25 +33,28 @@ import java.util.List;
  */
 public class WebEditorPaneExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webeditorpane";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "editorpane";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

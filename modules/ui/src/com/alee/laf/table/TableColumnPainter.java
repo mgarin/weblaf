@@ -17,6 +17,7 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -52,6 +53,7 @@ public class TableColumnPainter<C extends JTable, U extends WebTableUI, D extend
         return false;
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

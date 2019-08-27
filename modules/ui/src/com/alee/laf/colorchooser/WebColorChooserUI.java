@@ -17,6 +17,8 @@
 
 package com.alee.laf.colorchooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -132,6 +134,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
         chooser = null;
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -150,6 +153,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
         PainterSupport.setShapeDetectionEnabled ( chooser, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -157,11 +161,12 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( chooser, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -169,7 +174,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( chooser, padding );
     }
@@ -192,7 +197,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( chooser, new Consumer<IColorChooserPainter> ()
+        PainterSupport.setPainter ( chooser, this, new Consumer<IColorChooserPainter> ()
         {
             @Override
             public void accept ( final IColorChooserPainter newPainter )

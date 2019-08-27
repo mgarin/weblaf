@@ -72,6 +72,7 @@ public class WebMultiSplitPaneDivider extends WebContainer<WebMultiSplitPaneDivi
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

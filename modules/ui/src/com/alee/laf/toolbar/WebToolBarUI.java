@@ -17,6 +17,8 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
@@ -193,6 +195,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
         return new ToolbarLayout ();
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -211,6 +214,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
         PainterSupport.setShapeDetectionEnabled ( toolBar, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -218,11 +222,12 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( toolBar, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -230,7 +235,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( toolBar, padding );
     }
@@ -253,7 +258,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( toolBar, new Consumer<IToolBarPainter> ()
+        PainterSupport.setPainter ( toolBar, this, new Consumer<IToolBarPainter> ()
         {
             @Override
             public void accept ( final IToolBarPainter newPainter )

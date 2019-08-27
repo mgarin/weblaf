@@ -17,6 +17,7 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
@@ -56,12 +57,14 @@ public class WebViewport extends JViewport implements Styleable, Paintable
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.viewport;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {

@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
@@ -89,7 +91,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -102,7 +104,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling components
         uninstallComponents ();
@@ -660,6 +662,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         return new DockablePaneGlassLayer ( pane );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -678,6 +681,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         PainterSupport.setShapeDetectionEnabled ( pane, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -685,11 +689,12 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( pane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -697,7 +702,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( pane, padding );
     }
@@ -720,7 +725,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( pane, new Consumer<IDockablePanePainter> ()
+        PainterSupport.setPainter ( pane, this, new Consumer<IDockablePanePainter> ()
         {
             @Override
             public void accept ( final IDockablePanePainter newPainter )

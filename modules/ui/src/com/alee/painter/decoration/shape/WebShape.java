@@ -1,5 +1,6 @@
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Supplier;
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.painter.decoration.WebDecoration;
@@ -227,6 +228,7 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
         return false;
     }
 
+    @NotNull
     @Override
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {

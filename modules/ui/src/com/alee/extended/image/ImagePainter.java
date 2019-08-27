@@ -17,12 +17,15 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +75,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -144,7 +147,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         final float opacity = component.getOpacity ();
         if ( opacity > 0f )
@@ -220,7 +223,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
      * @param insets image component insets
      * @return image component center X coordinate
      */
-    protected int getCenterX ( final Insets insets )
+    protected int getCenterX ( @NotNull final Insets insets )
     {
         return insets.left + ( component.getWidth () - insets.left - insets.right ) / 2;
     }
@@ -231,7 +234,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
      * @param insets image component insets
      * @return image component center Y coordinate
      */
-    protected int getCenterY ( final Insets insets )
+    protected int getCenterY ( @NotNull final Insets insets )
     {
         return insets.top + ( component.getHeight () - insets.top - insets.bottom ) / 2;
     }
@@ -242,11 +245,11 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
      * @param insets image component insets
      * @return preview image
      */
-    protected BufferedImage getPreviewImage ( final Insets insets )
+    protected BufferedImage getPreviewImage ( @NotNull final Insets insets )
     {
+        final BufferedImage preview;
         final BufferedImage image = component.getImage ();
-        final Dimension size = component.getSize ();
-        size.setSize ( size.width - insets.left - insets.right, size.height - insets.top - insets.bottom );
+        final Dimension size = SwingUtils.shrink ( component.getSize (), insets );
         if ( image.getWidth () > size.width || image.getHeight () > size.height )
         {
             if ( lastPreviewImage == null || lastDimension != null && !lastDimension.equals ( size ) )
@@ -259,12 +262,13 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
                 lastPreviewImage = ImageUtils.createPreviewImage ( getCurrentImage (), size );
                 lastDimension = size;
             }
-            return lastPreviewImage;
+            preview = lastPreviewImage;
         }
         else
         {
-            return image;
+            preview = image;
         }
+        return preview;
     }
 
     /**
@@ -277,6 +281,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
         return !isEnabled () && disabledImage != null ? disabledImage : component.getImage ();
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

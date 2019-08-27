@@ -131,6 +131,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

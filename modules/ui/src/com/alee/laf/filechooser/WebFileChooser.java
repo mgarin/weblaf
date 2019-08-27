@@ -17,6 +17,8 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
@@ -313,12 +315,14 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         return getUI ().getFileChooserPanel ();
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.filechooser;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -391,6 +395,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -409,6 +414,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -428,11 +434,12 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -452,7 +459,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

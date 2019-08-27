@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Function;
 import com.alee.extended.accordion.AccordionDescriptor;
@@ -148,6 +150,7 @@ public final class StyleManager
      * List of listeners for various style events.
      * todo Might cause memory leaks in components, replace with {@link com.alee.utils.swing.WeakComponentDataList}?
      */
+    @NotNull
     private static final EventListenerList listenerList = new EventListenerList ();
 
     /**
@@ -156,6 +159,7 @@ public final class StyleManager
      * {@link ComponentDescriptor}s were introduced to allow easy customization of component base supported by WebLaF.
      * You can introduce an absolutely new {@link JComponent} implementation by simply registering {@link ComponentDescriptor} for it.
      */
+    @NotNull
     private static final List<ComponentDescriptor> descriptors = new ArrayList<ComponentDescriptor> ( 60 );
 
     /**
@@ -163,6 +167,7 @@ public final class StyleManager
      * This cache contains only {@link ComponentDescriptor}s which exist in {@link #descriptors} list.
      * Whenever some {@link ComponentDescriptor} is unregistered or replaced by another one it is also cleared from this cache.
      */
+    @NotNull
     private static final Map<String, ComponentDescriptor> descriptorsByIdentifier = new HashMap<String, ComponentDescriptor> ( 60 );
 
     /**
@@ -170,6 +175,7 @@ public final class StyleManager
      * This cache contains only {@link ComponentDescriptor}s which exist in {@link #descriptors} list.
      * Whenever some {@link ComponentDescriptor} is unregistered or replaced by another one it is also cleared from this cache.
      */
+    @NotNull
     private static final Map<Class<? extends JComponent>, ComponentDescriptor> descriptorsByClass =
             new HashMap<Class<? extends JComponent>, ComponentDescriptor> ( 60 );
 
@@ -185,6 +191,7 @@ public final class StyleManager
      * 3. Style children each styled component has
      * Those children are generally collected here for convenient changes tracking.
      */
+    @NotNull
     private static final WeakComponentData<JComponent, StyleData> styleData =
             new WeakComponentData<JComponent, StyleData> ( "StyleManager.StyleData", 200 );
 
@@ -197,12 +204,14 @@ public final class StyleManager
      * 1. Extensions can be attached to skins only, not to other extensions
      * 2. You cannot put any style overrides into extensions
      */
+    @NotNull
     private static final List<SkinExtension> extensions = new ArrayList<SkinExtension> ();
 
     /**
      * Synchronization lock object for skin operations.
      * todo This lock is redundant if all actions must be performed on EDT anyway
      */
+    @NotNull
     private static final Object skinLock = new Object ();
 
     /**
@@ -210,12 +219,14 @@ public final class StyleManager
      * It can be specified before WebLaF is installed or any managers are initialized.
      * It can be used to avoid extra loading time due to default skin or unnecessary UI updates later on.
      */
+    @Nullable
     private static LazyInstance<? extends Skin> defaultSkin = null;
 
     /**
      * Currently used skin.
      * This skin is applied to all newly created components styled by WebLaF except customized ones.
      */
+    @Nullable
     private static Skin currentSkin = null;
 
     /**
@@ -600,6 +611,7 @@ public final class StyleManager
      *
      * @return immutable list of all registered {@link ComponentDescriptor}s
      */
+    @NotNull
     public static List<ComponentDescriptor> getDescriptors ()
     {
         // Checking manager initialization
@@ -621,7 +633,8 @@ public final class StyleManager
      * @param <U> {@link ComponentUI} type
      * @return {@link ComponentDescriptor} with the specified identifier
      */
-    public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor ( final String id )
+    @NotNull
+    public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor ( @NotNull final String id )
     {
         // Checking manager initialization
         mustBeInitialized ();
@@ -630,7 +643,7 @@ public final class StyleManager
         synchronized ( descriptors )
         {
             // Looking for descriptor
-            final ComponentDescriptor<C, U> descriptor = getDescriptorImpl ( id );
+            final ComponentDescriptor<C, U> descriptor = descriptorsByIdentifier.get ( id );
 
             // Ensure we found descriptor
             if ( descriptor == null )
@@ -650,7 +663,8 @@ public final class StyleManager
      * @param <U>       {@link ComponentUI} type
      * @return {@link ComponentDescriptor} for the specified {@link JComponent}
      */
-    public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor ( final C component )
+    @NotNull
+    public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor ( @NotNull final C component )
     {
         return getDescriptor ( component.getClass () );
     }
@@ -664,8 +678,9 @@ public final class StyleManager
      * @param <U>            {@link ComponentUI} type
      * @return {@link ComponentDescriptor} for the specified {@link JComponent} class
      */
+    @NotNull
     public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor (
-            final Class<? extends JComponent> componentClass )
+            @NotNull final Class<? extends JComponent> componentClass )
     {
         // Checking manager initialization
         mustBeInitialized ();
@@ -687,19 +702,6 @@ public final class StyleManager
     }
 
     /**
-     * Returns {@link ComponentDescriptor} for the specified {@link JComponent} identifier.
-     *
-     * @param id  {@link JComponent} identifier
-     * @param <C> {@link JComponent} type
-     * @param <U> {@link ComponentUI} type
-     * @return {@link ComponentDescriptor} for the specified {@link JComponent} identifier
-     */
-    private static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptorImpl ( final String id )
-    {
-        return descriptorsByIdentifier.get ( id );
-    }
-
-    /**
      * Returns {@link ComponentDescriptor} for the specified {@link JComponent} class.
      *
      * @param componentClass {@link JComponent} class to find {@link ComponentDescriptor} for
@@ -707,10 +709,10 @@ public final class StyleManager
      * @param <U>            {@link ComponentUI} type
      * @return {@link ComponentDescriptor} for the specified {@link JComponent} class
      */
+    @Nullable
     private static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptorImpl (
-            final Class<? extends JComponent> componentClass )
+            @NotNull final Class<? extends JComponent> componentClass )
     {
-        // Looking for superclass descriptors
         final ComponentDescriptor<C, U> descriptor;
         if ( descriptorsByClass.containsKey ( componentClass ) )
         {
@@ -746,9 +748,9 @@ public final class StyleManager
      * @param id identifier of the component to check styling support for
      * @return {@code true} if styling is supported for the component with the specified identifier, {@code false} otherwise
      */
-    public static boolean isSupported ( final String id )
+    public static boolean isSupported ( @NotNull final String id )
     {
-        return !TextUtils.isEmpty ( id ) && getDescriptorImpl ( id ) != null;
+        return !TextUtils.isEmpty ( id ) && descriptorsByIdentifier.containsKey ( id );
     }
 
     /**
@@ -757,7 +759,7 @@ public final class StyleManager
      * @param component component to check styling support for
      * @return {@code true} if styling of the specified {@link JComponent} is supported, {@code false} otherwise
      */
-    public static boolean isSupported ( final JComponent component )
+    public static boolean isSupported ( @NotNull final JComponent component )
     {
         return getDescriptorImpl ( component.getClass () ) != null;
     }
@@ -769,7 +771,7 @@ public final class StyleManager
      *
      * @param descriptor {@link ComponentDescriptor} to register
      */
-    public static void registerComponentDescriptor ( final ComponentDescriptor descriptor )
+    public static void registerComponentDescriptor ( @NotNull final ComponentDescriptor descriptor )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -809,7 +811,7 @@ public final class StyleManager
      *
      * @param descriptor {@link ComponentDescriptor} to register
      */
-    public static void unregisterComponentDescriptor ( final ComponentDescriptor descriptor )
+    public static void unregisterComponentDescriptor ( @NotNull final ComponentDescriptor descriptor )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -843,6 +845,7 @@ public final class StyleManager
      *
      * @return {@link LazyInstance} for default {@link Skin}
      */
+    @NotNull
     public static LazyInstance<? extends Skin> getDefaultSkin ()
     {
         return defaultSkin != null ? defaultSkin : new LazyInstance<WebSkin> ( WebSkin.class );
@@ -855,7 +858,7 @@ public final class StyleManager
      * @param skin      default {@link Skin} class name
      * @param arguments default {@link Skin} constructor arguments
      */
-    public static void setDefaultSkin ( final String skin, final Object... arguments )
+    public static void setDefaultSkin ( @NotNull final String skin, @NotNull final Object... arguments )
     {
         try
         {
@@ -876,7 +879,7 @@ public final class StyleManager
      * @param skin      default {@link Skin} class
      * @param arguments default {@link Skin} constructor arguments
      */
-    public static void setDefaultSkin ( final Class<? extends Skin> skin, final Object... arguments )
+    public static void setDefaultSkin ( @NotNull final Class<? extends Skin> skin, @NotNull final Object... arguments )
     {
         setDefaultSkin ( new LazyInstance<Skin> ( skin, arguments ) );
     }
@@ -887,7 +890,7 @@ public final class StyleManager
      *
      * @param skin default skin class
      */
-    public static void setDefaultSkin ( final LazyInstance<? extends Skin> skin )
+    public static void setDefaultSkin ( @NotNull final LazyInstance<? extends Skin> skin )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -901,11 +904,22 @@ public final class StyleManager
      *
      * @return currently applied {@link Skin}
      */
+    @NotNull
     public static Skin getSkin ()
     {
-        // Synchronized by skin lock
         synchronized ( skinLock )
         {
+            if ( currentSkin == null )
+            {
+                if ( !initialized )
+                {
+                    throw new StyleException ( "StyleManager have to be initiaized first" );
+                }
+                else
+                {
+                    throw new StyleException ( "StyleManager wasn't able to initialize default skin" );
+                }
+            }
             return currentSkin;
         }
     }
@@ -918,7 +932,8 @@ public final class StyleManager
      * @param arguments {@link Skin} constructor arguments
      * @return previously applied {@link Skin}
      */
-    public static Skin setSkin ( final String skin, final Object... arguments )
+    @Nullable
+    public static Skin setSkin ( @NotNull final String skin, @NotNull final Object... arguments )
     {
         try
         {
@@ -927,8 +942,10 @@ public final class StyleManager
         }
         catch ( final ClassNotFoundException e )
         {
-            final String msg = "Unable to load skin class for name: %s";
-            throw new StyleException ( String.format ( msg, skin ), e );
+            throw new StyleException ( String.format (
+                    "Unable to load skin class for name: %s",
+                    skin
+            ), e );
         }
     }
 
@@ -940,7 +957,8 @@ public final class StyleManager
      * @param arguments {@link Skin} constructor arguments
      * @return previously applied {@link Skin}
      */
-    public static Skin setSkin ( final Class<? extends Skin> skin, final Object... arguments )
+    @Nullable
+    public static Skin setSkin ( @NotNull final Class<? extends Skin> skin, @NotNull final Object... arguments )
     {
         return setSkin ( new LazyInstance<Skin> ( skin, arguments ) );
     }
@@ -952,7 +970,8 @@ public final class StyleManager
      * @param skin {@link LazyInstance} for {@link Skin}
      * @return previously applied {@link Skin}
      */
-    public static Skin setSkin ( final LazyInstance<? extends Skin> skin )
+    @Nullable
+    public static Skin setSkin ( @NotNull final LazyInstance<? extends Skin> skin )
     {
         return setSkin ( skin.create () );
     }
@@ -964,7 +983,8 @@ public final class StyleManager
      * @param skin {@link Skin} to apply
      * @return previously applied {@link Skin}
      */
-    public static Skin setSkin ( final Skin skin )
+    @Nullable
+    public static Skin setSkin ( @NotNull final Skin skin )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -975,12 +995,6 @@ public final class StyleManager
         // Synchronized by skin lock
         synchronized ( skinLock )
         {
-            // Checking skin reference
-            if ( skin == null )
-            {
-                throw new StyleException ( "Null skin provided" );
-            }
-
             // Checking skin support
             if ( !skin.isSupported () )
             {
@@ -1069,9 +1083,9 @@ public final class StyleManager
      *
      * @return list of installed {@link SkinExtension}s
      */
+    @NotNull
     public static List<SkinExtension> getExtensions ()
     {
-        // Synchronized by skin lock
         synchronized ( skinLock )
         {
             return new ImmutableList<SkinExtension> ( extensions );
@@ -1084,7 +1098,8 @@ public final class StyleManager
      * @param component component to retrieve style ID for
      * @return component style ID
      */
-    public static StyleId getStyleId ( final JComponent component )
+    @NotNull
+    public static StyleId getStyleId ( @NotNull final JComponent component )
     {
         return getData ( component ).getStyleId ();
     }
@@ -1096,7 +1111,8 @@ public final class StyleManager
      * @param id        new style ID
      * @return previously used style ID
      */
-    public static StyleId setStyleId ( final JComponent component, final StyleId id )
+    @NotNull
+    public static StyleId setStyleId ( @NotNull final JComponent component, @NotNull final StyleId id )
     {
         return getData ( component ).setStyleId ( id );
     }
@@ -1107,7 +1123,8 @@ public final class StyleManager
      * @param component component to reset style ID for
      * @return previously used style ID
      */
-    public static StyleId resetStyleId ( final JComponent component )
+    @NotNull
+    public static StyleId resetStyleId ( @NotNull final JComponent component )
     {
         return getData ( component ).resetStyleId ( true );
     }
@@ -1119,11 +1136,9 @@ public final class StyleManager
      *
      * @param component component to apply skin to
      */
-    public static void installSkin ( final JComponent component )
+    public static void installSkin ( @NotNull final JComponent component )
     {
-        final StyleData data = getData ( component );
-        data.install ();
-        data.applySkin ( getSkin (), false );
+        getData ( component ).install ();
     }
 
     /**
@@ -1133,7 +1148,7 @@ public final class StyleManager
      *
      * @param component component to update skin for
      */
-    public static void updateSkin ( final JComponent component )
+    public static void updateSkin ( @NotNull final JComponent component )
     {
         getData ( component ).updateSkin ( true );
     }
@@ -1145,11 +1160,9 @@ public final class StyleManager
      *
      * @param component component to remove skin from
      */
-    public static void uninstallSkin ( final JComponent component )
+    public static void uninstallSkin ( @NotNull final JComponent component )
     {
-        final StyleData data = getData ( component );
-        data.removeSkin ();
-        data.uninstall ();
+        getData ( component ).uninstall ();
     }
 
     /**
@@ -1158,7 +1171,8 @@ public final class StyleManager
      * @param component component to retrieve applied skin from
      * @return skin currently applied to the specified component
      */
-    public static Skin getSkin ( final JComponent component )
+    // todo @NotNull
+    public static Skin getSkin ( @NotNull final JComponent component )
     {
         return getData ( component ).getSkin ();
     }
@@ -1172,7 +1186,8 @@ public final class StyleManager
      * @param skin      skin to be applied
      * @return previously applied skin
      */
-    public static Skin setSkin ( final JComponent component, final Skin skin )
+    @Nullable
+    public static Skin setSkin ( @NotNull final JComponent component, @NotNull final Skin skin )
     {
         return setSkin ( component, skin, false );
     }
@@ -1187,7 +1202,8 @@ public final class StyleManager
      * @param recursively whether or not should apply skin to child components
      * @return previously applied skin
      */
-    public static Skin setSkin ( final JComponent component, final Skin skin, final boolean recursively )
+    @Nullable
+    public static Skin setSkin ( @NotNull final JComponent component, @NotNull final Skin skin, final boolean recursively )
     {
         return getData ( component ).applyCustomSkin ( skin, recursively );
     }
@@ -1200,7 +1216,8 @@ public final class StyleManager
      * @param component component to reset skin for
      * @return skin applied to the specified component after reset
      */
-    public static Skin resetSkin ( final JComponent component )
+    @Nullable
+    public static Skin resetSkin ( @NotNull final JComponent component )
     {
         return getData ( component ).resetSkin ();
     }
@@ -1211,7 +1228,7 @@ public final class StyleManager
      * @param component component to listen skin changes on
      * @param listener  skin change listener to add
      */
-    public static void addStyleListener ( final JComponent component, final StyleListener listener )
+    public static void addStyleListener ( @NotNull final JComponent component, @NotNull final StyleListener listener )
     {
         getData ( component ).addStyleListener ( listener );
     }
@@ -1222,7 +1239,7 @@ public final class StyleManager
      * @param component component to listen skin changes on
      * @param listener  skin change listener to remove
      */
-    public static void removeStyleListener ( final JComponent component, final StyleListener listener )
+    public static void removeStyleListener ( @NotNull final JComponent component, @NotNull final StyleListener listener )
     {
         getData ( component ).removeStyleListener ( listener );
     }
@@ -1233,7 +1250,8 @@ public final class StyleManager
      * @param component component to retrieve custom painter for
      * @return custom painter for the specified component
      */
-    public static Painter getCustomPainter ( final JComponent component )
+    @Nullable
+    public static Painter getCustomPainter ( @NotNull final JComponent component )
     {
         return getData ( component ).getCustomPainter ();
     }
@@ -1246,7 +1264,8 @@ public final class StyleManager
      * @param painter   {@link Painter}
      * @return previously used custom {@link Painter}
      */
-    public static Painter setCustomPainter ( final JComponent component, final Painter painter )
+    @Nullable
+    public static Painter setCustomPainter ( @NotNull final JComponent component, @NotNull final Painter painter )
     {
         return getData ( component ).setCustomPainter ( painter );
     }
@@ -1257,7 +1276,7 @@ public final class StyleManager
      * @param component {@link JComponent} to reset custom {@link Painter} for
      * @return {@code true} if custom {@link Painter} was successfully resetted, {@code false} otherwise
      */
-    public static boolean resetCustomPainter ( final JComponent component )
+    public static boolean resetCustomPainter ( @NotNull final JComponent component )
     {
         return getData ( component ).resetCustomPainter ();
     }
@@ -1268,7 +1287,8 @@ public final class StyleManager
      * @param component component to retrieve style data for
      * @return component style data
      */
-    protected static StyleData getData ( final JComponent component )
+    @NotNull
+    protected static StyleData getData ( @NotNull final JComponent component )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -1317,7 +1337,7 @@ public final class StyleManager
      *
      * @param listener skin change listener to add
      */
-    public static void addSkinListener ( final SkinListener listener )
+    public static void addSkinListener ( @NotNull final SkinListener listener )
     {
         listenerList.add ( SkinListener.class, listener );
     }
@@ -1327,7 +1347,7 @@ public final class StyleManager
      *
      * @param listener skin change listener to remove
      */
-    public static void removeSkinListener ( final SkinListener listener )
+    public static void removeSkinListener ( @NotNull final SkinListener listener )
     {
         listenerList.remove ( SkinListener.class, listener );
     }
@@ -1338,7 +1358,7 @@ public final class StyleManager
      * @param previous previously used skin
      * @param current  currently used skin
      */
-    public static void fireSkinChanged ( final Skin previous, final Skin current )
+    public static void fireSkinChanged ( @Nullable final Skin previous, @NotNull final Skin current )
     {
         for ( final SkinListener listener : listenerList.getListeners ( SkinListener.class ) )
         {

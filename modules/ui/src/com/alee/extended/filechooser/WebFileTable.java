@@ -17,6 +17,7 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.table.WebTable;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -169,6 +170,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
         updateColumnSizes ();
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

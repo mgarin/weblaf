@@ -57,9 +57,9 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      */
     public static final String IMAGE_PROPERTY = "image";
     public static final String DISPLAY_TYPE_PROPERTY = "displayType";
-    public static final String HORIZONTAL_ALIGNMENT_PROPERTY = WebLookAndFeel.HORIZONTAL_ALIGNMENT_PROPERTY;
-    public static final String VERTICAL_ALIGNMENT_PROPERTY = WebLookAndFeel.VERTICAL_ALIGNMENT_PROPERTY;
-    public static final String OPACITY_PROPERTY = WebLookAndFeel.OPACITY_PROPERTY;
+    public static final String HORIZONTAL_ALIGNMENT_PROPERTY = "horizontalAlignment";
+    public static final String VERTICAL_ALIGNMENT_PROPERTY = "verticalAlignment";
+    public static final String OPACITY_PROPERTY = "opacity";
 
     /**
      * Displayed image.
@@ -290,6 +290,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

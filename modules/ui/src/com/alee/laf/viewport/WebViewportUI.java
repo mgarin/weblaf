@@ -17,6 +17,7 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.ShapeSupport;
@@ -58,7 +59,7 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -68,7 +69,7 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( viewport );
@@ -81,6 +82,7 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -117,7 +119,7 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( viewport, new Consumer<IViewportPainter> ()
+        PainterSupport.setPainter ( viewport, this, new Consumer<IViewportPainter> ()
         {
             @Override
             public void accept ( final IViewportPainter newPainter )

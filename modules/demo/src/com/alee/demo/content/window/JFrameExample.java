@@ -18,6 +18,7 @@
 package com.alee.demo.content.window;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
@@ -39,31 +40,35 @@ import java.util.List;
  */
 public class JFrameExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jframe";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "frame";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Make Frames", "frame" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

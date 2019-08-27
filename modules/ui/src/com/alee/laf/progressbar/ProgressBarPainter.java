@@ -1,5 +1,7 @@
 package com.alee.laf.progressbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.BoundsType;
@@ -52,6 +54,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
      */
     protected transient int value;
 
+    @Nullable
     @Override
     protected List<SectionPainter<C, U>> getSectionPainters ()
     {
@@ -73,13 +76,13 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
         // Update animator on progress state changes
-        if ( Objects.equals ( property, WebLookAndFeel.INDETERMINATE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, WebProgressBar.INDETERMINATE_PROPERTY, WebLookAndFeel.ORIENTATION_PROPERTY ) )
         {
             updateDecorationState ();
         }
@@ -104,7 +107,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
     }
 
     @Override
-    public void stateChanged ( final ChangeEvent e )
+    public void stateChanged ( @NotNull final ChangeEvent e )
     {
         // Ensure component is still available
         // This might happen if painter is replaced from another ChangeListener
@@ -132,6 +135,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -159,7 +163,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         // Painting progress line
         paintProgress ( g2d, BoundsType.border.bounds ( c ) );
@@ -174,7 +178,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
      * @param g2d    graphics context
      * @param bounds painting bounds
      */
-    protected void paintProgress ( final Graphics2D g2d, final Rectangle bounds )
+    protected void paintProgress ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds )
     {
         if ( progressPainter != null )
         {
@@ -225,7 +229,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
      * @param g2d    graphics context
      * @param bounds painting bounds
      */
-    protected void paintText ( final Graphics2D g2d, final Rectangle bounds )
+    protected void paintText ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds )
     {
         if ( component.isStringPainted () )
         {
@@ -239,15 +243,23 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
      *
      * @return minimum content area size
      */
+    @NotNull
     protected Dimension getMinimumContentSize ()
     {
-        if ( component != null && minimumContentSize != null )
+        final Dimension ms;
+        if ( component != null && this.minimumContentSize != null )
         {
             final boolean hor = isHorizontal ();
-            return new Dimension ( hor ? minimumContentSize.width : minimumContentSize.height,
-                    hor ? minimumContentSize.height : minimumContentSize.width );
+            ms = new Dimension (
+                    hor ? this.minimumContentSize.width : this.minimumContentSize.height,
+                    hor ? this.minimumContentSize.height : this.minimumContentSize.width
+            );
         }
-        return new Dimension ();
+        else
+        {
+            ms = new Dimension ();
+        }
+        return ms;
     }
 
     /**
@@ -260,6 +272,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
         return component.getOrientation () == SwingConstants.HORIZONTAL;
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

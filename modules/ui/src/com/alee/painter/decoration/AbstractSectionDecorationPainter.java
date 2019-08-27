@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterException;
 import com.alee.painter.SectionPainter;
@@ -139,6 +140,7 @@ public abstract class AbstractSectionDecorationPainter<C extends JComponent, U e
      *
      * @return current component section decoration states
      */
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

@@ -18,6 +18,7 @@
 package com.alee.demo.content.image.svg;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.layout.CompactFlowLayout;
 import com.alee.extended.svg.AbstractSvgAttributeAdjustment;
@@ -39,19 +40,21 @@ import java.util.List;
  */
 public class SvgIconExample extends AbstractPreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "svgicon";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

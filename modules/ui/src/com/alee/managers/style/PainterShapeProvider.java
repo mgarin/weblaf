@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 
 /**
@@ -37,5 +39,6 @@ public interface PainterShapeProvider<C extends Component>
      * @param bounds    bounds for painter view
      * @return painted component shape
      */
-    public Shape provideShape ( C component, Rectangle bounds );
+    @NotNull
+    public Shape provideShape ( @NotNull C component, @NotNull Rectangle bounds );
 }

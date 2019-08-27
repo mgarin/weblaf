@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
@@ -98,6 +100,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
         field = null;
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -116,6 +119,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
         PainterSupport.setShapeDetectionEnabled ( field, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -123,11 +127,12 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( field, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -135,7 +140,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( field, padding );
     }
@@ -158,7 +163,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( field, new Consumer<IPasswordFieldPainter> ()
+        PainterSupport.setPainter ( field, this, new Consumer<IPasswordFieldPainter> ()
         {
             @Override
             public void accept ( final IPasswordFieldPainter newPainter )

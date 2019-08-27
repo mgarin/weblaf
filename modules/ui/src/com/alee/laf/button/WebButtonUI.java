@@ -17,6 +17,8 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -54,7 +56,7 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -63,7 +65,7 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( button );
@@ -71,6 +73,7 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -89,6 +92,7 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
         PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -96,11 +100,12 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( button, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -108,7 +113,7 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( button, padding );
     }
@@ -131,7 +136,7 @@ public class WebButtonUI<C extends JButton> extends WButtonUI<C> implements Shap
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new Consumer<IButtonPainter> ()
+        PainterSupport.setPainter ( button, this, new Consumer<IButtonPainter> ()
         {
             @Override
             public void accept ( final IButtonPainter newPainter )

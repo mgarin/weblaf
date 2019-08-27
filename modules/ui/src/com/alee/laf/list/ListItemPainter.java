@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
@@ -48,6 +49,7 @@ public class ListItemPainter<C extends JList, U extends WebListUI, D extends IDe
         return "item";
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

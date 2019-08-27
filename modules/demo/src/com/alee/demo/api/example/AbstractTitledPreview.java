@@ -17,6 +17,8 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
@@ -64,8 +66,9 @@ public abstract class AbstractTitledPreview extends AbstractPreview
         super ( example, id, state );
     }
 
+    @NotNull
     @Override
-    protected JComponent createPreview ( final List<Preview> previews, final int index )
+    protected JComponent createPreview ( @NotNull final List<Preview> previews, final int index )
     {
         final Preview preview = previews.get ( index );
 
@@ -79,6 +82,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
         return previewPanel;
     }
 
+    @Nullable
     @Override
     public JComponent getEqualizableWidthComponent ()
     {

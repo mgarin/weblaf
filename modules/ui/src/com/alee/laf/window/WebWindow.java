@@ -17,6 +17,8 @@
 
 package com.alee.laf.window;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
@@ -58,6 +60,15 @@ import java.util.List;
 public class WebWindow<T extends WebWindow<T>> extends JWindow implements Styleable, Paintable, PaddingMethods, WindowEventMethods,
         LanguageMethods, LanguageEventMethods, SettingsMethods, WindowMethods<T>
 {
+    /**
+     * Component properties.
+     */
+    public static final String FOCUSABLE_WINDOW_STATE_PROPERTY = "focusableWindowState";
+    public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
+    public static final String RESIZABLE_PROPERTY = "resizable";
+    public static final String ICON_IMAGE_PROPERTY = "iconImage";
+    public static final String TITLE_PROPERTY = "title";
+
     /**
      * Whether should close window on focus loss or not.
      */
@@ -343,12 +354,14 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
         focusTracker.removeFocusableChild ( child );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.window;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -421,6 +434,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
         return StyleManager.resetCustomPainter ( getRootPane () );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -440,7 +454,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
@@ -667,6 +681,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
             super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
         }
 
+        @NotNull
         @Override
         public StyleId getDefaultStyleId ()
         {

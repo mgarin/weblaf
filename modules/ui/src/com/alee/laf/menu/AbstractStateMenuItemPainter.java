@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.checkbox.AbstractStateButtonPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -56,6 +57,7 @@ public abstract class AbstractStateMenuItemPainter<C extends JMenuItem, U extend
         super.uninstallPropertiesAndListeners ();
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

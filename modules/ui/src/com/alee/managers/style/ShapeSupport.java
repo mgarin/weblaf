@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebLookAndFeel;
 
 import java.awt.*;
@@ -37,6 +38,7 @@ public interface ShapeSupport
      *
      * @return component {@link Shape}
      */
+    @NotNull
     public Shape getShape ();
 
     /**

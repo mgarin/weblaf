@@ -17,6 +17,7 @@
 
 package com.alee.extended.pathfield;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.filechooser.PathFieldListener;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.WebLookAndFeel;
@@ -538,6 +539,7 @@ public class WebPathField extends WebPanel
         updatePath ( path );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

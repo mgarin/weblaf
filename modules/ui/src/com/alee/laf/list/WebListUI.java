@@ -18,6 +18,7 @@
 package com.alee.laf.list;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.laf.list.behavior.ListItemHoverBehavior;
 import com.alee.managers.style.*;
@@ -154,6 +155,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -172,6 +174,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
         PainterSupport.setShapeDetectionEnabled ( list, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -179,11 +182,12 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( list, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -191,7 +195,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( list, padding );
     }
@@ -214,7 +218,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( list, new Consumer<IListPainter> ()
+        PainterSupport.setPainter ( list, this, new Consumer<IListPainter> ()
         {
             @Override
             public void accept ( final IListPainter newPainter )

@@ -18,6 +18,7 @@
 package com.alee.demo.content.text.field;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -34,31 +35,35 @@ import java.util.List;
  */
 public class JFormattedTextFieldExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jformattedtextfield";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "formattedtextfield";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Formatted Text Fields", "formattedtextfield" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

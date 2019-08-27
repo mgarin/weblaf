@@ -148,6 +148,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

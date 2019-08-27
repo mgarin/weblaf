@@ -1,8 +1,12 @@
 package com.alee.laf.rootpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.window.WebWindow;
+import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -174,19 +178,19 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
 
         // Updating focus listener
-        if ( Objects.equals ( property, WebLookAndFeel.FOCUSABLE_WINDOW_STATE_PROPERTY ) )
+        if ( Objects.equals ( property, WebWindow.FOCUSABLE_WINDOW_STATE_PROPERTY ) )
         {
             updateFocusListener ();
         }
 
         // Updating decoration according to current state
-        if ( Objects.equals ( property, WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
+        if ( Objects.equals ( property, WebWindow.WINDOW_DECORATION_STYLE_PROPERTY ) )
         {
             // Updating decoration state first
             // This is necessary to avoid issues with state-dependant decorations
@@ -280,6 +284,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {
@@ -313,48 +318,63 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
      *
      * @return window decoration state
      */
+    @NotNull
     protected String getWindowDecorationState ()
     {
+        final String state;
         switch ( component.getWindowDecorationStyle () )
         {
             case JRootPane.NONE:
             {
-                return DecorationState.nativeWindow;
+                state = DecorationState.nativeWindow;
+                break;
             }
             case JRootPane.FRAME:
             {
-                return DecorationState.frame;
+                state = DecorationState.frame;
+                break;
             }
             case JRootPane.PLAIN_DIALOG:
             {
-                return DecorationState.dialog;
+                state = DecorationState.dialog;
+                break;
             }
             case JRootPane.COLOR_CHOOSER_DIALOG:
             {
-                return DecorationState.colorchooserDialog;
+                state = DecorationState.colorchooserDialog;
+                break;
             }
             case JRootPane.FILE_CHOOSER_DIALOG:
             {
-                return DecorationState.filechooserDialog;
+                state = DecorationState.filechooserDialog;
+                break;
             }
             case JRootPane.INFORMATION_DIALOG:
             {
-                return DecorationState.informationDialog;
+                state = DecorationState.informationDialog;
+                break;
             }
             case JRootPane.ERROR_DIALOG:
             {
-                return DecorationState.errorDialog;
+                state = DecorationState.errorDialog;
+                break;
             }
             case JRootPane.QUESTION_DIALOG:
             {
-                return DecorationState.questionDialog;
+                state = DecorationState.questionDialog;
+                break;
             }
             case JRootPane.WARNING_DIALOG:
             {
-                return DecorationState.warningDialog;
+                state = DecorationState.warningDialog;
+                break;
+            }
+            default:
+            {
+                throw new StyleException ( "Unknown window decoration style: " + component.getWindowDecorationStyle () );
             }
         }
-        throw new RuntimeException ( "Unknown window decoration style: " + component.getWindowDecorationStyle () );
+        return state;
     }
 
     /**
@@ -528,6 +548,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
      *
      * @return {@link Window} that uses {@link JRootPane} represented by this painter
      */
+    @Nullable
     protected Window getWindow ()
     {
         final Container parent = component.getParent ();

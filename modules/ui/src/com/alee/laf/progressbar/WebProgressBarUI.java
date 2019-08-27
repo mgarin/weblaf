@@ -17,9 +17,10 @@
 
 package com.alee.laf.progressbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -70,7 +71,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -80,7 +81,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( progressBar );
@@ -113,6 +114,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
         super.uninstallListeners ();
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -131,6 +133,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
         PainterSupport.setShapeDetectionEnabled ( progressBar, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -138,11 +141,12 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( progressBar, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -150,7 +154,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( progressBar, padding );
     }
@@ -173,7 +177,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( progressBar, new Consumer<IProgressBarPainter> ()
+        PainterSupport.setPainter ( progressBar, this, new Consumer<IProgressBarPainter> ()
         {
             @Override
             public void accept ( final IProgressBarPainter newPainter )
@@ -231,7 +235,7 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
         public void propertyChange ( final PropertyChangeEvent e )
         {
             final String propertyName = e.getPropertyName ();
-            if ( Objects.equals ( propertyName, WebLookAndFeel.INDETERMINATE_PROPERTY ) )
+            if ( Objects.equals ( propertyName, WebProgressBar.INDETERMINATE_PROPERTY ) )
             {
                 progressBar.repaint ();
             }

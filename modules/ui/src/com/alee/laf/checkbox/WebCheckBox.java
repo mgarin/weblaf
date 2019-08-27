@@ -17,6 +17,8 @@
 
 package com.alee.laf.checkbox;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
@@ -328,12 +330,14 @@ public HotkeyInfo addHotkey ( final Integer keyCode )
         HotkeyManager.unregisterHotkeys ( this );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.checkbox;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -406,6 +410,7 @@ public HotkeyInfo addHotkey ( final Integer keyCode )
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -424,6 +429,7 @@ public HotkeyInfo addHotkey ( final Integer keyCode )
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -443,11 +449,12 @@ public HotkeyInfo addHotkey ( final Integer keyCode )
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -467,7 +474,7 @@ public HotkeyInfo addHotkey ( final Integer keyCode )
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

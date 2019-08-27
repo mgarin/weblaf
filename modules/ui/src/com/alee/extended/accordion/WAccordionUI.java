@@ -17,6 +17,7 @@
 
 package com.alee.extended.accordion;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -40,6 +41,7 @@ public abstract class WAccordionUI<C extends WebAccordion> extends ComponentUI i
      */
     protected C accordion;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -47,7 +49,7 @@ public abstract class WAccordionUI<C extends WebAccordion> extends ComponentUI i
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving accordion reference
         accordion = ( C ) c;
@@ -60,7 +62,7 @@ public abstract class WAccordionUI<C extends WebAccordion> extends ComponentUI i
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();

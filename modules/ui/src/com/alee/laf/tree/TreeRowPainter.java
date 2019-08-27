@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
@@ -55,6 +56,7 @@ public class TreeRowPainter<C extends JTree, U extends WTreeUI, D extends IDecor
         return false;
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

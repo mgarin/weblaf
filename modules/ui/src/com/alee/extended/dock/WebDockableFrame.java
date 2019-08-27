@@ -209,13 +209,14 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.dockableframe;
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

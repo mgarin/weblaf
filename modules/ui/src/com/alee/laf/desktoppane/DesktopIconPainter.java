@@ -14,7 +14,7 @@ import javax.swing.*;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-public class DesktopIconPainter<C extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI, D extends IDecoration<C, D>>
+public class DesktopIconPainter<C extends JInternalFrame.JDesktopIcon, U extends WDesktopIconUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IDesktopIconPainter<C, U>
 {
     /**

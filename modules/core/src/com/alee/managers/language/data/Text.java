@@ -17,6 +17,8 @@
 
 package com.alee.managers.language.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.HtmlUtils;
@@ -43,6 +45,7 @@ public final class Text implements Cloneable, Serializable
     /**
      * State this translation is used for.
      */
+    @Nullable
     @XStreamAsAttribute
     private String state;
 
@@ -55,6 +58,7 @@ public final class Text implements Cloneable, Serializable
     /**
      * Translation text.
      */
+    @NotNull
     private String text;
 
     /**
@@ -62,7 +66,7 @@ public final class Text implements Cloneable, Serializable
      */
     public Text ()
     {
-        this ( "" );
+        this ( "", null, -1 );
     }
 
     /**
@@ -70,9 +74,9 @@ public final class Text implements Cloneable, Serializable
      *
      * @param text translation text
      */
-    public Text ( final String text )
+    public Text ( @NotNull final String text )
     {
-        this ( text, null );
+        this ( text, null, -1 );
     }
 
     /**
@@ -81,7 +85,7 @@ public final class Text implements Cloneable, Serializable
      * @param text  translation text
      * @param state state this translation is used for
      */
-    public Text ( final String text, final String state )
+    public Text ( @NotNull final String text, @Nullable final String state )
     {
         this ( text, state, -1 );
     }
@@ -93,9 +97,8 @@ public final class Text implements Cloneable, Serializable
      * @param state    state this translation is used for
      * @param mnemonic mnemonic character
      */
-    public Text ( final String text, final String state, final int mnemonic )
+    public Text ( @NotNull final String text, @Nullable final String state, final int mnemonic )
     {
-        super ();
         this.text = text;
         this.state = state;
         this.mnemonic = mnemonic;
@@ -107,7 +110,8 @@ public final class Text implements Cloneable, Serializable
      * @param data language data to process
      * @return parsed {@link #text} or raw contents depending on provided data
      */
-    public String getText ( final Object... data )
+    @NotNull
+    public String getText ( @NotNull final Object... data )
     {
         final String result;
         if ( ArrayUtils.notEmpty ( data ) )
@@ -128,36 +132,30 @@ public final class Text implements Cloneable, Serializable
      * @param data language data to process
      * @return language data transformed into its final form
      */
-    private Object[] parseData ( final Object... data )
+    @NotNull
+    private Object[] parseData ( @NotNull final Object... data )
     {
-        if ( data != null )
+        final Object[] parsedData = new Object[ data.length ];
+        for ( int i = 0; i < data.length; i++ )
         {
-            final Object[] finalData = new Object[ data.length ];
-            for ( int i = 0; i < data.length; i++ )
+            final Object object = data[ i ];
+            if ( object != null )
             {
-                final Object object = data[ i ];
-                if ( object != null )
+                if ( object instanceof Supplier )
                 {
-                    if ( object instanceof Supplier )
-                    {
-                        finalData[ i ] = ( ( Supplier ) object ).get ();
-                    }
-                    else
-                    {
-                        finalData[ i ] = object;
-                    }
+                    parsedData[ i ] = ( ( Supplier ) object ).get ();
                 }
                 else
                 {
-                    finalData[ i ] = object;
+                    parsedData[ i ] = object;
                 }
             }
-            return finalData;
+            else
+            {
+                parsedData[ i ] = object;
+            }
         }
-        else
-        {
-            return null;
-        }
+        return parsedData;
     }
 
     /**
@@ -165,7 +163,7 @@ public final class Text implements Cloneable, Serializable
      *
      * @param text translation text
      */
-    public void setText ( final String text )
+    public void setText ( @NotNull final String text )
     {
         this.text = text;
     }
@@ -175,6 +173,7 @@ public final class Text implements Cloneable, Serializable
      *
      * @return state this translation is used for
      */
+    @Nullable
     public String getState ()
     {
         return state;
@@ -185,7 +184,7 @@ public final class Text implements Cloneable, Serializable
      *
      * @param state state this translation is used for
      */
-    public void setState ( final String state )
+    public void setState ( @Nullable final String state )
     {
         this.state = state;
     }
@@ -210,6 +209,7 @@ public final class Text implements Cloneable, Serializable
         this.mnemonic = mnemonic;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

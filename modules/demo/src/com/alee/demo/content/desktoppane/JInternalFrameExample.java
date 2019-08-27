@@ -18,6 +18,7 @@
 package com.alee.demo.content.desktoppane;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -38,31 +39,35 @@ import java.util.List;
  */
 public class JInternalFrameExample extends AbstractPreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jinternalframe";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Internal Frames", "internalframe" );
     }
 
+    @NotNull
     @Override
     protected LayoutManager createPreviewLayout ()
     {
         return new BorderLayout ();
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {
@@ -84,8 +89,9 @@ public class JInternalFrameExample extends AbstractPreviewExample
             super ( JInternalFrameExample.this, "desktop", FeatureState.updated );
         }
 
+        @NotNull
         @Override
-        protected JComponent createPreview ( final List<Preview> previews, final int index )
+        protected JComponent createPreview ( @NotNull final List<Preview> previews, final int index )
         {
             // Configuring desktop pane
             final JDesktopPane desktopPane = new JDesktopPane ();
@@ -119,7 +125,7 @@ public class JInternalFrameExample extends AbstractPreviewExample
          */
         protected void addInternalFrame ( final JDesktopPane desktopPane, final int index ) throws PropertyVetoException
         {
-            final JInternalFrame internalFrame = new JInternalFrame ( "", true, true, true, true );
+            final JInternalFrame internalFrame = new JInternalFrame ( null, true, true, true, true );
             internalFrame.setFrameIcon ( loadExampleIcon ( "frame16.png" ) );
             UILanguageManager.registerComponent ( internalFrame, getExampleLanguagePrefix () + "frame.title", index );
 

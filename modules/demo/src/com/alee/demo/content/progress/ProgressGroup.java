@@ -18,6 +18,7 @@
 package com.alee.demo.content.progress;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.utils.CollectionUtils;
 
@@ -28,7 +29,7 @@ import java.util.List;
  */
 public class ProgressGroup extends AbstractExampleGroup
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

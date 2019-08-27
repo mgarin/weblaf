@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.combobox;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.managers.style.StyleId;
@@ -32,25 +33,28 @@ import java.util.List;
  */
 public class WebComboBoxExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webcombobox";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "combobox";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

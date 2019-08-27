@@ -17,6 +17,9 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.util.EventListener;
 
 /**
@@ -34,5 +37,5 @@ public interface SkinListener extends EventListener
      * @param previous previously used skin
      * @param current  currently used skin
      */
-    public void skinChanged ( Skin previous, Skin current );
+    public void skinChanged ( @Nullable Skin previous, @NotNull Skin current );
 }

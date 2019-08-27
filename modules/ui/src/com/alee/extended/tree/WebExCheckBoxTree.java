@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.StyleId;
@@ -184,6 +185,7 @@ public class WebExCheckBoxTree<N extends UniqueNode> extends WebCheckBoxTree<N> 
         }
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

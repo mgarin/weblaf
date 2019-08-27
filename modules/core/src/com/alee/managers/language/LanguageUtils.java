@@ -17,6 +17,7 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.TextUtils;
 
 import java.util.HashMap;
@@ -36,11 +37,13 @@ public final class LanguageUtils
      * Map with cached {@link Locale} instances.
      * todo With JDK8 it can be replaced with appropriate {@link Locale} methods usage
      */
+    @NotNull
     private static final Map<String, Locale> localesCache = new HashMap<String, Locale> ( 5 );
 
     /**
      * Locale country separator.
      */
+    @NotNull
     private static final String COUNTRY_SEPARATOR = "-";
 
     /**
@@ -49,18 +52,12 @@ public final class LanguageUtils
      * @param locale {@link Locale} to convert into {@link String}
      * @return {@link String} representation of {@link Locale}
      */
-    public static String toString ( final Locale locale )
+    @NotNull
+    public static String toString ( @NotNull final Locale locale )
     {
-        if ( locale != null )
-        {
-            final String lang = ( locale.getLanguage () != null ? locale.getLanguage () : "" ).toLowerCase ( Locale.ROOT );
-            final String country = ( locale.getCountry () != null ? locale.getCountry () : "" ).toUpperCase ( Locale.ROOT );
-            return lang + ( TextUtils.notEmpty ( country ) ? COUNTRY_SEPARATOR + country : "" );
-        }
-        else
-        {
-            throw new LanguageException ( "Locale was not specified" );
-        }
+        final String lang = ( locale.getLanguage () != null ? locale.getLanguage () : "" ).toLowerCase ( Locale.ROOT );
+        final String country = ( locale.getCountry () != null ? locale.getCountry () : "" ).toUpperCase ( Locale.ROOT );
+        return lang + ( TextUtils.notEmpty ( country ) ? COUNTRY_SEPARATOR + country : "" );
     }
 
     /**
@@ -69,24 +66,18 @@ public final class LanguageUtils
      * @param locale {@link String} to parse into {@link Locale}
      * @return {@link Locale} parsed from its {@link String} representation
      */
-    public static Locale fromString ( final String locale )
+    @NotNull
+    public static Locale fromString ( @NotNull final String locale )
     {
-        if ( locale != null )
+        final int s = locale.indexOf ( COUNTRY_SEPARATOR );
+        final String lang = ( s != -1 ? locale.substring ( 0, s ) : locale ).toLowerCase ( Locale.ROOT );
+        final String country = ( s != -1 ? locale.substring ( s + COUNTRY_SEPARATOR.length () ) : "" ).toUpperCase ( Locale.ROOT );
+        final String key = lang + ( TextUtils.notEmpty ( country ) ? COUNTRY_SEPARATOR + country : "" );
+        if ( !localesCache.containsKey ( key ) )
         {
-            final int s = locale.indexOf ( COUNTRY_SEPARATOR );
-            final String lang = ( s != -1 ? locale.substring ( 0, s ) : locale ).toLowerCase ( Locale.ROOT );
-            final String country = ( s != -1 ? locale.substring ( s + COUNTRY_SEPARATOR.length () ) : "" ).toUpperCase ( Locale.ROOT );
-            final String key = lang + ( TextUtils.notEmpty ( country ) ? COUNTRY_SEPARATOR + country : "" );
-            if ( !localesCache.containsKey ( key ) )
-            {
-                localesCache.put ( key, new Locale ( lang, country ) );
-            }
-            return localesCache.get ( key );
+            localesCache.put ( key, new Locale ( lang, country ) );
         }
-        else
-        {
-            throw new LanguageException ( "Locale was not specified" );
-        }
+        return localesCache.get ( key );
     }
 
     /**
@@ -96,15 +87,17 @@ public final class LanguageUtils
      *
      * @return system {@link Locale}
      */
+    @NotNull
     public static Locale getSystemLocale ()
     {
+        final Locale locale;
         final String language = System.getProperty ( "user.language" );
         if ( TextUtils.notEmpty ( language ) )
         {
             // Constructing system locale
             final String country = System.getProperty ( "user.country" );
             final String variant = System.getProperty ( "user.variant" );
-            return new Locale (
+            locale = new Locale (
                     language,
                     TextUtils.notEmpty ( country ) ? country : "",
                     TextUtils.notEmpty ( variant ) ? variant : ""
@@ -113,7 +106,8 @@ public final class LanguageUtils
         else
         {
             // Constructing fallback locale
-            return new Locale ( "en", "US" );
+            locale = new Locale ( "en", "US" );
         }
+        return locale;
     }
 }

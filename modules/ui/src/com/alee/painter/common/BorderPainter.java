@@ -17,6 +17,7 @@
 
 package com.alee.painter.common;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
@@ -146,6 +147,7 @@ public class BorderPainter<C extends JComponent, U extends ComponentUI> extends 
         this.color = color;
     }
 
+    @NotNull
     @Override
     protected Insets getBorder ()
     {
@@ -154,7 +156,7 @@ public class BorderPainter<C extends JComponent, U extends ComponentUI> extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
@@ -174,21 +176,32 @@ public class BorderPainter<C extends JComponent, U extends ComponentUI> extends 
      */
     protected RectangularShape getBorderShape ( final Rectangle bounds )
     {
+        final RectangularShape shape;
         final int round = getRound ();
         final int width = getStrokeWidth ();
         final double shear = width == 1 ? 0 : ( double ) width / 2;
         if ( round > 0 )
         {
-            return new RoundRectangle2D.Double ( bounds.x + shear, bounds.y + shear, bounds.width - shear * 2 - 1,
-                    bounds.height - shear * 2 - 1, round * 2, round * 2 );
+            shape = new RoundRectangle2D.Double (
+                    bounds.x + shear,
+                    bounds.y + shear,
+                    bounds.width - shear * 2 - 1,
+                    bounds.height - shear * 2 - 1, round * 2, round * 2
+            );
         }
         else
         {
-            return new Rectangle2D.Double ( bounds.x + shear, bounds.y + shear, bounds.width - shear * 2 - 1,
-                    bounds.height - shear * 2 - 1 );
+            shape = new Rectangle2D.Double (
+                    bounds.x + shear,
+                    bounds.y + shear,
+                    bounds.width - shear * 2 - 1,
+                    bounds.height - shear * 2 - 1
+            );
         }
+        return shape;
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

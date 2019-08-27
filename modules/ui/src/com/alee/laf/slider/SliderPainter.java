@@ -1,5 +1,6 @@
 package com.alee.laf.slider;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
@@ -231,7 +232,7 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         calculateGeometry ();
 

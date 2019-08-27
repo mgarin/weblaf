@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
@@ -163,12 +165,14 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
         UILanguageManager.registerInitialLanguage ( this, text );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.menu;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -241,6 +245,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -259,6 +264,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -278,11 +284,12 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -302,7 +309,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

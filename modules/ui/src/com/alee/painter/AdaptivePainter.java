@@ -17,6 +17,8 @@
 
 package com.alee.painter;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.Bounds;
 
 import javax.swing.*;
@@ -37,6 +39,7 @@ public abstract class AdaptivePainter<C extends JComponent, U extends ComponentU
     /**
      * Adapted {@link Painter}.
      */
+    @NotNull
     private final Painter painter;
 
     /**
@@ -44,9 +47,8 @@ public abstract class AdaptivePainter<C extends JComponent, U extends ComponentU
      *
      * @param painter {@link Painter} to adapt
      */
-    public AdaptivePainter ( final Painter painter )
+    public AdaptivePainter ( @NotNull final Painter painter )
     {
-        super ();
         this.painter = painter;
     }
 
@@ -55,19 +57,20 @@ public abstract class AdaptivePainter<C extends JComponent, U extends ComponentU
      *
      * @return adapted {@link Painter}
      */
+    @NotNull
     public Painter getPainter ()
     {
         return painter;
     }
 
     @Override
-    public void install ( final C c, final U ui )
+    public void install ( @NotNull final C c, @NotNull final U ui )
     {
         painter.install ( c, ui );
     }
 
     @Override
-    public void uninstall ( final C c, final U ui )
+    public void uninstall ( @NotNull final C c, @NotNull final U ui )
     {
         painter.uninstall ( c, ui );
     }
@@ -78,6 +81,7 @@ public abstract class AdaptivePainter<C extends JComponent, U extends ComponentU
         return painter.isInstalled ();
     }
 
+    @Nullable
     @Override
     public Boolean isOpaque ()
     {
@@ -85,29 +89,30 @@ public abstract class AdaptivePainter<C extends JComponent, U extends ComponentU
     }
 
     @Override
-    public int getBaseline ( final C c, final U ui, final Bounds bounds )
+    public int getBaseline ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         return painter.getBaseline ( c, ui, bounds );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final U ui )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final C c, @NotNull final U ui )
     {
         return painter.getBaselineResizeBehavior ( c, ui );
     }
 
     @Override
-    public boolean contains ( final C c, final U ui, final Bounds bounds, final int x, final int y )
+    public boolean contains ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds, final int x, final int y )
     {
         return painter.contains ( c, ui, bounds, x, y );
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         painter.paint ( g2d, c, ui, bounds );
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

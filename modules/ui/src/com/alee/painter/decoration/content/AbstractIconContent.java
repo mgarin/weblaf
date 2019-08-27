@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -35,7 +36,7 @@ import java.awt.*;
 public abstract class AbstractIconContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractIconContent<C, D, I>>
         extends AbstractContent<C, D, I>
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

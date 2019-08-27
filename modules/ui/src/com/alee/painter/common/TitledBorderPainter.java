@@ -17,6 +17,7 @@
 
 package com.alee.painter.common;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
@@ -230,6 +231,7 @@ public class TitledBorderPainter<C extends JComponent, U extends ComponentUI> ex
         updateAll ();
     }
 
+    @NotNull
     @Override
     protected Insets getBorder ()
     {
@@ -264,7 +266,7 @@ public class TitledBorderPainter<C extends JComponent, U extends ComponentUI> ex
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         // Initializing values
         w = c.getWidth ();
@@ -490,12 +492,14 @@ public class TitledBorderPainter<C extends JComponent, U extends ComponentUI> ex
         return null;
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {
+        final Dimension ps;
         if ( isEmptyTitle () )
         {
-            return super.getPreferredSize ();
+            ps = super.getPreferredSize ();
         }
         else
         {
@@ -508,17 +512,23 @@ public class TitledBorderPainter<C extends JComponent, U extends ComponentUI> ex
                 case TOP:
                 case BOTTOM:
                 {
-                    return new Dimension ( border * 2 + titleWidth + titleOffset * 2 +
+                    ps = new Dimension ( border * 2 + titleWidth + titleOffset * 2 +
                             titleBorderGap * 2, title + border );
+                    break;
                 }
                 case LEFT:
                 case RIGHT:
                 {
-                    return new Dimension ( title + border, border * 2 + titleWidth + titleOffset * 2 +
+                    ps = new Dimension ( title + border, border * 2 + titleWidth + titleOffset * 2 +
                             titleBorderGap * 2 );
+                    break;
+                }
+                default:
+                {
+                    throw new RuntimeException ( "Unknown title side: " + titleSide );
                 }
             }
-            return null;
         }
+        return ps;
     }
 }

@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.list;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.laf.list.WebList;
 import com.alee.laf.scroll.WebScrollPane;
@@ -33,25 +34,28 @@ import java.util.List;
  */
 public class WebListExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "weblist";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "list";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

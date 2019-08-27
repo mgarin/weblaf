@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.shadow;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -65,7 +66,7 @@ public abstract class AbstractShadow<C extends JComponent, D extends IDecoration
     @XStreamAsAttribute
     protected Color color;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

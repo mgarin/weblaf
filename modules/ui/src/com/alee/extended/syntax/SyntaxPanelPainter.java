@@ -17,6 +17,7 @@
 
 package com.alee.extended.syntax;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.panel.IPanelPainter;
 import com.alee.laf.panel.WPanelUI;
 import com.alee.managers.style.Bounds;
@@ -75,7 +76,7 @@ public class SyntaxPanelPainter<C extends JPanel, U extends WPanelUI<C>>
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C panel, final U ui, final Bounds b )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C panel, @NotNull final U ui, @NotNull final Bounds b )
     {
         // Paint syntax panel styling
         final Object aa = GraphicsUtils.setupAntialias ( g2d );

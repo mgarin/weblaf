@@ -36,7 +36,7 @@ import java.awt.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractDesktopIconDescriptor<C extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI>
+public abstract class AbstractDesktopIconDescriptor<C extends JInternalFrame.JDesktopIcon, U extends WDesktopIconUI>
         extends AbstractComponentDescriptor<C, U>
 {
     /**

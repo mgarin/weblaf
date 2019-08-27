@@ -17,6 +17,7 @@
 
 package com.alee.laf.radiobutton;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.button.WButtonUI;
 
 import javax.swing.*;
@@ -30,6 +31,7 @@ import java.awt.*;
  */
 public abstract class WRadioButtonUI<C extends JRadioButton> extends WButtonUI<C>
 {
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {

@@ -17,6 +17,8 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
@@ -250,12 +252,14 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
         this.thumbBounds = bounds;
     }
 
+    @NotNull
     @Override
     public Boolean isOpaque ()
     {
         return this.ui.isDisplayTrack ();
     }
 
+    @Nullable
     @Override
     protected Insets getBorder ()
     {
@@ -276,7 +280,7 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C scrollbar, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C scrollbar, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         paintBackground ( g2d, scrollbar, bounds.get () );
@@ -293,7 +297,7 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar
      * @param bounds    scroll bar bounds
      */
-    protected void paintBackground ( final Graphics2D g2d, final C scrollbar, final Rectangle bounds )
+    protected void paintBackground ( @NotNull final Graphics2D g2d, @NotNull final C scrollbar, @NotNull final Rectangle bounds )
     {
         if ( ui.isDisplayTrack () )
         {
@@ -322,7 +326,7 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar
      * @param bounds    track bounds
      */
-    protected void paintTrack ( final Graphics2D g2d, final C scrollbar, final Rectangle bounds )
+    protected void paintTrack ( @NotNull final Graphics2D g2d, @NotNull final C scrollbar, @NotNull final Rectangle bounds )
     {
         // You can paint your own track decoration by overriding this method
     }
@@ -335,7 +339,7 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar component
      * @param bounds    thumb bounds
      */
-    protected void paintThumb ( final Graphics2D g2d, final C scrollbar, final Rectangle bounds )
+    protected void paintThumb ( @NotNull final Graphics2D g2d, @NotNull final C scrollbar, @NotNull final Rectangle bounds )
     {
         final Insets m = getCurrentThumbMargin ( scrollbar );
         final int w = bounds.width - m.left - m.right;
@@ -359,7 +363,8 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar component
      * @return current thumb margin rotated into proper position
      */
-    protected Insets getCurrentThumbMargin ( final C scrollbar )
+    @NotNull
+    protected Insets getCurrentThumbMargin ( @NotNull final C scrollbar )
     {
         final Insets margin;
         if ( thumbMargin != null )
@@ -394,7 +399,8 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar component
      * @return current thumb border color
      */
-    protected Color getCurrentThumbBorderColor ( final C scrollbar )
+    @NotNull
+    protected Color getCurrentThumbBorderColor ( @NotNull final C scrollbar )
     {
         return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBorderColor : rollover ? thumbRolloverBorderColor :
                 ColorUtils.intermediate ( thumbBorderColor, thumbRolloverBorderColor, rolloverState ) : thumbDisabledBorderColor;
@@ -406,7 +412,8 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      * @param scrollbar scroll bar component
      * @return current thumb background color
      */
-    protected Color getCurrentThumbBackgroundColor ( final C scrollbar )
+    @NotNull
+    protected Color getCurrentThumbBackgroundColor ( @NotNull final C scrollbar )
     {
         return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBackgroundColor : rollover ? thumbRolloverBackgroundColor :
                 ColorUtils.intermediate ( thumbBackgroundColor, thumbRolloverBackgroundColor, rolloverState ) :
@@ -428,6 +435,7 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
         }
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

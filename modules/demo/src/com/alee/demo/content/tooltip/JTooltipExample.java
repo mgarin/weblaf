@@ -18,6 +18,7 @@
 package com.alee.demo.content.tooltip;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -33,31 +34,35 @@ import java.util.List;
  */
 public class JTooltipExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jtooltip";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "tooltip";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Tool Tips", "tooltip" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

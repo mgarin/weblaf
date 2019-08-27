@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.WebComboBoxUI;
@@ -55,7 +57,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
     protected transient PopupMenuType popupMenuType = null;
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -178,7 +180,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      *
      * @param type popup menu type
      */
-    public void setPopupMenuType ( final PopupMenuType type )
+    public void setPopupMenuType ( @NotNull final PopupMenuType type )
     {
         this.popupMenuType = type;
         if ( popupMenuType == PopupMenuType.menuBarSubMenu )
@@ -187,6 +189,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
         }
     }
 
+    @NotNull
     @Override
     protected Insets getBorder ()
     {

@@ -17,6 +17,8 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -48,18 +50,24 @@ public class SplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WS
     protected void installPropertiesAndListeners ()
     {
         super.installPropertiesAndListeners ();
-        installSplitPaneListeners ( component.getSplitPane () );
+        if ( component.getSplitPane () != null )
+        {
+            installSplitPaneListeners ( component.getSplitPane () );
+        }
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
-        uninstallSplitPaneListeners ( component.getSplitPane () );
+        if ( component.getSplitPane () != null )
+        {
+            uninstallSplitPaneListeners ( component.getSplitPane () );
+        }
         super.uninstallPropertiesAndListeners ();
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -67,8 +75,14 @@ public class SplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WS
         // Updating split pane listeners
         if ( Objects.equals ( property, WebSplitPaneDivider.SPLIT_PANE_PROPERTY ) )
         {
-            uninstallSplitPaneListeners ( ( JSplitPane ) oldValue );
-            installSplitPaneListeners ( ( JSplitPane ) newValue );
+            if ( oldValue != null )
+            {
+                uninstallSplitPaneListeners ( ( JSplitPane ) oldValue );
+            }
+            if ( newValue != null )
+            {
+                installSplitPaneListeners ( ( JSplitPane ) newValue );
+            }
         }
     }
 
@@ -77,24 +91,21 @@ public class SplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WS
      *
      * @param splitPane {@link JSplitPane}, could be {@code null}
      */
-    protected void installSplitPaneListeners ( final JSplitPane splitPane )
+    protected void installSplitPaneListeners ( @NotNull final JSplitPane splitPane )
     {
-        if ( splitPane != null )
+        splitPanePropertyChangeListener = new PropertyChangeListener ()
         {
-            splitPanePropertyChangeListener = new PropertyChangeListener ()
+            @Override
+            public void propertyChange ( final PropertyChangeEvent event )
             {
-                @Override
-                public void propertyChange ( final PropertyChangeEvent event )
+                if ( Objects.equals ( event.getPropertyName (),
+                        JSplitPane.ORIENTATION_PROPERTY, JSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
                 {
-                    if ( Objects.equals ( event.getPropertyName (),
-                            JSplitPane.ORIENTATION_PROPERTY, JSplitPane.ONE_TOUCH_EXPANDABLE_PROPERTY ) )
-                    {
-                        updateDecorationState ();
-                    }
+                    updateDecorationState ();
                 }
-            };
-            splitPane.addPropertyChangeListener ( splitPanePropertyChangeListener );
-        }
+            }
+        };
+        splitPane.addPropertyChangeListener ( splitPanePropertyChangeListener );
     }
 
     /**
@@ -102,15 +113,13 @@ public class SplitPaneDividerPainter<C extends WebSplitPaneDivider, U extends WS
      *
      * @param splitPane {@link JSplitPane}, could be {@code null}
      */
-    protected void uninstallSplitPaneListeners ( final JSplitPane splitPane )
+    protected void uninstallSplitPaneListeners ( @NotNull final JSplitPane splitPane )
     {
-        if ( splitPane != null )
-        {
-            splitPane.removePropertyChangeListener ( splitPanePropertyChangeListener );
-            splitPanePropertyChangeListener = null;
-        }
+        splitPane.removePropertyChangeListener ( splitPanePropertyChangeListener );
+        splitPanePropertyChangeListener = null;
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

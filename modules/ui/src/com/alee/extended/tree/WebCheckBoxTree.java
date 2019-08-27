@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Predicate;
 import com.alee.laf.checkbox.CheckState;
 import com.alee.laf.tree.NodesAcceptPolicy;
@@ -277,6 +278,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
         addKeyListener ( handler );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

@@ -17,6 +17,7 @@
 
 package com.alee.extended.language;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
@@ -165,6 +166,7 @@ public class LanguageChooser extends WebComboBox
         addDictionaryListener ( ( LanguageChooserModel ) model );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

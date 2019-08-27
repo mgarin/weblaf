@@ -17,6 +17,7 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.graphics.filters.GaussianFilter;
 import com.alee.graphics.filters.GrayscaleFilter;
 import com.alee.graphics.filters.MotionBlurFilter;
@@ -594,6 +595,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         }
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {

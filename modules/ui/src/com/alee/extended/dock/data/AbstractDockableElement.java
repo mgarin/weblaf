@@ -18,6 +18,7 @@
 package com.alee.extended.dock.data;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.dock.WebDockablePane;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -84,7 +85,7 @@ public abstract class AbstractDockableElement implements DockableElement
         return parent;
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

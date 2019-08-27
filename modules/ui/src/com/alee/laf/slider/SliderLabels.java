@@ -120,11 +120,12 @@ public class SliderLabels extends Hashtable implements PropertyChangeListener
     protected Object[] getProperties ()
     {
         final List<String> properties = new ArrayList<String> ( 3 );
-        properties.add ( WebLookAndFeel.MINIMUM_PROPERTY );
-        properties.add ( WebLookAndFeel.MAXIMUM_PROPERTY );
+        properties.add ( WebSlider.MINIMUM_PROPERTY );
+        properties.add ( WebSlider.MAXIMUM_PROPERTY );
         if ( distance == null )
         {
-            properties.add ( WebLookAndFeel.MAJOR_TICK_SPACING_PROPERTY );
+            properties.add ( WebSlider.MINOR_TICK_SPACING_PROPERTY );
+            properties.add ( WebSlider.MAJOR_TICK_SPACING_PROPERTY );
         }
         return properties.toArray ();
     }
@@ -209,12 +210,17 @@ public class SliderLabels extends Hashtable implements PropertyChangeListener
         @Override
         public Font getFont ()
         {
-            final Font font = super.getFont ();
-            if ( font != null && !( font instanceof UIResource ) )
+            final Font font;
+            final Font current = super.getFont ();
+            if ( current != null && !( current instanceof UIResource ) )
             {
-                return font;
+                font = current;
             }
-            return slider.getFont ();
+            else
+            {
+                font = slider.getFont ();
+            }
+            return font;
         }
     }
 }

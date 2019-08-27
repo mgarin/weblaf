@@ -17,6 +17,8 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LM;
@@ -292,6 +294,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         return new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -310,6 +313,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         PainterSupport.setShapeDetectionEnabled ( fileChooser, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -317,11 +321,12 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( fileChooser, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -329,7 +334,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( fileChooser, padding );
     }
@@ -352,7 +357,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( fileChooser, new Consumer<IFileChooserPainter> ()
+        PainterSupport.setPainter ( fileChooser, this, new Consumer<IFileChooserPainter> ()
         {
             @Override
             public void accept ( final IFileChooserPainter newPainter )

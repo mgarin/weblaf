@@ -18,6 +18,7 @@
 package com.alee.demo.content.label;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
@@ -39,31 +40,35 @@ import java.util.List;
  */
 public class WebLinkExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "weblink";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "link";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new WebLafWikiPage ( "How to use WebLink" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

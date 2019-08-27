@@ -330,6 +330,7 @@ public final class CoreSwingUtils
      */
     public static boolean isFullScreen ( @Nullable final Component component )
     {
+        final boolean fullScreen;
         final Window window = getWindowAncestor ( component );
         if ( window != null )
         {
@@ -337,10 +338,18 @@ public final class CoreSwingUtils
             if ( gc != null )
             {
                 final GraphicsDevice device = gc.getDevice ();
-                return device != null && device.getFullScreenWindow () == window;
+                fullScreen = device != null && device.getFullScreenWindow () == window;
+            }
+            else
+            {
+                fullScreen = false;
             }
         }
-        return false;
+        else
+        {
+            fullScreen = false;
+        }
+        return fullScreen;
     }
 
     /**

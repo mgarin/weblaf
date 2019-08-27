@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Rotation;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.IDecoration;
@@ -95,7 +95,7 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     @XStreamAsAttribute
     protected Float opacity;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
@@ -145,15 +145,22 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
      */
     protected Insets getPadding ( final C c, final D d )
     {
-        if ( padding != null )
+        final Insets padding;
+        if ( this.padding != null )
         {
             final boolean ltr = isLeftToRight ( c, d );
-            return new Insets ( padding.top, ltr ? padding.left : padding.right, padding.bottom, ltr ? padding.right : padding.left );
+            padding = new Insets (
+                    this.padding.top,
+                    ltr ? this.padding.left : this.padding.right,
+                    this.padding.bottom,
+                    ltr ? this.padding.right : this.padding.left
+            );
         }
         else
         {
-            return null;
+            padding = null;
         }
+        return padding;
     }
 
     /**
@@ -214,6 +221,7 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     @Override
     public int getBaseline ( final C c, final D d, final Rectangle bounds )
     {
+        final int baseline;
         final Rotation rotation = getActualRotation ( c, d );
         if ( rotation == Rotation.none || rotation == Rotation.upsideDown )
         {
@@ -221,22 +229,23 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
             final Rectangle rotated = rotation.transpose ( bounds );
             final Rectangle shrunk = SwingUtils.shrink ( rotated, getPadding ( c, d ) );
 
-            // Retrieving baseline
-            final int baseline = getContentBaseline ( c, d, shrunk );
-
             // Adjusting baseline according to initial bounds
             if ( rotation == Rotation.none )
             {
                 // Return baseline "as is" since there is no rotation
-                return baseline;
+                baseline = getContentBaseline ( c, d, shrunk );
             }
             else
             {
                 // Change baseline relative to the opposite side of the content bounds
-                return bounds.y + bounds.height - ( baseline - rotated.y );
+                baseline = bounds.y + bounds.height - ( getContentBaseline ( c, d, shrunk ) - rotated.y );
             }
         }
-        return -1;
+        else
+        {
+            baseline = -1;
+        }
+        return baseline;
     }
 
     /**
@@ -256,13 +265,18 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     @Override
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final D d )
     {
+        final Component.BaselineResizeBehavior baselineResizeBehavior;
         final Rotation rotation = getActualRotation ( c, d );
         if ( rotation == Rotation.none || rotation == Rotation.upsideDown )
         {
             final Component.BaselineResizeBehavior behavior = getContentBaselineResizeBehavior ( c, d );
-            return rotation == Rotation.none ? behavior : rotation.adjust ( behavior );
+            baselineResizeBehavior = rotation == Rotation.none ? behavior : rotation.adjust ( behavior );
         }
-        return Component.BaselineResizeBehavior.OTHER;
+        else
+        {
+            baselineResizeBehavior = Component.BaselineResizeBehavior.OTHER;
+        }
+        return baselineResizeBehavior;
     }
 
     /**

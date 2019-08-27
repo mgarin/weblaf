@@ -17,12 +17,17 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.language.data.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.compare.Filter;
+import com.alee.utils.swing.WeakComponentDataList;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +50,7 @@ public final class LanguageManager
     /**
      * Simple filter for {@link #isSuportedLocale(Locale)}.
      */
+    @NotNull
     private static final Filter<Locale> SUPPORTED_LOCALES_FILTER = new Filter<Locale> ()
     {
         @Override
@@ -57,12 +63,14 @@ public final class LanguageManager
     /**
      * Globally used {@link Language}.
      */
+    @Nullable
     private static Language language;
 
     /**
      * {@link Dictionary} containing all registered {@link Dictionary}s.
      * It is used as a global caching layer since each {@link Dictionary} has its own cache.
      */
+    @Nullable
     private static Dictionary dictionaries;
 
     /**
@@ -72,7 +80,19 @@ public final class LanguageManager
      * @see #addLanguageListener(LanguageListener)
      * @see #removeLanguageListener(LanguageListener)
      */
+    @NotNull
     private static final List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
+
+    /**
+     * {@link Language} changes listeners registered for specific {@link JComponent}s.
+     *
+     * @see LanguageListener
+     * @see #addLanguageListener(JComponent, LanguageListener)
+     * @see #removeLanguageListener(JComponent, LanguageListener)
+     */
+    @NotNull
+    private static final WeakComponentDataList<JComponent, LanguageListener> componentLanguageListeners =
+            new WeakComponentDataList<JComponent, LanguageListener> ( "LanguageManager.LanguageListener", 5 );
 
     /**
      * {@link Dictionary} changes listeners.
@@ -81,7 +101,19 @@ public final class LanguageManager
      * @see #addDictionaryListener(DictionaryListener)
      * @see #removeDictionaryListener(DictionaryListener)
      */
+    @NotNull
     private static final List<DictionaryListener> dictionaryListeners = new ArrayList<DictionaryListener> ();
+
+    /**
+     * {@link Dictionary} changes listeners registered for specific {@link JComponent}s.
+     *
+     * @see LanguageListener
+     * @see #addDictionaryListener(JComponent, DictionaryListener)
+     * @see #removeDictionaryListener(JComponent, DictionaryListener)
+     */
+    @NotNull
+    private static final WeakComponentDataList<JComponent, DictionaryListener> componentDictionaryListeners =
+            new WeakComponentDataList<JComponent, DictionaryListener> ( "LanguageManager.DictionaryListener", 5 );
 
     /**
      * Manager initialization mark.
@@ -129,12 +161,32 @@ public final class LanguageManager
     }
 
     /**
+     * Returns {@link Dictionary} containing all registered {@link Dictionary}s.
+     *
+     * @return {@link Dictionary} containing all registered {@link Dictionary}s
+     */
+    @NotNull
+    public static Dictionary getDictionaries ()
+    {
+        // Must be initialized
+        mustBeInitialized ();
+
+        // Ensure global dictionary is available
+        if ( dictionaries == null )
+        {
+            throw new LanguageException ( "LanguageManager failed to initialized correctly" );
+        }
+        return dictionaries;
+    }
+
+    /**
      * Returns {@link Language} title based on {@link TranslationInformation} provided within added {@link Dictionary}s.
      *
      * @param language {@link Language} to get title for
      * @return {@link Language} title based on {@link TranslationInformation} provided within added {@link Dictionary}s
      */
-    public static String getLanguageTitle ( final Language language )
+    @NotNull
+    public static String getLanguageTitle ( @NotNull final Language language )
     {
         return getLocaleTitle ( language.getLocale () );
     }
@@ -146,13 +198,14 @@ public final class LanguageManager
      * @param locale {@link Locale} to get title for
      * @return {@link Locale} title based on {@link TranslationInformation} provided within added {@link Dictionary}s
      */
-    public static String getLocaleTitle ( final Locale locale )
+    @NotNull
+    public static String getLocaleTitle ( @NotNull final Locale locale )
     {
         // Must be initialized
         mustBeInitialized ();
 
         // Calculating preferred locale title
-        final TranslationInformation info = dictionaries.getTranslation ( locale );
+        final TranslationInformation info = getDictionaries ().getTranslation ( locale );
         return info != null ? info.getTitle () : LanguageUtils.toString ( locale );
     }
 
@@ -161,13 +214,14 @@ public final class LanguageManager
      *
      * @return {@link List} of all {@link Locale} from all {@link Dictionary}s
      */
+    @NotNull
     public synchronized List<Locale> getAllLocales ()
     {
         // Must be initialized
         mustBeInitialized ();
 
         // Collecting all locales
-        return dictionaries.getAllLocales ();
+        return getDictionaries ().getAllLocales ();
     }
 
     /**
@@ -178,13 +232,14 @@ public final class LanguageManager
      *
      * @return {@link List} of {@link Locale}s supported by all {@link Dictionary}s
      */
+    @NotNull
     public static List<Locale> getSupportedLocales ()
     {
         // Must be initialized
         mustBeInitialized ();
 
         // Collecting all supported locales
-        return dictionaries.getSupportedLocales ();
+        return getDictionaries ().getSupportedLocales ();
     }
 
     /**
@@ -193,7 +248,8 @@ public final class LanguageManager
      * @param locales {@link List} of {@link Locale}s to filter
      * @return filtered {@link List} of {@link Locale}s that are supported by all {@link Dictionary}s
      */
-    public static List<Locale> getSupportedLocales ( final List<Locale> locales )
+    @NotNull
+    public static List<Locale> getSupportedLocales ( @NotNull final List<Locale> locales )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -208,7 +264,7 @@ public final class LanguageManager
      * @param language {@link Language}
      * @return {@code true} if specified {@link Language} is supported, {@code false} otherwise
      */
-    public static boolean isSuportedLanguage ( final Language language )
+    public static boolean isSuportedLanguage ( @NotNull final Language language )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -223,7 +279,7 @@ public final class LanguageManager
      * @param locale {@link Locale}
      * @return {@code true} if specified {@link Locale} is supported, {@code false} otherwise
      */
-    public static boolean isSuportedLocale ( final Locale locale )
+    public static boolean isSuportedLocale ( @NotNull final Locale locale )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -231,7 +287,7 @@ public final class LanguageManager
         // Checking locale support by language
         // It is important to exclude country from the check
         boolean supported = false;
-        for ( final Locale slocale : dictionaries.getSupportedLocales () )
+        for ( final Locale slocale : getSupportedLocales () )
         {
             if ( Objects.equals ( locale.getLanguage (), slocale.getLanguage () ) )
             {
@@ -249,12 +305,12 @@ public final class LanguageManager
      *
      * @param dictionary dictionary to add
      */
-    public static void addDictionary ( final Dictionary dictionary )
+    public static void addDictionary ( @NotNull final Dictionary dictionary )
     {
         // Must be initialized
         mustBeInitialized ();
 
-        dictionaries.addDictionary ( dictionary );
+        getDictionaries ().addDictionary ( dictionary );
         fireDictionaryAdded ( dictionary );
     }
 
@@ -264,12 +320,12 @@ public final class LanguageManager
      *
      * @param dictionary dictionary to remove
      */
-    public static void removeDictionary ( final Dictionary dictionary )
+    public static void removeDictionary ( @NotNull final Dictionary dictionary )
     {
         // Must be initialized
         mustBeInitialized ();
 
-        dictionaries.removeDictionary ( dictionary );
+        getDictionaries ().removeDictionary ( dictionary );
         fireDictionaryRemoved ( dictionary );
     }
 
@@ -282,22 +338,9 @@ public final class LanguageManager
         // Must be initialized
         mustBeInitialized ();
 
-        dictionaries.clearRecords ();
-        dictionaries.clearDictionaries ();
+        getDictionaries ().clearRecords ();
+        getDictionaries ().clearDictionaries ();
         fireDictionariesCleared ();
-    }
-
-    /**
-     * Returns {@link Dictionary} containing all registered {@link Dictionary}s.
-     *
-     * @return {@link Dictionary} containing all registered {@link Dictionary}s
-     */
-    public static Dictionary getDictionaries ()
-    {
-        // Must be initialized
-        mustBeInitialized ();
-
-        return dictionaries;
     }
 
     /**
@@ -305,6 +348,7 @@ public final class LanguageManager
      *
      * @return currently used {@link Locale}
      */
+    @NotNull
     public static Locale getLocale ()
     {
         // Must be initialized
@@ -319,7 +363,7 @@ public final class LanguageManager
      * @param locale {@link Locale} to check
      * @return true if the specified {@link Locale} is currently used, false otherwise
      */
-    public static boolean isCurrentLocale ( final Locale locale )
+    public static boolean isCurrentLocale ( @NotNull final Locale locale )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -332,16 +376,10 @@ public final class LanguageManager
      *
      * @param locale {@link Locale} to use
      */
-    public static void setLocale ( final Locale locale )
+    public static void setLocale ( @NotNull final Locale locale )
     {
         // Must be initialized
         mustBeInitialized ();
-
-        // Locale must be specified
-        if ( locale == null )
-        {
-            throw new LanguageException ( "Locale must be specified" );
-        }
 
         // Updating language
         setLanguage ( new Language ( locale ) );
@@ -352,6 +390,7 @@ public final class LanguageManager
      *
      * @return currently used {@link Language}
      */
+    @NotNull
     public static Language getLanguage ()
     {
         // Must be initialized
@@ -392,7 +431,7 @@ public final class LanguageManager
      * @param language {@link Language} to check
      * @return true if the specified {@link Language} is currently used, false otherwise
      */
-    public static boolean isCurrentLanguage ( final Language language )
+    public static boolean isCurrentLanguage ( @NotNull final Language language )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -406,22 +445,10 @@ public final class LanguageManager
      *
      * @param language {@link Language} to use
      */
-    public static void setLanguage ( final Language language )
+    public static void setLanguage ( @NotNull final Language language )
     {
         // Must be initialized
         mustBeInitialized ();
-
-        // Locale must be specified
-        if ( language == null )
-        {
-            throw new LanguageException ( "Language must be specified" );
-        }
-
-        // Locale must be specified
-        if ( language.getLocale () == null )
-        {
-            throw new LanguageException ( "Locale must be specified" );
-        }
 
         // Ignore incorrect and pointless changes
         if ( !isCurrentLanguage ( language ) )
@@ -442,7 +469,7 @@ public final class LanguageManager
      *
      * @param listener {@link LanguageListener} to add
      */
-    public static void addLanguageListener ( final LanguageListener listener )
+    public static void addLanguageListener ( @NotNull final LanguageListener listener )
     {
         synchronized ( languageListeners )
         {
@@ -455,7 +482,7 @@ public final class LanguageManager
      *
      * @param listener {@link LanguageListener} to remove
      */
-    public static void removeLanguageListener ( final LanguageListener listener )
+    public static void removeLanguageListener ( @NotNull final LanguageListener listener )
     {
         synchronized ( languageListeners )
         {
@@ -464,13 +491,43 @@ public final class LanguageManager
     }
 
     /**
+     * Adds new {@link LanguageListener}.
+     *
+     * @param component {@link JComponent} to add {@link LanguageListener} for
+     * @param listener  {@link LanguageListener} to add
+     */
+    public static void addLanguageListener ( @NotNull final JComponent component, @NotNull final LanguageListener listener )
+    {
+        componentLanguageListeners.add ( component, listener );
+    }
+
+    /**
+     * Removes {@link LanguageListener}.
+     *
+     * @param component {@link JComponent} to remove {@link LanguageListener} from
+     * @param listener  {@link LanguageListener} to remove
+     */
+    public static void removeLanguageListener ( @NotNull final JComponent component, @NotNull final LanguageListener listener )
+    {
+        componentLanguageListeners.remove ( component, listener );
+    }
+
+    /**
      * Fires {@link Language} changed event whenever current {@link Language} changes.
      *
      * @param oldLanguage old {@link Language}
      * @param newLanguage new {@link Language}
      */
-    private static void fireLanguageChanged ( final Language oldLanguage, final Language newLanguage )
+    private static void fireLanguageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
     {
+        componentLanguageListeners.forEachData ( new BiConsumer<JComponent, LanguageListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final LanguageListener listener )
+            {
+                listener.languageChanged ( oldLanguage, newLanguage );
+            }
+        } );
         synchronized ( languageListeners )
         {
             for ( final LanguageListener listener : CollectionUtils.copy ( languageListeners ) )
@@ -485,7 +542,7 @@ public final class LanguageManager
      *
      * @param listener {@link DictionaryListener} to add
      */
-    public static void addDictionaryListener ( final DictionaryListener listener )
+    public static void addDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         synchronized ( dictionaryListeners )
         {
@@ -498,7 +555,7 @@ public final class LanguageManager
      *
      * @param listener {@link DictionaryListener} to remove
      */
-    public static void removeDictionaryListener ( final DictionaryListener listener )
+    public static void removeDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         synchronized ( dictionaryListeners )
         {
@@ -507,12 +564,42 @@ public final class LanguageManager
     }
 
     /**
+     * Adds new {@link LanguageListener}.
+     *
+     * @param component {@link JComponent} to add {@link LanguageListener} for
+     * @param listener  {@link LanguageListener} to add
+     */
+    public static void addDictionaryListener ( @NotNull final JComponent component, @NotNull final DictionaryListener listener )
+    {
+        componentDictionaryListeners.add ( component, listener );
+    }
+
+    /**
+     * Removes {@link LanguageListener}.
+     *
+     * @param component {@link JComponent} to remove {@link LanguageListener} from
+     * @param listener  {@link LanguageListener} to remove
+     */
+    public static void removeDictionaryListener ( @NotNull final JComponent component, @NotNull final DictionaryListener listener )
+    {
+        componentDictionaryListeners.remove ( component, listener );
+    }
+
+    /**
      * Fires {@link Dictionary} added event whenever new {@link Dictionary} is added.
      *
      * @param dictionary new {@link Dictionary}
      */
-    private static void fireDictionaryAdded ( final Dictionary dictionary )
+    private static void fireDictionaryAdded ( @NotNull final Dictionary dictionary )
     {
+        componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final DictionaryListener listener )
+            {
+                listener.dictionaryAdded ( dictionary );
+            }
+        } );
         synchronized ( dictionaryListeners )
         {
             for ( final DictionaryListener listener : CollectionUtils.copy ( dictionaryListeners ) )
@@ -527,8 +614,16 @@ public final class LanguageManager
      *
      * @param dictionary removed {@link Dictionary}
      */
-    private static void fireDictionaryRemoved ( final Dictionary dictionary )
+    private static void fireDictionaryRemoved ( @NotNull final Dictionary dictionary )
     {
+        componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final DictionaryListener listener )
+            {
+                listener.dictionaryRemoved ( dictionary );
+            }
+        } );
         synchronized ( dictionaryListeners )
         {
             for ( final DictionaryListener listener : CollectionUtils.copy ( dictionaryListeners ) )
@@ -543,6 +638,14 @@ public final class LanguageManager
      */
     private static void fireDictionariesCleared ()
     {
+        componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final DictionaryListener listener )
+            {
+                listener.dictionariesCleared ();
+            }
+        } );
         synchronized ( dictionaryListeners )
         {
             for ( final DictionaryListener listener : CollectionUtils.copy ( dictionaryListeners ) )

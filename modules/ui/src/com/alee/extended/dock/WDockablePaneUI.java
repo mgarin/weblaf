@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -39,6 +40,7 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
      */
     protected C pane;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -46,7 +48,7 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving dockable pane reference
         pane = ( C ) c;
@@ -59,7 +61,7 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();

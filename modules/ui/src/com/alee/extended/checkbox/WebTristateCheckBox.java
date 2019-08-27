@@ -17,6 +17,8 @@
 
 package com.alee.extended.checkbox;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.checkbox.CheckState;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
@@ -371,6 +373,7 @@ public class WebTristateCheckBox extends JCheckBox
         UILanguageManager.registerInitialLanguage ( this, text );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
@@ -492,6 +495,7 @@ public class WebTristateCheckBox extends JCheckBox
         setState ( CheckState.unchecked );
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -564,6 +568,7 @@ public class WebTristateCheckBox extends JCheckBox
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -582,6 +587,7 @@ public class WebTristateCheckBox extends JCheckBox
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -601,11 +607,12 @@ public class WebTristateCheckBox extends JCheckBox
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -625,7 +632,7 @@ public class WebTristateCheckBox extends JCheckBox
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

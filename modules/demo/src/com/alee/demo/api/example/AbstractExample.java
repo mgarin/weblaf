@@ -17,6 +17,7 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.wiki.NoWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.demo.content.ExamplesManager;
@@ -44,24 +45,28 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected static final String commentStart = "/*";
     protected static final String commentEnd = "*/\n\n";
 
+    @NotNull
     @Override
     public Icon getIcon ()
     {
         return loadIcon ( getId () + ".png" );
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new NoWikiPage ();
     }
 
+    @NotNull
     @Override
-    public String getStyleCode ( final Skin skin )
+    public String getStyleCode ( @NotNull final Skin skin )
     {
         return "";
     }
 
+    @NotNull
     @Override
     public String getSourceCode ()
     {
@@ -82,6 +87,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         return source;
     }
 
+    @NotNull
     @Override
     public JComponent createContent ()
     {
@@ -143,6 +149,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      *
      * @return preview toolbar
      */
+    @NotNull
     protected JComponent createPreviewToolBar ()
     {
         final WebToolBar toolbar = new WebToolBar ( DemoStyles.exampleToolbar );
@@ -156,5 +163,6 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      *
      * @return example content component
      */
+    @NotNull
     protected abstract JComponent createContentImpl ();
 }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.laf.label.LabelPainter;
 import com.alee.laf.label.WLabelUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbLabelPainter<C extends JLabel, U extends WLabelUI<C>, D extends IDecoration<C, D>>
         extends LabelPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

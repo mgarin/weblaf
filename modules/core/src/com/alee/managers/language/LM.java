@@ -17,6 +17,8 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 import com.alee.managers.language.data.Record;
 import com.alee.managers.language.data.Text;
@@ -38,12 +40,14 @@ public final class LM
      * Empty language data.
      * Exists for methods usage convenience.
      */
+    @NotNull
     public static final Object[] emptyData = new Object[ 0 ];
 
     /**
      * {@link Supplier} for universal {@link Language}.
      * It can be replaced with any {@link Supplier} providing preferred {@link Language} instance.
      */
+    @NotNull
     private static Supplier<Language> languageSupplier = new Supplier<Language> ()
     {
         @Override
@@ -58,6 +62,7 @@ public final class LM
      *
      * @return {@link Supplier} for universal {@link Language}
      */
+    @NotNull
     public static Supplier<Language> getLanguageSupplier ()
     {
         return languageSupplier;
@@ -68,7 +73,7 @@ public final class LM
      *
      * @param supplier {@link Supplier} for universal {@link Language}
      */
-    public static void setLanguageSupplier ( final Supplier<Language> supplier )
+    public static void setLanguageSupplier ( @NotNull final Supplier<Language> supplier )
     {
         languageSupplier = supplier;
     }
@@ -78,6 +83,7 @@ public final class LM
      *
      * @return specific {@link Language} instance currently used by this bridge class
      */
+    @NotNull
     public static Language getLanguage ()
     {
         return languageSupplier.get ();
@@ -88,6 +94,7 @@ public final class LM
      *
      * @return {@link Locale} from {@link Language} instance currently used by this bridge class
      */
+    @NotNull
     public static Locale getLocale ()
     {
         return getLanguage ().getLocale ();
@@ -100,7 +107,8 @@ public final class LM
      * @param data language data
      * @return text for the specified language key from this {@link Language}
      */
-    public static String get ( final String key, final Object... data )
+    @NotNull
+    public static String get ( @Nullable final String key, @NotNull final Object... data )
     {
         return getLanguage ().get ( key, data );
     }
@@ -113,7 +121,8 @@ public final class LM
      * @param data  language data
      * @return text for the specified language key and state from this {@link Language}
      */
-    public static String getState ( final String key, final String state, final Object... data )
+    @NotNull
+    public static String getState ( @Nullable final String key, @Nullable final String state, @NotNull final Object... data )
     {
         return getLanguage ().getState ( key, state, data );
     }
@@ -124,7 +133,7 @@ public final class LM
      * @param key language key to retrieve mnemonic for
      * @return mnemonic for the specified language key from this {@link Language}
      */
-    public static int getMnemonic ( final String key )
+    public static int getMnemonic ( @Nullable final String key )
     {
         return getLanguage ().getMnemonic ( key );
     }
@@ -136,7 +145,7 @@ public final class LM
      * @param state {@link Text} state
      * @return mnemonic for the specified language key from this {@link Language}
      */
-    public static int getMnemonic ( final String key, final String state )
+    public static int getMnemonic ( @Nullable final String key, @Nullable final String state )
     {
         return getLanguage ().getMnemonic ( key, state );
     }
@@ -148,7 +157,7 @@ public final class LM
      * @param key language key to check
      * @return {@code true} if specified language key exists in default {@link Language}, {@code false} otherwise
      */
-    public static boolean contains ( final String key )
+    public static boolean contains ( @Nullable final String key )
     {
         return getLanguage ().contains ( key );
     }
@@ -159,7 +168,7 @@ public final class LM
      * @param key language key to check
      * @return {@code true} if at least single {@link Text} exists for specified language key, {@code false} otherwise
      */
-    public static boolean containsText ( final String key )
+    public static boolean containsText ( @Nullable final String key )
     {
         return getLanguage ().containsText ( key );
     }
@@ -171,7 +180,7 @@ public final class LM
      * @param state {@link Text} state
      * @return {@code true} if at least single {@link Text} exists for specified language key and state, {@code false} otherwise
      */
-    public static boolean containsText ( final String key, final String state )
+    public static boolean containsText ( @Nullable final String key, @Nullable final String state )
     {
         return getLanguage ().containsText ( key, state );
     }

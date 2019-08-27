@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.BiFunction;
 import com.alee.api.jdk.BiPredicate;
@@ -47,12 +49,14 @@ public class WeakComponentData<C extends JComponent, D>
      * Key used to place data within {@link JComponent} using {@link JComponent#putClientProperty(Object, Object)} method.
      * Make sure that every manager uses its own unique keys for registering different data to avoid unwanted overwrites.
      */
+    @NotNull
     protected final String key;
 
     /**
      * {@link Set} of {@link JComponent}s that have data of this kind stored within them.
      * {@link WeakHashSet} implementation is used to avoid hard component references that could cause memory leaks.
      */
+    @NotNull
     protected final Set<C> components;
 
     /**
@@ -61,7 +65,7 @@ public class WeakComponentData<C extends JComponent, D>
      * @param key             key used to place data within {@link JComponent}
      * @param initialCapacity initial capacity for the {@link Set} of {@link JComponent}s
      */
-    public WeakComponentData ( final String key, final int initialCapacity )
+    public WeakComponentData ( @NotNull final String key, final int initialCapacity )
     {
         super ();
         this.key = key;
@@ -73,6 +77,7 @@ public class WeakComponentData<C extends JComponent, D>
      *
      * @return {@link Set} of {@link JComponent}s that have data of this kind stored within them
      */
+    @NotNull
     public synchronized Set<C> components ()
     {
         return new ImmutableSet<C> ( components );
@@ -94,7 +99,7 @@ public class WeakComponentData<C extends JComponent, D>
      * @param component {@link JComponent} to check data in
      * @return {@code true} if specified {@link JComponent} has data of this kind stored within, {@code false} otherwise
      */
-    public synchronized boolean contains ( final C component )
+    public synchronized boolean contains ( @NotNull final C component )
     {
         return components.contains ( component );
     }
@@ -106,7 +111,8 @@ public class WeakComponentData<C extends JComponent, D>
      * @param component {@link JComponent} to retrieve data from
      * @return data stored in the {@link JComponent}
      */
-    public synchronized D get ( final C component )
+    @Nullable
+    public synchronized D get ( @NotNull final C component )
     {
         return ( D ) component.getClientProperty ( key );
     }
@@ -119,7 +125,8 @@ public class WeakComponentData<C extends JComponent, D>
      * @param defaultData {@link Function} that creates default data in case it is missing
      * @return data stored in the {@link JComponent}
      */
-    public synchronized D get ( final C component, final Function<C, D> defaultData )
+    @NotNull
+    public synchronized D get ( @NotNull final C component, @NotNull final Function<C, D> defaultData )
     {
         // Trying to retrieve existing data
         D data = get ( component );
@@ -141,7 +148,9 @@ public class WeakComponentData<C extends JComponent, D>
      * @param defaultData  {@link Function} that creates default data in case it is missing
      * @return modified data from the {@link JComponent}
      */
-    public synchronized D modify ( final C component, final BiFunction<C, D, D> modifiedData, final Function<C, D> defaultData )
+    @NotNull
+    public synchronized D modify ( @NotNull final C component, @NotNull final BiFunction<C, D, D> modifiedData,
+                                   @NotNull final Function<C, D> defaultData )
     {
         // Trying to retrieve existing data
         D data = get ( component );
@@ -168,7 +177,8 @@ public class WeakComponentData<C extends JComponent, D>
      * @param data      data to store
      * @return old data
      */
-    public synchronized D set ( final C component, final D data )
+    @Nullable
+    public synchronized D set ( @NotNull final C component, @Nullable final D data )
     {
         // Saving old data
         final D oldData = get ( component );
@@ -199,7 +209,8 @@ public class WeakComponentData<C extends JComponent, D>
      * @param oldDataConsumer {@link BiConsumer} for previous data
      * @return old data
      */
-    public synchronized D set ( final C component, final D data, final BiConsumer<C, D> oldDataConsumer )
+    @Nullable
+    public synchronized D set ( @NotNull final C component, @Nullable final D data, @NotNull final BiConsumer<C, D> oldDataConsumer )
     {
         // Processing old data
         final D oldData;
@@ -236,7 +247,8 @@ public class WeakComponentData<C extends JComponent, D>
      * @param component {@link JComponent} to clear stored data for
      * @return old data
      */
-    public synchronized D clear ( final C component )
+    @Nullable
+    public synchronized D clear ( @NotNull final C component )
     {
         // Saving old data
         final D oldData = get ( component );
@@ -256,7 +268,8 @@ public class WeakComponentData<C extends JComponent, D>
      * @param removedDataConsumer {@link BiConsumer} for removed data
      * @return old data
      */
-    public synchronized D clear ( final C component, final BiConsumer<C, D> removedDataConsumer )
+    @Nullable
+    public synchronized D clear ( @NotNull final C component, @NotNull final BiConsumer<C, D> removedDataConsumer )
     {
         final D oldData;
         if ( contains ( component ) )
@@ -283,7 +296,7 @@ public class WeakComponentData<C extends JComponent, D>
      *
      * @param consumer {@link BiConsumer} for {@link JComponent} and data
      */
-    public synchronized void forEach ( final BiConsumer<C, D> consumer )
+    public synchronized void forEach ( @NotNull final BiConsumer<C, D> consumer )
     {
         for ( final C component : components () )
         {
@@ -301,17 +314,18 @@ public class WeakComponentData<C extends JComponent, D>
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if at least one of the stored data pieces is accepted by specified {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean anyMatch ( final BiPredicate<C, D> predicate )
+    public synchronized boolean anyMatch ( @NotNull final BiPredicate<C, D> predicate )
     {
+        boolean anyMatch = false;
         for ( final C component : components () )
         {
-            // Testing predicate
             if ( predicate.test ( component, get ( component ) ) )
             {
-                return true;
+                anyMatch = true;
+                break;
             }
         }
-        return false;
+        return anyMatch;
     }
 
     /**
@@ -320,17 +334,18 @@ public class WeakComponentData<C extends JComponent, D>
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if all of the stored data pieces are accepted by specified {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean allMatch ( final BiPredicate<C, D> predicate )
+    public synchronized boolean allMatch ( @NotNull final BiPredicate<C, D> predicate )
     {
+        boolean allMatch = true;
         for ( final C component : components () )
         {
-            // Testing predicate
             if ( !predicate.test ( component, get ( component ) ) )
             {
-                return false;
+                allMatch = false;
+                break;
             }
         }
-        return true;
+        return allMatch;
     }
 
     /**
@@ -339,16 +354,17 @@ public class WeakComponentData<C extends JComponent, D>
      * @param predicate {@link BiPredicate} for {@link JComponent} and data
      * @return {@code true} if none of the stored data pieces are accepted by specified {@link BiPredicate}, {@code false} otherwise
      */
-    public synchronized boolean noneMatch ( final BiPredicate<C, D> predicate )
+    public synchronized boolean noneMatch ( @NotNull final BiPredicate<C, D> predicate )
     {
+        boolean noneMatch = true;
         for ( final C component : components () )
         {
-            // Testing predicate
             if ( predicate.test ( component, get ( component ) ) )
             {
-                return false;
+                noneMatch = false;
+                break;
             }
         }
-        return true;
+        return noneMatch;
     }
 }

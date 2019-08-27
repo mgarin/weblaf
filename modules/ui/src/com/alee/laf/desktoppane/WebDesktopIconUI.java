@@ -17,24 +17,27 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicDesktopIconUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link JInternalFrame.JDesktopIcon} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebDesktopIconUI<C extends JInternalFrame.JDesktopIcon> extends WDesktopIconUI<C>
+        implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -55,7 +58,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -64,7 +67,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( desktopIcon );
@@ -72,60 +75,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
         super.uninstallUI ( c );
     }
 
-    @Override
-    protected void installDefaults ()
-    {
-        //
-    }
-
-    @Override
-    protected void uninstallDefaults ()
-    {
-        //
-    }
-
-    @Override
-    protected void installComponents ()
-    {
-        iconPane = new WebInternalFrameTitlePane ( desktopIcon, frame );
-        desktopIcon.setLayout ( new BorderLayout () );
-        desktopIcon.add ( iconPane, BorderLayout.CENTER );
-    }
-
-    @Override
-    protected void uninstallComponents ()
-    {
-        desktopIcon.remove ( iconPane );
-        desktopIcon.setLayout ( null );
-        iconPane = null;
-    }
-
-    @Override
-    protected void installListeners ()
-    {
-        // Installing default listeners
-        super.installListeners ();
-
-        // Instaling custom listeners
-        if ( iconPane instanceof WebInternalFrameTitlePane )
-        {
-            ( ( WebInternalFrameTitlePane ) iconPane ).install ();
-        }
-    }
-
-    @Override
-    protected void uninstallListeners ()
-    {
-        // Uninstaling custom listeners
-        if ( iconPane instanceof WebInternalFrameTitlePane )
-        {
-            ( ( WebInternalFrameTitlePane ) iconPane ).uninstall ();
-        }
-
-        // Uninstalling default listeners
-        super.uninstallListeners ();
-    }
-
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -144,6 +94,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
         PainterSupport.setShapeDetectionEnabled ( desktopIcon, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -151,11 +102,12 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( desktopIcon, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -163,7 +115,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( desktopIcon, padding );
     }
@@ -186,7 +138,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeSupport
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( desktopIcon, new Consumer<IDesktopIconPainter> ()
+        PainterSupport.setPainter ( desktopIcon, this, new Consumer<IDesktopIconPainter> ()
         {
             @Override
             public void accept ( final IDesktopIconPainter newPainter )

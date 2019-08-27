@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
@@ -61,7 +62,7 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
     @XStreamAsAttribute
     protected Color color;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

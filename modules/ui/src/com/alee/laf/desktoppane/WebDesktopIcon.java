@@ -17,6 +17,8 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.DictionaryListener;
 import com.alee.managers.language.LanguageEventMethods;
@@ -47,6 +49,7 @@ import java.awt.event.MouseAdapter;
  *
  * @author Mikle Garin
  * @see JInternalFrame.JDesktopIcon
+ * @see WDesktopIconUI
  * @see WebDesktopIconUI
  * @see DesktopIconPainter
  */
@@ -75,12 +78,14 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.desktopicon;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -153,6 +158,7 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -171,6 +177,7 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -190,11 +197,12 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -214,7 +222,7 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }
@@ -606,20 +614,20 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
     /**
      * Returns the look and feel (LaF) object that renders this component.
      *
-     * @return the {@link WebDesktopIconUI} object that renders this component
+     * @return the {@link WDesktopIconUI} object that renders this component
      */
     @Override
-    public WebDesktopIconUI getUI ()
+    public WDesktopIconUI getUI ()
     {
-        return ( WebDesktopIconUI ) super.getUI ();
+        return ( WDesktopIconUI ) super.getUI ();
     }
 
     /**
      * Sets the LaF object that renders this component.
      *
-     * @param ui {@link WebDesktopIconUI}
+     * @param ui {@link WDesktopIconUI}
      */
-    public void setUI ( final WebDesktopIconUI ui )
+    public void setUI ( final WDesktopIconUI ui )
     {
         super.setUI ( ui );
     }

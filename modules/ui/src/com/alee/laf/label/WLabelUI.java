@@ -17,6 +17,7 @@
 
 package com.alee.laf.label;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -36,6 +37,7 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
      */
     protected C label;
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {
@@ -43,9 +45,9 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
-        // Saving label reference
+        // Saving component reference
         label = ( C ) c;
 
         // Installing default component settings
@@ -56,7 +58,7 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();
@@ -64,7 +66,7 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
         // Uninstalling default component settings
         uninstallDefaults ();
 
-        // Removing label reference
+        // Removing component reference
         label = null;
     }
 

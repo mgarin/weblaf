@@ -17,6 +17,8 @@
 
 package com.alee.laf.window;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
@@ -868,12 +870,14 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
         getUI ().setDisplayMenuBar ( display );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return JDialog.isDefaultLookAndFeelDecorated () ? StyleId.dialogDecorated : StyleId.dialog;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -946,6 +950,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
         return StyleManager.resetCustomPainter ( getRootPane () );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -965,7 +970,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( getRootPane (), padding );
     }
@@ -1192,6 +1197,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
             super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
         }
 
+        @NotNull
         @Override
         public StyleId getDefaultStyleId ()
         {

@@ -18,6 +18,7 @@
 package com.alee.demo.content.label;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.label.WebHotkeyLabel;
 import com.alee.managers.hotkey.Hotkey;
@@ -33,25 +34,28 @@ import java.util.List;
  */
 public class WebHotkeyLabelExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webhotkeylabel";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "hotkeylabel";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

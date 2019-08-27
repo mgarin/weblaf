@@ -17,6 +17,7 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.collapsible.WebCollapsiblePaneLU;
@@ -210,7 +211,7 @@ public final class UILanguageManager
             LanguageManager.addLanguageListener ( new LanguageListener ()
             {
                 @Override
-                public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+                public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
                 {
                     // Updating components orientation
                     final ComponentOrientation oo = ComponentOrientation.getOrientation ( oldLanguage.getLocale () );
@@ -230,7 +231,7 @@ public final class UILanguageManager
             LanguageManager.addDictionaryListener ( new DictionaryListener ()
             {
                 @Override
-                public void dictionaryAdded ( final Dictionary dictionary )
+                public void dictionaryAdded ( @NotNull final Dictionary dictionary )
                 {
                     // Updating relevant components
                     updateComponents ( dictionary.getKeys () );
@@ -240,7 +241,7 @@ public final class UILanguageManager
                 }
 
                 @Override
-                public void dictionaryRemoved ( final Dictionary dictionary )
+                public void dictionaryRemoved ( @NotNull final Dictionary dictionary )
                 {
                     // Updating relevant components
                     updateComponents ( dictionary.getKeys () );

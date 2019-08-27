@@ -18,6 +18,7 @@
 package com.alee.demo.content.container;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Orientation;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
@@ -41,31 +42,35 @@ import java.util.List;
  */
 public class WebMultiSplitPaneExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "multisplitpane";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "multisplitpane";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new WebLafWikiPage ( "How to use WebMultiSplitPane" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

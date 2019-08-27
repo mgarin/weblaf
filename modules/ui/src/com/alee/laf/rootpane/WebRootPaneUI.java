@@ -17,6 +17,8 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Function;
@@ -28,6 +30,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.window.WebWindow;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -166,6 +169,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -184,6 +188,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         PainterSupport.setShapeDetectionEnabled ( root, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -191,11 +196,12 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( root, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -203,7 +209,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( root, padding );
     }
@@ -226,7 +232,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( root, new Consumer<IRootPanePainter> ()
+        PainterSupport.setPainter ( root, this, new Consumer<IRootPanePainter> ()
         {
             @Override
             public void accept ( final IRootPanePainter newPainter )
@@ -236,11 +242,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         }, this.painter, painter, IRootPanePainter.class, AdaptiveRootPanePainter.class );
     }
 
-    /**
-     * Returns whether or not this {@link WRootPaneUI} provides custom window decoration.
-     *
-     * @return {@code true} if this {@link WRootPaneUI} provides custom window decoration, {@code false} otherwise
-     */
+    @Override
     public boolean isDecorated ()
     {
         return painter != null && painter.isDecorated ();
@@ -423,7 +425,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                 updateButtons ();
             }
         };
-        window.addPropertyChangeListener ( WebLookAndFeel.RESIZABLE_PROPERTY, resizableChangeListener );
+        window.addPropertyChangeListener ( WebWindow.RESIZABLE_PROPERTY, resizableChangeListener );
 
         // Window resize behavior
         // todo Should this be tied to painter instead?
@@ -433,6 +435,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
             public CompassDirection apply ( final Point p )
             {
                 // Ensure dialog or frame is resizable
+                final CompassDirection direction;
                 if ( dialog != null && dialog.isResizable () || frame != null && frame.isResizable () )
                 {
                     // Ensure that point is outside of inner bounds
@@ -449,44 +452,60 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                             {
                                 if ( p.x < inner.x )
                                 {
-                                    return CompassDirection.northWest;
+                                    direction = CompassDirection.northWest;
                                 }
                                 else if ( p.x > inner.x + inner.width )
                                 {
-                                    return CompassDirection.northEast;
+                                    direction = CompassDirection.northEast;
                                 }
                                 else
                                 {
-                                    return CompassDirection.north;
+                                    direction = CompassDirection.north;
                                 }
                             }
                             else if ( p.y > inner.y + inner.height )
                             {
                                 if ( p.x < inner.x )
                                 {
-                                    return CompassDirection.southWest;
+                                    direction = CompassDirection.southWest;
                                 }
                                 else if ( p.x > inner.x + inner.width )
                                 {
-                                    return CompassDirection.southEast;
+                                    direction = CompassDirection.southEast;
                                 }
                                 else
                                 {
-                                    return CompassDirection.south;
+                                    direction = CompassDirection.south;
                                 }
                             }
                             else if ( p.x < inner.x )
                             {
-                                return CompassDirection.west;
+                                direction = CompassDirection.west;
                             }
                             else if ( p.x > inner.x + inner.width )
                             {
-                                return CompassDirection.east;
+                                direction = CompassDirection.east;
+                            }
+                            else
+                            {
+                                direction = null;
                             }
                         }
+                        else
+                        {
+                            direction = null;
+                        }
+                    }
+                    else
+                    {
+                        direction = null;
                     }
                 }
-                return null;
+                else
+                {
+                    direction = null;
+                }
+                return direction;
             }
         } );
         resizeBehavior.install ();
@@ -499,7 +518,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     {
         resizeBehavior.uninstall ();
         resizeBehavior = null;
-        window.removePropertyChangeListener ( WebLookAndFeel.RESIZABLE_PROPERTY, resizableChangeListener );
+        window.removePropertyChangeListener ( WebWindow.RESIZABLE_PROPERTY, resizableChangeListener );
         resizableChangeListener = null;
     }
 
@@ -614,11 +633,11 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                 public void propertyChange ( final PropertyChangeEvent evt )
                 {
                     final String property = evt.getPropertyName ();
-                    if ( Objects.equals ( property, WebLookAndFeel.ICON_IMAGE_PROPERTY ) )
+                    if ( Objects.equals ( property, WebWindow.ICON_IMAGE_PROPERTY ) )
                     {
                         titleIcon.setImage ( getWindowImage () );
                     }
-                    else if ( Objects.equals ( property, WebLookAndFeel.TITLE_PROPERTY ) )
+                    else if ( Objects.equals ( property, WebWindow.TITLE_PROPERTY ) )
                     {
                         titleLabel.setText ( getWindowTitle () );
                     }
@@ -660,150 +679,147 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      */
     protected void updateButtons ()
     {
-        // Ignore if not decorated
-        if ( !isDecorated () || !isComponentInstallAllowed () )
+        if ( isDecorated () && isComponentInstallAllowed () )
         {
-            return;
-        }
-
-        // Creating new buttons panel
-        if ( buttonsPanel == null )
-        {
-            buttonsPanel = new GroupPane ( StyleId.rootpaneButtonsPanel.at ( root ) );
-            buttonsPanel.setPaintSides ( false, true, true, true );
-            root.add ( buttonsPanel );
-        }
-
-        // Minimize button
-        if ( displayMinimizeButton && isFrame () )
-        {
-            if ( minimizeButton == null )
+            // Creating new buttons panel
+            if ( buttonsPanel == null )
             {
-                final StyleId minimizeId = StyleId.rootpaneMinimizeButton.at ( buttonsPanel );
-                minimizeButton = new WebButton ( minimizeId )
-                {
-                    @Override
-                    public Icon getIcon ()
-                    {
-                        return setupButtonIcons ? minimizeIcon : null;
-                    }
-
-                    @Override
-                    public Icon getRolloverIcon ()
-                    {
-                        return setupButtonIcons ? minimizeActiveIcon : null;
-                    }
-                };
-                minimizeButton.setName ( "minimize" );
-                minimizeButton.setRolloverEnabled ( true );
-                minimizeButton.addActionListener ( new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        iconify ();
-                    }
-                } );
+                buttonsPanel = new GroupPane ( StyleId.rootpaneButtonsPanel.at ( root ) );
+                buttonsPanel.setPaintSides ( false, true, true, true );
+                root.add ( buttonsPanel );
             }
-            buttonsPanel.add ( minimizeButton );
-        }
-        else
-        {
-            if ( minimizeButton != null )
-            {
-                buttonsPanel.remove ( minimizeButton );
-            }
-        }
 
-        // Maximize button
-        if ( displayMaximizeButton && isResizable () && isFrame () )
-        {
-            if ( maximizeButton == null )
+            // Minimize button
+            if ( displayMinimizeButton && isFrame () )
             {
-                final StyleId maximizeId = StyleId.rootpaneMaximizeButton.at ( buttonsPanel );
-                maximizeButton = new WebButton ( maximizeId )
+                if ( minimizeButton == null )
                 {
-                    @Override
-                    public Icon getIcon ()
+                    final StyleId minimizeId = StyleId.rootpaneMinimizeButton.at ( buttonsPanel );
+                    minimizeButton = new WebButton ( minimizeId )
                     {
-                        return setupButtonIcons ? isMaximized () ? restoreIcon : maximizeIcon : null;
-                    }
-
-                    @Override
-                    public Icon getRolloverIcon ()
-                    {
-                        return setupButtonIcons ? isMaximized () ? restoreActiveIcon : maximizeActiveIcon : null;
-                    }
-                };
-                maximizeButton.setName ( "maximize" );
-                maximizeButton.setRolloverEnabled ( true );
-                maximizeButton.addActionListener ( new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        if ( isFrame () )
+                        @Override
+                        public Icon getIcon ()
                         {
-                            if ( isMaximized () )
+                            return setupButtonIcons ? minimizeIcon : null;
+                        }
+
+                        @Override
+                        public Icon getRolloverIcon ()
+                        {
+                            return setupButtonIcons ? minimizeActiveIcon : null;
+                        }
+                    };
+                    minimizeButton.setName ( "minimize" );
+                    minimizeButton.setRolloverEnabled ( true );
+                    minimizeButton.addActionListener ( new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            iconify ();
+                        }
+                    } );
+                }
+                buttonsPanel.add ( minimizeButton );
+            }
+            else
+            {
+                if ( minimizeButton != null )
+                {
+                    buttonsPanel.remove ( minimizeButton );
+                }
+            }
+
+            // Maximize button
+            if ( displayMaximizeButton && isResizable () && isFrame () )
+            {
+                if ( maximizeButton == null )
+                {
+                    final StyleId maximizeId = StyleId.rootpaneMaximizeButton.at ( buttonsPanel );
+                    maximizeButton = new WebButton ( maximizeId )
+                    {
+                        @Override
+                        public Icon getIcon ()
+                        {
+                            return setupButtonIcons ? isMaximized () ? restoreIcon : maximizeIcon : null;
+                        }
+
+                        @Override
+                        public Icon getRolloverIcon ()
+                        {
+                            return setupButtonIcons ? isMaximized () ? restoreActiveIcon : maximizeActiveIcon : null;
+                        }
+                    };
+                    maximizeButton.setName ( "maximize" );
+                    maximizeButton.setRolloverEnabled ( true );
+                    maximizeButton.addActionListener ( new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            if ( isFrame () )
                             {
-                                restore ();
-                            }
-                            else
-                            {
-                                maximize ();
+                                if ( isMaximized () )
+                                {
+                                    restore ();
+                                }
+                                else
+                                {
+                                    maximize ();
+                                }
                             }
                         }
-                    }
-                } );
+                    } );
+                }
+                buttonsPanel.add ( maximizeButton );
             }
-            buttonsPanel.add ( maximizeButton );
-        }
-        else
-        {
-            if ( maximizeButton != null )
+            else
             {
-                buttonsPanel.remove ( maximizeButton );
-            }
-        }
-
-        // Close button
-        if ( displayCloseButton )
-        {
-            if ( closeButton == null )
-            {
-                final StyleId closeId = StyleId.rootpaneCloseButton.at ( buttonsPanel );
-                closeButton = new WebButton ( closeId )
+                if ( maximizeButton != null )
                 {
-                    @Override
-                    public Icon getIcon ()
-                    {
-                        return setupButtonIcons ? closeIcon : null;
-                    }
-
-                    @Override
-                    public Icon getRolloverIcon ()
-                    {
-                        return setupButtonIcons ? closeActiveIcon : null;
-                    }
-                };
-                closeButton.setName ( "close" );
-                closeButton.setRolloverEnabled ( true );
-                closeButton.addActionListener ( new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        close ();
-                    }
-                } );
+                    buttonsPanel.remove ( maximizeButton );
+                }
             }
-            buttonsPanel.add ( closeButton );
-        }
-        else
-        {
-            if ( closeButton != null )
+
+            // Close button
+            if ( displayCloseButton )
             {
-                buttonsPanel.remove ( closeButton );
+                if ( closeButton == null )
+                {
+                    final StyleId closeId = StyleId.rootpaneCloseButton.at ( buttonsPanel );
+                    closeButton = new WebButton ( closeId )
+                    {
+                        @Override
+                        public Icon getIcon ()
+                        {
+                            return setupButtonIcons ? closeIcon : null;
+                        }
+
+                        @Override
+                        public Icon getRolloverIcon ()
+                        {
+                            return setupButtonIcons ? closeActiveIcon : null;
+                        }
+                    };
+                    closeButton.setName ( "close" );
+                    closeButton.setRolloverEnabled ( true );
+                    closeButton.addActionListener ( new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            close ();
+                        }
+                    } );
+                }
+                buttonsPanel.add ( closeButton );
+            }
+            else
+            {
+                if ( closeButton != null )
+                {
+                    buttonsPanel.remove ( closeButton );
+                }
             }
         }
     }
@@ -846,6 +862,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      */
     protected Image getWindowImage ()
     {
+        final Image image;
         final List<Image> images = window != null ? window.getIconImages () : null;
         if ( CollectionUtils.notEmpty ( images ) )
         {
@@ -866,17 +883,18 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                         bestDiff = diff;
                     }
                 }
-                return images.get ( bestIndex );
+                image = images.get ( bestIndex );
             }
             else
             {
-                return images.get ( 0 );
+                image = images.get ( 0 );
             }
         }
         else
         {
-            return null;
+            image = null;
         }
+        return image;
     }
 
     @Override

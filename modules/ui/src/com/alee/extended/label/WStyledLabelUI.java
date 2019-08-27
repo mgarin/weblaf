@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.label.WLabelUI;
 
 import javax.swing.*;
@@ -31,6 +32,7 @@ import javax.swing.*;
  */
 public abstract class WStyledLabelUI<C extends WebStyledLabel> extends WLabelUI<C> implements SwingConstants
 {
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {

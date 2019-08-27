@@ -17,6 +17,8 @@
 
 package com.alee.laf.progressbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
@@ -57,6 +59,11 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
         EventMethods, ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebProgressBar>,
         SizeMethods<WebProgressBar>
 {
+    /**
+     * Component properties.
+     */
+    public static final String INDETERMINATE_PROPERTY = "indeterminate";
+
     /**
      * Constructs new progress bar.
      */
@@ -190,12 +197,14 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.progressbar;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -268,6 +277,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -286,6 +296,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -305,11 +316,12 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -329,7 +341,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

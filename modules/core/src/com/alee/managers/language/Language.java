@@ -17,6 +17,8 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.Record;
@@ -40,6 +42,7 @@ public class Language implements Serializable
     /**
      * {@link Locale} of this {@link Language}.
      */
+    @NotNull
     protected final Locale locale;
 
     /**
@@ -47,9 +50,8 @@ public class Language implements Serializable
      *
      * @param locale {@link Locale} for new {@link Language}
      */
-    public Language ( final Locale locale )
+    public Language ( @NotNull final Locale locale )
     {
-        super ();
         this.locale = locale;
     }
 
@@ -58,6 +60,7 @@ public class Language implements Serializable
      *
      * @return {@link Locale} of this {@link Language}
      */
+    @NotNull
     public Locale getLocale ()
     {
         return locale;
@@ -68,6 +71,7 @@ public class Language implements Serializable
      *
      * @return {@link Dictionary} containing all registered {@link Dictionary}s
      */
+    @NotNull
     public Dictionary getDictionaries ()
     {
         return LanguageManager.getDictionaries ();
@@ -79,7 +83,8 @@ public class Language implements Serializable
      * @param key language key to retrieve {@link Record} for
      * @return {@link Record} for the specified language key
      */
-    public Record getRecord ( final String key )
+    @Nullable
+    public Record getRecord ( @Nullable final String key )
     {
         return TextUtils.notEmpty ( key ) ? getDictionaries ().getRecord ( key, locale ) : null;
     }
@@ -90,7 +95,8 @@ public class Language implements Serializable
      * @param key language key to retrieve {@link Value} for
      * @return {@link Value} for the specified language key and {@link Locale} from this {@link Language}
      */
-    public Value getValue ( final String key )
+    @Nullable
+    public Value getValue ( @Nullable final String key )
     {
         final Record record = getRecord ( key );
         return record != null ? record.getValue ( locale ) : null;
@@ -102,7 +108,8 @@ public class Language implements Serializable
      * @param key language key to retrieve {@link Text} for
      * @return default state {@link Text} for the specified language key and {@link Locale} from this {@link Language}
      */
-    public Text getText ( final String key )
+    @Nullable
+    public Text getText ( @Nullable final String key )
     {
         final Value value = getValue ( key );
         return value != null ? value.getText () : null;
@@ -115,7 +122,8 @@ public class Language implements Serializable
      * @param state {@link Text} state
      * @return {@link Text} for the specified language key and {@link Locale} from this {@link Language}
      */
-    public Text getText ( final String key, final String state )
+    @Nullable
+    public Text getText ( @Nullable final String key, @Nullable final String state )
     {
         final Value value = getValue ( key );
         return value != null ? value.getText ( state ) : null;
@@ -128,10 +136,11 @@ public class Language implements Serializable
      * @param data language data
      * @return text for the specified language key from this {@link Language}
      */
-    public String get ( final String key, final Object... data )
+    @NotNull
+    public String get ( @Nullable final String key, @NotNull final Object... data )
     {
         final Text text = getText ( key );
-        return text != null ? text.getText ( data ) : key;
+        return text != null ? text.getText ( data ) : key != null ? key : "";
     }
 
     /**
@@ -142,10 +151,11 @@ public class Language implements Serializable
      * @param data  language data
      * @return text for the specified language key and state from this {@link Language}
      */
-    public String getState ( final String key, final String state, final Object... data )
+    @NotNull
+    public String getState ( @Nullable final String key, @Nullable final String state, @NotNull final Object... data )
     {
         final Text text = getText ( key, state );
-        return text != null ? text.getText ( data ) : key;
+        return text != null ? text.getText ( data ) : key != null ? key : "";
     }
 
     /**
@@ -154,7 +164,7 @@ public class Language implements Serializable
      * @param key language key to retrieve mnemonic for
      * @return mnemonic for the specified language key from this {@link Language}
      */
-    public int getMnemonic ( final String key )
+    public int getMnemonic ( @Nullable final String key )
     {
         final Text text = getText ( key );
         return text != null ? text.getMnemonic () : -1;
@@ -167,7 +177,7 @@ public class Language implements Serializable
      * @param state {@link Text} state
      * @return mnemonic for the specified language key from this {@link Language}
      */
-    public int getMnemonic ( final String key, final String state )
+    public int getMnemonic ( @Nullable final String key, @Nullable final String state )
     {
         final Text text = getText ( key, state );
         return text != null ? text.getMnemonic () : -1;
@@ -180,7 +190,7 @@ public class Language implements Serializable
      * @param key language key to check
      * @return {@code true} if specified language key exists in this {@link Language}, {@code false} otherwise
      */
-    public boolean contains ( final String key )
+    public boolean contains ( @Nullable final String key )
     {
         return getRecord ( key ) != null;
     }
@@ -191,7 +201,7 @@ public class Language implements Serializable
      * @param key language key to check
      * @return {@code true} if at least single {@link Text} exists for specified language key, {@code false} otherwise
      */
-    public boolean containsText ( final String key )
+    public boolean containsText ( @Nullable final String key )
     {
         return getText ( key ) != null;
     }
@@ -203,17 +213,18 @@ public class Language implements Serializable
      * @param state {@link Text} state
      * @return {@code true} if at least single {@link Text} exists for specified language key and state, {@code false} otherwise
      */
-    public boolean containsText ( final String key, final String state )
+    public boolean containsText ( @Nullable final String key, @Nullable final String state )
     {
         return getText ( key, state ) != null;
     }
 
     @Override
-    public boolean equals ( final Object language )
+    public boolean equals ( @Nullable final Object language )
     {
         return language instanceof Language && Objects.equals ( getLocale (), ( ( Language ) language ).getLocale () );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

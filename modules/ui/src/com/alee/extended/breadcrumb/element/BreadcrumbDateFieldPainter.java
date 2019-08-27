@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.date.DateFieldPainter;
 import com.alee.extended.date.WDateFieldUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbDateFieldPainter<C extends WebDateField, U extends WDateFieldUI<C>, D extends IDecoration<C, D>>
         extends DateFieldPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

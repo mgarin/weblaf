@@ -17,6 +17,7 @@
 
 package com.alee.extended.button;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.button.WButtonUI;
 
 /**
@@ -27,6 +28,7 @@ import com.alee.laf.button.WButtonUI;
  */
 public abstract class WSplitButtonUI<C extends WebSplitButton> extends WButtonUI<C>
 {
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {

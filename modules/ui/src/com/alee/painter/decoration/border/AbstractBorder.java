@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.border;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -52,7 +53,7 @@ public abstract class AbstractBorder<C extends JComponent, D extends IDecoration
     @XStreamAsAttribute
     protected Float opacity;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

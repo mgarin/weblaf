@@ -18,6 +18,7 @@
 package com.alee.demo.content.chooser.field;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.colorchooser.WebColorChooserField;
 import com.alee.managers.style.StyleId;
@@ -32,25 +33,28 @@ import java.util.List;
  */
 public class WebColorChooserFieldExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "webcolorchooserfield";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "colorchooserfield";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

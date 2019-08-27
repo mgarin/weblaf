@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.BoundsType;
@@ -294,18 +296,21 @@ public abstract class AbstractPopupPainter<C extends JComponent, U extends Compo
         this.cornerAlignment = cornerAlignment;
     }
 
+    @NotNull
     @Override
-    public Shape provideShape ( final C component, final Rectangle bounds )
+    public Shape provideShape ( @NotNull final C component, @NotNull final Rectangle bounds )
     {
         return getBorderShape ( component, bounds.getSize (), false );
     }
 
+    @Nullable
     @Override
     public Boolean isOpaque ()
     {
         return !shaped;
     }
 
+    @NotNull
     @Override
     protected Insets getBorder ()
     {
@@ -323,7 +328,7 @@ public abstract class AbstractPopupPainter<C extends JComponent, U extends Compo
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C popup, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C popup, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         if ( shaped )

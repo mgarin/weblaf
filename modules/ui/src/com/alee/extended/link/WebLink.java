@@ -17,6 +17,7 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -353,6 +354,7 @@ public class WebLink extends WebStyledLabel
         setVisited ( true );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

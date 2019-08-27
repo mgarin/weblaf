@@ -17,6 +17,8 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -55,7 +57,7 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -65,7 +67,7 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( button );
@@ -74,6 +76,7 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -92,6 +95,7 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
         PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -99,11 +103,12 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( button, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -111,7 +116,7 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( button, padding );
     }
@@ -134,7 +139,7 @@ public class WebToggleButtonUI<C extends JToggleButton> extends WToggleButtonUI<
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new Consumer<IToggleButtonPainter> ()
+        PainterSupport.setPainter ( button, this, new Consumer<IToggleButtonPainter> ()
         {
             @Override
             public void accept ( final IToggleButtonPainter newPainter )

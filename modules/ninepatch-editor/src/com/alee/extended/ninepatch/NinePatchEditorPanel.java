@@ -19,6 +19,7 @@ package com.alee.extended.ninepatch;
 
 import com.alee.api.data.Orientation;
 import com.alee.extended.layout.TableLayout;
+import com.alee.extended.ninepatch.skin.NinePatchEditorStyles;
 import com.alee.extended.panel.ResizablePanel;
 import com.alee.extended.split.MultiSplitConstraints;
 import com.alee.extended.split.WebMultiSplitPane;
@@ -138,12 +139,12 @@ public class NinePatchEditorPanel extends WebPanel
     protected JComponent decoration;
     protected WebLabel preview;
 
-    protected final StyleId previewBackgroundId = StyleId.ninepatcheditorPreviewBackground.at ( this );
+    protected final StyleId previewBackgroundId = NinePatchEditorStyles.ninepatcheditorPreviewBackground.at ( this );
     protected Color previewColor;
 
     public NinePatchEditorPanel ()
     {
-        super ( StyleId.ninepatcheditor, new BorderLayout () );
+        super ( NinePatchEditorStyles.ninepatcheditor, new BorderLayout () );
 
         initializeAliases ();
 
@@ -199,7 +200,7 @@ public class NinePatchEditorPanel extends WebPanel
     {
         final WebPanel editorPanel = new WebPanel ();
 
-        final WebToolBar toolBar = new WebToolBar ( StyleId.ninepatcheditorToolbar.at ( this ), WebToolBar.HORIZONTAL );
+        final WebToolBar toolBar = new WebToolBar ( NinePatchEditorStyles.ninepatcheditorToolbar.at ( this ), WebToolBar.HORIZONTAL );
         editorPanel.add ( toolBar, BorderLayout.NORTH );
 
         final WebButton open = new WebButton ( OPEN_ICON );
@@ -558,7 +559,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         final int minZ = NinePatchEditor.MIN_ZOOM;
         final int maxZ = NinePatchEditor.MAX_ZOOM;
-        final StyleId zoomSliderId = StyleId.ninepatcheditorZoomSlider.at ( this );
+        final StyleId zoomSliderId = NinePatchEditorStyles.ninepatcheditorZoomSlider.at ( this );
         final WebSlider zoomSlider = new WebSlider ( zoomSliderId, minZ, maxZ, ninePatchEditor.getZoom () );
         zoomSlider.setPreferredWidth ( 170 );
         changeListener = new ChangeListener ()
@@ -788,7 +789,7 @@ public class NinePatchEditorPanel extends WebPanel
         showText.setCursor ( Cursor.getDefaultCursor () );
         showText.setSelected ( st );
 
-        final WebTextField textField = new WebTextField ( StyleId.ninepatcheditorPreviewField.at ( this ), previewText, 8 );
+        final WebTextField textField = new WebTextField ( NinePatchEditorStyles.ninepatcheditorPreviewField.at ( this ), previewText, 8 );
         textField.setHorizontalAlignment ( WebTextField.CENTER );
         textField.setEditable ( st );
 

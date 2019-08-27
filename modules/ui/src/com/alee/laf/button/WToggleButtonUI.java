@@ -17,6 +17,8 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 
 /**
@@ -27,6 +29,7 @@ import javax.swing.*;
  */
 public abstract class WToggleButtonUI<C extends JToggleButton> extends WButtonUI<C>
 {
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {

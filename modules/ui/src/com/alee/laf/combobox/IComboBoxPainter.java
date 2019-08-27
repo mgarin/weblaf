@@ -1,5 +1,6 @@
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -18,5 +19,5 @@ public interface IComboBoxPainter<C extends JComboBox, U extends WComboBoxUI> ex
      *
      * @param currentValuePane current value pane
      */
-    public void prepareToPaint ( CellRendererPane currentValuePane );
+    public void prepareToPaint ( @NotNull CellRendererPane currentValuePane );
 }

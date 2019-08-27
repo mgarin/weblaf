@@ -1,5 +1,7 @@
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
@@ -86,6 +88,7 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
      */
     protected transient CellRendererPane rendererPane = null;
 
+    @Nullable
     @Override
     protected List<SectionPainter<C, U>> getSectionPainters ()
     {
@@ -224,7 +227,7 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
         languageSensitive = new LanguageListener ()
         {
             @Override
-            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
             {
                 if ( isLanguageSensitive () )
                 {
@@ -330,7 +333,7 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final C c, final U ui )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         final Rectangle clip = g2d.getClipBounds ();
 

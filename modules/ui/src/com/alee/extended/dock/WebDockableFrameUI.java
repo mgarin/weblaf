@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
@@ -102,7 +103,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -116,7 +117,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling settings
         uninstallActions ();
@@ -518,6 +519,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         return sidebarButton;
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -536,6 +538,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         PainterSupport.setShapeDetectionEnabled ( frame, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -543,11 +546,12 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( frame, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -555,7 +559,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( frame, padding );
     }
@@ -578,7 +582,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( frame, new Consumer<IDockableFramePainter> ()
+        PainterSupport.setPainter ( frame, this, new Consumer<IDockableFramePainter> ()
         {
             @Override
             public void accept ( final IDockableFramePainter newPainter )

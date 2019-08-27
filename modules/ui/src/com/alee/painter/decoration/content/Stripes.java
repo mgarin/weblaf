@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
 import com.alee.api.merge.behavior.OverwriteOnMerge;
@@ -64,7 +65,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
     @OverwriteOnMerge
     protected List<Stripe> stripes;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

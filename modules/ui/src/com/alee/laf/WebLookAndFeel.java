@@ -85,48 +85,26 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String LAF_MARGIN_PROPERTY = "lafMargin";
     public static final String LAF_PADDING_PROPERTY = "lafPadding";
     public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
+    public static final String ANCESTOR_PROPERTY = "ancestor";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String FOCUSABLE_PROPERTY = "focusable";
     public static final String EDITABLE_PROPERTY = "editable";
     public static final String MODEL_PROPERTY = "model";
-    public static final String VIEWPORT_PROPERTY = "viewport";
-    public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
-    public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
-    public static final String TABLE_HEADER_PROPERTY = "tableHeader";
-    public static final String FLOATABLE_PROPERTY = "floatable";
-    public static final String FOCUSABLE_WINDOW_STATE_PROPERTY = "focusableWindowState";
-    public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
-    public static final String RESIZABLE_PROPERTY = "resizable";
-    public static final String ICON_IMAGE_PROPERTY = "iconImage";
-    public static final String TITLE_PROPERTY = "title";
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
     public static final String OPAQUE_PROPERTY = "opaque";
-    public static final String OPACITY_PROPERTY = "opacity";
     public static final String BORDER_PROPERTY = "border";
     public static final String ICON_TEXT_GAP_PROPERTY = "iconTextGap";
-    public static final String MINIMUM_PROPERTY = "minimum";
-    public static final String MAXIMUM_PROPERTY = "maximum";
-    public static final String MINOR_TICK_SPACING_PROPERTY = "minorTickSpacing";
-    public static final String MAJOR_TICK_SPACING_PROPERTY = "majorTickSpacing";
     public static final String PAINTER_PROPERTY = "painter";
-    public static final String RENDERER_PROPERTY = "renderer";
     public static final String TEXT_PROPERTY = "text";
     public static final String TIP_TEXT_PROPERTY = "tiptext";
     public static final String FONT_PROPERTY = "font";
     public static final String BACKGROUND_PROPERTY = "background";
     public static final String FOREGROUND_PROPERTY = "foreground";
-    public static final String INDETERMINATE_PROPERTY = "indeterminate";
-    public static final String DROP_LOCATION = "dropLocation";
     public static final String ORIENTATION_PROPERTY = "orientation";
-    public static final String HORIZONTAL_ALIGNMENT_PROPERTY = "horizontalAlignment";
-    public static final String VERTICAL_ALIGNMENT_PROPERTY = "verticalAlignment";
     public static final String LEADING_COMPONENT_PROPERTY = "leadingComponent";
     public static final String TRAILING_COMPONENT_PROPERTY = "trailingComponent";
-    public static final String TABBED_PANE_STYLE_PROPERTY = "tabbedPaneStyle";
-    public static final String EDITOR_PROPERTY = "editor";
-    public static final String TRANSFER_HANDLER_PROPERTY = "transferHandler";
 
     /**
      * Bound property name for tree data provider.
@@ -191,6 +169,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Alt hotkey processor for application windows with menu.
      */
+    @NotNull
     protected static final AltProcessor altProcessor = new AltProcessor ();
 
     /**
@@ -1198,6 +1177,30 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
+     * Helper method to play a named sound.
+     *
+     * @param component {@link JComponent} to play the sound for
+     * @param actionKey key for the sound.
+     */
+    public static void playSound ( final JComponent component, final Object actionKey )
+    {
+        final LookAndFeel laf = UIManager.getLookAndFeel ();
+        if ( laf instanceof WebLookAndFeel )
+        {
+            final ActionMap map = component.getActionMap ();
+            if ( map != null )
+            {
+                final Action audioAction = map.get ( actionKey );
+                if ( audioAction != null )
+                {
+                    // Pass off firing the Action to a utility method
+                    ( ( WebLookAndFeel ) laf ).playSound ( audioAction );
+                }
+            }
+        }
+    }
+
+    /**
      * Returns a list of square WebLookAndFeel images that can be used as window icons on any OS.
      *
      * @return list of square WebLookAndFeel images
@@ -1301,35 +1304,37 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public Icon getDisabledIcon ( @Nullable final JComponent component, @Nullable final Icon icon )
     {
+        final Icon disabledIcon;
         if ( icon != null && icon.getIconWidth () > 0 && icon.getIconHeight () > 0 )
         {
             if ( disabledIcons.containsKey ( icon ) )
             {
-                return disabledIcons.get ( icon );
+                disabledIcon = disabledIcons.get ( icon );
             }
             else
             {
-                final ImageIcon disabledIcon;
+                final ImageIcon imageIcon;
                 if ( icon instanceof ImageIcon || icon instanceof SvgIcon || icon instanceof GifIcon || icon instanceof LazyIcon )
                 {
                     // todo Different disabled implementation for different icon types?
                     // todo For example ImageIcon, SvgIcon, GifIcon etc.
                     final BufferedImage image = ImageUtils.getBufferedImage ( icon );
                     final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
-                    disabledIcon = new ImageIcon ( disabled );
+                    imageIcon = new ImageIcon ( disabled );
                 }
                 else
                 {
-                    disabledIcon = null;
+                    imageIcon = null;
                 }
-                disabledIcons.put ( icon, disabledIcon );
-                return disabledIcon;
+                disabledIcons.put ( icon, imageIcon );
+                disabledIcon = imageIcon;
             }
         }
         else
         {
-            return icon;
+            disabledIcon = icon;
         }
+        return disabledIcon;
     }
 
     /**
@@ -1398,14 +1403,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @NotNull
     public static ComponentOrientation getOrientation ()
     {
-        if ( orientation != null )
-        {
-            return orientation;
-        }
-        else
-        {
-            return ComponentOrientation.getOrientation ( Locale.getDefault () );
-        }
+        return orientation != null ? orientation : ComponentOrientation.getOrientation ( Locale.getDefault () );
     }
 
     /**

@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -113,6 +115,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
         return new MenuBarLayout ();
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -131,6 +134,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
         PainterSupport.setShapeDetectionEnabled ( menuBar, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -138,11 +142,12 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( menuBar, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -150,7 +155,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( menuBar, padding );
     }
@@ -173,7 +178,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( menuBar, new Consumer<IMenuBarPainter> ()
+        PainterSupport.setPainter ( menuBar, this, new Consumer<IMenuBarPainter> ()
         {
             @Override
             public void accept ( final IMenuBarPainter newPainter )

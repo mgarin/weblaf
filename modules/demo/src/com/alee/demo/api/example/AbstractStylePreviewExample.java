@@ -17,6 +17,7 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.Skin;
 import com.alee.utils.FileUtils;
 import com.alee.utils.NetUtils;
@@ -29,32 +30,39 @@ import java.io.File;
 /**
  * @author Mikle Garin
  */
-public abstract class AbstractStylePreviewExample extends AbstractPreviewExample implements Example
+public abstract class AbstractStylePreviewExample extends AbstractPreviewExample
 {
+    @NotNull
     @Override
-    public String getStyleCode ( final Skin skin )
+    public String getStyleCode ( @NotNull final Skin skin )
     {
+        final String styleCode;
         final Resource styleFile = getStyleFile ( skin );
         switch ( styleFile.getLocation () )
         {
             case nearClass:
             {
                 final Class<Object> nearClass = ReflectUtils.getClassSafely ( styleFile.getClassName () );
-                return FileUtils.readToString ( nearClass, styleFile.getPath () );
+                styleCode = FileUtils.readToString ( nearClass, styleFile.getPath () );
+                break;
             }
             case filePath:
             {
-                return FileUtils.readToString ( new File ( styleFile.getPath () ) );
+                styleCode = FileUtils.readToString ( new File ( styleFile.getPath () ) );
+                break;
             }
             case url:
             {
-                return FileUtils.readToString ( NetUtils.getURL ( styleFile.getPath () ) );
+                styleCode = FileUtils.readToString ( NetUtils.getURL ( styleFile.getPath () ) );
+                break;
             }
             default:
             {
-                return "";
+                styleCode = "";
+                break;
             }
         }
+        return styleCode;
     }
 
     /**
@@ -65,7 +73,8 @@ public abstract class AbstractStylePreviewExample extends AbstractPreviewExample
      * @param skin skin to retrieve style file for
      * @return style file representing styles for this example
      */
-    protected Resource getStyleFile ( final Skin skin )
+    @NotNull
+    protected Resource getStyleFile ( @NotNull final Skin skin )
     {
         final String path = "resources/" + getStyleFileName () + ".xml";
         final Resource resource = new Resource ( skin.getClass (), path );
@@ -82,8 +91,9 @@ public abstract class AbstractStylePreviewExample extends AbstractPreviewExample
      *
      * @return example style file name
      */
+    @NotNull
     protected String getStyleFileName ()
     {
-        return getId ();
+        return "" + getId ();
     }
 }

@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.SwingUtils;
@@ -25,9 +27,9 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Enumeration referncing component bounds types.
- * These bounds are relative to actual component bounds within its container and not to the component container bounds.
- * It is basically made for convenient retrieval of inner bounds for various painting operations.
+ * Enumeration referncing {@link JComponent} bounds types.
+ * These bounds are relative to the {@link JComponent} coordinates grid.
+ * It was made for convenient retrieval of inner bounds for various painting operations.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -37,44 +39,46 @@ import java.awt.*;
 public enum BoundsType
 {
     /**
-     * Component bounds.
-     * It represents full component bounds: [0,0,w,h]
+     * {@link JComponent} bounds.
+     * It represents full {@link JComponent} bounds: [0,0,w,h]
      */
     component,
 
     /**
-     * Component bounds excluding its margin.
-     * Represents bounds in which component decoration is painted.
+     * {@link JComponent} bounds excluding its margin.
+     * Represents bounds in which {@link JComponent} decoration is painted.
      */
     margin,
 
     /**
-     * Component bounds excluding its margin and decoration border.
-     * Represents bounds in which component background is painted.
+     * {@link JComponent} bounds excluding its margin and decoration border.
+     * Represents bounds in which {@link JComponent} background is painted.
      */
     border,
 
     /**
-     * Components bounds excluding its margin, decoration border and padding.
-     * Represents bounds in which component content is painted.
+     * {@link JComponent} bounds excluding its margin, decoration border and padding.
+     * Represents bounds in which {@link JComponent} content is painted.
      */
     padding,
 
     /**
-     * Component section bounds.
-     * This is a special type that represents custom component section.
+     * {@link JComponent} section bounds.
+     * This is a special type that represents custom {@link JComponent} section.
      * Insets, bounds or border cannot be retrieved for this type from this class.
      */
     section;
 
     /**
-     * Returns insets for bounds of this type for the specified component.
+     * Returns insets for bounds of this type for the specified {@link JComponent}.
      *
-     * @param component component to retrieve insets for
-     * @return insets for bounds of this type for the specified component
+     * @param component {@link JComponent} to retrieve insets for
+     * @return insets for bounds of this type for the specified {@link JComponent}
      */
-    public Insets insets ( final JComponent component )
+    @Nullable
+    public Insets insets ( @NotNull final JComponent component )
     {
+        final Insets insets;
         switch ( this )
         {
             case section:
@@ -83,33 +87,41 @@ public enum BoundsType
             }
             case margin:
             {
-                return PainterSupport.getMargin ( component );
+                insets = PainterSupport.getMargin ( component );
+                break;
             }
             case border:
             {
-                final Insets insets = PainterSupport.getInsets ( component );
-                SwingUtils.decrease ( insets, PainterSupport.getMargin ( component ) );
-                SwingUtils.decrease ( insets, PainterSupport.getPadding ( component ) );
-                return insets;
+                insets = PainterSupport.getInsets ( component );
+                if ( insets != null )
+                {
+                    SwingUtils.decrease ( insets, PainterSupport.getMargin ( component ) );
+                    SwingUtils.decrease ( insets, PainterSupport.getPadding ( component ) );
+                }
+                break;
             }
             case padding:
             {
-                return PainterSupport.getPadding ( component );
+                insets = PainterSupport.getPadding ( component );
+                break;
             }
             default:
             {
-                return new Insets ( 0, 0, 0, 0 );
+                insets = new Insets ( 0, 0, 0, 0 );
+                break;
             }
         }
+        return insets;
     }
 
     /**
-     * Returns border for bounds of this type for the specified component.
+     * Returns border for bounds of this type for the specified {@link JComponent}.
      *
-     * @param component component to retrieve border for
-     * @return border for bounds of this type for the specified component
+     * @param component {@link JComponent} to retrieve border for
+     * @return border for bounds of this type for the specified {@link JComponent}
      */
-    public Insets border ( final JComponent component )
+    @NotNull
+    public Insets border ( @NotNull final JComponent component )
     {
         final Insets i = new Insets ( 0, 0, 0, 0 );
         switch ( this )
@@ -135,16 +147,18 @@ public enum BoundsType
     }
 
     /**
-     * Returns insets for bounds of this type for the specified section decoration.
-     * These insets never include component margin or padding since those are section only.
+     * Returns insets for bounds of this type for the specified section {@link IDecoration}.
+     * These insets never include {@link JComponent} margin or padding since those are section only.
      * todo These insets should include decoration margin and padding when those are implemented
      *
-     * @param component  decorated component
-     * @param decoration decoration to retrieve insets for
-     * @return insets for bounds of this type for the specified section decoration
+     * @param component  decorated {@link JComponent}
+     * @param decoration {@link IDecoration} to retrieve insets for
+     * @return insets for bounds of this type for the specified section {@link IDecoration}
      */
-    public Insets insets ( final JComponent component, final IDecoration decoration )
+    @NotNull
+    public Insets insets ( @NotNull final JComponent component, @NotNull final IDecoration decoration )
     {
+        final Insets i;
         switch ( this )
         {
             case section:
@@ -153,28 +167,32 @@ public enum BoundsType
             }
             case border:
             {
-                return decoration.getBorderInsets ( component );
+                i = decoration.getBorderInsets ( component );
+                break;
             }
             case component:
             case margin:
             case padding:
             default:
             {
-                return new Insets ( 0, 0, 0, 0 );
+                i = new Insets ( 0, 0, 0, 0 );
+                break;
             }
         }
+        return i;
     }
 
     /**
-     * Returns border for bounds of this type for the specified section decoration.
-     * This border never include component margin or padding since those are section only.
+     * Returns border for bounds of this type for the specified section {@link IDecoration}.
+     * This border never include {@link JComponent} margin or padding since those are section only.
      * todo This border should include decoration margin and padding when those are implemented
      *
-     * @param component  decorated component
-     * @param decoration decoration to retrieve border for
-     * @return border for bounds of this type for the specified section decoration
+     * @param component  decorated {@link JComponent}
+     * @param decoration {@link IDecoration} to retrieve border for
+     * @return border for bounds of this type for the specified section {@link IDecoration}
      */
-    public Insets border ( final JComponent component, final IDecoration decoration )
+    @NotNull
+    public Insets border ( @NotNull final JComponent component, @NotNull final IDecoration decoration )
     {
         final Insets i = new Insets ( 0, 0, 0, 0 );
         switch ( this )
@@ -187,20 +205,30 @@ public enum BoundsType
             case padding:
             {
                 SwingUtils.increase ( i, decoration.getBorderInsets ( component ) );
+                break;
             }
         }
         return i;
     }
 
     /**
-     * Returns bounds of this type for the specified component.
+     * Returns bounds of this type for the specified {@link JComponent}.
      *
-     * @param component component to retrieve bounds for
-     * @return bounds of this type for the specified component
+     * @param component {@link JComponent} to retrieve bounds for
+     * @return bounds of this type for the specified {@link JComponent}
      */
-    public Rectangle bounds ( final Component component )
+    @NotNull
+    public Rectangle bounds ( @NotNull final Component component )
     {
-        final Insets i = component instanceof JComponent ? border ( ( JComponent ) component ) : new Insets ( 0, 0, 0, 0 );
-        return new Rectangle ( i.left, i.top, component.getWidth () - i.left - i.right, component.getHeight () - i.top - i.bottom );
+        final Insets insets = component instanceof JComponent ?
+                border ( ( JComponent ) component ) :
+                new Insets ( 0, 0, 0, 0 );
+
+        return new Rectangle (
+                insets.left,
+                insets.top,
+                component.getWidth () - insets.left - insets.right,
+                component.getHeight () - insets.top - insets.bottom
+        );
     }
 }

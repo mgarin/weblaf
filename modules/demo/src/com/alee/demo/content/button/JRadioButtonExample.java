@@ -18,6 +18,7 @@
 package com.alee.demo.content.button;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -35,31 +36,35 @@ import java.util.List;
  */
 public class JRadioButtonExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jradiobutton";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "radiobutton";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Radio Buttons", "button" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

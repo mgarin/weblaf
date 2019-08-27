@@ -17,6 +17,8 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.style.*;
@@ -60,7 +62,7 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -70,7 +72,7 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( multisplitpane );
@@ -119,6 +121,7 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
         }
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -137,6 +140,7 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
         PainterSupport.setShapeDetectionEnabled ( multisplitpane, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -144,11 +148,12 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( multisplitpane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -156,7 +161,7 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( multisplitpane, padding );
     }
@@ -179,7 +184,7 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( multisplitpane, new Consumer<IMultiSplitPanePainter> ()
+        PainterSupport.setPainter ( multisplitpane, this, new Consumer<IMultiSplitPanePainter> ()
         {
             @Override
             public void accept ( final IMultiSplitPanePainter newPainter )

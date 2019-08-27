@@ -221,6 +221,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
         setStyleId ( id );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.list;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -34,31 +35,35 @@ import java.util.List;
  */
 public class JListExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "jlist";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "list";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.swing;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new OracleWikiPage ( "How to Use Lists", "list" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

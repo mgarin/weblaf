@@ -17,10 +17,11 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -58,6 +59,11 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
         ContainerMethods<WebToolBar>, EventMethods, ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods,
         FontMethods<WebToolBar>, SizeMethods<WebToolBar>
 {
+    /**
+     * Component properties.
+     */
+    public static final String FLOATABLE_PROPERTY = "floatable";
+
     /**
      * Constructs new toolbar.
      */
@@ -347,12 +353,14 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
         add ( new WhiteSpace ( spacing ), constraints );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.toolbar;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -425,6 +433,7 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -443,6 +452,7 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -462,11 +472,12 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -486,7 +497,7 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

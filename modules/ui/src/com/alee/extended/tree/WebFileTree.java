@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.style.StyleId;
@@ -183,6 +184,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         setAsyncLoading ( async );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -37,7 +38,7 @@ public abstract class WBreadcrumbUI<C extends WebBreadcrumb> extends ComponentUI
     protected C breadcrumb;
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving canvas reference
         breadcrumb = ( C ) c;
@@ -50,7 +51,7 @@ public abstract class WBreadcrumbUI<C extends WebBreadcrumb> extends ComponentUI
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling default component listeners
         uninstallListeners ();
@@ -62,6 +63,7 @@ public abstract class WBreadcrumbUI<C extends WebBreadcrumb> extends ComponentUI
         breadcrumb = null;
     }
 
+    @NotNull
     @Override
     public String getPropertyPrefix ()
     {

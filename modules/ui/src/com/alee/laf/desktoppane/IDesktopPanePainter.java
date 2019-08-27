@@ -11,7 +11,7 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public interface IDesktopPanePainter<C extends JDesktopPane, U extends WebDesktopPaneUI> extends SpecificPainter<C, U>
+public interface IDesktopPanePainter<C extends JDesktopPane, U extends WDesktopPaneUI> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

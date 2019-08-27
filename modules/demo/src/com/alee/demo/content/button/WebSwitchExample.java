@@ -18,6 +18,7 @@
 package com.alee.demo.content.button;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.extended.button.WebSwitch;
@@ -32,25 +33,28 @@ import java.util.List;
  */
 public class WebSwitchExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "switch";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "switch";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

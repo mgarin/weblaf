@@ -17,6 +17,7 @@
 
 package com.alee.extended.statusbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.language.LM;
@@ -110,13 +111,14 @@ public class WebMemoryBar extends WebButton
         addLanguageListener ( new LanguageListener ()
         {
             @Override
-            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
             {
                 updateMemory ();
             }
         } );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

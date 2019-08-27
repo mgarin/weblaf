@@ -246,6 +246,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         add ( components );
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

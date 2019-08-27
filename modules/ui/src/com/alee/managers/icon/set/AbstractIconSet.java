@@ -18,6 +18,7 @@
 package com.alee.managers.icon.set;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.Overwriting;
 import com.alee.api.merge.behavior.OmitOnMerge;
@@ -80,7 +81,7 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
         this.iconsData = new ConcurrentHashMap<String, AbstractIconData> ( 100 );
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

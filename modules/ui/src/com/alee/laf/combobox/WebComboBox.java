@@ -17,6 +17,8 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.combobox.behavior.ComboBoxMouseWheelScrollBehavior;
 import com.alee.managers.hotkey.HotkeyData;
@@ -60,6 +62,11 @@ import java.util.Vector;
 public class WebComboBox extends JComboBox implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
         ToolTipMethods, LanguageMethods,LanguageEventMethods,  SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
+    /**
+     * Component properties.
+     */
+    public static final String EDITOR_PROPERTY = "editor";
+
     /**
      * Constructs new combobox.
      */
@@ -426,12 +433,14 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
         }
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.combobox;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -504,6 +513,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -522,6 +532,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -541,11 +552,12 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -565,7 +577,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

@@ -17,6 +17,8 @@
 
 package com.alee.painter;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
@@ -77,7 +79,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     protected transient boolean ltr;
 
     @Override
-    public void install ( final C c, final U ui )
+    public void install ( @NotNull final C c, @NotNull final U ui )
     {
         // Event Dispatch Thread checkers
         WebLookAndFeel.installEventDispatchThreadCheckers ( c );
@@ -101,7 +103,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     }
 
     @Override
-    public void uninstall ( final C c, final U ui )
+    public void uninstall ( @NotNull final C c, @NotNull final U ui )
     {
         // Event Dispatch Thread checkers
         WebLookAndFeel.uninstallEventDispatchThreadCheckers ( c );
@@ -177,6 +179,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
         return installed;
     }
 
+    @Nullable
     @Override
     public Boolean isOpaque ()
     {
@@ -246,6 +249,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      *
      * @return {@link SectionPainter}s used by this painter or {@code null} if none are used
      */
+    @Nullable
     protected List<SectionPainter<C, U>> getSectionPainters ()
     {
         return null;
@@ -258,7 +262,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      * @param sections section painters, some or all of them can be {@code null}
      * @return section painters list in a most optimal way
      */
-    protected final List<SectionPainter<C, U>> asList ( final SectionPainter<C, U>... sections )
+    @Nullable
+    protected final List<SectionPainter<C, U>> asList ( @Nullable final SectionPainter<C, U>... sections )
     {
         ArrayList<SectionPainter<C, U>> list = null;
         if ( sections != null )
@@ -284,6 +289,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      *
      * @return {@link SectionPainter}s installed within this painter or {@code null} if none are installed
      */
+    @Nullable
     protected final List<SectionPainter<C, U>> getInstalledSectionPainters ()
     {
         return MapUtils.notEmpty ( sectionPainters ) ? new ArrayList<SectionPainter<C, U>> ( sectionPainters.values () ) : null;
@@ -294,14 +300,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      *
      * @param painter {@link SectionPainter} to install
      */
-    protected final void installSectionPainter ( final SectionPainter<C, U> painter )
+    protected final void installSectionPainter ( @NotNull final SectionPainter<C, U> painter )
     {
-        // Ensure painter exists
-        if ( painter == null )
-        {
-            throw new PainterException ( "Installed Painter cannot be null" );
-        }
-
         // Initializing cache map
         if ( sectionPainters == null )
         {
@@ -330,14 +330,8 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      *
      * @param painter {@link SectionPainter} to uninstall
      */
-    protected final void uninstallSectionPainter ( final SectionPainter<C, U> painter )
+    protected final void uninstallSectionPainter ( @NotNull final SectionPainter<C, U> painter )
     {
-        // Ensure painter exists
-        if ( painter == null )
-        {
-            throw new PainterException ( "Uninstalled Painter cannot be null" );
-        }
-
         // Section identifier
         final String sectionId = painter.getSectionId ();
 
@@ -356,7 +350,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      * @param g2d     graphics context
      * @param bounds  section bounds relative to component coordinates system
      */
-    protected void paintSection ( final SectionPainter painter, final Graphics2D g2d, final Rectangle bounds )
+    protected void paintSection ( @NotNull final SectionPainter painter, @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds )
     {
         if ( SystemUtils.isUnix () )
         {
@@ -459,7 +453,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      * @param oldValue old property value
      * @param newValue new property value
      */
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Forcing orientation visual updates
         if ( Objects.equals ( property, WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
@@ -602,6 +596,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      *
      * @return border required for the view provided by this {@link Painter} or {@code null} in case it is not needed
      */
+    @Nullable
     protected Insets getBorder ()
     {
         return null;
@@ -612,23 +607,24 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
      * Default implementation simply checks that point is within component bounds.
      */
     @Override
-    public boolean contains ( final C c, final U ui, final Bounds bounds, final int x, final int y )
+    public boolean contains ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds, final int x, final int y )
     {
         return bounds.get ().contains ( x, y );
     }
 
     @Override
-    public int getBaseline ( final C c, final U ui, final Bounds bounds )
+    public int getBaseline ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         return -1;
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final C c, final U ui )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final C c, @NotNull final U ui )
     {
         return Component.BaselineResizeBehavior.OTHER;
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

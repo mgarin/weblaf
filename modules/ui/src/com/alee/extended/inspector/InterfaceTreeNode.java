@@ -17,6 +17,7 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.ui.IconBridge;
 import com.alee.api.ui.TextBridge;
 import com.alee.extended.inspector.info.*;
@@ -223,7 +224,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
                         styleListener = new StyleAdapter ()
                         {
                             @Override
-                            public void skinUpdated ( final JComponent component, final StyleId styleId )
+                            public void skinUpdated ( @NotNull final JComponent component, @NotNull final StyleId styleId )
                             {
                                 updateNodeLater ( tree );
                             }

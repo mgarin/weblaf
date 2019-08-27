@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.link.LinkPainter;
 import com.alee.extended.link.WLinkUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbLinkPainter<C extends WebLink, U extends WLinkUI<C>, D extends IDecoration<C, D>>
         extends LinkPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

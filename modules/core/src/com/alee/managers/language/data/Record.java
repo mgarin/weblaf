@@ -17,6 +17,8 @@
 
 package com.alee.managers.language.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
@@ -44,18 +46,21 @@ public final class Record implements Cloneable, Serializable
     /**
      * {@link Record} key within its {@link Dictionary}.
      */
+    @NotNull
     @XStreamAsAttribute
     private String key;
 
     /**
      * {@link Value}s of this {@link Record}.
      */
+    @NotNull
     @XStreamImplicit
     private List<Value> values;
 
     /**
      * {@link Map} containing {@link Value}s cached by {@link Locale} keys.
      */
+    @Nullable
     private transient Map<String, Value> valuesCache;
 
     /**
@@ -63,7 +68,7 @@ public final class Record implements Cloneable, Serializable
      */
     public Record ()
     {
-        this ( null );
+        this ( "", new ArrayList<Value> ( 0 ) );
     }
 
     /**
@@ -71,7 +76,7 @@ public final class Record implements Cloneable, Serializable
      *
      * @param key {@link Record} key within its {@link Dictionary}
      */
-    public Record ( final String key )
+    public Record ( @NotNull final String key )
     {
         this ( key, new ArrayList<Value> ( 0 ) );
     }
@@ -82,7 +87,7 @@ public final class Record implements Cloneable, Serializable
      * @param key    {@link Record} key within its {@link Dictionary}
      * @param values {@link Value}s for new {@link Record}
      */
-    public Record ( final String key, final Value... values )
+    public Record ( @NotNull final String key, @NotNull final Value... values )
     {
         this ( key, CollectionUtils.asList ( values ) );
     }
@@ -93,11 +98,10 @@ public final class Record implements Cloneable, Serializable
      * @param key    {@link Record} key within its {@link Dictionary}
      * @param values {@link Value}s for new {@link Record}
      */
-    public Record ( final String key, final List<Value> values )
+    public Record ( @NotNull final String key, @NotNull final List<Value> values )
     {
-        super ();
-        setKey ( key );
-        setValues ( CollectionUtils.copy ( values ) );
+        this.key = key;
+        this.values = CollectionUtils.copy ( values );
     }
 
     /**
@@ -105,6 +109,7 @@ public final class Record implements Cloneable, Serializable
      *
      * @return {@link Record} key within its {@link Dictionary}
      */
+    @NotNull
     public String getKey ()
     {
         return key;
@@ -115,7 +120,7 @@ public final class Record implements Cloneable, Serializable
      *
      * @param key new {@link Record} key within its {@link Dictionary}
      */
-    public void setKey ( final String key )
+    public void setKey ( @NotNull final String key )
     {
         this.key = key;
     }
@@ -125,6 +130,7 @@ public final class Record implements Cloneable, Serializable
      *
      * @return {@link Value}s of this {@link Record}
      */
+    @NotNull
     public List<Value> getValues ()
     {
         return values;
@@ -135,7 +141,7 @@ public final class Record implements Cloneable, Serializable
      *
      * @param values new {@link Value}s for this {@link Record}
      */
-    public void setValues ( final List<Value> values )
+    public void setValues ( @NotNull final List<Value> values )
     {
         this.values = values;
     }
@@ -144,16 +150,10 @@ public final class Record implements Cloneable, Serializable
      * Adds new {@link Value} for this {@link Record}.
      *
      * @param value new {@link Value}
-     * @return added {@link Value}
      */
-    public Value addValue ( final Value value )
+    public void addValue ( @NotNull final Value value )
     {
-        if ( values == null )
-        {
-            values = new ArrayList<Value> ( 1 );
-        }
         values.add ( value );
-        return value;
     }
 
     /**
@@ -161,12 +161,9 @@ public final class Record implements Cloneable, Serializable
      *
      * @param value {@link Value} to remove
      */
-    public void removeValue ( final Value value )
+    public void removeValue ( @NotNull final Value value )
     {
-        if ( values != null )
-        {
-            values.remove ( value );
-        }
+        values.remove ( value );
     }
 
     /**
@@ -174,10 +171,7 @@ public final class Record implements Cloneable, Serializable
      */
     public void clearValues ()
     {
-        if ( CollectionUtils.notEmpty ( values ) )
-        {
-            values.clear ();
-        }
+        values.clear ();
     }
 
     /**
@@ -187,7 +181,7 @@ public final class Record implements Cloneable, Serializable
      */
     public int valuesCount ()
     {
-        return values != null ? values.size () : 0;
+        return values.size ();
     }
 
     /**
@@ -195,17 +189,31 @@ public final class Record implements Cloneable, Serializable
      *
      * @param locales {@link List} to put {@link Locale}s into
      */
-    protected void collectAllLocales ( final List<Locale> locales )
+    protected void collectAllLocales ( @NotNull final List<Locale> locales )
     {
-        if ( CollectionUtils.notEmpty ( values ) )
+        for ( final Value value : values )
         {
-            for ( final Value value : values )
+            final Locale locale = value.getLocale ();
+            if ( !locales.contains ( locale ) )
             {
-                final Locale locale = value.getLocale ();
-                if ( !locales.contains ( locale ) )
-                {
-                    locales.add ( locale );
-                }
+                locales.add ( locale );
+            }
+        }
+    }
+
+    /**
+     * Collects all language codes from this {@link Record}.
+     *
+     * @param codes {@link List} to put language codes into
+     */
+    protected void collectAllCodes ( @NotNull final List<String> codes )
+    {
+        for ( final Value value : values )
+        {
+            final String code = value.getLocale ().getLanguage ();
+            if ( !codes.contains ( code ) )
+            {
+                codes.add ( code );
             }
         }
     }
@@ -216,7 +224,7 @@ public final class Record implements Cloneable, Serializable
      * @param locale {@link Locale} to check {@link Value} for
      * @return {@code true} if this {@link Record} has {@link Value} for the specified {@link Locale}, {@code false} otherwise
      */
-    public boolean hasValue ( final Locale locale )
+    public boolean hasValue ( @NotNull final Locale locale )
     {
         return getValue ( locale ) != null;
     }
@@ -227,15 +235,15 @@ public final class Record implements Cloneable, Serializable
      * @param locale {@link Locale} to provide {@link Value} for
      * @return {@link Value} most fitting for the specified {@link Locale}
      */
-    public Value getValue ( final Locale locale )
+    @Nullable
+    public Value getValue ( @NotNull final Locale locale )
     {
-        // Looking for appropriate value
-        final Value result;
+        final Value value;
         final String key = locale.getLanguage () + "_" + locale.getCountry ();
         if ( valuesCache != null && valuesCache.containsKey ( key ) )
         {
             // Resulting value is already cached
-            result = valuesCache.get ( key );
+            value = valuesCache.get ( key );
         }
         else
         {
@@ -245,12 +253,12 @@ public final class Record implements Cloneable, Serializable
                 // Looking for most fittng value
                 final List<Value> values = getValues ( locale );
                 final Comparator<Value> comparator = new ValueCountryComparator ( locale );
-                result = CollectionUtils.max ( values, comparator );
+                value = CollectionUtils.max ( values, comparator );
             }
             else
             {
                 // Empty value result
-                result = null;
+                value = null;
             }
 
             // Caching result
@@ -258,9 +266,9 @@ public final class Record implements Cloneable, Serializable
             {
                 valuesCache = new HashMap<String, Value> ( values.size () );
             }
-            valuesCache.put ( key, result );
+            valuesCache.put ( key, value );
         }
-        return result;
+        return value;
     }
 
     /**
@@ -269,19 +277,21 @@ public final class Record implements Cloneable, Serializable
      * @param locale {@link Locale} to provide {@link Value}s for
      * @return {@link List} of {@link Value} for the specified {@link Locale}
      */
-    public List<Value> getValues ( final Locale locale )
+    @NotNull
+    public List<Value> getValues ( @NotNull final Locale locale )
     {
-        final List<Value> values = new ArrayList<Value> ( 3 );
-        for ( final Value value : this.values )
+        final List<Value> localeValues = new ArrayList<Value> ( 3 );
+        for ( final Value value : values )
         {
             if ( Objects.equals ( value.getLocale ().getLanguage (), locale.getLanguage () ) )
             {
-                values.add ( value );
+                localeValues.add ( value );
             }
         }
-        return values;
+        return localeValues;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
@@ -294,9 +304,10 @@ public final class Record implements Cloneable, Serializable
      * @param boldKey whether or not key should be displayed bold
      * @return {@link Record} text representation
      */
+    @NotNull
     public String toString ( final boolean boldKey )
     {
         return ( boldKey ? "{" : "" ) + key + ( boldKey ? ":b}" : "" ) +
-                ( values != null ? "[ " + TextUtils.listToString ( values, "; " ) + " ]" : "null" );
+                ( "[ " + TextUtils.listToString ( values, "; " ) + " ]" );
     }
 }

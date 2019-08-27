@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.layout;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.painter.decoration.content.IContent;
@@ -58,7 +59,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
      */
     protected transient Map<String, List<IContent>> contentsCache;
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

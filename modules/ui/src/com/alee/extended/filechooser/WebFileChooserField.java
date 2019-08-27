@@ -17,6 +17,7 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.laf.button.WebButton;
@@ -215,6 +216,7 @@ public class WebFileChooserField extends WebPanel
         updateContentLayout ();
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {

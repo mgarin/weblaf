@@ -13,7 +13,7 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public final class AdaptiveInternalFramePainter<C extends JInternalFrame, U extends WebInternalFrameUI> extends AdaptivePainter<C, U>
+public final class AdaptiveInternalFramePainter<C extends JInternalFrame, U extends WInternalFrameUI> extends AdaptivePainter<C, U>
         implements IInternalFramePainter<C, U>
 {
     /**

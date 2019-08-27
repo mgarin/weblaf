@@ -18,6 +18,8 @@
 package com.alee.demo.api.example;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -34,6 +36,7 @@ public interface Preview extends Identifiable, PreviewControl
      *
      * @return example this preview belongs to
      */
+    @NotNull
     public Example getExample ();
 
     /**
@@ -41,6 +44,7 @@ public interface Preview extends Identifiable, PreviewControl
      *
      * @return current development state feature displayed in this preview
      */
+    @NotNull
     public FeatureState getFeatureState ();
 
     /**
@@ -48,6 +52,7 @@ public interface Preview extends Identifiable, PreviewControl
      *
      * @return preview title
      */
+    @NotNull
     public String getTitle ();
 
     /**
@@ -58,12 +63,14 @@ public interface Preview extends Identifiable, PreviewControl
      * @param index    index of this preview
      * @return preview component
      */
-    public JComponent getPreview ( List<Preview> previews, int index );
+    @NotNull
+    public JComponent getPreview ( @NotNull List<Preview> previews, int index );
 
     /**
      * Returns preview part which width should be equalized with other previews within same example.
      *
      * @return preview part which width should be equalized with other previews within same example
      */
+    @Nullable
     public JComponent getEqualizableWidthComponent ();
 }

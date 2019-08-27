@@ -17,10 +17,13 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.reflection.ReflectionException;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicLookAndFeel;
 import java.awt.*;
 import java.awt.event.WindowListener;
 import java.lang.reflect.InvocationTargetException;
@@ -79,6 +82,33 @@ public final class ProprietaryUtils
     }
 
     /**
+     * Initializes proprietary {@code javax.swing.plaf.basic.BasicLookAndFeel.AWTEventHelper}.
+     */
+    public static void installAWTEventListener ()
+    {
+        try
+        {
+            final LookAndFeel laf = UIManager.getLookAndFeel ();
+            if ( laf instanceof BasicLookAndFeel )
+            {
+                ReflectUtils.callMethod ( laf, "installAWTEventListener" );
+            }
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+        }
+    }
+
+    /**
      * Installs some proprietary LaF defaults for proper text rendering.
      * Basically this method is a workaround for this simple call:
      * {@code table.put ( sun.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY, sun.swing.SwingUtilities2.AATextInfo.getAATextInfo ( true ) );}
@@ -86,7 +116,7 @@ public final class ProprietaryUtils
      *
      * @param table defaults table
      */
-    public static void setupAATextInfo ( final UIDefaults table )
+    public static void setupAATextInfo ( @NotNull final UIDefaults table )
     {
         if ( SystemUtils.isJava9orAbove () )
         {
@@ -168,6 +198,7 @@ public final class ProprietaryUtils
      */
     public static boolean isWindowTransparencyAllowed ()
     {
+        boolean allowed;
         try
         {
             if ( windowTransparencyAllowed )
@@ -180,19 +211,20 @@ public final class ProprietaryUtils
                 final Boolean wts = ReflectUtils.callStaticMethod ( au, "isWindowTranslucencySupported" );
                 final Boolean tc = ReflectUtils.callStaticMethod ( au, "isTranslucencyCapable", SystemUtils.getGraphicsConfiguration () );
                 final Boolean ppts = ReflectUtils.callStaticMethod ( au, "isTranslucencySupported", ppt );
-                return wts && tc && ppts && ( SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
+                allowed = wts && tc && ppts && ( SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
                         SystemUtils.isUnix () && allowLinuxTransparency );
             }
             else
             {
-                return false;
+                allowed = false;
             }
         }
         catch ( final Exception e )
         {
-            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
+            allowed = SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
                     SystemUtils.isUnix () && allowLinuxTransparency;
         }
+        return allowed;
     }
 
     /**
@@ -213,6 +245,7 @@ public final class ProprietaryUtils
      */
     public static boolean isWindowShapeAllowed ()
     {
+        boolean allowed;
         try
         {
             if ( windowShapeAllowed )
@@ -223,17 +256,18 @@ public final class ProprietaryUtils
                 final Object ppt = ReflectUtils.getStaticFieldValue ( t, "PERPIXEL_TRANSPARENT" );
                 final Boolean wts = ReflectUtils.callStaticMethod ( au, "isWindowShapingSupported" );
                 final Boolean ppts = ReflectUtils.callStaticMethod ( au, "isTranslucencySupported", ppt );
-                return wts && ppts;
+                allowed = wts && ppts;
             }
             else
             {
-                return false;
+                allowed = false;
             }
         }
         catch ( final Exception e )
         {
-            return windowShapeAllowed;
+            allowed = windowShapeAllowed;
         }
+        return allowed;
     }
 
     /**
@@ -252,7 +286,7 @@ public final class ProprietaryUtils
      * @param window window to process
      * @param opaque whether should make window opaque or not
      */
-    public static void setWindowOpaque ( final Window window, final boolean opaque )
+    public static void setWindowOpaque ( @Nullable final Window window, final boolean opaque )
     {
         if ( window != null && isWindowTransparencyAllowed () )
         {
@@ -262,7 +296,7 @@ public final class ProprietaryUtils
                 if ( SystemUtils.isJava7orAbove () )
                 {
                     // In Java 7 and later we change window background color to make it opaque or non-opaque
-                    setupOpacityBackgroundColor ( opaque, window );
+                    setupOpacityBackgroundColor ( window, opaque );
                 }
                 else
                 {
@@ -276,14 +310,14 @@ public final class ProprietaryUtils
                 if ( rootPane != null )
                 {
                     // Changing root pane background color and opacity
-                    setupOpacityBackgroundColor ( opaque, rootPane );
+                    setupOpacityBackgroundColor ( rootPane, opaque );
                     rootPane.setOpaque ( opaque );
 
                     // Changing content pane color and opacity
                     final Container container = rootPane.getContentPane ();
                     if ( container != null )
                     {
-                        setupOpacityBackgroundColor ( opaque, container );
+                        setupOpacityBackgroundColor ( container, opaque );
                         if ( container instanceof JComponent )
                         {
                             ( ( JComponent ) container ).setOpaque ( opaque );
@@ -305,15 +339,15 @@ public final class ProprietaryUtils
     }
 
     /**
-     * Changes component background color to match opacity.
+     * Changes {@link Component} background color to match opacity.
      *
+     * @param component {@link Component} to process
      * @param opaque    whether component should should be opaque or not
-     * @param component component to process
      * @throws java.lang.NoSuchMethodException             if method was not found
      * @throws java.lang.reflect.InvocationTargetException if method throws an exception
      * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
-    private static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
+    private static void setupOpacityBackgroundColor ( @NotNull final Component component, final boolean opaque )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         ReflectUtils.callMethod ( component, "setBackground", opaque ? Color.WHITE : ColorUtils.transparent () );
@@ -325,8 +359,9 @@ public final class ProprietaryUtils
      * @param window window to process
      * @return whether window background is opaque or not
      */
-    public static boolean isWindowOpaque ( final Window window )
+    public static boolean isWindowOpaque ( @Nullable final Window window )
     {
+        boolean opaque = true;
         if ( window != null && isWindowTransparencyAllowed () )
         {
             try
@@ -343,7 +378,7 @@ public final class ProprietaryUtils
                     // Workaround to allow this method usage on all possible Java versions
                     isOpaque = ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "isWindowOpaque", window );
                 }
-                return isOpaque != null ? isOpaque : true;
+                opaque = isOpaque != null ? isOpaque : true;
             }
             catch ( final Exception e )
             {
@@ -352,7 +387,7 @@ public final class ProprietaryUtils
                 LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
-        return true;
+        return opaque;
     }
 
     /**
@@ -361,7 +396,7 @@ public final class ProprietaryUtils
      * @param window  window to process
      * @param opacity new window opacity
      */
-    public static void setWindowOpacity ( final Window window, final float opacity )
+    public static void setWindowOpacity ( @Nullable final Window window, final float opacity )
     {
         if ( window != null && isWindowTransparencyAllowed () )
         {
@@ -393,24 +428,25 @@ public final class ProprietaryUtils
      * @param window window to process
      * @return window opacity
      */
-    public static float getWindowOpacity ( final Window window )
+    public static float getWindowOpacity ( @Nullable final Window window )
     {
+        float opacity = 1f;
         if ( window != null && isWindowTransparencyAllowed () )
         {
             try
             {
-                final Float opacity;
+                final Float retrieved;
                 if ( SystemUtils.isJava7orAbove () )
                 {
                     // For Java 7 and later this will work just fine
-                    opacity = ReflectUtils.callMethod ( window, "getOpacity" );
+                    retrieved = ReflectUtils.callMethod ( window, "getOpacity" );
                 }
                 else
                 {
                     // Workaround to allow this method usage on all possible Java versions
-                    opacity = ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "getWindowOpacity", window );
+                    retrieved = ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "getWindowOpacity", window );
                 }
-                return opacity != null ? opacity : 1f;
+                opacity = retrieved != null ? retrieved : 1f;
             }
             catch ( final Exception e )
             {
@@ -419,16 +455,17 @@ public final class ProprietaryUtils
                 LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
-        return 1f;
+        return opacity;
     }
 
     /**
-     * Sets window shape if that option is supported by the underlying system.
+     * Sets new {@link Shape} for the specified {@link Window} if that option is supported by the underlying system.
+     * {@code null} can be passed to reset {@link Window} shape.
      *
-     * @param window window to process
-     * @param shape  new window shape
+     * @param window {@link Window} to update
+     * @param shape  new {@link Shape} for the {@link Window}
      */
-    public static void setWindowShape ( final Window window, final Shape shape )
+    public static void setWindowShape ( @Nullable final Window window, @Nullable final Shape shape )
     {
         if ( window != null && isWindowShapeAllowed () )
         {
@@ -460,13 +497,14 @@ public final class ProprietaryUtils
      * @param window window to process
      * @return window shape
      */
-    public static Shape getWindowShape ( final Window window )
+    @Nullable
+    public static Shape getWindowShape ( @Nullable final Window window )
     {
+        Shape shape = null;
         if ( window != null && isWindowShapeAllowed () )
         {
             try
             {
-                final Shape shape;
                 if ( SystemUtils.isJava7orAbove () )
                 {
                     // For Java 7 and later this will work just fine
@@ -477,7 +515,6 @@ public final class ProprietaryUtils
                     // Workaround to allow this method usage on all possible Java versions
                     shape = ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "getWindowShape", window );
                 }
-                return shape;
             }
             catch ( final Exception e )
             {
@@ -486,7 +523,7 @@ public final class ProprietaryUtils
                 LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
             }
         }
-        return null;
+        return shape;
     }
 
     /**
@@ -495,7 +532,7 @@ public final class ProprietaryUtils
      *
      * @param window window to process
      */
-    public static void checkAndSetPolicy ( final Window window )
+    public static void checkAndSetPolicy ( @NotNull final Window window )
     {
         final String toolkitClass = "sun.awt.SunToolkit";
         try
@@ -526,75 +563,77 @@ public final class ProprietaryUtils
     }
 
     /**
-     * Returns {@link javax.swing.SwingUtilities.SharedOwnerFrame} instance that is used as default parent for all parentless dialogs.
+     * Returns {@code javax.swing.SwingUtilities.SharedOwnerFrame} instance that is used as default parent for all parentless dialogs.
+     * todo Returning {@code null} from this method can potentially cause issues for windows
      *
-     * @return {@link javax.swing.SwingUtilities.SharedOwnerFrame} instance that is used as default parent for all parentless dialogs
+     * @return {@code javax.swing.SwingUtilities.SharedOwnerFrame} instance that is used as default parent for all parentless dialogs
      */
+    @Nullable
     public static Frame getSharedOwnerFrame ()
     {
+        Frame sharedOwner = null;
         try
         {
-            return ReflectUtils.callStaticMethod ( SwingUtilities.class, "getSharedOwnerFrame" );
+            sharedOwner = ReflectUtils.callStaticMethod ( SwingUtilities.class, "getSharedOwnerFrame" );
         }
         catch ( final NoSuchMethodException e )
         {
             final String msg = "Unable to retrieve SharedOwnerFrame, it seems your JDK version doesn't support it";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
-            return null;
         }
         catch ( final InvocationTargetException e )
         {
             final String msg = "Exception occured while retrieving SharedOwnerFrame";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
-            return null;
         }
         catch ( final IllegalAccessException e )
         {
             final String msg = "Unable to access SharedOwnerFrame";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
-            return null;
         }
+        return sharedOwner;
     }
 
     /**
-     * Returns {@link javax.swing.SwingUtilities.SharedOwnerFrame} shutdown listener.
+     * Returns {@code javax.swing.SwingUtilities.SharedOwnerFrame} shutdown listener.
      *
-     * @return {@link javax.swing.SwingUtilities.SharedOwnerFrame} shutdown listener
+     * @return {@code javax.swing.SwingUtilities.SharedOwnerFrame} shutdown listener
      */
+    @Nullable
     public static WindowListener getSharedOwnerFrameShutdownListener ()
     {
+        WindowListener listener = null;
         try
         {
-            return ReflectUtils.callStaticMethod ( SwingUtilities.class, "getSharedOwnerFrameShutdownListener" );
+            listener = ReflectUtils.callStaticMethod ( SwingUtilities.class, "getSharedOwnerFrameShutdownListener" );
         }
         catch ( final NoSuchMethodException e )
         {
             final String msg = "Unable to retrieve SharedOwnerFrame shutdown listener, it seems your JDK version doesn't support it";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
-            return null;
         }
         catch ( final InvocationTargetException e )
         {
             final String msg = "Exception occured while retrieving SharedOwnerFrame shutdown listener";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
-            return null;
         }
         catch ( final IllegalAccessException e )
         {
             final String msg = "Unable to access SharedOwnerFrame shutdown listener";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
-            return null;
         }
+        return listener;
     }
 
     /**
-     * Returns window ancestor for specified component or {@link javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist.
+     * Returns window ancestor for specified component or {@code javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist.
      * Any kinds of {@link Window}s except for {@link Dialog} and {@link Frame} are not accepted by {@link JDialog}, that is why they are
-     * filtered and {@link javax.swing.SwingUtilities.SharedOwnerFrame} is used instead in such cases.
+     * filtered and {@code javax.swing.SwingUtilities.SharedOwnerFrame} is used instead in such cases.
      *
      * @param component component to process
-     * @return window ancestor for specified component or {@link javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist
+     * @return window ancestor for specified component or {@code javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist
      */
+    @Nullable
     public static Window getWindowAncestorForDialog ( final Component component )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( component );
@@ -609,7 +648,7 @@ public final class ProprietaryUtils
      *
      * @param window {@link Window} to change type for
      */
-    public static void setPopupWindowType ( final Window window )
+    public static void setPopupWindowType ( @NotNull final Window window )
     {
         setWindowType ( window, "POPUP" );
     }
@@ -621,7 +660,7 @@ public final class ProprietaryUtils
      *
      * @param window {@link Window} to change type for
      */
-    public static void setUtilityWindowType ( final Window window )
+    public static void setUtilityWindowType ( @NotNull final Window window )
     {
         setWindowType ( window, "UTILITY" );
     }
@@ -634,7 +673,7 @@ public final class ProprietaryUtils
      * @param window   {@link Window} to change type for
      * @param typeName {@code Window.Type} enumeration literal name
      */
-    private static void setWindowType ( final Window window, final String typeName )
+    private static void setWindowType ( @NotNull final Window window, @NotNull final String typeName )
     {
         if ( SystemUtils.isJava7orAbove () )
         {

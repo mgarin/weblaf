@@ -419,6 +419,7 @@ public final class TextUtils
      */
     public static int findLastRowWordStartIndex ( @NotNull final String string )
     {
+        int index = -1;
         boolean spaceFound = false;
         boolean skipSpace = true;
         for ( int i = string.length () - 1; i >= 0; i-- )
@@ -437,13 +438,14 @@ public final class TextUtils
                 {
                     if ( spaceFound )
                     {
-                        return i;
+                        index = i;
+                        break;
                     }
                     skipSpace = false;
                 }
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -455,15 +457,17 @@ public final class TextUtils
      */
     public static int findFirstWordFromIndex ( @NotNull final String string, final int from )
     {
+        int index = -1;
         for ( int i = from; i < string.length (); i++ )
         {
             final char c = string.charAt ( i );
             if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -474,6 +478,7 @@ public final class TextUtils
      */
     public static int findFirstRowWordEndIndex ( @NotNull final String string )
     {
+        int index = string.length ();
         boolean spaceFound = false;
         for ( int i = 0; i < string.length (); i++ )
         {
@@ -489,11 +494,12 @@ public final class TextUtils
             {
                 if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
                 {
-                    return i;
+                    index = i;
+                    break;
                 }
             }
         }
-        return string.length ();
+        return index;
     }
 
     /**
@@ -518,10 +524,10 @@ public final class TextUtils
             }
             else
             {
-                return "";
+                break;
             }
         }
-        return text.substring ( index );
+        return index != -1 ? text.substring ( index ) : "";
     }
 
     /**
@@ -742,6 +748,7 @@ public final class TextUtils
     public static <T> String listToString ( @Nullable final List<T> list, @NotNull final String separator,
                                             @NotNull final Function<T, String> textProvider, @Nullable final Filter<T> filter )
     {
+        final String result;
         if ( CollectionUtils.notEmpty ( list ) )
         {
             final StringBuilder stringBuilder = new StringBuilder ();
@@ -758,12 +765,13 @@ public final class TextUtils
                     hasPreviouslyAccepted = true;
                 }
             }
-            return stringBuilder.toString ();
+            result = stringBuilder.toString ();
         }
         else
         {
-            return null;
+            result = null;
         }
+        return result;
     }
 
     /**
@@ -823,6 +831,7 @@ public final class TextUtils
     public static <T> String arrayToString ( @NotNull final String separator, @NotNull final Function<T, String> textProvider,
                                              @Nullable final Filter<T> filter, @Nullable final T... array )
     {
+        final String result;
         if ( array != null && array.length > 0 )
         {
             final StringBuilder stringBuilder = new StringBuilder ();
@@ -839,12 +848,13 @@ public final class TextUtils
                     hasPreviouslyAccepted = true;
                 }
             }
-            return stringBuilder.toString ();
+            result = stringBuilder.toString ();
         }
         else
         {
-            return null;
+            result = null;
         }
+        return result;
     }
 
     /**
@@ -871,6 +881,7 @@ public final class TextUtils
     @Nullable
     public static <E extends Enum<E>> String enumArrayToString ( @NotNull final String separator, @Nullable final E... enumArray )
     {
+        final String result;
         if ( enumArray != null && enumArray.length > 0 )
         {
             final int end = enumArray.length - 1;
@@ -880,12 +891,13 @@ public final class TextUtils
                 stringBuilder.append ( enumArray[ i ] );
                 stringBuilder.append ( i != end ? separator : "" );
             }
-            return stringBuilder.toString ();
+            result = stringBuilder.toString ();
         }
         else
         {
-            return null;
+            result = null;
         }
+        return result;
     }
 
     /**
@@ -912,6 +924,7 @@ public final class TextUtils
     @Nullable
     public static <E extends Enum<E>> String enumListToString ( @Nullable final List<E> enumList, @NotNull final String separator )
     {
+        final String result;
         if ( enumList != null && enumList.size () > 0 )
         {
             final int end = enumList.size () - 1;
@@ -921,12 +934,13 @@ public final class TextUtils
                 stringBuilder.append ( enumList.get ( i ) );
                 stringBuilder.append ( i != end ? separator : "" );
             }
-            return stringBuilder.toString ();
+            result = stringBuilder.toString ();
         }
         else
         {
-            return null;
+            result = null;
         }
+        return result;
     }
 
     /**
@@ -983,6 +997,7 @@ public final class TextUtils
     @NotNull
     public static String unite ( @NotNull final String separator, @Nullable final String... parts )
     {
+        final String result;
         if ( parts != null && parts.length > 0 )
         {
             final StringBuilder sb = new StringBuilder ();
@@ -999,12 +1014,13 @@ public final class TextUtils
                     hasPrevious = true;
                 }
             }
-            return sb.toString ();
+            result = sb.toString ();
         }
         else
         {
-            return "";
+            result = "";
         }
+        return result;
     }
 
     /**

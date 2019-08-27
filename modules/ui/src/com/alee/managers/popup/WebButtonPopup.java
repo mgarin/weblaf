@@ -17,6 +17,7 @@
 
 package com.alee.managers.popup;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -580,6 +581,7 @@ public class WebButtonPopup extends WebInnerPopup
         return new Point ( x, y );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -639,7 +641,7 @@ public class WebButtonPopup extends WebInnerPopup
             extends PanelPainter<WebButtonPopup, WebPanelUI<WebButtonPopup>, D>
     {
         @Override
-        public void paint ( final Graphics2D g2d, final WebButtonPopup c, final WebPanelUI ui, final Bounds bounds )
+        public void paint ( @NotNull final Graphics2D g2d, @NotNull final WebButtonPopup c, @NotNull final WebPanelUI ui, @NotNull final Bounds bounds )
         {
             // todo FIX
             //            LafUtils.drawCustomWebBorder ( g2d, c, getPopupShape ( c ),

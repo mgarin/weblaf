@@ -17,6 +17,8 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 import com.alee.utils.DebugUtils;
 import com.alee.utils.ReflectUtils;
@@ -119,7 +121,8 @@ public final class NativeFonts
      * @param control {@link ControlType}
      * @return native {@link FontUIResource} for the specified {@link ControlType}
      */
-    public static FontUIResource get ( final ControlType control )
+    @NotNull
+    public static FontUIResource get ( @NotNull final ControlType control )
     {
         final FontUIResource font;
         switch ( SystemUtils.getOsType () )
@@ -485,8 +488,9 @@ public final class NativeFonts
      * @return native Windows {@link FontUIResource} for the {@link Font} key and {@link Font} size key
      * @see com.sun.java.swing.plaf.windows.WindowsLookAndFeel.WindowsFontProperty#configureValue(Object)
      */
+    @NotNull
     @SuppressWarnings ( "JavadocReference" )
-    private static FontUIResource getWindowsFont ( final String fontKey, final Supplier<FontUIResource> fallback )
+    private static FontUIResource getWindowsFont ( @NotNull final String fontKey, @NotNull final Supplier<FontUIResource> fallback )
     {
         Font font;
 
@@ -589,7 +593,8 @@ public final class NativeFonts
      * @param fallback       {@link Supplier} for the fallback {@link FontUIResource}
      * @return native Mac OS X {@link FontUIResource} using the specified retrieval method name
      */
-    private static FontUIResource getMacOSFont ( final String fontMethodName, final Supplier<FontUIResource> fallback )
+    @NotNull
+    private static FontUIResource getMacOSFont ( @NotNull final String fontMethodName, @NotNull final Supplier<FontUIResource> fallback )
     {
         Font font;
         if ( isUseNativeFonts () )
@@ -646,9 +651,10 @@ public final class NativeFonts
      * @param fallback {@link Supplier} for the fallback {@link FontUIResource}
      * @return native Unix {@link FontUIResource} using the specified retrieval method name
      */
-    private static FontUIResource getUnixFont ( final Region region, final Supplier<FontUIResource> fallback )
+    @NotNull
+    private static FontUIResource getUnixFont ( @NotNull final Region region, @NotNull final Supplier<FontUIResource> fallback )
     {
-        Font font;
+        Font font = null;
         if ( isUseNativeFonts () && isGTKAvailable () )
         {
             final Object factory = getGTKStyleFactory ();
@@ -657,43 +663,40 @@ public final class NativeFonts
                 try
                 {
                     final Object style = ReflectUtils.callMethod ( factory, "getStyle", null, region );
-                    try
+                    if ( style != null )
                     {
-                        if ( SystemUtils.isJava9orAbove () || SystemUtils.isJavaVersionOrAbove ( 1.8, 211 ) )
+                        try
                         {
-                            font = ReflectUtils.callMethod ( style, "getDefaultFont" );
+                            if ( SystemUtils.isJava9orAbove () || SystemUtils.isJavaVersionOrAbove ( 1.8, 211 ) )
+                            {
+                                font = ReflectUtils.callMethod ( style, "getDefaultFont" );
+                            }
+                            else if ( SystemUtils.isJava7orAbove () )
+                            {
+                                final Object[] args = { null };
+                                font = ReflectUtils.callMethod ( style, "getFontForState", args );
+                            }
+                            else
+                            {
+                                final Object[] args = { null, region, SynthConstants.ENABLED };
+                                font = ReflectUtils.callMethod ( style, "getFontForState", args );
+                            }
                         }
-                        else if ( SystemUtils.isJava7orAbove () )
+                        catch ( final Exception e )
                         {
-                            final Object[] args = { null };
-                            font = ReflectUtils.callMethod ( style, "getFontForState", args );
+                            final String msg = "Unable to retrieve region Font: %s";
+                            LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, region ) );
                         }
-                        else
-                        {
-                            final Object[] args = { null, region, SynthConstants.ENABLED };
-                            font = ReflectUtils.callMethod ( style, "getFontForState", args );
-                        }
-                    }
-                    catch ( final Exception e )
-                    {
-                        final String msg = "Unable to retrieve region Font: %s";
-                        LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, region ) );
-                        font = fallback.get ();
                     }
                 }
                 catch ( final Exception e )
                 {
                     final String msg = "Unable to retrieve region style: %s";
                     LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, region ) );
-                    font = fallback.get ();
                 }
             }
-            else
-            {
-                font = fallback.get ();
-            }
         }
-        else
+        if ( font == null )
         {
             font = fallback.get ();
         }
@@ -775,6 +778,7 @@ public final class NativeFonts
      *
      * @return {@code com.sun.java.swing.plaf.gtk.GTKStyleFactory} instance or {@code null} if it cannot be instantiated
      */
+    @Nullable
     private static Object getGTKStyleFactory ()
     {
         if ( gtkStyleFactoryAvailable == null )
@@ -822,10 +826,11 @@ public final class NativeFonts
     }
 
     /**
-     * Returns default GTK {@link Font}.
+     * Returns default GTK {@link Font} or {@code null} if it cannot be instantiated..
      *
-     * @return default GTK {@link Font}
+     * @return default GTK {@link Font} or {@code null} if it cannot be instantiated.
      */
+    @Nullable
     private static Font getDefaultGTKFont ()
     {
         if ( defaultGTKFontAvailable == null )
@@ -851,7 +856,7 @@ public final class NativeFonts
                             }
                         }
                         defaultGTKFont = ReflectUtils.callStaticMethod ( "com.sun.java.swing.plaf.gtk.PangoFonts",
-                            "lookupFont", ( String ) fontName );
+                                "lookupFont", fontName );
                         defaultGTKFontAvailable = true;
                     }
                     catch ( final Exception e )

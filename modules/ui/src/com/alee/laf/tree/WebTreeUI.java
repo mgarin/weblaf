@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.extended.tree.WebCheckBoxTree;
@@ -177,6 +178,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -195,6 +197,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         PainterSupport.setShapeDetectionEnabled ( tree, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -202,11 +205,12 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( tree, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -214,7 +218,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( tree, padding );
     }
@@ -237,7 +241,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tree, new Consumer<ITreePainter> ()
+        PainterSupport.setPainter ( tree, this, new Consumer<ITreePainter> ()
         {
             @Override
             public void accept ( final ITreePainter newPainter )

@@ -1,5 +1,7 @@
 package com.alee.managers.style;
 
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 
 /**
@@ -19,6 +21,7 @@ public interface MarginSupport
     /**
      * Empty margin.
      */
+    @Nullable
     public static Insets EMPTY = null;
 
     /**
@@ -27,6 +30,7 @@ public interface MarginSupport
      *
      * @return current margin
      */
+    @Nullable
     public Insets getMargin ();
 
     /**
@@ -35,5 +39,5 @@ public interface MarginSupport
      *
      * @param margin new margin
      */
-    public void setMargin ( Insets margin );
+    public void setMargin ( @Nullable Insets margin );
 }

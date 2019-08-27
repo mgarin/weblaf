@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
@@ -155,7 +156,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         return styleId;
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
@@ -165,24 +166,25 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     @Override
     public Icon getIcon ()
     {
+        final Icon icon;
         final Class<C> key = getComponentClass ();
         if ( componentIcons.containsKey ( key ) )
         {
-            return componentIcons.get ( key );
+            icon = componentIcons.get ( key );
         }
         else
         {
             try
             {
-                final ImageIcon icon = new ImageIcon ( getIconResource () );
+                icon = new ImageIcon ( getIconResource () );
                 componentIcons.put ( key, icon );
-                return icon;
             }
             catch ( final Exception e )
             {
                 throw new StyleException ( "Unable to find component icon: " + key, e );
             }
         }
+        return icon;
     }
 
     /**

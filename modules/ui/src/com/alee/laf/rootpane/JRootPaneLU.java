@@ -58,10 +58,10 @@ public class JRootPaneLU extends ToolTipLU<JRootPane>
             }
 
             // Updating custom window title upon language changes
-            // todo This should be done within WebRootPaneUI instead
-            if ( component.getUI () instanceof WebRootPaneUI )
+            // todo This should be done within WRootPaneUI instead
+            if ( component.getUI () instanceof WRootPaneUI )
             {
-                final JComponent titleComponent = ( ( WebRootPaneUI ) component.getUI () ).getTitleComponent ();
+                final JComponent titleComponent = ( ( WRootPaneUI ) component.getUI () ).getTitleComponent ();
                 if ( titleComponent != null )
                 {
                     titleComponent.repaint ();

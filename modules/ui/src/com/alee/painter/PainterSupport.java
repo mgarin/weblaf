@@ -17,6 +17,8 @@
 
 package com.alee.painter;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Bounds;
@@ -25,7 +27,6 @@ import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.painter.decoration.AbstractDecorationPainter;
-import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WeakComponentData;
@@ -52,132 +53,141 @@ public final class PainterSupport
      * Installed painters.
      * todo These should be moved into {@link StyleManager} and preserver in {@link com.alee.managers.style.StyleData}
      *
-     * @see #installPainter(JComponent, Painter)
-     * @see #uninstallPainter(JComponent, Painter)
+     * @see #installPainter(JComponent, ComponentUI, Painter)
+     * @see #uninstallPainter(JComponent, ComponentUI, Painter)
      */
+    @NotNull
     private static final WeakComponentData<JComponent, Painter> installedPainters =
             new WeakComponentData<JComponent, Painter> ( "PainterSupport.painter", 200 );
 
     /**
-     * Margins saved per-component instance.
+     * Margins saved for each {@link JComponent} instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
      *
      * @see #getMargin(JComponent)
      * @see #setMargin(JComponent, Insets)
      */
+    @NotNull
     private static final WeakComponentData<JComponent, Insets> margins =
             new WeakComponentData<JComponent, Insets> ( "PainterSupport.margin", 200 );
 
     /**
-     * Paddings saved per-component instance.
+     * Paddings saved for each {@link JComponent} instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
      *
      * @see #getPadding(JComponent)
      * @see #setPadding(JComponent, Insets)
      */
+    @NotNull
     private static final WeakComponentData<JComponent, Insets> paddings =
             new WeakComponentData<JComponent, Insets> ( "PainterSupport.padding", 200 );
 
     /**
-     * Shape detection settings saved per-component instance.
+     * Shape detection settings saved for each {@link JComponent} instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
      *
      * @see #isShapeDetectionEnabled(JComponent, Painter)
      * @see #setShapeDetectionEnabled(JComponent, Painter, boolean)
      */
+    @NotNull
     private static final WeakComponentData<JComponent, Boolean> shapeDetectionEnabled =
             new WeakComponentData<JComponent, Boolean> ( "PainterSupport.shapeDetectionEnabled", 200 );
 
     /**
-     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
-     * Used by component UIs to retrieve painters adapted for their specific needs.
+     * Returns either specified {@link Painter} if it is not an {@link AdaptivePainter} or the adapted {@link Painter} otherwise.
+     * Used by {@link ComponentUI}s to retrieve {@link Painter}s adapted for their specific needs.
      *
-     * @param painter painter to process
-     * @param <P>     desired painter type
-     * @return either the specified painter if it is not an adapted painter or the adapted painter
+     * @param painter {@link Painter} to process
+     * @param <P>     desired {@link Painter} type
+     * @return either specified {@link Painter} if it is not an {@link AdaptivePainter} or the adapted {@link Painter} otherwise
      */
-    public static <P extends Painter> P getPainter ( final Painter painter )
+    @Nullable
+    public static <P extends Painter> P getPainter ( @Nullable final Painter painter )
     {
         return ( P ) ( painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
     }
 
     /**
-     * Sets component painter.
-     * {@code null} can be provided to uninstall painter.
+     * Sets component {@link Painter}.
+     * Provided {@link Painter} can be {@code null} in which case current {@link Painter} will be uninstalled.
      *
-     * @param component            component painter should be installed into
-     * @param setter               runnable that updates actual painter field
-     * @param oldPainter           previously installed painter
-     * @param painter              painter to install
-     * @param specificClass        specific painter class
-     * @param specificAdapterClass specific painter adapter class
-     * @param <P>                  specific painter class type
+     * @param component     {@link JComponent}
+     * @param componentUI   {@link ComponentUI}
+     * @param setter        {@link Consumer} that updates actual painter field
+     * @param oldPainter    previously installed {@link Painter}
+     * @param painter       {@link Painter} to install
+     * @param specificClass {@link SpecificPainter} class
+     * @param adaptiveClass {@link SpecificPainter} adapter class
+     * @param <P>           {@link SpecificPainter} class type
      */
-    public static <P extends SpecificPainter> void setPainter ( final JComponent component, final Consumer<P> setter,
-                                                                final P oldPainter, final Painter painter, final Class<P> specificClass,
-                                                                final Class<? extends P> specificAdapterClass )
+    public static <P extends SpecificPainter> void setPainter ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
+                                                                @NotNull final Consumer<P> setter, @Nullable final P oldPainter,
+                                                                @Nullable final Painter painter, @NotNull final Class<P> specificClass,
+                                                                @NotNull final Class<? extends P> adaptiveClass )
     {
         // Creating adaptive painter if required
-        final P newPainter = getApplicablePainter ( painter, specificClass, specificAdapterClass );
+        final P newPainter = getApplicablePainter ( painter, specificClass, adaptiveClass );
 
         // Properly updating painter
-        uninstallPainter ( component, oldPainter );
+        uninstallPainter ( component, componentUI, oldPainter );
         setter.accept ( newPainter );
-        installPainter ( component, newPainter );
+        installPainter ( component, componentUI, newPainter );
 
         // Firing painter change event
         SwingUtils.firePropertyChanged ( component, WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
     }
 
     /**
-     * Returns the specified painter if it can be assigned to proper painter type.
-     * Otherwise returns newly created adapter painter that wraps the specified painter.
-     * Used by component UIs to adapt general-type painters for their specific-type needs.
+     * Returns specified {@link Painter} if it can be assigned to requested {@link Painter} type, otherwise returns newly created
+     * {@link AdaptivePainter} that acts as a decorator for the specified {@link Painter}.
+     * Used by {@link ComponentUI}s to adapt non-specific {@link Painter}s for their specific needs.
      *
-     * @param painter      processed painter
-     * @param properClass  proper painter class
-     * @param adapterClass adapter painter class
-     * @param <P>          proper painter type
-     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
+     * @param painter       {@link Painter}
+     * @param requested     requested {@link SpecificPainter} class
+     * @param adaptiveClass {@link AdaptivePainter} class
+     * @param <P>           requested {@link SpecificPainter} type
+     * @return specified {@link Painter} if it can be assigned to requested {@link Painter} type, otherwise returns newly created
+     * {@link AdaptivePainter} that acts as a decorator for the specified {@link Painter}
      */
-    private static <P extends SpecificPainter> P getApplicablePainter ( final Painter painter, final Class<P> properClass,
-                                                                        final Class<? extends P> adapterClass )
+    private static <P extends SpecificPainter> P getApplicablePainter ( @Nullable final Painter painter, @NotNull final Class<P> requested,
+                                                                        @NotNull final Class<? extends P> adaptiveClass )
     {
-        if ( painter == null )
+        final P result;
+        if ( painter != null )
         {
-            return null;
-        }
-        else
-        {
-            if ( ReflectUtils.isAssignable ( properClass, painter.getClass () ) )
+            if ( ReflectUtils.isAssignable ( requested, painter.getClass () ) )
             {
-                return ( P ) painter;
+                result = ( P ) painter;
             }
             else
             {
-                return ( P ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
+                result = ReflectUtils.createInstanceSafely ( adaptiveClass, painter );
             }
         }
+        else
+        {
+            result = null;
+        }
+        return result;
     }
 
     /**
-     * Installs painter into the specified component.
-     * It is highly recommended to call this method only from EDT.
+     * Installs {@link Painter} into the specified {@link JComponent} and {@link ComponentUI}.
      * todo Move this code into {@link AbstractPainter#install(JComponent, ComponentUI)}
      *
-     * @param component component painter is applied to
-     * @param painter   painter to install
+     * @param component   {@link JComponent}
+     * @param componentUI {@link ComponentUI}
+     * @param painter     {@link Painter} to install
      */
-    private static void installPainter ( final JComponent component, final Painter painter )
+    private static void installPainter ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
+                                         @Nullable final Painter painter )
     {
-        // Simply ignore this call if empty painter is set or component doesn't exist
-        if ( component != null && painter != null )
+        if ( painter != null )
         {
-            // Installing painter
             if ( !installedPainters.contains ( component ) )
             {
                 // Installing painter
-                painter.install ( component, LafUtils.getUI ( component ) );
+                painter.install ( component, componentUI );
 
                 // Applying initial component settings
                 final Boolean opaque = painter.isOpaque ();
@@ -199,17 +209,17 @@ public final class PainterSupport
     }
 
     /**
-     * Uninstalls painter from the specified component.
-     * It is highly recommended to call this method only from EDT.
+     * Uninstalls {@link Painter} from the specified {@link JComponent} and {@link ComponentUI}.
      * todo Move this code into {@link AbstractPainter#uninstall(JComponent, ComponentUI)}
      *
-     * @param component component painter is uninstalled from
-     * @param painter   painter to uninstall
+     * @param component   {@link JComponent}
+     * @param componentUI {@link ComponentUI}
+     * @param painter     {@link Painter} to uninstall
      */
-    private static void uninstallPainter ( final JComponent component, final Painter painter )
+    private static void uninstallPainter ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
+                                           @Nullable final Painter painter )
     {
-        // Simply ignore this call if painter or component doesn't exist
-        if ( component != null && painter != null )
+        if ( painter != null )
         {
             if ( installedPainters.contains ( component ) )
             {
@@ -217,7 +227,7 @@ public final class PainterSupport
                 if ( installedPainter == painter )
                 {
                     // Uninstalling painter
-                    installedPainter.uninstall ( component, LafUtils.getUI ( component ) );
+                    installedPainter.uninstall ( component, componentUI );
 
                     // Removing painter reference
                     installedPainters.clear ( component );
@@ -239,76 +249,85 @@ public final class PainterSupport
     }
 
     /**
-     * Returns component border insets or {@code null} if component doesn't have borders.
+     * Returns {@link Component} border insets or {@code null} if {@link Component} doesn't have borders.
      * {@code null} is basically the same as an empty [0,0,0,0] border insets.
      *
      * @param component component to retrieve border insets from
      * @return component border insets or {@code null} if component doesn't have borders
      */
-    public static Insets getInsets ( final Component component )
+    @Nullable
+    public static Insets getInsets ( @Nullable final Component component )
     {
+        final Insets insets;
         if ( component instanceof JComponent )
         {
-            return ( ( JComponent ) component ).getInsets ();
+            insets = ( ( JComponent ) component ).getInsets ();
         }
         else
         {
-            return null;
+            insets = null;
         }
+        return insets;
     }
 
     /**
-     * Returns current component margin.
+     * Returns current {@link JComponent} margin.
      * Might return {@code null} which is basically the same as an empty [0,0,0,0] margin.
      *
-     * @param component component to retrieve margin from
-     * @return current component margin
+     * @param component {@link JComponent} to retrieve margin from
+     * @return current {@link JComponent} margin
      */
-    public static Insets getMargin ( final JComponent component )
+    @Nullable
+    public static Insets getMargin ( @NotNull final JComponent component )
     {
-        final Insets margin = margins.get ( component );
-        return margin != null ? new Insets ( margin.top, margin.left, margin.bottom, margin.right ) : null;
+        return getMargin ( component, false );
     }
 
     /**
-     * Returns current component margin.
+     * Returns current {@link JComponent} margin.
      * Might return {@code null} which is basically the same as an empty [0,0,0,0] margin.
      *
-     * @param component        component to retrieve margin from
+     * @param component        {@link JComponent} to retrieve margin from
      * @param applyOrientation whether or not {@link ComponentOrientation} of the specified {@link JComponent} should be applied to margin
-     * @return current component margin
+     * @return current {@link JComponent} margin
      */
-    public static Insets getMargin ( final JComponent component, final boolean applyOrientation )
+    @Nullable
+    public static Insets getMargin ( @NotNull final JComponent component, final boolean applyOrientation )
     {
         final Insets result;
-        if ( applyOrientation )
+        final Insets margin = margins.get ( component );
+        if ( margin != null )
         {
-            final Insets margin = margins.get ( component );
-            if ( margin != null )
+            if ( applyOrientation )
             {
                 final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-                result = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+                result = new Insets (
+                        margin.top,
+                        ltr ? margin.left : margin.right,
+                        margin.bottom,
+                        ltr ? margin.right : margin.left
+                );
             }
             else
             {
-                result = null;
+                result = new Insets ( margin.top, margin.left, margin.bottom, margin.right );
             }
         }
         else
         {
-            result = getMargin ( component );
+            result = null;
         }
         return result;
     }
 
     /**
-     * Sets new component margin.
+     * Sets {@link JComponent} margin.
      * {@code null} can be provided to set an empty [0,0,0,0] margin.
      *
-     * @param component component to set margin for
+     * @param component {@link JComponent} to set margin for
      * @param margin    new margin
      */
-    public static void setMargin ( final JComponent component, final Insets margin )
+    public static void setMargin ( @NotNull final JComponent component, @Nullable final Insets margin )
     {
         // Updating margin cache
         final Insets oldMargin = margins.set ( component, margin );
@@ -318,57 +337,63 @@ public final class PainterSupport
     }
 
     /**
-     * Returns current component padding.
+     * Returns current {@link JComponent} padding.
      * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
      *
-     * @param component component to retrieve padding from
-     * @return current component padding
+     * @param component {@link JComponent} to retrieve padding from
+     * @return current {@link JComponent} padding
      */
-    public static Insets getPadding ( final JComponent component )
+    @Nullable
+    public static Insets getPadding ( @NotNull final JComponent component )
     {
-        final Insets padding = paddings.get ( component );
-        return padding != null ? new Insets ( padding.top, padding.left, padding.bottom, padding.right ) : null;
+        return getPadding ( component, false );
     }
 
     /**
-     * Returns current component padding.
+     * Returns current {@link JComponent} padding.
      * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
      *
-     * @param component        component to retrieve padding from
+     * @param component        {@link JComponent} to retrieve padding from
      * @param applyOrientation whether or not {@link ComponentOrientation} of the specified {@link JComponent} should be applied to padding
-     * @return current component padding
+     * @return current {@link JComponent} padding
      */
-    public static Insets getPadding ( final JComponent component, final boolean applyOrientation )
+    @Nullable
+    public static Insets getPadding ( @NotNull final JComponent component, final boolean applyOrientation )
     {
         final Insets result;
-        if ( applyOrientation )
+        final Insets padding = paddings.get ( component );
+        if ( padding != null )
         {
-            final Insets padding = paddings.get ( component );
-            if ( padding != null )
+            if ( applyOrientation )
             {
                 final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-                result = new Insets ( padding.top, ltr ? padding.left : padding.right, padding.bottom, ltr ? padding.right : padding.left );
+                result = new Insets (
+                        padding.top,
+                        ltr ? padding.left : padding.right,
+                        padding.bottom,
+                        ltr ? padding.right : padding.left
+                );
             }
             else
             {
-                result = null;
+                result = new Insets ( padding.top, padding.left, padding.bottom, padding.right );
             }
         }
         else
         {
-            result = getPadding ( component );
+            result = null;
         }
         return result;
     }
 
     /**
-     * Sets new padding.
+     * Sets {@link JComponent} padding.
      * {@code null} can be provided to set an empty [0,0,0,0] padding.
      *
-     * @param component component to set padding for
+     * @param component {@link JComponent} to set padding for
      * @param padding   new padding
      */
-    public static void setPadding ( final JComponent component, final Insets padding )
+    public static void setPadding ( @NotNull final JComponent component, @Nullable final Insets padding )
     {
         // Updating padding cache
         final Insets oldPadding = paddings.set ( component, padding );
@@ -384,62 +409,68 @@ public final class PainterSupport
      * @param painter   {@link Painter} currently used by the {@link JComponent}
      * @return component {@link Shape}
      */
-    public static Shape getShape ( final JComponent component, final Painter painter )
+    @NotNull
+    public static Shape getShape ( @NotNull final JComponent component, @Nullable final Painter painter )
     {
+        final Shape shape;
         if ( painter instanceof PainterShapeProvider )
         {
-            return ( ( PainterShapeProvider ) painter ).provideShape ( component, BoundsType.margin.bounds ( component ) );
+            shape = ( ( PainterShapeProvider ) painter ).provideShape ( component, BoundsType.margin.bounds ( component ) );
         }
         else
         {
-            return BoundsType.margin.bounds ( component );
+            shape = BoundsType.margin.bounds ( component );
         }
+        return shape;
     }
 
     /**
-     * Returns whether or not component's custom {@link Shape} is used for better mouse events detection.
+     * Returns whether or not {@link JComponent}'s custom {@link Shape} is used for better mouse events detection.
      * If it wasn't explicitly specified - {@link WebLookAndFeel#isShapeDetectionEnabled()} is used as result.
+     * todo Either use {@link Painter}, remove it from here or rework shape detection source
      *
      * @param component {@link JComponent} to return {@link Shape} for
      * @param painter   {@link Painter} currently used by the {@link JComponent}
-     * @return {@code true} if component's custom {@link Shape} is used for better mouse events detection, {@code false} otherwise
+     * @return {@code true} if {@link JComponent}'s custom {@link Shape} is used for better mouse events detection, {@code false} otherwise
      */
-    public static boolean isShapeDetectionEnabled ( final JComponent component, final Painter painter )
+    public static boolean isShapeDetectionEnabled ( @NotNull final JComponent component, @Nullable final Painter painter )
     {
         final Boolean enabled = shapeDetectionEnabled.get ( component );
         return enabled != null ? enabled : WebLookAndFeel.isShapeDetectionEnabled ();
     }
 
     /**
-     * Sets whether or not component's custom {@link Shape} should be used for better mouse events detection.
+     * Sets whether or not {@link JComponent}'s custom {@link Shape} should be used for better mouse events detection.
      * It can be enabled globally through {@link com.alee.laf.WebLookAndFeel#setShapeDetectionEnabled(boolean)}.
+     * todo Either use {@link Painter}, remove it from here or rework shape detection source
      *
      * @param component {@link JComponent} to return {@link Shape} for
      * @param painter   {@link Painter} currently used by the {@link JComponent}
-     * @param enabled   whether or not component's custom {@link Shape} should be used for better mouse events detection
+     * @param enabled   whether or not {@link JComponent}'s custom {@link Shape} should be used for better mouse events detection
      */
-    public static void setShapeDetectionEnabled ( final JComponent component, final Painter painter, final boolean enabled )
+    public static void setShapeDetectionEnabled ( @NotNull final JComponent component, @Nullable final Painter painter,
+                                                  final boolean enabled )
     {
         shapeDetectionEnabled.set ( component, enabled );
     }
 
     /**
-     * Returns whether or not specified (x,y) location is contained within the shape of the component.
+     * Returns whether or not specified (x,y) location is contained within the shape of the {@link JComponent}.
      *
-     * @param component {@link JComponent}
-     * @param ui        {@link ComponentUI}
-     * @param painter   {@link Painter}
-     * @param x         X coordinate
-     * @param y         Y coordinate
+     * @param component   {@link JComponent}
+     * @param componentUI {@link ComponentUI}
+     * @param painter     {@link Painter}
+     * @param x           X coordinate
+     * @param y           Y coordinate
      * @return {@code true} if specified (x,y) location is contained within the shape of the component, {@code false} otherwise
      */
-    public static boolean contains ( final JComponent component, final ComponentUI ui,
-                                     final Painter painter, final int x, final int y )
+    public static boolean contains ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
+                                     @Nullable final Painter painter, final int x, final int y )
     {
         final boolean contains;
         if ( painter != null && isShapeDetectionEnabled ( component, painter ) )
         {
-            contains = painter.contains ( component, ui, new Bounds ( component ), x, y );
+            contains = painter.contains ( component, componentUI, new Bounds ( component ), x, y );
         }
         else
         {
@@ -449,19 +480,19 @@ public final class PainterSupport
     }
 
     /**
-     * Returns component baseline for the specified component size, measured from the top of the component bounds.
+     * Returns {@link JComponent} baseline measured from the top of the component bounds for the specified {@link JComponent} size.
      * A return value less than {@code 0} indicates this component does not have a reasonable baseline.
-     * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.
+     * This method is primarily meant for {@link LayoutManager}s to align components along their baseline.
      *
-     * @param component aligned component
-     * @param ui        aligned component UI
-     * @param painter   aligned component painter
-     * @param width     approximate component width
-     * @param height    approximate component height
-     * @return component baseline within the specified bounds, measured from the top of the bounds
+     * @param component   {@link JComponent}
+     * @param componentUI {@link ComponentUI}
+     * @param painter     {@link Painter}
+     * @param width       offered component width
+     * @param height      offered component height
+     * @return {@link JComponent} baseline measured from the top of the component bounds for the specified {@link JComponent} size
      */
-    public static int getBaseline ( final JComponent component, final ComponentUI ui,
-                                    final Painter painter, final int width, final int height )
+    public static int getBaseline ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
+                                    @Nullable final Painter painter, final int width, final int height )
     {
         // Default baseline
         int baseline = -1;
@@ -473,7 +504,7 @@ public final class PainterSupport
             final Bounds componentBounds = new Bounds ( new Dimension ( width, height ) );
 
             // Retrieving baseline provided by painter
-            baseline = painter.getBaseline ( component, ui, componentBounds );
+            baseline = painter.getBaseline ( component, componentUI, componentBounds );
         }
 
         // Border baseline support
@@ -491,34 +522,33 @@ public final class PainterSupport
     }
 
     /**
-     * Returns enum indicating how the baseline of the component changes as the size changes.
+     * Returns {@link Component.BaselineResizeBehavior} indicating how baseline of the {@link JComponent} changes as the size changes.
      *
-     * @param component aligned component
-     * @param ui        aligned component UI
-     * @param painter   aligned component painter
-     * @return enum indicating how the baseline of the component changes as the size changes
+     * @param component   {@link JComponent}
+     * @param componentUI {@link ComponentUI}
+     * @param painter     {@link Painter}
+     * @return {@link Component.BaselineResizeBehavior} indicating how baseline of the {@link JComponent} changes as the size changes
      */
-    public static Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent component, final ComponentUI ui,
-                                                                               final Painter painter )
+    @NotNull
+    public static Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent component,
+                                                                               @NotNull final ComponentUI componentUI,
+                                                                               @Nullable final Painter painter )
     {
         final Component.BaselineResizeBehavior behavior;
         if ( painter != null )
         {
-            // Painter baseline behavior support
-            behavior = painter.getBaselineResizeBehavior ( component, ui );
+            behavior = painter.getBaselineResizeBehavior ( component, componentUI );
         }
         else
         {
             final Border border = component.getBorder ();
             if ( border instanceof AbstractBorder )
             {
-                // Border baseline behavior support
                 final AbstractBorder abstractBorder = ( AbstractBorder ) border;
                 behavior = abstractBorder.getBaselineResizeBehavior ( component );
             }
             else
             {
-                // Default baseline behavior
                 behavior = Component.BaselineResizeBehavior.OTHER;
             }
         }
@@ -526,13 +556,13 @@ public final class PainterSupport
     }
 
     /**
-     * Returns component preferred size or {@code null} if there is no preferred size.
+     * Returns {@link JComponent} preferred size or {@code null} if there is no preferred size.
      *
-     * @param component component painter is applied to
-     * @param painter   component painter
-     * @return component preferred size or {@code null} if there is no preferred size
+     * @param component {@link JComponent}
+     * @param painter   {@link Painter}
+     * @return {@link JComponent} preferred size or {@code null} if there is no preferred size
      */
-    public static Dimension getPreferredSize ( final JComponent component, final Painter painter )
+    public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Painter painter )
     {
         return getPreferredSize ( component, null, painter );
     }
@@ -546,7 +576,8 @@ public final class PainterSupport
      * @param painter   component painter
      * @return component preferred size or {@code null} if there is no preferred size
      */
-    public static Dimension getPreferredSize ( final JComponent component, final Dimension preferred, final Painter painter )
+    public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Dimension preferred,
+                                               @Nullable final Painter painter )
     {
         return getPreferredSize ( component, preferred, painter, false );
     }
@@ -560,8 +591,8 @@ public final class PainterSupport
      * @param ignoreLayoutSize whether or not layout preferred size should be ignored
      * @return component preferred size or {@code null} if there is no preferred size
      */
-    public static Dimension getPreferredSize ( final JComponent component, final Dimension preferred, final Painter painter,
-                                               final boolean ignoreLayoutSize )
+    public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Dimension preferred,
+                                               @Nullable final Painter painter, final boolean ignoreLayoutSize )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -588,19 +619,21 @@ public final class PainterSupport
      * @param component component to process
      * @return true if component uses decoratable painter, false otherwise
      */
-    public static boolean isDecoratable ( final Component component )
+    public static boolean isDecoratable ( @Nullable final Component component )
     {
+        final boolean decoratable;
         if ( component instanceof JComponent )
         {
             final JComponent jComponent = ( JComponent ) component;
             final ComponentStyle style = StyleManager.getSkin ( jComponent ).getStyle ( jComponent );
             final Painter painter = style != null ? style.getPainter ( jComponent ) : null;
-            return painter instanceof AbstractDecorationPainter;
+            decoratable = painter instanceof AbstractDecorationPainter;
             // todo Add additional decoration conditions? For: && ((AbstractDecorationPainter)painter)...
         }
         else
         {
-            return false;
+            decoratable = false;
         }
+        return decoratable;
     }
 }

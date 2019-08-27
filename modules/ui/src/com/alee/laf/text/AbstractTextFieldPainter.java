@@ -1,11 +1,12 @@
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.SwingUtils;
 
-import javax.swing.*;
 import javax.swing.plaf.basic.BasicTextUI;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
@@ -22,7 +23,7 @@ import java.awt.event.ComponentEvent;
  * @author Mikle Garin
  */
 public abstract class AbstractTextFieldPainter<C extends JTextComponent, U extends BasicTextUI, D extends IDecoration<C, D>>
-        extends AbstractTextEditorPainter<C, U, D> implements IAbstractTextFieldPainter<C, U>, SwingConstants
+        extends AbstractTextEditorPainter<C, U, D> implements IAbstractTextFieldPainter<C, U>
 {
     /**
      * Leading and trailing components resize listener.
@@ -46,7 +47,7 @@ public abstract class AbstractTextFieldPainter<C extends JTextComponent, U exten
     }
 
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -145,6 +146,7 @@ public abstract class AbstractTextFieldPainter<C extends JTextComponent, U exten
         }
     }
 
+    @Nullable
     @Override
     protected Insets getBorder ()
     {

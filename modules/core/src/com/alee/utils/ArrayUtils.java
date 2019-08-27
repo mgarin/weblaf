@@ -166,14 +166,16 @@ public final class ArrayUtils
      */
     public static int indexOf ( final int number, @NotNull final int[] array )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             if ( array[ i ] == number )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -185,14 +187,16 @@ public final class ArrayUtils
      */
     public static int indexOf ( final long number, @NotNull final long[] array )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             if ( array[ i ] == number )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -204,14 +208,16 @@ public final class ArrayUtils
      */
     public static int indexOf ( final float number, @NotNull final float[] array )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             if ( array[ i ] == number )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -223,14 +229,16 @@ public final class ArrayUtils
      */
     public static int indexOf ( final double number, @NotNull final double[] array )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             if ( array[ i ] == number )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -242,14 +250,16 @@ public final class ArrayUtils
      */
     public static int indexOf ( final char character, @NotNull final char[] array )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             if ( array[ i ] == character )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -261,14 +271,16 @@ public final class ArrayUtils
      */
     public static int indexOf ( final byte data, @NotNull final byte[] array )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             if ( array[ i ] == data )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -293,16 +305,18 @@ public final class ArrayUtils
      */
     public static int indexOf ( @Nullable final String text, @NotNull final String[] array, final boolean ignoreCase )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             final String txt = array[ i ];
             if ( txt == null && text == null ||
                     txt != null && text != null && ( ignoreCase ? txt.equalsIgnoreCase ( text ) : txt.equals ( text ) ) )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -314,15 +328,17 @@ public final class ArrayUtils
      */
     public static int indexOf ( @Nullable final Object object, @NotNull final Object[] array )
     {
+        int index = -1;
         for ( int i = 0; i < array.length; i++ )
         {
             final Object obj = array[ i ];
             if ( obj == null && object == null || obj != null && obj.equals ( object ) )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -334,15 +350,17 @@ public final class ArrayUtils
      */
     public static int lastIndexOf ( @Nullable final Object object, @NotNull final Object[] array )
     {
+        int index = -1;
         for ( int i = array.length - 1; i >= 0; i-- )
         {
             final Object obj = array[ i ];
             if ( obj == null && object == null || obj != null && obj.equals ( object ) )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
     /**
@@ -768,25 +786,29 @@ public final class ArrayUtils
      */
     public static boolean equals ( @Nullable final int[] array1, @Nullable final int[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final int number : array1 )
             {
                 if ( !contains ( number, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**
@@ -798,25 +820,29 @@ public final class ArrayUtils
      */
     public static boolean equals ( @Nullable final long[] array1, @Nullable final long[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final long number : array1 )
             {
                 if ( !contains ( number, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**
@@ -828,25 +854,29 @@ public final class ArrayUtils
      */
     public static boolean equals ( @Nullable final float[] array1, @Nullable final float[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final float number : array1 )
             {
                 if ( !contains ( number, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**
@@ -858,25 +888,29 @@ public final class ArrayUtils
      */
     public static boolean equals ( @Nullable final double[] array1, @Nullable final double[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final double number : array1 )
             {
                 if ( !contains ( number, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**
@@ -888,25 +922,29 @@ public final class ArrayUtils
      */
     public static boolean equals ( @Nullable final char[] array1, @Nullable final char[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final char character : array1 )
             {
                 if ( !contains ( character, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**
@@ -918,25 +956,29 @@ public final class ArrayUtils
      */
     public static boolean equals ( @Nullable final byte[] array1, @Nullable final byte[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final byte data : array1 )
             {
                 if ( !contains ( data, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**
@@ -948,25 +990,29 @@ public final class ArrayUtils
      */
     public static boolean equals ( @Nullable final String[] array1, @Nullable final String[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final String text : array1 )
             {
                 if ( !contains ( text, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 
     /**
@@ -979,24 +1025,28 @@ public final class ArrayUtils
      */
     public static <T> boolean equals ( @Nullable final T[] array1, @Nullable final T[] array2 )
     {
+        final boolean equals;
         if ( array1 == null && array2 == null )
         {
-            return true;
+            equals = true;
         }
         else if ( array1 == null || array2 == null || array1.length != array2.length )
         {
-            return false;
+            equals = false;
         }
         else
         {
+            boolean eq = true;
             for ( final Object object : array1 )
             {
                 if ( !contains ( object, array2 ) )
                 {
-                    return false;
+                    eq = false;
+                    break;
                 }
             }
-            return true;
+            equals = eq;
         }
+        return equals;
     }
 }

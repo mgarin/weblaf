@@ -1,5 +1,6 @@
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.decoration.IDecoration;
 
@@ -33,6 +34,7 @@ public class MenuPainter<C extends JMenu, U extends WebMenuUI, D extends IDecora
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

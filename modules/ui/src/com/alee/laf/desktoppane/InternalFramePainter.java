@@ -1,5 +1,7 @@
 package com.alee.laf.desktoppane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -20,11 +22,11 @@ import static javax.swing.JInternalFrame.*;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-public class InternalFramePainter<C extends JInternalFrame, U extends WebInternalFrameUI, D extends IDecoration<C, D>>
+public class InternalFramePainter<C extends JInternalFrame, U extends WInternalFrameUI, D extends IDecoration<C, D>>
         extends AbstractContainerPainter<C, U, D> implements IInternalFramePainter<C, U>
 {
     @Override
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
         // Perform basic actions on property changes
         super.propertyChanged ( property, oldValue, newValue );
@@ -36,6 +38,7 @@ public class InternalFramePainter<C extends JInternalFrame, U extends WebInterna
         }
     }
 
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

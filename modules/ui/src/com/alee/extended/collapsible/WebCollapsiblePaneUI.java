@@ -17,6 +17,8 @@
 
 package com.alee.extended.collapsible;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.style.*;
@@ -60,7 +62,7 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -73,7 +75,7 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling settings
         uninstallComponents ();
@@ -255,6 +257,7 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
         pane.removeAll ();
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -273,6 +276,7 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
         PainterSupport.setShapeDetectionEnabled ( pane, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -280,11 +284,12 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( pane, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -292,7 +297,7 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( pane, padding );
     }
@@ -315,7 +320,7 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( pane, new Consumer<ICollapsiblePanePainter> ()
+        PainterSupport.setPainter ( pane, this, new Consumer<ICollapsiblePanePainter> ()
         {
             @Override
             public void accept ( final ICollapsiblePanePainter newPainter )

@@ -17,6 +17,8 @@
 
 package com.alee.laf.slider;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.language.LanguageUpdater;
@@ -59,6 +61,14 @@ import java.util.List;
 public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
         ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
 {
+    /**
+     * Component properties.
+     */
+    public static final String MINIMUM_PROPERTY = "minimum";
+    public static final String MAXIMUM_PROPERTY = "maximum";
+    public static final String MINOR_TICK_SPACING_PROPERTY = "minorTickSpacing";
+    public static final String MAJOR_TICK_SPACING_PROPERTY = "majorTickSpacing";
+
     /**
      * Constructs new slider.
      */
@@ -233,12 +243,14 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
         return labels;
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return StyleId.slider;
     }
 
+    @NotNull
     @Override
     public StyleId getStyleId ()
     {
@@ -311,6 +323,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
         return StyleManager.resetCustomPainter ( this );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -329,6 +342,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
         ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -348,11 +362,12 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         MarginMethodsImpl.setMargin ( this, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -372,7 +387,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PaddingMethodsImpl.setPadding ( this, padding );
     }

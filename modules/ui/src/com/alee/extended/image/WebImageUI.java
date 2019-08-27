@@ -17,6 +17,8 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -54,7 +56,7 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -63,7 +65,7 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( image );
@@ -71,6 +73,7 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -89,6 +92,7 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
         PainterSupport.setShapeDetectionEnabled ( image, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -96,11 +100,12 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( image, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -108,7 +113,7 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( image, padding );
     }
@@ -131,7 +136,7 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( image, new Consumer<IImagePainter> ()
+        PainterSupport.setPainter ( image, this, new Consumer<IImagePainter> ()
         {
             @Override
             public void accept ( final IImagePainter newPainter )

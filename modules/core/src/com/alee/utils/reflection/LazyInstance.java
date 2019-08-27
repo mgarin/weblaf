@@ -17,6 +17,8 @@
 
 package com.alee.utils.reflection;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.ReflectUtils;
 
 /**
@@ -31,16 +33,19 @@ public final class LazyInstance<T>
     /**
      * Object {@link Class}.
      */
+    @NotNull
     private final Class<? extends T> clazz;
 
     /**
      * Arguments for object constructor.
      */
+    @NotNull
     private final Object[] arguments;
 
     /**
      * Singleton instance.
      */
+    @Nullable
     private T instance;
 
     /**
@@ -49,7 +54,7 @@ public final class LazyInstance<T>
      * @param clazz     object {@link Class}
      * @param arguments arguments for object constructor
      */
-    public LazyInstance ( final Class<? extends T> clazz, final Object... arguments )
+    public LazyInstance ( @NotNull final Class<? extends T> clazz, @NotNull final Object... arguments )
     {
         this.clazz = clazz;
         this.arguments = arguments;
@@ -61,6 +66,7 @@ public final class LazyInstance<T>
      *
      * @return new object instance
      */
+    @NotNull
     public T create ()
     {
         try
@@ -80,6 +86,7 @@ public final class LazyInstance<T>
      *
      * @return singleton object instance
      */
+    @NotNull
     public synchronized T get ()
     {
         if ( instance == null )

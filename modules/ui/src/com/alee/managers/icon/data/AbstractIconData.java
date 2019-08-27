@@ -19,6 +19,7 @@ package com.alee.managers.icon.data;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Overwriting;
 import com.alee.extended.svg.SvgIconData;
 import com.alee.utils.xml.ClassConverter;
@@ -105,7 +106,7 @@ public abstract class AbstractIconData<T extends Icon> implements Identifiable, 
         setPath ( path );
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

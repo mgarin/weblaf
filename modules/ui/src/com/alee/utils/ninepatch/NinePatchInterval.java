@@ -18,7 +18,7 @@
 package com.alee.utils.ninepatch;
 
 import com.alee.api.Identifiable;
-import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -120,7 +120,7 @@ public final class NinePatchInterval implements Identifiable, Cloneable, Seriali
      *
      * @return unique runtime interval identifier
      */
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {

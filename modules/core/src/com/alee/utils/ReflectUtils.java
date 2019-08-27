@@ -1493,21 +1493,28 @@ public final class ReflectUtils
      * @param <T>        method result type
      * @return list of results returned by called methods
      */
-    public static <T> List<T> callMethodsSafely ( final List objects, final String methodName, final Object... arguments )
+    @NotNull
+    public static <T> List<T> callMethodsSafely ( @NotNull final List<?> objects, @NotNull final String methodName,
+                                                  @NotNull final Object... arguments )
     {
-        try
+        final List<T> results = new ArrayList<T> ();
+        for ( final Object object : objects )
         {
-            return callMethods ( objects, methodName, arguments );
-        }
-        catch ( final Exception e )
-        {
-            if ( safeMethodsLoggingEnabled )
+            try
             {
-                final String msg = "ReflectionUtils method failed: callMethodsSafely";
-                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
+                results.add ( ( T ) callMethod ( object, methodName, arguments ) );
             }
-            return null;
+            catch ( final Exception e )
+            {
+                if ( safeMethodsLoggingEnabled )
+                {
+                    final String msg = "ReflectionUtils method failed: callMethodsSafely:callMethod";
+                    LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
+                }
+                results.add ( null );
+            }
         }
+        return results;
     }
 
     /**
@@ -1522,7 +1529,9 @@ public final class ReflectUtils
      * @throws InvocationTargetException if method throws an exception
      * @throws IllegalAccessException    if method is inaccessible
      */
-    public static <T> List<T> callMethods ( final List objects, final String methodName, final Object... arguments )
+    @NotNull
+    public static <T> List<T> callMethods ( @NotNull final List<?> objects, @NotNull final String methodName,
+                                            @NotNull final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         final List<T> results = new ArrayList<T> ();
@@ -1541,21 +1550,28 @@ public final class ReflectUtils
      * @param arguments  method arguments
      * @return an array of results returned by called methods
      */
-    public static Object[] callMethodsSafely ( final Object[] objects, final String methodName, final Object... arguments )
+    @NotNull
+    public static Object[] callMethodsSafely ( @NotNull final Object[] objects, @NotNull final String methodName,
+                                               @NotNull final Object... arguments )
     {
-        try
+        final Object[] results = new Object[ objects.length ];
+        for ( int i = 0; i < objects.length; i++ )
         {
-            return callMethods ( objects, methodName, arguments );
-        }
-        catch ( final Exception e )
-        {
-            if ( safeMethodsLoggingEnabled )
+            try
             {
-                final String msg = "ReflectionUtils method failed: callMethodsSafely";
-                LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
+                results[ i ] = callMethod ( objects[ i ], methodName, arguments );
             }
-            return null;
+            catch ( final Exception e )
+            {
+                if ( safeMethodsLoggingEnabled )
+                {
+                    final String msg = "ReflectionUtils method failed: callMethodsSafely:callMethod";
+                    LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
+                }
+                results[ i ] = null;
+            }
         }
+        return results;
     }
 
     /**
@@ -1569,7 +1585,9 @@ public final class ReflectUtils
      * @throws InvocationTargetException if method throws an exception
      * @throws IllegalAccessException    if method is inaccessible
      */
-    public static Object[] callMethods ( final Object[] objects, final String methodName, final Object... arguments )
+    @NotNull
+    public static Object[] callMethods ( @NotNull final Object[] objects, @NotNull final String methodName,
+                                         @NotNull final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         final Object[] results = new Object[ objects.length ];
@@ -1589,11 +1607,14 @@ public final class ReflectUtils
      * @param <T>        method result type
      * @return result given by called method
      */
-    public static <T> T callMethodSafely ( final Object object, final String methodName, final Object... arguments )
+    @Nullable
+    public static <T> T callMethodSafely ( @NotNull final Object object, @NotNull final String methodName,
+                                           @NotNull final Object... arguments )
     {
+        T result;
         try
         {
-            return callMethod ( object, methodName, arguments );
+            result = callMethod ( object, methodName, arguments );
         }
         catch ( final Exception e )
         {
@@ -1602,8 +1623,9 @@ public final class ReflectUtils
                 final String msg = "ReflectionUtils method failed: callMethodSafely";
                 LoggerFactory.getLogger ( ReflectUtils.class ).error ( msg, e );
             }
-            return null;
+            result = null;
         }
+        return result;
     }
 
     /**
@@ -1621,7 +1643,8 @@ public final class ReflectUtils
      * @throws IllegalAccessException      if method is inaccessible
      * @throws ExceptionInInitializerError if the initialization provoked by this method fails
      */
-    public static <T> T callMethod ( final Object object, final String methodName, final Object... arguments )
+    @Nullable
+    public static <T> T callMethod ( @NotNull final Object object, @NotNull final String methodName, @NotNull final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         final Method method = getMethod ( object.getClass (), methodName, arguments );
@@ -1707,7 +1730,7 @@ public final class ReflectUtils
      * @param arguments  method arguments
      * @return {@code true} if method with the specified name and arguments exists in the specified object, {@code false} otherwise
      */
-    public static boolean hasMethod ( final Object object, final String methodName, final Object... arguments )
+    public static boolean hasMethod ( @NotNull final Object object, @NotNull final String methodName, @NotNull final Object... arguments )
     {
         return hasMethod ( object.getClass (), methodName, arguments );
     }
@@ -1721,16 +1744,18 @@ public final class ReflectUtils
      * @param arguments  method arguments
      * @return {@code true} if method with the specified name and arguments exists in the specified class, {@code false} otherwise
      */
-    public static boolean hasMethod ( final Class aClass, final String methodName, final Object... arguments )
+    public static boolean hasMethod ( @NotNull final Class aClass, @NotNull final String methodName, @NotNull final Object... arguments )
     {
+        boolean result;
         try
         {
-            return getMethod ( aClass, methodName, arguments ) != null;
+            result = getMethod ( aClass, methodName, arguments ) != null;
         }
         catch ( final Exception e )
         {
-            return false;
+            result = false;
         }
+        return result;
     }
 
     /**
@@ -1807,7 +1832,7 @@ public final class ReflectUtils
      * @return object's method with the specified name and arguments
      * @throws NoSuchMethodException if method was not found
      */
-    public static Method getMethod ( final Class aClass, final String methodName, final Object... arguments )
+    public static Method getMethod ( @NotNull final Class aClass, @NotNull final String methodName, @NotNull final Object... arguments )
             throws NoSuchMethodException
     {
         // Method key
@@ -1990,7 +2015,7 @@ public final class ReflectUtils
      * @param arguments arguments to process
      * @return an array of argument class types
      */
-    public static Class[] getClassTypes ( final Object[] arguments )
+    public static Class[] getClassTypes ( @NotNull final Object[] arguments )
     {
         final Class[] parameterTypes = new Class[ arguments.length ];
         for ( int i = 0; i < arguments.length; i++ )

@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
@@ -40,7 +42,8 @@ public final class PaddingMethodsImpl
      * @param component component to retrieve padding from
      * @return current padding
      */
-    public static Insets getPadding ( final JComponent component )
+    @Nullable
+    public static Insets getPadding ( @NotNull final JComponent component )
     {
         final PaddingSupport support = getPaddingSupportUI ( component );
         return support != null ? support.getPadding () : PaddingSupport.EMPTY;
@@ -52,7 +55,7 @@ public final class PaddingMethodsImpl
      * @param component component to set padding for
      * @param padding   new padding
      */
-    public static void setPadding ( final JComponent component, final int padding )
+    public static void setPadding ( @NotNull final JComponent component, final int padding )
     {
         setPadding ( component, padding, padding, padding, padding );
     }
@@ -66,7 +69,7 @@ public final class PaddingMethodsImpl
      * @param bottom    new bottom padding
      * @param right     new right padding
      */
-    public static void setPadding ( final JComponent component, final int top, final int left, final int bottom, final int right )
+    public static void setPadding ( @NotNull final JComponent component, final int top, final int left, final int bottom, final int right )
     {
         setPadding ( component, new Insets ( top, left, bottom, right ) );
     }
@@ -78,7 +81,7 @@ public final class PaddingMethodsImpl
      * @param component component to set padding for
      * @param padding   new padding
      */
-    public static void setPadding ( final JComponent component, final Insets padding )
+    public static void setPadding ( @NotNull final JComponent component, @Nullable final Insets padding )
     {
         final PaddingSupport support = getPaddingSupportUI ( component );
         if ( support != null )
@@ -93,7 +96,8 @@ public final class PaddingMethodsImpl
      * @param component component to retrieve UI from
      * @return UI with padding support
      */
-    private static PaddingSupport getPaddingSupportUI ( final JComponent component )
+    @Nullable
+    private static PaddingSupport getPaddingSupportUI ( @NotNull final JComponent component )
     {
         final ComponentUI ui = LafUtils.getUI ( component );
         return ui != null && ui instanceof PaddingSupport ? ( PaddingSupport ) ui : null;

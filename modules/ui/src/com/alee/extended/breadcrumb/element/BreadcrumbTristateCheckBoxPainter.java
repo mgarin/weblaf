@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb.element;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.checkbox.TristateCheckBoxPainter;
 import com.alee.extended.checkbox.WTristateCheckBoxUI;
@@ -38,6 +39,7 @@ import java.util.List;
 public class BreadcrumbTristateCheckBoxPainter<C extends WebTristateCheckBox, U extends WTristateCheckBoxUI<C>, D extends IDecoration<C, D>>
         extends TristateCheckBoxPainter<C, U, D> implements BreadcrumbElementPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

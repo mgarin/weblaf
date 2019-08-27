@@ -179,27 +179,32 @@ public final class ColorUtils
      */
     public static int webSafe ( final int value )
     {
+        final int webSafe;
         if ( 0 <= value && value <= 51 )
         {
-            return value > 51 - value ? 51 : 0;
+            webSafe = value > 51 - value ? 51 : 0;
         }
         else if ( 51 < value && value <= 102 )
         {
-            return value - 51 > 102 - value ? 102 : 51;
+            webSafe = value - 51 > 102 - value ? 102 : 51;
         }
         else if ( 102 < value && value <= 153 )
         {
-            return value - 102 > 153 - value ? 153 : 102;
+            webSafe = value - 102 > 153 - value ? 153 : 102;
         }
         else if ( 153 < value && value <= 204 )
         {
-            return value - 153 > 204 - value ? 204 : 153;
+            webSafe = value - 153 > 204 - value ? 204 : 153;
         }
         else if ( 204 < value && value <= 255 )
         {
-            return value - 204 > 255 - value ? 255 : 204;
+            webSafe = value - 204 > 255 - value ? 255 : 204;
         }
-        return value;
+        else
+        {
+            webSafe = value;
+        }
+        return webSafe;
     }
 
     /**

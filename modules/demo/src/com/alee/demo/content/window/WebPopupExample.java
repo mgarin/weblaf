@@ -18,6 +18,7 @@
 package com.alee.demo.content.window;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -42,31 +43,35 @@ import java.util.List;
  */
 public class WebPopupExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "popup";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "popup";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     public WikiPage getWikiPage ()
     {
         return new WebLafWikiPage ( "How to use WebPopup" );
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

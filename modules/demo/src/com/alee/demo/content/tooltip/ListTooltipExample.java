@@ -18,6 +18,7 @@
 package com.alee.demo.content.tooltip;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
 import com.alee.laf.list.*;
@@ -32,25 +33,28 @@ import java.util.List;
  */
 public class ListTooltipExample extends AbstractStylePreviewExample
 {
-    @NotNull
+    @Nullable
     @Override
     public String getId ()
     {
         return "listtooltip";
     }
 
+    @NotNull
     @Override
     protected String getStyleFileName ()
     {
         return "customtooltip";
     }
 
+    @NotNull
     @Override
     public FeatureType getFeatureType ()
     {
         return FeatureType.extended;
     }
 
+    @NotNull
     @Override
     protected List<Preview> createPreviews ()
     {

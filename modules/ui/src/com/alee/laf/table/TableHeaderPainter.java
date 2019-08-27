@@ -1,5 +1,6 @@
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
@@ -67,7 +68,7 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
         languageSensitive = new LanguageListener ()
         {
             @Override
-            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
             {
                 if ( isLanguageSensitive () )
                 {
@@ -150,7 +151,7 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final C c, final U ui, final Bounds bounds )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         // Creating background paint
         final Paint bgPaint = getBackgroundPaint ( 0, 0, 0, component.getHeight () - 1 );
@@ -348,6 +349,7 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
         return -1;
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

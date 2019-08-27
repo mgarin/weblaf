@@ -24,15 +24,6 @@
             </painter>
         </style>
 
-        <!-- Float editor slider -->
-        <style type="slider" id="editor-float" padding="10">
-            <component>
-                <paintTicks>true</paintTicks>
-                <paintLabels>false</paintLabels>
-                <snapToTicks>true</snapToTicks>
-            </component>
-        </style>
-
         <!-- Preview field -->
         <style type="textfield" id="preview" extends="nofocus" />
 

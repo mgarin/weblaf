@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.Bounds;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -66,8 +67,9 @@ public class NinePatchDecoration<C extends JComponent, I extends NinePatchDecora
         return insets;
     }
 
+    @NotNull
     @Override
-    public Shape provideShape ( final C component, final Rectangle bounds )
+    public Shape provideShape ( @NotNull final C component, @NotNull final Rectangle bounds )
     {
         // Unfortunately there is no good way to detect actual 9-patch decoration shape
         // This is why we simply return full painting bounds

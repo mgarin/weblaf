@@ -17,6 +17,7 @@
 
 package com.alee.extended.colorchooser;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.colorchooser.HSBColor;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.language.*;
@@ -71,7 +72,7 @@ public class DoubleColorField extends WebPanel
         addLanguageListener ( new LanguageListener ()
         {
             @Override
-            public void languageChanged ( final Language oldLanguage, final Language newLanguage )
+            public void languageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
             {
                 revalidate ();
                 repaint ();

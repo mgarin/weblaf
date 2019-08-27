@@ -1,5 +1,6 @@
 package com.alee.laf.radiobutton;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.checkbox.AbstractStateButtonPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -19,6 +20,7 @@ import java.util.List;
 public class RadioButtonPainter<C extends JRadioButton, U extends WRadioButtonUI<C>, D extends IDecoration<C, D>>
         extends AbstractStateButtonPainter<C, U, D> implements IRadioButtonPainter<C, U>
 {
+    @NotNull
     @Override
     public List<String> getDecorationStates ()
     {

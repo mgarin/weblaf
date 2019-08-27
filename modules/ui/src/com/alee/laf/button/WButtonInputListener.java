@@ -35,8 +35,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Basic listener for {@link WButtonUI} implementation.
- * It is based on common Swing {@link javax.swing.plaf.basic.BasicButtonListener} but cleaned up and optimized.
+ * Basic UI input listener for {@link WButtonUI} implementation.
+ * It is partially based on Swing {@link javax.swing.plaf.basic.BasicButtonListener} but cleaned up and optimized.
  *
  * @param <C> {@link AbstractButton} type
  * @param <U> {@link WButtonUI} type
@@ -44,8 +44,8 @@ import java.beans.PropertyChangeListener;
  * @author Arnaud Weber
  * @author Mikle Garin
  */
-public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>> extends AbstractUIInputListener<C, U>
-        implements MouseListener, MouseMotionListener, FocusListener, AncestorListener, PropertyChangeListener
+public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<C>> extends AbstractUIInputListener<C, U>
+        implements ButtonInputListener<C>, MouseListener, MouseMotionListener, FocusListener, AncestorListener, PropertyChangeListener
 {
     /**
      * Last button press timestamp.
@@ -211,27 +211,26 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>> e
                 final long multiClickThreshhold = b.getMultiClickThreshhold ();
                 final long lastTime = lastPressedTimestamp;
                 final long currentTime = lastPressedTimestamp = e.getWhen ();
-                if ( lastTime != -1 && currentTime - lastTime < multiClickThreshhold )
+                if ( lastTime == -1 || currentTime - lastTime >= multiClickThreshhold )
+                {
+                    final ButtonModel model = b.getModel ();
+                    if ( model.isEnabled () )
+                    {
+                        if ( !model.isArmed () )
+                        {
+                            // button not armed, should be
+                            model.setArmed ( true );
+                        }
+                        model.setPressed ( true );
+                        if ( !b.hasFocus () && b.isRequestFocusEnabled () )
+                        {
+                            b.requestFocus ();
+                        }
+                    }
+                }
+                else
                 {
                     shouldDiscardRelease = true;
-                    return;
-                }
-
-                final ButtonModel model = b.getModel ();
-                if ( !model.isEnabled () )
-                {
-                    // Disabled buttons ignore all input...
-                    return;
-                }
-                if ( !model.isArmed () )
-                {
-                    // button not armed, should be
-                    model.setArmed ( true );
-                }
-                model.setPressed ( true );
-                if ( !b.hasFocus () && b.isRequestFocusEnabled () )
-                {
-                    b.requestFocus ();
                 }
             }
         }
@@ -242,17 +241,18 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>> e
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
         {
-            // Support for multiClickThreshhold
-            if ( shouldDiscardRelease )
+            if ( !shouldDiscardRelease )
             {
-                shouldDiscardRelease = false;
-                return;
+                final AbstractButton b = ( AbstractButton ) e.getSource ();
+                final ButtonModel model = b.getModel ();
+                model.setPressed ( false );
+                model.setArmed ( false );
             }
-
-            final AbstractButton b = ( AbstractButton ) e.getSource ();
-            final ButtonModel model = b.getModel ();
-            model.setPressed ( false );
-            model.setArmed ( false );
+            else
+            {
+                // Support for multiClickThreshhold
+                shouldDiscardRelease = false;
+            }
         }
     }
 
@@ -306,7 +306,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>> e
      *
      * @param <B> {@link AbstractButton} type
      */
-    protected class Action<B extends AbstractButton> extends UIAction<B>
+    protected static class Action<B extends AbstractButton> extends UIAction<B>
     {
         /**
          * Supported actions.
@@ -329,7 +329,8 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>> e
         public void actionPerformed ( @NotNull final ActionEvent e )
         {
             final B button = getComponent ();
-            if ( Objects.equals ( getName (), PRESSED ) )
+            final String action = getName ();
+            if ( Objects.equals ( action, PRESSED ) )
             {
                 final ButtonModel model = button.getModel ();
                 model.setArmed ( true );
@@ -339,7 +340,7 @@ public class WButtonListener<C extends AbstractButton, U extends WButtonUI<C>> e
                     button.requestFocus ();
                 }
             }
-            else if ( Objects.equals ( getName (), RELEASED ) )
+            else if ( Objects.equals ( action, RELEASED ) )
             {
                 final ButtonModel model = button.getModel ();
                 model.setPressed ( false );

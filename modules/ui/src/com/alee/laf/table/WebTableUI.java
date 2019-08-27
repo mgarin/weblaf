@@ -17,10 +17,11 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Corner;
 import com.alee.api.jdk.Consumer;
 import com.alee.extended.canvas.WebCanvas;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.ScrollPaneCornerProvider;
 import com.alee.laf.table.editors.WebBooleanEditor;
 import com.alee.laf.table.editors.WebDateEditor;
@@ -122,7 +123,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
                 updateTableHeaderStyleId ();
             }
         };
-        table.addPropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
+        table.addPropertyChangeListener ( WebTable.TABLE_HEADER_PROPERTY, propertyChangeListener );
 
         // Applying skin
         StyleManager.installSkin ( table );
@@ -135,7 +136,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         StyleManager.uninstallSkin ( table );
 
         // Cleaning up listeners
-        table.removePropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
+        table.removePropertyChangeListener ( WebTable.TABLE_HEADER_PROPERTY, propertyChangeListener );
         propertyChangeListener = null;
 
         super.uninstallUI ( c );
@@ -156,6 +157,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         }
     }
 
+    @NotNull
     @Override
     public Shape getShape ()
     {
@@ -174,6 +176,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         PainterSupport.setShapeDetectionEnabled ( table, painter, enabled );
     }
 
+    @Nullable
     @Override
     public Insets getMargin ()
     {
@@ -181,11 +184,12 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public void setMargin ( @Nullable final Insets margin )
     {
         PainterSupport.setMargin ( table, margin );
     }
 
+    @Nullable
     @Override
     public Insets getPadding ()
     {
@@ -193,7 +197,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     }
 
     @Override
-    public void setPadding ( final Insets padding )
+    public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( table, padding );
     }
@@ -216,7 +220,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( table, new Consumer<ITablePainter> ()
+        PainterSupport.setPainter ( table, this, new Consumer<ITablePainter> ()
         {
             @Override
             public void accept ( final ITablePainter newPainter )
