@@ -324,6 +324,10 @@ public class CollapsiblePaneLayout extends AbstractLayoutManager implements Prop
             }
             else
             {
+                // Resetting position
+                contentSize = expanded ? 1.0f : 0.0f;
+
+                // Firing appropriate event
                 if ( expanded )
                 {
                     pane.fireExpanding ();
@@ -435,7 +439,7 @@ public class CollapsiblePaneLayout extends AbstractLayoutManager implements Prop
             }
 
             content.setBounds ( bounds );
-            content.setVisible ( bounds.width > 0 && bounds.height > 0 );
+            content.setVisible ( transitionsQueue != null || pane.isExpanded () );
         }
     }
 

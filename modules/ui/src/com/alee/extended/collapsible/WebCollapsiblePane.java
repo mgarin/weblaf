@@ -83,14 +83,24 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Whether or not {@link WebCollapsiblePane} is expanded.
      */
-    protected boolean expanded = true;
+    protected boolean expanded;
 
     /**
      * Constructs empty {@link WebCollapsiblePane}.
      */
     public WebCollapsiblePane ()
     {
-        this ( StyleId.auto, ( String ) null );
+        this ( StyleId.auto, null, null, null, true );
+    }
+
+    /**
+     * Constructs empty {@link WebCollapsiblePane} with specified expansion state.
+     *
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( final boolean expanded )
+    {
+        this ( StyleId.auto, null, null, null, expanded );
     }
 
     /**
@@ -100,7 +110,18 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @Nullable final String title )
     {
-        this ( StyleId.auto, null, title );
+        this ( StyleId.auto, null, title, null, true );
+    }
+
+    /**
+     * Constructs empty {@link WebCollapsiblePane} with specified title text and expansion state.
+     *
+     * @param title    title text
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @Nullable final String title, final boolean expanded )
+    {
+        this ( StyleId.auto, null, title, null, expanded );
     }
 
     /**
@@ -111,7 +132,19 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @Nullable final Icon icon, @Nullable final String title )
     {
-        this ( StyleId.auto, icon, title, null );
+        this ( StyleId.auto, icon, title, null, true );
+    }
+
+    /**
+     * Constructs empty {@link WebCollapsiblePane} with specified title icon, text and expansion state.
+     *
+     * @param icon     title icon
+     * @param title    title text
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @Nullable final Icon icon, @Nullable final String title, final boolean expanded )
+    {
+        this ( StyleId.auto, icon, title, null, expanded );
     }
 
     /**
@@ -121,7 +154,18 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @Nullable final Component content )
     {
-        this ( StyleId.auto, null, null, content );
+        this ( StyleId.auto, null, null, content, true );
+    }
+
+    /**
+     * Constructs {@link WebCollapsiblePane} with specified content and expansion state.
+     *
+     * @param content  content {@link Component}
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @Nullable final Component content, final boolean expanded )
+    {
+        this ( StyleId.auto, null, null, content, expanded );
     }
 
     /**
@@ -132,7 +176,19 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @Nullable final String title, @Nullable final Component content )
     {
-        this ( StyleId.auto, null, title, content );
+        this ( StyleId.auto, null, title, content, true );
+    }
+
+    /**
+     * Constructs {@link WebCollapsiblePane} with specified title text, content and expansion state.
+     *
+     * @param title    title text
+     * @param content  content {@link Component}
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @Nullable final String title, @Nullable final Component content, final boolean expanded )
+    {
+        this ( StyleId.auto, null, title, content, expanded );
     }
 
     /**
@@ -144,7 +200,21 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @Nullable final Icon icon, @Nullable final String title, @Nullable final Component content )
     {
-        this ( StyleId.auto, icon, title, content );
+        this ( StyleId.auto, icon, title, content, true );
+    }
+
+    /**
+     * Constructs {@link WebCollapsiblePane} with specified title icon, text, content and expansion state.
+     *
+     * @param icon     title icon
+     * @param title    title text
+     * @param content  content {@link Component}
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @Nullable final Icon icon, @Nullable final String title, @Nullable final Component content,
+                                final boolean expanded )
+    {
+        this ( StyleId.auto, icon, title, content, expanded );
     }
 
     /**
@@ -154,7 +224,18 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @NotNull final StyleId id )
     {
-        this ( id, "" );
+        this ( id, null, null, null, true );
+    }
+
+    /**
+     * Constructs empty {@link WebCollapsiblePane} with specified expansion state.
+     *
+     * @param id       style ID
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @NotNull final StyleId id, final boolean expanded )
+    {
+        this ( id, null, null, null, expanded );
     }
 
     /**
@@ -165,7 +246,19 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final String title )
     {
-        this ( id, null, title );
+        this ( id, null, title, null, true );
+    }
+
+    /**
+     * Constructs empty {@link WebCollapsiblePane} with specified title text and expansion state.
+     *
+     * @param id       style ID
+     * @param title    title text
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final String title, final boolean expanded )
+    {
+        this ( id, null, title, null, expanded );
     }
 
     /**
@@ -177,7 +270,20 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final Icon icon, @Nullable final String title )
     {
-        this ( id, icon, title, null );
+        this ( id, icon, title, null, true );
+    }
+
+    /**
+     * Constructs empty {@link WebCollapsiblePane} with specified title icon, text and expansion state.
+     *
+     * @param id       style ID
+     * @param icon     title icon
+     * @param title    title text
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final Icon icon, @Nullable final String title, final boolean expanded )
+    {
+        this ( id, icon, title, null, expanded );
     }
 
     /**
@@ -188,7 +294,19 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final Component content )
     {
-        this ( id, null, "", content );
+        this ( id, null, null, content, true );
+    }
+
+    /**
+     * Constructs {@link WebCollapsiblePane} with specified content and expansion state.
+     *
+     * @param id       style ID
+     * @param content  content {@link Component}
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final Component content, final boolean expanded )
+    {
+        this ( id, null, null, content, expanded );
     }
 
     /**
@@ -200,7 +318,21 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
      */
     public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final String title, @Nullable final Component content )
     {
-        this ( id, null, title, content );
+        this ( id, null, title, content, true );
+    }
+
+    /**
+     * Constructs {@link WebCollapsiblePane} with specified title text, content and expansion state.
+     *
+     * @param id       style ID
+     * @param title    title text
+     * @param content  content {@link Component}
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final String title, @Nullable final Component content,
+                                final boolean expanded )
+    {
+        this ( id, null, title, content, expanded );
     }
 
     /**
@@ -214,11 +346,27 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final Icon icon, @Nullable final String title,
                                 @Nullable final Component content )
     {
+        this ( id, icon, title, content, true );
+    }
+
+    /**
+     * Constructs {@link WebCollapsiblePane} with specified title icon, text, content and expansion state.
+     *
+     * @param id       style ID
+     * @param icon     title icon
+     * @param title    title text
+     * @param content  content {@link Component}
+     * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
+     */
+    public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final Icon icon, @Nullable final String title,
+                                @Nullable final Component content, final boolean expanded )
+    {
         updateUI ();
         setIcon ( icon );
         setTitle ( title );
         setContent ( content );
         setStyleId ( id );
+        setExpanded ( expanded );
     }
 
     @NotNull
