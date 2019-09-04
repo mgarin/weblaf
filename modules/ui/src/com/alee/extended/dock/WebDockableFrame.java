@@ -561,16 +561,19 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      */
     public boolean isSidebarButtonVisible ()
     {
+        boolean visible = false;
         final WebDockablePane dockablePane = getDockablePane ();
         if ( dockablePane != null )
         {
             switch ( dockablePane.getSidebarVisibility () )
             {
                 case never:
-                    return false;
+                    visible = false;
+                    break;
 
                 case minimized:
-                    return isMinimized () || isPreview ();
+                    visible = isMinimized () || isPreview ();
+                    break;
 
                 case anyMinimized:
                     if ( !isClosed () )
@@ -579,17 +582,19 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
                         {
                             if ( frame.isMinimized () || frame.isPreview () )
                             {
-                                return true;
+                                visible = true;
+                                break;
                             }
                         }
                     }
-                    return false;
+                    break;
 
                 case always:
-                    return isOpened ();
+                    visible = isOpened ();
+                    break;
             }
         }
-        return false;
+        return visible;
     }
 
     /**

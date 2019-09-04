@@ -27,6 +27,7 @@ import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.managers.drag.DragAdapter;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -38,12 +39,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Custom glass layer for {@link com.alee.extended.dock.WebDockablePane}.
- * Unlike {@link javax.swing.JRootPane} glass layer it only covers dockable pane itself.
+ * Custom glass layer for {@link WebDockablePane}.
+ * Unlike {@link JRootPane} glass layer it only covers dockable pane itself.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see com.alee.extended.dock.WebDockablePane
+ * @see WebDockablePane
  */
 public class DockablePaneGlassLayer extends JComponent
 {
@@ -52,39 +53,35 @@ public class DockablePaneGlassLayer extends JComponent
      */
 
     /**
-     * {@link com.alee.extended.dock.WebDockablePane} this glass pane is attached to.
+     * {@link WebDockablePane} this glass pane is attached to.
      */
     protected final WebDockablePane dockablePane;
 
     /**
-     * {@link com.alee.extended.dock.drag.FrameDropData} containing information about dragged frame.
+     * {@link FrameDropData} containing information about dragged frame.
      */
     protected FrameDropData frameDropData;
 
     /**
-     * {@link com.alee.extended.dock.data.ResizeData} containting information about resized elements.
+     * {@link ResizeData} containting information about resized elements.
      */
     protected ResizeData resizeData;
 
     /**
      * Constructs new dockable pane glass layer.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
+     * @param dockablePane {@link WebDockablePane}
      */
     public DockablePaneGlassLayer ( final WebDockablePane dockablePane )
     {
         super ();
         this.dockablePane = dockablePane;
-        initialize ();
-    }
 
-    /**
-     * Initializes glass layer settings.
-     */
-    protected void initialize ()
-    {
         // Visual settings
         setOpaque ( false );
+
+        // Ensure our glass layer doesn't interfere with AWT and opaque components
+        ProprietaryUtils.enableMixingCutoutShape ( this );
 
         // Resize listener
         final MouseAdapter mouseListener = new MouseAdapter ()
@@ -295,24 +292,28 @@ public class DockablePaneGlassLayer extends JComponent
      */
     protected boolean checkDrag ()
     {
+        boolean isDragged = false;
         if ( frameDropData != null )
         {
-            return true;
+            isDragged = true;
         }
-        else if ( DragManager.isDragging ( FrameTransferable.dataFlavor ) )
+        else
         {
-            try
+            if ( DragManager.isDragging ( FrameTransferable.dataFlavor ) )
             {
-                final Transferable transferable = DragManager.getTransferable ();
-                final FrameDragData data = ( FrameDragData ) transferable.getTransferData ( FrameTransferable.dataFlavor );
-                return dockablePane.getFrame ( data.getId () ) != null;
-            }
-            catch ( final Exception ignored )
-            {
-                //
+                try
+                {
+                    final Transferable transferable = DragManager.getTransferable ();
+                    final FrameDragData data = ( FrameDragData ) transferable.getTransferData ( FrameTransferable.dataFlavor );
+                    isDragged = dockablePane.getFrame ( data.getId () ) != null;
+                }
+                catch ( final Exception ignored )
+                {
+                    //
+                }
             }
         }
-        return false;
+        return isDragged;
     }
 
     /**

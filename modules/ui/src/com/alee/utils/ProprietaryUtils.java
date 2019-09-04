@@ -354,6 +354,26 @@ public final class ProprietaryUtils
     }
 
     /**
+     * Enables mixing cutout shape to avoid issues with AWT and non-opaque components when they are layered within same container.
+     *
+     * @param component {@link Component} to enable mixing cutout shape for
+     */
+    public static void enableMixingCutoutShape ( final Component component )
+    {
+        try
+        {
+            final Object componentAccessor = ReflectUtils.callStaticMethod ( "sun.awt.AWTAccessor", "getComponentAccessor" );
+            ReflectUtils.callMethod ( componentAccessor, "setMixingCutoutShape", component, new Rectangle () );
+        }
+        catch ( final Exception e )
+        {
+            // Ignore any exceptions this native feature might cause
+            // Still, should inform that such actions cause an exception on the underlying system
+            LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( e.toString (), e );
+        }
+    }
+
+    /**
      * Returns whether window is opaque or not.
      *
      * @param window window to process
