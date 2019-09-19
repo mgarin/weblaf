@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.tree.AsyncTreeModel;
 import com.alee.extended.tree.ExTreeModel;
 import com.alee.extended.tree.walker.AsyncTreeWalker;
@@ -48,6 +50,7 @@ public final class TreeUtils
      * @param tree tree to process
      * @return tree expansion and selection states
      */
+    @NotNull
     public static TreeState getTreeState ( final JTree tree )
     {
         return getTreeState ( tree, true );
@@ -61,7 +64,8 @@ public final class TreeUtils
      * @param saveSelection whether to save selection states or not
      * @return tree expansion and selection states
      */
-    public static TreeState getTreeState ( final JTree tree, final boolean saveSelection )
+    @NotNull
+    public static TreeState getTreeState ( @NotNull final JTree tree, final boolean saveSelection )
     {
         return getTreeState ( tree, tree.getModel ().getRoot (), saveSelection );
     }
@@ -74,7 +78,8 @@ public final class TreeUtils
      * @param root node to save state for
      * @return tree expansion and selection states
      */
-    public static TreeState getTreeState ( final JTree tree, final Object root )
+    @NotNull
+    public static TreeState getTreeState ( @NotNull final JTree tree, @Nullable final Object root )
     {
         return getTreeState ( tree, root, true );
     }
@@ -88,14 +93,18 @@ public final class TreeUtils
      * @param root          node to save state for
      * @return tree expansion and selection states
      */
-    public static TreeState getTreeState ( final JTree tree, final Object root, final boolean saveSelection )
+    @NotNull
+    public static TreeState getTreeState ( @NotNull final JTree tree, @Nullable final Object root, final boolean saveSelection )
     {
-        if ( !( root instanceof UniqueNode ) )
-        {
-            throw new RuntimeException ( "To get tree state you must use UniqueNode or any class that extends it as tree elements" );
-        }
         final TreeState state = new TreeState ();
-        saveTreeStateImpl ( tree, state, ( UniqueNode ) root, saveSelection );
+        if ( root != null )
+        {
+            if ( !( root instanceof UniqueNode ) )
+            {
+                throw new RuntimeException ( "To get tree state you must use UniqueNode or any class that extends it as tree elements" );
+            }
+            saveTreeStateImpl ( tree, state, ( UniqueNode ) root, saveSelection );
+        }
         return state;
     }
 
@@ -107,7 +116,7 @@ public final class TreeUtils
      * @param parent        node to save states for
      * @param saveSelection whether to save selection states or not
      */
-    private static void saveTreeStateImpl ( final JTree tree, final TreeState state, final UniqueNode parent,
+    private static void saveTreeStateImpl ( @NotNull final JTree tree, @NotNull final TreeState state, @NotNull final UniqueNode parent,
                                             final boolean saveSelection )
     {
         // Saving children states first
@@ -133,9 +142,9 @@ public final class TreeUtils
      * @param tree      tree to process
      * @param treeState tree expansion and selection states
      */
-    public static void setTreeState ( final JTree tree, final TreeState treeState )
+    public static void setTreeState ( @NotNull final JTree tree, @Nullable final TreeState treeState )
     {
-        setTreeState ( tree, treeState, true );
+        setTreeState ( tree, treeState, tree.getModel ().getRoot (), true );
     }
 
     /**
@@ -146,7 +155,7 @@ public final class TreeUtils
      * @param treeState        tree expansion and selection states
      * @param restoreSelection whether to restore selection states or not
      */
-    public static void setTreeState ( final JTree tree, final TreeState treeState, final boolean restoreSelection )
+    public static void setTreeState ( @NotNull final JTree tree, @Nullable final TreeState treeState, final boolean restoreSelection )
     {
         setTreeState ( tree, treeState, tree.getModel ().getRoot (), restoreSelection );
     }
@@ -159,7 +168,7 @@ public final class TreeUtils
      * @param treeState tree expansion and selection states
      * @param root      node to restore state for
      */
-    public static void setTreeState ( final JTree tree, final TreeState treeState, final Object root )
+    public static void setTreeState ( @NotNull final JTree tree, @Nullable final TreeState treeState, @Nullable final Object root )
     {
         setTreeState ( tree, treeState, root, true );
     }
@@ -173,15 +182,19 @@ public final class TreeUtils
      * @param root             node to restore state for
      * @param restoreSelection whether to restore selection states or not
      */
-    public static void setTreeState ( final JTree tree, final TreeState treeState, final Object root, final boolean restoreSelection )
+    public static void setTreeState ( @NotNull final JTree tree, @Nullable final TreeState treeState,
+                                      @Nullable final Object root, final boolean restoreSelection )
     {
-        if ( !( root instanceof UniqueNode ) )
+        if ( root != null )
         {
-            throw new RuntimeException ( "To set tree state you must use UniqueNode or any class that extends it as tree elements" );
-        }
-        if ( treeState != null )
-        {
-            restoreTreeStateImpl ( tree, treeState, ( UniqueNode ) root, restoreSelection );
+            if ( !( root instanceof UniqueNode ) )
+            {
+                throw new RuntimeException ( "To set tree state you must use UniqueNode or any class that extends it as tree elements" );
+            }
+            if ( treeState != null )
+            {
+                restoreTreeStateImpl ( tree, treeState, ( UniqueNode ) root, restoreSelection );
+            }
         }
     }
 
@@ -193,8 +206,8 @@ public final class TreeUtils
      * @param parent           node to restore states for
      * @param restoreSelection whether to restore selection states or not
      */
-    private static void restoreTreeStateImpl ( final JTree tree, final TreeState treeState, final UniqueNode parent,
-                                               final boolean restoreSelection )
+    private static void restoreTreeStateImpl ( @NotNull final JTree tree, @NotNull final TreeState treeState,
+                                               @NotNull final UniqueNode parent, final boolean restoreSelection )
     {
         // Restoring children states first
         for ( int i = 0; i < parent.getChildCount (); i++ )
@@ -232,7 +245,8 @@ public final class TreeUtils
      * @param <N>  tree node type
      * @return appropriate {@link TreeWalker} implementation for the specified {@link JTree}
      */
-    public static <N extends TreeNode> TreeWalker<N> getTreeWalker ( final JTree tree )
+    @NotNull
+    public static <N extends TreeNode> TreeWalker<N> getTreeWalker ( @NotNull final JTree tree )
     {
         final TreeWalker treeWalker;
         if ( tree.getModel () instanceof AsyncTreeModel )
@@ -253,9 +267,27 @@ public final class TreeUtils
      * @param node {@link TreeNode} to get {@link TreePath} for
      * @return {@link TreePath} from the root to the specified {@link TreeNode}
      */
-    public static TreePath getTreePath ( final TreeNode node )
+    @Nullable
+    public static TreePath getTreePath ( @Nullable final TreeNode node )
     {
-        return new TreePath ( getPath ( node ) );
+        final TreePath treePath;
+        if ( node != null )
+        {
+            final TreeNode[] path = getPath ( node );
+            if ( path != null )
+            {
+                treePath = new TreePath ( path );
+            }
+            else
+            {
+                treePath = null;
+            }
+        }
+        else
+        {
+            treePath = null;
+        }
+        return treePath;
     }
 
     /**
@@ -265,7 +297,8 @@ public final class TreeUtils
      * @param node {@link TreeNode} to get the path for
      * @return array of {@link TreeNode}s representing the path
      */
-    public static TreeNode[] getPath ( final TreeNode node )
+    @Nullable
+    public static TreeNode[] getPath ( @Nullable final TreeNode node )
     {
         return getPathToRoot ( node, 0 );
     }
@@ -278,25 +311,29 @@ public final class TreeUtils
      * @param depth an int giving the number of steps already taken towards the root (on recursive calls), used to size the returned array
      * @return array of {@link TreeNode}s representing the path from the root to the specified {@link TreeNode}
      */
-    public static TreeNode[] getPathToRoot ( final TreeNode node, int depth )
+    @Nullable
+    private static TreeNode[] getPathToRoot ( @Nullable final TreeNode node, int depth )
     {
         final TreeNode[] path;
         if ( node == null )
         {
-            if ( depth == 0 )
+            if ( depth != 0 )
             {
-                return null;
+                path = new TreeNode[ depth ];
             }
             else
             {
-                path = new TreeNode[ depth ];
+                path = null;
             }
         }
         else
         {
             depth++;
             path = getPathToRoot ( node.getParent (), depth );
-            path[ path.length - depth ] = node;
+            if ( path != null )
+            {
+                path[ path.length - depth ] = node;
+            }
         }
         return path;
     }
@@ -311,8 +348,9 @@ public final class TreeUtils
      * @param anotherNode node to test as an ancestor of {@code node}
      * @return {@code true} if {@code anotherNode} is an ancestor of {@code node}, {@code false} otherwise
      */
-    public static boolean isNodeAncestor ( final TreeNode node, final TreeNode anotherNode )
+    public static boolean isNodeAncestor ( @NotNull final TreeNode node, @Nullable final TreeNode anotherNode )
     {
+        boolean nodeAncestor = false;
         if ( anotherNode != null )
         {
             TreeNode ancestor = node;
@@ -320,12 +358,13 @@ public final class TreeUtils
             {
                 if ( ancestor == anotherNode )
                 {
-                    return true;
+                    nodeAncestor = true;
+                    break;
                 }
             }
             while ( ( ancestor = ancestor.getParent () ) != null );
         }
-        return false;
+        return nodeAncestor;
     }
 
     /**
@@ -342,7 +381,7 @@ public final class TreeUtils
      * @param anotherNode node to test as an ancestor of {@code node}
      * @return {@code true} if {@code anotherNode} is an ancestor of {@code node}, {@code false} otherwise
      */
-    public static boolean isNodeAncestor ( final JTree tree, final TreeNode node, final TreeNode anotherNode )
+    public static boolean isNodeAncestor ( @NotNull final JTree tree, @NotNull final TreeNode node, @Nullable final TreeNode anotherNode )
     {
         final boolean ancestor;
         final TreeModel model = tree.getModel ();
@@ -387,7 +426,7 @@ public final class TreeUtils
         }*/
         else
         {
-            ancestor = TreeUtils.isNodeAncestor ( node, anotherNode );
+            ancestor = isNodeAncestor ( node, anotherNode );
         }
         return ancestor;
     }
@@ -400,7 +439,7 @@ public final class TreeUtils
      * @param node {@code node}
      * @return number of levels above the specified {@code node}
      */
-    public static int getLevel ( final TreeNode node )
+    public static int getLevel ( @NotNull final TreeNode node )
     {
         int levels = 0;
         TreeNode ancestor = node;
@@ -416,7 +455,7 @@ public final class TreeUtils
      *
      * @param tree {@link JTree} to expand all nodes for
      */
-    public static void expandAll ( final JTree tree )
+    public static void expandAll ( @NotNull final JTree tree )
     {
         if ( tree instanceof WebTree )
         {
@@ -439,7 +478,7 @@ public final class TreeUtils
      *
      * @param tree {@link JTree} to expand {@link TreeNode}s for
      */
-    public static void expandLoaded ( final JTree tree )
+    public static void expandLoaded ( @NotNull final JTree tree )
     {
         final Object root = tree.getModel ().getRoot ();
         if ( root instanceof TreeNode )
@@ -458,7 +497,7 @@ public final class TreeUtils
      * @param tree {@link JTree} to expand {@link TreeNode}s for
      * @param node {@link TreeNode} under which all other {@link TreeNode}s should be expanded
      */
-    public static void expandLoaded ( final JTree tree, final TreeNode node )
+    public static void expandLoaded ( @NotNull final JTree tree, @NotNull final TreeNode node )
     {
         // Only expand parent for non-root nodes
         if ( node.getParent () != null )

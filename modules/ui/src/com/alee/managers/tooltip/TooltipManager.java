@@ -17,6 +17,7 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
@@ -458,7 +459,7 @@ public final class TooltipManager
         HotkeyManager.registerHotkey ( topComponent, hotkeyData, new HotkeyRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 showAllTooltips ( topComponent );
             }

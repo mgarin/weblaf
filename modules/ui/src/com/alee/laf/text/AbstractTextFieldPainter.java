@@ -55,9 +55,14 @@ public abstract class AbstractTextFieldPainter<C extends JTextComponent, U exten
         // Updating leading and trailing components state
         if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
-            final boolean enabled = component.isEnabled ();
-            SwingUtils.setEnabledRecursively ( getLeadingComponent (), enabled );
-            SwingUtils.setEnabledRecursively ( getTrailingComponent (), enabled );
+            if ( getLeadingComponent () != null )
+            {
+                SwingUtils.setEnabledRecursively ( getLeadingComponent (), component.isEnabled () );
+            }
+            if ( getTrailingComponent () != null )
+            {
+                SwingUtils.setEnabledRecursively ( getTrailingComponent (), component.isEnabled () );
+            }
         }
 
         // Updating listeners and borders on leading or trailing component change

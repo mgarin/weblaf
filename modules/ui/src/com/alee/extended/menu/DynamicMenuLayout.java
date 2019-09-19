@@ -52,7 +52,7 @@ public class DynamicMenuLayout extends AbstractLayoutManager
 
     protected void layoutPlainMenu ( final WebDynamicMenu menu, final float displayProgress, final DynamicMenuType type )
     {
-        final Dimension max = SwingUtils.max ( menu.getComponents () );
+        final Dimension max = SwingUtils.maxPreferredSize ( menu.getComponents () );
         final int itemsCount = menu.getComponentCount ();
 
         switch ( type )
@@ -88,7 +88,7 @@ public class DynamicMenuLayout extends AbstractLayoutManager
 
     protected void layoutRoundMenu ( final WebDynamicMenu menu, final float displayProgress, final DynamicMenuType type )
     {
-        final Dimension max = SwingUtils.max ( menu.getComponents () );
+        final Dimension max = SwingUtils.maxPreferredSize ( menu.getComponents () );
         final Point center = new Point ( menu.getRadius (), menu.getRadius () );
         final int itemSide = Math.max ( max.width, max.height );
 
@@ -227,6 +227,7 @@ public class DynamicMenuLayout extends AbstractLayoutManager
         menuItem.setBounds ( x - ps.width / 2, y - ps.height / 2, ps.width, ps.height );
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
@@ -243,7 +244,7 @@ public class DynamicMenuLayout extends AbstractLayoutManager
             }
             case list:
             {
-                final Dimension max = SwingUtils.max ( menu.getComponents () );
+                final Dimension max = SwingUtils.maxPreferredSize ( menu.getComponents () );
                 final int itemsCount = menu.getComponentCount ();
                 return new Dimension ( max.width, max.height * itemsCount );
             }

@@ -70,6 +70,7 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

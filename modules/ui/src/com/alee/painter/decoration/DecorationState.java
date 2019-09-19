@@ -18,6 +18,7 @@
 package com.alee.painter.decoration;
 
 import com.alee.extended.breadcrumb.element.BreadcrumbElementUtils;
+import com.alee.laf.tabbedpane.Tab;
 
 import javax.swing.*;
 import java.util.List;
@@ -107,6 +108,20 @@ public interface DecorationState
     public static final String inHoveredParent = "in-hovered-parent";
 
     /**
+     * Used to provide component children existence state.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
+    public static final String hasChildren = "has-children";
+
+    /**
+     * Used to provide component children existence state.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
+    public static final String hasNoChildren = "has-no-children";
+
+    /**
      * Used to provide component pressed state.
      *
      * @see com.alee.laf.button.AbstractButtonPainter#getDecorationStates()
@@ -129,6 +144,7 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     * @see Tab#getStates()
      */
     public static final String selected = "selected";
 

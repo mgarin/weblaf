@@ -140,7 +140,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
         documentChangeBehavior = new DocumentChangeBehavior<C> ( component )
         {
             @Override
-            public void documentChanged ( final C component, final DocumentEvent event )
+            public void documentChanged ( @NotNull final C component, @Nullable final DocumentEvent event )
             {
                 updateDecorationState ();
             }

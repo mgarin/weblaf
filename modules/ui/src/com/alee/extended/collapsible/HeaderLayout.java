@@ -193,6 +193,7 @@ public class HeaderLayout extends AbstractLayoutManager
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container parent )
     {

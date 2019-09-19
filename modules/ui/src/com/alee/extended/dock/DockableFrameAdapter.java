@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 
 /**
@@ -29,7 +30,7 @@ import com.alee.api.data.CompassDirection;
 public abstract class DockableFrameAdapter implements DockableFrameListener
 {
     @Override
-    public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+    public void frameAdded ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
     {
         /**
          * Do nothing by default.
@@ -37,7 +38,8 @@ public abstract class DockableFrameAdapter implements DockableFrameListener
     }
 
     @Override
-    public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState, final DockableFrameState newState )
+    public void frameStateChanged ( @NotNull final WebDockableFrame frame, @NotNull final DockableFrameState oldState,
+                                    @NotNull final DockableFrameState newState )
     {
         /**
          * Do nothing by default.
@@ -45,7 +47,7 @@ public abstract class DockableFrameAdapter implements DockableFrameListener
     }
 
     @Override
-    public void frameMoved ( final WebDockableFrame frame, final CompassDirection position )
+    public void frameMoved ( @NotNull final WebDockableFrame frame, @NotNull final CompassDirection position )
     {
         /**
          * Do nothing by default.
@@ -53,7 +55,7 @@ public abstract class DockableFrameAdapter implements DockableFrameListener
     }
 
     @Override
-    public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+    public void frameRemoved ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
     {
         /**
          * Do nothing by default.

@@ -89,6 +89,7 @@ public class JComboBoxExample extends AbstractStylePreviewExample
             super ( JComboBoxExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

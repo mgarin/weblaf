@@ -17,6 +17,7 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.optionpane.WebExtendedOptionPane;
 import com.alee.extended.panel.GroupPanel;
@@ -243,7 +244,7 @@ public class UIProxyAuthenticator extends Authenticator
             HotkeyManager.registerHotkey ( authPanel, authPanel, Hotkey.ENTER, new HotkeyRunnable ()
             {
                 @Override
-                public void run ( final KeyEvent e )
+                public void run ( @NotNull final KeyEvent e )
                 {
                     clickOk ();
                 }
@@ -251,7 +252,7 @@ public class UIProxyAuthenticator extends Authenticator
             HotkeyManager.registerHotkey ( authPanel, authPanel, Hotkey.ESCAPE, new HotkeyRunnable ()
             {
                 @Override
-                public void run ( final KeyEvent e )
+                public void run ( @NotNull final KeyEvent e )
                 {
                     clickCancel ();
                 }

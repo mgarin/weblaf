@@ -562,9 +562,10 @@ public final class PainterSupport
      * @param painter   {@link Painter}
      * @return {@link JComponent} preferred size or {@code null} if there is no preferred size
      */
+    @Nullable
     public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Painter painter )
     {
-        return getPreferredSize ( component, null, painter );
+        return getPreferredSize ( component, null, painter, false );
     }
 
     /**
@@ -576,6 +577,7 @@ public final class PainterSupport
      * @param painter   component painter
      * @return component preferred size or {@code null} if there is no preferred size
      */
+    @Nullable
     public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Dimension preferred,
                                                @Nullable final Painter painter )
     {
@@ -591,6 +593,7 @@ public final class PainterSupport
      * @param ignoreLayoutSize whether or not layout preferred size should be ignored
      * @return component preferred size or {@code null} if there is no preferred size
      */
+    @Nullable
     public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Dimension preferred,
                                                @Nullable final Painter painter, final boolean ignoreLayoutSize )
     {

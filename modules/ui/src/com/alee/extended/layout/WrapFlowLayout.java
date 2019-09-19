@@ -153,6 +153,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return rowsData;
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
@@ -160,6 +161,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return new Dimension ( maxWidth, maxHeight );
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {

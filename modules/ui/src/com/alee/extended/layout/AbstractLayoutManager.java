@@ -76,15 +76,18 @@ public abstract class AbstractLayoutManager implements LayoutManager2
     @Override
     public abstract void layoutContainer ( @NotNull Container parent );
 
+    @NotNull
     @Override
     public abstract Dimension preferredLayoutSize ( @NotNull Container parent );
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         return preferredLayoutSize ( container );
     }
 
+    @NotNull
     @Override
     public Dimension maximumLayoutSize ( @NotNull final Container container )
     {

@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import java.awt.*;
+import java.util.EventListener;
 
 /**
  * Special listener that tracks {@link DocumentData} changes.
@@ -28,7 +29,7 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see WebDocumentPane
  */
-public interface DocumentDataListener<T extends DocumentData>
+public interface DocumentDataListener<T extends DocumentData> extends EventListener
 {
     /**
      * Informs about {@link DocumentData} title change.

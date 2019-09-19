@@ -17,6 +17,8 @@
 
 package com.alee.managers.hotkey;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
@@ -43,7 +45,7 @@ public class ButtonHotkeyRunnable implements HotkeyRunnable
     }
 
     @Override
-    public void run ( final KeyEvent e )
+    public void run ( @NotNull final KeyEvent e )
     {
         button.doClick ( pressTime );
     }

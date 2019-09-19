@@ -17,6 +17,7 @@
 
 package com.alee.extended.colorchooser;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
@@ -568,7 +569,7 @@ public class WebColorChooserField extends WebTextField
                         HotkeyManager.registerHotkey ( screen, Hotkey.ESCAPE, new HotkeyRunnable ()
                         {
                             @Override
-                            public void run ( final KeyEvent e )
+                            public void run ( @NotNull final KeyEvent e )
                             {
                                 if ( window != null )
                                 {

@@ -17,6 +17,7 @@
 
 package com.alee.laf.tooltip;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.label.AbstractSimpleStyledTextContent;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.IDecoration;
@@ -36,6 +37,7 @@ import javax.swing.*;
 public class StyledToolTipText<C extends JToolTip, D extends IDecoration<C, D>, I extends StyledToolTipText<C, D, I>>
         extends AbstractSimpleStyledTextContent<C, D, I>
 {
+    @Nullable
     @Override
     protected String getStyledTextProperty ()
     {

@@ -43,12 +43,14 @@ public class HorizontalOverflowLayout extends AbstractLayoutManager
         this.overflow = overflow;
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return getLayoutSize ( container, false );
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {

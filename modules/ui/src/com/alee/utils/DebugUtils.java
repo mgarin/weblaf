@@ -37,11 +37,6 @@ import java.text.NumberFormat;
 public final class DebugUtils
 {
     /**
-     * Global debug information output mark.
-     */
-    private static boolean GLOBAL_DEBUG_ENABLED = false;
-
-    /**
      * Debug {@link Font}.
      */
     public static final Font DEBUG_FONT = new Font ( "Dialog", Font.BOLD, 8 );
@@ -57,26 +52,6 @@ public final class DebugUtils
     private DebugUtils ()
     {
         throw new UtilityException ( "Utility classes are not meant to be instantiated" );
-    }
-
-    /**
-     * Returns whether or not global debug information output is enabled.
-     *
-     * @return {@code true} if global debug information output is enabled, {@code false} otherwise
-     */
-    public static boolean isGlobalDebugEnabled ()
-    {
-        return GLOBAL_DEBUG_ENABLED;
-    }
-
-    /**
-     * Sets whether or not global debug information output is enabled.
-     *
-     * @param enabled whether or not global debug information output is enabled
-     */
-    public static void setGlobalDebugEnabled ( final boolean enabled )
-    {
-        DebugUtils.GLOBAL_DEBUG_ENABLED = enabled;
     }
 
     /**
@@ -109,10 +84,7 @@ public final class DebugUtils
      */
     public static void initTimeDebugInfo ()
     {
-        if ( isGlobalDebugEnabled () )
-        {
-            TimeUtils.pinNanoTime ();
-        }
+        TimeUtils.pinNanoTime ();
     }
 
     /**
@@ -123,10 +95,7 @@ public final class DebugUtils
      */
     public static void paintTimeDebugInfo ( @NotNull final Graphics g )
     {
-        if ( isGlobalDebugEnabled () )
-        {
-            paintDebugInfoImpl ( ( Graphics2D ) g );
-        }
+        paintDebugInfoImpl ( ( Graphics2D ) g );
     }
 
     /**
@@ -137,10 +106,7 @@ public final class DebugUtils
      */
     public static void paintTimeDebugInfo ( @NotNull final Graphics2D g2d )
     {
-        if ( isGlobalDebugEnabled () )
-        {
-            paintDebugInfoImpl ( g2d );
-        }
+        paintDebugInfoImpl ( g2d );
     }
 
     /**

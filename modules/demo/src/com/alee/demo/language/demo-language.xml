@@ -1397,6 +1397,142 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="jtabbedpane">
+                <record key="title">
+                    <value lang="en">JTabbedPane</value>
+                    <value lang="ru">JTabbedPane</value>
+                </record>
+                <Dictionary prefix="data">
+                    <record key="tab0">
+                        <value lang="en">Tab 0</value>
+                        <value lang="ru">Таб 0</value>
+                    </record>
+                    <record key="tab1">
+                        <value lang="en">Tab 1</value>
+                        <value lang="ru">Таб 1</value>
+                    </record>
+                    <record key="tab2">
+                        <value lang="en">Tab 2</value>
+                        <value lang="ru">Таб 2</value>
+                    </record>
+                    <record key="tab3">
+                        <value lang="en">Tab 3</value>
+                        <value lang="ru">Таб 3</value>
+                    </record>
+                    <record key="tab4">
+                        <value lang="en">Tab 4</value>
+                        <value lang="ru">Таб 4</value>
+                    </record>
+                    <record key="tab5">
+                        <value lang="en">Tab 5</value>
+                        <value lang="ru">Таб 5</value>
+                    </record>
+                    <record key="tab6">
+                        <value lang="en">Tab 6</value>
+                        <value lang="ru">Таб 6</value>
+                    </record>
+                    <record key="tab7">
+                        <value lang="en">Tab 7</value>
+                        <value lang="ru">Таб 7</value>
+                    </record>
+                    <record key="content">
+                        <value lang="en">Sample tab content{br}(click to focus this)</value>
+                        <value lang="ru">Пример таб контента{br}(кликните для передачи фокуса)</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="top">
+                    <record key="title">
+                        <value lang="en">Tabs at the top</value>
+                        <value lang="ru">Табы сверху</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="left">
+                    <record key="title">
+                        <value lang="en">Tabs at the left</value>
+                        <value lang="ru">Табы слева</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="bottom">
+                    <record key="title">
+                        <value lang="en">Tabs at the bottom</value>
+                        <value lang="ru">Табы снизу</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="right">
+                    <record key="title">
+                        <value lang="en">Tabs at the right</value>
+                        <value lang="ru">Табы справа</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="documentpane">
+                <record key="title">
+                    <value lang="en">WebDocumentPane</value>
+                    <value lang="ru">WebDocumentPane</value>
+                </record>
+                <Dictionary prefix="data">
+                    <record key="tab0">
+                        <value lang="en">Tab 0</value>
+                        <value lang="ru">Таб 0</value>
+                    </record>
+                    <record key="tab1">
+                        <value lang="en">Tab 1</value>
+                        <value lang="ru">Таб 1</value>
+                    </record>
+                    <record key="tab2">
+                        <value lang="en">Tab 2</value>
+                        <value lang="ru">Таб 2</value>
+                    </record>
+                    <record key="tab3">
+                        <value lang="en">Tab 3</value>
+                        <value lang="ru">Таб 3</value>
+                    </record>
+                    <record key="tab4">
+                        <value lang="en">Tab 4</value>
+                        <value lang="ru">Таб 4</value>
+                    </record>
+                    <record key="tab5">
+                        <value lang="en">Tab 5</value>
+                        <value lang="ru">Таб 5</value>
+                    </record>
+                    <record key="tab6">
+                        <value lang="en">Tab 6</value>
+                        <value lang="ru">Таб 6</value>
+                    </record>
+                    <record key="tab7">
+                        <value lang="en">Tab 7</value>
+                        <value lang="ru">Таб 7</value>
+                    </record>
+                    <record key="content">
+                        <value lang="en">Sample tab content{br}(click to focus this)</value>
+                        <value lang="ru">Пример таб контента{br}(кликните для передачи фокуса)</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="top">
+                    <record key="title">
+                        <value lang="en">Tabs at the top</value>
+                        <value lang="ru">Табы сверху</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="left">
+                    <record key="title">
+                        <value lang="en">Tabs at the left</value>
+                        <value lang="ru">Табы слева</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="bottom">
+                    <record key="title">
+                        <value lang="en">Tabs at the bottom</value>
+                        <value lang="ru">Табы снизу</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="right">
+                    <record key="title">
+                        <value lang="en">Tabs at the right</value>
+                        <value lang="ru">Табы справа</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
             <Dictionary prefix="grouppane">
                 <record key="title">
                     <value lang="en">GroupPane</value>

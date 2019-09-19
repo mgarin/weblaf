@@ -144,6 +144,7 @@ public class InternalFrameLayout extends AbstractLayoutManager
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
@@ -189,6 +190,7 @@ public class InternalFrameLayout extends AbstractLayoutManager
      * The minimum size of the internal frame only takes into account the title pane and internal frame insets.
      * That allows you to resize the frames to the point where just the title pane is visible.
      */
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {

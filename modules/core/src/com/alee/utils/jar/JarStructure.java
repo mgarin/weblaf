@@ -17,18 +17,24 @@
 
 package com.alee.utils.jar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.compare.Filter;
+import com.alee.utils.UtilityException;
+import com.alee.utils.file.FileDownloadListener;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.List;
 import java.util.Locale;
-import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * This class represents single JAR file structure.
@@ -39,175 +45,383 @@ import java.util.zip.ZipFile;
 public class JarStructure
 {
     /**
-     * Comparator for {@link JarEntry}.
-     */
-    public static final JarEntryComparator COMPARATOR = new JarEntryComparator ();
-
-    /**
      * Location of JAR file which structure is represented by this object.
      * Since local copy of file is always required to create this structure this field always points at existing local JAR file.
      */
-    private String jarLocation;
+    @NotNull
+    protected final String jarLocation;
 
     /**
      * Root {@link JarEntry}.
      * Represents JAR structure itself using nested {@link JarEntry}.
      */
-    private JarEntry root;
+    @NotNull
+    protected final JarEntry root;
 
     /**
-     * Constructs new empty JAR structure.
-     */
-    public JarStructure ()
-    {
-        super ();
-    }
-
-    /**
-     * Constructs new JAR structure with the specified root {@link JarEntry}.
+     * Constructs new {@link JarStructure}.
      *
-     * @param root root {@link JarEntry}
+     * @param jarClass any class within the JAR
      */
-    public JarStructure ( final JarEntry root )
+    public JarStructure ( @NotNull final Class jarClass )
     {
-        super ();
-        setRoot ( root );
+        this ( jarClass, null, null, null );
     }
 
+    /**
+     * Constructs new {@link JarStructure}.
+     *
+     * @param jarClass          any class within the JAR
+     * @param allowedExtensions list of extension filters
+     * @param allowedPackages   list of allowed packages
+     */
+    public JarStructure ( @NotNull final Class jarClass, @Nullable final List<String> allowedExtensions,
+                          @Nullable final List<String> allowedPackages )
+    {
+        this ( jarClass, allowedExtensions, allowedPackages, null );
+    }
+
+    /**
+     * Constructs new {@link JarStructure}.
+     *
+     * @param jarClass          any class within the JAR
+     * @param allowedExtensions list of extension filters
+     * @param allowedPackages   list of allowed packages
+     * @param listener          {@link FileDownloadListener} for JAR file
+     */
+    public JarStructure ( @NotNull final Class jarClass, @Nullable final List<String> allowedExtensions,
+                          @Nullable final List<String> allowedPackages, @Nullable final FileDownloadListener listener )
+    {
+        try
+        {
+            final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
+            if ( src != null )
+            {
+                // Source url
+                final URL jarUrl = src.getLocation ();
+                final URI uri = jarUrl.toURI ();
+
+                // Source file
+                final File jarFile;
+                final String scheme = uri.getScheme ();
+                if ( scheme != null && scheme.equalsIgnoreCase ( "file" ) )
+                {
+                    // Local jar-file
+                    jarFile = new File ( uri );
+                }
+                else
+                {
+                    // Remote jar-file
+                    jarFile = FileUtils.downloadFile (
+                            jarUrl.toString (),
+                            File.createTempFile ( jarUrl.getFile (), ".tmp" ),
+                            listener
+                    );
+                }
+
+                // Creating JAR structure
+                this.jarLocation = jarFile.getAbsolutePath ();
+
+                // Updating root element
+                this.root = new JarEntry ( this, JarEntryType.JAR, jarFile.getName () );
+
+                // Reading all entries and parsing them into structure
+                final ZipInputStream zip = new ZipInputStream ( jarUrl.openStream () );
+                ZipEntry zipEntry;
+                while ( ( zipEntry = zip.getNextEntry () ) != null )
+                {
+                    final String entryName = zipEntry.getName ();
+                    if ( isAllowedPackage ( entryName, allowedPackages ) &&
+                            ( zipEntry.isDirectory () || isAllowedExtension ( entryName, allowedExtensions ) ) )
+                    {
+                        final String[] path = entryName.split ( "/" );
+                        JarEntry currentLevel = this.root;
+                        for ( int i = 0; i < path.length; i++ )
+                        {
+                            if ( i < path.length - 1 )
+                            {
+                                JarEntry child = currentLevel.findChildByName ( path[ i ] );
+                                if ( child == null )
+                                {
+                                    child = new JarEntry ( this, currentLevel, zipEntry, JarEntryType.PACKAGE, path[ i ] );
+                                    currentLevel.addChild ( child );
+                                }
+                                currentLevel = child;
+                            }
+                            else
+                            {
+                                final JarEntryType type;
+                                final String ext = FileUtils.getFileExtPart ( path[ i ], false );
+                                if ( ext.equals ( "java" ) )
+                                {
+                                    type = JarEntryType.JAVA;
+                                }
+                                else if ( ext.equals ( "class" ) )
+                                {
+                                    type = JarEntryType.CLASS;
+                                }
+                                else if ( !ext.isEmpty () )
+                                {
+                                    type = JarEntryType.FILE;
+                                }
+                                else
+                                {
+                                    type = JarEntryType.PACKAGE;
+                                }
+                                currentLevel.addChild ( new JarEntry ( this, currentLevel, zipEntry, type, path[ i ] ) );
+                            }
+                        }
+                    }
+                }
+                zip.close ();
+            }
+            else
+            {
+                throw new UtilityException ( "Unable to retrieve JAR file location" );
+            }
+        }
+        catch ( final URISyntaxException e )
+        {
+            throw new UtilityException ( "Unable to retrieve JAR URI", e );
+        }
+        catch ( final IOException e )
+        {
+            throw new UtilityException ( "Unable to retrieve JAR file", e );
+        }
+    }
+
+    /**
+     * Returns whether JAR entry with the specified name is allowed by the packages list or not.
+     *
+     * @param entryName       JAR entry name
+     * @param allowedPackages list of allowed packages
+     * @return true if JAR entry with the specified name is allowed by the packages list, false otherwise
+     */
+    private boolean isAllowedPackage ( @NotNull final String entryName, @Nullable final List<String> allowedPackages )
+    {
+        boolean allowed;
+        if ( allowedPackages != null && allowedPackages.size () != 0 )
+        {
+            allowed = false;
+            for ( final String packageStart : allowedPackages )
+            {
+                if ( entryName.startsWith ( packageStart ) )
+                {
+                    allowed = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            allowed = true;
+        }
+        return allowed;
+    }
+
+    /**
+     * Returns whether JAR entry with the specified name is allowed by the extensions list or not.
+     *
+     * @param entryName         JAR entry name
+     * @param allowedExtensions list of allowed extensions
+     * @return true if JAR entry with the specified name is allowed by the extensions list, false otherwise
+     */
+    private boolean isAllowedExtension ( @NotNull final String entryName, @Nullable final List<String> allowedExtensions )
+    {
+        return allowedExtensions == null || allowedExtensions.size () == 0 || allowedExtensions.contains (
+                FileUtils.getFileExtPart ( entryName, true ).toLowerCase ( Locale.ROOT )
+        );
+    }
+
+    /**
+     * Returns JAR file location.
+     *
+     * @return JAR file location
+     */
+    @NotNull
     public String getJarLocation ()
     {
         return jarLocation;
     }
 
-    public void setJarLocation ( final String jarLocation )
-    {
-        this.jarLocation = jarLocation;
-    }
-
+    /**
+     * Returns root {@link JarEntry} of {@link JarEntryType#JAR} representing JAR itself.
+     *
+     * @return root {@link JarEntry} of {@link JarEntryType#JAR} representing JAR itself
+     */
+    @NotNull
     public JarEntry getRoot ()
     {
         return root;
     }
 
-    public void setRoot ( final JarEntry root )
+    /**
+     * Returns copy of children {@link JarEntry}s of the root {@link JarEntry}.
+     *
+     * @return copy of children {@link JarEntry}s of the root {@link JarEntry}
+     */
+    @NotNull
+    public List<JarEntry> getChildEntries ()
     {
-        this.root = root;
+        return root.getChildren ();
     }
 
-    public List<JarEntry> getChildEntries ( final JarEntry entry )
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name child {@link JarEntry} name
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @NotNull
+    public JarEntry getChildByName ( @Nullable final String name )
     {
-        final List<JarEntry> children = entry != null ? entry.getChildren () : getRoot ().getChildren ();
-        Collections.sort ( children, COMPARATOR );
-        return children;
+        return root.getChildByName ( name );
     }
 
-    public JarEntry findEntryByName ( final String name )
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name        child {@link JarEntry} name
+     * @param recursively whether should look for the child recursively in all children
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @NotNull
+    public JarEntry getChildByName ( @Nullable final String name, final boolean recursively )
     {
-        return findEntryByName ( name, getRoot () );
+        return root.getChildByName ( name, recursively );
     }
 
-    private JarEntry findEntryByName ( final String name, final JarEntry entry )
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name child {@link JarEntry} name
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @Nullable
+    public JarEntry findChildByName ( @Nullable final String name )
     {
-        for ( final JarEntry child : entry.getChildren () )
-        {
-            if ( FileUtils.getFileNamePart ( child.getName () ).equals ( name ) )
-            {
-                return child;
-            }
-            final JarEntry found = findEntryByName ( name, child );
-            if ( found != null )
-            {
-                return found;
-            }
-        }
-        return null;
+        return root.getChildByName ( name );
     }
 
-    public List<JarEntry> findSimilarEntries ( final String name )
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name        child {@link JarEntry} name
+     * @param recursively whether should look for the child recursively in all children
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @Nullable
+    public JarEntry findChildByName ( @Nullable final String name, final boolean recursively )
     {
-        return findSimilarEntries ( name.toLowerCase ( Locale.ROOT ), null );
+        return root.findChildByName ( name, recursively );
     }
 
-    public List<JarEntry> findSimilarEntries ( final String name, final Filter<JarEntry> filter )
-    {
-        return findSimilarEntries ( name.toLowerCase ( Locale.ROOT ), getRoot (), filter, new ArrayList<JarEntry> () );
-    }
-
-    private List<JarEntry> findSimilarEntries ( final String name, final JarEntry entry, final Filter<JarEntry> filter,
-                                                final List<JarEntry> entries )
-    {
-        if ( entry.getName ().toLowerCase ( Locale.ROOT ).contains ( name ) )
-        {
-            if ( filter == null || filter.accept ( entry ) )
-            {
-                entries.add ( entry );
-            }
-        }
-        for ( final JarEntry child : entry.getChildren () )
-        {
-            findSimilarEntries ( name, child, filter, entries );
-        }
-        return entries;
-    }
-
-    public JarEntry getClassEntry ( final Class forClass )
+    /**
+     * Returns {@link JarEntry} for the specified {@link Class} or {@code null} if it cannot be found.
+     *
+     * @param forClass {@link Class} to find {@link JarEntry} for
+     * @return {@link JarEntry} for the specified {@link Class} or {@code null} if it cannot be found
+     */
+    @Nullable
+    public JarEntry getClassEntry ( @NotNull final Class<?> forClass )
     {
         final String[] packages = ReflectUtils.getClassPackages ( forClass );
         final String classFileName = ReflectUtils.getJavaClassName ( forClass );
 
         int currentPackage = 0;
-        JarEntry currentLevel = getRoot ();
-        while ( currentLevel != null )
+        JarEntry classEntry = getRoot ();
+        while ( classEntry != null )
         {
             if ( currentPackage < packages.length )
             {
-                currentLevel = currentLevel.getChildByName ( packages[ currentPackage ] );
+                classEntry = classEntry.findChildByName ( packages[ currentPackage ] );
             }
             else
             {
-                currentLevel = currentLevel.getChildByName ( classFileName );
+                classEntry = classEntry.findChildByName ( classFileName );
                 break;
             }
             currentPackage++;
         }
 
-        return currentLevel;
+        return classEntry;
     }
 
-    public void setPackageIcon ( final Package packageType, final ImageIcon icon )
+    /**
+     * Returns {@link JarEntry} for the specified {@link Package} or {@code null} if it cannot be found.
+     *
+     * @param forPackage {@link Package} to find {@link JarEntry} for
+     * @return {@link JarEntry} for the specified {@link Package} or {@code null} if it cannot be found
+     */
+    @Nullable
+    public JarEntry getPackageEntry ( @NotNull final Package forPackage )
     {
-        setPackageIcon ( packageType.getName (), icon );
+        return getPackageEntry ( forPackage.getName () );
     }
 
-    public void setPackageIcon ( final String packageName, final ImageIcon icon )
+    /**
+     * Returns {@link JarEntry} for the specified {@link Package} name or {@code null} if it cannot be found.
+     *
+     * @param forPackage {@link Package} name to find {@link JarEntry} for
+     * @return {@link JarEntry} for the specified {@link Package} name or {@code null} if it cannot be found
+     */
+    @Nullable
+    public JarEntry getPackageEntry ( @NotNull final String forPackage )
     {
-        final String[] packages = ReflectUtils.getPackages ( packageName );
-        JarEntry currentLevel = getRoot ();
+        final String[] packages = ReflectUtils.getPackages ( forPackage );
+        JarEntry packageEntry = getRoot ();
         for ( final String currentPackage : packages )
         {
-            if ( currentLevel != null )
+            if ( packageEntry != null )
             {
-                currentLevel = currentLevel.getChildByName ( currentPackage );
+                packageEntry = packageEntry.findChildByName ( currentPackage );
             }
             else
             {
-                return;
+                break;
             }
         }
-        currentLevel.setIcon ( icon );
+        return packageEntry;
     }
 
-    public void setClassIcon ( final Class classType, final ImageIcon icon )
+    /**
+     * Sets {@link Icon} for the {@link JarEntry} representing specified {@link Class}.
+     *
+     * @param forClass {@link Class} to find {@link JarEntry} for
+     * @param icon     {@link Icon}
+     */
+    public void setClassIcon ( @NotNull final Class<?> forClass, @NotNull final Icon icon )
     {
-        final JarEntry classEntry = getClassEntry ( classType );
+        final JarEntry classEntry = getClassEntry ( forClass );
         if ( classEntry != null )
         {
             classEntry.setIcon ( icon );
         }
     }
 
-    public InputStream getEntryInputStream ( final JarEntry entry ) throws IOException
+    /**
+     * Sets {@link Icon} for the {@link JarEntry} representing specified {@link Package}.
+     *
+     * @param forPackage {@link Package} to find {@link JarEntry} for
+     * @param icon       {@link Icon}
+     */
+    public void setPackageIcon ( @NotNull final Package forPackage, @NotNull final Icon icon )
     {
-        return new ZipFile ( getJarLocation () ).getInputStream ( entry.getZipEntry () );
+        setPackageIcon ( forPackage.getName (), icon );
+    }
+
+    /**
+     * Sets {@link Icon} for the {@link JarEntry} representing specified {@link Package} name.
+     *
+     * @param forPackage {@link Package} name to find {@link JarEntry} for
+     * @param icon       {@link Icon}
+     */
+    public void setPackageIcon ( @NotNull final String forPackage, @NotNull final Icon icon )
+    {
+        final JarEntry packageEntry = getPackageEntry ( forPackage );
+        if ( packageEntry != null )
+        {
+            packageEntry.setIcon ( icon );
+        }
     }
 }

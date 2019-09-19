@@ -121,6 +121,7 @@ public class OverlayLayout extends AbstractLayoutManager implements SwingConstan
         this.constraints.remove ( component );
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

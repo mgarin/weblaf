@@ -25,17 +25,18 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 /**
- * Replacement for default Swing {@link ScrollPaneLayout} used within {@link JScrollPane} to layout components.
+ * Replacement for default Swing {@link javax.swing.ScrollPaneLayout} used within {@link JScrollPane} to layout components.
  * It allows deeper customization of scroll bar placement and a few enhancements to default calculations.
  *
- * Note: The only reason why this layout is based on {@link ScrollPaneLayout} is because {@link JScrollPane#setLayout(LayoutManager)}
- * method accepts only {@link ScrollPaneLayout}-based layouts and nothing else. Unfortunately there is no good workaround so it have been
- * used as a base for this layout and all unserializable fields have been emptied and omitted for XStream.
+ * Note: The only reason why this layout is based on {@link javax.swing.ScrollPaneLayout} is because
+ * {@link JScrollPane#setLayout(LayoutManager)} method accepts only {@link javax.swing.ScrollPaneLayout}-based layouts and nothing else.
+ * Unfortunately there is no good workaround so it have been used as a base for this layout for the time being.
+ * All unserializable fields have been forcefully emptied and omitted for XStream in {@link com.alee.managers.style.StyleManager}.
  *
  * @author Mikle Garin
  */
-@XStreamAlias ( "WebScrollPaneLayout" )
-public class WebScrollPaneLayout extends ScrollPaneLayout implements Mergeable, Cloneable
+@XStreamAlias ( "ScrollPaneLayout" )
+public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Mergeable, Cloneable
 {
     /**
      * {@link ScrollBarSettings} for vertical scroll bar.
@@ -755,13 +756,13 @@ public class WebScrollPaneLayout extends ScrollPaneLayout implements Mergeable, 
     }
 
     /**
-     * The UI resource version of {@link WebScrollPaneLayout}.
+     * The UI resource version of {@link ScrollPaneLayout}.
      */
-    @XStreamAlias ( "WebScrollPaneLayout$UIResource" )
-    public static final class UIResource extends WebScrollPaneLayout implements javax.swing.plaf.UIResource
+    @XStreamAlias ( "ScrollPaneLayout$UIResource" )
+    public static final class UIResource extends ScrollPaneLayout implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link WebScrollPaneLayout}.
+         * Implementation is used completely from {@link ScrollPaneLayout}.
          */
     }
 }

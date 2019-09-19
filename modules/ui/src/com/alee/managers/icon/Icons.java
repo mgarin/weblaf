@@ -59,6 +59,9 @@ public final class Icons
     public static final LazyIcon brokenHover = new LazyIcon ( "broken-hover" );
     public static final LazyIcon hourglass = new LazyIcon ( "hourglass" );
     public static final LazyIcon hourglassHover = new LazyIcon ( "hourglass-hover" );
+    public static final LazyIcon menu = new LazyIcon ( "menu" );
+    public static final LazyIcon menuDimmed = new LazyIcon ( "menu-dimmed" );
+    public static final LazyIcon menuHover = new LazyIcon ( "menu-hover" );
 
     /**
      * Medium arrow icons.

@@ -45,6 +45,7 @@ public class TextFieldLayout extends AbstractLayoutManager
         this.painter = painter;
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

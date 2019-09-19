@@ -6,30 +6,197 @@
     <style type="tabbedpane">
         <component>
             <background>68,68,68</background>
+            <layout class="TabbedPaneLayout$UIResource">
+                <ContentSize type="preferred" />
+            </layout>
         </component>
-        <ui>
-            <tabbedPaneStyle>standalone</tabbedPaneStyle>
-        </ui>
         <painter>
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <selectedTopBg>111,115,117</selectedTopBg>
-            <selectedBottomBg>68,68,68</selectedBottomBg>
-            <topBg>111,115,117</topBg>
-            <bottomBg>77,81,83</bottomBg>
-            <tabBorderColor>20,20,20</tabBorderColor>
-            <contentBorderColor>20,20,20</contentBorderColor>
-            <paintBorderOnlyOnSelectedTab>false</paintBorderOnlyOnSelectedTab>
-            <forceUseSelectedTabBgColors>false</forceUseSelectedTabBgColors>
-            <paintOnlyTopBorder>false</paintOnlyTopBorder>
+            <decorations>
+                <decoration states="focused" />
+            </decorations>
         </painter>
+
+        <!-- Tab area -->
+        <style type="panel" id="tab-area" extends="transparent">
+            <component>
+                <layout class="TabAreaLayout$UIResource" />
+            </component>
+            <painter>
+                <decorations>
+                    <decoration>
+                        <BoundsShape />
+                        <ColorBackground color="68,68,68" />
+                        <Stripes orientation="horizontal" align="bottom" bounds="margin">
+                            <Stripe>
+                                <color>20,20,20</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="left">
+                        <Stripes orientation="vertical" align="right" bounds="margin" />
+                    </decoration>
+                    <decoration states="right">
+                        <Stripes orientation="vertical" align="left" bounds="margin" />
+                    </decoration>
+                    <decoration states="bottom">
+                        <Stripes align="top" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Tab viewport -->
+            <style type="viewport" id="viewport" extends="transparent">
+
+                <!-- Tab container -->
+                <style type="panel" id="container" extends="transparent">
+                    <component>
+                        <layout class="TabContainerLayout$UIResource">
+                            <tabStretchType>multiline</tabStretchType>
+                        </layout>
+                    </component>
+
+                    <!-- Tab title -->
+                    <style type="styledlabel" id="tab" padding="6,10,6,8">
+                        <component>
+                            <horizontalAlignment>0</horizontalAlignment>
+                        </component>
+                        <painter>
+                            <decorations overwrite="true">
+                                <decoration>
+                                    <BoundsShape />
+                                    <ColorBackground color="68,68,68" />
+                                    <Stripes orientation="horizontal" align="bottom" bounds="margin">
+                                        <Stripe>
+                                            <color>20,20,20</color>
+                                        </Stripe>
+                                    </Stripes>
+                                </decoration>
+                                <decoration states="left">
+                                    <Stripes orientation="vertical" align="right" bounds="margin" />
+                                </decoration>
+                                <decoration states="right">
+                                    <Stripes orientation="vertical" align="left" bounds="margin" />
+                                </decoration>
+                                <decoration states="bottom">
+                                    <Stripes align="top" />
+                                </decoration>
+                                <decoration states="enabled,hover">
+                                    <ColorBackground color="55,55,55" />
+                                </decoration>
+                                <decoration states="selected">
+                                    <ColorBackground color="45,45,45" />
+                                    <Stripes>
+                                        <Stripe stroke="basic;5">
+                                            <color>106,117,134</color>
+                                        </Stripe>
+                                    </Stripes>
+                                </decoration>
+                                <decoration states="selected,in-focused-parent">
+                                    <Stripes>
+                                        <Stripe stroke="basic;5">
+                                            <color>64,131,201</color>
+                                        </Stripe>
+                                    </Stripes>
+                                </decoration>
+                                <decoration states="has-no-children">
+                                    <LabelLayout>
+                                        <LabelIcon constraints="icon" />
+                                        <StyledLabelText constraints="text" color="200,200,200" />
+                                    </LabelLayout>
+                                </decoration>
+                                <decoration states="has-no-children,hover">
+                                    <LabelLayout>
+                                        <StyledLabelText color="245,245,245" />
+                                    </LabelLayout>
+                                </decoration>
+                                <decoration states="has-no-children,selected">
+                                    <LabelLayout>
+                                        <StyledLabelText color="245,245,245" />
+                                    </LabelLayout>
+                                </decoration>
+                                <decoration states="has-no-children,selected,in-focused-parent">
+                                    <LabelLayout>
+                                        <StyledLabelText color="118,185,255" />
+                                    </LabelLayout>
+                                </decoration>
+                                <decoration states="has-no-children,disabled">
+                                    <LabelLayout>
+                                        <StyledLabelText color="180,180,180" ignoreStyleColors="true" />
+                                    </LabelLayout>
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
+
+                </style>
+
+            </style>
+
+            <!-- Tab menu button -->
+            <style type="button" id="tab-menu-button" extends="undecorated" padding="6,6,6,6">
+                <painter>
+                    <decorations overwrite="true">
+                        <decoration>
+                            <SetIcon constraints="icon" icon="menu-dimmed" />
+                        </decoration>
+                        <decoration states="hover">
+                            <SetIcon constraints="icon" icon="menu-hover" />
+                        </decoration>
+                    </decorations>
+                </painter>
+
+                <!-- Popup style -->
+                <style type="popupmenu" id="menu">
+
+                    <!-- Menu item -->
+                    <style type="menuitem" id="item" />
+
+                </style>
+
+            </style>
+
+        </style>
+
     </style>
 
-    <!-- Attached tabbed pane -->
-    <style type="tabbedpane" id="attached">
-        <ui>
-            <tabbedPaneStyle>attached</tabbedPaneStyle>
-        </ui>
+    <!-- Tabbed pane with rotated left/right tabs -->
+    <style type="tabbedpane" id="rotated">
+
+        <!-- Tab area -->
+        <style type="panel" id="tab-area">
+
+            <!-- Tab viewport -->
+            <style type="viewport" id="viewport">
+
+                <!-- Tab container -->
+                <style type="panel" id="container">
+
+                    <!-- Tab title -->
+                    <style type="styledlabel" id="tab">
+                        <painter>
+                            <decorations>
+                                <decoration states="top">
+                                    <LabelLayout rotation="counterClockwise" />
+                                </decoration>
+                                <decoration states="left">
+                                    <LabelLayout rotation="counterClockwise" />
+                                </decoration>
+                                <decoration states="bottom">
+                                    <LabelLayout rotation="counterClockwise" />
+                                </decoration>
+                                <decoration states="right">
+                                    <LabelLayout rotation="clockwise" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
+
+                </style>
+
+            </style>
+
+        </style>
+
     </style>
 
 </skin>

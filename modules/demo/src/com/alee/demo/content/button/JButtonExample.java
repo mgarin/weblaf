@@ -91,6 +91,7 @@ public class JButtonExample extends AbstractStylePreviewExample
             super ( JButtonExample.this, "text", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -133,6 +134,7 @@ public class JButtonExample extends AbstractStylePreviewExample
             super ( JButtonExample.this, "icon", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

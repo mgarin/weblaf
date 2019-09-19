@@ -464,6 +464,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @Nullable
     @Override
     public String getLanguage ()
     {
@@ -471,19 +472,19 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     @Override
-    public void setLanguage ( final String key, final Object... data )
+    public void setLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
-    public void updateLanguage ( final Object... data )
+    public void updateLanguage ( @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, data );
     }
 
     @Override
-    public void updateLanguage ( final String key, final Object... data )
+    public void updateLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, key, data );
     }
@@ -501,7 +502,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     @Override
-    public void setLanguageUpdater ( final LanguageUpdater updater )
+    public void setLanguageUpdater ( @NotNull final LanguageUpdater updater )
     {
         UILanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -513,13 +514,13 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     @Override
-    public void addLanguageListener ( final LanguageListener listener )
+    public void addLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.addLanguageListener ( getRootPane (), listener );
     }
 
     @Override
-    public void removeLanguageListener ( final LanguageListener listener )
+    public void removeLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.removeLanguageListener ( getRootPane (), listener );
     }
@@ -531,13 +532,13 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     @Override
-    public void addDictionaryListener ( final DictionaryListener listener )
+    public void addDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.addDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
-    public void removeDictionaryListener ( final DictionaryListener listener )
+    public void removeDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
     }

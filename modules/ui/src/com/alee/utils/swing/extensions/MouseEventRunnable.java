@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.event.MouseEvent;
 
 /**
@@ -31,5 +33,5 @@ public interface MouseEventRunnable
      *
      * @param e occured mouse event
      */
-    public void run ( MouseEvent e );
+    public void run ( @NotNull MouseEvent e );
 }

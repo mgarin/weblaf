@@ -78,6 +78,7 @@ public class WebColorChooserFieldExample extends AbstractStylePreviewExample
             super ( WebColorChooserFieldExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

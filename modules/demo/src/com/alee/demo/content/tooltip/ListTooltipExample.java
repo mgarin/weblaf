@@ -80,6 +80,7 @@ public class ListTooltipExample extends AbstractStylePreviewExample
             super ( ListTooltipExample.this, "swing", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -114,6 +115,7 @@ public class ListTooltipExample extends AbstractStylePreviewExample
             super ( ListTooltipExample.this, "custom", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

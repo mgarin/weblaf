@@ -97,6 +97,15 @@
     <SvgIcon id="hourglass-hover" path="hourglass.svg" size="16,16">
         <SvgFill selector="svg" color="black" />
     </SvgIcon>
+    <SvgIcon id="menu" path="menu.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="menu-dimmed" path="menu.svg" size="16,16">
+        <SvgFill selector="svg" color="120,120,120" />
+    </SvgIcon>
+    <SvgIcon id="menu-hover" path="menu.svg" size="16,16">
+        <SvgFill selector="svg" color="black" />
+    </SvgIcon>
 
     <!-- Medium arrow icons -->
     <SvgIcon id="up" path="down.svg" size="16,16">

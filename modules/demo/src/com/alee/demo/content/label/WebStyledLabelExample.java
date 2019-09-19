@@ -97,12 +97,14 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
             super ( WebStyledLabelExample.this, id, featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new CompactFlowLayout ( FlowLayout.LEADING, 8, 0 );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -133,12 +135,14 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
             super ( WebStyledLabelExample.this, id, featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new VerticalFlowLayout ( 8, true, false );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 /**
  * Settings for single {@link javax.swing.JScrollBar} within {@link javax.swing.JScrollPane}.
- * It is only used within {@link WebScrollPaneLayout} to customize scroll bars and it is not applicable to default layout.
+ * It is only used within {@link ScrollPaneLayout} to customize scroll bars and it is not applicable to default layout.
  *
  * @author Mikle Garin
  */

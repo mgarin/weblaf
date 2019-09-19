@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 
 import java.util.EventListener;
@@ -36,7 +37,7 @@ public interface DockableFrameListener extends EventListener
      * @param frame        {@link WebDockableFrame} which was added
      * @param dockablePane {@link WebDockablePane} where frame was added
      */
-    public void frameAdded ( WebDockableFrame frame, WebDockablePane dockablePane );
+    public void frameAdded ( @NotNull WebDockableFrame frame, @NotNull WebDockablePane dockablePane );
 
     /**
      * Called when frame state is changed.
@@ -45,7 +46,8 @@ public interface DockableFrameListener extends EventListener
      * @param oldState previous frame state
      * @param newState current frame state
      */
-    public void frameStateChanged ( WebDockableFrame frame, DockableFrameState oldState, DockableFrameState newState );
+    public void frameStateChanged ( @NotNull WebDockableFrame frame, @NotNull DockableFrameState oldState,
+                                    @NotNull DockableFrameState newState );
 
     /**
      * Called when frame is moved within {@link WebDockablePane}.
@@ -53,7 +55,7 @@ public interface DockableFrameListener extends EventListener
      * @param frame    {@link WebDockableFrame}
      * @param position current frame position relative to content
      */
-    public void frameMoved ( WebDockableFrame frame, CompassDirection position );
+    public void frameMoved ( @NotNull WebDockableFrame frame, @NotNull CompassDirection position );
 
     /**
      * Called when frame is removed from {@link WebDockablePane}.
@@ -61,5 +63,5 @@ public interface DockableFrameListener extends EventListener
      * @param frame        {@link WebDockableFrame} which was removed
      * @param dockablePane {@link WebDockablePane} where frame was removed from
      */
-    public void frameRemoved ( WebDockableFrame frame, WebDockablePane dockablePane );
+    public void frameRemoved ( @NotNull WebDockableFrame frame, @NotNull WebDockablePane dockablePane );
 }

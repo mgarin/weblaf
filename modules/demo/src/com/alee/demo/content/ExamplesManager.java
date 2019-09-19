@@ -17,6 +17,8 @@
 
 package com.alee.demo.content;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.ExampleGroup;
 import com.alee.demo.content.animation.AnimationGroup;
@@ -35,17 +37,17 @@ import com.alee.demo.content.tooltip.TooltipsGroup;
 import com.alee.demo.content.window.WindowsGroup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.JarUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.jar.JarEntry;
 import com.alee.utils.jar.JarStructure;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Special Demo Application manager that handles examples and their resources.
+ * Special manager that handles examples and their resources for {@link DemoApplication}.
  *
  * @author Mikle Garin
  */
@@ -55,12 +57,14 @@ public final class ExamplesManager
      * Top-level example groups.
      * These will be displayed in {@link com.alee.demo.frames.examples.ExamplesTree}.
      */
+    @NotNull
     private static final List<ExampleGroup> groups = new ArrayList<ExampleGroup> ();
 
     /**
      * Demo application JAR structure.
      * It is required to retrieve example sources and navigate through them.
      */
+    @Nullable
     private static JarStructure jarStructure = null;
 
     /**
@@ -99,78 +103,39 @@ public final class ExamplesManager
     }
 
     /**
-     * Returns Demo Application JAR structure.
+     * Returns {@link DemoApplication} JAR structure.
      * In process of structure retrieval JAR might be downloaded to local machine.
      * This might be a case when application was launched through JNLP laucher.
      *
-     * @return Demo Application JAR structure
+     * @return {@link DemoApplication} JAR structure
      */
+    @Nullable
     private static JarStructure createJarStructure ()
     {
-        // todo Some progress? Or not?
-        //        // Download listener in case of remote jar-file (for e.g. demo loaded from .jnlp)
-        //        final FileDownloadListener listener = new FileDownloadListener ()
-        //        {
-        //            private int totalSize = 0;
-        //
-        //            @Override
-        //            public void sizeDetermined ( final int totalSize )
-        //            {
-        //                // Download started
-        //                this.totalSize = totalSize;
-        //                updateProgress ( 0 );
-        //            }
-        //
-        //            @Override
-        //            public void partDownloaded ( final int totalBytesDownloaded )
-        //            {
-        //                // Some part loaded
-        //                updateProgress ( totalBytesDownloaded );
-        //            }
-        //
-        //            @Override
-        //            public boolean shouldStopDownload ()
-        //            {
-        //                return false;
-        //            }
-        //
-        //            private void updateProgress ( final int downloaded )
-        //            {
-        //                // Updating progress text
-        //                progress.setText ( "<html>Loading source files... <b>" +
-        //                        FileUtils.getFileSizeString ( downloaded, 1 ) + "</b> of <b>" +
-        //                        FileUtils.getFileSizeString ( totalSize, 1 ) + "</b> done</html>" );
-        //            }
-        //
-        //            @Override
-        //            public void fileDownloaded ( final File file )
-        //            {
-        //                // Updating progress text
-        //                progress.setText ( "Creating source files structure..." );
-        //            }
-        //
-        //            @Override
-        //            public void fileDownloadFailed ( final Throwable e )
-        //            {
-        //                // Updating progress text
-        //                progress.setText ( "Filed to download source files" );
-        //            }
-        //        };
-
-        // Creating structure using any of classes contained inside jar
-        // progress.setText ( "Creating source files structure..." );
-        final List<String> extensions = new ImmutableList<String> ( ".java", ".png", ".gif", ".jpg", ".txt", ".xml" );
-        final List<String> packages = new ImmutableList<String> ( "com/alee", "licenses" );
-        final JarStructure jarStructure = JarUtils.getJarStructure ( ExamplesManager.class, extensions, packages );
-
-        // Applying some custom icons
-        // todo Apply example icons as well?
-        jarStructure.setPackageIcon ( DemoApplication.class.getPackage (), new ImageIcon ( WebLookAndFeel.getImages ().get ( 0 ) ) );
-        for ( final ExampleGroup exampleGroup : getGroups () )
+        JarStructure jarStructure;
+        try
         {
-            jarStructure.setClassIcon ( exampleGroup.getClass (), ( ImageIcon ) exampleGroup.getIcon () );
-        }
+            // Creating structure using any of classes contained inside jar
+            // progress.setText ( "Creating source files structure..." );
+            jarStructure = new JarStructure (
+                    DemoApplication.class,
+                    new ImmutableList<String> ( ".java", ".png", ".gif", ".jpg", ".txt", ".xml" ),
+                    new ImmutableList<String> ( "com/alee", "licenses" )
+            );
 
+            // Applying some custom icons
+            // todo Apply example icons as well?
+            jarStructure.setPackageIcon ( DemoApplication.class.getPackage (), new ImageIcon ( WebLookAndFeel.getImages ().get ( 0 ) ) );
+            for ( final ExampleGroup exampleGroup : getGroups () )
+            {
+                jarStructure.setClassIcon ( exampleGroup.getClass (), ( ImageIcon ) exampleGroup.getIcon () );
+            }
+        }
+        catch ( final Exception e )
+        {
+            jarStructure = null;
+            LoggerFactory.getLogger ( ExamplesManager.class ).error ( "Unable to read DemoApplication JAR structure", e );
+        }
         return jarStructure;
     }
 
@@ -180,9 +145,10 @@ public final class ExamplesManager
      * @param classType class type
      * @return class JAR entry
      */
-    public static JarEntry getClassEntry ( final Class classType )
+    @Nullable
+    public static JarEntry getClassEntry ( @NotNull final Class<?> classType )
     {
-        return jarStructure.getClassEntry ( classType );
+        return jarStructure != null ? jarStructure.getClassEntry ( classType ) : null;
     }
 
     /**
@@ -190,6 +156,7 @@ public final class ExamplesManager
      *
      * @return top-level available example groups
      */
+    @NotNull
     public static List<ExampleGroup> getGroups ()
     {
         return CollectionUtils.copy ( groups );

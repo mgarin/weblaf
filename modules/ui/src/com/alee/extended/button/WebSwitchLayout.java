@@ -55,6 +55,7 @@ public class WebSwitchLayout extends AbstractLayoutManager
         this.constraints.remove ( component );
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

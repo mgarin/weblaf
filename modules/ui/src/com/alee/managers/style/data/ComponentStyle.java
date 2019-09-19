@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneBehavior;
 import com.alee.api.clone.RecursiveClone;
@@ -852,8 +853,9 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
         }
     }
 
+    @NotNull
     @Override
-    public ComponentStyle clone ( final RecursiveClone clone, final int depth )
+    public ComponentStyle clone ( @NotNull final RecursiveClone clone, final int depth )
     {
         final ComponentStyle styleCopy = clone.cloneFields ( this, depth );
 

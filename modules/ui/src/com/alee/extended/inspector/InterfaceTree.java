@@ -18,6 +18,7 @@
 package com.alee.extended.inspector;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.tree.WebExTree;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
@@ -94,7 +95,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
         onKeyPress ( Hotkey.ESCAPE, new KeyEventRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 clearSelection ();
             }
@@ -115,7 +116,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
     }
 
     @Override
-    public void hoverChanged ( final InterfaceTreeNode previous, final InterfaceTreeNode current )
+    public void hoverChanged ( @Nullable final InterfaceTreeNode previous, @Nullable final InterfaceTreeNode current )
     {
         // Separating action from the tree hover makes UI more responsive
         CoreSwingUtils.invokeLater ( new Runnable ()

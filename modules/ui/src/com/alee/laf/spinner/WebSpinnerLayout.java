@@ -122,6 +122,7 @@ public class WebSpinnerLayout extends AbstractLayoutManager
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

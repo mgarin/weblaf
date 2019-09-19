@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.*;
 import com.alee.utils.CollectionUtils;
@@ -336,7 +337,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      * @param index  insert index
      */
     @Override
-    public void insertNodeInto ( final MutableTreeNode child, final MutableTreeNode parent, final int index )
+    public void insertNodeInto ( @NotNull final MutableTreeNode child, @NotNull final MutableTreeNode parent, final int index )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -375,7 +376,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      * @param index    insert index
      */
     @Override
-    public void insertNodesInto ( final List<N> children, final N parent, final int index )
+    public void insertNodesInto ( @NotNull final List<N> children, @NotNull final N parent, final int index )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -414,7 +415,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
      * @param index    insert index
      */
     @Override
-    public void insertNodesInto ( final N[] children, final N parent, final int index )
+    public void insertNodesInto ( @NotNull final N[] children, @NotNull final N parent, final int index )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -445,7 +446,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     }
 
     @Override
-    public void removeNodeFromParent ( final MutableTreeNode node )
+    public void removeNodeFromParent ( @NotNull final MutableTreeNode node )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -473,7 +474,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     }
 
     @Override
-    public void removeNodesFromParent ( final N parent )
+    public void removeNodesFromParent ( @NotNull final N parent )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -489,7 +490,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     }
 
     @Override
-    public void removeNodesFromParent ( final N[] nodes )
+    public void removeNodesFromParent ( @NotNull final N[] nodes )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -502,7 +503,7 @@ public class ExTreeModel<N extends UniqueNode> extends WebTreeModel<N> implement
     }
 
     @Override
-    public void removeNodesFromParent ( final List<N> nodes )
+    public void removeNodesFromParent ( @NotNull final List<N> nodes )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();

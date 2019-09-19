@@ -849,18 +849,21 @@ public class WebMultiSplitPaneModel extends AbstractLayoutManager implements Mul
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return layoutSize ( SizeType.preferred );
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
         return layoutSize ( SizeType.minimum );
     }
 
+    @NotNull
     @Override
     public Dimension maximumLayoutSize ( @NotNull final Container container )
     {

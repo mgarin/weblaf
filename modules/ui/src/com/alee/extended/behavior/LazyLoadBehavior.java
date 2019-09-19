@@ -17,6 +17,7 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Supplier;
 import com.alee.api.jdk.UnsafeSupplier;
@@ -78,7 +79,7 @@ public class LazyLoadBehavior implements Behavior
                 error.onMousePress ( MouseButton.left, new MouseEventRunnable ()
                 {
                     @Override
-                    public void run ( final MouseEvent e )
+                    public void run ( @NotNull final MouseEvent e )
                     {
                         final WebPopOver info = new WebPopOver ( error );
                         final WebSyntaxArea area = new WebSyntaxArea ( ExceptionUtils.getStackTrace ( throwable ), 12, 60 );

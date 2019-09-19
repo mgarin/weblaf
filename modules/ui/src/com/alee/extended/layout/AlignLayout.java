@@ -43,21 +43,25 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Horizontal alignment constraints.
      */
+    @NotNull
     public static final List<Integer> horizontals = new ImmutableList<Integer> ( LEFT, CENTER, RIGHT );
 
     /**
      * Vertical alignment constraints.
      */
+    @NotNull
     public static final List<Integer> verticals = new ImmutableList<Integer> ( TOP, CENTER, BOTTOM );
 
     /**
      * Layout constraints separator.
      */
+    @NotNull
     public static final String SEPARATOR = ",";
 
     /**
      * Constraints cache for added components.
      */
+    @NotNull
     protected final Map<Component, String> constraints;
 
     /**
@@ -316,6 +320,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
@@ -353,7 +358,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             ps = new Dimension ( 0, 0 );
             if ( isHfill () )
             {
-                ps.width = SwingUtils.maxWidth ( container.getComponents () );
+                ps.width = SwingUtils.maxPreferredWidth ( container.getComponents () );
             }
             else
             {
@@ -364,7 +369,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
             if ( isVfill () )
             {
-                ps.height = SwingUtils.maxHeight ( container.getComponents () );
+                ps.height = SwingUtils.maxPreferredHeight ( container.getComponents () );
             }
             else
             {
@@ -401,7 +406,8 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
      * @param valign    vertical alignment
      * @return size for the area specified by horizontal and vertical alignments
      */
-    protected Dimension getAreaSize ( final Container container, final int halign, final int valign )
+    @Nullable
+    protected Dimension getAreaSize ( @NotNull final Container container, final int halign, final int valign )
     {
         final Dimension size = new Dimension ( 0, 0 );
         for ( final Component component : container.getComponents () )
@@ -423,7 +429,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
      * @param constraints constraints
      * @return horizontal alignment
      */
-    protected int getHalign ( final String constraints )
+    protected int getHalign ( @Nullable final String constraints )
     {
         return constraints == null ? CENTER :
                 Integer.parseInt ( constraints.substring ( 0, constraints.indexOf ( SEPARATOR ) ) );
@@ -435,7 +441,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
      * @param constraints constraints
      * @return vertical alignment
      */
-    protected int getValign ( final String constraints )
+    protected int getValign ( @Nullable final String constraints )
     {
         return constraints == null ? CENTER :
                 Integer.parseInt ( constraints.substring ( constraints.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );

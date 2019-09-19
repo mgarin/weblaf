@@ -17,22 +17,24 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.painter.SectionPainter;
+
+import javax.swing.*;
+
 /**
- * This enumeration represents predefined tabbed pane styles.
+ * Base interface for {@link JTabbedPane} tab content painters.
  *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
-public enum TabbedPaneStyle
+public interface ITabContentPainter<C extends JTabbedPane, U extends WTabbedPaneUI> extends SectionPainter<C, U>
 {
     /**
-     * Standalone tabbed pane style.
-     * It has its own borders around the component and looks complete.
+     * Prepares painter to paint tab content.
+     * It is either an index of selected tab or {@code -1} if there are no tabs.
+     *
+     * @param index index of painted tab contet
      */
-    standalone,
-
-    /**
-     * Attached tabbed pane style.
-     * It doesn't have its own borders around the component and might be attached to some other styled container.
-     */
-    attached
+    public void prepareToPaint ( int index );
 }

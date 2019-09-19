@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.ContentPropertyListener;
 import com.alee.utils.SwingUtils;
@@ -171,6 +172,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      *
      * @return name of the property that contains styled text
      */
+    @Nullable
     protected abstract String getStyledTextProperty ();
 
     /**

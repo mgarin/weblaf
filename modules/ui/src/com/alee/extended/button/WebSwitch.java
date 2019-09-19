@@ -17,6 +17,7 @@
 
 package com.alee.extended.button;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
@@ -129,7 +130,7 @@ public class WebSwitch extends WebPanel
         final KeyEventRunnable keyEventRunnable = new KeyEventRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 manualSelection.run ();
             }
@@ -137,7 +138,7 @@ public class WebSwitch extends WebPanel
         final MouseEventRunnable mouseEventRunnable = new MouseEventRunnable ()
         {
             @Override
-            public void run ( final MouseEvent e )
+            public void run ( @NotNull final MouseEvent e )
             {
                 manualSelection.run ();
             }

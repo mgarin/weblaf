@@ -164,7 +164,7 @@ public class DocumentTransferHandler extends TransferHandler
                 {
                     final DocumentPaneTransferInfo info = ( DocumentPaneTransferInfo ) transferData;
                     final WebDocumentPane dp = paneData.getDocumentPane ();
-                    final boolean allowed = dp.isDragBetweenPanesEnabled () && info.getDragBetweenPanesEnabled ();
+                    final boolean allowed = dp.isDragBetweenPanesEnabled () && info.isDragBetweenPanesEnabled ();
                     return allowed || dp.getId ().equals ( info.getDocumentPaneId () );
                 }
                 else

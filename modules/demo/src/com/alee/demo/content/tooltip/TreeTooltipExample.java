@@ -82,6 +82,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
             super ( TreeTooltipExample.this, "swing", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -117,6 +118,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
             super ( TreeTooltipExample.this, "advanced", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -152,6 +154,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
             super ( TreeTooltipExample.this, "custom", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

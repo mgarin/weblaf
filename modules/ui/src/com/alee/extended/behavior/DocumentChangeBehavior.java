@@ -17,6 +17,8 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 
 import javax.swing.event.DocumentEvent;
@@ -40,6 +42,7 @@ public abstract class DocumentChangeBehavior<C extends JTextComponent> implement
     /**
      * Weak reference to {@link JTextComponent} to track {@link Document} changes for.
      */
+    @NotNull
     protected final WeakReference<C> textComponent;
 
     /**
@@ -47,9 +50,8 @@ public abstract class DocumentChangeBehavior<C extends JTextComponent> implement
      *
      * @param textComponent {@link JTextComponent} to track {@link Document} changes for
      */
-    public DocumentChangeBehavior ( final C textComponent )
+    public DocumentChangeBehavior ( @NotNull final C textComponent )
     {
-        super ();
         this.textComponent = new WeakReference<C> ( textComponent );
     }
 
@@ -86,7 +88,7 @@ public abstract class DocumentChangeBehavior<C extends JTextComponent> implement
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent e )
+    public void propertyChange ( @NotNull final PropertyChangeEvent e )
     {
         final Object oldDocument = e.getOldValue ();
         if ( oldDocument != null && oldDocument instanceof Document )
@@ -98,25 +100,39 @@ public abstract class DocumentChangeBehavior<C extends JTextComponent> implement
         {
             ( ( Document ) newDocument ).addDocumentListener ( this );
         }
-        documentChanged ( textComponent.get (), null );
+        fireDocumentChanged ( null );
     }
 
     @Override
-    public void insertUpdate ( final DocumentEvent e )
+    public void insertUpdate ( @NotNull final DocumentEvent e )
     {
-        documentChanged ( textComponent.get (), e );
+        fireDocumentChanged ( e );
     }
 
     @Override
-    public void removeUpdate ( final DocumentEvent e )
+    public void removeUpdate ( @NotNull final DocumentEvent e )
     {
-        documentChanged ( textComponent.get (), e );
+        fireDocumentChanged ( e );
     }
 
     @Override
-    public void changedUpdate ( final DocumentEvent e )
+    public void changedUpdate ( @NotNull final DocumentEvent e )
     {
-        documentChanged ( textComponent.get (), e );
+        fireDocumentChanged ( e );
+    }
+
+    /**
+     * Fires {@link Document} change event if {@link JTextComponent} is still available.
+     *
+     * @param event occured document event, {@code null} if the whole {@link Document} was replaced
+     */
+    protected void fireDocumentChanged ( @Nullable final DocumentEvent event )
+    {
+        final C component = textComponent.get ();
+        if ( component != null )
+        {
+            documentChanged ( component, event );
+        }
     }
 
     /**
@@ -125,5 +141,5 @@ public abstract class DocumentChangeBehavior<C extends JTextComponent> implement
      * @param component {@link JTextComponent} containing changed document
      * @param event     occured document event, {@code null} if the whole {@link Document} was replaced
      */
-    public abstract void documentChanged ( C component, DocumentEvent event );
+    public abstract void documentChanged ( @NotNull C component, @Nullable DocumentEvent event );
 }

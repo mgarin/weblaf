@@ -80,6 +80,7 @@ public class WebFileTreeExample extends AbstractStylePreviewExample
             super ( WebFileTreeExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -104,6 +105,7 @@ public class WebFileTreeExample extends AbstractStylePreviewExample
             super ( WebFileTreeExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

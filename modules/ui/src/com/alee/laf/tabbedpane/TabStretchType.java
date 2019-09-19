@@ -17,12 +17,32 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
+ * Enumeration representing differen tab size stretch types.
+ * Different settings allow tabs to grow in size to fill-in all available space on the {@link TabContainer}.
+ *
  * @author Mikle Garin
  */
+@XStreamAlias ( "TabStretchType" )
 public enum TabStretchType
 {
+    /**
+     * Disables tabs stretching for {@link javax.swing.JTabbedPane#WRAP_TAB_LAYOUT}.
+     * Disables tabs stretching for {@link javax.swing.JTabbedPane#SCROLL_TAB_LAYOUT}.
+     */
     never,
+
+    /**
+     * Enables tabs stretching for {@link javax.swing.JTabbedPane#WRAP_TAB_LAYOUT} when there is more than one tab run.
+     * Disables tabs stretching for {@link javax.swing.JTabbedPane#SCROLL_TAB_LAYOUT}.
+     */
     multiline,
+
+    /**
+     * Enables tabs stretching for {@link javax.swing.JTabbedPane#WRAP_TAB_LAYOUT}.
+     * Enables tabs stretching for {@link javax.swing.JTabbedPane#SCROLL_TAB_LAYOUT} only when they fit into visible area.
+     */
     always
 }

@@ -94,7 +94,7 @@ public class WDesktopPaneInputListener<C extends JDesktopPane, U extends WDeskto
      *
      * @param <D> {@link JDesktopPane} type
      */
-    protected static class Action<D extends JDesktopPane> extends UIAction<D>
+    public static class Action<D extends JDesktopPane> extends UIAction<D>
     {
         /**
          * Supported actions.

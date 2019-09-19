@@ -212,7 +212,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         titlePanel.onMousePress ( MouseButton.left, new MouseEventRunnable ()
         {
             @Override
-            public void run ( final MouseEvent e )
+            public void run ( @NotNull final MouseEvent e )
             {
                 // Requesting focus into the frame
                 requestFocusInFrame ();
@@ -221,7 +221,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         titlePanel.onMousePress ( MouseButton.middle, new MouseEventRunnable ()
         {
             @Override
-            public void run ( final MouseEvent e )
+            public void run ( @NotNull final MouseEvent e )
             {
                 // Hiding frame on middle mouse button press
                 frame.minimize ();
@@ -230,7 +230,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         titlePanel.onDragStart ( 5, new MouseEventRunnable ()
         {
             @Override
-            public void run ( final MouseEvent e )
+            public void run ( @NotNull final MouseEvent e )
             {
                 // Starting frame drag if transfer handler is available
                 if ( frame.isDraggable () && !frame.isFloating () )
@@ -641,7 +641,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
             onMousePress ( MouseButton.right, new MouseEventRunnable ()
             {
                 @Override
-                public void run ( final MouseEvent e )
+                public void run ( @NotNull final MouseEvent e )
                 {
                     if ( frame.getDockablePane ().getSidebarButtonAction () == SidebarButtonAction.preview )
                     {

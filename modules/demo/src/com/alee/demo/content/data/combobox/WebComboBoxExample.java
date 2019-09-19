@@ -81,6 +81,7 @@ public class WebComboBoxExample extends AbstractStylePreviewExample
             super ( WebComboBoxExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

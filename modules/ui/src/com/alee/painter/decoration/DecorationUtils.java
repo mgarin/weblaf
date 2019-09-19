@@ -159,7 +159,7 @@ public final class DecorationUtils
      *
      * @param component {@link Component} decoration states changed for
      */
-    public static void fireStatesChanged ( @NotNull final Component component )
+    public static void fireStatesChanged ( @Nullable final Component component )
     {
         if ( component instanceof JComponent )
         {

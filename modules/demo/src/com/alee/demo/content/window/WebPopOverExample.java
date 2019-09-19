@@ -99,6 +99,7 @@ public class WebPopOverExample extends AbstractStylePreviewExample
             super ( WebPopOverExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

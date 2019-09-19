@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.layout;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
@@ -27,8 +26,8 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Abstract {@link IContentLayout} implementations providing basic content definitions and methods to work with layout content.
@@ -95,14 +94,16 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     @Override
     public boolean isEmpty ( final C c, final D d )
     {
+        boolean isEmpty = true;
         for ( final IContent content : getContents ( c, d ) )
         {
             if ( !content.isEmpty ( c, d ) )
             {
-                return false;
+                isEmpty = false;
+                break;
             }
         }
-        return true;
+        return isEmpty;
     }
 
     /**
@@ -115,14 +116,16 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
      */
     public boolean isEmpty ( final C c, final D d, final String constraints )
     {
+        boolean isEmpty = true;
         for ( final IContent content : getContents ( c, d, constraints ) )
         {
             if ( !content.isEmpty ( c, d ) )
             {
-                return false;
+                isEmpty = false;
+                break;
             }
         }
-        return true;
+        return isEmpty;
     }
 
     @Override
@@ -141,13 +144,25 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
      */
     protected List<IContent> getContents ( final C c, final D d, final String constraints )
     {
-        if ( CollectionUtils.notEmpty ( contents ) )
+        final List<IContent> contents;
+        if ( CollectionUtils.notEmpty ( this.contents ) )
         {
             final Map<String, List<IContent>> contentsCache = getContentsCache ( c, d );
-            final List<IContent> contents = contentsCache.get ( constraints );
-            return CollectionUtils.notEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
+            final List<IContent> cached = contentsCache.get ( constraints );
+            if ( CollectionUtils.notEmpty ( cached ) )
+            {
+                contents = cached;
+            }
+            else
+            {
+                contents = Collections.emptyList ();
+            }
         }
-        return Collections.emptyList ();
+        else
+        {
+            contents = Collections.emptyList ();
+        }
+        return contents;
     }
 
     /**
@@ -183,6 +198,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     {
         // Simply whether or not any of the contents have meaningful baseline
         // If this behavior is not sufficient it can be overridden in specific layout implementation
+        boolean hasContentBaseline = false;
         for ( final IContent content : getContents ( c, d ) )
         {
             // We are only interested in non-empty contents which provide reasonable baseline
@@ -190,10 +206,11 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
             {
                 // todo Allow marking specific content to be prioritized baseline provider?
                 // todo Though for that we would need to iterate through all contents every time
-                return true;
+                hasContentBaseline = true;
+                break;
             }
         }
-        return false;
+        return hasContentBaseline;
     }
 
     @Override
@@ -201,6 +218,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     {
         // Simply return baseline of the first content that has it
         // If this behavior is not sufficient it can be overridden in specific layout implementation
+        int contentBaseline = -1;
         for ( final IContent content : getContents ( c, d ) )
         {
             // We are only interested in non-empty contents which provide reasonable baseline
@@ -210,10 +228,11 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
                 // This might not seem reasonable, but we need to perform full layout to determine content bounds properly
                 final ContentLayoutData layoutData = layoutContent ( c, d, bounds );
                 final Rectangle b = layoutData.get ( content.getConstraints () );
-                return content.getBaseline ( c, d, b );
+                contentBaseline = content.getBaseline ( c, d, b );
+                break;
             }
         }
-        return -1;
+        return contentBaseline;
     }
 
     @Override

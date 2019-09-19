@@ -516,7 +516,7 @@ public class WebPathField extends WebPanel
         HotkeyManager.registerHotkey ( WebPathField.this, WebPathField.this, Hotkey.F2, new HotkeyRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 startEditing ();
             }

@@ -71,7 +71,7 @@ public final class SelectorUtils
     public static void drawWebSelection ( final Graphics2D g2d, final Color color, Rectangle selection, final boolean resizableLR,
                                           final boolean resizableUD, final boolean drawConnectors, final boolean drawSideControls )
     {
-        selection = GeometryUtils.validateRect ( selection );
+        selection = validateRect ( selection );
 
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
@@ -155,7 +155,7 @@ public final class SelectorUtils
 
     public static void drawWebSelector ( final Graphics2D g2d, final Color color, Rectangle selection, final int selector )
     {
-        selection = GeometryUtils.validateRect ( selection );
+        selection = validateRect ( selection );
 
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
@@ -283,7 +283,7 @@ public final class SelectorUtils
     public static void drawWebIconedSelection ( final Graphics2D g2d, Rectangle selection, final boolean resizableLR,
                                                 final boolean resizableUD, final boolean drawConnectors, final boolean drawSideControls )
     {
-        selection = GeometryUtils.validateRect ( selection );
+        selection = validateRect ( selection );
 
         // Calculating selection rect
         final Rectangle rect = calculateIconedRect ( selection );
@@ -341,7 +341,7 @@ public final class SelectorUtils
 
     public static void drawWebIconedSelector ( final Graphics2D g2d, Rectangle selection, final int selector )
     {
-        selection = GeometryUtils.validateRect ( selection );
+        selection = validateRect ( selection );
 
         // Calculating selector rect
         final Rectangle rect = calculateIconedRect ( selection );
@@ -366,5 +366,37 @@ public final class SelectorUtils
         // Recalculating coordinates to iconed view
         return new Rectangle ( selection.x - halfButton - shadeWidth, selection.y - halfButton - shadeWidth,
                 selection.width + halfButton * 2 + shadeWidth * 2, selection.height + halfButton * 2 + shadeWidth * 2 );
+    }
+
+    /**
+     * Returns valid rectangle with non-negative width and height.
+     *
+     * @param rect rectangle to validate
+     * @return valid rectangle with non-negative width and height
+     */
+    private static Rectangle validateRect ( final Rectangle rect )
+    {
+        final Rectangle result;
+        if ( rect.width >= 0 && rect.height >= 0 )
+        {
+            result = rect;
+        }
+        else
+        {
+            int x = rect.x;
+            final int width = Math.abs ( rect.width );
+            if ( rect.width < 0 )
+            {
+                x = x - width;
+            }
+            int y = rect.y;
+            final int height = Math.abs ( rect.height );
+            if ( rect.height < 0 )
+            {
+                y = y - height;
+            }
+            result = new Rectangle ( x, y, width, height );
+        }
+        return result;
     }
 }

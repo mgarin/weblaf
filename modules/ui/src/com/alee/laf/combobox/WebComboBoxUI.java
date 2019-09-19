@@ -843,12 +843,14 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             }
         }
 
+        @NotNull
         @Override
         public Dimension minimumLayoutSize ( @NotNull final Container container )
         {
             return container.getMinimumSize ();
         }
 
+        @NotNull
         @Override
         public Dimension preferredLayoutSize ( @NotNull final Container container )
         {

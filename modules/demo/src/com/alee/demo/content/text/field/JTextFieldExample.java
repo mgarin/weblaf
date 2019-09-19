@@ -88,6 +88,7 @@ public class JTextFieldExample extends AbstractStylePreviewExample
             super ( JTextFieldExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

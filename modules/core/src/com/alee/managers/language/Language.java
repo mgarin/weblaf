@@ -185,7 +185,7 @@ public class Language implements Serializable
 
     /**
      * Returns whether or not specified language key exists in this {@link Language}.
-     * This will basically check existance of at least single {@link Record} with the key.
+     * This will basically check existence of at least single {@link Record} with the key.
      *
      * @param key language key to check
      * @return {@code true} if specified language key exists in this {@link Language}, {@code false} otherwise

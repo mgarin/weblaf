@@ -1,5 +1,6 @@
 package com.alee.laf.text;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.LM;
 import com.alee.painter.decoration.IDecoration;
 
@@ -24,12 +25,14 @@ public class FormattedTextFieldPainter<C extends JFormattedTextField, U extends 
         return LM.get ( ui.getInputPrompt () );
     }
 
+    @Nullable
     @Override
     public Component getLeadingComponent ()
     {
         return ui.getLeadingComponent ();
     }
 
+    @Nullable
     @Override
     public Component getTrailingComponent ()
     {

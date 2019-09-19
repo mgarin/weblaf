@@ -387,41 +387,13 @@ public final class GraphicsUtils
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width )
     {
-        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width );
+        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, null, true );
     }
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
                                    final int width )
     {
         drawShade ( g2d, shape, shadeType, shadeColor, width, null, true );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip )
-    {
-        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, clip, true );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
-                                   final int width, final Shape clip )
-    {
-        drawShade ( g2d, shape, shadeType, shadeColor, width, clip, true );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final boolean round )
-    {
-        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, null, round );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
-                                   final int width, final boolean round )
-    {
-        drawShade ( g2d, shape, shadeType, shadeColor, width, null, round );
-    }
-
-    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip,
-                                   final boolean round )
-    {
-        drawShade ( g2d, shape, ShadeType.simple, shadeColor, width, clip, round );
     }
 
     public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor, int width,

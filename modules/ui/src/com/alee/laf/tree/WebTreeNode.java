@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.collection.EmptyEnumeration;
 
 import javax.swing.tree.MutableTreeNode;
@@ -43,11 +45,13 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
     /**
      * Parent node or {@code null} if this node has no parent.
      */
+    @Nullable
     protected N parent;
 
     /**
      * {@link List} of child nodes, may be {@code null} if this node has no children.
      */
+    @Nullable
     protected List<N> children;
 
     /**
@@ -58,6 +62,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
     /**
      * Optional node {@link Object}.
      */
+    @Nullable
     protected transient T userObject;
 
     /**
@@ -73,7 +78,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @param userObject optional node {@link Object}
      */
-    public WebTreeNode ( final T userObject )
+    public WebTreeNode ( @Nullable final T userObject )
     {
         this ( userObject, true );
     }
@@ -84,10 +89,9 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @param userObject     optional node {@link Object}
      * @param allowsChildren whether or not this node is able to have children
      */
-    public WebTreeNode ( final T userObject, final boolean allowsChildren )
+    public WebTreeNode ( @Nullable final T userObject, final boolean allowsChildren )
     {
-        super ();
-        parent = null;
+        this.parent = null;
         this.allowsChildren = allowsChildren;
         this.userObject = userObject;
     }
@@ -105,17 +109,13 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #isNodeDescendant(WebTreeNode)
      */
     @Override
-    public void insert ( final MutableTreeNode child, final int index )
+    public void insert ( @NotNull final MutableTreeNode child, final int index )
     {
         if ( !allowsChildren )
         {
             throw new IllegalStateException ( "Node does not allow children" );
         }
-        else if ( child == null )
-        {
-            throw new IllegalArgumentException ( "New child is null" );
-        }
-        else if ( isNodeAncestor ( ( N ) child ) )
+        if ( isNodeAncestor ( ( N ) child ) )
         {
             throw new IllegalArgumentException ( "New child is an ancestor" );
         }
@@ -143,6 +143,10 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
     @Override
     public void remove ( final int index )
     {
+        if ( children == null )
+        {
+            throw new ArrayIndexOutOfBoundsException ( "Node has no children" );
+        }
         final N child = getChildAt ( index );
         children.remove ( index );
         child.setParent ( null );
@@ -156,7 +160,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @param parent this node's new parent
      */
     @Override
-    public void setParent ( final MutableTreeNode parent )
+    public void setParent ( @Nullable final MutableTreeNode parent )
     {
         this.parent = ( N ) parent;
     }
@@ -166,6 +170,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @return this node's parent node, or {@code null} if this node has no parent
      */
+    @Nullable
     @Override
     public N getParent ()
     {
@@ -179,6 +184,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the child node at the specified index in this node's child {@link List}
      * @throws ArrayIndexOutOfBoundsException if {@code index} is out of bounds
      */
+    @NotNull
     @Override
     public N getChildAt ( final int index )
     {
@@ -210,13 +216,9 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @throws IllegalArgumentException if {@code child} is {@code null}
      */
     @Override
-    public int getIndex ( final TreeNode child )
+    public int getIndex ( @NotNull final TreeNode child )
     {
-        if ( child == null )
-        {
-            throw new IllegalArgumentException ( "Node is null" );
-        }
-        return isNodeChild ( ( N ) child ) ? children.indexOf ( child ) : -1;
+        return children != null ? children.indexOf ( child ) : -1;
     }
 
     /**
@@ -225,6 +227,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @return a forward-order {@link Enumeration} of this node's children
      */
+    @NotNull
     @Override
     public Enumeration<N> children ()
     {
@@ -270,7 +273,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #toString()
      */
     @Override
-    public void setUserObject ( final Object userObject )
+    public void setUserObject ( @Nullable final Object userObject )
     {
         this.userObject = ( T ) userObject;
     }
@@ -282,6 +285,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #setUserObject(Object)
      * @see #toString()
      */
+    @Nullable
     public T getUserObject ()
     {
         return userObject;
@@ -308,17 +312,14 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @throws IllegalArgumentException if {@code child} is {@code null} or is not a child of this node
      */
     @Override
-    public void remove ( final MutableTreeNode child )
+    public void remove ( @NotNull final MutableTreeNode child )
     {
-        if ( child == null )
-        {
-            throw new IllegalArgumentException ( "Node is null" );
-        }
-        if ( !isNodeChild ( ( N ) child ) )
+        final int index = getIndex ( child );
+        if ( index == -1 )
         {
             throw new IllegalArgumentException ( "Node is not a child" );
         }
-        remove ( getIndex ( child ) );
+        remove ( index );
     }
 
     /**
@@ -341,16 +342,9 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @throws IllegalArgumentException if {@code child} is {@code null}
      * @see #insert(MutableTreeNode, int)
      */
-    public void add ( final MutableTreeNode child )
+    public void add ( @NotNull final MutableTreeNode child )
     {
-        if ( child != null && child.getParent () == this )
-        {
-            insert ( child, getChildCount () - 1 );
-        }
-        else
-        {
-            insert ( child, getChildCount () );
-        }
+        insert ( child, getChildCount () - ( child.getParent () == this ? 1 : 0 ) );
     }
 
     /**
@@ -364,8 +358,9 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #isNodeDescendant(WebTreeNode)
      * @see #getSharedAncestor(WebTreeNode)
      */
-    public boolean isNodeAncestor ( final N anotherNode )
+    public boolean isNodeAncestor ( @Nullable final N anotherNode )
     {
+        boolean isAncestor = false;
         if ( anotherNode != null )
         {
             N ancestor = ( N ) this;
@@ -373,12 +368,13 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
             {
                 if ( ancestor == anotherNode )
                 {
-                    return true;
+                    isAncestor = true;
+                    break;
                 }
             }
             while ( ( ancestor = ancestor.getParent () ) != null );
         }
-        return false;
+        return isAncestor;
     }
 
     /**
@@ -392,7 +388,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #isNodeAncestor(WebTreeNode)
      * @see #getSharedAncestor(WebTreeNode)
      */
-    public boolean isNodeDescendant ( final N anotherNode )
+    public boolean isNodeDescendant ( @Nullable final N anotherNode )
     {
         return anotherNode != null && anotherNode.isNodeAncestor ( ( N ) this );
     }
@@ -407,72 +403,74 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #isNodeAncestor(WebTreeNode)
      * @see #isNodeDescendant(WebTreeNode)
      */
-    public N getSharedAncestor ( final N anotherNode )
+    @Nullable
+    @SuppressWarnings ( "ConstantConditions" )
+    public N getSharedAncestor ( @Nullable final N anotherNode )
     {
+        N result = null;
+        boolean finished = false;
         if ( anotherNode == this )
         {
-            return ( N ) this;
+            result = ( N ) this;
         }
-        else if ( anotherNode == null )
+        else if ( anotherNode != null )
         {
-            return null;
-        }
+            final int level1;
+            final int level2;
+            int diff;
+            N node1;
+            N node2;
 
-        final int level1;
-        final int level2;
-        int diff;
-        N node1;
-        N node2;
+            level1 = getLevel ();
+            level2 = anotherNode.getLevel ();
 
-        level1 = getLevel ();
-        level2 = anotherNode.getLevel ();
-
-        if ( level2 > level1 )
-        {
-            diff = level2 - level1;
-            node1 = anotherNode;
-            node2 = ( N ) this;
-        }
-        else
-        {
-            diff = level1 - level2;
-            node1 = ( N ) this;
-            node2 = anotherNode;
-        }
-
-        // Go up the tree until the nodes are at the same level
-        while ( diff > 0 )
-        {
-            node1 = node1.getParent ();
-            diff--;
-        }
-
-        /**
-         * Move up the tree until we find a common ancestor.
-         * Since we know that both nodes are at the same level, we won't cross paths unknowingly.
-         * (if there is a common ancestor, both nodes hit it in the same iteration)
-         */
-        do
-        {
-            if ( node1 == node2 )
+            if ( level2 > level1 )
             {
-                return node1;
+                diff = level2 - level1;
+                node1 = anotherNode;
+                node2 = ( N ) this;
             }
-            node1 = node1.getParent ();
-            node2 = node2.getParent ();
-        }
-        while ( node1 != null );
+            else
+            {
+                diff = level1 - level2;
+                node1 = ( N ) this;
+                node2 = anotherNode;
+            }
 
-        /**
-         * Only need to check one.
-         * They're at the same level so if one is {@code null} - the other is.
-         */
-        if ( node1 != null || node2 != null )
-        {
-            throw new Error ( "Nodes shouldn't be null" );
-        }
+            // Go up the tree until the nodes are at the same level
+            while ( diff > 0 )
+            {
+                node1 = node1.getParent ();
+                diff--;
+            }
 
-        return null;
+            /**
+             * Move up the tree until we find a common ancestor.
+             * Since we know that both nodes are at the same level, we won't cross paths unknowingly.
+             * If there is a common ancestor, both nodes hit it in the same iteration.
+             */
+            do
+            {
+                if ( node1 == node2 )
+                {
+                    result = node1;
+                    finished = true;
+                    break;
+                }
+                node1 = node1.getParent ();
+                node2 = node2.getParent ();
+            }
+            while ( node1 != null );
+
+            if ( !finished )
+            {
+                if ( node1 != null || node2 != null )
+                {
+                    throw new Error ( "Nodes shouldn't be null" );
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -484,7 +482,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #getSharedAncestor(WebTreeNode)
      * @see #getRoot()
      */
-    public boolean isNodeRelated ( final N anotherNode )
+    public boolean isNodeRelated ( @Nullable final N anotherNode )
     {
         return anotherNode != null && getRoot () == anotherNode.getRoot ();
     }
@@ -534,9 +532,15 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @return {@link TreePath} from the root to this node
      */
+    @NotNull
     public TreePath getTreePath ()
     {
-        return TreeUtils.getTreePath ( this );
+        final TreePath treePath = TreeUtils.getTreePath ( this );
+        if ( treePath == null )
+        {
+            throw new Error ( "TreePath is null" );
+        }
+        return treePath;
     }
 
     /**
@@ -545,9 +549,15 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @return an array of {@link TreeNode} objects giving the path, where the first element is root and the last element is this node
      */
+    @NotNull
     public TreeNode[] getPath ()
     {
-        return TreeUtils.getPath ( this );
+        final TreeNode[] path = TreeUtils.getPath ( this );
+        if ( path == null )
+        {
+            throw new Error ( "Path is null" );
+        }
+        return path;
     }
 
     /**
@@ -558,6 +568,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the user object path from the root to this node
      * @throws IllegalStateException if this node to have a {@code null} user object
      */
+    @NotNull
     public T[] getUserObjectPath ()
     {
         final T userObject = getUserObject ();
@@ -587,6 +598,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the root of the tree that contains this node
      * @see #isNodeAncestor(WebTreeNode)
      */
+    @NotNull
     public N getRoot ()
     {
         final N parent = getParent ();
@@ -612,8 +624,10 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the node that follows this node in a preorder traversal, or {@code null} if this node is last
      * @see #preorderEnumeration()
      */
+    @Nullable
     public N getNextNode ()
     {
+        final N next;
         if ( getChildCount () == 0 )
         {
             // No children, so look for nextSibling
@@ -625,13 +639,15 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
                 {
                     if ( aNode == null )
                     {
-                        return null;
+                        next = null;
+                        break;
                     }
 
                     nextSibling = aNode.getNextSibling ();
                     if ( nextSibling != null )
                     {
-                        return nextSibling;
+                        next = nextSibling;
+                        break;
                     }
 
                     aNode = aNode.getParent ();
@@ -640,13 +656,14 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
             }
             else
             {
-                return nextSibling;
+                next = nextSibling;
             }
         }
         else
         {
-            return getChildAt ( 0 );
+            next = getChildAt ( 0 );
         }
+        return next;
     }
 
     /**
@@ -657,30 +674,36 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the node that precedes this node in a preorder traversal, or {@code null} if this node is the first
      * @see #preorderEnumeration()
      */
+    @Nullable
     public N getPreviousNode ()
     {
+        final N previous;
         final N previousSibling;
         final N myParent = getParent ();
-        if ( myParent == null )
+        if ( myParent != null )
         {
-            return null;
-        }
-        previousSibling = getPreviousSibling ();
-        if ( previousSibling != null )
-        {
-            if ( previousSibling.getChildCount () == 0 )
+            previousSibling = getPreviousSibling ();
+            if ( previousSibling != null )
             {
-                return previousSibling;
+                if ( previousSibling.getChildCount () == 0 )
+                {
+                    previous = previousSibling;
+                }
+                else
+                {
+                    previous = previousSibling.getLastLeaf ();
+                }
             }
             else
             {
-                return previousSibling.getLastLeaf ();
+                previous = myParent;
             }
         }
         else
         {
-            return myParent;
+            previous = null;
         }
+        return previous;
     }
 
     /**
@@ -691,6 +714,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return an {@link Enumeration} that traverses the subtree rooted at this node in preorder
      * @see #postorderEnumeration()
      */
+    @NotNull
     public Enumeration<N> preorderEnumeration ()
     {
         return new PreorderEnumeration<N, T> ( ( N ) this );
@@ -706,6 +730,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #depthFirstEnumeration()
      * @see #preorderEnumeration()
      */
+    @NotNull
     public Enumeration<N> postorderEnumeration ()
     {
         return new PostorderEnumeration<N, T> ( ( N ) this );
@@ -719,6 +744,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return an {@link Enumeration} that traverses the subtree rooted at this node in breadth-first order
      * @see #depthFirstEnumeration()
      */
+    @NotNull
     public Enumeration<N> breadthFirstEnumeration ()
     {
         return new BreadthFirstEnumeration<N, T> ( ( N ) this );
@@ -734,6 +760,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #breadthFirstEnumeration()
      * @see #postorderEnumeration()
      */
+    @NotNull
     public Enumeration<N> depthFirstEnumeration ()
     {
         return postorderEnumeration ();
@@ -753,7 +780,8 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #isNodeAncestor(WebTreeNode)
      * @see #isNodeDescendant(WebTreeNode)
      */
-    public Enumeration pathFromAncestorEnumeration ( final N ancestor )
+    @NotNull
+    public Enumeration pathFromAncestorEnumeration ( @NotNull final N ancestor )
     {
         return new PathBetweenNodesEnumeration<N, T> ( ancestor, ( N ) this );
     }
@@ -765,7 +793,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @param anotherNode node to confirm if it is child of this node or not
      * @return {@code true} if {@code anotherNode} is a child of this node, {@code false} if {@code anotherNode} is {@code null}
      */
-    public boolean isNodeChild ( final N anotherNode )
+    public boolean isNodeChild ( @Nullable final N anotherNode )
     {
         return anotherNode != null && getChildCount () != 0 && anotherNode.getParent () == this;
     }
@@ -777,6 +805,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the first child of this node
      * @throws NoSuchElementException if this node has no children
      */
+    @NotNull
     public N getFirstChild ()
     {
         if ( getChildCount () == 0 )
@@ -793,6 +822,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the last child of this node
      * @throws NoSuchElementException if this node has no children
      */
+    @NotNull
     public N getLastChild ()
     {
         if ( getChildCount () == 0 )
@@ -813,12 +843,9 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @throws IllegalArgumentException if {@code child} is {@code null} or is not a child of this node
      * @see #children()
      */
-    public N getChildAfter ( final N child )
+    @Nullable
+    public N getChildAfter ( @NotNull final N child )
     {
-        if ( child == null )
-        {
-            throw new IllegalArgumentException ( "argument is null" );
-        }
         final int index = getIndex ( child );
         if ( index == -1 )
         {
@@ -836,12 +863,9 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the child of this node that immediately precedes {@code child}
      * @throws IllegalArgumentException if {@code child} is {@code null} or is not a child of this node
      */
-    public N getChildBefore ( final N child )
+    @Nullable
+    public N getChildBefore ( @NotNull final N child )
     {
-        if ( child == null )
-        {
-            throw new IllegalArgumentException ( "argument is null" );
-        }
         final int index = getIndex ( child );
         if ( index == -1 )
         {
@@ -858,7 +882,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @param anotherNode node to test as sibling of this node
      * @return {@code true} if {@code anotherNode} is a sibling of this node, {@code false} otherwise
      */
-    public boolean isNodeSibling ( final N anotherNode )
+    public boolean isNodeSibling ( @Nullable final N anotherNode )
     {
         final boolean sibling;
         if ( anotherNode == null )
@@ -903,23 +927,24 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @return the sibling of this node that immediately follows this node
      * @see #children()
      */
+    @Nullable
     public N getNextSibling ()
     {
-        final N retval;
+        final N nextSibling;
         final N myParent = getParent ();
-        if ( myParent == null )
+        if ( myParent != null )
         {
-            retval = null;
+            nextSibling = myParent.getChildAfter ( ( N ) this );
         }
         else
         {
-            retval = myParent.getChildAfter ( ( N ) this );
+            nextSibling = null;
         }
-        if ( retval != null && !isNodeSibling ( retval ) )
+        if ( nextSibling != null && !isNodeSibling ( nextSibling ) )
         {
             throw new Error ( "child of parent is not a sibling" );
         }
-        return retval;
+        return nextSibling;
     }
 
     /**
@@ -929,23 +954,24 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @return the sibling of this node that immediately precedes this node
      */
+    @Nullable
     public N getPreviousSibling ()
     {
-        final N retval;
+        final N previousSibling;
         final N myParent = getParent ();
-        if ( myParent == null )
+        if ( myParent != null )
         {
-            retval = null;
+            previousSibling = myParent.getChildBefore ( ( N ) this );
         }
         else
         {
-            retval = myParent.getChildBefore ( ( N ) this );
+            previousSibling = null;
         }
-        if ( retval != null && !isNodeSibling ( retval ) )
+        if ( previousSibling != null && !isNodeSibling ( previousSibling ) )
         {
             throw new Error ( "child of parent is not a sibling" );
         }
-        return retval;
+        return previousSibling;
     }
 
     /**
@@ -971,6 +997,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #isLeaf()
      * @see #isNodeDescendant(WebTreeNode)
      */
+    @NotNull
     public N getFirstLeaf ()
     {
         N node = ( N ) this;
@@ -990,6 +1017,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #isLeaf()
      * @see #isNodeDescendant(WebTreeNode)
      */
+    @NotNull
     public N getLastLeaf ()
     {
         N node = ( N ) this;
@@ -1015,20 +1043,29 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #depthFirstEnumeration()
      * @see #isLeaf()
      */
+    @Nullable
     public N getNextLeaf ()
     {
+        final N nextLeaf;
         final N nextSibling;
         final N myParent = getParent ();
-        if ( myParent == null )
+        if ( myParent != null )
         {
-            return null;
+            nextSibling = getNextSibling ();
+            if ( nextSibling != null )
+            {
+                nextLeaf = nextSibling.getFirstLeaf ();
+            }
+            else
+            {
+                nextLeaf = myParent.getNextLeaf ();
+            }
         }
-        nextSibling = getNextSibling ();
-        if ( nextSibling != null )
+        else
         {
-            return nextSibling.getFirstLeaf ();
+            nextLeaf = null;
         }
-        return myParent.getNextLeaf ();
+        return nextLeaf;
     }
 
     /**
@@ -1046,20 +1083,29 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @see #depthFirstEnumeration()
      * @see #isLeaf()
      */
+    @Nullable
     public N getPreviousLeaf ()
     {
+        final N previousLeaf;
         final N previousSibling;
         final N myParent = getParent ();
-        if ( myParent == null )
+        if ( myParent != null )
         {
-            return null;
+            previousSibling = getPreviousSibling ();
+            if ( previousSibling != null )
+            {
+                previousLeaf = previousSibling.getLastLeaf ();
+            }
+            else
+            {
+                previousLeaf = myParent.getPreviousLeaf ();
+            }
         }
-        previousSibling = getPreviousSibling ();
-        if ( previousSibling != null )
+        else
         {
-            return previousSibling.getLastLeaf ();
+            previousLeaf = null;
         }
-        return myParent.getPreviousLeaf ();
+        return previousLeaf;
     }
 
     /**
@@ -1095,6 +1141,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @see #getUserObject()
      */
+    @Nullable
     @Override
     public String toString ()
     {
@@ -1107,6 +1154,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      *
      * @return a copy of this node
      */
+    @NotNull
     @Override
     public WebTreeNode<N, T> clone ()
     {
@@ -1134,7 +1182,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @param outputStream {@link ObjectOutputStream}
      * @throws IOException if an I/O error occurs while writing to the underlying {@link java.io.OutputStream}
      */
-    private void writeObject ( final ObjectOutputStream outputStream ) throws IOException
+    private void writeObject ( @NotNull final ObjectOutputStream outputStream ) throws IOException
     {
         final Serializable[] tValues;
         outputStream.defaultWriteObject ();
@@ -1158,7 +1206,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
      * @throws IOException            if an I/O error occurs while reading from the underlying {@link java.io.InputStream}
      * @throws ClassNotFoundException if the class of a serialized object could not be found
      */
-    private void readObject ( final ObjectInputStream inputStream ) throws IOException, ClassNotFoundException
+    private void readObject ( @NotNull final ObjectInputStream inputStream ) throws IOException, ClassNotFoundException
     {
         final Serializable[] tValues;
         inputStream.defaultReadObject ();
@@ -1170,17 +1218,26 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
     }
 
     /**
+     * {@link Enumeration} that traverses the subtree rooted at this node in preorder.
      *
-     * @param <E>
-     * @param <V>
+     * @param <E> tree node type
+     * @param <V> stored object type
      */
     private final class PreorderEnumeration<E extends WebTreeNode<E, V>, V> implements Enumeration<E>
     {
-        protected final Stack<Enumeration<E>> stack;
+        /**
+         * {@link Stack} of children node {@link Enumeration}s.
+         */
+        @NotNull
+        private final Stack<Enumeration<E>> stack;
 
-        public PreorderEnumeration ( final E rootNode )
+        /**
+         * Constructs new {@link PreorderEnumeration}.
+         *
+         * @param rootNode root node
+         */
+        public PreorderEnumeration ( @NotNull final E rootNode )
         {
-            super ();
             stack = new Stack<Enumeration<E>> ();
             stack.push ( Collections.enumeration ( Collections.singletonList ( rootNode ) ) );
         }
@@ -1191,6 +1248,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
             return !stack.empty () && stack.peek ().hasMoreElements ();
         }
 
+        @NotNull
         @Override
         public E nextElement ()
         {
@@ -1210,21 +1268,40 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
     }
 
     /**
+     * {@link Enumeration} that traverses the subtree rooted at this node in postorder.
      *
-     * @param <E>
-     * @param <V>
+     * @param <E> tree node type
+     * @param <V> stored object type
      */
     private final class PostorderEnumeration<E extends WebTreeNode<E, V>, V> implements Enumeration<E>
     {
+        /**
+         * Root node.
+         */
+        @Nullable
         protected E root;
+
+        /**
+         * {@link Enumeration} of root node children.
+         */
+        @NotNull
         protected Enumeration<E> children;
+
+        /**
+         * {@link Enumeration} of subtree nodes.
+         */
+        @NotNull
         protected Enumeration<E> subtree;
 
-        public PostorderEnumeration ( final E rootNode )
+        /**
+         * Constructs new {@link PostorderEnumeration}.
+         *
+         * @param rootNode root node
+         */
+        public PostorderEnumeration ( @NotNull final E rootNode )
         {
-            super ();
             root = rootNode;
-            children = root.children ();
+            children = rootNode.children ();
             subtree = EmptyEnumeration.instance ();
         }
 
@@ -1234,6 +1311,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
             return root != null;
         }
 
+        @NotNull
         @Override
         public E nextElement ()
         {
@@ -1247,27 +1325,40 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
                 subtree = new PostorderEnumeration ( children.nextElement () );
                 retval = subtree.nextElement ();
             }
-            else
+            else if ( root != null )
             {
                 retval = root;
                 root = null;
+            }
+            else
+            {
+                throw new NoSuchElementException ( "No more elements" );
             }
             return retval;
         }
     }
 
     /**
+     * {@link Enumeration} that traverses the subtree rooted at this node in breadth-first order.
      *
-     * @param <E>
-     * @param <V>
+     * @param <E> tree node type
+     * @param <V> stored object type
      */
     private final class BreadthFirstEnumeration<E extends WebTreeNode<E, V>, V> implements Enumeration<E>
     {
-        private Queue<Enumeration<E>> queue;
+        /**
+         * {@link Queue} of children node {@link Enumeration}s.
+         */
+        @NotNull
+        private final Queue<Enumeration<E>> queue;
 
-        public BreadthFirstEnumeration ( final E rootNode )
+        /**
+         * Constructs new {@link BreadthFirstEnumeration}.
+         *
+         * @param rootNode root node
+         */
+        public BreadthFirstEnumeration ( @NotNull final E rootNode )
         {
-            super ();
             queue = new Queue<Enumeration<E>> ();
             queue.enqueue ( Collections.enumeration ( Collections.singletonList ( rootNode ) ) );
         }
@@ -1278,6 +1369,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
             return !queue.isEmpty () && queue.firstObject ().hasMoreElements ();
         }
 
+        @NotNull
         @Override
         public E nextElement ()
         {
@@ -1295,15 +1387,33 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
             return node;
         }
 
-        // A simple queue with a linked list data structure.
+        /**
+         * A simple queue with a linked list data structure.
+         *
+         * @param <Q> queue element type
+         */
         private final class Queue<Q>
         {
-            private QNode<Q> head;    // null if empty
+            /**
+             * Head {@link QNode}, {@code null} if empty.
+             */
+            @Nullable
+            private QNode<Q> head;
+
+            /**
+             * Tail {@link QNode}.
+             */
+            @Nullable
             private QNode<Q> tail;
 
-            public void enqueue ( final Q object )
+            /**
+             * Adds element to the end of the {@link Queue}.
+             *
+             * @param object element to add
+             */
+            public void enqueue ( @NotNull final Q object )
             {
-                if ( head == null )
+                if ( head == null || tail == null )
                 {
                     head = tail = new QNode<Q> ( object, null );
                 }
@@ -1314,6 +1424,12 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
                 }
             }
 
+            /**
+             * Returns next {@link Queue} element and removes it from the {@link Queue}.
+             *
+             * @return next {@link Queue} element
+             */
+            @NotNull
             public Q dequeue ()
             {
                 if ( head == null )
@@ -1334,6 +1450,12 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
                 return retval;
             }
 
+            /**
+             * Returns first {@link Queue} element.
+             *
+             * @return first {@link Queue} element
+             */
+            @NotNull
             public Q firstObject ()
             {
                 if ( head == null )
@@ -1343,17 +1465,42 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
                 return head.object;
             }
 
+            /**
+             * Returns whether or not this {@link Queue} is empty.
+             *
+             * @return {@code true} if this {@link Queue} is empty, {@code false} otherwise
+             */
             public boolean isEmpty ()
             {
                 return head == null;
             }
 
+            /**
+             * Single element node.
+             *
+             * @param <O> element type
+             */
             private final class QNode<O>
             {
-                public O object;
-                public QNode<O> next;    // null if end
+                /**
+                 * Element.
+                 */
+                @NotNull
+                public final O object;
 
-                public QNode ( final O object, final QNode<O> next )
+                /**
+                 * Next node, {@code null} if this one is last.
+                 */
+                @Nullable
+                public QNode<O> next;
+
+                /**
+                 * Constructs new {@link QNode}.
+                 *
+                 * @param object element
+                 * @param next   next node
+                 */
+                public QNode ( @NotNull final O object, @Nullable final QNode<O> next )
                 {
                     this.object = object;
                     this.next = next;
@@ -1363,33 +1510,35 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
     }
 
     /**
+     * {@link Enumeration} that follows the path from {@code ancestor} to this node.
      *
-     * @param <E>
-     * @param <V>
+     * @param <E> tree node type
+     * @param <V> stored object type
      */
     private final class PathBetweenNodesEnumeration<E extends WebTreeNode<E, V>, V> implements Enumeration<E>
     {
-        protected Stack<E> stack;
+        /**
+         * {@link Stack} of nodes.
+         */
+        @NotNull
+        private final Stack<E> stack;
 
-        public PathBetweenNodesEnumeration ( final E ancestor, final E descendant )
+        /**
+         * Constructs new {@link PathBetweenNodesEnumeration}.
+         *
+         * @param ancestor   ancestor node
+         * @param descendant descendant node
+         */
+        public PathBetweenNodesEnumeration ( @NotNull final E ancestor, @NotNull final E descendant )
         {
-            super ();
-
-            if ( ancestor == null || descendant == null )
-            {
-                throw new IllegalArgumentException ( "Ancestor and descendant cannot be null" );
-            }
-
-            E current;
-
             stack = new Stack<E> ();
             stack.push ( descendant );
 
-            current = descendant;
+            E current = descendant;
             while ( current != ancestor )
             {
                 current = current.getParent ();
-                if ( current == null && descendant != ancestor )
+                if ( current == null )
                 {
                     final String msg = "Node '%s' is not an ancestor of '%s'";
                     throw new IllegalArgumentException ( String.format ( msg, ancestor, descendant ) );
@@ -1404,6 +1553,7 @@ public class WebTreeNode<N extends WebTreeNode<N, T>, T> implements MutableTreeN
             return stack.size () > 0;
         }
 
+        @NotNull
         @Override
         public E nextElement ()
         {

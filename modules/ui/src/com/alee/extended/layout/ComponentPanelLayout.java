@@ -76,6 +76,7 @@ public class ComponentPanelLayout extends AbstractLayoutManager
         components.add ( index, component );
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

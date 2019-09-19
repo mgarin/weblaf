@@ -268,7 +268,14 @@ public final class StyleId implements Identifiable
      * {@link com.alee.laf.tabbedpane.WebTabbedPane} style identifiers.
      */
     public static final StyleId tabbedpane = StyleId.of ( "tabbedpane" );
-    public static final StyleId tabbedpaneAttached = StyleId.of ( "attached" );
+    public static final StyleId tabbedpaneRotated = StyleId.of ( "rotated" );
+    public static final ChildStyleId tabbedpaneTabArea = ChildStyleId.of ( "tab-area" );
+    public static final ChildStyleId tabbedpaneTabMenuButton = ChildStyleId.of ( "tab-menu-button" );
+    public static final ChildStyleId tabbedpaneTabMenu = ChildStyleId.of ( "menu" );
+    public static final ChildStyleId tabbedpaneTabMenuItem = ChildStyleId.of ( "item" );
+    public static final ChildStyleId tabbedpaneTabViewport = ChildStyleId.of ( "viewport" );
+    public static final ChildStyleId tabbedpaneTabContainer = ChildStyleId.of ( "container" );
+    public static final ChildStyleId tabbedpaneTabTitle = ChildStyleId.of ( "tab" );
 
     /**
      * {@link com.alee.laf.splitpane.WebSplitPaneDivider} style identifiers.
@@ -917,8 +924,11 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.tab.WebDocumentPane} style identifiers.
      */
     public static final StyleId documentpane = StyleId.of ( "documentpane" );
+    public static final ChildStyleId documentpaneSplit = ChildStyleId.of ( "split" );
     public static final ChildStyleId documentpaneTabbedPane = ChildStyleId.of ( "tabbedpane" );
-    public static final ChildStyleId documentpaneCloseButton = ChildStyleId.of ( "close" );
+    public static final ChildStyleId documentpaneTabPanel = ChildStyleId.of ( "tab" );
+    public static final ChildStyleId documentpaneTabTitle = ChildStyleId.of ( "title" );
+    public static final ChildStyleId documentpaneTabCloseButton = ChildStyleId.of ( "close" );
     public static final ChildStyleId documentpaneMenu = ChildStyleId.of ( "menu" );
 
     /**

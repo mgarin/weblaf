@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -277,7 +278,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
         onChange ( new DocumentEventRunnable<WebTextField> ()
         {
             @Override
-            public void run ( final WebTextField component, final DocumentEvent event )
+            public void run ( @NotNull final WebTextField component, @Nullable final DocumentEvent event )
             {
                 filter.setSearchText ( component.getText () );
                 updateFiltering ();
@@ -288,7 +289,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
         onKeyPress ( Hotkey.ESCAPE, new KeyEventRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 clear ();
             }

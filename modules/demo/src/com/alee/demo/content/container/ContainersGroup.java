@@ -17,7 +17,6 @@
 
 package com.alee.demo.content.container;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.utils.CollectionUtils;
@@ -46,6 +45,8 @@ public class ContainersGroup extends AbstractExampleGroup
                 JSplitPaneExample.class,
                 WebMultiSplitPaneExample.class,
                 JToolBarExample.class,
+                JTabbedPaneExample.class,
+                WebDocumentPaneExample.class,
                 GroupPaneExample.class,
                 WebBreadcrumbExample.class,
                 WebCollapsiblePaneExample.class,

@@ -17,6 +17,7 @@
 
 package com.alee.demo.frames.inspector;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoIcons;
@@ -26,7 +27,7 @@ import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.inspector.InterfaceInspector;
 
 /**
- * Demo Application inspector frame.
+ * {@link DemoApplication} inspector frame.
  *
  * @author Mikle Garin
  */
@@ -42,7 +43,7 @@ public final class InspectorFrame extends WebDockableFrame
      *
      * @param application demo application
      */
-    public InspectorFrame ( final DemoApplication application )
+    public InspectorFrame ( @NotNull final DemoApplication application )
     {
         super ( ID, DemoIcons.inspector16, "demo.inspector.title" );
         setState ( DockableFrameState.minimized );
@@ -56,8 +57,8 @@ public final class InspectorFrame extends WebDockableFrame
         addFrameListener ( new DockableFrameAdapter ()
         {
             @Override
-            public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState,
-                                            final DockableFrameState newState )
+            public void frameStateChanged ( @NotNull final WebDockableFrame frame, @NotNull final DockableFrameState oldState,
+                                            @NotNull final DockableFrameState newState )
             {
                 if ( newState == DockableFrameState.minimized || newState == DockableFrameState.closed )
                 {

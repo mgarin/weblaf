@@ -225,6 +225,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

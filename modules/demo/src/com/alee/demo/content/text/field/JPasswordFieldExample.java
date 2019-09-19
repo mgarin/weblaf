@@ -88,6 +88,7 @@ public class JPasswordFieldExample extends AbstractStylePreviewExample
             super ( JPasswordFieldExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

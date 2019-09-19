@@ -92,6 +92,7 @@ public class MultiSplitPaneDividerLayout extends AbstractLayoutManager
         }
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
@@ -102,6 +103,7 @@ public class MultiSplitPaneDividerLayout extends AbstractLayoutManager
      * NOTE: This isn't really used due to divider being forcefully positioned according to predefined sizes.
      * I leave a proper implementation for this method in hopes of using it at some point instead of workarounds.
      */
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

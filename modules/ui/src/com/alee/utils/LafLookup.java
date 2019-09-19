@@ -19,6 +19,7 @@ package com.alee.utils;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Function;
 import com.alee.laf.LookAndFeelException;
 import com.alee.laf.WebUI;
 
@@ -45,11 +46,11 @@ public final class LafLookup
     }
 
     /**
-     * Returns {@link InputMap} for {@code condition} from the specified {@link JComponent}.
+     * Returns {@link InputMap} for the specified {@link JComponent} and event condition.
      *
      * @param component {@link JComponent}
      * @param condition event condition
-     * @return {@link InputMap} for {@code condition} from the specified {@link JComponent}
+     * @return {@link InputMap} for the specified {@link JComponent} and event condition.
      */
     @Nullable
     public static InputMap getInputMap ( @NotNull final JComponent component, final int condition )
@@ -59,44 +60,102 @@ public final class LafLookup
         if ( ui instanceof WebUI )
         {
             final WebUI webUI = ( WebUI ) ui;
-
-            // Retrieving input map settings key
-            final String key;
             if ( condition == JComponent.WHEN_IN_FOCUSED_WINDOW )
             {
-                key = webUI.getPropertyPrefix () + "windowBindings";
-            }
-            else if ( condition == JComponent.WHEN_FOCUSED )
-            {
-                key = webUI.getPropertyPrefix () + "focusInputMap";
-            }
-            else if ( condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT )
-            {
-                key = webUI.getPropertyPrefix () + "ancestorInputMap";
+                // Custom InputMap created from window bindings specified in UI property
+                inputMap = getCompleteInputMap ( component, ui, webUI, condition, new Function<Object, InputMap> ()
+                {
+                    @Nullable
+                    @Override
+                    public InputMap apply ( final Object property )
+                    {
+                        final Object[] bindings = ( Object[] ) property;
+                        return bindings != null ? LookAndFeel.makeComponentInputMap ( component, bindings ) : null;
+                    }
+                } );
             }
             else
             {
-                throw new LookAndFeelException ( "Unsupported InputMap condition: " + condition );
-            }
-
-            // Retrieving input map
-            if ( condition == JComponent.WHEN_IN_FOCUSED_WINDOW )
-            {
-                // Custom input map for window bindings
-                final Object[] bindings = ( Object[] ) LafLookup.get ( component, ui, key );
-                inputMap = bindings != null ? LookAndFeel.makeComponentInputMap ( component, bindings ) : null;
-            }
-            else
-            {
-                // Existing input map for key
-                inputMap = ( InputMap ) LafLookup.get ( component, ui, key );
+                // Existing InputMap retrieved from UI property
+                inputMap = getCompleteInputMap ( component, ui, webUI, condition, new Function<Object, InputMap> ()
+                {
+                    @Nullable
+                    @Override
+                    public InputMap apply ( final Object property )
+                    {
+                        return ( InputMap ) property;
+                    }
+                } );
             }
         }
         else
         {
-            inputMap = null;
+            throw new LookAndFeelException ( "Component UI is not a WebUI implementation: " + ui );
         }
         return inputMap;
+    }
+
+    /**
+     * Returns complete {@link InputMap} for the specified {@link JComponent} and event condition.
+     *
+     * @param component          {@link JComponent}
+     * @param ui                 {@link ComponentUI}
+     * @param webUI              {@link WebUI}
+     * @param condition          event condition
+     * @param propertyToInputMap {@link Function} for mapping retrieved property value to {@link InputMap}
+     * @return complete {@link InputMap} for the specified {@link JComponent} and event condition
+     */
+    private static InputMap getCompleteInputMap ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                                                  @NotNull final WebUI webUI, final int condition,
+                                                  @NotNull final Function<Object, InputMap> propertyToInputMap )
+    {
+        final String key = getInputMapPropertyKey ( webUI, condition );
+        InputMap inputMap = propertyToInputMap.apply ( LafLookup.get ( component, ui, key ) );
+        if ( inputMap != null )
+        {
+            // Checking whether component has RTL orientation
+            if ( !component.getComponentOrientation ().isLeftToRight () )
+            {
+                // There might be a separate InputMap for RTL component orientation
+                final InputMap rtlInputMap = propertyToInputMap.apply ( LafLookup.get ( component, ui, key + ".RightToLeft" ) );
+                if ( rtlInputMap != null )
+                {
+                    // Using RTL InputMap instead
+                    rtlInputMap.setParent ( inputMap );
+                    inputMap = rtlInputMap;
+                }
+            }
+        }
+        return inputMap;
+    }
+
+    /**
+     * Returns {@link InputMap} property key for the specified {@link WebUI} and event condition.
+     *
+     * @param webUI     {@link WebUI}
+     * @param condition event condition
+     * @return {@link InputMap} property key for the specified {@link WebUI} and event condition
+     */
+    private static String getInputMapPropertyKey ( @NotNull final WebUI webUI, final int condition )
+    {
+        final String key;
+        if ( condition == JComponent.WHEN_IN_FOCUSED_WINDOW )
+        {
+            key = webUI.getPropertyPrefix () + "windowBindings";
+        }
+        else if ( condition == JComponent.WHEN_FOCUSED )
+        {
+            key = webUI.getPropertyPrefix () + "focusInputMap";
+        }
+        else if ( condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT )
+        {
+            key = webUI.getPropertyPrefix () + "ancestorInputMap";
+        }
+        else
+        {
+            throw new LookAndFeelException ( "Unsupported InputMap condition: " + condition );
+        }
+        return key;
     }
 
     /**

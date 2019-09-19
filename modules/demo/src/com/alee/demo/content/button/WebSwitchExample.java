@@ -79,6 +79,7 @@ public class WebSwitchExample extends AbstractStylePreviewExample
             super ( WebSwitchExample.this, "text", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -103,6 +104,7 @@ public class WebSwitchExample extends AbstractStylePreviewExample
             super ( WebSwitchExample.this, "icon", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

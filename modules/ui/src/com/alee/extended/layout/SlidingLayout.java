@@ -110,6 +110,7 @@ public class SlidingLayout extends AbstractLayoutManager
         animator.start ();
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

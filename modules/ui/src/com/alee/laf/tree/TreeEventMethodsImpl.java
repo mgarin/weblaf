@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Predicate;
 import com.alee.utils.SwingUtils;
 
@@ -37,10 +39,12 @@ public final class TreeEventMethodsImpl
      *
      * @param tree     tree to handle events for
      * @param runnable tree node event runnable
+     * @param <N>      {@link MutableTreeNode} type
      * @return used mouse adapter
      */
-    public static <N extends MutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree,
-                                                                               final TreeNodeEventRunnable<N> runnable )
+    @NotNull
+    public static <N extends MutableTreeNode> MouseAdapter onNodeDoubleClick ( @NotNull final WebTree<N> tree,
+                                                                               @NotNull final TreeNodeEventRunnable<N> runnable )
     {
         return onNodeDoubleClick ( tree, null, runnable );
     }
@@ -51,15 +55,18 @@ public final class TreeEventMethodsImpl
      * @param tree      tree to handle events for
      * @param condition node condition
      * @param runnable  tree node event runnable
+     * @param <N>       {@link MutableTreeNode} type
      * @return used mouse adapter
      */
-    public static <N extends MutableTreeNode> MouseAdapter onNodeDoubleClick ( final WebTree<N> tree, final Predicate<N> condition,
-                                                                               final TreeNodeEventRunnable<N> runnable )
+    @NotNull
+    public static <N extends MutableTreeNode> MouseAdapter onNodeDoubleClick ( @NotNull final WebTree<N> tree,
+                                                                               @Nullable final Predicate<N> condition,
+                                                                               @NotNull final TreeNodeEventRunnable<N> runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseClicked ( final MouseEvent e )
+            public void mouseClicked ( @NotNull final MouseEvent e )
             {
                 if ( SwingUtils.isDoubleClick ( e ) )
                 {
@@ -67,7 +74,7 @@ public final class TreeEventMethodsImpl
                     if ( row != -1 )
                     {
                         final N node = tree.getNodeForRow ( row );
-                        if ( condition == null || condition.test ( node ) )
+                        if ( node != null && ( condition == null || condition.test ( node ) ) )
                         {
                             runnable.run ( node );
                         }

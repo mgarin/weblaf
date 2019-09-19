@@ -18,6 +18,7 @@
 package com.alee.managers.language;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.collapsible.WebCollapsiblePaneLU;
@@ -42,8 +43,8 @@ import com.alee.utils.swing.WeakComponentDataList;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * {@link UILanguageManager} is an extension over {@link LanguageManager} that offers extensive Swing components translation support.
@@ -83,6 +84,7 @@ public final class UILanguageManager
      * @see #setLanguageIcon(Language, Icon)
      * @see #setLocaleIcon(Locale, Icon)
      */
+    @NotNull
     private static final Map<String, Icon> localeIcons = new HashMap<String, Icon> ();
 
     /**
@@ -101,12 +103,14 @@ public final class UILanguageManager
      * @see #unregisterComponent(JComponent)
      * @see #isRegisteredComponent(JComponent)
      */
+    @NotNull
     private static final WeakComponentData<JComponent, TranslationKey> components =
             new WeakComponentData<JComponent, TranslationKey> ( "WebLanguageManager.TranslationKey", 100 );
 
     /**
      * Special comparator for sorting LanguageUpdaters list.
      */
+    @NotNull
     private static final LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
 
     /**
@@ -118,6 +122,7 @@ public final class UILanguageManager
      * @see #unregisterLanguageUpdater(LanguageUpdater)
      * @see #getLanguageUpdater(JComponent)
      */
+    @NotNull
     private static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ( 20 );
 
     /**
@@ -129,6 +134,7 @@ public final class UILanguageManager
      * @see #unregisterLanguageUpdater(JComponent)
      * @see #getLanguageUpdater(JComponent)
      */
+    @NotNull
     private static final WeakComponentData<JComponent, LanguageUpdater> customUpdaters =
             new WeakComponentData<JComponent, LanguageUpdater> ( "WebLanguageManager.LanguageUpdater", 2 );
 
@@ -141,6 +147,7 @@ public final class UILanguageManager
      * @see #getLanguageUpdater(JComponent)
      * @see #getLanguageUpdater(Class)
      */
+    @NotNull
     private static final Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
 
     /**
@@ -151,6 +158,7 @@ public final class UILanguageManager
      * @see #removeLanguageListener(JComponent, LanguageListener)
      * @see #removeLanguageListeners(JComponent)
      */
+    @NotNull
     private static final WeakComponentDataList<JComponent, LanguageListener> componentLanguageListeners =
             new WeakComponentDataList<JComponent, LanguageListener> ( "WebLanguageManager.LanguageListener", 50 );
 
@@ -162,8 +170,9 @@ public final class UILanguageManager
      * @see #removeDictionaryListener(JComponent, DictionaryListener)
      * @see #removeDictionaryListeners(JComponent)
      */
+    @NotNull
     private static final WeakComponentDataList<JComponent, DictionaryListener> componentDictionaryListeners =
-            new WeakComponentDataList<JComponent, DictionaryListener> ( "WebLanguageManager.LanguageListener", 5 );
+            new WeakComponentDataList<JComponent, DictionaryListener> ( "WebLanguageManager.DictionaryListener", 5 );
 
     /**
      * Manager initialization mark.
@@ -306,7 +315,8 @@ public final class UILanguageManager
      * @param language language to retrieve {@link Icon} for
      * @return {@link Icon} for the specified {@link Language}
      */
-    public static Icon getLanguageIcon ( final Language language )
+    @NotNull
+    public static Icon getLanguageIcon ( @NotNull final Language language )
     {
         return getLocaleIcon ( language.getLocale () );
     }
@@ -318,12 +328,14 @@ public final class UILanguageManager
      * @param locale {@link Locale} to retrieve {@link Icon} for
      * @return {@link Icon} for the specified {@link Locale}
      */
-    public static Icon getLocaleIcon ( final Locale locale )
+    @NotNull
+    public static Icon getLocaleIcon ( @NotNull final Locale locale )
     {
+        final Icon localeIcon;
         final String key = LanguageUtils.toString ( locale );
         if ( localeIcons.containsKey ( key ) )
         {
-            return localeIcons.get ( key );
+            localeIcon = localeIcons.get ( key );
         }
         else
         {
@@ -342,8 +354,9 @@ public final class UILanguageManager
                 icon = UNKNOWN_LANGUAGE;
             }
             localeIcons.put ( key, icon );
-            return icon;
+            localeIcon = icon;
         }
+        return localeIcon;
     }
 
     /**
@@ -353,7 +366,8 @@ public final class UILanguageManager
      * @param icon     {@link Icon}
      * @return {@link Icon} previously set for this {@link Language}
      */
-    public static Icon setLanguageIcon ( final Language language, final Icon icon )
+    @Nullable
+    public static Icon setLanguageIcon ( @NotNull final Language language, @Nullable final Icon icon )
     {
         return setLocaleIcon ( language.getLocale (), icon );
     }
@@ -365,7 +379,8 @@ public final class UILanguageManager
      * @param icon   {@link Icon}
      * @return {@link Icon} previously set for this {@link Locale}
      */
-    public static Icon setLocaleIcon ( final Locale locale, final Icon icon )
+    @Nullable
+    public static Icon setLocaleIcon ( @NotNull final Locale locale, @Nullable final Icon icon )
     {
         final String key = LanguageUtils.toString ( locale );
         return localeIcons.put ( key, icon );
@@ -378,7 +393,7 @@ public final class UILanguageManager
      * @param updater new {@link LanguageUpdater}
      * @see LanguageUpdater
      */
-    public static void registerLanguageUpdater ( final LanguageUpdater updater )
+    public static void registerLanguageUpdater ( @NotNull final LanguageUpdater updater )
     {
         synchronized ( updaters )
         {
@@ -403,7 +418,7 @@ public final class UILanguageManager
      *
      * @param updater {@link LanguageUpdater} to unregister
      */
-    public static void unregisterLanguageUpdater ( final LanguageUpdater updater )
+    public static void unregisterLanguageUpdater ( @NotNull final LanguageUpdater updater )
     {
         synchronized ( updaters )
         {
@@ -419,7 +434,7 @@ public final class UILanguageManager
      * @param component {@link JComponent} to register {@link LanguageUpdater} for
      * @param updater   custom {@link LanguageUpdater}
      */
-    public static void registerLanguageUpdater ( final JComponent component, final LanguageUpdater updater )
+    public static void registerLanguageUpdater ( @NotNull final JComponent component, @NotNull final LanguageUpdater updater )
     {
         customUpdaters.set ( component, updater );
     }
@@ -429,7 +444,7 @@ public final class UILanguageManager
      *
      * @param component {@link JComponent} to unregister custom {@link LanguageUpdater} from
      */
-    public static void unregisterLanguageUpdater ( final JComponent component )
+    public static void unregisterLanguageUpdater ( @NotNull final JComponent component )
     {
         customUpdaters.clear ( component );
     }
@@ -442,7 +457,8 @@ public final class UILanguageManager
      * @param component component to retrieve {@link LanguageUpdater} for
      * @return {@link LanguageUpdater} currently used for the specified component
      */
-    public static LanguageUpdater getLanguageUpdater ( final JComponent component )
+    @NotNull
+    public static LanguageUpdater getLanguageUpdater ( @NotNull final JComponent component )
     {
         final LanguageUpdater updater;
         final LanguageUpdater customUpdater = customUpdaters.get ( component );
@@ -507,20 +523,17 @@ public final class UILanguageManager
      * @param clazz component class to retrieve {@link LanguageUpdater} for
      * @return {@link LanguageUpdater} currently used for the specified component class
      */
-    public static LanguageUpdater getLanguageUpdater ( final Class<? extends JComponent> clazz )
+    @NotNull
+    public static LanguageUpdater getLanguageUpdater ( @NotNull final Class<? extends JComponent> clazz )
     {
+        LanguageUpdater updater;
         synchronized ( updaters )
         {
             // Retrieving cached updater
-            LanguageUpdater updater = updatersCache.get ( clazz );
+            updater = updatersCache.get ( clazz );
 
-            // Checking found updater
-            if ( updater != null )
-            {
-                // Returning cached updater
-                return updater;
-            }
-            else
+            // Looking for updater if necessary
+            if ( updater == null )
             {
                 // Searching for a suitable component updater if none cached yet
                 final List<LanguageUpdater> foundUpdaters = new ArrayList<LanguageUpdater> ();
@@ -553,10 +566,9 @@ public final class UILanguageManager
 
                 // Caching resolved updater
                 updatersCache.put ( clazz, updater );
-
-                return updater;
             }
         }
+        return updater;
     }
 
     /**
@@ -566,7 +578,8 @@ public final class UILanguageManager
      * @param data language data, may not be passed
      * @return proper initial component text
      */
-    public static String getInitialText ( final String key, final Object... data )
+    @Nullable
+    public static String getInitialText ( @Nullable final String key, @NotNull final Object... data )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -602,13 +615,14 @@ public final class UILanguageManager
      * @param key       text provided into component constructor
      * @param data      language data, may not be passed
      */
-    public static void registerInitialLanguage ( final LanguageMethods component, final String key, final Object... data )
+    public static void registerInitialLanguage ( @NotNull final LanguageMethods component, @Nullable final String key,
+                                                 @NotNull final Object... data )
     {
         // Must be initialized
         mustBeInitialized ();
 
         // Registering component
-        if ( isCheckComponentsTextForTranslations () && LM.contains ( key ) )
+        if ( isCheckComponentsTextForTranslations () && key != null && LM.contains ( key ) )
         {
             component.setLanguage ( key, data );
         }
@@ -623,7 +637,7 @@ public final class UILanguageManager
      * @param data      component language data
      * @see LanguageUpdater
      */
-    public static void registerComponent ( final JComponent component, final String key, Object... data )
+    public static void registerComponent ( @NotNull final JComponent component, @NotNull final String key, @Nullable final Object... data )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -631,20 +645,11 @@ public final class UILanguageManager
         // Properly remove previously installed language
         unregisterComponent ( component );
 
-        // Simply unregister component if {@code null} key was provided
-        if ( key == null )
-        {
-            return;
-        }
-
         // Nullifying data if it has no values
-        if ( data != null && data.length == 0 )
-        {
-            data = null;
-        }
+        final Object[] actualData = data != null && data.length == 0 ? null : data;
 
         // Registering component
-        components.set ( component, TranslationKey.of ( key, data ) );
+        components.set ( component, new TranslationKey ( key, actualData ) );
 
         // Updating component language
         updateComponent ( component );
@@ -655,7 +660,7 @@ public final class UILanguageManager
      *
      * @param component component to unregister
      */
-    public static void unregisterComponent ( final JComponent component )
+    public static void unregisterComponent ( @NotNull final JComponent component )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -670,7 +675,7 @@ public final class UILanguageManager
      * @param component component to check
      * @return {@code true} if component is registered for language updates, {@code false} otherwise
      */
-    public static boolean isRegisteredComponent ( final JComponent component )
+    public static boolean isRegisteredComponent ( @NotNull final JComponent component )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -685,7 +690,8 @@ public final class UILanguageManager
      * @param component component to retrieve language key for
      * @return language key which was used to register specified component
      */
-    public static String getComponentKey ( final JComponent component )
+    @Nullable
+    public static String getComponentKey ( @NotNull final JComponent component )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -707,7 +713,7 @@ public final class UILanguageManager
         components.forEach ( new BiConsumer<JComponent, TranslationKey> ()
         {
             @Override
-            public void accept ( final JComponent component, final TranslationKey translationKey )
+            public void accept ( @NotNull final JComponent component, @NotNull final TranslationKey translationKey )
             {
                 updateComponent ( component );
             }
@@ -719,7 +725,7 @@ public final class UILanguageManager
      *
      * @param keys language keys of the components to update
      */
-    public static void updateComponents ( final Set<String> keys )
+    public static void updateComponents ( @NotNull final Set<String> keys )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -728,7 +734,7 @@ public final class UILanguageManager
         components.forEach ( new BiConsumer<JComponent, TranslationKey> ()
         {
             @Override
-            public void accept ( final JComponent component, final TranslationKey translationKey )
+            public void accept ( @NotNull final JComponent component, @NotNull final TranslationKey translationKey )
             {
                 if ( keys.contains ( translationKey.getKey () ) )
                 {
@@ -744,37 +750,27 @@ public final class UILanguageManager
      * @param component {@link JComponent} to update
      * @param data      new formatting data
      */
-    public static void updateComponent ( final JComponent component, final Object... data )
+    public static void updateComponent ( @NotNull final JComponent component, @Nullable final Object... data )
     {
         // Must be initialized
         mustBeInitialized ();
 
-        // Checking that component is registered
-        if ( isRegisteredComponent ( component ) )
+        // Retrieving tranlation settings
+        final TranslationKey translationKey = components.get ( component );
+        if ( translationKey != null )
         {
             // Retrieving actual data for update
-            final TranslationKey translationKey = components.get ( component );
             final Object[] actualData = getActualData ( component, translationKey.getKey (), data );
 
             // Updating component translation data
             translationKey.setData ( actualData );
 
-            // Checking component updater existence
+            // Updating component language
             final LanguageUpdater updater = getLanguageUpdater ( component );
-            if ( updater != null )
-            {
-                // Updating component language
-                updater.update ( component, LM.getLanguage (), translationKey.getKey (), translationKey.getData () );
-            }
-            else
-            {
-                // Missing language updater
-                throw new LanguageException ( "Component LanguageUpdater is missing: " + component );
-            }
+            updater.update ( component, LM.getLanguage (), translationKey.getKey (), translationKey.getData () );
         }
         else
         {
-            // Premature update call
             throw new LanguageException ( "Component is not registered yet: " + component );
         }
     }
@@ -786,7 +782,7 @@ public final class UILanguageManager
      * @param key       new language key
      * @param data      new formatting data
      */
-    public static void updateComponent ( final JComponent component, final String key, final Object... data )
+    public static void updateComponent ( @NotNull final JComponent component, @NotNull final String key, @Nullable final Object... data )
     {
         // Must be initialized
         mustBeInitialized ();
@@ -798,21 +794,12 @@ public final class UILanguageManager
             final Object[] actualData = getActualData ( component, key, data );
 
             // Updating component translation settings
-            final TranslationKey translationKey = TranslationKey.of ( key, actualData );
+            final TranslationKey translationKey = new TranslationKey ( key, actualData );
             components.set ( component, translationKey );
 
-            // Checking component updater existence
+            // Updating component language
             final LanguageUpdater updater = getLanguageUpdater ( component );
-            if ( updater != null )
-            {
-                // Updating component language
-                updater.update ( component, LM.getLanguage (), translationKey.getKey (), translationKey.getData () );
-            }
-            else
-            {
-                // Missing language updater
-                throw new LanguageException ( "Component LanguageUpdater is missing: " + component );
-            }
+            updater.update ( component, LM.getLanguage (), translationKey.getKey (), translationKey.getData () );
         }
         else
         {
@@ -829,41 +816,45 @@ public final class UILanguageManager
      * @param data      translation data
      * @return actual {@link JComponent} translation data based on its translation settings
      */
-    private static Object[] getActualData ( final JComponent component, final String key, final Object[] data )
+    @Nullable
+    private static Object[] getActualData ( @NotNull final JComponent component, @NotNull final String key, @Nullable final Object[] data )
     {
         final Object[] actualData;
         final TranslationKey oldKey = components.get ( component );
-        if ( Objects.equals ( oldKey.getKey (), key ) )
+        if ( oldKey != null )
         {
-            // When keys are identical we want to compare passed data
-            // This is just an extra layer of checks to indentify issues with data usage
-            if ( ArrayUtils.notEmpty ( data ) )
+            if ( Objects.equals ( oldKey.getKey (), key ) )
             {
-                // Checking sizes of new and old data arrays
-                if ( !ArrayUtils.isEmpty ( oldKey.getData () ) && oldKey.getData ().length == data.length )
+                /**
+                 * When keys are identical we want to check passed data.
+                 */
+                if ( ArrayUtils.notEmpty ( data ) )
                 {
-                    // Everything is good, data size is the same
+                    /**
+                     * Non-empty data is automatically used.
+                     */
                     actualData = data;
                 }
                 else
                 {
-                    // Data size has changed, this is not really acceptable without key change
-                    // This identifies an issue with updating component translation and therefore exception is thrown
-                    throw new LanguageException ( "Translation" );
+                    /**
+                     * New data is empty, we will be using old data.
+                     * This is important to avoid issues with the vararg method usage and for general convenience.
+                     */
+                    actualData = oldKey.getData ();
                 }
             }
             else
             {
-                // Whenever new data is empty we can use old data
-                // This is important to avoid issues with the vararg method usage and for general convenience
-                actualData = oldKey.getData ();
+                /**
+                 * New key will always accept new data, even if it's empty.
+                 */
+                actualData = data;
             }
         }
         else
         {
-            // New key always should bring new data
-            // We will accept even empty data here
-            actualData = data;
+            throw new LanguageException ( "Component is not registered yet: " + component );
         }
         return actualData;
     }
@@ -877,7 +868,7 @@ public final class UILanguageManager
      * @param component {@link JComponent} to tie {@link LanguageListener} to
      * @param listener  {@link LanguageListener} to add
      */
-    public static void addLanguageListener ( final JComponent component, final LanguageListener listener )
+    public static void addLanguageListener ( @NotNull final JComponent component, @NotNull final LanguageListener listener )
     {
         componentLanguageListeners.add ( component, listener );
     }
@@ -888,7 +879,7 @@ public final class UILanguageManager
      * @param component {@link JComponent} to remove tied {@link LanguageListener} from
      * @param listener  {@link LanguageListener} to remove
      */
-    public static void removeLanguageListener ( final JComponent component, final LanguageListener listener )
+    public static void removeLanguageListener ( @NotNull final JComponent component, @NotNull final LanguageListener listener )
     {
         componentLanguageListeners.remove ( component, listener );
     }
@@ -898,7 +889,7 @@ public final class UILanguageManager
      *
      * @param component {@link JComponent} to remove all tied {@link LanguageListener}s from
      */
-    public static void removeLanguageListeners ( final JComponent component )
+    public static void removeLanguageListeners ( @NotNull final JComponent component )
     {
         componentLanguageListeners.clear ( component );
     }
@@ -909,12 +900,12 @@ public final class UILanguageManager
      * @param oldLanguage old {@link Language}
      * @param newLanguage new {@link Language}
      */
-    private static void fireLanguageChanged ( final Language oldLanguage, final Language newLanguage )
+    private static void fireLanguageChanged ( @NotNull final Language oldLanguage, @NotNull final Language newLanguage )
     {
         componentLanguageListeners.forEachData ( new BiConsumer<JComponent, LanguageListener> ()
         {
             @Override
-            public void accept ( final JComponent component, final LanguageListener languageListener )
+            public void accept ( @NotNull final JComponent component, @NotNull final LanguageListener languageListener )
             {
                 languageListener.languageChanged ( oldLanguage, newLanguage );
             }
@@ -931,7 +922,7 @@ public final class UILanguageManager
      * @param component {@link JComponent} to tie {@link DictionaryListener} to
      * @param listener  {@link DictionaryListener} to add
      */
-    public static void addDictionaryListener ( final JComponent component, final DictionaryListener listener )
+    public static void addDictionaryListener ( @NotNull final JComponent component, @NotNull final DictionaryListener listener )
     {
         componentDictionaryListeners.add ( component, listener );
     }
@@ -942,7 +933,7 @@ public final class UILanguageManager
      * @param component {@link JComponent} to remove tied {@link DictionaryListener} from
      * @param listener  {@link DictionaryListener} to remove
      */
-    public static void removeDictionaryListener ( final JComponent component, final DictionaryListener listener )
+    public static void removeDictionaryListener ( @NotNull final JComponent component, @NotNull final DictionaryListener listener )
     {
         componentDictionaryListeners.remove ( component, listener );
     }
@@ -952,7 +943,7 @@ public final class UILanguageManager
      *
      * @param component {@link JComponent} to remove all tied {@link DictionaryListener}s from
      */
-    public static void removeDictionaryListeners ( final JComponent component )
+    public static void removeDictionaryListeners ( @NotNull final JComponent component )
     {
         componentDictionaryListeners.clear ( component );
     }
@@ -962,12 +953,12 @@ public final class UILanguageManager
      *
      * @param dictionary new {@link Dictionary}
      */
-    private static void fireDictionaryAdded ( final Dictionary dictionary )
+    private static void fireDictionaryAdded ( @NotNull final Dictionary dictionary )
     {
         componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
         {
             @Override
-            public void accept ( final JComponent component, final DictionaryListener languageListener )
+            public void accept ( @NotNull final JComponent component, @NotNull final DictionaryListener languageListener )
             {
                 languageListener.dictionaryAdded ( dictionary );
             }
@@ -979,12 +970,12 @@ public final class UILanguageManager
      *
      * @param dictionary removed {@link Dictionary}
      */
-    private static void fireDictionaryRemoved ( final Dictionary dictionary )
+    private static void fireDictionaryRemoved ( @NotNull final Dictionary dictionary )
     {
         componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
         {
             @Override
-            public void accept ( final JComponent component, final DictionaryListener languageListener )
+            public void accept ( @NotNull final JComponent component, @NotNull final DictionaryListener languageListener )
             {
                 languageListener.dictionaryRemoved ( dictionary );
             }
@@ -999,7 +990,7 @@ public final class UILanguageManager
         componentDictionaryListeners.forEachData ( new BiConsumer<JComponent, DictionaryListener> ()
         {
             @Override
-            public void accept ( final JComponent component, final DictionaryListener languageListener )
+            public void accept ( @NotNull final JComponent component, @NotNull final DictionaryListener languageListener )
             {
                 languageListener.dictionariesCleared ();
             }

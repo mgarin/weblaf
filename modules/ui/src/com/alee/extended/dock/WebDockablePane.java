@@ -451,14 +451,16 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      */
     public WebDockableFrame getFrame ( final String id )
     {
+        WebDockableFrame frameById = null;
         for ( final WebDockableFrame frame : frames )
         {
             if ( Objects.equals ( id, frame.getId () ) )
             {
-                return frame;
+                frameById = frame;
+                break;
             }
         }
-        return null;
+        return frameById;
     }
 
     /**

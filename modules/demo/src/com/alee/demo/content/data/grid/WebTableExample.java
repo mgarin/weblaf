@@ -81,6 +81,7 @@ public class WebTableExample extends AbstractStylePreviewExample
             super ( WebTableExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -106,6 +107,7 @@ public class WebTableExample extends AbstractStylePreviewExample
             super ( WebTableExample.this, "scrollable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -133,6 +135,7 @@ public class WebTableExample extends AbstractStylePreviewExample
             super ( WebTableExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

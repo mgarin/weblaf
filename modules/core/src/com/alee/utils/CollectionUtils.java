@@ -1156,4 +1156,19 @@ public final class CollectionUtils
         }
         return collection;
     }
+
+    /**
+     * Returns item from the {@link List} at the specified index.
+     * Index can be larger than {@link List} size, allowing round robin item selection.
+     *
+     * @param index index in the {@link List} or a number larger than {@link List} size, cannot be less than zero
+     * @param items {@link List}
+     * @param <T>   item type
+     * @return item from the {@link List} at the specified index
+     */
+    @Nullable
+    public static <T> T roundRobin ( final int index, @NotNull final List<T> items )
+    {
+        return items.size () > 0 ? items.get ( index % items.size () ) : null;
+    }
 }

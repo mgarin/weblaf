@@ -17,6 +17,7 @@
 
 package com.alee.utils.jar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.collection.ImmutableList;
 
 import java.util.Comparator;
@@ -31,13 +32,34 @@ import java.util.List;
 public final class JarEntryComparator implements Comparator<JarEntry>
 {
     /**
+     * Static {@link JarEntryComparator} instance.
+     */
+    private static JarEntryComparator instance;
+
+    /**
+     * Returns static {@link JarEntryComparator} instance.
+     *
+     * @return static {@link JarEntryComparator} instance
+     */
+    public static JarEntryComparator instance ()
+    {
+        if ( instance == null )
+        {
+            instance = new JarEntryComparator ();
+        }
+        return instance;
+    }
+
+    /**
      * {@link JarEntryType}s sorted by priority.
      */
-    private final List<JarEntryType> typePriority = new ImmutableList<JarEntryType> ( JarEntryType.values () );
+    @NotNull
+    private static final List<JarEntryType> typePriority = new ImmutableList<JarEntryType> ( JarEntryType.values () );
 
     @Override
     public int compare ( final JarEntry e1, final JarEntry e2 )
     {
-        return Integer.valueOf ( typePriority.indexOf ( e1.getType () ) ).compareTo ( typePriority.indexOf ( e2.getType () ) );
+        return Integer.valueOf ( typePriority.indexOf ( e1.getType () ) )
+                .compareTo ( typePriority.indexOf ( e2.getType () ) );
     }
 }

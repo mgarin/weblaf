@@ -82,6 +82,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
             super ( GroupPaneExample.this, "mixed", featureState, id );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -111,6 +112,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
             super ( GroupPaneExample.this, "grid", featureState, id );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -151,6 +153,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
             super ( GroupPaneExample.this, "buttons", featureState, id );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

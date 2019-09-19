@@ -17,6 +17,9 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -35,5 +38,5 @@ public interface DocumentEventRunnable<C extends JTextComponent>
      * @param component {@link JTextComponent} containing changed document
      * @param event     occured document event, {@code null} if the whole {@link Document} was replaced
      */
-    public void run ( C component, DocumentEvent event );
+    public void run ( @NotNull C component, @Nullable DocumentEvent event );
 }

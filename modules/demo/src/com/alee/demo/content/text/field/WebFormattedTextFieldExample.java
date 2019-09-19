@@ -100,6 +100,7 @@ public class WebFormattedTextFieldExample extends AbstractStylePreviewExample
             this.columns = columns;
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

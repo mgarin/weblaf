@@ -20,7 +20,6 @@ package com.alee.laf;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
-import com.alee.utils.DebugUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;
 import org.slf4j.LoggerFactory;
@@ -43,6 +42,11 @@ public final class NativeFonts
      * todo 2. Should only be working as a fallback for a more convenient style-related implementation instead of default implementation
      * todo 3. Don't use generalized fonts for {@link ControlType}s, they do not fit all possible use cases on different OS
      */
+
+    /**
+     * Whether or not various {@link Font} loading related warnings should be displayed.
+     */
+    private static boolean warningsEnabled = true;
 
     /**
      * Fallback Windows font names.
@@ -94,6 +98,16 @@ public final class NativeFonts
      * Can be {@code null} if it was not requested yet or not available.
      */
     private static Font defaultGTKFont = null;
+
+    /**
+     * Sets whether or not various {@link Font} loading related warnings should be displayed.
+     *
+     * @param enabled whether or not various {@link Font} loading related warnings should be displayed
+     */
+    public static void setWarningsEnabled ( final boolean enabled )
+    {
+        NativeFonts.warningsEnabled = enabled;
+    }
 
     /**
      * Returns whether or not native OS fonts should be used when possible.
@@ -510,7 +524,7 @@ public final class NativeFonts
                 }
                 else
                 {
-                    if ( DebugUtils.isGlobalDebugEnabled () )
+                    if ( warningsEnabled )
                     {
                         final String msg = "Unable to retrieve native Windows font: %s";
                         LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, fontKey ) );
@@ -520,7 +534,7 @@ public final class NativeFonts
             }
             catch ( final Exception e )
             {
-                if ( DebugUtils.isGlobalDebugEnabled () )
+                if ( warningsEnabled )
                 {
                     final String msg = "Unable to retrieve native Windows font: %s";
                     LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, fontKey ), e );
@@ -534,42 +548,88 @@ public final class NativeFonts
         }
 
         // Switching to composite FontUIResource if needed
-        try
+        if ( SystemUtils.isJava7orAbove () )
         {
-            final Class fontManager = ReflectUtils.getClass ( "sun.font.FontManager" );
+            // Newer approach using sun.font.FontUtilities
             try
             {
-                if ( !( Boolean ) ReflectUtils.callStaticMethod ( fontManager, "fontSupportsDefaultEncoding", font ) )
+                final Class fontUtilities = ReflectUtils.getClass ( "sun.font.FontUtilities" );
+                try
                 {
-                    try
+                    if ( !( Boolean ) ReflectUtils.callStaticMethod ( fontUtilities, "fontSupportsDefaultEncoding", font ) )
                     {
-                        font = ReflectUtils.callStaticMethod ( fontManager, "getCompositeFontUIResource", font );
-                    }
-                    catch ( final Exception e )
-                    {
-                        if ( DebugUtils.isGlobalDebugEnabled () )
+                        try
                         {
-                            final String msg = "Unable to retrieve composite Font";
-                            LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
+                            font = ReflectUtils.callStaticMethod ( fontUtilities, "getCompositeFontUIResource", font );
+                        }
+                        catch ( final Exception e )
+                        {
+                            if ( warningsEnabled )
+                            {
+                                final String msg = "Unable to retrieve composite Font";
+                                LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
+                            }
                         }
                     }
                 }
-            }
-            catch ( final Exception e )
-            {
-                if ( DebugUtils.isGlobalDebugEnabled () )
+                catch ( final Exception e )
                 {
-                    final String msg = "Unable to check Font default encoding support";
+                    if ( warningsEnabled )
+                    {
+                        final String msg = "Unable to check Font default encoding support";
+                        LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
+                    }
+                }
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                if ( warningsEnabled )
+                {
+                    final String msg = "Unable to access sun.font.FontUtilities";
                     LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
                 }
             }
         }
-        catch ( final ClassNotFoundException e )
+        else
         {
-            if ( DebugUtils.isGlobalDebugEnabled () )
+            // Older approach using sun.font.FontManager
+            try
             {
-                final String msg = "Unable to access FontManager";
-                LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
+                final Class fontManager = ReflectUtils.getClass ( "sun.font.FontManager" );
+                try
+                {
+                    if ( !( Boolean ) ReflectUtils.callStaticMethod ( fontManager, "fontSupportsDefaultEncoding", font ) )
+                    {
+                        try
+                        {
+                            font = ReflectUtils.callStaticMethod ( fontManager, "getCompositeFontUIResource", font );
+                        }
+                        catch ( final Exception e )
+                        {
+                            if ( warningsEnabled )
+                            {
+                                final String msg = "Unable to retrieve composite Font";
+                                LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
+                            }
+                        }
+                    }
+                }
+                catch ( final Exception e )
+                {
+                    if ( warningsEnabled )
+                    {
+                        final String msg = "Unable to check Font default encoding support";
+                        LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
+                    }
+                }
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                if ( warningsEnabled )
+                {
+                    final String msg = "Unable to access sun.font.FontManager";
+                    LoggerFactory.getLogger ( NativeFonts.class ).error ( msg, e );
+                }
             }
         }
 
@@ -608,7 +668,7 @@ public final class NativeFonts
                 }
                 else
                 {
-                    if ( DebugUtils.isGlobalDebugEnabled () )
+                    if ( warningsEnabled )
                     {
                         final String msg = "Unable to retrieve native Mac OS X font using method: com.apple.laf.AquaFonts.%s()";
                         LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, fontMethodName ) );
@@ -618,7 +678,7 @@ public final class NativeFonts
             }
             catch ( final Exception e )
             {
-                if ( DebugUtils.isGlobalDebugEnabled () )
+                if ( warningsEnabled )
                 {
                     final String msg = "Unable to retrieve native Mac OS X font using method: com.apple.laf.AquaFonts.%s()";
                     LoggerFactory.getLogger ( NativeFonts.class ).error ( String.format ( msg, fontMethodName ), e );

@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.font.DerivedFontAttributes;
 import com.alee.utils.map.SoftHashMap;
 
@@ -33,6 +34,7 @@ public final class FontUtils
     /**
      * Derived fonts cache map.
      */
+    @NotNull
     private static final Map<DerivedFontAttributes, Font> derivedFontsCache = new SoftHashMap<DerivedFontAttributes, Font> ();
 
     /**
@@ -86,7 +88,8 @@ public final class FontUtils
      * @param size  new font size
      * @return the derived font.
      */
-    public static Font getCachedDerivedFont ( final Font font, final int style, final int size )
+    @NotNull
+    public static Font getCachedDerivedFont ( @NotNull final Font font, final int style, final int size )
     {
         final DerivedFontAttributes attribute = getFontAttribute ( font, style, size );
         Font derivedFont = derivedFontsCache.get ( attribute );
@@ -106,7 +109,8 @@ public final class FontUtils
      * @param size  new font size
      * @return font attributes object
      */
-    protected static DerivedFontAttributes getFontAttribute ( final Font font, final int style, final int size )
+    @NotNull
+    protected static DerivedFontAttributes getFontAttribute ( @NotNull final Font font, final int style, final int size )
     {
         return new DerivedFontAttributes ( font, style, size );
     }
@@ -114,15 +118,15 @@ public final class FontUtils
     /**
      * checks whether TextLayout is required to handle characters.
      *
-     * @param text  characters to be tested
-     * @param start start
-     * @param limit limit
+     * @param characters characters to be tested
+     * @param start      start
+     * @param limit      limit
      * @return <tt>true</tt>  if TextLayout is required
      * <tt>false</tt> if TextLayout is not required
      */
-    public static boolean isComplexLayout ( final char[] text, final int start, final int limit )
+    public static boolean isComplexLayout ( @NotNull final char[] characters, final int start, final int limit )
     {
-        return isComplexText ( text, start, limit );
+        return isComplexText ( characters, start, limit );
     }
 
     /**
@@ -147,21 +151,18 @@ public final class FontUtils
      * @param limit      check end index
      * @return {@code true} if any of the characters are non-simple, {@code false} otherwise
      */
-    public static boolean isComplexText ( final char[] characters, final int start, final int limit )
+    public static boolean isComplexText ( @NotNull final char[] characters, final int start, final int limit )
     {
+        boolean complex = false;
         for ( int i = start; i < limit; i++ )
         {
-            if ( characters[ i ] < MIN_LAYOUT_CHARCODE )
+            if ( characters[ i ] >= MIN_LAYOUT_CHARCODE && isNonSimpleChar ( characters[ i ] ) )
             {
-                //noinspection UnnecessaryContinue
-                continue;
-            }
-            else if ( isNonSimpleChar ( characters[ i ] ) )
-            {
-                return true;
+                complex = true;
+                break;
             }
         }
-        return false;
+        return complex;
     }
 
     /**

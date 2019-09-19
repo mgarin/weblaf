@@ -747,7 +747,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @param listener {@link DockableFrameListener} to add
      */
-    public void addFrameListener ( final DockableFrameListener listener )
+    public void addFrameListener ( @NotNull final DockableFrameListener listener )
     {
         listenerList.add ( DockableFrameListener.class, listener );
     }
@@ -757,7 +757,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @param listener {@link DockableFrameListener} to remove
      */
-    public void removeFrameListener ( final DockableFrameListener listener )
+    public void removeFrameListener ( @NotNull final DockableFrameListener listener )
     {
         listenerList.remove ( DockableFrameListener.class, listener );
     }
@@ -779,7 +779,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param oldState previous frame state
      * @param newState current frame state
      */
-    public void fireFrameStateChanged ( final DockableFrameState oldState, final DockableFrameState newState )
+    public void fireFrameStateChanged ( @NotNull final DockableFrameState oldState, @NotNull final DockableFrameState newState )
     {
         for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
         {
@@ -792,7 +792,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @param position current frame position relative to content
      */
-    public void fireFrameMoved ( final CompassDirection position )
+    public void fireFrameMoved ( @NotNull final CompassDirection position )
     {
         for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
         {

@@ -81,6 +81,7 @@ public class WebListExample extends AbstractStylePreviewExample
             super ( WebListExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -104,6 +105,7 @@ public class WebListExample extends AbstractStylePreviewExample
             super ( WebListExample.this, "scrollable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -128,6 +130,7 @@ public class WebListExample extends AbstractStylePreviewExample
             super ( WebListExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

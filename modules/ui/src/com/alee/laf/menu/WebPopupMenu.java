@@ -357,6 +357,7 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, Paintable, Sh
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @Nullable
     @Override
     public String getLanguage ()
     {
@@ -364,19 +365,19 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, Paintable, Sh
     }
 
     @Override
-    public void setLanguage ( final String key, final Object... data )
+    public void setLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
-    public void updateLanguage ( final Object... data )
+    public void updateLanguage ( @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, data );
     }
 
     @Override
-    public void updateLanguage ( final String key, final Object... data )
+    public void updateLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, key, data );
     }
@@ -394,7 +395,7 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, Paintable, Sh
     }
 
     @Override
-    public void setLanguageUpdater ( final LanguageUpdater updater )
+    public void setLanguageUpdater ( @NotNull final LanguageUpdater updater )
     {
         UILanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -406,13 +407,13 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, Paintable, Sh
     }
 
     @Override
-    public void addLanguageListener ( final LanguageListener listener )
+    public void addLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.addLanguageListener ( this, listener );
     }
 
     @Override
-    public void removeLanguageListener ( final LanguageListener listener )
+    public void removeLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.removeLanguageListener ( this, listener );
     }
@@ -424,13 +425,13 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, Paintable, Sh
     }
 
     @Override
-    public void addDictionaryListener ( final DictionaryListener listener )
+    public void addDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.addDictionaryListener ( this, listener );
     }
 
     @Override
-    public void removeDictionaryListener ( final DictionaryListener listener )
+    public void removeDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.removeDictionaryListener ( this, listener );
     }

@@ -17,12 +17,13 @@
 
 package com.alee.utils.jar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.swing.EnumLazyIconProvider;
 
 import javax.swing.*;
 
 /**
- * This enumeration represents possible jar entry types.
+ * This enumeration represents possible {@link JarEntry} types.
  *
  * @author Mikle Garin
  */
@@ -31,34 +32,35 @@ public enum JarEntryType
     /**
      * Jar entry.
      */
-    jarEntry,
+    JAR,
 
     /**
      * Package entry.
      */
-    packageEntry,
+    PACKAGE,
 
     /**
      * Java class entry.
      */
-    classEntry,
+    CLASS,
 
     /**
      * Java class source entry.
      */
-    javaEntry,
+    JAVA,
 
     /**
      * File entry.
      */
-    fileEntry;
+    FILE;
 
     /**
      * Returns JAR entry type icon.
      *
      * @return JAR entry type icon
      */
-    public ImageIcon getIcon ()
+    @NotNull
+    public Icon getIcon ()
     {
         return EnumLazyIconProvider.getIcon ( this, "icons/" );
     }

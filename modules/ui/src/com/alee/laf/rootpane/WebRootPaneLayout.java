@@ -31,12 +31,14 @@ import java.awt.*;
  */
 public class WebRootPaneLayout extends AbstractLayoutManager
 {
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return calculateSize ( container, true );
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {

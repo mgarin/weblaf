@@ -74,6 +74,12 @@ public abstract class AbstractSectionDecorationPainter<C extends JComponent, U e
         return originPainter;
     }
 
+    @Override
+    protected boolean usesContainerView ()
+    {
+        return false;
+    }
+
     /**
      * We do not want {@link SectionPainter} to perform any default tracking as it is already done within {@link #origin}.
      * Maybe in some rare cases in the future this will be enabled but so far there are none.

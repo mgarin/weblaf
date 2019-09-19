@@ -17,6 +17,7 @@
 
 package com.alee.managers.hotkey;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.BiPredicate;
 import com.alee.api.jdk.Function;
@@ -552,7 +553,7 @@ public final class HotkeyManager
         HotkeyManager.registerHotkey ( topComponent, topComponent, hotkeyData, new HotkeyRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 HotkeyManager.showComponentHotkeys ( topComponent );
             }

@@ -17,6 +17,7 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleId;
 
 /**
@@ -29,6 +30,7 @@ public abstract class AbstractStylePreview extends AbstractTitledPreview
     /**
      * Preview style ID.
      */
+    @NotNull
     protected final StyleId styleId;
 
     /**
@@ -39,7 +41,8 @@ public abstract class AbstractStylePreview extends AbstractTitledPreview
      * @param state   feature state
      * @param styleId preview style ID
      */
-    public AbstractStylePreview ( final Example example, final String id, final FeatureState state, final StyleId styleId )
+    public AbstractStylePreview ( @NotNull final Example example, @NotNull final String id, @NotNull final FeatureState state,
+                                  @NotNull final StyleId styleId )
     {
         super ( example, id, state );
         this.styleId = styleId;
@@ -50,6 +53,7 @@ public abstract class AbstractStylePreview extends AbstractTitledPreview
      *
      * @return preview style ID
      */
+    @NotNull
     protected StyleId getStyleId ()
     {
         return styleId;

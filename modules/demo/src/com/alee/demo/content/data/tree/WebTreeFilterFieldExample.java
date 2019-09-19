@@ -84,6 +84,7 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
             super ( WebTreeFilterFieldExample.this, "extree", FeatureState.release, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -115,6 +116,7 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
             super ( WebTreeFilterFieldExample.this, "asynctree", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -146,6 +148,7 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
             super ( WebTreeFilterFieldExample.this, "excheckboxtree", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

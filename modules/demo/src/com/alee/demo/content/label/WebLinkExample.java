@@ -96,6 +96,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
             super ( WebLinkExample.this, "url", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -120,6 +121,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
             super ( WebLinkExample.this, "email", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -144,6 +146,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
             super ( WebLinkExample.this, "file", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -168,6 +171,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
             super ( WebLinkExample.this, "action", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

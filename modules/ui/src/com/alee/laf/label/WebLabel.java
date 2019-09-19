@@ -21,8 +21,8 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageMethods;
-import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.language.LanguageUpdater;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -59,6 +59,12 @@ import java.util.List;
 public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
         ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebLabel>, SizeMethods<WebLabel>
 {
+    /**
+     * Component properties.
+     */
+    public static final String DISPLAYED_MNEMONIC_PROPERTY = "displayedMnemonic";
+    public static final String LABEL_FOR_PROPERTY = "labelFor";
+
     /**
      * Constructs empty label.
      */
@@ -422,122 +428,142 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
         return StyleManager.getDescriptor ( this ).getUIClassId ();
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    public MouseAdapter onMousePress ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMousePress ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onMousePress ( @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseEnter ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseEnter ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseExit ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseExit ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseDrag ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseDrag ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onMouseDrag ( @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseClick ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseClick ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onMouseClick ( @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    public MouseAdapter onDoubleClick ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDoubleClick ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    public MouseAdapter onMenuTrigger ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMenuTrigger ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    public KeyAdapter onKeyType ( @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyType ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    public KeyAdapter onKeyType ( @Nullable final HotkeyData hotkey, @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    public KeyAdapter onKeyPress ( @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyPress ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    public KeyAdapter onKeyPress ( @Nullable final HotkeyData hotkey, @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    public KeyAdapter onKeyRelease ( @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyRelease ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    public KeyAdapter onKeyRelease ( @Nullable final HotkeyData hotkey, @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
     }
 
+    @NotNull
     @Override
-    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    public FocusAdapter onFocusGain ( @NotNull final FocusEventRunnable runnable )
     {
         return EventMethodsImpl.onFocusGain ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    public FocusAdapter onFocusLoss ( @NotNull final FocusEventRunnable runnable )
     {
         return EventMethodsImpl.onFocusLoss ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    public MouseAdapter onDragStart ( final int shift, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onDragStart ( final int shift, @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
@@ -686,6 +712,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
+    @Nullable
     @Override
     public String getLanguage ()
     {
@@ -693,19 +720,19 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     }
 
     @Override
-    public void setLanguage ( final String key, final Object... data )
+    public void setLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
-    public void updateLanguage ( final Object... data )
+    public void updateLanguage ( @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, data );
     }
 
     @Override
-    public void updateLanguage ( final String key, final Object... data )
+    public void updateLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, key, data );
     }
@@ -723,7 +750,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     }
 
     @Override
-    public void setLanguageUpdater ( final LanguageUpdater updater )
+    public void setLanguageUpdater ( @NotNull final LanguageUpdater updater )
     {
         UILanguageManager.registerLanguageUpdater ( this, updater );
     }

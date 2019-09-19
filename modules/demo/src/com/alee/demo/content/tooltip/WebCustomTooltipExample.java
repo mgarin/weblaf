@@ -92,6 +92,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
             super ( WebCustomTooltipExample.this, "basic", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -117,6 +118,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
             super ( WebCustomTooltipExample.this, "instant", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -142,6 +144,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
             super ( WebCustomTooltipExample.this, "multiple", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -170,6 +173,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
             super ( WebCustomTooltipExample.this, "hotkey", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -208,6 +212,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
             super ( WebCustomTooltipExample.this, "onetime", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -240,6 +245,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
             super ( WebCustomTooltipExample.this, "custom", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

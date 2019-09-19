@@ -152,7 +152,7 @@ public final class LM
 
     /**
      * Returns whether or not specified language key exists in default {@link Language}.
-     * This will basically check existance of at least single {@link Record} with the specified key in default {@link Language}.
+     * This will basically check existence of at least single {@link Record} with the specified key in default {@link Language}.
      *
      * @param key language key to check
      * @return {@code true} if specified language key exists in default {@link Language}, {@code false} otherwise

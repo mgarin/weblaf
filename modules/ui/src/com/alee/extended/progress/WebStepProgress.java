@@ -890,7 +890,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     /**
      * Returns total progress for the specified point on progress component.
      *
-     * @param point point to retrive total progress for
+     * @param point point to retrieve total progress for
      * @return total progress for the specified point on progress component
      */
     public float getTotalProgressAt ( final Point point )
@@ -1303,7 +1303,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     /**
      * Returns step shape index at the specified point or -1 if none found.
      *
-     * @param point point to retrive shape index for
+     * @param point point to retrieve shape index for
      * @return step shape index at the specified point or -1 if none found
      */
     public int getStepShapeIndexAt ( final Point point )
@@ -1526,6 +1526,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
+        @NotNull
         @Override
         public Dimension preferredLayoutSize ( @NotNull final Container container )
         {

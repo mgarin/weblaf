@@ -114,6 +114,7 @@ public class MultiLayout extends AbstractLayoutManager
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
@@ -125,6 +126,7 @@ public class MultiLayout extends AbstractLayoutManager
         return ps;
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {
@@ -136,6 +138,7 @@ public class MultiLayout extends AbstractLayoutManager
         return ms;
     }
 
+    @NotNull
     @Override
     public Dimension maximumLayoutSize ( @NotNull final Container container )
     {

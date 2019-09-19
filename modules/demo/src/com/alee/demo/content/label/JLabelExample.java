@@ -96,12 +96,14 @@ public class JLabelExample extends AbstractStylePreviewExample
             super ( JLabelExample.this, id, featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new CompactFlowLayout ( FlowLayout.LEADING, 8, 0 );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -132,12 +134,14 @@ public class JLabelExample extends AbstractStylePreviewExample
             super ( JLabelExample.this, id, featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 8, true, false );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

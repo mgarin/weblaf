@@ -83,6 +83,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
             super ( WebTreeExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -107,6 +108,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
             super ( WebTreeExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -132,6 +134,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
             super ( WebTreeExample.this, "dragndrop", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

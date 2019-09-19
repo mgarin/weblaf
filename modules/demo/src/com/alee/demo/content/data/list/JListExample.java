@@ -88,6 +88,7 @@ public class JListExample extends AbstractStylePreviewExample
             super ( JListExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -112,6 +113,7 @@ public class JListExample extends AbstractStylePreviewExample
             super ( JListExample.this, "scrollable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

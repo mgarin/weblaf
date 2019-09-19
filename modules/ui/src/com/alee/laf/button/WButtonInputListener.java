@@ -136,7 +136,7 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     public void propertyChange ( @NotNull final PropertyChangeEvent e )
     {
         final String prop = e.getPropertyName ();
-        if ( prop.equals ( AbstractButton.MNEMONIC_CHANGED_PROPERTY ) )
+        if ( Objects.equals ( prop, AbstractButton.MNEMONIC_CHANGED_PROPERTY ) )
         {
             updateMnemonicBinding ( ( AbstractButton ) e.getSource () );
         }
@@ -306,7 +306,7 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
      *
      * @param <B> {@link AbstractButton} type
      */
-    protected static class Action<B extends AbstractButton> extends UIAction<B>
+    public static class Action<B extends AbstractButton> extends UIAction<B>
     {
         /**
          * Supported actions.

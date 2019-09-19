@@ -17,9 +17,13 @@
 
 package com.alee.utils.jar;
 
+import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.TextUtils;
-import org.slf4j.LoggerFactory;
+import com.alee.utils.UtilityException;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -35,252 +39,348 @@ import java.util.zip.ZipFile;
  *
  * @author Mikle Garin
  */
-public class JarEntry
+public class JarEntry implements Identifiable
 {
     /**
      * ID prefix.
      */
-    public static final String ID_PREFIX = "JE";
+    protected static final String ID_PREFIX = "JE";
 
     /**
      * Unique JAR entry ID.
      */
-    private String id;
-
-    /**
-     * JAR entry type.
-     */
-    private JarEntryType type;
-
-    /**
-     * JAR entry name.
-     */
-    private String name;
-
-    /**
-     * Custom JAR entry icon.
-     */
-    private ImageIcon icon;
-
-    /**
-     * ZIP entry reference for this JAR entry.
-     */
-    private ZipEntry zipEntry;
+    @NotNull
+    protected final String id;
 
     /**
      * JAR structure this entry belongs to.
      */
-    private JarStructure structure;
+    @NotNull
+    protected final JarStructure structure;
 
     /**
      * Parent JAR entry if it has one.
      */
-    private JarEntry parent;
+    @Nullable
+    protected final JarEntry parent;
+
+    /**
+     * ZIP entry reference for this JAR entry.
+     */
+    @Nullable
+    protected final ZipEntry zipEntry;
+
+    /**
+     * JAR entry type.
+     */
+    @NotNull
+    protected final JarEntryType type;
+
+    /**
+     * JAR entry name.
+     */
+    @NotNull
+    protected String name;
+
+    /**
+     * Custom JAR entry icon.
+     */
+    @Nullable
+    protected Icon icon;
 
     /**
      * Children JAR entries.
      */
-    private List<JarEntry> children = new ArrayList<JarEntry> ();
+    @Nullable
+    protected List<JarEntry> children;
 
-    public JarEntry ( final JarStructure structure )
+    /**
+     * Constructs new {@link JarEntry}.
+     *
+     * @param structure {@link JarStructure}
+     * @param type      {@link JarEntryType}
+     * @param name      {@link JarEntry} name
+     */
+    public JarEntry ( @NotNull final JarStructure structure, @NotNull final JarEntryType type, @NotNull final String name )
     {
-        super ();
-        setStructure ( structure );
-        setParent ( null );
+        this ( structure, null, null, type, name );
     }
 
-    public JarEntry ( final JarStructure structure, final JarEntryType type, final String name )
+    /**
+     * Constructs new {@link JarEntry}.
+     *
+     * @param structure {@link JarStructure}
+     * @param parent    parent {@link JarEntry}
+     * @param zipEntry  {@link ZipEntry}
+     * @param type      {@link JarEntryType}
+     * @param name      {@link JarEntry} name
+     */
+    public JarEntry ( @NotNull final JarStructure structure, @Nullable final JarEntry parent, @Nullable final ZipEntry zipEntry,
+                      @NotNull final JarEntryType type, @NotNull final String name )
     {
-        super ();
-        setType ( type );
-        setName ( name );
-        setStructure ( structure );
-        setParent ( null );
-    }
-
-    public JarEntry ( final JarStructure structure, final JarEntryType type, final String name, final JarEntry parent )
-    {
-        super ();
-        setType ( type );
-        setName ( name );
-        setStructure ( structure );
-        setParent ( parent );
-    }
-
-    public JarEntry ( final JarStructure structure, final JarEntryType type, final String name, final JarEntry parent,
-                      final List<JarEntry> children )
-    {
-        super ();
-        setType ( type );
-        setName ( name );
-        setStructure ( structure );
-        setParent ( parent );
-        setChildren ( children );
-    }
-
-    public String getId ()
-    {
-        if ( id == null )
-        {
-            setId ();
-        }
-        return id;
-    }
-
-    private void setId ()
-    {
-        setId ( TextUtils.generateId ( ID_PREFIX ) );
-    }
-
-    public void setId ( final String id )
-    {
-        this.id = id;
-    }
-
-    public JarEntryType getType ()
-    {
-        return type;
-    }
-
-    public void setType ( final JarEntryType type )
-    {
+        this.id = TextUtils.generateId ( ID_PREFIX );
+        this.structure = structure;
+        this.parent = parent;
+        this.zipEntry = zipEntry;
+        this.children = null;
         this.type = type;
-    }
-
-    public String getName ()
-    {
-        return name;
-    }
-
-    public void setName ( final String name )
-    {
         this.name = name;
     }
 
-    public ZipEntry getZipEntry ()
+    @NotNull
+    @Override
+    public String getId ()
     {
-        return zipEntry;
+        return id;
     }
 
-    public void setZipEntry ( final ZipEntry zipEntry )
-    {
-        this.zipEntry = zipEntry;
-    }
-
-    public JarStructure getStructure ()
-    {
-        return structure;
-    }
-
-    public void setStructure ( final JarStructure structure )
-    {
-        this.structure = structure;
-    }
-
+    /**
+     * Returns parent {@link JarEntry} or {@code null} if this is a {@link JarEntryType#JAR} entry.
+     *
+     * @return parent {@link JarEntry} or {@code null} if this is a {@link JarEntryType#JAR} entry
+     */
+    @Nullable
     public JarEntry getParent ()
     {
         return parent;
     }
 
-    public void setParent ( final JarEntry parent )
+    /**
+     * Returns {@link ZipEntry} or {@code null} if this is a {@link JarEntryType#JAR} entry.
+     *
+     * @return {@link ZipEntry} or {@code null} if this is a {@link JarEntryType#JAR} entry
+     */
+    @Nullable
+    public ZipEntry getZipEntry ()
     {
-        this.parent = parent;
+        return zipEntry;
     }
 
-    public List<JarEntry> getChildren ()
+    /**
+     * Returns {@link JarEntryType}.
+     *
+     * @return {@link JarEntryType}
+     */
+    @NotNull
+    public JarEntryType getType ()
     {
-        return children;
+        return type;
     }
 
-    public JarEntry getChild ( final int index )
+    /**
+     * Returns {@link JarEntry} name.
+     *
+     * @return {@link JarEntry} name
+     */
+    @NotNull
+    public String getName ()
     {
-        return children.get ( index );
+        return name;
     }
 
-    public JarEntry getChildByName ( final String name )
+    /**
+     * Sets custom {@link JarEntry} name.
+     *
+     * @param name custom {@link JarEntry} name
+     */
+    public void setName ( @NotNull final String name )
     {
-        for ( final JarEntry child : children )
+        this.name = name;
+    }
+
+    /**
+     * Returns {@link JarEntry} icon.
+     *
+     * @return {@link JarEntry} icon
+     */
+    @NotNull
+    public Icon getIcon ()
+    {
+        final Icon icon;
+        if ( this.icon != null )
         {
-            if ( child.getName ().equals ( name ) )
-            {
-                return child;
-            }
+            icon = this.icon;
         }
-        return null;
-    }
-
-    public void setChildren ( final List<JarEntry> children )
-    {
-        this.children = children;
-    }
-
-    public void addChild ( final JarEntry child )
-    {
-        this.children.add ( child );
-    }
-
-    public void addChild ( final int index, final JarEntry child )
-    {
-        this.children.add ( index, child );
-    }
-
-    public void removeChild ( final JarEntry child )
-    {
-        this.children.remove ( child );
-    }
-
-    public ImageIcon getIcon ()
-    {
-        if ( icon != null )
+        else if ( type != JarEntryType.FILE )
         {
-            return icon;
-        }
-        else if ( type != JarEntryType.fileEntry )
-        {
-            return type.getIcon ();
+            icon = type.getIcon ();
         }
         else
         {
-            final ImageIcon icon = FileUtils.getStandardFileIcon ( false, getEntryExtension (), 1f );
-            if ( icon != null )
-            {
-                return icon;
-            }
-            else
-            {
-                return JarEntryType.fileEntry.getIcon ();
-            }
+            final Icon standard = FileUtils.getStandardFileIcon ( false, getEntryExtension (), 1f );
+            icon = standard != null ? standard : JarEntryType.FILE.getIcon ();
         }
+        return icon;
     }
 
-    public void setIcon ( final ImageIcon icon )
+    /**
+     * Sets custom {@link JarEntry} icon.
+     *
+     * @param icon custom {@link JarEntry} icon
+     */
+    public void setIcon ( @Nullable final Icon icon )
     {
         this.icon = icon;
     }
 
+    /**
+     * Returns copy of children {@link JarEntry}s.
+     *
+     * @return copy of children {@link JarEntry}s
+     */
+    @NotNull
+    public List<JarEntry> getChildren ()
+    {
+        return this.children != null ?
+                new ArrayList<JarEntry> ( this.children ) :
+                new ArrayList<JarEntry> ();
+    }
+
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name child {@link JarEntry} name
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @NotNull
+    public JarEntry getChildByName ( @Nullable final String name )
+    {
+        return getChildByName ( name, false );
+    }
+
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name        child {@link JarEntry} name
+     * @param recursively whether should look for the child recursively in all children
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @NotNull
+    public JarEntry getChildByName ( @Nullable final String name, final boolean recursively )
+    {
+        final JarEntry child = findChildByName ( name, recursively );
+        if ( child == null )
+        {
+            throw new UtilityException ( "Cannot find child by name: " + name );
+        }
+        return child;
+    }
+
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name child {@link JarEntry} name
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @Nullable
+    public JarEntry findChildByName ( @Nullable final String name )
+    {
+        return getChildByName ( name, false );
+    }
+
+    /**
+     * Returns child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found.
+     *
+     * @param name        child {@link JarEntry} name
+     * @param recursively whether should look for the child recursively in all children
+     * @return child {@link JarEntry} with the specfiied name or {@code null} if it cannot be found
+     */
+    @Nullable
+    public JarEntry findChildByName ( @Nullable final String name, final boolean recursively )
+    {
+        JarEntry childByName = null;
+        if ( this.children != null )
+        {
+            for ( final JarEntry child : this.children )
+            {
+                if ( child.getName ().equals ( name ) )
+                {
+                    childByName = child;
+                    break;
+                }
+                else if ( recursively )
+                {
+                    final JarEntry otherChild = child.findChildByName ( name, true );
+                    if ( otherChild != null )
+                    {
+                        childByName = child;
+                        break;
+                    }
+                }
+            }
+        }
+        return childByName;
+    }
+
+    /**
+     * Adds child {@link JarEntry}.
+     *
+     * @param child child {@link JarEntry} to add
+     */
+    public void addChild ( @NotNull final JarEntry child )
+    {
+        if ( this.children == null )
+        {
+            this.children = new ArrayList<JarEntry> ();
+        }
+        this.children.add ( child );
+        CollectionUtils.sort ( this.children, JarEntryComparator.instance () );
+    }
+
+    /**
+     * Removes child {@link JarEntry}.
+     *
+     * @param child child {@link JarEntry} to remove
+     */
+    public void removeChild ( @NotNull final JarEntry child )
+    {
+        if ( this.children != null )
+        {
+            this.children.remove ( child );
+        }
+    }
+
+    /**
+     * Returns {@link JarEntry} file extension if it is a file, empty {@link String} othewise.
+     *
+     * @return {@link JarEntry} file extension if it is a file, empty {@link String} othewise
+     */
+    @NotNull
     public String getEntryExtension ()
     {
         return FileUtils.getFileExtPart ( name, false );
     }
 
-    public boolean isClassEntry ( final Class classType )
+    /**
+     * Returns whether or not this {@link JarEntry} represents specified {@link Class}.
+     *
+     * @param classType {@link Class}
+     * @return {@code true} if this {@link JarEntry} represents specified {@link Class}, {@code false} otherwise
+     */
+    public boolean isClassEntry ( @Nullable final Class classType )
     {
         return classType != null && classType.getCanonicalName ().equals ( getCanonicalEntryName () );
     }
 
+    /**
+     * Returns {@link JarEntry} canonical name.
+     *
+     * @return {@link JarEntry} canonical name
+     */
+    @NotNull
     public String getCanonicalEntryName ()
     {
         // Creating canonical name
         StringBuilder canonicalName = new StringBuilder ( getName () );
         JarEntry parent = getParent ();
-        while ( parent != null && !parent.getType ().equals ( JarEntryType.jarEntry ) )
+        while ( parent != null && !parent.getType ().equals ( JarEntryType.JAR ) )
         {
             canonicalName.insert ( 0, parent.getName () + "." );
             parent = parent.getParent ();
         }
 
         // Removing extension from classes
-        if ( type.equals ( JarEntryType.classEntry ) || type.equals ( JarEntryType.javaEntry ) )
+        if ( type.equals ( JarEntryType.CLASS ) || type.equals ( JarEntryType.JAVA ) )
         {
             canonicalName = new StringBuilder ( canonicalName.substring ( 0, canonicalName.lastIndexOf ( "." ) ) );
         }
@@ -288,13 +388,18 @@ public class JarEntry
         return canonicalName.toString ();
     }
 
+    /**
+     * Returns {@link JarEntry} canonical path.
+     *
+     * @return {@link JarEntry} canonical path
+     */
+    @NotNull
     public String getCanonicalEntryPath ()
     {
-        // Creating canonical path
         final StringBuilder canonicalName = new StringBuilder ( getName () );
         JarEntry parent = getParent ();
-        while ( parent != null && !parent.getType ().equals ( JarEntryType.jarEntry ) &&
-                !parent.getParent ().getType ().equals ( JarEntryType.jarEntry ) )
+        while ( parent != null && !parent.getType ().equals ( JarEntryType.JAR ) &&
+                parent.getParent () != null && !parent.getParent ().getType ().equals ( JarEntryType.JAR ) )
         {
             canonicalName.insert ( 0, parent.getName () + "/" );
             parent = parent.getParent ();
@@ -302,11 +407,18 @@ public class JarEntry
         return canonicalName.toString ();
     }
 
+    /**
+     * Returns {@link List} of {@link JarEntry}s representing this {@link JarEntry} path to root {@link JarEntry}.
+     * Root will always be at {@code 0} index, this element will always be at the last index.
+     *
+     * @return {@link List} of {@link JarEntry}s representing this {@link JarEntry} path to root {@link JarEntry}
+     */
+    @NotNull
     public List<JarEntry> getPath ()
     {
         final List<JarEntry> path = new ArrayList<JarEntry> ();
         JarEntry current = JarEntry.this;
-        while ( current != null && !current.getType ().equals ( JarEntryType.jarEntry ) )
+        while ( current != null && !current.getType ().equals ( JarEntryType.JAR ) )
         {
             path.add ( 0, current );
             current = current.getParent ();
@@ -314,25 +426,39 @@ public class JarEntry
         return path;
     }
 
+    /**
+     * Returns {@link JarEntry} content {@link InputStream}.
+     *
+     * @return {@link JarEntry} content {@link InputStream}
+     */
+    @NotNull
     public InputStream getInputStream ()
     {
-        try
+        final ZipEntry zipEntry = getZipEntry ();
+        if ( zipEntry != null )
         {
-            return new ZipFile ( structure.getJarLocation () ).getInputStream ( getZipEntry () );
+            try
+            {
+                return new ZipFile ( structure.getJarLocation () ).getInputStream ( zipEntry );
+            }
+            catch ( final IOException e )
+            {
+                throw new UtilityException ( "Unable to open InputStream for JarEntry: " + getName (), e );
+            }
         }
-        catch ( final IOException e )
+        else
         {
-            LoggerFactory.getLogger ( JarEntry.class ).error ( e.toString (), e );
-            return null;
+            throw new UtilityException ( "JarEntry of JAR type cannot be read" );
         }
     }
 
     @Override
-    public boolean equals ( final Object obj )
+    public boolean equals ( @Nullable final Object other )
     {
-        return obj != null && obj instanceof JarEntry && ( ( JarEntry ) obj ).getCanonicalEntryPath ().equals ( getCanonicalEntryPath () );
+        return other instanceof JarEntry && ( ( JarEntry ) other ).getCanonicalEntryPath ().equals ( getCanonicalEntryPath () );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

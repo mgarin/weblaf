@@ -84,6 +84,7 @@ public class TableTooltipExample extends AbstractStylePreviewExample
             super ( TableTooltipExample.this, "swing", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -118,6 +119,7 @@ public class TableTooltipExample extends AbstractStylePreviewExample
             super ( TableTooltipExample.this, "custom", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

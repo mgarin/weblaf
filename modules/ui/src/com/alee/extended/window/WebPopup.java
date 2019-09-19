@@ -38,10 +38,7 @@ import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.AWTEventListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.lang.ref.WeakReference;
 
 /**
@@ -58,7 +55,7 @@ import java.lang.ref.WeakReference;
  * @see PopupPainter
  */
 public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
-    implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
+        implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
 {
     /**
      * todo 1. Move all action implementations into UI
@@ -178,6 +175,12 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      * Invoker follow adapter.
      */
     protected transient WindowFollowBehavior followBehavior;
+
+    /**
+     * Whether or not popup is undergoing opacity change.
+     * This is a workaround for older JDKs changing {@link Window} contents opacity along with {@link Window} opacity.
+     */
+    protected transient boolean changingOpacity = false;
 
     /**
      * Constructs new popup.
@@ -626,135 +629,133 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Ignore action if popup is being displayed or already displayed
-        if ( displaying || !hiding && window != null )
+        if ( !displaying && ( window == null || hiding ) )
         {
-            return;
-        }
-
-        // Stop hiding popup
-        if ( hiding )
-        {
-            if ( hideAnimator != null )
+            // Stop hiding popup
+            if ( window != null )
             {
-                hideAnimator.stop ();
-                hideAnimator = null;
-            }
-            hiding = false;
-            completePopupHide ();
-        }
-
-        // Set state to displaying
-        displaying = true;
-
-        // Saving invoker
-        this.invoker = invoker;
-        this.invokerWindow = CoreSwingUtils.getWindowAncestor ( invoker );
-
-        // Updating display state
-        this.visibilityProgress = animate ? 0f : 1f;
-
-        // Creating popup
-        window = createWindow ( x, y );
-
-        // Informing about popup display
-        firePopupWillBeOpened ();
-
-        // Creating menu hide mouse event listener (when mouse pressed outside of the menu)
-        mouseListener = new AWTEventListener ()
-        {
-            @Override
-            public void eventDispatched ( final AWTEvent event )
-            {
-                if ( isCloseOnOuterAction () )
+                if ( hideAnimator != null )
                 {
-                    final MouseEvent e = ( MouseEvent ) event;
-                    if ( e.getID () == MouseEvent.MOUSE_PRESSED )
+                    hideAnimator.stop ();
+                    hideAnimator = null;
+                }
+                window.dispose ();
+                hiding = false;
+            }
+
+            // Set state to displaying
+            displaying = true;
+
+            // Saving invoker
+            this.invoker = invoker;
+            this.invokerWindow = CoreSwingUtils.getWindowAncestor ( invoker );
+
+            // Updating display state
+            this.visibilityProgress = animate ? 0f : 1f;
+
+            // Creating popup
+            window = createWindow ( x, y );
+
+            // Informing about popup display
+            firePopupWillBeOpened ();
+
+            // Creating menu hide mouse event listener (when mouse pressed outside of the menu)
+            mouseListener = new AWTEventListener ()
+            {
+                @Override
+                public void eventDispatched ( final AWTEvent event )
+                {
+                    if ( isCloseOnOuterAction () )
                     {
-                        final Component component = e.getComponent ();
-                        if ( window != component && !window.isAncestorOf ( component ) )
+                        final MouseEvent e = ( MouseEvent ) event;
+                        if ( e.getID () == MouseEvent.MOUSE_PRESSED )
                         {
-                            hidePopup ();
+                            final Component component = e.getComponent ();
+                            if ( window != component && !window.isAncestorOf ( component ) )
+                            {
+                                hidePopup ();
+                            }
                         }
                     }
                 }
-            }
-        };
-        Toolkit.getDefaultToolkit ().addAWTEventListener ( mouseListener, AWTEvent.MOUSE_EVENT_MASK );
+            };
+            Toolkit.getDefaultToolkit ().addAWTEventListener ( mouseListener, AWTEvent.MOUSE_EVENT_MASK );
 
-        // Creating menu hide focus event listener (when focus leaves application)
-        focusListener = new GlobalFocusListener ()
-        {
-            @Override
-            public void focusChanged ( @Nullable final Component oldFocus, @Nullable final Component newFocus )
+            // Creating menu hide focus event listener (when focus leaves application)
+            focusListener = new GlobalFocusListener ()
             {
-                if ( isCloseOnOuterAction () && newFocus == null )
+                @Override
+                public void focusChanged ( @Nullable final Component oldFocus, @Nullable final Component newFocus )
                 {
-                    hidePopup ();
+                    if ( isCloseOnOuterAction () && newFocus == null )
+                    {
+                        hidePopup ();
+                    }
                 }
-            }
-        };
-        FocusManager.registerGlobalFocusListener ( this, focusListener );
+            };
+            FocusManager.registerGlobalFocusListener ( this, focusListener );
 
-        // Displaying popup
-        window.setVisible ( true );
+            // Displaying popup
+            window.setVisible ( true );
 
-        // Transferring focus
-        final Component defaultFocus = getDefaultFocus ();
-        if ( defaultFocus != null && WebPopup.this.isAncestorOf ( defaultFocus ) && defaultFocus.isShowing () )
-        {
-            // Transferring focus into specified component located inside of the popup
-            defaultFocus.requestFocus ();
-        }
-        else
-        {
-            // Transferring focus into first focusable component
-            final Component nextFocus = SwingUtils.findFocusableComponent ( this );
-            if ( nextFocus != null && nextFocus.isShowing () )
+            // Transferring focus
+            final Component defaultFocus = getDefaultFocus ();
+            if ( defaultFocus != null && WebPopup.this.isAncestorOf ( defaultFocus ) && defaultFocus.isShowing () )
             {
-                nextFocus.requestFocus ();
+                // Transferring focus into specified component located inside of the popup
+                defaultFocus.requestFocus ();
             }
             else
             {
-                window.requestFocus ();
-            }
-        }
-
-        // Animating popup display
-        if ( animate )
-        {
-            showAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, true, new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
+                // Transferring focus into first focusable component
+                final Component nextFocus = SwingUtils.findFocusableComponent ( this );
+                if ( nextFocus != null && nextFocus.isShowing () )
                 {
-                    if ( visibilityProgress < 1f )
-                    {
-                        visibilityProgress = Math.min ( visibilityProgress + fadeStepSize, 1f );
-                        setWindowOpacity ( visibilityProgress );
-                    }
-                    else
-                    {
-                        showAnimator.stop ();
-                        showAnimator = null;
-                        displaying = false;
-                    }
-                    showAnimationStepPerformed ();
+                    nextFocus.requestFocus ();
                 }
-            } );
-        }
+                else
+                {
+                    window.requestFocus ();
+                }
+            }
 
-        // Adding follow behavior if needed
-        if ( followInvoker && invokerWindow != null )
-        {
-            installFollowBehavior ();
-        }
+            // Animating popup display
+            if ( animate )
+            {
+                showAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, true, new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        if ( visibilityProgress < 1f )
+                        {
+                            visibilityProgress = Math.min ( visibilityProgress + fadeStepSize, 1f );
+                            setWindowOpacity ( visibilityProgress );
+                        }
+                        else
+                        {
+                            showAnimator.stop ();
+                            showAnimator = null;
+                            displaying = false;
+                        }
+                        showAnimationStepPerformed ();
+                    }
+                } );
+            }
 
-        if ( !animate )
-        {
-            displaying = false;
-        }
+            // Adding follow behavior if needed
+            if ( followInvoker && invokerWindow != null )
+            {
+                installFollowBehavior ();
+            }
 
-        firePopupOpened ();
+            if ( !animate )
+            {
+                displaying = false;
+            }
+
+            firePopupOpened ();
+        }
     }
 
     /**
@@ -782,6 +783,16 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         {
             window.setLocation ( x, y );
         }
+
+        // Listener
+        window.addWindowListener ( new WindowAdapter ()
+        {
+            @Override
+            public void windowClosed ( @NotNull final WindowEvent e )
+            {
+                completePopupHide ();
+            }
+        } );
 
         // Packing window size to preferred
         window.pack ();
@@ -819,54 +830,52 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Ignore action if popup is being hidden or already hidden
-        if ( hiding || window == null || !window.isShowing () )
+        if ( !hiding && window != null && window.isShowing () )
         {
-            return;
-        }
+            // Set state to displaying
+            hiding = true;
 
-        // Set state to displaying
-        hiding = true;
-
-        // Stop hiding popup
-        if ( displaying )
-        {
-            if ( showAnimator != null )
+            // Stop hiding popup
+            if ( displaying )
             {
-                showAnimator.stop ();
-            }
-            displaying = false;
-        }
-
-        // Updating display state
-        this.visibilityProgress = animate ? 1f : 0f;
-
-        if ( animate )
-        {
-            hideAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, true, new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
+                if ( showAnimator != null )
                 {
-                    if ( visibilityProgress > 0f )
-                    {
-                        visibilityProgress = Math.max ( visibilityProgress - fadeStepSize, 0f );
-                        setWindowOpacity ( visibilityProgress );
-                    }
-                    else
-                    {
-                        completePopupHide ();
-                        hideAnimator.stop ();
-                        hideAnimator = null;
-                        hiding = false;
-                    }
-                    hideAnimationStepPerformed ();
+                    showAnimator.stop ();
                 }
-            } );
-        }
-        else
-        {
-            completePopupHide ();
-            hiding = false;
+                displaying = false;
+            }
+
+            // Updating display state
+            this.visibilityProgress = animate ? 1f : 0f;
+
+            if ( animate )
+            {
+                hideAnimator = WebTimer.repeat ( SwingUtils.frameRateDelay ( 48 ), 0L, true, new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        if ( visibilityProgress > 0f )
+                        {
+                            visibilityProgress = Math.max ( visibilityProgress - fadeStepSize, 0f );
+                            setWindowOpacity ( visibilityProgress );
+                        }
+                        else
+                        {
+                            window.dispose ();
+                            hideAnimator.stop ();
+                            hideAnimator = null;
+                            hiding = false;
+                        }
+                        hideAnimationStepPerformed ();
+                    }
+                } );
+            }
+            else
+            {
+                window.dispose ();
+                hiding = false;
+            }
         }
     }
 
@@ -875,32 +884,35 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
      */
     protected void completePopupHide ()
     {
-        firePopupWillBeClosed ();
-
-        // Detaching this popup from window
-        window.setContentPane ( new EmptyComponent () );
-
-        // Removing follow adapter
-        if ( followInvoker && invokerWindow != null )
+        if ( window != null )
         {
-            uninstallFollowBehavior ();
+            firePopupWillBeClosed ();
+
+            // Detaching this popup from window
+            window.setContentPane ( new EmptyComponent () );
+
+            // Removing follow adapter
+            if ( followInvoker && invokerWindow != null )
+            {
+                uninstallFollowBehavior ();
+            }
+
+            // Removing popup hide event listeners
+            Toolkit.getDefaultToolkit ().removeAWTEventListener ( mouseListener );
+            mouseListener = null;
+            FocusManager.unregisterGlobalFocusListener ( this, focusListener );
+            focusListener = null;
+
+            // Removing follow adapter
+            invokerWindow = null;
+            invoker = null;
+
+            // Disposing of popup window
+            window.dispose ();
+            window = null;
+
+            firePopupClosed ();
         }
-
-        // Removing popup hide event listeners
-        Toolkit.getDefaultToolkit ().removeAWTEventListener ( mouseListener );
-        mouseListener = null;
-        FocusManager.unregisterGlobalFocusListener ( this, focusListener );
-        focusListener = null;
-
-        // Removing follow adapter
-        invokerWindow = null;
-        invoker = null;
-
-        // Disposing of popup window
-        window.dispose ();
-        window = null;
-
-        firePopupClosed ();
     }
 
     /**
@@ -1018,8 +1030,13 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     @Override
     public void setOpaque ( final boolean isOpaque )
     {
-        super.setOpaque ( isOpaque );
-        setWindowOpaque ( isOpaque );
+        if ( !changingOpacity )
+        {
+            changingOpacity = true;
+            super.setOpaque ( isOpaque );
+            setWindowOpaque ( isOpaque );
+            changingOpacity = false;
+        }
     }
 
     @Override

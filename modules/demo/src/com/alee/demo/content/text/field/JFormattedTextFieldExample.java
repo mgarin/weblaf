@@ -100,6 +100,7 @@ public class JFormattedTextFieldExample extends AbstractStylePreviewExample
             this.value = value;
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

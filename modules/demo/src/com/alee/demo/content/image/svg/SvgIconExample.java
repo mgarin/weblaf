@@ -87,12 +87,14 @@ public class SvgIconExample extends AbstractPreviewExample
             this.adjustments = CollectionUtils.asList ( adjustments );
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new CompactFlowLayout ( FlowLayout.LEADING, 8, 0 );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

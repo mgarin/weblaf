@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.utils.swing.MouseButton;
 
@@ -37,151 +39,169 @@ public interface EventMethods extends MethodExtension
      * Shortcut method for mouse press event.
      *
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMousePress ( MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMousePress ( @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse press event.
      *
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMousePress ( MouseButton mouseButton, MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMousePress ( @Nullable MouseButton mouseButton, @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse enter event.
      *
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMouseEnter ( MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMouseEnter ( @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse exit event.
      *
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMouseExit ( MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMouseExit ( @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse drag event.
      *
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMouseDrag ( MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMouseDrag ( @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse drag event.
      *
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMouseDrag ( MouseButton mouseButton, MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMouseDrag ( @Nullable MouseButton mouseButton, @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse click event.
      *
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMouseClick ( MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMouseClick ( @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse click event.
      *
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMouseClick ( MouseButton mouseButton, MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMouseClick ( @Nullable MouseButton mouseButton, @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for double-click mouse event.
      *
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onDoubleClick ( MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onDoubleClick ( @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse event triggering popup menu.
      *
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onMenuTrigger ( MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onMenuTrigger ( @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for key type event.
      *
      * @param runnable key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public KeyAdapter onKeyType ( KeyEventRunnable runnable );
+    @NotNull
+    public KeyAdapter onKeyType ( @NotNull KeyEventRunnable runnable );
 
     /**
      * Shortcut method for key type event.
      *
      * @param hotkey   hotkey filter
      * @param runnable key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public KeyAdapter onKeyType ( HotkeyData hotkey, KeyEventRunnable runnable );
+    @NotNull
+    public KeyAdapter onKeyType ( @Nullable HotkeyData hotkey, @NotNull KeyEventRunnable runnable );
 
     /**
      * Shortcut method for key press event.
      *
      * @param runnable key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public KeyAdapter onKeyPress ( KeyEventRunnable runnable );
+    @NotNull
+    public KeyAdapter onKeyPress ( @NotNull KeyEventRunnable runnable );
 
     /**
      * Shortcut method for key press event.
      *
      * @param hotkey   hotkey filter
      * @param runnable key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public KeyAdapter onKeyPress ( HotkeyData hotkey, KeyEventRunnable runnable );
+    @NotNull
+    public KeyAdapter onKeyPress ( @Nullable HotkeyData hotkey, @NotNull KeyEventRunnable runnable );
 
     /**
      * Shortcut method for key release event.
      *
      * @param runnable key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public KeyAdapter onKeyRelease ( KeyEventRunnable runnable );
+    @NotNull
+    public KeyAdapter onKeyRelease ( @NotNull KeyEventRunnable runnable );
 
     /**
      * Shortcut method for key release event.
      *
      * @param hotkey   hotkey filter
      * @param runnable key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public KeyAdapter onKeyRelease ( HotkeyData hotkey, KeyEventRunnable runnable );
+    @NotNull
+    public KeyAdapter onKeyRelease ( @Nullable HotkeyData hotkey, @NotNull KeyEventRunnable runnable );
 
     /**
      * Shortcut method for focus gain event.
      *
      * @param runnable focus event runnable
-     * @return used focus adapter
+     * @return created {@link FocusAdapter}
      */
-    public FocusAdapter onFocusGain ( FocusEventRunnable runnable );
+    @NotNull
+    public FocusAdapter onFocusGain ( @NotNull FocusEventRunnable runnable );
 
     /**
      * Shortcut method for focus loss event.
      *
      * @param runnable focus event runnable
-     * @return used focus adapter
+     * @return created {@link FocusAdapter}
      */
-    public FocusAdapter onFocusLoss ( FocusEventRunnable runnable );
+    @NotNull
+    public FocusAdapter onFocusLoss ( @NotNull FocusEventRunnable runnable );
 
     /**
      * Shortcut method for drag start.
@@ -190,9 +210,10 @@ public interface EventMethods extends MethodExtension
      *
      * @param shift    coordinate shift required to start drag
      * @param runnable mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onDragStart ( int shift, MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onDragStart ( int shift, @NotNull MouseEventRunnable runnable );
 
     /**
      * Shortcut method for drag start.
@@ -202,7 +223,8 @@ public interface EventMethods extends MethodExtension
      * @param shift       coordinate shift required to start drag
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public MouseAdapter onDragStart ( int shift, MouseButton mouseButton, MouseEventRunnable runnable );
+    @NotNull
+    public MouseAdapter onDragStart ( int shift, @Nullable MouseButton mouseButton, @NotNull MouseEventRunnable runnable );
 }

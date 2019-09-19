@@ -19,53 +19,30 @@ package com.alee.laf.tabbedpane;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.clone.Clone;
 import com.alee.api.jdk.Consumer;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.painter.SectionPainter;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.text.View;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * Custom UI for {@link JTabbedPane} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebTabbedPaneUI<C extends JTabbedPane> extends WTabbedPaneUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    /**
-     * Style settings.
-     */
-    protected int tabRunIndent = WebTabbedPaneStyle.tabRunIndent;
-    protected int tabOverlay = WebTabbedPaneStyle.tabOverlay;
-    protected TabbedPaneStyle tabbedPaneStyle = WebTabbedPaneStyle.tabbedPaneStyle;
-    protected TabStretchType tabStretchType = WebTabbedPaneStyle.tabStretchType;
-    protected Insets contentInsets = WebTabbedPaneStyle.contentInsets;
-    protected Insets tabInsets = WebTabbedPaneStyle.tabInsets;
-    protected boolean rotateTabInsets = WebTabbedPaneStyle.rotateTabInsets;
-
     /**
      * Component painter.
      */
     @DefaultPainter ( TabbedPanePainter.class )
     protected ITabbedPanePainter painter;
-
-    /**
-     * Runtime variables.
-     */
-    protected transient final Map<Integer, SectionPainter> backgroundPainterAt = new HashMap<Integer, SectionPainter> ();
 
     /**
      * Returns an instance of the {@link WebTabbedPaneUI} for the specified component.
@@ -80,20 +57,20 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.installSkin ( tabPane );
+        StyleManager.installSkin ( tabbedPane );
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( tabPane );
+        StyleManager.uninstallSkin ( tabbedPane );
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -103,19 +80,45 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( tabPane, painter );
+        return PainterSupport.getShape ( tabbedPane, painter );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( tabPane, painter );
+        return PainterSupport.isShapeDetectionEnabled ( tabbedPane, painter );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( tabPane, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( tabbedPane, painter, enabled );
+    }
+
+    @Nullable
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( tabbedPane );
+    }
+
+    @Override
+    public void setMargin ( @Nullable final Insets margin )
+    {
+        PainterSupport.setMargin ( tabbedPane, margin );
+    }
+
+    @Nullable
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( tabbedPane );
+    }
+
+    @Override
+    public void setPadding ( @Nullable final Insets padding )
+    {
+        PainterSupport.setPadding ( tabbedPane, padding );
     }
 
     /**
@@ -136,7 +139,7 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tabPane, this, new Consumer<ITabbedPanePainter> ()
+        PainterSupport.setPainter ( tabbedPane, this, new Consumer<ITabbedPanePainter> ()
         {
             @Override
             public void accept ( final ITabbedPanePainter newPainter )
@@ -144,74 +147,6 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
                 WebTabbedPaneUI.this.painter = newPainter;
             }
         }, this.painter, painter, ITabbedPanePainter.class, AdaptiveTabbedPanePainter.class );
-    }
-
-    @Override
-    public TabbedPaneStyle getTabbedPaneStyle ()
-    {
-        return tabbedPaneStyle;
-    }
-
-    @Override
-    public void setTabbedPaneStyle ( final TabbedPaneStyle tabbedPaneStyle )
-    {
-        final TabbedPaneStyle old = this.tabbedPaneStyle;
-        this.tabbedPaneStyle = tabbedPaneStyle;
-        SwingUtils.firePropertyChanged ( tabPane, WebTabbedPane.TABBED_PANE_STYLE_PROPERTY, old, tabbedPaneStyle );
-    }
-
-    @Override
-    public TabStretchType getTabStretchType ()
-    {
-        return tabStretchType;
-    }
-
-    @Override
-    public void setTabStretchType ( final TabStretchType tabStretchType )
-    {
-        this.tabStretchType = tabStretchType;
-    }
-
-    @Override
-    public Vector<View> getHtmlViews ()
-    {
-        return htmlViews;
-    }
-
-    @Override
-    public ScrollableTabSupport getTabScroller ()
-    {
-        return tabScroller;
-    }
-
-    @Override
-    public int[] getTabRuns ()
-    {
-        return tabRuns;
-    }
-
-    @Override
-    public Rectangle[] getRects ()
-    {
-        return rects;
-    }
-
-    @Override
-    public int getMaxTabHeight ()
-    {
-        return maxTabHeight;
-    }
-
-    @Override
-    public int getMaxTabWidth ()
-    {
-        return maxTabWidth;
-    }
-
-    @Override
-    public SectionPainter getBackgroundPainterAt ( final int tabIndex )
-    {
-        return backgroundPainterAt.get ( tabIndex );
     }
 
     @Override
@@ -228,192 +163,6 @@ public class WebTabbedPaneUI extends WTabbedPaneUI implements ShapeSupport, Marg
             painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
     }
-
-    @Override
-    protected int getTabRunIndent ( final int tabPlacement, final int run )
-    {
-        return tabRunIndent;
-    }
-
-    @Override
-    public int getTabRunOverlay ( final int tabPlacement )
-    {
-        return tabOverlay;
-    }
-
-    @Override
-    protected Insets getSelectedTabPadInsets ( final int tabPlacement )
-    {
-        final Insets targetInsets = new Insets ( 0, 0, 0, 0 );
-        rotateInsets ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? new Insets ( 2, 2, 2, 1 ) : new Insets ( 0, 0, 0, 0 ),
-                targetInsets, tabPlacement );
-        return targetInsets;
-    }
-
-    @Override
-    public Insets getTabAreaInsets ( final int tabPlacement )
-    {
-        final Insets targetInsets = new Insets ( 0, 0, 0, 0 );
-        rotateInsets (
-                tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? new Insets ( tabPlacement == JTabbedPane.RIGHT ? 1 : 0, 1, 0, 2 ) :
-                        new Insets ( -1, -1, 0, 0 ), targetInsets, tabPlacement );
-        return targetInsets;
-    }
-
-    @Override
-    protected boolean shouldRotateTabRuns ( final int tabPlacement )
-    {
-        // todo Requires style changes
-        return true;
-    }
-
-    @Override
-    protected boolean shouldPadTabRun ( final int tabPlacement, final int run )
-    {
-        return !tabStretchType.equals ( TabStretchType.never ) &&
-                ( tabStretchType.equals ( TabStretchType.always ) || tabStretchType.equals ( TabStretchType.multiline ) && runCount > 1 );
-    }
-
-    @Override
-    protected Insets getContentBorderInsets ( final int tabPlacement )
-    {
-        if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
-        {
-            final Insets insets;
-            if ( tabPlacement == JTabbedPane.TOP )
-            {
-                insets = new Insets ( 1, 2, 1, 2 );
-            }
-            else if ( tabPlacement == JTabbedPane.BOTTOM )
-            {
-                insets = new Insets ( 2, 2, 0, 2 );
-            }
-            else if ( tabPlacement == JTabbedPane.LEFT )
-            {
-                insets = new Insets ( 2, 1, 2, 1 );
-            }
-            else if ( tabPlacement == JTabbedPane.RIGHT )
-            {
-                insets = new Insets ( 2, 2, 2, 0 );
-            }
-            else
-            {
-                insets = new Insets ( 0, 0, 0, 0 );
-            }
-            insets.top += contentInsets.top - 1;
-            insets.left += contentInsets.left - 1;
-            insets.bottom += contentInsets.bottom - 1;
-            insets.right += contentInsets.right - 1;
-            return insets;
-        }
-        else
-        {
-            return new Insets ( 0, 0, 0, 0 );
-        }
-    }
-
-    @Override
-    protected Insets getTabInsets ( final int tabPlacement, final int tabIndex )
-    {
-        final Insets insets = Clone.basic ().clone ( tabInsets );
-        if ( tabIndex == 0 && tabPane.getSelectedIndex () == 0 )
-        {
-            // Fix for 1st element
-            insets.left -= 1;
-            insets.right += 1;
-        }
-        if ( rotateTabInsets )
-        {
-            final Insets targetInsets = new Insets ( 0, 0, 0, 0 );
-            rotateInsets ( insets, targetInsets, tabPlacement );
-            return targetInsets;
-        }
-        else
-        {
-            return insets;
-        }
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( tabPane );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( tabPane, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( tabPane );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( tabPane, padding );
-    }
-
-    //    protected void setRolloverTab ( int index )
-    //    {
-    //        super.setRolloverTab ( index );
-    //
-    //        // todo Animate rollover
-    //    }
-
-    //    public Dimension getPreferredSize ( JComponent c )
-    //    {
-    //        if ( tabPane.getTabPlacement () == JTabbedPane.TOP ||
-    //                tabPane.getTabPlacement () == JTabbedPane.BOTTOM )
-    //        {
-    //            getTab
-    //        }else {
-    //
-    //        }
-    //    }
-
-    //    protected LayoutManager createLayoutManager ()
-    //    {
-    //        return new TabbedPaneLayout ();
-    //    }
-    //
-    //    public class TabbedPaneLayout extends BasicTabbedPaneUI.TabbedPaneLayout
-    //    {
-    //
-    //        public TabbedPaneLayout ()
-    //        {
-    //            WebTabbedPaneUI.this.super ();
-    //        }
-    //
-    //        protected void normalizeTabRuns ( int tabPlacement, int tabCount, int start, int max )
-    //        {
-    //            // Only normalize the runs for top & bottom;  normalizing
-    //            // doesn't look right for Metal's vertical tabs
-    //            // because the last run isn't padded and it looks odd to have
-    //            // fat tabs in the first vertical runs, but slimmer ones in the
-    //            // last (this effect isn't noticeable for horizontal tabs).
-    //            if ( tabPlacement == TOP || tabPlacement == BOTTOM )
-    //            {
-    //                super.normalizeTabRuns ( tabPlacement, tabCount, start, max );
-    //            }
-    //        }
-    //
-    //        // Don't rotate runs!
-    //        protected void rotateTabRuns ( int tabPlacement, int selectedRun )
-    //        {
-    //        }
-    //
-    //        // Don't pad selected tab
-    //        protected void padSelectedTab ( int tabPlacement, int selectedIndex )
-    //        {
-    //        }
-    //    }
 
     @Override
     public Dimension getPreferredSize ( final JComponent c )

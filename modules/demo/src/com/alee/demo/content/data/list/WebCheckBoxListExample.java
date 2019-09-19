@@ -83,6 +83,7 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
             super ( WebCheckBoxListExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -106,6 +107,7 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
             super ( WebCheckBoxListExample.this, "scrollable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -130,6 +132,7 @@ public class WebCheckBoxListExample extends AbstractStylePreviewExample
             super ( WebCheckBoxListExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

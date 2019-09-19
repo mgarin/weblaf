@@ -82,6 +82,7 @@ public class WebPasswordFieldExample extends AbstractStylePreviewExample
             super ( WebPasswordFieldExample.this, "inputprompt", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -106,6 +107,7 @@ public class WebPasswordFieldExample extends AbstractStylePreviewExample
             super ( WebPasswordFieldExample.this, "leading", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -131,6 +133,7 @@ public class WebPasswordFieldExample extends AbstractStylePreviewExample
             super ( WebPasswordFieldExample.this, "trailing", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

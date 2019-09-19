@@ -38,18 +38,20 @@ public class JComponentPreview<C extends JComponent> extends AWTComponentPreview
     @Override
     public Icon getIconImpl ( final C component )
     {
+        final Icon icon;
         if ( component instanceof JLayeredPane )
         {
-            return layeredPaneType;
+            icon = layeredPaneType;
         }
         else if ( component instanceof HeatMap )
         {
-            return heatMapType;
+            icon = heatMapType;
         }
         else
         {
-            return super.getIconImpl ( component );
+            icon = super.getIconImpl ( component );
         }
+        return icon;
     }
 
     @Override

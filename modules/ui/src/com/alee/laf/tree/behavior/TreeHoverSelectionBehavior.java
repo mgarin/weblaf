@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.Behavior;
 import com.alee.laf.tree.WebTree;
 import com.alee.utils.swing.HoverListener;
@@ -39,6 +41,7 @@ public class TreeHoverSelectionBehavior<N extends MutableTreeNode> implements Ho
     /**
      * Tree using this behavior.
      */
+    @NotNull
     protected final WebTree<N> tree;
 
     /**
@@ -46,14 +49,13 @@ public class TreeHoverSelectionBehavior<N extends MutableTreeNode> implements Ho
      *
      * @param tree tree using this behavior
      */
-    public TreeHoverSelectionBehavior ( final WebTree<N> tree )
+    public TreeHoverSelectionBehavior ( @NotNull final WebTree<N> tree )
     {
-        super ();
         this.tree = tree;
     }
 
     @Override
-    public void hoverChanged ( final N previous, final N current )
+    public void hoverChanged ( @Nullable final N previous, @Nullable final N current )
     {
         if ( current != null )
         {
@@ -71,7 +73,7 @@ public class TreeHoverSelectionBehavior<N extends MutableTreeNode> implements Ho
      * @param tree tree to modify
      * @return installed behavior
      */
-    public static TreeHoverSelectionBehavior install ( final WebTree tree )
+    public static TreeHoverSelectionBehavior install ( @NotNull final WebTree tree )
     {
         // Uninstalling old behavior first
         uninstall ( tree );
@@ -87,7 +89,7 @@ public class TreeHoverSelectionBehavior<N extends MutableTreeNode> implements Ho
      *
      * @param tree tree to modify
      */
-    public static void uninstall ( final WebTree tree )
+    public static void uninstall ( @NotNull final WebTree tree )
     {
         for ( final HoverListener listener : tree.getHoverListeners () )
         {
@@ -104,15 +106,17 @@ public class TreeHoverSelectionBehavior<N extends MutableTreeNode> implements Ho
      * @param tree tree to process
      * @return true if the specified tree has any behaviors installed, false otherwise
      */
-    public static boolean isInstalled ( final WebTree tree )
+    public static boolean isInstalled ( @NotNull final WebTree tree )
     {
+        boolean installed = false;
         for ( final HoverListener listener : tree.getHoverListeners () )
         {
             if ( listener instanceof TreeHoverSelectionBehavior )
             {
-                return true;
+                installed = true;
+                break;
             }
         }
-        return false;
+        return installed;
     }
 }

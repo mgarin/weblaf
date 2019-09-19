@@ -17,6 +17,7 @@
 
 package com.alee.managers.hotkey;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 
 import java.awt.event.KeyEvent;
@@ -37,7 +38,7 @@ public interface HotkeyRunnable extends KeyEventRunnable
     public static final HotkeyRunnable NONE = new HotkeyRunnable ()
     {
         @Override
-        public void run ( final KeyEvent e )
+        public void run ( @NotNull final KeyEvent e )
         {
             /**
              * Take no action.
@@ -51,5 +52,5 @@ public interface HotkeyRunnable extends KeyEventRunnable
      * @param e occured key event
      */
     @Override
-    public void run ( KeyEvent e );
+    public void run ( @NotNull KeyEvent e );
 }

@@ -122,12 +122,14 @@ public class JSplitPaneExample extends AbstractStylePreviewExample
             this.simpleContent = simpleContent;
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new CompactFlowLayout ( FlowLayout.LEADING, 8, 0 );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

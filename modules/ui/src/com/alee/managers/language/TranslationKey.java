@@ -17,6 +17,9 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 /**
  * This object encapsulates a single translation key.
  * It might also store translation data if it is needed.
@@ -30,12 +33,14 @@ public final class TranslationKey
     /**
      * Immutable translation key.
      */
+    @NotNull
     private final String key;
 
     /**
      * Mutable translation data.
      * Used for compiling resulting translation
      */
+    @Nullable
     private Object[] data;
 
     /**
@@ -44,9 +49,8 @@ public final class TranslationKey
      * @param key  translation key
      * @param data translation data
      */
-    private TranslationKey ( final String key, final Object... data )
+    public TranslationKey ( @NotNull final String key, @Nullable final Object... data )
     {
-        super ();
         this.key = key;
         this.data = data;
     }
@@ -56,6 +60,7 @@ public final class TranslationKey
      *
      * @return translation key
      */
+    @NotNull
     public String getKey ()
     {
         return key;
@@ -66,6 +71,7 @@ public final class TranslationKey
      *
      * @return translation data
      */
+    @Nullable
     public Object[] getData ()
     {
         return data;
@@ -76,20 +82,8 @@ public final class TranslationKey
      *
      * @param data new translation data
      */
-    public void setData ( final Object[] data )
+    public void setData ( @Nullable final Object[] data )
     {
         this.data = data;
-    }
-
-    /**
-     * Returns new {@link TranslationKey} instance.
-     *
-     * @param key  translation key
-     * @param data translation data
-     * @return new {@link TranslationKey} instance
-     */
-    public static TranslationKey of ( final String key, final Object... data )
-    {
-        return new TranslationKey ( key, data );
     }
 }

@@ -17,6 +17,7 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.label.AbstractSimpleStyledTextContent;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.IDecoration;
@@ -36,6 +37,7 @@ import javax.swing.*;
 public class StyledButtonText<C extends AbstractButton, D extends IDecoration<C, D>, I extends StyledButtonText<C, D, I>>
         extends AbstractSimpleStyledTextContent<C, D, I>
 {
+    @Nullable
     @Override
     protected String getStyledTextProperty ()
     {

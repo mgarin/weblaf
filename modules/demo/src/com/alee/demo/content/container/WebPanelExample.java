@@ -87,12 +87,14 @@ public class WebPanelExample extends AbstractStylePreviewExample
             super ( WebPanelExample.this, id, featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new CompactFlowLayout ( FlowLayout.LEADING, 8, 0 );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

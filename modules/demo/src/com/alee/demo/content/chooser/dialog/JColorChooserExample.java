@@ -90,6 +90,7 @@ public class JColorChooserExample extends AbstractStylePreviewExample
             super ( JColorChooserExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

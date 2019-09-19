@@ -150,11 +150,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
             {
                 if ( row != -1 )
                 {
-                    final Rectangle rowBounds = getRowBounds ( row, true );
-                    if ( rowBounds != null )
-                    {
-                        tree.repaint ( rowBounds );
-                    }
+                    tree.repaint ( getRowBounds ( row, true ) );
                 }
             }
         };
@@ -258,14 +254,15 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public int getExactRowForLocation ( final Point location )
+    public int getExactRowForLocation ( @NotNull final Point location )
     {
         return getExactRowForLocation ( location, isFullLineSelection () );
     }
 
     @Override
-    public int getExactRowForLocation ( final Point location, final boolean fullRow )
+    public int getExactRowForLocation ( @NotNull final Point location, final boolean fullRow )
     {
+        int row = -1;
         if ( tree != null )
         {
             final Enumeration<TreePath> visiblePaths = getVisiblePaths ();
@@ -277,25 +274,33 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
                     final Rectangle bounds = getPathBounds ( treePath, fullRow );
                     if ( bounds != null && bounds.contains ( location ) )
                     {
-                        return getRowForPath ( tree, treePath );
+                        row = getRowForPath ( tree, treePath );
+                        break;
                     }
                 }
             }
         }
-        return -1;
+        return row;
     }
 
+    @NotNull
     @Override
     public Rectangle getRowBounds ( final int row )
     {
         return getRowBounds ( row, isFullLineSelection () );
     }
 
+    @NotNull
     @Override
     public Rectangle getRowBounds ( final int row, final boolean fullRow )
     {
         final TreePath path = getPathForRow ( tree, row );
-        return fullRow ? getFullPathBounds ( path ) : getPathBounds ( tree, path );
+        final Rectangle rowBounds = fullRow ? getFullPathBounds ( path ) : getPathBounds ( tree, path );
+        if ( rowBounds == null )
+        {
+            throw new RuntimeException ( "Unable to retrieve row bounds: " + row );
+        }
+        return rowBounds;
     }
 
     /**
@@ -316,6 +321,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      * @param path tree path
      * @return full path bounds
      */
+    @Nullable
     private Rectangle getFullPathBounds ( final TreePath path )
     {
         final Rectangle b = getPathBounds ( tree, path );
@@ -336,16 +342,25 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      */
     public Enumeration<TreePath> getVisiblePaths ()
     {
+        final Enumeration<TreePath> result;
         if ( tree.isShowing () )
         {
             final Rectangle paintBounds = tree.getVisibleRect ();
             final TreePath initialPath = getClosestPathForLocation ( tree, 0, paintBounds.y );
             if ( initialPath != null )
             {
-                return treeState.getVisiblePathsFrom ( initialPath );
+                result = treeState.getVisiblePathsFrom ( initialPath );
+            }
+            else
+            {
+                result = null;
             }
         }
-        return null;
+        else
+        {
+            result = null;
+        }
+        return result;
     }
 
     @Override
@@ -361,7 +376,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    protected void selectPathForEvent ( final TreePath path, final MouseEvent e )
+    protected void selectPathForEvent ( @NotNull final TreePath path, final MouseEvent e )
     {
         if ( !isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
         {
@@ -370,8 +385,9 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public boolean isLocationInCheckBoxControl ( final TreePath path, final int x, final int y )
+    public boolean isLocationInCheckBoxControl ( @NotNull final TreePath path, final int x, final int y )
     {
+        final boolean inCheckBox;
         if ( tree instanceof WebCheckBoxTree )
         {
             final WebCheckBoxTree checkBoxTree = ( WebCheckBoxTree ) tree;
@@ -381,22 +397,23 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
                 if ( checkBoxTree.isCheckBoxVisible ( node ) && checkBoxTree.isCheckBoxEnabled ( node ) )
                 {
                     final Rectangle checkBoxBounds = checkBoxTree.getCheckBoxBounds ( path );
-                    return checkBoxBounds != null && checkBoxBounds.contains ( x, y );
+                    inCheckBox = checkBoxBounds != null && checkBoxBounds.contains ( x, y );
                 }
                 else
                 {
-                    return false;
+                    inCheckBox = false;
                 }
             }
             else
             {
-                return false;
+                inCheckBox = false;
             }
         }
         else
         {
-            return false;
+            inCheckBox = false;
         }
+        return inCheckBox;
     }
 
     @Override
@@ -411,18 +428,21 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         return tree.isEnabled () ? Icons.squarePlus : Icons.squarePlusDisabled;
     }
 
+    @NotNull
     @Override
     public CellRendererPane getCellRendererPane ()
     {
         return rendererPane;
     }
 
+    @Nullable
     @Override
     public AbstractLayoutCache getTreeLayoutCache ()
     {
         return treeState;
     }
 
+    @NotNull
     @Override
     public TreeSelectionStyle getSelectionStyle ()
     {
@@ -430,7 +450,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public void setSelectionStyle ( final TreeSelectionStyle style )
+    public void setSelectionStyle ( @NotNull final TreeSelectionStyle style )
     {
         this.selectionStyle = style;
     }

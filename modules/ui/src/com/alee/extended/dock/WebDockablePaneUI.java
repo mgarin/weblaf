@@ -564,26 +564,26 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
             proxyListener = new DockableFrameListener ()
             {
                 @Override
-                public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+                public void frameAdded ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
                 {
                     pane.fireFrameAdded ( frame, dockablePane );
                 }
 
                 @Override
-                public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState,
-                                                final DockableFrameState newState )
+                public void frameStateChanged ( @NotNull final WebDockableFrame frame, @NotNull final DockableFrameState oldState,
+                                                @NotNull final DockableFrameState newState )
                 {
                     pane.fireFrameStateChanged ( frame, oldState, newState );
                 }
 
                 @Override
-                public void frameMoved ( final WebDockableFrame frame, final CompassDirection position )
+                public void frameMoved ( @NotNull final WebDockableFrame frame, @NotNull final CompassDirection position )
                 {
                     pane.fireFrameMoved ( frame, position );
                 }
 
                 @Override
-                public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+                public void frameRemoved ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
                 {
                     pane.fireFrameRemoved ( frame, dockablePane );
                 }

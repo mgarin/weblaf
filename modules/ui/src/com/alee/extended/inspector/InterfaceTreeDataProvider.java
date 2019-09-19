@@ -18,6 +18,7 @@
 package com.alee.extended.inspector;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 import com.alee.laf.VisibleWindowListener;
 import com.alee.laf.WebLookAndFeel;
@@ -39,11 +40,13 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     /**
      * Interface components tree.
      */
+    @NotNull
     private final InterfaceTree tree;
 
     /**
      * Interface root component.
      */
+    @Nullable
     private final Component inspected;
 
     /**
@@ -52,9 +55,8 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
      * @param tree      interface tree
      * @param inspected interface root component
      */
-    public InterfaceTreeDataProvider ( final InterfaceTree tree, final Component inspected )
+    public InterfaceTreeDataProvider ( @NotNull final InterfaceTree tree, @Nullable final Component inspected )
     {
-        super ();
         this.tree = tree;
         this.inspected = inspected;
 
@@ -62,7 +64,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
         setChildrenComparator ( new Comparator<InterfaceTreeNode> ()
         {
             @Override
-            public int compare ( final InterfaceTreeNode node1, final InterfaceTreeNode node2 )
+            public int compare ( @NotNull final InterfaceTreeNode node1, @NotNull final InterfaceTreeNode node2 )
             {
                 final Component component1 = node1.getUserObject ();
                 final Component component2 = node2.getUserObject ();
@@ -73,7 +75,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
                     // No point to compare windows
                     result = 0;
                 }
-                else
+                else if ( component1 != null && component2 != null )
                 {
                     // Checking that parent is the same
                     final Container parent1 = component1.getParent ();
@@ -89,6 +91,10 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
                     {
                         throw new RuntimeException ( "Compared nodes cannot have different parent" );
                     }
+                }
+                else
+                {
+                    throw new RuntimeException ( "Compared nodes cannot have null components" );
                 }
                 return result;
             }
@@ -113,14 +119,17 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
                 public void windowHidden ( @NotNull final Window window )
                 {
                     final InterfaceTreeNode root = tree.getRootNode ();
-                    for ( int i = 0; i < root.getChildCount (); i++ )
+                    if ( root != null )
                     {
-                        final InterfaceTreeNode child = root.getChildAt ( i );
-                        if ( child.getUserObject () == window )
+                        for ( int i = 0; i < root.getChildCount (); i++ )
                         {
-                            child.uninstall ();
-                            tree.removeNode ( child );
-                            break;
+                            final InterfaceTreeNode child = root.getChildAt ( i );
+                            if ( child.getUserObject () == window )
+                            {
+                                child.uninstall ();
+                                tree.removeNode ( child );
+                                break;
+                            }
                         }
                     }
                 }
@@ -131,14 +140,16 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     @Override
     public InterfaceTreeNode getRoot ()
     {
+        final InterfaceTreeNode root;
         if ( inspected != null )
         {
-            return new InterfaceTreeNode ( tree, inspected );
+            root = new InterfaceTreeNode ( tree, inspected );
         }
         else
         {
-            return new InterfaceTreeNode ( tree, null );
+            root = new InterfaceTreeNode ( tree, null );
         }
+        return root;
     }
 
     @Override
@@ -148,7 +159,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
         final Component component = parent.getUserObject ();
         if ( component != null )
         {
-            if ( !( component instanceof CellRendererPane ) )
+            if ( component instanceof Container && !( component instanceof CellRendererPane ) )
             {
                 final Container container = ( Container ) component;
                 nodes = new ArrayList<InterfaceTreeNode> ( container.getComponentCount () );

@@ -17,6 +17,8 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
@@ -36,6 +38,7 @@ public interface LanguageMethods extends MethodExtension
      *
      * @return language key which was used to register specified component in {@link LanguageManager}
      */
+    @Nullable
     public String getLanguage ();
 
     /**
@@ -44,14 +47,14 @@ public interface LanguageMethods extends MethodExtension
      * @param key  language record key
      * @param data formatting data
      */
-    public void setLanguage ( String key, Object... data );
+    public void setLanguage ( @NotNull String key, @Nullable Object... data );
 
     /**
      * Updates component language and formatting data.
      *
      * @param data new formatting data
      */
-    public void updateLanguage ( Object... data );
+    public void updateLanguage ( @Nullable Object... data );
 
     /**
      * Changes component language key and updates its language and formatting data.
@@ -59,7 +62,7 @@ public interface LanguageMethods extends MethodExtension
      * @param key  new language key
      * @param data new formatting data
      */
-    public void updateLanguage ( String key, Object... data );
+    public void updateLanguage ( @NotNull String key, @Nullable Object... data );
 
     /**
      * Unregisters component from {@link LanguageManager}.
@@ -79,7 +82,7 @@ public interface LanguageMethods extends MethodExtension
      *
      * @param updater {@link LanguageUpdater} for the component
      */
-    public void setLanguageUpdater ( LanguageUpdater updater );
+    public void setLanguageUpdater ( @NotNull LanguageUpdater updater );
 
     /**
      * Unregisters custom component {@link LanguageUpdater}.

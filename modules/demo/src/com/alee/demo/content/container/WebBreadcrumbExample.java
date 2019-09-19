@@ -125,12 +125,14 @@ public class WebBreadcrumbExample extends AbstractStylePreviewExample
             super ( WebBreadcrumbExample.this, id, featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new VerticalFlowLayout ( VerticalFlowLayout.MIDDLE, 8, false, false );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

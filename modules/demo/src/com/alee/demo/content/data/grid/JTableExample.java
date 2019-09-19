@@ -89,6 +89,7 @@ public class JTableExample extends AbstractStylePreviewExample
             super ( JTableExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -113,6 +114,7 @@ public class JTableExample extends AbstractStylePreviewExample
             super ( JTableExample.this, "scrollable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -138,6 +140,7 @@ public class JTableExample extends AbstractStylePreviewExample
             super ( JTableExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

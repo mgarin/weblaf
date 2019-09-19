@@ -709,7 +709,7 @@ public final class SettingsManager
     /**
      * Returns {@link SettingsGroupState} for the {@link SettingsGroup} with the specified name.
      *
-     * @param group {@link SettingsGroup} name to retreive {@link SettingsGroupState} for
+     * @param group {@link SettingsGroup} name to retrieve {@link SettingsGroupState} for
      * @return {@link SettingsGroupState} for the {@link SettingsGroup} with the specified name
      */
     public SettingsGroupState getSettingsGroupState ( final String group )

@@ -23,6 +23,7 @@ import javax.swing.*;
 
 /**
  * Custom interface that should be implemented by all basic WebLaF UI implementations.
+ * This interface must only be implemented by classes that extend {@link javax.swing.plaf.ComponentUI}.
  * Basic implementations are made to replace basic Swing UI implementations to avoid some nasty workarounds and provide better visuals.
  *
  * @param <C> component type

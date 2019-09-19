@@ -1049,4 +1049,19 @@ public final class ArrayUtils
         }
         return equals;
     }
+
+    /**
+     * Returns item from the array at the specified index.
+     * Index can be larger than array size, allowing round robin item selection.
+     *
+     * @param index index in the array or a number larger than array size, cannot be less than zero
+     * @param items array items
+     * @param <T>   item type
+     * @return item from the array at the specified index
+     */
+    @Nullable
+    public static <T> T roundRobin ( final int index, @NotNull final T... items )
+    {
+        return items.length > 0 ? items[ index % items.length ] : null;
+    }
 }

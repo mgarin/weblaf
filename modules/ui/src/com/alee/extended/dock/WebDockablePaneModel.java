@@ -876,6 +876,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         return width;
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

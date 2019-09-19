@@ -15,6 +15,24 @@
             <value lang="hu">Minta szöveg</value>
         </record>
     </Dictionary>
+    <Dictionary prefix="tabbedpane">
+        <Dictionary prefix="menu">
+            <record key="tab">
+                <value lang="en">Tab #%s</value>
+                <value lang="ru">Таб №%s</value>
+                <value lang="pl">Naszywka #%s</value>
+                <value lang="ar">عروة #%s</value>
+                <value lang="es">Tabulación %s</value>
+                <value lang="fr">Étiquette %s</value>
+                <value lang="pt">Tabulação %s</value>
+                <value lang="de">Tab %s</value>
+                <value lang="it">Etichetta %s</value>
+                <value lang="tr">Çıkıntı %s</value>
+                <value lang="vi">Chuyển hướng %s</value>
+                <value lang="hu">Poggyászcímke %s</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
     <Translations>
         <Translation lang="en" title="English" author="mgarin" />
         <Translation lang="ru" title="Русский" author="mgarin" />

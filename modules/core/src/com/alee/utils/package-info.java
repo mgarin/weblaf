@@ -30,7 +30,6 @@
  * @see com.alee.utils.GraphicsUtils
  * @see com.alee.utils.HtmlUtils
  * @see com.alee.utils.ImageUtils
- * @see com.alee.utils.JarUtils
  * @see com.alee.utils.MapUtils
  * @see com.alee.utils.MathUtils
  * @see com.alee.utils.NetUtils

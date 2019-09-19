@@ -90,12 +90,14 @@ public class WebTristateCheckBoxExample extends AbstractStylePreviewExample
             this.text = text;
         }
 
+        @NotNull
         @Override
         protected LayoutManager createPreviewLayout ()
         {
             return new VerticalFlowLayout ( 0, 8, false, false );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

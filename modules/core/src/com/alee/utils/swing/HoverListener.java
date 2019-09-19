@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.Nullable;
+
 import java.util.EventListener;
 
 /**
@@ -34,5 +36,5 @@ public interface HoverListener<E> extends EventListener
      * @param previous previous hover object
      * @param current  current hover object
      */
-    public void hoverChanged ( E previous, E current );
+    public void hoverChanged ( @Nullable E previous, @Nullable E current );
 }

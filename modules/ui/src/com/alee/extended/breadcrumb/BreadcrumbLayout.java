@@ -220,6 +220,7 @@ public class BreadcrumbLayout extends AbstractLayoutManager implements Mergeable
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.event.ComponentEvent;
 
 /**
@@ -29,7 +31,7 @@ public interface ComponentEventRunnable
     /**
      * Performs action according to component event.
      *
-     * @param e occured component event
+     * @param event occured component event
      */
-    public void run ( ComponentEvent e );
+    public void run ( @NotNull ComponentEvent event );
 }

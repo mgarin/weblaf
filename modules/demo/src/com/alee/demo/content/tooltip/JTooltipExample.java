@@ -87,6 +87,7 @@ public class JTooltipExample extends AbstractStylePreviewExample
             super ( JTooltipExample.this, "basic", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

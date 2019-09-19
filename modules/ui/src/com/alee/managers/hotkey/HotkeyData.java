@@ -17,6 +17,8 @@
 
 package com.alee.managers.hotkey;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -57,6 +59,7 @@ public class HotkeyData implements Cloneable, Serializable
     /**
      * Key code required for the hotkey activation.
      */
+    @Nullable
     @XStreamAsAttribute
     protected final Integer keyCode;
 
@@ -73,9 +76,14 @@ public class HotkeyData implements Cloneable, Serializable
      *
      * @param keyEvent KeyEvent to convert
      */
-    public HotkeyData ( final KeyEvent keyEvent )
+    public HotkeyData ( @NotNull final KeyEvent keyEvent )
     {
-        this ( SwingUtils.isCtrl ( keyEvent ), SwingUtils.isAlt ( keyEvent ), SwingUtils.isShift ( keyEvent ), keyEvent.getKeyCode () );
+        this (
+                SwingUtils.isCtrl ( keyEvent ),
+                SwingUtils.isAlt ( keyEvent ),
+                SwingUtils.isShift ( keyEvent ),
+                keyEvent.getKeyCode ()
+        );
     }
 
     /**
@@ -83,10 +91,14 @@ public class HotkeyData implements Cloneable, Serializable
      *
      * @param keyStroke key stroke
      */
-    public HotkeyData ( final KeyStroke keyStroke )
+    public HotkeyData ( @NotNull final KeyStroke keyStroke )
     {
-        this ( SwingUtils.isCtrl ( keyStroke.getModifiers () ), SwingUtils.isAlt ( keyStroke.getModifiers () ),
-                SwingUtils.isShift ( keyStroke.getModifiers () ), keyStroke.getKeyCode () );
+        this (
+                SwingUtils.isCtrl ( keyStroke.getModifiers () ),
+                SwingUtils.isAlt ( keyStroke.getModifiers () ),
+                SwingUtils.isShift ( keyStroke.getModifiers () ),
+                keyStroke.getKeyCode ()
+        );
     }
 
     /**
@@ -107,7 +119,7 @@ public class HotkeyData implements Cloneable, Serializable
      * @param isShift whether hotkey activation requires SHIFT modifier or not
      * @param keyCode key code required for the hotkey activation
      */
-    public HotkeyData ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
+    public HotkeyData ( final boolean isCtrl, final boolean isAlt, final boolean isShift, @Nullable final Integer keyCode )
     {
         this.isCtrl = isCtrl;
         this.isAlt = isAlt;
@@ -150,6 +162,7 @@ public class HotkeyData implements Cloneable, Serializable
      *
      * @return key code required for the hotkey activation
      */
+    @Nullable
     public Integer getKeyCode ()
     {
         return keyCode;
@@ -182,7 +195,7 @@ public class HotkeyData implements Cloneable, Serializable
      * @param event processed key event
      * @return true if hotkey is triggered by the key event, false otherwise
      */
-    public boolean isTriggered ( final KeyEvent event )
+    public boolean isTriggered ( @NotNull final KeyEvent event )
     {
         return areControlsTriggered ( event ) && isKeyTriggered ( event );
     }
@@ -193,9 +206,11 @@ public class HotkeyData implements Cloneable, Serializable
      * @param event processed key event
      * @return true if hotkey controls are triggered by the key event, false otherwise
      */
-    public boolean areControlsTriggered ( final KeyEvent event )
+    public boolean areControlsTriggered ( @NotNull final KeyEvent event )
     {
-        return SwingUtils.isShortcut ( event ) == isCtrl && SwingUtils.isAlt ( event ) == isAlt && SwingUtils.isShift ( event ) == isShift;
+        return SwingUtils.isShortcut ( event ) == isCtrl &&
+                SwingUtils.isAlt ( event ) == isAlt &&
+                SwingUtils.isShift ( event ) == isShift;
     }
 
     /**
@@ -204,9 +219,9 @@ public class HotkeyData implements Cloneable, Serializable
      * @param event processed key event
      * @return true if key is triggered by the key event, false otherwise
      */
-    public boolean isKeyTriggered ( final KeyEvent event )
+    public boolean isKeyTriggered ( @NotNull final KeyEvent event )
     {
-        return event.getKeyCode () == keyCode;
+        return keyCode != null && event.getKeyCode () == keyCode;
     }
 
     /**
@@ -214,15 +229,14 @@ public class HotkeyData implements Cloneable, Serializable
      *
      * @return key stroke for this hotkey
      */
+    @NotNull
     public KeyStroke getKeyStroke ()
     {
+        if ( keyCode == null )
+        {
+            throw new HotkeyException ( "KeyStroke can only be retrieved from HotkeyData that contains key code" );
+        }
         return KeyStroke.getKeyStroke ( keyCode, getModifiers () );
-    }
-
-    @Override
-    public boolean equals ( final Object obj )
-    {
-        return obj != null && obj instanceof HotkeyData && obj.hashCode () == hashCode ();
     }
 
     @Override
@@ -232,8 +246,15 @@ public class HotkeyData implements Cloneable, Serializable
     }
 
     @Override
+    public boolean equals ( @Nullable final Object other )
+    {
+        return other instanceof HotkeyData && other.hashCode () == hashCode ();
+    }
+
+    @NotNull
+    @Override
     public String toString ()
     {
-        return SwingUtils.hotkeyToString ( this );
+        return SwingUtils.hotkeyToString ( isCtrl (), isAlt (), isShift (), getKeyCode () );
     }
 }

@@ -528,6 +528,7 @@ public class FormLayout extends AbstractLayoutManager
         return rowY;
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

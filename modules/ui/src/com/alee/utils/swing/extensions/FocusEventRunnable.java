@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.event.FocusEvent;
 
 /**
@@ -31,5 +33,5 @@ public interface FocusEventRunnable
      *
      * @param e occured focus event
      */
-    public void run ( FocusEvent e );
+    public void run ( @NotNull FocusEvent e );
 }

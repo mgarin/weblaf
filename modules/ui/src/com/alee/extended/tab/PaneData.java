@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -81,13 +82,11 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public PaneData ( final WebDocumentPane<T> documentPane )
     {
-        super ();
-
         // Parent document pane reference
         this.documentPane = documentPane;
 
         // Creating tabbed pane
-        // todo This style parent might change on drag into other document pane
+        // todo This style parent should change on drag into other document pane?
         tabbedPane = new WebTabbedPane ( StyleId.documentpaneTabbedPane.at ( documentPane ) );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
 
@@ -98,7 +97,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         HotkeyManager.registerHotkey ( tabbedPane, tabbedPane, Hotkey.CTRL_W, new HotkeyRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 if ( getDocumentPane ().isClosable () )
                 {
@@ -451,6 +450,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         data.add ( i, document );
         tabbedPane.insertTab ( "", document.getIcon (), document.getComponent (), null, i );
         tabbedPane.setBackgroundAt ( i, document.getBackground () );
+        tabbedPane.setForegroundAt ( i, document.getForeground () );
         tabbedPane.setTabComponentAt ( i, createTabComponent ( document ) );
 
         // Listening to document data changes

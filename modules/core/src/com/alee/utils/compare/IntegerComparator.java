@@ -48,17 +48,23 @@ public final class IntegerComparator implements Comparator<Integer>
     @Override
     public int compare ( final Integer o1, final Integer o2 )
     {
-        if ( o1 != null && o2 == null )
+        final int result;
+        if ( o1 == null && o2 == null )
         {
-            return 1;
+            result = 0;
         }
-        else if ( o1 == null && o2 != null )
+        else if ( o2 == null )
         {
-            return -1;
+            result = 1;
+        }
+        else if ( o1 == null )
+        {
+            result = -1;
         }
         else
         {
-            return o1.compareTo ( o2 );
+            result = o1.compareTo ( o2 );
         }
+        return result;
     }
 }

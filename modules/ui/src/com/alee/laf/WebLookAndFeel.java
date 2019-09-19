@@ -22,10 +22,14 @@ import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.extended.svg.SvgIcon;
 import com.alee.graphics.image.gif.GifIcon;
+import com.alee.laf.button.WButtonInputListener;
+import com.alee.laf.desktoppane.WDesktopPaneInputListener;
 import com.alee.laf.edt.ExceptionNonEventThreadHandler;
 import com.alee.laf.edt.NonEventThreadHandler;
 import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebListCellRenderer;
+import com.alee.laf.splitpane.WSplitPaneInputListener;
+import com.alee.laf.tabbedpane.WTabbedPaneInputListener;
 import com.alee.managers.UIManagers;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.icon.LazyIcon;
@@ -488,28 +492,68 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Fonts
         initializeFonts ( table );
 
-        // Button mnemonics display
+        // Button
         table.put ( "Button.showMnemonics", Boolean.TRUE );
-        // Button should become default in frame
         table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
+        table.put ( "Button.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", WButtonInputListener.Action.PRESSED,
+                "released SPACE", WButtonInputListener.Action.RELEASED,
+                "ENTER", WButtonInputListener.Action.PRESSED,
+                "released ENTER", WButtonInputListener.Action.RELEASED
+        } ) );
+
+        // Toggle button
+        table.put ( "ToggleButton.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", WButtonInputListener.Action.PRESSED,
+                "released SPACE", WButtonInputListener.Action.RELEASED,
+        } ) );
 
         // Split button
         table.put ( "SplitButton.defaultButtonFollowsFocus", Boolean.FALSE );
         table.put ( "SplitButton.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
-                "SPACE", "pressed",
-                "released SPACE", "released",
-                "ENTER", "pressed",
-                "released ENTER", "released"
+                "SPACE", WButtonInputListener.Action.PRESSED,
+                "released SPACE", WButtonInputListener.Action.RELEASED,
+                "ENTER", WButtonInputListener.Action.PRESSED,
+                "released ENTER", WButtonInputListener.Action.RELEASED
+        } ) );
+
+        // Check box
+        table.put ( "CheckBox.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", WButtonInputListener.Action.PRESSED,
+                "released SPACE", WButtonInputListener.Action.RELEASED,
+        } ) );
+
+        // Radio button
+        table.put ( "RadioButton.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", WButtonInputListener.Action.PRESSED,
+                "released SPACE", WButtonInputListener.Action.RELEASED,
+                "RETURN", WButtonInputListener.Action.PRESSED,
         } ) );
 
         // Tristate checkbox
         table.put ( "TristateCheckBox.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
-                "SPACE", "pressed",
-                "released SPACE", "released"
+                "SPACE", WButtonInputListener.Action.PRESSED,
+                "released SPACE", WButtonInputListener.Action.RELEASED
         } ) );
 
         // Split pane
         table.put ( "SplitPane.dividerSize", 2 );
+        table.put ( "SplitPane.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "UP", WSplitPaneInputListener.Action.NEGATIVE_INCREMENT,
+                "DOWN", WSplitPaneInputListener.Action.POSITIVE_INCREMENT,
+                "LEFT", WSplitPaneInputListener.Action.NEGATIVE_INCREMENT,
+                "RIGHT", WSplitPaneInputListener.Action.POSITIVE_INCREMENT,
+                "KP_UP", WSplitPaneInputListener.Action.NEGATIVE_INCREMENT,
+                "KP_DOWN", WSplitPaneInputListener.Action.POSITIVE_INCREMENT,
+                "KP_LEFT", WSplitPaneInputListener.Action.NEGATIVE_INCREMENT,
+                "KP_RIGHT", WSplitPaneInputListener.Action.POSITIVE_INCREMENT,
+                "HOME", WSplitPaneInputListener.Action.SELECT_MIN,
+                "END", WSplitPaneInputListener.Action.SELECT_MAX,
+                "F8", WSplitPaneInputListener.Action.START_RESIZE,
+                "F6", WSplitPaneInputListener.Action.TOGGLE_FOCUS,
+                "ctrl TAB", WSplitPaneInputListener.Action.FOCUS_OUT_FORWARD,
+                "ctrl shift TAB", WSplitPaneInputListener.Action.FOCUS_OUT_BACKWARD
+        } ) );
 
         // Option pane
         table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );
@@ -796,6 +840,32 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 "KP_UP", "selectPrevious"
         } ) );
 
+        // TabbedPane actions
+        table.put ( "TabbedPane.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "LEFT", WTabbedPaneInputListener.Actions.LEFT,
+                "KP_LEFT", WTabbedPaneInputListener.Actions.LEFT,
+                "RIGHT", WTabbedPaneInputListener.Actions.RIGHT,
+                "KP_RIGHT", WTabbedPaneInputListener.Actions.RIGHT,
+                "UP", WTabbedPaneInputListener.Actions.UP,
+                "KP_UP", WTabbedPaneInputListener.Actions.UP,
+                "DOWN", WTabbedPaneInputListener.Actions.DOWN,
+                "KP_DOWN", WTabbedPaneInputListener.Actions.DOWN,
+                "ctrl DOWN", WTabbedPaneInputListener.Actions.REQUEST_FOCUS_FOR_VISIBLE,
+                "ctrl KP_DOWN", WTabbedPaneInputListener.Actions.REQUEST_FOCUS_FOR_VISIBLE
+        } ) );
+        table.put ( "TabbedPane.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "alt LEFT", WTabbedPaneInputListener.Actions.LEFT,
+                "alt KP_LEFT", WTabbedPaneInputListener.Actions.LEFT,
+                "alt RIGHT", WTabbedPaneInputListener.Actions.RIGHT,
+                "alt KP_RIGHT", WTabbedPaneInputListener.Actions.RIGHT,
+                "ctrl PAGE_DOWN", WTabbedPaneInputListener.Actions.PAGE_DOWN,
+                "ctrl PAGE_UP", WTabbedPaneInputListener.Actions.PAGE_UP,
+                "ctrl UP", WTabbedPaneInputListener.Actions.REQUEST_FOCUS,
+                "ctrl KP_UP", WTabbedPaneInputListener.Actions.REQUEST_FOCUS,
+                "ctrl F", WTabbedPaneInputListener.Actions.SCROLL_FORWARD,
+                "ctrl B", WTabbedPaneInputListener.Actions.SCROLL_BACKWARD
+        } ) );
+
         // FileChooser actions
         table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
                 "ESCAPE", "cancelSelection",
@@ -804,6 +874,39 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 "BACK_SPACE", "Go Up",
                 "ENTER", "approveSelection",
                 "ctrl ENTER", "approveSelection"
+        } ) );
+
+        // DesktopPane actions
+        table.put ( "Desktop.ancestorInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "ctrl F5", WDesktopPaneInputListener.Action.RESTORE,
+                "ctrl F4", WDesktopPaneInputListener.Action.CLOSE,
+                "ctrl F7", WDesktopPaneInputListener.Action.MOVE,
+                "ctrl F8", WDesktopPaneInputListener.Action.RESIZE,
+                "RIGHT", WDesktopPaneInputListener.Action.RIGHT,
+                "KP_RIGHT", WDesktopPaneInputListener.Action.RIGHT,
+                "shift RIGHT", WDesktopPaneInputListener.Action.SHRINK_RIGHT,
+                "shift KP_RIGHT", WDesktopPaneInputListener.Action.SHRINK_RIGHT,
+                "LEFT", WDesktopPaneInputListener.Action.LEFT,
+                "KP_LEFT", WDesktopPaneInputListener.Action.LEFT,
+                "shift LEFT", WDesktopPaneInputListener.Action.SHRINK_LEFT,
+                "shift KP_LEFT", WDesktopPaneInputListener.Action.SHRINK_LEFT,
+                "UP", WDesktopPaneInputListener.Action.UP,
+                "KP_UP", WDesktopPaneInputListener.Action.UP,
+                "shift UP", WDesktopPaneInputListener.Action.SHRINK_UP,
+                "shift KP_UP", WDesktopPaneInputListener.Action.SHRINK_UP,
+                "DOWN", WDesktopPaneInputListener.Action.DOWN,
+                "KP_DOWN", WDesktopPaneInputListener.Action.DOWN,
+                "shift DOWN", WDesktopPaneInputListener.Action.SHRINK_DOWN,
+                "shift KP_DOWN", WDesktopPaneInputListener.Action.SHRINK_DOWN,
+                "ESCAPE", WDesktopPaneInputListener.Action.ESCAPE,
+                "ctrl F9", WDesktopPaneInputListener.Action.MINIMIZE,
+                "ctrl F10", WDesktopPaneInputListener.Action.MAXIMIZE,
+                "ctrl F6", WDesktopPaneInputListener.Action.NEXT_FRAME,
+                "ctrl TAB", WDesktopPaneInputListener.Action.NEXT_FRAME,
+                "ctrl alt F6", WDesktopPaneInputListener.Action.NEXT_FRAME,
+                "shift ctrl alt F6", WDesktopPaneInputListener.Action.PREVIOUS_FRAME,
+                "ctrl F12", WDesktopPaneInputListener.Action.NAVIGATE_NEXT,
+                "shift ctrl F12", WDesktopPaneInputListener.Action.NAVIGATE_PREVIOUS
         } ) );
     }
 

@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.IntegerComparator;
 
@@ -42,7 +44,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param root TreeNode object that is the root of the tree
      */
-    public WebTreeModel ( final N root )
+    public WebTreeModel ( @Nullable final N root )
     {
         super ( root );
     }
@@ -53,7 +55,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      * @param root               TreeNode object that is the root of the tree
      * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
      */
-    public WebTreeModel ( final N root, final boolean asksAllowsChildren )
+    public WebTreeModel ( @Nullable final N root, final boolean asksAllowsChildren )
     {
         super ( root, asksAllowsChildren );
     }
@@ -63,13 +65,14 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @return root node
      */
+    @Nullable
     public N getRootNode ()
     {
         return ( N ) getRoot ();
     }
 
     @Override
-    public void insertNodeInto ( final MutableTreeNode child, final MutableTreeNode parent, final int index )
+    public void insertNodeInto ( @NotNull final MutableTreeNode child, @NotNull final MutableTreeNode parent, final int index )
     {
         // Inserting node
         parent.insert ( child, index );
@@ -85,7 +88,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertNodesInto ( final List<N> children, final N parent, final int index )
+    public void insertNodesInto ( @NotNull final List<N> children, @NotNull final N parent, final int index )
     {
         final int count = children.size ();
         if ( count > 0 )
@@ -111,7 +114,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertNodesInto ( final N[] children, final N parent, final int index )
+    public void insertNodesInto ( @NotNull final N[] children, @NotNull final N parent, final int index )
     {
         final int count = children.length;
         if ( count > 0 )
@@ -131,7 +134,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
     }
 
     @Override
-    public void removeNodeFromParent ( final MutableTreeNode node )
+    public void removeNodeFromParent ( @NotNull final MutableTreeNode node )
     {
         // Removing nodes and collecting information on the operation
         final N parent = ( N ) node.getParent ();
@@ -151,7 +154,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param parent node to remove children from
      */
-    public void removeNodesFromParent ( final N parent )
+    public void removeNodesFromParent ( @NotNull final N parent )
     {
         final int count = parent.getChildCount ();
         if ( count > 0 )
@@ -176,7 +179,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param nodes nodes to remove
      */
-    public void removeNodesFromParent ( final N[] nodes )
+    public void removeNodesFromParent ( @NotNull final N[] nodes )
     {
         removeNodesFromParent ( CollectionUtils.toList ( nodes ) );
     }
@@ -186,7 +189,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param nodes nodes to remove
      */
-    public void removeNodesFromParent ( final List<N> nodes )
+    public void removeNodesFromParent ( @NotNull final List<N> nodes )
     {
         if ( nodes.size () > 0 )
         {
@@ -237,7 +240,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param node tree node to be updated
      */
-    public void updateNode ( final N node )
+    public void updateNode ( @Nullable final N node )
     {
         if ( node != null )
         {
@@ -250,7 +253,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param nodes tree nodes to be updated
      */
-    public void updateNodes ( final N... nodes )
+    public void updateNodes ( @Nullable final N... nodes )
     {
         if ( nodes != null && nodes.length > 0 )
         {
@@ -266,7 +269,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param nodes tree nodes to be updated
      */
-    public void updateNodes ( final List<N> nodes )
+    public void updateNodes ( @Nullable final List<N> nodes )
     {
         if ( CollectionUtils.notEmpty ( nodes ) )
         {
@@ -282,7 +285,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param node tree node to be updated
      */
-    public void updateNodeStructure ( final N node )
+    public void updateNodeStructure ( @Nullable final N node )
     {
         if ( node != null )
         {
@@ -296,7 +299,11 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      */
     public void updateTree ()
     {
-        final TreeNode[] path = TreeUtils.getPath ( getRootNode () );
-        fireTreeStructureChanged ( WebTreeModel.this, path, null, null );
+        final N rootNode = getRootNode ();
+        if ( rootNode != null )
+        {
+            final TreeNode[] path = TreeUtils.getPath ( rootNode );
+            fireTreeStructureChanged ( WebTreeModel.this, path, null, null );
+        }
     }
 }

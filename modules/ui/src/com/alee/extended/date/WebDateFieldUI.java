@@ -228,7 +228,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         field.onFocusLoss ( new FocusEventRunnable ()
         {
             @Override
-            public void run ( final FocusEvent e )
+            public void run ( @NotNull final FocusEvent e )
             {
                 // Date from the text field
                 final Date fieldDate = getDate ( field.getText () );
@@ -254,7 +254,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         field.onKeyPress ( Hotkey.DOWN, new KeyEventRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 showDateChooserPopup ();
                 e.consume ();

@@ -87,6 +87,7 @@ public class JTreeExample extends AbstractStylePreviewExample
             super ( JTreeExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -112,6 +113,7 @@ public class JTreeExample extends AbstractStylePreviewExample
             super ( JTreeExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

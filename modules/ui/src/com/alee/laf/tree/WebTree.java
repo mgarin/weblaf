@@ -36,6 +36,7 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.HoverListener;
@@ -75,6 +76,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Component properties.
      */
+    @NotNull
     public static final String DROP_LOCATION = "dropLocation";
 
     /**
@@ -99,16 +101,19 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * Listener that forces tree to scroll view to selection.
      * It is disabled by default and null in that case.
      */
+    @Nullable
     protected transient TreeSelectionListener scrollToSelectionListener = null;
 
     /**
      * Special state provider that can be set to check whether or not specific nodes are editable.
      */
+    @Nullable
     protected transient Predicate<N> editableStateProvider = null;
 
     /**
      * Custom WebLaF tooltip provider.
      */
+    @Nullable
     protected transient TreeToolTipProvider<N> toolTipProvider = null;
 
     /**
@@ -124,7 +129,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param data tree data
      */
-    public WebTree ( final Object[] data )
+    public WebTree ( @NotNull final Object[] data )
     {
         this ( StyleId.auto, data );
     }
@@ -134,7 +139,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param data tree data
      */
-    public WebTree ( final Vector<?> data )
+    public WebTree ( @NotNull final Vector<?> data )
     {
         this ( StyleId.auto, data );
     }
@@ -144,7 +149,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param data tree data
      */
-    public WebTree ( final Hashtable<?, ?> data )
+    public WebTree ( @NotNull final Hashtable<?, ?> data )
     {
         this ( StyleId.auto, data );
     }
@@ -154,7 +159,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param root tree root node
      */
-    public WebTree ( final N root )
+    public WebTree ( @Nullable final N root )
     {
         this ( StyleId.auto, root );
     }
@@ -165,7 +170,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param root               tree root node
      * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
      */
-    public WebTree ( final N root, final boolean asksAllowsChildren )
+    public WebTree ( @Nullable final N root, final boolean asksAllowsChildren )
     {
         this ( StyleId.auto, root, asksAllowsChildren );
     }
@@ -175,7 +180,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param newModel tree model
      */
-    public WebTree ( final TreeModel newModel )
+    public WebTree ( @Nullable final TreeModel newModel )
     {
         this ( StyleId.auto, newModel );
     }
@@ -185,7 +190,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param id style ID
      */
-    public WebTree ( final StyleId id )
+    public WebTree ( @NotNull final StyleId id )
     {
         this ( id, createDefaultTreeModel () );
     }
@@ -196,7 +201,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param id   style ID
      * @param data tree data
      */
-    public WebTree ( final StyleId id, final Object[] data )
+    public WebTree ( @NotNull final StyleId id, @NotNull final Object[] data )
     {
         this ( id, createTreeModel ( data ) );
     }
@@ -207,7 +212,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param id   style ID
      * @param data tree data
      */
-    public WebTree ( final StyleId id, final Vector<?> data )
+    public WebTree ( @NotNull final StyleId id, @NotNull final Vector<?> data )
     {
         this ( id, createTreeModel ( data ) );
     }
@@ -218,7 +223,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param id   style ID
      * @param data tree data
      */
-    public WebTree ( final StyleId id, final Hashtable<?, ?> data )
+    public WebTree ( @NotNull final StyleId id, @NotNull final Hashtable<?, ?> data )
     {
         this ( id, createTreeModel ( data ) );
     }
@@ -229,7 +234,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param id   style ID
      * @param root tree root node
      */
-    public WebTree ( final StyleId id, final N root )
+    public WebTree ( @NotNull final StyleId id, @Nullable final N root )
     {
         this ( id, new WebTreeModel<N> ( root ) );
     }
@@ -241,7 +246,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param root               tree root node
      * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
      */
-    public WebTree ( final StyleId id, final N root, final boolean asksAllowsChildren )
+    public WebTree ( @NotNull final StyleId id, @Nullable final N root, final boolean asksAllowsChildren )
     {
         this ( id, new WebTreeModel<N> ( root, asksAllowsChildren ) );
     }
@@ -252,14 +257,14 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param id       style ID
      * @param newModel tree model
      */
-    public WebTree ( final StyleId id, final TreeModel newModel )
+    public WebTree ( @NotNull final StyleId id, @Nullable final TreeModel newModel )
     {
         super ( newModel );
         setStyleId ( id );
     }
 
     @Override
-    public void setCellEditor ( final TreeCellEditor cellEditor )
+    public void setCellEditor ( @Nullable final TreeCellEditor cellEditor )
     {
         // Removing cell editor listeners from old cell editor
         if ( this.cellEditor != null )
@@ -290,8 +295,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param event {@link MouseEvent}
      * @return tooltip text
      */
+    @Nullable
     @Override
-    public String getToolTipText ( final MouseEvent event )
+    public String getToolTipText ( @Nullable final MouseEvent event )
     {
         String tip = null;
         if ( event != null )
@@ -311,19 +317,22 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
                 if ( renderer instanceof JComponent )
                 {
                     final Rectangle pathBounds = getPathBounds ( path );
-                    final MouseEvent newEvent = new MouseEvent ( renderer, event.getID (),
-                            event.getWhen (),
-                            event.getModifiers (),
-                            point.x - pathBounds.x,
-                            point.y - pathBounds.y,
-                            event.getXOnScreen (),
-                            event.getYOnScreen (),
-                            event.getClickCount (),
-                            event.isPopupTrigger (),
-                            MouseEvent.NOBUTTON );
+                    if ( pathBounds != null )
+                    {
+                        final MouseEvent newEvent = new MouseEvent ( renderer, event.getID (),
+                                event.getWhen (),
+                                event.getModifiers (),
+                                point.x - pathBounds.x,
+                                point.y - pathBounds.y,
+                                event.getXOnScreen (),
+                                event.getYOnScreen (),
+                                event.getClickCount (),
+                                event.isPopupTrigger (),
+                                MouseEvent.NOBUTTON );
 
-                    final JComponent jComponent = ( JComponent ) renderer;
-                    tip = jComponent.getToolTipText ( newEvent );
+                        final JComponent jComponent = ( JComponent ) renderer;
+                        tip = jComponent.getToolTipText ( newEvent );
+                    }
                 }
             }
         }
@@ -340,7 +349,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param listener cell editor listener to add
      */
-    public void addCellEditorListener ( final CellEditorListener listener )
+    public void addCellEditorListener ( @NotNull final CellEditorListener listener )
     {
         // Saving listener
         listenerList.add ( CellEditorListener.class, listener );
@@ -357,7 +366,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param listener cell editor listener to remove
      */
-    public void removeCellEditorListener ( final CellEditorListener listener )
+    public void removeCellEditorListener ( @NotNull final CellEditorListener listener )
     {
         // Removing listener
         listenerList.remove ( CellEditorListener.class, listener );
@@ -375,6 +384,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return special state provider that can be set to check whether or not specific nodes are editable
      */
+    @Nullable
     public Predicate<N> getEditableStateProvider ()
     {
         return editableStateProvider;
@@ -386,13 +396,13 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param stateProvider special state provider that can be set to check whether or not specific nodes are editable
      */
-    public void setEditableStateProvider ( final Predicate<N> stateProvider )
+    public void setEditableStateProvider ( @Nullable final Predicate<N> stateProvider )
     {
         this.editableStateProvider = stateProvider;
     }
 
     @Override
-    public boolean isPathEditable ( final TreePath path )
+    public boolean isPathEditable ( @NotNull final TreePath path )
     {
         return super.isPathEditable ( path ) && isNodeEditable ( ( N ) path.getLastPathComponent () );
     }
@@ -405,7 +415,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @return true if the specified tree node is editable, false otherwise
      * @see #isPathEditable(javax.swing.tree.TreePath)
      */
-    public boolean isNodeEditable ( final N node )
+    public boolean isNodeEditable ( @NotNull final N node )
     {
         return editableStateProvider == null || editableStateProvider.test ( node );
     }
@@ -415,6 +425,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return {@link TreeToolTipProvider}
      */
+    @Nullable
     public TreeToolTipProvider<N> getToolTipProvider ()
     {
         return toolTipProvider;
@@ -425,7 +436,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param provider {@link TreeToolTipProvider}
      */
-    public void setToolTipProvider ( final TreeToolTipProvider<N> provider )
+    public void setToolTipProvider ( @Nullable final TreeToolTipProvider<N> provider )
     {
         this.toolTipProvider = provider;
     }
@@ -458,7 +469,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param shouldExpand expand filter
      */
-    public void expandAll ( final Filter<N> shouldExpand )
+    public void expandAll ( @Nullable final Filter<N> shouldExpand )
     {
         if ( shouldExpand == null )
         {
@@ -466,8 +477,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         }
         else
         {
-            final N rootNode = getRootNode ();
-            expandAll ( rootNode, shouldExpand );
+            expandAll ( getRootNode (), shouldExpand );
         }
     }
 
@@ -476,7 +486,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node node to expand
      */
-    public void expandAll ( final N node )
+    public void expandAll ( @Nullable final N node )
     {
         expandAll ( node, null );
     }
@@ -487,14 +497,17 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node         node to expand
      * @param shouldExpand expand filter
      */
-    public void expandAll ( final N node, final Filter<N> shouldExpand )
+    public void expandAll ( @Nullable final N node, @Nullable final Filter<N> shouldExpand )
     {
         if ( shouldExpand == null || shouldExpand.accept ( node ) )
         {
             expandNode ( node );
-            for ( int i = 0; i < node.getChildCount (); i++ )
+            if ( node != null )
             {
-                expandAll ( ( N ) node.getChildAt ( i ), shouldExpand );
+                for ( int i = 0; i < node.getChildCount (); i++ )
+                {
+                    expandAll ( ( N ) node.getChildAt ( i ), shouldExpand );
+                }
             }
         }
     }
@@ -517,16 +530,19 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param currentDepth current depth level
      * @param maxDepth     max depth level
      */
-    private void expandAllImpl ( final N node, final int currentDepth, final int maxDepth )
+    protected void expandAllImpl ( @Nullable final N node, final int currentDepth, final int maxDepth )
     {
         final int depth = currentDepth + 1;
-        for ( int i = 0; i < node.getChildCount (); i++ )
+        if ( node != null )
         {
-            final N child = ( N ) node.getChildAt ( i );
-            expandNode ( child );
-            if ( depth < maxDepth )
+            for ( int i = 0; i < node.getChildCount (); i++ )
             {
-                expandAllImpl ( child, depth, maxDepth );
+                final N child = ( N ) node.getChildAt ( i );
+                expandNode ( child );
+                if ( depth < maxDepth )
+                {
+                    expandAllImpl ( child, depth, maxDepth );
+                }
             }
         }
     }
@@ -536,7 +552,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node node to expand
      */
-    public void expandNode ( final N node )
+    public void expandNode ( @Nullable final N node )
     {
         expandPath ( getPathForNode ( node ) );
     }
@@ -547,7 +563,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node node to check
      * @return true if node is expanded, false otherwise
      */
-    public boolean isExpanded ( final N node )
+    public boolean isExpanded ( @Nullable final N node )
     {
         return isExpanded ( getPathForNode ( node ) );
     }
@@ -557,6 +573,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return selected {@link MutableTreeNode} bounds
      */
+    @Nullable
     public Rectangle getSelectedNodeBounds ()
     {
         return getNodeBounds ( getSelectedNode () );
@@ -568,7 +585,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node {@link MutableTreeNode} to retrieve bounds for
      * @return {@link MutableTreeNode} bounds
      */
-    public Rectangle getNodeBounds ( final N node )
+    @Nullable
+    public Rectangle getNodeBounds ( @Nullable final N node )
     {
         return getPathBounds ( getPathForNode ( node ) );
     }
@@ -579,21 +597,18 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param nodes {@link List} of {@link MutableTreeNode}s to combine bounds for
      * @return combined bounds for the {@link List} of {@link MutableTreeNode}s
      */
-    public Rectangle getNodeBounds ( final List<N> nodes )
+    @Nullable
+    public Rectangle getNodeBounds ( @Nullable final List<N> nodes )
     {
-        if ( nodes == null || nodes.size () == 0 )
+        Rectangle bounds = null;
+        if ( CollectionUtils.notEmpty ( nodes ) )
         {
-            return null;
-        }
-        else
-        {
-            Rectangle combined = null;
             for ( final N node : nodes )
             {
-                combined = GeometryUtils.getContainingRect ( combined, getNodeBounds ( node ) );
+                bounds = GeometryUtils.getContainingRect ( bounds, getNodeBounds ( node ) );
             }
-            return combined;
         }
+        return bounds;
     }
 
     /**
@@ -602,7 +617,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node {@link MutableTreeNode} to find row for
      * @return row for the specified {@link MutableTreeNode}
      */
-    public int getRowForNode ( final N node )
+    public int getRowForNode ( @Nullable final N node )
     {
         return getRowForPath ( getPathForNode ( node ) );
     }
@@ -613,6 +628,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param row row to look for {@link MutableTreeNode} at
      * @return {@link MutableTreeNode} for the specified row
      */
+    @Nullable
     public N getNodeForRow ( final int row )
     {
         return getNodeForPath ( getPathForRow ( row ) );
@@ -624,9 +640,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node {@link MutableTreeNode} to retrieve {@link TreePath} for
      * @return {@link TreePath} for specified {@link MutableTreeNode}
      */
-    public TreePath getPathForNode ( final N node )
+    @Nullable
+    public TreePath getPathForNode ( @Nullable final N node )
     {
-        return node != null ? new TreePath ( TreeUtils.getPath ( node ) ) : null;
+        return TreeUtils.getTreePath ( node );
     }
 
     /**
@@ -635,7 +652,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param path {@link TreePath} to retrieve {@link MutableTreeNode} for
      * @return {@link MutableTreeNode} for specified {@link TreePath}
      */
-    public N getNodeForPath ( final TreePath path )
+    @Nullable
+    public N getNodeForPath ( @Nullable final TreePath path )
     {
         return path != null ? ( N ) path.getLastPathComponent () : null;
     }
@@ -648,7 +666,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param location location to process
      * @return {@link MutableTreeNode} at the exact location
      */
-    public N getNodeForLocation ( final Point location )
+    @Nullable
+    public N getNodeForLocation ( @NotNull final Point location )
     {
         return getNodeForLocation ( location.x, location.y );
     }
@@ -662,6 +681,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param y location Y coordinate
      * @return {@link MutableTreeNode} at the exact location
      */
+    @Nullable
     public N getNodeForLocation ( final int x, final int y )
     {
         return getNodeForPath ( getPathForLocation ( x, y ) );
@@ -675,7 +695,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param location location to process
      * @return {@link TreePath} for the {@link MutableTreeNode} at the exact location
      */
-    public TreePath getPathForLocation ( final Point location )
+    @Nullable
+    public TreePath getPathForLocation ( @NotNull final Point location )
     {
         return getPathForLocation ( location.x, location.y );
     }
@@ -686,7 +707,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param location location to process
      * @return {@link MutableTreeNode} closest to the specified location
      */
-    public N getClosestNodeForLocation ( final Point location )
+    @Nullable
+    public N getClosestNodeForLocation ( @NotNull final Point location )
     {
         return getClosestNodeForLocation ( location.x, location.y );
     }
@@ -698,6 +720,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param y location Y coordinate
      * @return {@link MutableTreeNode} closest to the specified location
      */
+    @Nullable
     public N getClosestNodeForLocation ( final int x, final int y )
     {
         return getNodeForPath ( getClosestPathForLocation ( x, y ) );
@@ -710,7 +733,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param location location to process
      * @return {@link TreePath} for the {@link MutableTreeNode} closest to the specified location
      */
-    public TreePath getClosestPathForLocation ( final Point location )
+    @Nullable
+    public TreePath getClosestPathForLocation ( @NotNull final Point location )
     {
         return getClosestPathForLocation ( location.x, location.y );
     }
@@ -721,7 +745,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node {@link MutableTreeNode} to check
      * @return {@code true} if specified {@link MutableTreeNode} is selected, {@code false} otherwise
      */
-    public boolean isSelected ( final N node )
+    public boolean isSelected ( @Nullable final N node )
     {
         return isPathSelected ( getPathForNode ( node ) );
     }
@@ -731,6 +755,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return selected {@link MutableTreeNode}
      */
+    @Nullable
     public N getSelectedNode ()
     {
         return getNodeForPath ( getSelectionPath () );
@@ -754,7 +779,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @return {@link List} of selected {@link MutableTreeNode}s filtered by {@link NodesAcceptPolicy}
      * @see NodesAcceptPolicy
      */
-    public List<N> getSelectedNodes ( final NodesAcceptPolicy policy )
+    @NotNull
+    public List<N> getSelectedNodes ( @NotNull final NodesAcceptPolicy policy )
     {
         final TreePath[] selectionPaths = getSelectionPaths ();
         final List<N> selectedNodes;
@@ -770,10 +796,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         {
             selectedNodes = new ArrayList<N> ();
         }
-        if ( policy != null )
-        {
-            policy.filter ( this, selectedNodes );
-        }
+        policy.filter ( this, selectedNodes );
         return selectedNodes;
     }
 
@@ -783,6 +806,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return {@link List} of selected {@link MutableTreeNode}s which are currently within {@link #getVisibleRect()} of this tree
      */
+    @NotNull
     public List<N> getVisibleSelectedNodes ()
     {
         final List<N> selectedNodes = getSelectedNodes ();
@@ -791,7 +815,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         while ( iterator.hasNext () )
         {
             final N node = iterator.next ();
-            if ( !vr.intersects ( getNodeBounds ( node ) ) )
+            final Rectangle bounds = getNodeBounds ( node );
+            if ( bounds == null || !vr.intersects ( bounds ) )
             {
                 iterator.remove ();
             }
@@ -802,8 +827,10 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Returns user object extracted from the selected {@link MutableTreeNode}.
      *
+     * @param <U> user object type
      * @return user object extracted from the selected {@link MutableTreeNode}
      */
+    @Nullable
     public <U> U getSelectedUserObject ()
     {
         return getUserObject ( getSelectedNode () );
@@ -812,9 +839,11 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Returns {@link List} of user objects extracted from all selected {@link MutableTreeNode}s.
      *
+     * @param <U> user object type
      * @return {@link List} of user objects extracted from all selected {@link MutableTreeNode}s
      * @see NodesAcceptPolicy#all
      */
+    @NotNull
     public <U> List<U> getSelectedUserObjects ()
     {
         return getSelectedUserObjects ( NodesAcceptPolicy.all );
@@ -824,10 +853,12 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * Returns {@link List} of user objects extracted from selected {@link MutableTreeNode}s filtered by {@link NodesAcceptPolicy}.
      *
      * @param policy {@link NodesAcceptPolicy} used for filtering {@link MutableTreeNode}s
+     * @param <U>    user object type
      * @return {@link List} of user objects extracted from selected {@link MutableTreeNode}s filtered by {@link NodesAcceptPolicy}
      * @see NodesAcceptPolicy
      */
-    public <U> List<U> getSelectedUserObjects ( final NodesAcceptPolicy policy )
+    @NotNull
+    public <U> List<U> getSelectedUserObjects ( @NotNull final NodesAcceptPolicy policy )
     {
         final List<N> selectedNodes = getSelectedNodes ( policy );
         final List<U> selectedUserObjects = new ArrayList<U> ( selectedNodes.size () );
@@ -848,7 +879,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param <U>  user object type
      * @return user object extracted from the specified {@link MutableTreeNode}
      */
-    protected <U> U getUserObject ( final N node )
+    @Nullable
+    protected <U> U getUserObject ( @Nullable final N node )
     {
         final U selectedUserObject;
         if ( node instanceof WebTreeNode )
@@ -871,7 +903,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param point point to look for {@link MutableTreeNode}
      */
-    public void selectNodeUnderPoint ( final Point point )
+    public void selectNodeUnderPoint ( @NotNull final Point point )
     {
         selectNodeUnderPoint ( point.x, point.y );
     }
@@ -893,7 +925,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node {@link MutableTreeNode} to select
      */
-    public void setSelectedNode ( final N node )
+    public void setSelectedNode ( @Nullable final N node )
     {
         final TreePath path = getPathForNode ( node );
         if ( path != null )
@@ -908,7 +940,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param nodes {@link List} of {@link MutableTreeNode}s to select
      */
-    public void setSelectedNodes ( final List<N> nodes )
+    public void setSelectedNodes ( @NotNull final List<N> nodes )
     {
         final TreePath[] paths = new TreePath[ nodes.size () ];
         for ( int i = 0; i < nodes.size (); i++ )
@@ -924,7 +956,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param nodes {@link MutableTreeNode}s to select
      */
-    public void setSelectedNodes ( final N[] nodes )
+    public void setSelectedNodes ( @NotNull final N[] nodes )
     {
         final TreePath[] paths = new TreePath[ nodes.length ];
         for ( int i = 0; i < nodes.length; i++ )
@@ -941,17 +973,20 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return first visible leaf {@link MutableTreeNode} from the top of the tree
      */
+    @Nullable
     public N getFirstVisibleLeafNode ()
     {
+        N firstVisibleLeafNode = null;
         for ( int i = 0; i < getRowCount (); i++ )
         {
             final N node = getNodeForRow ( i );
             if ( getModel ().isLeaf ( node ) )
             {
-                return node;
+                firstVisibleLeafNode = node;
+                break;
             }
         }
-        return null;
+        return firstVisibleLeafNode;
     }
 
     /**
@@ -1043,6 +1078,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return root {@link MutableTreeNode}
      */
+    @Nullable
     public N getRootNode ()
     {
         return ( N ) getModel ().getRoot ();
@@ -1053,6 +1089,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return {@link List} of all {@link MutableTreeNode}s available in this tree
      */
+    @NotNull
     public List<N> getAvailableNodes ()
     {
         return getAvailableNodes ( getRootNode () );
@@ -1064,25 +1101,29 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param parent {@link MutableTreeNode} to collect nodes for
      * @return {@link List} of all {@link MutableTreeNode}s available under the specified {@link MutableTreeNode} including that node
      */
-    public List<N> getAvailableNodes ( final N parent )
+    @NotNull
+    public List<N> getAvailableNodes ( @Nullable final N parent )
     {
         final List<N> nodes = new ArrayList<N> ();
-        getAllNodesImpl ( nodes, getRootNode () );
+        collectAllNodesImpl ( parent, nodes );
         return nodes;
     }
 
     /**
      * Collects {@link List} of all {@link MutableTreeNode}s available under the specified {@link MutableTreeNode} including that node.
      *
-     * @param nodes  {@link List} into which all {@link MutableTreeNode}s should be collected
      * @param parent {@link MutableTreeNode} to start collecting from
+     * @param nodes  {@link List} into which all {@link MutableTreeNode}s should be collected
      */
-    private void getAllNodesImpl ( final List<N> nodes, final N parent )
+    protected void collectAllNodesImpl ( @Nullable final N parent, @NotNull final List<N> nodes )
     {
-        nodes.add ( parent );
-        for ( int i = 0; i < parent.getChildCount (); i++ )
+        if ( parent != null )
         {
-            getAllNodesImpl ( nodes, ( N ) parent.getChildAt ( i ) );
+            nodes.add ( parent );
+            for ( int i = 0; i < parent.getChildCount (); i++ )
+            {
+                collectAllNodesImpl ( ( N ) parent.getChildAt ( i ), nodes );
+            }
         }
     }
 
@@ -1220,7 +1261,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node {@link MutableTreeNode} to scroll tree view to
      */
-    public void scrollToNode ( final N node )
+    public void scrollToNode ( @Nullable final N node )
     {
         scrollToNode ( node, false );
     }
@@ -1231,28 +1272,31 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node     {@link MutableTreeNode} to scroll tree view to
      * @param centered whether or not should vertically center specified {@link MutableTreeNode} in view bounds
      */
-    public void scrollToNode ( final N node, final boolean centered )
+    public void scrollToNode ( @Nullable final N node, final boolean centered )
     {
-        final Rectangle nodeBounds = getNodeBounds ( node );
-        if ( nodeBounds != null )
+        if ( node != null )
         {
-            if ( node.getParent () != null )
+            final Rectangle nodeBounds = getNodeBounds ( node );
+            if ( nodeBounds != null )
             {
-                final int indent = ( getUI ().getLeftChildIndent () + getUI ().getRightChildIndent () ) * 2;
-                nodeBounds.x -= indent;
-                nodeBounds.width += indent;
+                if ( node.getParent () != null )
+                {
+                    final int indent = ( getUI ().getLeftChildIndent () + getUI ().getRightChildIndent () ) * 2;
+                    nodeBounds.x -= indent;
+                    nodeBounds.width += indent;
+                }
+                final Dimension visibleBounds = getVisibleRect ().getSize ();
+                if ( nodeBounds.width > visibleBounds.width )
+                {
+                    nodeBounds.width = visibleBounds.width;
+                }
+                if ( centered )
+                {
+                    nodeBounds.y = nodeBounds.y + nodeBounds.height / 2 - visibleBounds.height / 2;
+                    nodeBounds.height = visibleBounds.height;
+                }
+                scrollRectToVisible ( nodeBounds );
             }
-            final Dimension visibleBounds = getVisibleRect ().getSize ();
-            if ( nodeBounds.width > visibleBounds.width )
-            {
-                nodeBounds.width = visibleBounds.width;
-            }
-            if ( centered )
-            {
-                nodeBounds.y = nodeBounds.y + nodeBounds.height / 2 - visibleBounds.height / 2;
-                nodeBounds.height = visibleBounds.height;
-            }
-            scrollRectToVisible ( nodeBounds );
         }
     }
 
@@ -1269,7 +1313,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node {@link MutableTreeNode} to edit
      */
-    public void startEditingNode ( final N node )
+    public void startEditingNode ( @Nullable final N node )
     {
         if ( node != null )
         {
@@ -1291,7 +1335,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node {@link MutableTreeNode} to update view for
      */
-    public void updateNode ( final N node )
+    public void updateNode ( @Nullable final N node )
     {
         final TreeModel model = getModel ();
         if ( model instanceof WebTreeModel )
@@ -1306,7 +1350,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param nodes {@link MutableTreeNode}s to update view for
      */
-    public void updateNodes ( final N... nodes )
+    public void updateNodes ( @Nullable final N... nodes )
     {
         final TreeModel model = getModel ();
         if ( model instanceof WebTreeModel )
@@ -1321,7 +1365,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param nodes tree nodes to be updated
      */
-    public void updateNodes ( final List<N> nodes )
+    public void updateNodes ( @Nullable final List<N> nodes )
     {
         final TreeModel model = getModel ();
         if ( model instanceof WebTreeModel )
@@ -1352,6 +1396,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return tree expansion and selection states
      */
+    @NotNull
     public TreeState getTreeState ()
     {
         return TreeUtils.getTreeState ( this );
@@ -1364,6 +1409,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param saveSelection whether to save selection states or not
      * @return tree expansion and selection states
      */
+    @NotNull
     public TreeState getTreeState ( final boolean saveSelection )
     {
         return TreeUtils.getTreeState ( this, saveSelection );
@@ -1376,7 +1422,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node node to save state for
      * @return tree expansion and selection states
      */
-    public TreeState getTreeState ( final N node )
+    @NotNull
+    public TreeState getTreeState ( @Nullable final N node )
     {
         return TreeUtils.getTreeState ( this, node );
     }
@@ -1389,7 +1436,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param saveSelection whether to save selection states or not
      * @return tree expansion and selection states
      */
-    public TreeState getTreeState ( final N node, final boolean saveSelection )
+    @NotNull
+    public TreeState getTreeState ( @Nullable final N node, final boolean saveSelection )
     {
         return TreeUtils.getTreeState ( this, node, saveSelection );
     }
@@ -1400,7 +1448,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param treeState tree expansion and selection states
      */
-    public void setTreeState ( final TreeState treeState )
+    public void setTreeState ( @Nullable final TreeState treeState )
     {
         TreeUtils.setTreeState ( this, treeState );
     }
@@ -1412,7 +1460,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param treeState        tree expansion and selection states
      * @param restoreSelection whether to restore selection states or not
      */
-    public void setTreeState ( final TreeState treeState, final boolean restoreSelection )
+    public void setTreeState ( @Nullable final TreeState treeState, final boolean restoreSelection )
     {
         TreeUtils.setTreeState ( this, treeState, restoreSelection );
     }
@@ -1424,7 +1472,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param treeState tree expansion and selection states
      * @param node      node to restore state for
      */
-    public void setTreeState ( final TreeState treeState, final N node )
+    public void setTreeState ( @Nullable final TreeState treeState, @Nullable final N node )
     {
         TreeUtils.setTreeState ( this, treeState, node );
     }
@@ -1437,7 +1485,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node             node to restore state for
      * @param restoreSelection whether to restore selection states or not
      */
-    public void setTreeState ( final TreeState treeState, final N node, final boolean restoreSelection )
+    public void setTreeState ( @Nullable final TreeState treeState, @Nullable final N node, final boolean restoreSelection )
     {
         TreeUtils.setTreeState ( this, treeState, node, restoreSelection );
     }
@@ -1447,6 +1495,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return tree selection style
      */
+    @NotNull
     public TreeSelectionStyle getSelectionStyle ()
     {
         return getUI ().getSelectionStyle ();
@@ -1457,7 +1506,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param style tree selection style
      */
-    public void setSelectionStyle ( final TreeSelectionStyle style )
+    public void setSelectionStyle ( @NotNull final TreeSelectionStyle style )
     {
         getUI ().setSelectionStyle ( style );
     }
@@ -1717,7 +1766,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param listener hover listener to add
      */
-    public void addHoverListener ( final HoverListener<N> listener )
+    public void addHoverListener ( @NotNull final HoverListener<N> listener )
     {
         listenerList.add ( HoverListener.class, listener );
     }
@@ -1727,7 +1776,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param listener hover listener to remove
      */
-    public void removeHoverListener ( final HoverListener<N> listener )
+    public void removeHoverListener ( @NotNull final HoverListener<N> listener )
     {
         listenerList.remove ( HoverListener.class, listener );
     }
@@ -1737,6 +1786,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return hover listeners
      */
+    @NotNull
     public HoverListener[] getHoverListeners ()
     {
         return listenerList.getListeners ( HoverListener.class );
@@ -1748,7 +1798,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param previous previous hover node
      * @param current  current hover node
      */
-    public void fireHoverChanged ( final N previous, final N current )
+    public void fireHoverChanged ( @Nullable final N previous, @Nullable final N current )
     {
         for ( final HoverListener listener : getHoverListeners () )
         {
@@ -1757,7 +1807,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     @Override
-    public int getScrollableUnitIncrement ( final Rectangle visibleRect, final int orientation, final int direction )
+    public int getScrollableUnitIncrement ( @NotNull final Rectangle visibleRect, final int orientation, final int direction )
     {
         int increment = super.getScrollableUnitIncrement ( visibleRect, orientation, direction );
 
@@ -1809,7 +1859,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node node to repaint
      */
-    public void repaint ( final N node )
+    public void repaint ( @Nullable final N node )
     {
         if ( node != null )
         {
@@ -1826,9 +1876,9 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param nodes nodes to repaint
      */
-    public void repaint ( final List<N> nodes )
+    public void repaint ( @Nullable final List<N> nodes )
     {
-        if ( nodes != null && nodes.size () > 0 )
+        if ( CollectionUtils.notEmpty ( nodes ) )
         {
             Rectangle summ = null;
             for ( final N node : nodes )
@@ -1843,145 +1893,165 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     @Override
-    public MouseAdapter onNodeDoubleClick ( final TreeNodeEventRunnable<N> runnable )
+    public MouseAdapter onNodeDoubleClick ( @NotNull final TreeNodeEventRunnable<N> runnable )
     {
         return TreeEventMethodsImpl.onNodeDoubleClick ( this, runnable );
     }
 
     @Override
-    public MouseAdapter onNodeDoubleClick ( final Predicate<N> condition, final TreeNodeEventRunnable<N> runnable )
+    public MouseAdapter onNodeDoubleClick ( @Nullable final Predicate<N> condition, @NotNull final TreeNodeEventRunnable<N> runnable )
     {
         return TreeEventMethodsImpl.onNodeDoubleClick ( this, condition, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    public MouseAdapter onMousePress ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMousePress ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onMousePress ( @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseEnter ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseEnter ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseExit ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseExit ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseDrag ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseDrag ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onMouseDrag ( @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    public MouseAdapter onMouseClick ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseClick ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onMouseClick ( @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    public MouseAdapter onDoubleClick ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDoubleClick ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    public MouseAdapter onMenuTrigger ( @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onMenuTrigger ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    public KeyAdapter onKeyType ( @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyType ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    public KeyAdapter onKeyType ( @Nullable final HotkeyData hotkey, @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    public KeyAdapter onKeyPress ( @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyPress ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    public KeyAdapter onKeyPress ( @Nullable final HotkeyData hotkey, @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    public KeyAdapter onKeyRelease ( @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyRelease ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    public KeyAdapter onKeyRelease ( @Nullable final HotkeyData hotkey, @NotNull final KeyEventRunnable runnable )
     {
         return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
     }
 
+    @NotNull
     @Override
-    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    public FocusAdapter onFocusGain ( @NotNull final FocusEventRunnable runnable )
     {
         return EventMethodsImpl.onFocusGain ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    public FocusAdapter onFocusLoss ( @NotNull final FocusEventRunnable runnable )
     {
         return EventMethodsImpl.onFocusLoss ( this, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    public MouseAdapter onDragStart ( final int shift, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, runnable );
     }
 
+    @NotNull
     @Override
-    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    public MouseAdapter onDragStart ( final int shift, @Nullable final MouseButton mouseButton, @NotNull final MouseEventRunnable runnable )
     {
         return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
 
     @Override
-    public void addLanguageListener ( final LanguageListener listener )
+    public void addLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.addLanguageListener ( this, listener );
     }
 
     @Override
-    public void removeLanguageListener ( final LanguageListener listener )
+    public void removeLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.removeLanguageListener ( this, listener );
     }
@@ -1993,13 +2063,13 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     @Override
-    public void addDictionaryListener ( final DictionaryListener listener )
+    public void addDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.addDictionaryListener ( this, listener );
     }
 
     @Override
-    public void removeDictionaryListener ( final DictionaryListener listener )
+    public void removeDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.removeDictionaryListener ( this, listener );
     }
@@ -2265,6 +2335,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         StyleManager.getDescriptor ( this ).updateUI ( this );
     }
 
+    @NotNull
     @Override
     public String getUIClassID ()
     {
@@ -2279,7 +2350,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param data data object used as the foundation for the TreeModel
      * @return a TreeModel wrapping the specified object
      */
-    protected static TreeModel createTreeModel ( final Object data )
+    @NotNull
+    protected static TreeModel createTreeModel ( @NotNull final Object data )
     {
         final DefaultMutableTreeNode root;
         if ( data instanceof Object[] || data instanceof Hashtable || data instanceof Vector )
@@ -2300,6 +2372,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return the default TreeModel
      */
+    @NotNull
     public static TreeModel createDefaultTreeModel ()
     {
         final UniqueNode root = new UniqueNode ( "JTree" );

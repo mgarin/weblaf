@@ -1,5 +1,7 @@
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -15,11 +17,13 @@ public class DocumentPaneTransferInfo implements Serializable
     /**
      * {@link WebDocumentPane} unique ID.
      */
+    @NotNull
     protected final String documentPaneId;
 
     /**
      * Whether or not source {@link WebDocumentPane} allows drag between panes.
      */
+    @NotNull
     protected final Boolean dragBetweenPanesEnabled;
 
     /**
@@ -27,7 +31,7 @@ public class DocumentPaneTransferInfo implements Serializable
      *
      * @param documentPane source {@link WebDocumentPane}
      */
-    public DocumentPaneTransferInfo ( final WebDocumentPane documentPane )
+    public DocumentPaneTransferInfo ( @NotNull final WebDocumentPane documentPane )
     {
         this.documentPaneId = documentPane.getId ();
         this.dragBetweenPanesEnabled = documentPane.isDragBetweenPanesEnabled ();
@@ -38,6 +42,7 @@ public class DocumentPaneTransferInfo implements Serializable
      *
      * @return {@link WebDocumentPane} unique identifier
      */
+    @NotNull
     public String getDocumentPaneId ()
     {
         return documentPaneId;
@@ -48,7 +53,7 @@ public class DocumentPaneTransferInfo implements Serializable
      *
      * @return true if source {@link WebDocumentPane} allows drag between panes, false otherwise
      */
-    public Boolean getDragBetweenPanesEnabled ()
+    public boolean isDragBetweenPanesEnabled ()
     {
         return dragBetweenPanesEnabled;
     }

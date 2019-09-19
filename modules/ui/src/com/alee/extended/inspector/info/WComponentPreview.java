@@ -38,21 +38,23 @@ public class WComponentPreview<C extends JComponent> extends AbstractComponentPr
     @Override
     public Icon getIconImpl ( final C component )
     {
+        final Icon icon;
         final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
         if ( rootPane != null && rootPane.getGlassPane () == component )
         {
-            return glassPaneType;
+            icon = glassPaneType;
         }
         else
         {
-            return StyleManager.getDescriptor ( component ).getIcon ();
+            icon = StyleManager.getDescriptor ( component ).getIcon ();
         }
+        return icon;
     }
 
     @Override
     public String getText ( final C component )
     {
-        final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
+        final String title = "{" + ReflectUtils.getCompleteClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
 
         final LayoutManager layoutManager = component.getLayout ();
         final String layout = renderLayout ( layoutManager );

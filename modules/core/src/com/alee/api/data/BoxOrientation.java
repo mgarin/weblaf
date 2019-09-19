@@ -17,6 +17,8 @@
 
 package com.alee.api.data;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 
 /**
@@ -114,27 +116,35 @@ public enum BoxOrientation implements SwingConstants
      * @param value constant value
      * @return enumeration literal referencing constant value
      */
+    @NotNull
     public static BoxOrientation get ( final int value )
     {
+        final BoxOrientation orientation;
         switch ( value )
         {
             case TOP:
-                return top;
+                orientation = top;
+                break;
 
             case LEADING:
             case LEFT:
-                return left;
+                orientation = left;
+                break;
 
             case BOTTOM:
-                return bottom;
+                orientation = bottom;
+                break;
 
             case TRAILING:
             case RIGHT:
-                return right;
+                orientation = right;
+                break;
 
             case CENTER:
             default:
-                return center;
+                orientation = center;
+                break;
         }
+        return orientation;
     }
 }

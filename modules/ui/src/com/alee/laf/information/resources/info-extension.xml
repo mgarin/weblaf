@@ -12,9 +12,17 @@
     <!-- Document pane -->
     <style type="panel" id="tabs" extends="documentpane">
         <style type="tabbedpane" id="tabbedpane">
-            <ui>
-                <tabStretchType>always</tabStretchType>
-            </ui>
+            <style type="panel" id="tab-area">
+                <style type="viewport" id="viewport">
+                    <style type="panel" id="container">
+                        <component>
+                            <layout class="TabContainerLayout$UIResource">
+                                <tabStretchType>always</tabStretchType>
+                            </layout>
+                        </component>
+                    </style>
+                </style>
+            </style>
         </style>
     </style>
 

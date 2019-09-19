@@ -93,6 +93,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
             super ( WebAsyncTreeExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -118,6 +119,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
             super ( WebAsyncTreeExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -143,6 +145,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
             super ( WebAsyncTreeExample.this, "dragndrop", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

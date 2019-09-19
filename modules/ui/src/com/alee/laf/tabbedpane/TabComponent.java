@@ -15,21 +15,29 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
+package com.alee.laf.tabbedpane;
+
+import javax.swing.*;
 
 /**
- * Adapter for {@link HoverListener}.
+ * Interface that can be implemented by custom {@link Tab} components to provide additional information.
+ * Currently this is used by {@link TabMenuButton} to generate accurate menu for all available {@link Tab}s.
  *
- * @param <E> object type
  * @author Mikle Garin
  */
-public abstract class HoverAdapter<E> implements HoverListener<E>
+public interface TabComponent
 {
-    @Override
-    public void hoverChanged ( final E previous, final E current )
-    {
-        /**
-         * Do nothing by default.
-         */
-    }
+    /**
+     * Returns {@link Tab} component {@link Icon}.
+     *
+     * @return {@link Tab} component {@link Icon}
+     */
+    public Icon getIcon ();
+
+    /**
+     * Returns {@link Tab} component title.
+     *
+     * @return {@link Tab} component title
+     */
+    public String getTitle ();
 }

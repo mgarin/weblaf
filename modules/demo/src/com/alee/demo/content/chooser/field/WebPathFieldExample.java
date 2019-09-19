@@ -78,6 +78,7 @@ public class WebPathFieldExample extends AbstractStylePreviewExample
             super ( WebPathFieldExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

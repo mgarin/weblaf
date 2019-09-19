@@ -17,6 +17,8 @@
 
 package com.alee.laf.list.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.Behavior;
 import com.alee.laf.list.WebList;
 import com.alee.utils.swing.HoverListener;
@@ -32,6 +34,7 @@ public class ListHoverSelectionBehavior implements HoverListener<Integer>, Behav
     /**
      * List using this behavior.
      */
+    @NotNull
     protected final WebList list;
 
     /**
@@ -39,16 +42,15 @@ public class ListHoverSelectionBehavior implements HoverListener<Integer>, Behav
      *
      * @param list list using this behavior
      */
-    public ListHoverSelectionBehavior ( final WebList list )
+    public ListHoverSelectionBehavior ( @NotNull final WebList list )
     {
-        super();
         this.list = list;
     }
 
     @Override
-    public void hoverChanged ( final Integer previous, final Integer current )
+    public void hoverChanged ( @Nullable final Integer previous, @Nullable final Integer current )
     {
-        if ( current != -1 )
+        if ( current != null && current != -1 )
         {
             list.setSelectedIndex ( current );
         }
@@ -64,7 +66,7 @@ public class ListHoverSelectionBehavior implements HoverListener<Integer>, Behav
      * @param list list to modify
      * @return installed behavior
      */
-    public static ListHoverSelectionBehavior install ( final WebList list )
+    public static ListHoverSelectionBehavior install ( @NotNull final WebList list )
     {
         // Uninstalling old behavior first
         uninstall ( list );
@@ -80,7 +82,7 @@ public class ListHoverSelectionBehavior implements HoverListener<Integer>, Behav
      *
      * @param list list to modify
      */
-    public static void uninstall ( final WebList list )
+    public static void uninstall ( @NotNull final WebList list )
     {
         for ( final HoverListener listener : list.getHoverListeners () )
         {
@@ -97,15 +99,17 @@ public class ListHoverSelectionBehavior implements HoverListener<Integer>, Behav
      * @param list list to process
      * @return true if the specified list has any behaviors installed, false otherwise
      */
-    public static boolean isInstalled ( final WebList list )
+    public static boolean isInstalled ( @NotNull final WebList list )
     {
+        boolean installed = false;
         for ( final HoverListener listener : list.getHoverListeners () )
         {
             if ( listener instanceof ListHoverSelectionBehavior )
             {
-                return true;
+                installed = true;
+                break;
             }
         }
-        return false;
+        return installed;
     }
 }

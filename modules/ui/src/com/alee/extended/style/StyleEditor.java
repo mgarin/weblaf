@@ -17,6 +17,9 @@
 
 package com.alee.extended.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.data.Orientation;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.button.SplitButtonAdapter;
 import com.alee.extended.button.WebSplitButton;
@@ -26,6 +29,8 @@ import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.split.MultiSplitConstraints;
+import com.alee.extended.split.WebMultiSplitPane;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.syntax.SyntaxPreset;
@@ -55,7 +60,6 @@ import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.laf.spinner.WebSpinner;
-import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.text.WebPasswordField;
@@ -149,7 +153,7 @@ public class StyleEditor extends WebFrame
      * General UI elements.
      */
     protected WebPanel container;
-    protected WebSplitPane split;
+    protected WebMultiSplitPane split;
 
     /**
      * Preview UI elements.
@@ -201,19 +205,17 @@ public class StyleEditor extends WebFrame
         container = new WebPanel ();
         getContentPane ().add ( container, BorderLayout.CENTER );
 
-        split = new WebSplitPane ( StyleId.styleeditorSplit.at ( StyleEditor.this ), WebSplitPane.HORIZONTAL_SPLIT, true );
-        split.setDividerLocation ( 350 );
-        split.setDividerSize ( 8 );
+        split = new WebMultiSplitPane ( StyleId.styleeditorSplit.at ( StyleEditor.this ), Orientation.horizontal );
         split.setOneTouchExpandable ( true );
         container.add ( split, BorderLayout.CENTER );
 
         // Adding preview container into split
         previewContainer = new WebPanel ( StyleId.styleeditorPreview.at ( split ), new BorderLayout () );
-        split.setLeftComponent ( previewContainer );
+        split.add ( previewContainer, MultiSplitConstraints.PREFERRED );
 
         // Adding XML editors container into split
         editorsContainer = new WebPanel ( StyleId.styleeditorEditors.at ( split ), new BorderLayout () );
-        split.setRightComponent ( editorsContainer );
+        split.add ( editorsContainer, MultiSplitConstraints.FILL );
 
         createPreviewToolbar ();
         createPreviewPanel ();
@@ -523,7 +525,7 @@ public class StyleEditor extends WebFrame
         homeFileTree.onKeyRelease ( Hotkey.SPACE, new KeyEventRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 homeFileTree.updateVisibleNodes ();
             }
@@ -724,14 +726,14 @@ public class StyleEditor extends WebFrame
         delayField.onChange ( new DocumentEventRunnable<WebTextField> ()
         {
             @Override
-            public void run ( final WebTextField component, final DocumentEvent event )
+            public void run ( @NotNull final WebTextField component, @Nullable final DocumentEvent event )
             {
                 try
                 {
                     final int value = Integer.parseInt ( component.getText () );
                     updateDelay = value >= 0 ? value : 0;
                 }
-                catch ( final Exception e )
+                catch ( final Exception ignored )
                 {
                     // Leave delay unchanged
                 }
@@ -747,7 +749,7 @@ public class StyleEditor extends WebFrame
         statusMessage.onMousePress ( MouseButton.left, new MouseEventRunnable ()
         {
             @Override
-            public void run ( final MouseEvent e )
+            public void run ( @NotNull final MouseEvent e )
             {
                 if ( lastException != null )
                 {
@@ -784,6 +786,7 @@ public class StyleEditor extends WebFrame
     {
         // Creating XML editors tabbed pane
         editorTabs = new WebTabbedPane ( StyleId.styleeditorEditorsTabs.at ( editorsContainer ) );
+        // todo Use it once not all XML are opened at once: editorTabs.setTabLayoutPolicy ( JTabbedPane.SCROLL_TAB_LAYOUT );
         editorsContainer.add ( editorTabs, BorderLayout.CENTER );
 
         // Parsing all related files
@@ -798,9 +801,7 @@ public class StyleEditor extends WebFrame
         final List<String> sortedNames = new ArrayList<String> ( numTabs );
         for ( int i = 0; i < xmlContent.size (); i++ )
         {
-            final WebPanel tabContent = new WebPanel ();
-            tabContent.add ( new TabContentSeparator (), BorderLayout.NORTH );
-            tabContent.add ( createSingleXmlEditor ( xmlContent.get ( i ), xmlFiles.get ( i ) ), BorderLayout.CENTER );
+            final Component tabContent = createSingleXmlEditor ( xmlContent.get ( i ), xmlFiles.get ( i ) );
             final String name = xmlNames.get ( i );
             int j = 0;
             while ( j < i )
@@ -812,15 +813,15 @@ public class StyleEditor extends WebFrame
                 j++;
             }
             editorTabs.insertTab ( name, null, tabContent, null, j );
+            editorTabs.setIconAt ( j, tabIcon );
             sortedNames.add ( j, name );
-            editorTabs.setIconAt ( i, tabIcon );
         }
 
         // Quick file search
         HotkeyManager.registerHotkey ( Hotkey.CTRL_N, new HotkeyRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 final WebPopOver popOver = new WebPopOver ( StyleEditor.this );
                 popOver.setCloseOnFocusLoss ( true );
@@ -834,7 +835,7 @@ public class StyleEditor extends WebFrame
                 searchField.onChange ( new DocumentEventRunnable<WebTextField> ()
                 {
                     @Override
-                    public void run ( final WebTextField component, final DocumentEvent event )
+                    public void run ( @NotNull final WebTextField component, @Nullable final DocumentEvent event )
                     {
                         final String text = component.getText ().toLowerCase ( Locale.ROOT );
                         if ( !TextUtils.isEmpty ( text ) )
@@ -855,7 +856,7 @@ public class StyleEditor extends WebFrame
                 final KeyEventRunnable closeRunnable = new KeyEventRunnable ()
                 {
                     @Override
-                    public void run ( final KeyEvent e )
+                    public void run ( @NotNull final KeyEvent e )
                     {
                         popOver.dispose ();
                         editors.get ( editorTabs.getSelectedIndex () ).requestFocusInWindow ();
@@ -890,7 +891,7 @@ public class StyleEditor extends WebFrame
         HotkeyManager.registerHotkey ( xmlEditor, xmlEditor, Hotkey.CTRL_SHIFT_Z, new HotkeyRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 xmlEditor.undoLastAction ();
             }
@@ -913,7 +914,7 @@ public class StyleEditor extends WebFrame
             } ).setRepeats ( false );
 
             @Override
-            public void run ( final WebSyntaxArea component, final DocumentEvent event )
+            public void run ( @NotNull final WebSyntaxArea component, @Nullable final DocumentEvent event )
             {
                 updateTimer.restart ( updateDelay );
             }
@@ -1129,28 +1130,6 @@ public class StyleEditor extends WebFrame
         xmlFiles.add ( rf );
 
         resources.remove ( 0 );
-    }
-
-    /**
-     * Custom tab content separator.
-     * todo This is a temporary thing, it should be replaced with an appropriate styling
-     */
-    protected class TabContentSeparator extends JComponent
-    {
-        @Override
-        protected void paintComponent ( final Graphics g )
-        {
-            g.setColor ( new Color ( 237, 237, 237 ) );
-            g.fillRect ( 0, 0, getWidth (), getHeight () - 1 );
-            g.setColor ( Color.GRAY );
-            g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
-        }
-
-        @Override
-        public Dimension getPreferredSize ()
-        {
-            return new Dimension ( 0, 4 );
-        }
     }
 
     /**

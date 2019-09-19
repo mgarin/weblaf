@@ -9,7 +9,7 @@
         <!-- Gutter -->
         <style type="panel" id="gutter">
             <component>
-                <background>245,245,245</background>
+                <background>106,110,112</background>
             </component>
         </style>
 

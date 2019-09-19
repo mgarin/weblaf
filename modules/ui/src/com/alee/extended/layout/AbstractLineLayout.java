@@ -562,6 +562,7 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {

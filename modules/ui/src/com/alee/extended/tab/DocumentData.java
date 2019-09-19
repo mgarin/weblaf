@@ -17,15 +17,19 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class represents basic data for single document opened in {@link WebDocumentPane}.
+ * todo Change this to interface so it could be implemented in any custom data class
  *
  * @param <C> {@link Component} type
  * @author Mikle Garin
@@ -38,32 +42,38 @@ public class DocumentData<C extends Component>
     /**
      * {@link DocumentDataListener}s used to properly update {@link WebDocumentPane} on document changes.
      */
-    protected transient List<DocumentDataListener> listeners = new ArrayList<DocumentDataListener> ( 1 );
+    @Nullable
+    protected EventListenerList listeners;
 
     /**
      * Document identifier unique within {@link WebDocumentPane}.
      */
+    @NotNull
     protected String id;
 
     /**
      * Document {@link Icon} used for the document tab.
      */
+    @Nullable
     protected Icon icon;
 
     /**
      * Plain text or a language key used as document title.
      * Whether this is a plain text or a language key will be determined automatically, you only have to provide it.
      */
+    @NotNull
     protected String title;
 
     /**
      * Document foreground {@link Color} used for the document tab title.
      */
+    @Nullable
     protected Color foreground;
 
     /**
      * Document background {@link Color} used for the document tab and content.
      */
+    @Nullable
     protected Color background;
 
     /**
@@ -81,6 +91,7 @@ public class DocumentData<C extends Component>
     /**
      * {@link Component} used as document tab content.
      */
+    @NotNull
     protected C component;
 
     /**
@@ -90,21 +101,9 @@ public class DocumentData<C extends Component>
      * @param title     plain text or a language key used as document title
      * @param component {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final String title, final C component )
+    public DocumentData ( @NotNull final String id, @NotNull final String title, @NotNull final C component )
     {
-        this ( id, null, title, null, component );
-    }
-
-    /**
-     * Constructs new {@link DocumentData}.
-     *
-     * @param id        document identifier unique within {@link WebDocumentPane}
-     * @param icon      document {@link Icon} used for the document tab
-     * @param component {@link Component} used as document tab content
-     */
-    public DocumentData ( final String id, final Icon icon, final C component )
-    {
-        this ( id, icon, null, null, component );
+        this ( id, null, title, null, null, true, true, component );
     }
 
     /**
@@ -115,9 +114,9 @@ public class DocumentData<C extends Component>
      * @param title     plain text or a language key used as document title
      * @param component {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final C component )
+    public DocumentData ( @NotNull final String id, @Nullable final Icon icon, @NotNull final String title, @NotNull final C component )
     {
-        this ( id, icon, title, null, component );
+        this ( id, icon, title, null, null, true, true, component );
     }
 
     /**
@@ -129,9 +128,10 @@ public class DocumentData<C extends Component>
      * @param background document background {@link Color} used for the document tab and content
      * @param component  {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final C component )
+    public DocumentData ( @NotNull final String id, @Nullable final Icon icon, @NotNull final String title,
+                          @Nullable final Color background, @NotNull final C component )
     {
-        this ( id, icon, title, background, true, component );
+        this ( id, icon, title, null, background, true, true, component );
     }
 
     /**
@@ -144,10 +144,10 @@ public class DocumentData<C extends Component>
      * @param closable   whether document is closable or not
      * @param component  {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closable,
-                          final C component )
+    public DocumentData ( @NotNull final String id, @Nullable final Icon icon, @NotNull final String title,
+                          @Nullable final Color background, final boolean closable, @NotNull final C component )
     {
-        this ( id, icon, title, background, closable, true, component );
+        this ( id, icon, title, null, background, closable, true, component );
     }
 
     /**
@@ -161,10 +161,10 @@ public class DocumentData<C extends Component>
      * @param draggable  whether document is draggable or not
      * @param component  {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closable,
-                          final boolean draggable, final C component )
+    public DocumentData ( @NotNull final String id, @Nullable final Icon icon, @NotNull final String title,
+                          @Nullable final Color background, final boolean closable, final boolean draggable, @NotNull final C component )
     {
-        this ( id, icon, title, Color.BLACK, background, closable, draggable, component );
+        this ( id, icon, title, null, background, closable, draggable, component );
     }
 
     /**
@@ -179,10 +179,10 @@ public class DocumentData<C extends Component>
      * @param draggable  whether document is draggable or not
      * @param component  {@link Component} used as document tab content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color foreground, final Color background,
-                          final boolean closable, final boolean draggable, final C component )
+    public DocumentData ( @NotNull final String id, @Nullable final Icon icon, @NotNull final String title,
+                          @Nullable final Color foreground, @Nullable final Color background,
+                          final boolean closable, final boolean draggable, @NotNull final C component )
     {
-        super ();
         this.id = id;
         this.icon = icon;
         this.title = title;
@@ -198,6 +198,7 @@ public class DocumentData<C extends Component>
      *
      * @return document identifier unique within {@link WebDocumentPane}
      */
+    @NotNull
     public String getId ()
     {
         return id;
@@ -208,7 +209,7 @@ public class DocumentData<C extends Component>
      *
      * @param id new document identifier unique within {@link WebDocumentPane}
      */
-    public void setId ( final String id )
+    public void setId ( @NotNull final String id )
     {
         this.id = id;
     }
@@ -218,6 +219,7 @@ public class DocumentData<C extends Component>
      *
      * @return document {@link Icon} used for the document tab
      */
+    @Nullable
     public Icon getIcon ()
     {
         return icon;
@@ -228,7 +230,7 @@ public class DocumentData<C extends Component>
      *
      * @param icon new document {@link Icon} used for the document tab
      */
-    public void setIcon ( final Icon icon )
+    public void setIcon ( @Nullable final Icon icon )
     {
         this.icon = icon;
         fireTitleChanged ();
@@ -239,6 +241,7 @@ public class DocumentData<C extends Component>
      *
      * @return plain text or a language key used as document title
      */
+    @NotNull
     public String getTitle ()
     {
         return title;
@@ -249,7 +252,7 @@ public class DocumentData<C extends Component>
      *
      * @param title new plain text or a language key used as document title
      */
-    public void setTitle ( final String title )
+    public void setTitle ( @NotNull final String title )
     {
         this.title = title;
         fireTitleChanged ();
@@ -260,6 +263,7 @@ public class DocumentData<C extends Component>
      *
      * @return document foreground {@link Color} used for the document tab title
      */
+    @Nullable
     public Color getForeground ()
     {
         return foreground;
@@ -270,7 +274,7 @@ public class DocumentData<C extends Component>
      *
      * @param foreground document foreground {@link Color} used for the document tab title
      */
-    public void setForeground ( final Color foreground )
+    public void setForeground ( @Nullable final Color foreground )
     {
         this.foreground = foreground;
         fireTitleChanged ();
@@ -281,6 +285,7 @@ public class DocumentData<C extends Component>
      *
      * @return document background {@link Color} used for the document tab and content
      */
+    @Nullable
     public Color getBackground ()
     {
         return background;
@@ -291,7 +296,7 @@ public class DocumentData<C extends Component>
      *
      * @param background document background {@link Color} used for the document tab and content
      */
-    public void setBackground ( final Color background )
+    public void setBackground ( @Nullable final Color background )
     {
         final Color old = this.background;
         this.background = background;
@@ -344,6 +349,7 @@ public class DocumentData<C extends Component>
      *
      * @return {@link Component} used as document tab content
      */
+    @NotNull
     public C getComponent ()
     {
         return component;
@@ -354,7 +360,7 @@ public class DocumentData<C extends Component>
      *
      * @param component new {@link Component} used as document tab content
      */
-    public void setComponent ( final C component )
+    public void setComponent ( @NotNull final C component )
     {
         final Component old = this.component;
         this.component = component;
@@ -366,9 +372,12 @@ public class DocumentData<C extends Component>
      *
      * @return available document data listeners
      */
+    @NotNull
     public List<DocumentDataListener> getListeners ()
     {
-        return CollectionUtils.copy ( listeners );
+        return listeners != null ?
+                CollectionUtils.asList ( listeners.getListeners ( DocumentDataListener.class ) ) :
+                new ArrayList<DocumentDataListener> ();
     }
 
     /**
@@ -376,9 +385,13 @@ public class DocumentData<C extends Component>
      *
      * @param listener document data listener to add
      */
-    public void addListener ( final DocumentDataListener listener )
+    public void addListener ( @NotNull final DocumentDataListener listener )
     {
-        listeners.add ( listener );
+        if ( listeners == null )
+        {
+            listeners = new EventListenerList ();
+        }
+        listeners.add ( DocumentDataListener.class, listener );
     }
 
     /**
@@ -386,9 +399,16 @@ public class DocumentData<C extends Component>
      *
      * @param listener document data listener to remove
      */
-    public void removeListener ( final DocumentDataListener listener )
+    public void removeListener ( @NotNull final DocumentDataListener listener )
     {
-        listeners.remove ( listener );
+        if ( listeners != null )
+        {
+            listeners.remove ( DocumentDataListener.class, listener );
+            if ( listeners.getListenerCount () == 0 )
+            {
+                listeners = null;
+            }
+        }
     }
 
     /**
@@ -396,9 +416,12 @@ public class DocumentData<C extends Component>
      */
     public void fireTitleChanged ()
     {
-        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        if ( listeners != null )
         {
-            listener.titleChanged ( this );
+            for ( final DocumentDataListener listener : listeners.getListeners ( DocumentDataListener.class ) )
+            {
+                listener.titleChanged ( this );
+            }
         }
     }
 
@@ -410,9 +433,12 @@ public class DocumentData<C extends Component>
      */
     public void fireBackgroundChanged ( final Color oldBackground, final Color newBackground )
     {
-        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        if ( listeners != null )
         {
-            listener.backgroundChanged ( this, oldBackground, newBackground );
+            for ( final DocumentDataListener listener : listeners.getListeners ( DocumentDataListener.class ) )
+            {
+                listener.backgroundChanged ( this, oldBackground, newBackground );
+            }
         }
     }
 
@@ -424,9 +450,12 @@ public class DocumentData<C extends Component>
      */
     public void fireContentChanged ( final Component oldComponent, final Component newComponent )
     {
-        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        if ( listeners != null )
         {
-            listener.contentChanged ( this, oldComponent, newComponent );
+            for ( final DocumentDataListener listener : listeners.getListeners ( DocumentDataListener.class ) )
+            {
+                listener.contentChanged ( this, oldComponent, newComponent );
+            }
         }
     }
 }

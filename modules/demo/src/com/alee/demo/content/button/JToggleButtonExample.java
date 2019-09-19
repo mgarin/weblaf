@@ -91,6 +91,7 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
             super ( JToggleButtonExample.this, "text", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -133,6 +134,7 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
             super ( JToggleButtonExample.this, "icon", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

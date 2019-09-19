@@ -82,6 +82,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
             super ( WebHotkeyLabelExample.this, "text", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -108,6 +109,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
             super ( WebHotkeyLabelExample.this, "code", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -133,6 +135,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
             super ( WebHotkeyLabelExample.this, "data", featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

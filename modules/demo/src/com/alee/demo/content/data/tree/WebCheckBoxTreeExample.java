@@ -85,6 +85,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
             super ( WebCheckBoxTreeExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -110,6 +111,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
             super ( WebCheckBoxTreeExample.this, "custom", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -121,7 +123,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
             tree.setCheckBoxEnabledStateProvider ( new Predicate<SampleNode> ()
             {
                 @Override
-                public boolean test ( final SampleNode node )
+                public boolean test ( @NotNull final SampleNode node )
                 {
                     return !node.isLeaf () || Objects.notEquals ( node.getParent ().getId (), "disabled" );
                 }
@@ -129,7 +131,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
             tree.setCheckBoxVisibleStateProvider ( new Predicate<SampleNode> ()
             {
                 @Override
-                public boolean test ( final SampleNode node )
+                public boolean test ( @NotNull final SampleNode node )
                 {
                     return !node.isLeaf () || Objects.notEquals ( node.getParent ().getId (), "hidden" );
                 }
@@ -137,7 +139,7 @@ public class WebCheckBoxTreeExample extends AbstractStylePreviewExample
             tree.setEditableStateProvider ( new Predicate<SampleNode> ()
             {
                 @Override
-                public boolean test ( final SampleNode node )
+                public boolean test ( @NotNull final SampleNode node )
                 {
                     return node.isLeaf () && Objects.equals ( node.getParent ().getId (), "editable" );
                 }

@@ -17,6 +17,8 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Object clone behavior.
  *
@@ -34,5 +36,6 @@ public interface CloneBehavior<T> extends Cloneable
      * @param depth clone calls stack depth
      * @return cloned instance of the object implementing {@link CloneBehavior}
      */
-    public T clone ( RecursiveClone clone, int depth );
+    @NotNull
+    public T clone ( @NotNull RecursiveClone clone, int depth );
 }

@@ -33,6 +33,11 @@ import javax.swing.plaf.LabelUI;
 public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebUI<C>
 {
     /**
+     * {@link LabelInputListener} for the {@link JLabel}.
+     */
+    protected LabelInputListener<C> inputListener;
+
+    /**
      * Runtime variables.
      */
     protected C label;
@@ -91,9 +96,8 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
      */
     protected void installListeners ()
     {
-        /**
-         * Do nothing by default.
-         */
+        inputListener = createLabelInputListener ();
+        inputListener.install ( label );
     }
 
     /**
@@ -101,8 +105,17 @@ public abstract class WLabelUI<C extends JLabel> extends LabelUI implements WebU
      */
     protected void uninstallListeners ()
     {
-        /**
-         * Do nothing by default.
-         */
+        inputListener.uninstall ( label );
+        inputListener = null;
+    }
+
+    /**
+     * Returns {@link LabelInputListener} for the {@link JLabel}.
+     *
+     * @return {@link LabelInputListener} for the {@link JLabel}
+     */
+    protected LabelInputListener<C> createLabelInputListener ()
+    {
+        return new WLabelInputListener<C, WLabelUI<C>> ();
     }
 }

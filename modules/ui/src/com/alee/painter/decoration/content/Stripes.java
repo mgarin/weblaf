@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
@@ -100,13 +99,14 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
      */
     public BoxOrientation getAlign ( final C c, final D d )
     {
+        final BoxOrientation actualAlign;
         if ( align != null )
         {
             if ( getOrientation ( c, d ).isVertical () )
             {
                 if ( align.isLeft () || align.isCenter () || align.isRight () )
                 {
-                    return align;
+                    actualAlign = align;
                 }
                 else
                 {
@@ -117,7 +117,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
             {
                 if ( align.isTop () || align.isCenter () || align.isBottom () )
                 {
-                    return align;
+                    actualAlign = align;
                 }
                 else
                 {
@@ -127,8 +127,9 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
         }
         else
         {
-            return BoxOrientation.center;
+            actualAlign = BoxOrientation.center;
         }
+        return actualAlign;
     }
 
     /**

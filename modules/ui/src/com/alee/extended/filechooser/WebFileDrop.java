@@ -17,6 +17,8 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.layout.WrapFlowLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
@@ -599,6 +601,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * Language methods
      */
 
+    @Nullable
     @Override
     public String getLanguage ()
     {
@@ -606,19 +609,19 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     }
 
     @Override
-    public void setLanguage ( final String key, final Object... data )
+    public void setLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
-    public void updateLanguage ( final Object... data )
+    public void updateLanguage ( @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, data );
     }
 
     @Override
-    public void updateLanguage ( final String key, final Object... data )
+    public void updateLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( this, key, data );
     }
@@ -636,7 +639,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     }
 
     @Override
-    public void setLanguageUpdater ( final LanguageUpdater updater )
+    public void setLanguageUpdater ( @NotNull final LanguageUpdater updater )
     {
         UILanguageManager.registerLanguageUpdater ( this, updater );
     }

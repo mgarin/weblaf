@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.LM;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.utils.compare.Filter;
@@ -38,9 +40,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
+import java.security.CodeSource;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -209,6 +214,50 @@ public final class FileUtils
     private FileUtils ()
     {
         throw new UtilityException ( "Utility classes are not meant to be instantiated" );
+    }
+
+    /**
+     * Returns JAR location URL for the specified class.
+     *
+     * @param jarClass any class from that JAR
+     * @return JAR location URL
+     */
+    @Nullable
+    public static URL getJarLocationURL ( @NotNull final Class jarClass )
+    {
+        final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
+        return src != null ? src.getLocation () : null;
+    }
+
+    /**
+     * Returns JAR location File for the specified class.
+     *
+     * @param jarClass any class from that JAR
+     * @return JAR location File
+     */
+    @Nullable
+    public static File getJarLocationFile ( @NotNull final Class jarClass )
+    {
+        File file = null;
+        try
+        {
+            final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
+            if ( src != null )
+            {
+                final URL jarUrl = src.getLocation ();
+                final URI uri = jarUrl.toURI ();
+                final String scheme = uri.getScheme ();
+                if ( scheme != null && scheme.equalsIgnoreCase ( "file" ) )
+                {
+                    file = new File ( uri );
+                }
+            }
+        }
+        catch ( final URISyntaxException e )
+        {
+            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
+        }
+        return file;
     }
 
     /**
@@ -917,7 +966,8 @@ public final class FileUtils
      * @param file file to process
      * @return file name without extension
      */
-    public static String getFileNamePart ( final File file )
+    @NotNull
+    public static String getFileNamePart ( @Nullable final File file )
     {
         return file != null ? getFileNamePart ( file.getName () ) : "";
     }
@@ -928,18 +978,21 @@ public final class FileUtils
      * @param name file name to trim
      * @return file name without extension
      */
-    public static String getFileNamePart ( final String name )
+    @NotNull
+    public static String getFileNamePart ( @Nullable final String name )
     {
+        final String namePart;
         if ( !TextUtils.isEmpty ( name ) )
         {
             final int first = name.indexOf ( "." );
             final int last = name.lastIndexOf ( "." );
-            return last == -1 || first == 0 && first == last ? name : name.substring ( 0, last );
+            namePart = last == -1 || first == 0 && first == last ? name : name.substring ( 0, last );
         }
         else
         {
-            return "";
+            namePart = "";
         }
+        return namePart;
     }
 
     /**
@@ -949,7 +1002,8 @@ public final class FileUtils
      * @param withDot whether return the extension with dot, or not
      * @return file extension
      */
-    public static String getFileExtPart ( final File file, final boolean withDot )
+    @NotNull
+    public static String getFileExtPart ( @Nullable final File file, final boolean withDot )
     {
         return file != null ? getFileExtPart ( file.getName (), withDot ) : "";
     }
@@ -961,17 +1015,20 @@ public final class FileUtils
      * @param withDot whether return the extension with dot, or not
      * @return file extension
      */
-    public static String getFileExtPart ( final String name, final boolean withDot )
+    @NotNull
+    public static String getFileExtPart ( @Nullable final String name, final boolean withDot )
     {
+        final String ext;
         if ( !TextUtils.isEmpty ( name ) )
         {
             final int i = name.lastIndexOf ( "." );
-            return i == -1 ? "" : withDot ? name.substring ( i ) : name.substring ( i + 1 );
+            ext = i == -1 ? "" : withDot ? name.substring ( i ) : name.substring ( i + 1 );
         }
         else
         {
-            return "";
+            ext = "";
         }
+        return ext;
     }
 
     /**
@@ -980,7 +1037,8 @@ public final class FileUtils
      * @param name file name to shorten
      * @return shortened file name
      */
-    public static String getShortFileName ( final String name )
+    @NotNull
+    public static String getShortFileName ( @Nullable final String name )
     {
         return getShortFileName ( name, 30 );
     }
@@ -993,25 +1051,19 @@ public final class FileUtils
      * @param length maximum allowed file name length
      * @return shortened file name
      */
-    public static String getShortFileName ( final String name, final int length )
+    @NotNull
+    public static String getShortFileName ( @Nullable final String name, final int length )
     {
-        if ( length < 2 )
-        {
-            return name;
-        }
-        else
+        String shortName = name != null ? name : "";
+        if ( length >= 2 )
         {
             final String newName = getFileNamePart ( name );
             if ( newName.length () > length )
             {
-                // 2 symbols taken by dots
-                return newName.substring ( 0, length - 2 ) + "..." + getFileExtPart ( name, false );
-            }
-            else
-            {
-                return name;
+                shortName = newName.substring ( 0, length - 2 ) + "..." + getFileExtPart ( name, false );
             }
         }
+        return shortName;
     }
 
     /**

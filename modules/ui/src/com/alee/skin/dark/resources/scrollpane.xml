@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
             <background>68,68,68</background>
-            <layout class="WebScrollPaneLayout$UIResource">
+            <layout class="ScrollPaneLayout$UIResource">
                 <Vertical leading="false" trailing="false" hovering="false" extending="true" />
                 <Horizontal leading="false" trailing="false" hovering="false" extending="true" />
             </layout>
@@ -65,6 +65,14 @@
                 <decoration visible="false" />
             </decorations>
         </painter>
+
+        <!-- Corners -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations overwrite="true" />
+            </painter>
+        </style>
+
     </style>
 
     <!-- Scroll pane with no focus display -->
@@ -119,7 +127,7 @@
     <!-- Hovering scroll pane -->
     <style type="scrollpane" id="hovering">
         <component>
-            <layout class="WebScrollPaneLayout$UIResource">
+            <layout class="ScrollPaneLayout$UIResource">
                 <Vertical leading="false" trailing="true" hovering="true" extending="false" />
                 <Horizontal leading="false" trailing="false" hovering="true" extending="true" />
             </layout>

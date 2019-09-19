@@ -95,6 +95,7 @@ public class JFrameExample extends AbstractStylePreviewExample
             super ( JFrameExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

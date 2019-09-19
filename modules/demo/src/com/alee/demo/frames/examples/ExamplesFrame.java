@@ -17,6 +17,8 @@
 
 package com.alee.demo.frames.examples;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.FeatureState;
@@ -47,7 +49,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 /**
- * Demo Application examples frame.
+ * {@link DemoApplication} examples frame.
  *
  * @author Mikle Garin
  */
@@ -73,7 +75,7 @@ public final class ExamplesFrame extends WebDockableFrame
         examplesTree.onKeyPress ( Hotkey.ENTER, new KeyEventRunnable ()
         {
             @Override
-            public void run ( final KeyEvent e )
+            public void run ( @NotNull final KeyEvent e )
             {
                 open ( examplesTree.getSelectedNode () );
             }
@@ -81,7 +83,7 @@ public final class ExamplesFrame extends WebDockableFrame
         examplesTree.onNodeDoubleClick ( new TreeNodeEventRunnable<ExamplesTreeNode> ()
         {
             @Override
-            public void run ( final ExamplesTreeNode node )
+            public void run ( @NotNull final ExamplesTreeNode node )
             {
                 open ( node );
             }
@@ -101,7 +103,7 @@ public final class ExamplesFrame extends WebDockableFrame
             private WebStyledLabel legendTip;
 
             @Override
-            public void run ( final MouseEvent e )
+            public void run ( @NotNull final MouseEvent e )
             {
                 if ( legendTip == null )
                 {
@@ -135,7 +137,7 @@ public final class ExamplesFrame extends WebDockableFrame
      *
      * @param node examples tree node
      */
-    protected void open ( final ExamplesTreeNode node )
+    protected void open ( @Nullable final ExamplesTreeNode node )
     {
         if ( node != null && node.getType () == ExamplesTreeNodeType.example )
         {

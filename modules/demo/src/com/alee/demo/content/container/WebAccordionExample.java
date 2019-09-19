@@ -85,6 +85,7 @@ public class WebAccordionExample extends AbstractStylePreviewExample
             this.headerPosition = headerPosition;
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

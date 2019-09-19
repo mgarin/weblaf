@@ -115,7 +115,7 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
      */
     protected String renderLayout ( final LayoutManager layout )
     {
-        return layout != null ? " {[" + ReflectUtils.getClassName ( layout ) + "]:b}" : "";
+        return layout != null ? " {[" + ReflectUtils.getCompleteClassName ( layout ) + "]:b}" : "";
     }
 
     /**
@@ -127,13 +127,15 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
      */
     protected String renderInsets ( final Insets insets, final String color )
     {
+        final String text;
         if ( !SwingUtils.isEmpty ( insets ) )
         {
-            return " {[ " + InsetsConverter.insetsToString ( insets ) + " ]:b;c(" + color + ")}";
+            text = " {[ " + InsetsConverter.insetsToString ( insets ) + " ]:b;c(" + color + ")}";
         }
         else
         {
-            return "";
+            text = "";
         }
+        return text;
     }
 }

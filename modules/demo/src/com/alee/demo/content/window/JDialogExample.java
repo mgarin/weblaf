@@ -97,6 +97,7 @@ public class JDialogExample extends AbstractStylePreviewExample
             super ( JDialogExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

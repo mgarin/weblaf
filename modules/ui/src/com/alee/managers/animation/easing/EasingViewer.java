@@ -17,6 +17,7 @@
 
 package com.alee.managers.animation.easing;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.graphics.data.Line;
 import com.alee.managers.animation.transition.*;
@@ -100,7 +101,7 @@ public class EasingViewer extends WebCanvas
         onMousePress ( MouseButton.left, new MouseEventRunnable ()
         {
             @Override
-            public void run ( final MouseEvent e )
+            public void run ( @NotNull final MouseEvent e )
             {
                 preview ( easing, duration );
             }

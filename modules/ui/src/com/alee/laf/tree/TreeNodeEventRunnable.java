@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.tree.MutableTreeNode;
 
 /**
@@ -32,5 +34,5 @@ public interface TreeNodeEventRunnable<N extends MutableTreeNode>
      *
      * @param node tree node
      */
-    public void run ( N node );
+    public void run ( @NotNull N node );
 }

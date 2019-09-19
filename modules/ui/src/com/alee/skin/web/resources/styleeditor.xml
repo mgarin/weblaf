@@ -6,7 +6,7 @@
     <style type="rootpane" id="styleeditor" extends="frame">
 
         <!-- Content split -->
-        <style type="splitpane" id="split">
+        <style type="multisplitpane" id="split">
 
             <!-- Preview panel -->
             <style type="panel" id="preview">
@@ -128,11 +128,7 @@
             <style type="panel" id="editors">
 
                 <!-- Skin XML editors tabs -->
-                <style type="tabbedpane" id="tabs">
-                    <ui>
-                        <tabbedPaneStyle>attached</tabbedPaneStyle>
-                    </ui>
-                </style>
+                <style type="tabbedpane" id="tabs" />
 
             </style>
 

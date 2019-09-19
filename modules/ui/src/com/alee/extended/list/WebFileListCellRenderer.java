@@ -357,6 +357,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
             }
         }
 
+        @NotNull
         @Override
         public Dimension preferredLayoutSize ( @NotNull final Container container )
         {

@@ -195,7 +195,7 @@ public class ShapeDetectionExample extends AbstractPreviewExample
             paintingArea.onMouseClick ( new MouseEventRunnable ()
             {
                 @Override
-                public void run ( final MouseEvent e )
+                public void run ( @NotNull final MouseEvent e )
                 {
                     dots.clear ();
                     paintingArea.repaint ();

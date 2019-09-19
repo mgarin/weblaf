@@ -133,6 +133,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
             this.text = text;
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -165,6 +166,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
             this.text = text;
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -198,6 +200,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
             this.text = text;
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

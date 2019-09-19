@@ -163,7 +163,7 @@ public class WSplitPaneInputListener<C extends JSplitPane, U extends WSplitPaneU
      *
      * @param <S> {@link JSplitPane} type
      */
-    protected class Action<S extends JSplitPane> extends UIAction<S>
+    public static class Action<S extends JSplitPane> extends UIAction<S>
     {
         /**
          * Supported actions.
@@ -193,72 +193,76 @@ public class WSplitPaneInputListener<C extends JSplitPane, U extends WSplitPaneU
         {
             final S splitPane = getComponent ();
             final WSplitPaneUI splitPaneUI = LafUtils.getUI ( splitPane );
-            final String key = getName ();
-            if ( key.equals ( NEGATIVE_INCREMENT ) )
+            if ( splitPaneUI != null )
             {
-                if ( splitPaneUI.isDividerKeyboardResize () )
+                final String key = getName ();
+                if ( key.equals ( NEGATIVE_INCREMENT ) )
                 {
-                    splitPane.setDividerLocation (
-                            Math.max ( 0, splitPaneUI.getDividerLocation ( splitPane ) - splitPaneUI.getKeyboardMoveIncrement () ) );
-                }
-            }
-            else if ( key.equals ( POSITIVE_INCREMENT ) )
-            {
-                if ( splitPaneUI.isDividerKeyboardResize () )
-                {
-                    splitPane.setDividerLocation ( splitPaneUI.getDividerLocation ( splitPane ) + splitPaneUI.getKeyboardMoveIncrement () );
-                }
-            }
-            else if ( key.equals ( SELECT_MIN ) )
-            {
-                if ( splitPaneUI.isDividerKeyboardResize () )
-                {
-                    splitPane.setDividerLocation ( 0 );
-                }
-            }
-            else if ( key.equals ( SELECT_MAX ) )
-            {
-                if ( splitPaneUI.isDividerKeyboardResize () )
-                {
-                    final Insets insets = splitPane.getInsets ();
-                    final int bottomI = insets != null ? insets.bottom : 0;
-                    final int rightI = insets != null ? insets.right : 0;
-                    if ( splitPaneUI.orientation == JSplitPane.VERTICAL_SPLIT )
+                    if ( splitPaneUI.isDividerKeyboardResize () )
                     {
-                        splitPane.setDividerLocation ( splitPane.getHeight () - bottomI );
+                        splitPane.setDividerLocation (
+                                Math.max ( 0, splitPaneUI.getDividerLocation ( splitPane ) - splitPaneUI.getKeyboardMoveIncrement () ) );
+                    }
+                }
+                else if ( key.equals ( POSITIVE_INCREMENT ) )
+                {
+                    if ( splitPaneUI.isDividerKeyboardResize () )
+                    {
+                        splitPane.setDividerLocation (
+                                splitPaneUI.getDividerLocation ( splitPane ) + splitPaneUI.getKeyboardMoveIncrement () );
+                    }
+                }
+                else if ( key.equals ( SELECT_MIN ) )
+                {
+                    if ( splitPaneUI.isDividerKeyboardResize () )
+                    {
+                        splitPane.setDividerLocation ( 0 );
+                    }
+                }
+                else if ( key.equals ( SELECT_MAX ) )
+                {
+                    if ( splitPaneUI.isDividerKeyboardResize () )
+                    {
+                        final Insets insets = splitPane.getInsets ();
+                        final int bottomI = insets != null ? insets.bottom : 0;
+                        final int rightI = insets != null ? insets.right : 0;
+                        if ( splitPaneUI.orientation == JSplitPane.VERTICAL_SPLIT )
+                        {
+                            splitPane.setDividerLocation ( splitPane.getHeight () - bottomI );
+                        }
+                        else
+                        {
+                            splitPane.setDividerLocation ( splitPane.getWidth () - rightI );
+                        }
+                    }
+                }
+                else if ( key.equals ( START_RESIZE ) )
+                {
+                    if ( !splitPaneUI.isDividerKeyboardResize () )
+                    {
+                        splitPane.requestFocus ();
                     }
                     else
                     {
-                        splitPane.setDividerLocation ( splitPane.getWidth () - rightI );
+                        final JSplitPane parentSplitPane = ( JSplitPane ) SwingUtilities.getAncestorOfClass ( JSplitPane.class, splitPane );
+                        if ( parentSplitPane != null )
+                        {
+                            parentSplitPane.requestFocus ();
+                        }
                     }
                 }
-            }
-            else if ( key.equals ( START_RESIZE ) )
-            {
-                if ( !splitPaneUI.isDividerKeyboardResize () )
+                else if ( key.equals ( TOGGLE_FOCUS ) )
                 {
-                    splitPane.requestFocus ();
+                    toggleFocus ( splitPane );
                 }
-                else
+                else if ( key.equals ( FOCUS_OUT_FORWARD ) )
                 {
-                    final JSplitPane parentSplitPane = ( JSplitPane ) SwingUtilities.getAncestorOfClass ( JSplitPane.class, splitPane );
-                    if ( parentSplitPane != null )
-                    {
-                        parentSplitPane.requestFocus ();
-                    }
+                    moveFocus ( splitPane, 1 );
                 }
-            }
-            else if ( key.equals ( TOGGLE_FOCUS ) )
-            {
-                toggleFocus ( splitPane );
-            }
-            else if ( key.equals ( FOCUS_OUT_FORWARD ) )
-            {
-                moveFocus ( splitPane, 1 );
-            }
-            else if ( key.equals ( FOCUS_OUT_BACKWARD ) )
-            {
-                moveFocus ( splitPane, -1 );
+                else if ( key.equals ( FOCUS_OUT_BACKWARD ) )
+                {
+                    moveFocus ( splitPane, -1 );
+                }
             }
         }
 

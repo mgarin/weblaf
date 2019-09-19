@@ -99,6 +99,7 @@ public class JToolBarExample extends AbstractStylePreviewExample
             super ( JToolBarExample.this, id, featureState, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

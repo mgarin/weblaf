@@ -854,6 +854,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
             }
         }
 
+        @NotNull
         @Override
         public Dimension minimumLayoutSize ( @NotNull final Container container )
         {
@@ -864,6 +865,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
          * NOTE: This isn't really used due to divider being forcefully positioned according to predefined sizes.
          * I leave a proper implementation for this method in hopes of using it at some point instead of workarounds.
          */
+        @NotNull
         @Override
         public Dimension preferredLayoutSize ( @NotNull final Container container )
         {

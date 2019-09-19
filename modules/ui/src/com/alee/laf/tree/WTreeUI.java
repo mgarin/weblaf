@@ -17,6 +17,9 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.AbstractLayoutCache;
@@ -35,6 +38,7 @@ public abstract class WTreeUI extends BasicTreeUI
      *
      * @return tree selection style
      */
+    @NotNull
     public abstract TreeSelectionStyle getSelectionStyle ();
 
     /**
@@ -42,7 +46,7 @@ public abstract class WTreeUI extends BasicTreeUI
      *
      * @param style tree selection style
      */
-    public abstract void setSelectionStyle ( TreeSelectionStyle style );
+    public abstract void setSelectionStyle ( @NotNull TreeSelectionStyle style );
 
     /**
      * Returns current hover row.
@@ -58,7 +62,7 @@ public abstract class WTreeUI extends BasicTreeUI
      * @param location location on the tree
      * @return row index for specified location on the tree or {@code -1}
      */
-    public abstract int getExactRowForLocation ( Point location );
+    public abstract int getExactRowForLocation ( @NotNull Point location );
 
     /**
      * Returns row index for specified location on the tree or {@code -1}.
@@ -67,7 +71,7 @@ public abstract class WTreeUI extends BasicTreeUI
      * @param fullRow  whether take the whole row into account or just node renderer bounds
      * @return row index for specified location on the tree or {@code -1}
      */
-    public abstract int getExactRowForLocation ( Point location, boolean fullRow );
+    public abstract int getExactRowForLocation ( @NotNull Point location, boolean fullRow );
 
     /**
      * Returns row bounds by its index.
@@ -76,6 +80,7 @@ public abstract class WTreeUI extends BasicTreeUI
      * @param row row index
      * @return row bounds by its index
      */
+    @NotNull
     public abstract Rectangle getRowBounds ( int row );
 
     /**
@@ -85,6 +90,7 @@ public abstract class WTreeUI extends BasicTreeUI
      * @param fullRow whether take the whole row or just node renderer bounds
      * @return row bounds by its index
      */
+    @NotNull
     public abstract Rectangle getRowBounds ( int row, boolean fullRow );
 
     /**
@@ -97,13 +103,14 @@ public abstract class WTreeUI extends BasicTreeUI
      * @param y    location Y coordinate
      * @return true if location is in the checkbox tree checkbox control, false otherwise
      */
-    public abstract boolean isLocationInCheckBoxControl ( TreePath path, int x, int y );
+    public abstract boolean isLocationInCheckBoxControl ( @NotNull TreePath path, int x, int y );
 
     /**
      * Returns tree cell renderer pane.
      *
      * @return tree cell renderer pane
      */
+    @NotNull
     public abstract CellRendererPane getCellRendererPane ();
 
     /**
@@ -111,6 +118,7 @@ public abstract class WTreeUI extends BasicTreeUI
      *
      * @return tree layout cache
      */
+    @Nullable
     public abstract AbstractLayoutCache getTreeLayoutCache ();
 
     /**

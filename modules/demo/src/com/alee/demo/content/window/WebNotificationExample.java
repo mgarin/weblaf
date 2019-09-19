@@ -99,6 +99,7 @@ public class WebNotificationExample extends AbstractStylePreviewExample
             super ( WebNotificationExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -133,6 +134,7 @@ public class WebNotificationExample extends AbstractStylePreviewExample
             super ( WebNotificationExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -168,6 +170,7 @@ public class WebNotificationExample extends AbstractStylePreviewExample
             super ( WebNotificationExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

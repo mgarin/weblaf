@@ -17,6 +17,7 @@
 
 package com.alee.laf.information;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.api.version.Version;
 import com.alee.extended.behavior.ComponentMoveBehavior;
@@ -38,18 +39,16 @@ import com.alee.laf.text.WebTextArea;
 import com.alee.laf.window.WebDialog;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.icon.LazyIcon;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
-import com.alee.utils.JarUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.jar.JarEntry;
 import com.alee.utils.jar.JarStructure;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -57,7 +56,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -68,12 +66,9 @@ import java.util.*;
 public class LibraryInfoDialog extends WebFrame
 {
     /**
-     * todo 1. Fix inner popup with license close action
-     */
-
-    /**
      * Library data separator.
      */
+    @NotNull
     private static final String LIBRARY_DATA_SEPARATOR = " - ";
 
     /**
@@ -107,6 +102,7 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @return general tab content
      */
+    @NotNull
     private Component createGeneralTab ()
     {
         final WebPanel content = new WebPanel ( StyleId.of ( "general" ), new VerticalFlowLayout ( 30, 30 ) );
@@ -115,7 +111,7 @@ public class LibraryInfoDialog extends WebFrame
         content.add ( createJavaVersionPanel () );
         content.add ( new WebSeparator ( WebSeparator.HORIZONTAL ) );
         content.add ( createOsVersionPanel () );
-        return createTabSeparator ( content );
+        return content;
     }
 
     /**
@@ -123,6 +119,7 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @return library version panel
      */
+    @NotNull
     private WebPanel createLibraryVersionPanel ()
     {
         final Version version = new Version ( LibraryInfoDialog.class );
@@ -142,6 +139,7 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @return java version panel
      */
+    @NotNull
     private WebPanel createJavaVersionPanel ()
     {
         final WebImage javaIcon = new WebImage ( new LazyIcon ( "java32" ) );
@@ -161,6 +159,7 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @return operation system version panel
      */
+    @NotNull
     private WebPanel createOsVersionPanel ()
     {
         final WebImage osIcon = new WebImage ( SystemUtils.getOsIcon ( 32, false ) );
@@ -179,19 +178,21 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @return libraries tab content
      */
+    @NotNull
     private Component createLibrariesTab ()
     {
+        Component tab = null;
         try
         {
             // Parsing jar structure
-            final JarStructure structure = JarUtils.getJarStructure ( getClass () );
+            final JarStructure structure = new JarStructure ( getClass () );
 
             // Retrieving required files
             final JarEntry licensesFolder = structure.getRoot ().getChildByName ( "licenses" );
             final JarEntry librariesDataFile = licensesFolder.getChildByName ( "libraries.data" );
 
             // Retrieving additional data for used libraries
-            final String librariesDataText = FileUtils.readToString ( structure.getEntryInputStream ( librariesDataFile ) );
+            final String librariesDataText = FileUtils.readToString ( librariesDataFile.getInputStream () );
             final Map<String, String> librariesData = parseUrls ( librariesDataText );
 
             // Parsing available libraries info
@@ -217,33 +218,25 @@ public class LibraryInfoDialog extends WebFrame
                             @Override
                             public void linkExecuted ( final ActionEvent event )
                             {
-                                try
+                                final String license = FileUtils.readToString ( child.getInputStream () );
+
+                                final WebDialog licenseDialog = new WebDialog ( LibraryInfoDialog.this, child.getName () );
+
+                                final WebTextArea textArea = new WebTextArea ( StyleId.textareaNonOpaque, license );
+                                textArea.setEditable ( false );
+                                textArea.onKeyPress ( Hotkey.ESCAPE, new KeyEventRunnable ()
                                 {
-                                    final String license = FileUtils.readToString ( structure.getEntryInputStream ( child ) );
-
-                                    final WebDialog licenseDialog = new WebDialog ( LibraryInfoDialog.this, child.getName () );
-
-                                    final WebTextArea textArea = new WebTextArea ( StyleId.textareaNonOpaque, license );
-                                    textArea.setEditable ( false );
-                                    licenseDialog.add ( new WebScrollPane ( StyleId.scrollpaneTransparentHovering, textArea ) );
-
-                                    licenseDialog.setSize ( 800, 600 );
-                                    licenseDialog.setLocationRelativeTo ( LibraryInfoDialog.this );
-                                    licenseDialog.setVisible ( true );
-
-                                    HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
+                                    @Override
+                                    public void run ( @NotNull final KeyEvent e )
                                     {
-                                        @Override
-                                        public void run ( final KeyEvent e )
-                                        {
-                                            licenseDialog.dispose ();
-                                        }
-                                    } );
-                                }
-                                catch ( final IOException e )
-                                {
-                                    LoggerFactory.getLogger ( LibraryInfoDialog.class ).error ( e.toString (), e );
-                                }
+                                        licenseDialog.dispose ();
+                                    }
+                                } );
+                                licenseDialog.add ( new WebScrollPane ( StyleId.scrollpaneTransparentHovering, textArea ) );
+
+                                licenseDialog.setSize ( 800, 600 );
+                                licenseDialog.setLocationRelativeTo ( LibraryInfoDialog.this );
+                                licenseDialog.setVisible ( true );
                             }
                         } );
                         final GroupPanel fileLinkPanel = new GroupPanel ( 5, licenseLabel, licenseLink );
@@ -261,18 +254,19 @@ public class LibraryInfoDialog extends WebFrame
             }
 
             // Libraries panel scroll
-            final WebScrollPane scrollPane = new WebScrollPane ( StyleId.of ( "libraries" ), librariesPanel );
-            return createTabSeparator ( scrollPane );
+            tab = new WebScrollPane ( StyleId.of ( "libraries" ), librariesPanel );
         }
         catch ( final Exception e )
         {
             // Logging exception
             LoggerFactory.getLogger ( LibraryInfoDialog.class ).error ( e.toString (), e );
-
-            // Error label
-            final WebLabel errorLabel = new WebLabel ( "weblaf.info.libraries.error", WebLabel.CENTER );
-            return createTabSeparator ( errorLabel );
         }
+        if ( tab == null )
+        {
+            // Error label
+            tab = new WebLabel ( "weblaf.info.libraries.error", WebLabel.CENTER );
+        }
+        return tab;
     }
 
     /**
@@ -281,7 +275,8 @@ public class LibraryInfoDialog extends WebFrame
      * @param librariesUrlText libraries data file content
      * @return parsed libraries data
      */
-    private Map<String, String> parseUrls ( final String librariesUrlText )
+    @NotNull
+    private Map<String, String> parseUrls ( @NotNull final String librariesUrlText )
     {
         final Map<String, String> librariesUrl = new LinkedHashMap<String, String> ();
         final StringTokenizer st = new StringTokenizer ( librariesUrlText, "\n", false );
@@ -299,6 +294,7 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @return properties tab content
      */
+    @NotNull
     private Component createPropertiesTab ()
     {
         final Object[][] systemPropertiesData = createSystemPropertiesData ();
@@ -311,8 +307,7 @@ public class LibraryInfoDialog extends WebFrame
         propertiesTable.setPreferredScrollableViewportSize ( new Dimension ( 1, 1 ) );
         propertiesTable.setEditable ( false );
 
-        final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpaneTransparentHovering, propertiesTable );
-        return createTabSeparator ( scrollPane );
+        return new WebScrollPane ( StyleId.scrollpaneTransparentHovering, propertiesTable );
     }
 
     /**
@@ -320,6 +315,7 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @return system properties table data
      */
+    @NotNull
     private Object[][] createSystemPropertiesData ()
     {
         final Properties properties = System.getProperties ();
@@ -340,52 +336,6 @@ public class LibraryInfoDialog extends WebFrame
             }
         } );
         return data;
-    }
-
-    /**
-     * Returns tabbed pane separator.
-     *
-     * @param component tab content
-     * @return tabbed pane separator
-     */
-    private Component createTabSeparator ( final Component component )
-    {
-        final WebPanel content = new WebPanel ();
-        content.add ( new TabAreaSeparator (), BorderLayout.NORTH );
-        content.add ( component, BorderLayout.CENTER );
-        return content;
-    }
-
-    /**
-     * Tabbed pane separator component.
-     * todo Temporary styling addition, remove upon proper tabbed pane UI implementation
-     */
-    private class TabAreaSeparator extends JComponent
-    {
-        /**
-         * Custom component view.
-         *
-         * @param g graphics
-         */
-        @Override
-        protected void paintComponent ( final Graphics g )
-        {
-            g.setColor ( new Color ( 237, 237, 237 ) );
-            g.fillRect ( 0, 0, getWidth (), getHeight () - 1 );
-            g.setColor ( Color.GRAY );
-            g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
-        }
-
-        /**
-         * Returns custom component preferred size.
-         *
-         * @return custom component preferred size
-         */
-        @Override
-        public Dimension getPreferredSize ()
-        {
-            return new Dimension ( 0, 4 );
-        }
     }
 
     /**

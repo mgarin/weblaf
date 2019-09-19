@@ -101,6 +101,7 @@ public class WebDirectoryChooserExample extends AbstractStylePreviewExample
             super ( WebDirectoryChooserExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -159,6 +160,7 @@ public class WebDirectoryChooserExample extends AbstractStylePreviewExample
             super ( WebDirectoryChooserExample.this, "custom", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

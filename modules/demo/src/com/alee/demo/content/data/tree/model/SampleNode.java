@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.data.tree.model;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneBehavior;
 import com.alee.api.clone.RecursiveClone;
@@ -125,8 +126,9 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
         return getTitle ();
     }
 
+    @NotNull
     @Override
-    public SampleNode clone ( final RecursiveClone clone, final int depth )
+    public SampleNode clone ( @NotNull final RecursiveClone clone, final int depth )
     {
         final SampleObject userObject = clone.clone ( getUserObject (), depth + 1 );
         final SampleNode nodeCopy = new SampleNode ( getId (), userObject );
@@ -134,6 +136,7 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
         return nodeCopy;
     }
 
+    @NotNull
     @Override
     public SampleNode clone ()
     {

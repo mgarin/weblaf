@@ -107,6 +107,7 @@ public class JOptionPaneExample extends AbstractStylePreviewExample
             this.type = type;
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

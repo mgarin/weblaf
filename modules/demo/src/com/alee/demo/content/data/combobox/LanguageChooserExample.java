@@ -80,6 +80,7 @@ public class LanguageChooserExample extends AbstractStylePreviewExample
             super ( LanguageChooserExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

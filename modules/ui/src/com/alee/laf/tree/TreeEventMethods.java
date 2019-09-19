@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Predicate;
 import com.alee.utils.swing.extensions.MethodExtension;
 
@@ -40,7 +42,7 @@ public interface TreeEventMethods<N extends MutableTreeNode> extends MethodExten
      * @param runnable mouse event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onNodeDoubleClick ( TreeNodeEventRunnable<N> runnable );
+    public MouseAdapter onNodeDoubleClick ( @NotNull TreeNodeEventRunnable<N> runnable );
 
     /**
      * Shortcut method for double-click mouse event on specific tree node with condition.
@@ -49,5 +51,5 @@ public interface TreeEventMethods<N extends MutableTreeNode> extends MethodExten
      * @param runnable  tree node event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onNodeDoubleClick ( Predicate<N> condition, TreeNodeEventRunnable<N> runnable );
+    public MouseAdapter onNodeDoubleClick ( @Nullable Predicate<N> condition, @NotNull TreeNodeEventRunnable<N> runnable );
 }

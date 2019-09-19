@@ -156,7 +156,7 @@ public final class SkinInfoConverter extends ReflectionConverter
                     // Reading skin class canonical name
                     final String skinClass = reader.getValue ();
 
-                    // Validating skin class existance
+                    // Validating skin class existence
                     getSkinClass ( skinClass );
 
                     // Saving skin class into skin information

@@ -89,6 +89,7 @@ public class JEditorPaneExample extends AbstractStylePreviewExample
             super ( JEditorPaneExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -114,6 +115,7 @@ public class JEditorPaneExample extends AbstractStylePreviewExample
             super ( JEditorPaneExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -139,6 +141,7 @@ public class JEditorPaneExample extends AbstractStylePreviewExample
             super ( JEditorPaneExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

@@ -97,6 +97,7 @@ public class JMenuBarExample extends AbstractStylePreviewExample
             super ( JMenuBarExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -150,7 +151,7 @@ public class JMenuBarExample extends AbstractStylePreviewExample
                             dialog.onClose ( new ComponentEventRunnable ()
                             {
                                 @Override
-                                public void run ( final ComponentEvent e )
+                                public void run ( @NotNull final ComponentEvent event )
                                 {
                                     if ( showButton.isSelected () )
                                     {

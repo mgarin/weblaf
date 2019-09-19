@@ -82,6 +82,7 @@ public class WebDateFieldExample extends AbstractStylePreviewExample
             super ( WebDateFieldExample.this, "basic", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

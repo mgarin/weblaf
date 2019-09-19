@@ -98,6 +98,7 @@ public class WebPopupExample extends AbstractStylePreviewExample
             super ( WebPopupExample.this, id, state, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

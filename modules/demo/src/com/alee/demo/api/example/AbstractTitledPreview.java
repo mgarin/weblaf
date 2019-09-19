@@ -42,16 +42,19 @@ public abstract class AbstractTitledPreview extends AbstractPreview
     /**
      * Preview container.
      */
+    @Nullable
     protected PreviewPanel previewPanel;
 
     /**
      * Preview information.
      */
+    @Nullable
     protected JComponent previewInfo;
 
     /**
      * Preview content elements.
      */
+    @Nullable
     protected List<? extends JComponent> previewContent;
 
     /**
@@ -61,7 +64,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      * @param id      preview ID
      * @param state   feature state
      */
-    public AbstractTitledPreview ( final Example example, final String id, final FeatureState state )
+    public AbstractTitledPreview ( @NotNull final Example example, @NotNull final String id, @NotNull final FeatureState state )
     {
         super ( example, id, state );
     }
@@ -70,15 +73,18 @@ public abstract class AbstractTitledPreview extends AbstractPreview
     @Override
     protected JComponent createPreview ( @NotNull final List<Preview> previews, final int index )
     {
-        final Preview preview = previews.get ( index );
-
         final double[] columns = new double[]{ TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.FILL };
         final double[] rows = new double[]{ TableLayout.PREFERRED };
         final TableLayout layout = new TableLayout ( columns, rows, 0, 0 );
-        previewPanel = new PreviewPanel ( preview.getFeatureState (), layout );
+        previewPanel = new PreviewPanel ( previews.get ( index ).getFeatureState (), layout );
+
         previewPanel.add ( createPreviewContent (), "2,0" );
+
         previewPanel.add ( createSeparator (), "1,0" );
-        previewPanel.add ( getPreviewInfo (), "0,0" );
+
+        previewInfo = createPreviewInfo ();
+        previewPanel.add ( previewInfo, "0,0" );
+
         return previewPanel;
     }
 
@@ -86,20 +92,6 @@ public abstract class AbstractTitledPreview extends AbstractPreview
     @Override
     public JComponent getEqualizableWidthComponent ()
     {
-        return getPreviewInfo ();
-    }
-
-    /**
-     * Returns cached preview component information.
-     *
-     * @return cached preview component information
-     */
-    protected JComponent getPreviewInfo ()
-    {
-        if ( previewInfo == null )
-        {
-            previewInfo = createPreviewInfo ();
-        }
         return previewInfo;
     }
 
@@ -108,6 +100,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      *
      * @return preview component information
      */
+    @NotNull
     protected JComponent createPreviewInfo ()
     {
         final StyleId styleId = DemoStyles.previewTitleLabel.at ( previewPanel );
@@ -119,6 +112,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      *
      * @return newly created information and content separator
      */
+    @NotNull
     protected WebSeparator createSeparator ()
     {
         final StyleId styleId = DemoStyles.previewSeparator.at ( previewPanel );
@@ -130,6 +124,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      *
      * @return newly created previewed elements container
      */
+    @NotNull
     protected JComponent createPreviewContent ()
     {
         final StyleId styleId = DemoStyles.previewContent.at ( previewPanel );
@@ -144,6 +139,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      *
      * @return newly created previewed elements container layout
      */
+    @NotNull
     protected LayoutManager createPreviewLayout ()
     {
         return new HorizontalFlowLayout ( 8, false );
@@ -155,6 +151,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      *
      * @return cached preview content elements
      */
+    @NotNull
     protected List<? extends JComponent> getPreviewElements ()
     {
         if ( previewContent == null )
@@ -170,6 +167,7 @@ public abstract class AbstractTitledPreview extends AbstractPreview
      *
      * @return preview content component
      */
+    @NotNull
     protected abstract List<? extends JComponent> createPreviewElements ();
 
     @Override

@@ -87,6 +87,7 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
             super ( WebSplitButtonExample.this, "text", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -123,6 +124,7 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
             super ( WebSplitButtonExample.this, "icon", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

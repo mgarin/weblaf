@@ -76,11 +76,7 @@
     <style type="panel" id="examples" extends="documentpane">
 
         <!-- Tabbed pane style -->
-        <style type="tabbedpane" id="tabbedpane">
-            <ui>
-                <tabStretchType>multiline</tabStretchType>
-            </ui>
-        </style>
+        <style type="tabbedpane" id="tabbedpane" />
 
     </style>
 

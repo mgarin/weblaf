@@ -90,6 +90,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
             super ( JTextAreaExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -115,6 +116,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
             super ( JTextAreaExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -141,6 +143,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
             super ( JTextAreaExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -167,6 +170,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
             super ( JTextAreaExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

@@ -80,6 +80,7 @@ public class WebTextPaneExample extends AbstractStylePreviewExample
             super ( WebTextPaneExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -105,6 +106,7 @@ public class WebTextPaneExample extends AbstractStylePreviewExample
             super ( WebTextPaneExample.this, id, FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

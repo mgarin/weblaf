@@ -164,7 +164,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     /**
      * Constructs new {@link WindowState} with settings from the specified {@link Window}.
      *
-     * @param window {@link Window} to retreive settings from
+     * @param window {@link Window} to retrieve settings from
      */
     public WindowState ( final Window window )
     {
@@ -174,7 +174,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
     /**
      * Constructs new {@link WindowState} with settings from the specified {@link JRootPane}'s {@link Window}.
      *
-     * @param rootPane {@link JRootPane} used to find {@link Window} to retreive settings from
+     * @param rootPane {@link JRootPane} used to find {@link Window} to retrieve settings from
      */
     public WindowState ( final JRootPane rootPane )
     {
@@ -216,7 +216,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * Calling this method when this {@link WindowState} is not empty will apply settings from the specified {@link JRootPane}'s
      * {@link Window} on top of settings in this {@link WindowState}.
      *
-     * @param rootPane {@link JRootPane} used to find {@link Window} to retreive settings from
+     * @param rootPane {@link JRootPane} used to find {@link Window} to retrieve settings from
      * @return settings retrieved from the specified {@link JRootPane}'s {@link Window}
      */
     public WindowState retrieve ( final JRootPane rootPane )

@@ -157,6 +157,11 @@
                             <xs:element name="progressTextPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                         </xs:sequence>
 
+                        <!-- com.alee.laf.tabbedpane.TabbedPanePainter -->
+                        <xs:sequence>
+                            <xs:element name="tabContentPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+
                     </xs:choice>
 
                 </xs:sequence>

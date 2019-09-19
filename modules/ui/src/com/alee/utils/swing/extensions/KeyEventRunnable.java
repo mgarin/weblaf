@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.event.KeyEvent;
 
 /**
@@ -31,5 +33,5 @@ public interface KeyEventRunnable
      *
      * @param e occured key event
      */
-    public void run ( KeyEvent e );
+    public void run ( @NotNull KeyEvent e );
 }

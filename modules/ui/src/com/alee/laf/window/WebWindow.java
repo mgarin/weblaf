@@ -491,6 +491,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
         return WindowEventMethodsImpl.onClose ( this, runnable );
     }
 
+    @Nullable
     @Override
     public String getLanguage ()
     {
@@ -498,19 +499,19 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
     }
 
     @Override
-    public void setLanguage ( final String key, final Object... data )
+    public void setLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.registerComponent ( getRootPane (), key, data );
     }
 
     @Override
-    public void updateLanguage ( final Object... data )
+    public void updateLanguage ( @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( getRootPane (), data );
     }
 
     @Override
-    public void updateLanguage ( final String key, final Object... data )
+    public void updateLanguage ( @NotNull final String key, @Nullable final Object... data )
     {
         UILanguageManager.updateComponent ( getRootPane (), key, data );
     }
@@ -528,7 +529,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
     }
 
     @Override
-    public void setLanguageUpdater ( final LanguageUpdater updater )
+    public void setLanguageUpdater ( @NotNull final LanguageUpdater updater )
     {
         UILanguageManager.registerLanguageUpdater ( getRootPane (), updater );
     }
@@ -540,13 +541,13 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
     }
 
     @Override
-    public void addLanguageListener ( final LanguageListener listener )
+    public void addLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.addLanguageListener ( getRootPane (), listener );
     }
 
     @Override
-    public void removeLanguageListener ( final LanguageListener listener )
+    public void removeLanguageListener ( @NotNull final LanguageListener listener )
     {
         UILanguageManager.removeLanguageListener ( getRootPane (), listener );
     }
@@ -558,13 +559,13 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
     }
 
     @Override
-    public void addDictionaryListener ( final DictionaryListener listener )
+    public void addDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.addDictionaryListener ( getRootPane (), listener );
     }
 
     @Override
-    public void removeDictionaryListener ( final DictionaryListener listener )
+    public void removeDictionaryListener ( @NotNull final DictionaryListener listener )
     {
         UILanguageManager.removeDictionaryListener ( getRootPane (), listener );
     }

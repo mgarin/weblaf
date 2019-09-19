@@ -82,6 +82,7 @@ public class WebTextFieldExample extends AbstractStylePreviewExample
             super ( WebTextFieldExample.this, "inputprompt", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -106,6 +107,7 @@ public class WebTextFieldExample extends AbstractStylePreviewExample
             super ( WebTextFieldExample.this, "leading", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -131,6 +133,7 @@ public class WebTextFieldExample extends AbstractStylePreviewExample
             super ( WebTextFieldExample.this, "trailing", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

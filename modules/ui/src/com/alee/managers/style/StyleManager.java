@@ -78,14 +78,14 @@ import com.alee.laf.radiobutton.RadioIcon;
 import com.alee.laf.rootpane.RootPaneDescriptor;
 import com.alee.laf.scroll.ScrollBarDescriptor;
 import com.alee.laf.scroll.ScrollPaneDescriptor;
-import com.alee.laf.scroll.layout.WebScrollPaneLayout;
+import com.alee.laf.scroll.layout.ScrollPaneLayout;
 import com.alee.laf.separator.SeparatorDescriptor;
 import com.alee.laf.separator.SeparatorStripes;
 import com.alee.laf.slider.SliderDescriptor;
 import com.alee.laf.spinner.SpinnerDescriptor;
 import com.alee.laf.splitpane.SplitPaneDescriptor;
 import com.alee.laf.splitpane.SplitPaneDividerDescriptor;
-import com.alee.laf.tabbedpane.TabbedPaneDescriptor;
+import com.alee.laf.tabbedpane.*;
 import com.alee.laf.table.TableDescriptor;
 import com.alee.laf.table.TableHeaderDescriptor;
 import com.alee.laf.text.*;
@@ -96,7 +96,7 @@ import com.alee.laf.tooltip.ToolTipDescriptor;
 import com.alee.laf.tooltip.ToolTipText;
 import com.alee.laf.tree.TreeDescriptor;
 import com.alee.laf.viewport.ViewportDescriptor;
-import com.alee.laf.viewport.WebViewportLayout;
+import com.alee.laf.viewport.ViewportLayout;
 import com.alee.managers.animation.easing.*;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
@@ -356,10 +356,17 @@ public final class StyleManager
         XmlUtils.processAnnotations ( BreadcrumbPasswordFieldPainter.class );
 
         // Layout aliases
-        XmlUtils.processAnnotations ( WebScrollPaneLayout.class );
-        XmlUtils.processAnnotations ( WebScrollPaneLayout.UIResource.class );
-        XmlUtils.processAnnotations ( WebViewportLayout.class );
-        XmlUtils.processAnnotations ( WebViewportLayout.UIResource.class );
+        XmlUtils.processAnnotations ( ScrollPaneLayout.class );
+        XmlUtils.processAnnotations ( ScrollPaneLayout.UIResource.class );
+        XmlUtils.processAnnotations ( ViewportLayout.class );
+        XmlUtils.processAnnotations ( ViewportLayout.UIResource.class );
+        XmlUtils.processAnnotations ( TabbedPaneLayout.class );
+        XmlUtils.processAnnotations ( TabbedPaneLayout.UIResource.class );
+        XmlUtils.processAnnotations ( TabAreaLayout.class );
+        XmlUtils.processAnnotations ( TabAreaLayout.UIResource.class );
+        XmlUtils.processAnnotations ( TabStretchType.class );
+        XmlUtils.processAnnotations ( TabContainerLayout.class );
+        XmlUtils.processAnnotations ( TabContainerLayout.UIResource.class );
         XmlUtils.processAnnotations ( BreadcrumbLayout.class );
         XmlUtils.processAnnotations ( BreadcrumbLayout.UIResource.class );
         XmlUtils.processAnnotations ( CollapsiblePaneLayout.class );
@@ -404,17 +411,17 @@ public final class StyleManager
         XmlUtils.processAnnotations ( Bezier.class );
 
         // Workaround for ScrollPaneLayout due to neccessity of its usage
-        XmlUtils.omitField ( ScrollPaneLayout.class, "viewport" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "vsb" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "hsb" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "rowHead" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "colHead" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "lowerLeft" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "lowerRight" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "upperLeft" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "upperRight" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "vsbPolicy" );
-        XmlUtils.omitField ( ScrollPaneLayout.class, "hsbPolicy" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "viewport" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "vsb" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "hsb" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "rowHead" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "colHead" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "lowerLeft" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "lowerRight" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "upperLeft" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "upperRight" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "vsbPolicy" );
+        XmlUtils.omitField ( javax.swing.ScrollPaneLayout.class, "hsbPolicy" );
     }
 
     /**

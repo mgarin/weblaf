@@ -17,6 +17,7 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.swing.extensions.MethodExtension;
 
 import javax.swing.*;
@@ -43,14 +44,14 @@ public interface LanguageEventMethods extends MethodExtension
      *
      * @param listener {@link LanguageListener} to add
      */
-    public void addLanguageListener ( LanguageListener listener );
+    public void addLanguageListener ( @NotNull LanguageListener listener );
 
     /**
      * Removes {@link LanguageListener} tied to the {@link JComponent} implementing this interface.
      *
      * @param listener {@link LanguageListener} to remove
      */
-    public void removeLanguageListener ( LanguageListener listener );
+    public void removeLanguageListener ( @NotNull LanguageListener listener );
 
     /**
      * Removes all {@link LanguageListener}s tied to the {@link JComponent} implementing this interface.
@@ -66,14 +67,14 @@ public interface LanguageEventMethods extends MethodExtension
      *
      * @param listener {@link DictionaryListener} to add
      */
-    public void addDictionaryListener ( DictionaryListener listener );
+    public void addDictionaryListener ( @NotNull DictionaryListener listener );
 
     /**
      * Removes {@link DictionaryListener} tied to the {@link JComponent} implementing this interface.
      *
      * @param listener {@link DictionaryListener} to remove
      */
-    public void removeDictionaryListener ( DictionaryListener listener );
+    public void removeDictionaryListener ( @NotNull DictionaryListener listener );
 
     /**
      * Removes all {@link DictionaryListener}s tied to the {@link JComponent} implementing this interface.

@@ -217,12 +217,14 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container container )
     {
         return getLayoutSize ( container, false );
     }
 
+    @NotNull
     @Override
     public Dimension minimumLayoutSize ( @NotNull final Container container )
     {

@@ -1,5 +1,6 @@
 package com.alee.laf.text;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -39,12 +40,14 @@ public final class AdaptivePasswordFieldPainter<C extends JPasswordField, U exte
         return false;
     }
 
+    @Nullable
     @Override
     public Component getLeadingComponent ()
     {
         return null;
     }
 
+    @Nullable
     @Override
     public Component getTrailingComponent ()
     {

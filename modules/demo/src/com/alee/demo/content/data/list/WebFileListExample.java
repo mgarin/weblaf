@@ -84,6 +84,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
             super ( WebFileListExample.this, "icons", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -109,6 +110,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
             super ( WebFileListExample.this, "tiles", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -134,6 +136,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
             super ( WebFileListExample.this, "scrollable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -157,6 +160,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
             super ( WebFileListExample.this, "editable", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {

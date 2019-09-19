@@ -17,7 +17,7 @@
 
 package com.alee.demo.api.example;
 
-import com.alee.api.annotations.Nullable;
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.laf.panel.WebPanel;
 import com.alee.painter.decoration.DecorationUtils;
@@ -44,7 +44,7 @@ public final class PreviewPanel extends WebPanel implements Stateful
      * @param layout     panel layout
      * @param components components to add into panel
      */
-    public PreviewPanel ( final FeatureState state, final LayoutManager layout, final Component... components )
+    public PreviewPanel ( @NotNull final FeatureState state, final LayoutManager layout, final Component... components )
     {
         super ( DemoStyles.previewPanel, layout, components );
         this.state = state;
@@ -56,12 +56,13 @@ public final class PreviewPanel extends WebPanel implements Stateful
      *
      * @return preview feature state
      */
+    @NotNull
     public FeatureState getState ()
     {
         return state;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> getStates ()
     {

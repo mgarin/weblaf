@@ -443,6 +443,7 @@ public class CollapsiblePaneLayout extends AbstractLayoutManager implements Prop
         }
     }
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container parent )
     {

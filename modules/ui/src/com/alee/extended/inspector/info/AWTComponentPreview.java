@@ -33,27 +33,29 @@ public class AWTComponentPreview<C extends Component> extends AbstractComponentP
     @Override
     public Icon getIconImpl ( final C component )
     {
+        final Icon icon;
         if ( component instanceof Frame )
         {
-            return frameType;
+            icon = frameType;
         }
         else if ( component instanceof Dialog )
         {
-            return dialogType;
+            icon = dialogType;
         }
         else if ( component instanceof Window )
         {
-            return windowType;
+            icon = windowType;
         }
         else
         {
-            return unknownType;
+            icon = unknownType;
         }
+        return icon;
     }
 
     @Override
     public String getText ( final C component )
     {
-        return "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
+        return "{" + ReflectUtils.getCompleteClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
     }
 }

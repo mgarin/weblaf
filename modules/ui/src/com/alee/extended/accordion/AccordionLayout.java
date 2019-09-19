@@ -602,6 +602,7 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
         }
     }*/
 
+    @NotNull
     @Override
     public Dimension preferredLayoutSize ( @NotNull final Container parent )
     {

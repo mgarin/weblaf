@@ -362,8 +362,15 @@ public final class ProprietaryUtils
     {
         try
         {
-            final Object componentAccessor = ReflectUtils.callStaticMethod ( "sun.awt.AWTAccessor", "getComponentAccessor" );
-            ReflectUtils.callMethod ( componentAccessor, "setMixingCutoutShape", component, new Rectangle () );
+            if ( SystemUtils.isJava9orAbove () )
+            {
+                ReflectUtils.callMethod ( component, "setMixingCutoutShape", new Rectangle () );
+            }
+            else
+            {
+                final Object componentAccessor = ReflectUtils.callStaticMethod ( "sun.awt.AWTAccessor", "getComponentAccessor" );
+                ReflectUtils.callMethod ( componentAccessor, "setMixingCutoutShape", component, new Rectangle () );
+            }
         }
         catch ( final Exception e )
         {

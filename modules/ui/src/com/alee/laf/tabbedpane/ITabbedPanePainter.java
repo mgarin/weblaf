@@ -11,7 +11,7 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public interface ITabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI> extends SpecificPainter<C, U>
+public interface ITabbedPanePainter<C extends JTabbedPane, U extends WTabbedPaneUI<C>> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

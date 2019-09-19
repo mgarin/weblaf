@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
@@ -38,9 +40,10 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMousePress ( final Component component, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMousePress ( @NotNull final Component component, @NotNull final MouseEventRunnable runnable )
     {
         return onMousePress ( component, null, runnable );
     }
@@ -51,14 +54,16 @@ public final class EventMethodsImpl
      * @param component   component to handle events for
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMousePress ( final Component component, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMousePress ( @NotNull final Component component, @Nullable final MouseButton mouseButton,
+                                              @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void mousePressed ( @NotNull final MouseEvent e )
             {
                 if ( mouseButton == null || mouseButton == MouseButton.get ( e ) )
                 {
@@ -75,14 +80,15 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMouseEnter ( final Component component, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMouseEnter ( @NotNull final Component component, @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseEntered ( final MouseEvent e )
+            public void mouseEntered ( @NotNull final MouseEvent e )
             {
                 runnable.run ( e );
             }
@@ -96,14 +102,15 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMouseExit ( final Component component, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMouseExit ( @NotNull final Component component, @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseExited ( final MouseEvent e )
+            public void mouseExited ( @NotNull final MouseEvent e )
             {
                 runnable.run ( e );
             }
@@ -117,9 +124,10 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMouseDrag ( final Component component, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMouseDrag ( @NotNull final Component component, @NotNull final MouseEventRunnable runnable )
     {
         return onMouseDrag ( component, null, runnable );
     }
@@ -130,14 +138,16 @@ public final class EventMethodsImpl
      * @param component   component to handle events for
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMouseDrag ( final Component component, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMouseDrag ( @NotNull final Component component, @Nullable final MouseButton mouseButton,
+                                             @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseDragged ( final MouseEvent e )
+            public void mouseDragged ( @NotNull final MouseEvent e )
             {
                 if ( mouseButton == null || mouseButton == MouseButton.get ( e ) )
                 {
@@ -154,9 +164,10 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMouseClick ( final Component component, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMouseClick ( @NotNull final Component component, @NotNull final MouseEventRunnable runnable )
     {
         return onMouseClick ( component, null, runnable );
     }
@@ -167,14 +178,16 @@ public final class EventMethodsImpl
      * @param component   component to handle events for
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMouseClick ( final Component component, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMouseClick ( @NotNull final Component component, @Nullable final MouseButton mouseButton,
+                                              @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseClicked ( final MouseEvent e )
+            public void mouseClicked ( @NotNull final MouseEvent e )
             {
                 if ( mouseButton == null || mouseButton == MouseButton.get ( e ) )
                 {
@@ -191,14 +204,15 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onDoubleClick ( final Component component, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onDoubleClick ( @NotNull final Component component, @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseClicked ( final MouseEvent e )
+            public void mouseClicked ( @NotNull final MouseEvent e )
             {
                 if ( SwingUtils.isDoubleClick ( e ) )
                 {
@@ -215,14 +229,15 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onMenuTrigger ( final Component component, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onMenuTrigger ( @NotNull final Component component, @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void mousePressed ( @NotNull final MouseEvent e )
             {
                 if ( SwingUtils.isRightMouseButton ( e ) )
                 {
@@ -239,9 +254,10 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public static KeyAdapter onKeyType ( final Component component, final KeyEventRunnable runnable )
+    @NotNull
+    public static KeyAdapter onKeyType ( @NotNull final Component component, @NotNull final KeyEventRunnable runnable )
     {
         return onKeyType ( component, null, runnable );
     }
@@ -252,14 +268,16 @@ public final class EventMethodsImpl
      * @param component component to handle events for
      * @param hotkey    hotkey filter
      * @param runnable  key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public static KeyAdapter onKeyType ( final Component component, final HotkeyData hotkey, final KeyEventRunnable runnable )
+    @NotNull
+    public static KeyAdapter onKeyType ( @NotNull final Component component, @Nullable final HotkeyData hotkey,
+                                         @NotNull final KeyEventRunnable runnable )
     {
         final KeyAdapter keyAdapter = new KeyAdapter ()
         {
             @Override
-            public void keyTyped ( final KeyEvent e )
+            public void keyTyped ( @NotNull final KeyEvent e )
             {
                 if ( hotkey == null || hotkey.isTriggered ( e ) )
                 {
@@ -276,9 +294,10 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public static KeyAdapter onKeyPress ( final Component component, final KeyEventRunnable runnable )
+    @NotNull
+    public static KeyAdapter onKeyPress ( @NotNull final Component component, @NotNull final KeyEventRunnable runnable )
     {
         return onKeyPress ( component, null, runnable );
     }
@@ -289,14 +308,16 @@ public final class EventMethodsImpl
      * @param component component to handle events for
      * @param hotkey    hotkey filter
      * @param runnable  key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public static KeyAdapter onKeyPress ( final Component component, final HotkeyData hotkey, final KeyEventRunnable runnable )
+    @NotNull
+    public static KeyAdapter onKeyPress ( @NotNull final Component component, @Nullable final HotkeyData hotkey,
+                                          @NotNull final KeyEventRunnable runnable )
     {
         final KeyAdapter keyAdapter = new KeyAdapter ()
         {
             @Override
-            public void keyPressed ( final KeyEvent e )
+            public void keyPressed ( @NotNull final KeyEvent e )
             {
                 if ( hotkey == null || hotkey.isTriggered ( e ) )
                 {
@@ -313,9 +334,10 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public static KeyAdapter onKeyRelease ( final Component component, final KeyEventRunnable runnable )
+    @NotNull
+    public static KeyAdapter onKeyRelease ( @NotNull final Component component, @NotNull final KeyEventRunnable runnable )
     {
         return onKeyRelease ( component, null, runnable );
     }
@@ -326,14 +348,16 @@ public final class EventMethodsImpl
      * @param component component to handle events for
      * @param hotkey    hotkey filter
      * @param runnable  key event runnable
-     * @return used key adapter
+     * @return created {@link KeyAdapter}
      */
-    public static KeyAdapter onKeyRelease ( final Component component, final HotkeyData hotkey, final KeyEventRunnable runnable )
+    @NotNull
+    public static KeyAdapter onKeyRelease ( @NotNull final Component component, @Nullable final HotkeyData hotkey,
+                                            @NotNull final KeyEventRunnable runnable )
     {
         final KeyAdapter keyAdapter = new KeyAdapter ()
         {
             @Override
-            public void keyReleased ( final KeyEvent e )
+            public void keyReleased ( @NotNull final KeyEvent e )
             {
                 if ( hotkey == null || hotkey.isTriggered ( e ) )
                 {
@@ -350,14 +374,15 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  focus event runnable
-     * @return used focus adapter
+     * @return created {@link FocusAdapter}
      */
-    public static FocusAdapter onFocusGain ( final Component component, final FocusEventRunnable runnable )
+    @NotNull
+    public static FocusAdapter onFocusGain ( @NotNull final Component component, @NotNull final FocusEventRunnable runnable )
     {
         final FocusAdapter focusAdapter = new FocusAdapter ()
         {
             @Override
-            public void focusGained ( final FocusEvent e )
+            public void focusGained ( @NotNull final FocusEvent e )
             {
                 runnable.run ( e );
             }
@@ -371,14 +396,15 @@ public final class EventMethodsImpl
      *
      * @param component component to handle events for
      * @param runnable  focus event runnable
-     * @return used focus adapter
+     * @return created {@link FocusAdapter}
      */
-    public static FocusAdapter onFocusLoss ( final Component component, final FocusEventRunnable runnable )
+    @NotNull
+    public static FocusAdapter onFocusLoss ( @NotNull final Component component, @NotNull final FocusEventRunnable runnable )
     {
         final FocusAdapter focusAdapter = new FocusAdapter ()
         {
             @Override
-            public void focusLost ( final FocusEvent e )
+            public void focusLost ( @NotNull final FocusEvent e )
             {
                 runnable.run ( e );
             }
@@ -395,9 +421,11 @@ public final class EventMethodsImpl
      * @param component component to handle events for
      * @param shift     coordinate shift required to start drag
      * @param runnable  mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onDragStart ( final Component component, final int shift, final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onDragStart ( @NotNull final Component component, final int shift,
+                                             @NotNull final MouseEventRunnable runnable )
     {
         return onDragStart ( component, shift, MouseButton.left, runnable );
     }
@@ -411,17 +439,18 @@ public final class EventMethodsImpl
      * @param shift       coordinate shift required to start drag
      * @param mouseButton mouse button filter
      * @param runnable    mouse event runnable
-     * @return used mouse adapter
+     * @return created {@link MouseAdapter}
      */
-    public static MouseAdapter onDragStart ( final Component component, final int shift, final MouseButton mouseButton,
-                                             final MouseEventRunnable runnable )
+    @NotNull
+    public static MouseAdapter onDragStart ( @NotNull final Component component, final int shift, @Nullable final MouseButton mouseButton,
+                                             @NotNull final MouseEventRunnable runnable )
     {
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             private Point start = null;
 
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void mousePressed ( @NotNull final MouseEvent e )
             {
                 if ( isButton ( e ) )
                 {
@@ -430,7 +459,7 @@ public final class EventMethodsImpl
             }
 
             @Override
-            public void mouseDragged ( final MouseEvent e )
+            public void mouseDragged ( @NotNull final MouseEvent e )
             {
                 if ( start != null && MathUtils.distance ( start, e.getPoint () ) > shift )
                 {
@@ -440,7 +469,7 @@ public final class EventMethodsImpl
             }
 
             @Override
-            public void mouseReleased ( final MouseEvent e )
+            public void mouseReleased ( @NotNull final MouseEvent e )
             {
                 if ( isButton ( e ) && start != null )
                 {
@@ -454,7 +483,7 @@ public final class EventMethodsImpl
              * @param e mouse event
              * @return true if event fits the button requirement, false otherwise
              */
-            private boolean isButton ( final MouseEvent e )
+            private boolean isButton ( @NotNull final MouseEvent e )
             {
                 return mouseButton == null || mouseButton == MouseButton.get ( e );
             }

@@ -41,6 +41,8 @@ import com.alee.painter.SectionPainter;
 import com.alee.utils.*;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.event.ContainerEvent;
@@ -75,10 +77,13 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Listeners.
      */
+    protected transient ContainerListener containerListener;
     protected transient FocusTracker focusStateTracker;
     protected transient GlobalFocusListener inFocusedParentTracker;
+    protected transient AncestorListener inFocusedParentAncestorListener;
     protected transient HoverTracker hoverStateTracker;
     protected transient GlobalHoverListener inHoveredParentTracker;
+    protected transient AncestorListener inHoveredParentAncestorListener;
     protected transient HierarchyListener hierarchyTracker;
     protected transient ContainerListener neighboursTracker;
 
@@ -148,6 +153,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         super.installPropertiesAndListeners ();
 
         // Installing various extra listeners
+        installContainerListener ();
         installFocusListener ();
         installInFocusedParentListener ();
         installHoverListener ();
@@ -164,6 +170,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         uninstallHoverListener ();
         uninstallInFocusedParentListener ();
         uninstallFocusListener ();
+        uninstallContainerListener ();
 
         super.uninstallPropertiesAndListeners ();
     }
@@ -210,6 +217,65 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     }
 
     /**
+     * Returns whether or not component has distinct container view.
+     * todo Replace with {@link #usesState(String)} override
+     *
+     * @return {@code true} if component has distinct container view, {@code false} otherwise
+     */
+    protected boolean usesContainerView ()
+    {
+        return usesState ( DecorationState.hasChildren ) || usesState ( DecorationState.hasNoChildren );
+    }
+
+    /**
+     * Installs {@link ContainerListener} that will perform decoration updates on children change.
+     */
+    protected void installContainerListener ()
+    {
+        if ( usesContainerView () )
+        {
+            containerListener = new ContainerListener ()
+            {
+                @Override
+                public void componentAdded ( final ContainerEvent e )
+                {
+                    AbstractDecorationPainter.this.childrenChanged ( e );
+                }
+
+                @Override
+                public void componentRemoved ( final ContainerEvent e )
+                {
+                    AbstractDecorationPainter.this.childrenChanged ( e );
+                }
+            };
+            component.addContainerListener ( containerListener );
+        }
+    }
+
+    /**
+     * Informs about {@link Container} children change.
+     *
+     * @param event {@link ContainerEvent}
+     */
+    protected void childrenChanged ( final ContainerEvent event )
+    {
+        updateDecorationState ();
+    }
+
+    /**
+     * Uninstalls {@link ContainerListener}.
+     */
+    protected void uninstallContainerListener ()
+    {
+        if ( containerListener != null )
+        {
+            component.removeContainerListener ( containerListener );
+            containerListener = null;
+        }
+    }
+
+
+    /**
      * Returns whether or not component has distinct focused view.
      * Note that this is exactly distinct view and not state, distinct focused state might actually be missing.
      * todo Replace with {@link #usesState(String)} override
@@ -233,12 +299,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 @Override
                 public void focusChanged ( final boolean focused )
                 {
-                    // Ensure component is still available
-                    // This might happen if painter is replaced from another FocusTracker
-                    if ( AbstractDecorationPainter.this.component != null )
-                    {
-                        AbstractDecorationPainter.this.focusChanged ( focused );
-                    }
+                    AbstractDecorationPainter.this.focusChanged ( focused );
                 }
             };
             FocusManager.addFocusTracker ( component, focusStateTracker );
@@ -258,8 +319,13 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      */
     protected void focusChanged ( final boolean focused )
     {
-        this.focused = focused;
-        updateDecorationState ();
+        // Ensure component is still available
+        // This might happen if painter is replaced from another FocusTracker
+        if ( AbstractDecorationPainter.this.component != null )
+        {
+            this.focused = focused;
+            updateDecorationState ();
+        }
     }
 
     /**
@@ -325,16 +391,31 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 @Override
                 public void focusChanged ( @Nullable final Component oldFocus, @Nullable final Component newFocus )
                 {
-                    // Ensure component is still available
-                    // This might happen if painter is replaced from another GlobalFocusListener
-                    if ( AbstractDecorationPainter.this.component != null )
-                    {
-                        // Updating {@link #inFocusedParent} state
-                        updateInFocusedParent ();
-                    }
+                    AbstractDecorationPainter.this.updateInFocusedParent ();
                 }
             };
             FocusManager.registerGlobalFocusListener ( component, inFocusedParentTracker );
+            inFocusedParentAncestorListener = new AncestorListener ()
+            {
+                @Override
+                public void ancestorAdded ( @NotNull final AncestorEvent event )
+                {
+                    AbstractDecorationPainter.this.updateInFocusedParent ();
+                }
+
+                @Override
+                public void ancestorRemoved ( @NotNull final AncestorEvent event )
+                {
+                    AbstractDecorationPainter.this.updateInFocusedParent ();
+                }
+
+                @Override
+                public void ancestorMoved ( @NotNull final AncestorEvent event )
+                {
+                    AbstractDecorationPainter.this.updateInFocusedParent ();
+                }
+            };
+            component.addAncestorListener ( inFocusedParentAncestorListener );
         }
         else
         {
@@ -352,47 +433,52 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      */
     protected boolean updateInFocusedParent ()
     {
-        final boolean old = inFocusedParent;
-        inFocusedParent = false;
-        Container current = component;
-        while ( current != null )
+        // Ensure component is still available
+        // This might happen if painter is replaced from another GlobalFocusListener
+        if ( AbstractDecorationPainter.this.component != null )
         {
-            if ( current.isFocusOwner () )
+            final boolean old = inFocusedParent;
+            inFocusedParent = false;
+            Container current = component;
+            while ( current != null )
             {
-                // Directly in a focused parent
-                inFocusedParent = true;
-                break;
-            }
-            else if ( current != component && current instanceof JComponent )
-            {
-                // Ensure that component supports styling
-                final JComponent jComponent = ( JComponent ) current;
-                if ( LafUtils.hasWebLafUI ( jComponent ) )
+                if ( current.isFocusOwner () )
                 {
-                    // In a parent that tracks children focus and visually displays it
-                    // This case is not obvious but really important for correct visual representation of the state
-                    final ComponentUI ui = LafUtils.getUI ( jComponent );
-                    if ( ui != null )
+                    // Directly in a focused parent
+                    inFocusedParent = true;
+                    break;
+                }
+                else if ( current != component && current instanceof JComponent )
+                {
+                    // Ensure that component supports styling
+                    final JComponent jComponent = ( JComponent ) current;
+                    if ( LafUtils.hasWebLafUI ( jComponent ) )
                     {
-                        // todo Replace with proper painter retrieval upon Paintable interface implementation
-                        final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
-                        if ( painter != null && painter instanceof AbstractDecorationPainter )
+                        // In a parent that tracks children focus and visually displays it
+                        // This case is not obvious but really important for correct visual representation of the state
+                        final ComponentUI ui = LafUtils.getUI ( jComponent );
+                        if ( ui != null )
                         {
-                            final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
-                            if ( dp.usesFocusedView () )
+                            // todo Replace with proper painter retrieval upon Paintable interface implementation
+                            final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
+                            if ( painter != null && painter instanceof AbstractDecorationPainter )
                             {
-                                inFocusedParent = dp.isFocused ();
-                                break;
+                                final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
+                                if ( dp.usesFocusedView () )
+                                {
+                                    inFocusedParent = dp.isFocused ();
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+                current = current.getParent ();
             }
-            current = current.getParent ();
-        }
-        if ( Objects.notEquals ( old, inFocusedParent ) )
-        {
-            updateDecorationState ();
+            if ( Objects.notEquals ( old, inFocusedParent ) )
+            {
+                updateDecorationState ();
+            }
         }
         return inFocusedParent;
     }
@@ -416,6 +502,8 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         if ( inFocusedParentTracker != null )
         {
+            component.removeAncestorListener ( inFocusedParentAncestorListener );
+            inFocusedParentAncestorListener = null;
             FocusManager.unregisterGlobalFocusListener ( component, inFocusedParentTracker );
             inFocusedParentTracker = null;
             inFocusedParent = false;
@@ -446,12 +534,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 @Override
                 public void hoverChanged ( final boolean hover )
                 {
-                    // Ensure component is still available
-                    // This might happen if painter is replaced from another DefaultHoverTracker
-                    if ( AbstractDecorationPainter.this.component != null )
-                    {
-                        AbstractDecorationPainter.this.hoverChanged ( hover );
-                    }
+                    AbstractDecorationPainter.this.hoverChanged ( hover );
                 }
             };
             HoverManager.addHoverTracker ( component, hoverStateTracker );
@@ -471,8 +554,13 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      */
     protected void hoverChanged ( final boolean hover )
     {
-        this.hover = hover;
-        updateDecorationState ();
+        // Ensure component is still available
+        // This might happen if painter is replaced from another DefaultHoverTracker
+        if ( AbstractDecorationPainter.this.component != null )
+        {
+            this.hover = hover;
+            updateDecorationState ();
+        }
     }
 
     /**
@@ -538,16 +626,31 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 @Override
                 public void hoverChanged ( @Nullable final Component oldHover, @Nullable final Component newHover )
                 {
-                    // Ensure component is still available
-                    // This might happen if painter is replaced from another GlobalHoverListener
-                    if ( AbstractDecorationPainter.this.component != null )
-                    {
-                        // Updating {@link #inHoveredParent} state
-                        updateInHoveredParent ();
-                    }
+                    AbstractDecorationPainter.this.updateInHoveredParent ();
                 }
             };
             HoverManager.registerGlobalHoverListener ( component, inHoveredParentTracker );
+            inHoveredParentAncestorListener = new AncestorListener ()
+            {
+                @Override
+                public void ancestorAdded ( @NotNull final AncestorEvent event )
+                {
+                    AbstractDecorationPainter.this.updateInHoveredParent ();
+                }
+
+                @Override
+                public void ancestorRemoved ( @NotNull final AncestorEvent event )
+                {
+                    AbstractDecorationPainter.this.updateInHoveredParent ();
+                }
+
+                @Override
+                public void ancestorMoved ( @NotNull final AncestorEvent event )
+                {
+                    AbstractDecorationPainter.this.updateInHoveredParent ();
+                }
+            };
+            component.addAncestorListener ( inHoveredParentAncestorListener );
         }
         else
         {
@@ -565,47 +668,52 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      */
     protected boolean updateInHoveredParent ()
     {
-        final boolean old = inHoveredParent;
-        inHoveredParent = false;
-        Container current = component;
-        while ( current != null )
+        // Ensure component is still available
+        // This might happen if painter is replaced from another GlobalHoverListener
+        if ( component != null )
         {
-            if ( current == HoverManager.getHoverOwner () )
+            final boolean old = inHoveredParent;
+            inHoveredParent = false;
+            Container current = component;
+            while ( current != null )
             {
-                // Directly in a hovered parent
-                inHoveredParent = true;
-                break;
-            }
-            else if ( current != component && current instanceof JComponent )
-            {
-                // Ensure that component supports styling
-                final JComponent jComponent = ( JComponent ) current;
-                if ( LafUtils.hasWebLafUI ( jComponent ) )
+                if ( current == HoverManager.getHoverOwner () )
                 {
-                    // In a parent that tracks children hover and visually displays it
-                    // This case is not obvious but really important for correct visual representation of the state
-                    final ComponentUI ui = LafUtils.getUI ( jComponent );
-                    if ( ui != null )
+                    // Directly in a hovered parent
+                    inHoveredParent = true;
+                    break;
+                }
+                else if ( current != component && current instanceof JComponent )
+                {
+                    // Ensure that component supports styling
+                    final JComponent jComponent = ( JComponent ) current;
+                    if ( LafUtils.hasWebLafUI ( jComponent ) )
                     {
-                        // todo Replace with proper painter retrieval upon Paintable interface implementation
-                        final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
-                        if ( painter != null && painter instanceof AbstractDecorationPainter )
+                        // In a parent that tracks children hover and visually displays it
+                        // This case is not obvious but really important for correct visual representation of the state
+                        final ComponentUI ui = LafUtils.getUI ( jComponent );
+                        if ( ui != null )
                         {
-                            final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
-                            if ( dp.usesHoverView () )
+                            // todo Replace with proper painter retrieval upon Paintable interface implementation
+                            final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
+                            if ( painter != null && painter instanceof AbstractDecorationPainter )
                             {
-                                inHoveredParent = dp.isHover ();
-                                break;
+                                final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
+                                if ( dp.usesHoverView () )
+                                {
+                                    inHoveredParent = dp.isHover ();
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+                current = current.getParent ();
             }
-            current = current.getParent ();
-        }
-        if ( Objects.notEquals ( old, inHoveredParent ) )
-        {
-            updateDecorationState ();
+            if ( Objects.notEquals ( old, inHoveredParent ) )
+            {
+                updateDecorationState ();
+            }
         }
         return inHoveredParent;
     }
@@ -629,6 +737,8 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         if ( inHoveredParentTracker != null )
         {
+            component.removeAncestorListener ( inHoveredParentAncestorListener );
+            inHoveredParentAncestorListener = null;
             HoverManager.unregisterGlobalHoverListener ( component, inHoveredParentTracker );
             inHoveredParentTracker = null;
             inHoveredParent = false;
@@ -666,7 +776,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                         // Updating border when a child was added nearby
                         if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
                         {
-                            updateBorder ();
+                            AbstractDecorationPainter.this.updateBorder ();
                         }
                     }
                 }
@@ -681,7 +791,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                         // Updating border when a child was removed nearby
                         if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
                         {
-                            updateBorder ();
+                            AbstractDecorationPainter.this.updateBorder ();
                         }
                     }
                 }
@@ -691,12 +801,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 @Override
                 public void hierarchyChanged ( final HierarchyEvent e )
                 {
-                    // Ensure component is still available
-                    // This might happen if painter is replaced from another HierarchyListener
-                    if ( AbstractDecorationPainter.this.component != null )
-                    {
-                        AbstractDecorationPainter.this.hierarchyChanged ( e );
-                    }
+                    AbstractDecorationPainter.this.hierarchyChanged ( e );
                 }
             };
             component.addHierarchyListener ( hierarchyTracker );
@@ -715,29 +820,34 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      */
     protected void hierarchyChanged ( final HierarchyEvent e )
     {
-        // Listening only for parent change event
-        // It will inform us when parent container for this component changes
-        // Ancestor listener is not really reliable because it might inform about consequent parent changes
-        if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) == HierarchyEvent.PARENT_CHANGED )
+        // Ensure component is still available
+        // This might happen if painter is replaced from another HierarchyListener
+        if ( AbstractDecorationPainter.this.component != null )
         {
-            // If there was a previous container...
-            if ( ancestor != null )
+            // Listening only for parent change event
+            // It will inform us when parent container for this component changes
+            // Ancestor listener is not really reliable because it might inform about consequent parent changes
+            if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) == HierarchyEvent.PARENT_CHANGED )
             {
-                // Stop tracking neighbours
-                ancestor.removeContainerListener ( neighboursTracker );
-            }
+                // If there was a previous container...
+                if ( ancestor != null )
+                {
+                    // Stop tracking neighbours
+                    ancestor.removeContainerListener ( neighboursTracker );
+                }
 
-            // Updating ancestor
-            ancestor = component.getParent ();
+                // Updating ancestor
+                ancestor = component.getParent ();
 
-            // If there is a new container...
-            if ( ancestor != null )
-            {
-                // Start tracking neighbours
-                ancestor.addContainerListener ( neighboursTracker );
+                // If there is a new container...
+                if ( ancestor != null )
+                {
+                    // Start tracking neighbours
+                    ancestor.addContainerListener ( neighboursTracker );
 
-                // Updating border
-                updateBorder ();
+                    // Updating border
+                    updateBorder ();
+                }
             }
         }
     }
@@ -803,6 +913,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         states.add ( SystemUtils.getShortOsName () );
         states.add ( isEnabled () ? DecorationState.enabled : DecorationState.disabled );
         states.add ( ltr ? DecorationState.leftToRight : DecorationState.rightToLeft );
+        states.add ( component.getComponentCount () > 0 ? DecorationState.hasChildren : DecorationState.hasNoChildren );
         if ( isFocused () )
         {
             states.add ( DecorationState.focused );
@@ -860,17 +971,19 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      */
     protected final boolean usesState ( final Decorations<C, D> decorations, final String state )
     {
+        boolean usesState = false;
         if ( decorations != null && decorations.size () > 0 )
         {
             for ( final D decoration : decorations )
             {
                 if ( decoration.usesState ( state ) )
                 {
-                    return true;
+                    usesState = true;
+                    break;
                 }
             }
         }
-        return false;
+        return usesState;
     }
 
     /**

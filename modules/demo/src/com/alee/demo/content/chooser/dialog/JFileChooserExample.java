@@ -108,6 +108,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
             super ( JFileChooserExample.this, "open", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
@@ -143,6 +144,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
             super ( JFileChooserExample.this, "save", FeatureState.updated, styleId );
         }
 
+        @NotNull
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
