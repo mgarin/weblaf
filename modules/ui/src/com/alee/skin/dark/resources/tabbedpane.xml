@@ -147,6 +147,12 @@
 
                 <!-- Popup style -->
                 <style type="popupmenu" id="menu">
+                    <painter>
+                        <popupStyle>simple</popupStyle>
+                        <round>2</round>
+                        <shadeWidth>2</shadeWidth>
+                        <opacity>0.98</opacity>
+                    </painter>
 
                     <!-- Menu item -->
                     <style type="menuitem" id="item" />

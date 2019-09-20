@@ -24,6 +24,7 @@ import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -68,18 +69,49 @@ public class TabMenuButton extends WebButton implements ActionListener, UIResour
     @Override
     public void actionPerformed ( @NotNull final ActionEvent e )
     {
+        // Creating menu to show
         final WebPopupMenu menu = new WebPopupMenu ( StyleId.tabbedpaneTabMenu.at ( this ) );
         for ( int tabIndex = 0; tabIndex < tabbedPane.getTabCount (); tabIndex++ )
         {
             menu.add ( new TabMenuItem ( tabbedPane, menu, tabIndex ) );
         }
+
+        // Positioning it according to tab placement
+        final boolean ltr = tabbedPane.getComponentOrientation ().isLeftToRight ();
+        final Dimension menuSize = menu.getPreferredSize ();
         if ( tabbedPane.getTabPlacement () == JTabbedPane.TOP )
         {
-            menu.showBelowMiddle ( this );
+            menu.show (
+                    this,
+                    ltr ? getWidth () - menuSize.width : 0,
+                    getHeight ()
+            );
         }
-        else
+        else if ( tabbedPane.getTabPlacement () == JTabbedPane.BOTTOM )
         {
-            menu.showAboveMiddle ( this );
+            menu.show (
+                    this,
+                    ltr ? getWidth () - menuSize.width : 0,
+                    -menuSize.height
+            );
+        }
+        else if ( ltr && tabbedPane.getTabPlacement () == JTabbedPane.LEFT ||
+                !ltr && tabbedPane.getTabPlacement () == JTabbedPane.RIGHT )
+        {
+            menu.show (
+                    this,
+                    getWidth (),
+                    getHeight () - menuSize.height
+            );
+        }
+        else if ( ltr && tabbedPane.getTabPlacement () == JTabbedPane.RIGHT ||
+                !ltr && tabbedPane.getTabPlacement () == JTabbedPane.LEFT )
+        {
+            menu.show (
+                    this,
+                    -menuSize.width,
+                    getHeight () - menuSize.height
+            );
         }
     }
 }
