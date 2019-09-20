@@ -159,6 +159,42 @@ public final class GeometryUtils
     }
 
     /**
+     * Returns rectangle containing all specified rectangles.
+     *
+     * @param rectangles rectangles to process
+     * @return rectangle containing all specified rectangles
+     */
+    @NotNull
+    public static Rectangle getNonNullContainingRect ( @NotNull final Rectangle... rectangles )
+    {
+        Rectangle rect = rect = rectangles[ 0 ];
+        int i = 1;
+        while ( i < rectangles.length )
+        {
+            rect = getNonNullContainingRect ( rect, rectangles[ i ] );
+            i++;
+        }
+        return rect;
+    }
+
+    /**
+     * Returns rectangle containing two others.
+     *
+     * @param r1 first rectangle
+     * @param r2 second rectangle
+     * @return rectangle containing two others or null if both rectangles are null
+     */
+    @NotNull
+    public static Rectangle getNonNullContainingRect ( @NotNull final Rectangle r1, @NotNull final Rectangle r2 )
+    {
+        final int minX = Math.min ( r1.x, r2.x );
+        final int minY = Math.min ( r1.y, r2.y );
+        final int maxX = Math.max ( r1.x + r1.width, r2.x + r2.width );
+        final int maxY = Math.max ( r1.y + r1.height, r2.y + r2.height );
+        return new Rectangle ( minX, minY, maxX - minX, maxY - minY );
+    }
+
+    /**
      * Returns middle point for the specified rectangle.
      *
      * @param rectangle rectangle to process

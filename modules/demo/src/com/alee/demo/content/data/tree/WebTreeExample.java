@@ -22,9 +22,8 @@ import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.tree.AbstractTreeTransferHandler;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.tree.UniqueNode;
-import com.alee.laf.tree.WebTree;
-import com.alee.laf.tree.WebTreeModel;
+import com.alee.laf.tree.*;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -64,6 +63,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         return CollectionUtils.<Preview>asList (
                 new BasicTree ( StyleId.tree ),
                 new EditableTree ( StyleId.tree ),
+                new TreeTooltips ( StyleId.tree ),
                 new DragAndDropTree ( StyleId.tree )
         );
     }
@@ -115,6 +115,40 @@ public class WebTreeExample extends AbstractStylePreviewExample
             final WebTree tree = new WebTree ( getStyleId () );
             tree.setVisibleRowCount ( 8 );
             tree.setEditable ( true );
+            return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
+        }
+    }
+
+    /**
+     * Custom tree tooltips preview.
+     */
+    protected class TreeTooltips extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param styleId preview style ID
+         */
+        public TreeTooltips ( final StyleId styleId )
+        {
+            super ( WebTreeExample.this, "tooltips", FeatureState.updated, styleId );
+        }
+
+        @NotNull
+        @Override
+        protected List<? extends JComponent> createPreviewElements ()
+        {
+            final WebTree tree = new WebTree ( getStyleId () );
+            tree.setVisibleRowCount ( 8 );
+            tree.setToolTipProvider ( new TreeToolTipProvider<UniqueNode> ()
+            {
+                @Override
+                @Nullable
+                protected String getToolTipText ( @NotNull final JTree tree, @NotNull final TreeCellArea<UniqueNode, JTree> area )
+                {
+                    return LM.get ( getPreviewLanguageKey ( "node" ), area.row (), area.getValue ( tree ).getUserObject () );
+                }
+            } );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );
         }
     }

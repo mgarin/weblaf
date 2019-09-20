@@ -65,7 +65,7 @@
 
         <!-- Example nodes renderer -->
         <style type="styledlabel" id="renderer" padding="4,4,4,6">
-            <painter>
+            <!--<painter>
                 <decorations>
                     <decoration states="beta">
                         <LabelLayout>
@@ -93,7 +93,7 @@
                         </LabelLayout>
                     </decoration>
                 </decorations>
-            </painter>
+            </painter>-->
         </style>
 
     </style>

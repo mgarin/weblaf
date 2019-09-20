@@ -105,9 +105,11 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
                 final ListToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    final ListCellArea oldArea = previousIndex != -1 ? new ListCellArea ( previousIndex ) : null;
-                    final ListCellArea newArea = hoverIndex != -1 ? new ListCellArea ( hoverIndex ) : null;
-                    provider.hoverAreaChanged ( list, oldArea, newArea );
+                    provider.hoverAreaChanged (
+                            list,
+                            previousIndex != -1 ? new ListCellArea ( previousIndex ) : null,
+                            hoverIndex != -1 ? new ListCellArea ( hoverIndex ) : null
+                    );
                 }
 
                 // Informing {@link com.alee.laf.list.WebList} about hover index change
@@ -404,9 +406,12 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      *
      * @return {@link ListToolTipProvider} for {@link JList} that uses this {@link WebListUI}
      */
+    @Nullable
     protected ListToolTipProvider getToolTipProvider ()
     {
-        return list != null && list instanceof WebList ? ( ( WebList ) list ).getToolTipProvider () : null;
+        return list != null ?
+                ( ListToolTipProvider ) list.getClientProperty ( WebList.TOOLTIP_PROVIDER_PROPERTY ) :
+                null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.alee.laf.table;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
@@ -14,6 +15,8 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Basic painter for {@link JTableHeader} component.
@@ -30,11 +33,17 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
     /**
      * Listeners.
      */
+    protected transient MouseAdapter mouseAdapter;
     protected transient LanguageListener languageSensitive;
 
     /**
+     * Runtime variables.
+     */
+    protected transient TableHeaderCellArea rolloverCell;
+
+    /**
      * Style settings.
-     * todo Replace with single background painter per cell?
+     * todo Replace with single background painter per cell
      */
     protected Integer headerHeight;
     protected Color topBgColor;
@@ -50,6 +59,7 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
     protected void installPropertiesAndListeners ()
     {
         super.installPropertiesAndListeners ();
+        installTableMouseListeners ();
         installLanguageListeners ();
     }
 
@@ -57,7 +67,128 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
     protected void uninstallPropertiesAndListeners ()
     {
         uninstallLanguageListeners ();
+        uninstallTableMouseListeners ();
         super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Installs table mouse listeners.
+     */
+    protected void installTableMouseListeners ()
+    {
+        mouseAdapter = new MouseAdapter ()
+        {
+            @Override
+            public void mouseMoved ( final MouseEvent e )
+            {
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseMotionListener
+                if ( component != null )
+                {
+                    updateMouseover ( e );
+                }
+            }
+
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseMotionListener
+                if ( component != null )
+                {
+                    updateMouseover ( e );
+                }
+            }
+
+            @Override
+            public void mouseExited ( final MouseEvent e )
+            {
+                // Ensure component is still available
+                // This might happen if painter is replaced from another MouseListener
+                if ( component != null )
+                {
+                    clearMouseover ();
+                }
+            }
+
+            /**
+             * Performs mouseover cell update.
+             *
+             * @param e mouse event
+             */
+            private void updateMouseover ( final MouseEvent e )
+            {
+                final Point point = e.getPoint ();
+                final int column = component.columnAtPoint ( point );
+                if ( column != -1 )
+                {
+                    final TableHeaderCellArea cell = new TableHeaderCellArea ( 0, column );
+                    if ( Objects.notEquals ( rolloverCell, cell ) )
+                    {
+                        updateRolloverCell ( rolloverCell, cell );
+                    }
+                }
+                else
+                {
+                    clearMouseover ();
+                }
+            }
+
+            /**
+             * Clears mouseover cell.
+             */
+            private void clearMouseover ()
+            {
+                if ( rolloverCell != null )
+                {
+                    updateRolloverCell ( rolloverCell, null );
+                }
+            }
+
+            /**
+             * Performs mouseover cell update.
+             *
+             * @param oldCell previous mouseover cell
+             * @param newCell current mouseover cell
+             */
+            private void updateRolloverCell ( final TableHeaderCellArea oldCell, final TableHeaderCellArea newCell )
+            {
+                // Updating rollover cell
+                rolloverCell = newCell;
+
+                // Updating custom WebLaF tooltip display state
+                final TableHeaderToolTipProvider provider = getToolTipProvider ();
+                if ( provider != null )
+                {
+                    provider.hoverAreaChanged ( component, oldCell, newCell );
+                }
+            }
+        };
+        component.addMouseListener ( mouseAdapter );
+        component.addMouseMotionListener ( mouseAdapter );
+    }
+
+    /**
+     * Uninstalls table mouse listeners.
+     */
+    protected void uninstallTableMouseListeners ()
+    {
+        component.removeMouseListener ( mouseAdapter );
+        component.removeMouseMotionListener ( mouseAdapter );
+        mouseAdapter = null;
+    }
+
+    /**
+     * Returns {@link TableHeaderToolTipProvider} for {@link JTableHeader} that uses this {@link TableHeaderPainter}.
+     *
+     * @return {@link TableHeaderToolTipProvider} for {@link JTableHeader} that uses this {@link TableHeaderPainter}
+     */
+    @Nullable
+    protected TableHeaderToolTipProvider getToolTipProvider ()
+    {
+        return component != null && component.getTable () != null ?
+                ( TableHeaderToolTipProvider ) component.getTable ().getClientProperty ( WebTable.HEADER_TOOLTIP_PROVIDER_PROPERTY ) :
+                null;
     }
 
     /**
@@ -302,14 +433,16 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
      */
     protected Paint getBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
+        final Paint background;
         if ( bottomBgColor == null || Objects.equals ( topBgColor, bottomBgColor ) )
         {
-            return topBgColor;
+            background = topBgColor;
         }
         else
         {
-            return new GradientPaint ( x1, y1, topBgColor, x2, y2, bottomBgColor );
+            background = new GradientPaint ( x1, y1, topBgColor, x2, y2, bottomBgColor );
         }
+        return background;
     }
 
     /**
@@ -338,15 +471,17 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
      */
     protected int getViewIndexForColumn ( final TableColumn column )
     {
+        int viewIndex = -1;
         final TableColumnModel cm = component.getColumnModel ();
         for ( int index = 0; index < cm.getColumnCount (); index++ )
         {
             if ( cm.getColumn ( index ) == column )
             {
-                return index;
+                viewIndex = index;
+                break;
             }
         }
-        return -1;
+        return viewIndex;
     }
 
     @NotNull

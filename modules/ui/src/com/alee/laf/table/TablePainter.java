@@ -220,6 +220,19 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
     }
 
     /**
+     * Returns {@link TableToolTipProvider} for {@link JTable} that uses this {@link TablePainter}.
+     *
+     * @return {@link TableToolTipProvider} for {@link JTable} that uses this {@link TablePainter}
+     */
+    @Nullable
+    protected TableToolTipProvider getToolTipProvider ()
+    {
+        return component != null ?
+                ( TableToolTipProvider ) component.getClientProperty ( WebTable.TOOLTIP_PROVIDER_PROPERTY ) :
+                null;
+    }
+
+    /**
      * Installs language listeners.
      */
     protected void installLanguageListeners ()
@@ -335,71 +348,67 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
     @Override
     protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
-        final Rectangle clip = g2d.getClipBounds ();
-
         // Avoiding painting the entire table when there are no cells
         // Also this check prevents us from painting the entire table when the clip doesn't intersect our bounds at all
-        if ( component.getRowCount () <= 0 || component.getColumnCount () <= 0 || !bounds.intersects ( clip ) )
+        final Rectangle clip = g2d.getClipBounds ();
+        if ( component.getRowCount () > 0 && component.getColumnCount () > 0 && bounds.intersects ( clip ) )
         {
-            paintDropLocation ( g2d );
-            return;
+            final Point upperLeft = clip.getLocation ();
+            if ( !ltr )
+            {
+                upperLeft.x++;
+            }
+
+            final Point lowerRight = new Point ( clip.x + clip.width - ( ltr ? 1 : 0 ), clip.y + clip.height );
+
+            int rMin = component.rowAtPoint ( upperLeft );
+            int rMax = component.rowAtPoint ( lowerRight );
+            // This should never happen (as long as our bounds intersect the clip,
+            // which is why we bail above if that is the case).
+            if ( rMin == -1 )
+            {
+                rMin = 0;
+            }
+            // If the table does not have enough rows to fill the view we'll get -1.
+            // (We could also get -1 if our bounds don't intersect the clip,
+            // which is why we bail above if that is the case).
+            // Replace this with the index of the last row.
+            if ( rMax == -1 )
+            {
+                rMax = component.getRowCount () - 1;
+            }
+
+            int cMin = component.columnAtPoint ( ltr ? upperLeft : lowerRight );
+            int cMax = component.columnAtPoint ( ltr ? lowerRight : upperLeft );
+            // This should never happen.
+            if ( cMin == -1 )
+            {
+                cMin = 0;
+            }
+            // If the table does not have enough columns to fill the view we'll get -1.
+            // Replace this with the index of the last column.
+            if ( cMax == -1 )
+            {
+                cMax = component.getColumnCount () - 1;
+            }
+
+            // Paint table background
+            paintBackground ( g2d, bounds, rMin, rMax, cMin, cMax );
+
+            // Paint table grid
+            paintGrid ( g2d, rMin, rMax, cMin, cMax );
+
+            // Paint table selection
+            paintSelection ( g2d );
+
+            // Painting table cells
+            paintContent ( g2d, rMin, rMax, cMin, cMax );
+
+            rendererPane = null;
         }
-
-        final Point upperLeft = clip.getLocation ();
-        if ( !ltr )
-        {
-            upperLeft.x++;
-        }
-
-        final Point lowerRight = new Point ( clip.x + clip.width - ( ltr ? 1 : 0 ), clip.y + clip.height );
-
-        int rMin = component.rowAtPoint ( upperLeft );
-        int rMax = component.rowAtPoint ( lowerRight );
-        // This should never happen (as long as our bounds intersect the clip,
-        // which is why we bail above if that is the case).
-        if ( rMin == -1 )
-        {
-            rMin = 0;
-        }
-        // If the table does not have enough rows to fill the view we'll get -1.
-        // (We could also get -1 if our bounds don't intersect the clip,
-        // which is why we bail above if that is the case).
-        // Replace this with the index of the last row.
-        if ( rMax == -1 )
-        {
-            rMax = component.getRowCount () - 1;
-        }
-
-        int cMin = component.columnAtPoint ( ltr ? upperLeft : lowerRight );
-        int cMax = component.columnAtPoint ( ltr ? lowerRight : upperLeft );
-        // This should never happen.
-        if ( cMin == -1 )
-        {
-            cMin = 0;
-        }
-        // If the table does not have enough columns to fill the view we'll get -1.
-        // Replace this with the index of the last column.
-        if ( cMax == -1 )
-        {
-            cMax = component.getColumnCount () - 1;
-        }
-
-        // Paint table background
-        paintBackground ( g2d, bounds, rMin, rMax, cMin, cMax );
-
-        // Paint table grid
-        paintGrid ( g2d, rMin, rMax, cMin, cMax );
-
-        // Paint table selection
-        paintSelection ( g2d );
-
-        // Painting table cells
-        paintContent ( g2d, rMin, rMax, cMin, cMax );
 
         // Painting drop location
         paintDropLocation ( g2d );
-
-        rendererPane = null;
     }
 
     /**
@@ -574,7 +583,7 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
                         {
                             final Rectangle first = component.getCellRect ( rowSection.getKey (), colSection.getKey (), false );
                             final Rectangle last = component.getCellRect ( rowSection.getValue (), colSection.getValue (), false );
-                            final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
+                            final Rectangle selection = GeometryUtils.getNonNullContainingRect ( first, last );
                             paintSection ( selectionPainter, g2d, selection );
                         }
                     }
@@ -586,7 +595,7 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
                     {
                         final Rectangle first = component.getCellRect ( rowSection.getKey (), 0, false );
                         final Rectangle last = component.getCellRect ( rowSection.getValue (), component.getColumnCount () - 1, false );
-                        final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
+                        final Rectangle selection = GeometryUtils.getNonNullContainingRect ( first, last );
                         paintSection ( selectionPainter, g2d, selection );
                     }
                 }
@@ -597,7 +606,7 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
                     {
                         final Rectangle first = component.getCellRect ( 0, colSection.getKey (), false );
                         final Rectangle last = component.getCellRect ( component.getRowCount () - 1, colSection.getValue (), false );
-                        final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
+                        final Rectangle selection = GeometryUtils.getNonNullContainingRect ( first, last );
                         paintSection ( selectionPainter, g2d, selection );
                     }
                 }
@@ -811,53 +820,47 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
     protected void paintDropLocation ( final Graphics2D g2d )
     {
         final JTable.DropLocation loc = component.getDropLocation ();
-        if ( loc == null )
+        if ( loc != null )
         {
-            return;
-        }
-
-        final Color color = UIManager.getColor ( "Table.dropLineColor" );
-        final Color shortColor = UIManager.getColor ( "Table.dropLineShortColor" );
-        if ( color == null && shortColor == null )
-        {
-            return;
-        }
-
-        Rectangle rect;
-
-        rect = getHDropLineRect ( loc );
-        if ( rect != null )
-        {
-            final int x = rect.x;
-            final int w = rect.width;
-            if ( color != null )
+            final Color color = UIManager.getColor ( "Table.dropLineColor" );
+            final Color shortColor = UIManager.getColor ( "Table.dropLineShortColor" );
+            if ( color != null || shortColor != null )
             {
-                extendRect ( rect, true );
-                g2d.setColor ( color );
-                g2d.fillRect ( rect.x, rect.y, rect.width, rect.height );
-            }
-            if ( !loc.isInsertColumn () && shortColor != null )
-            {
-                g2d.setColor ( shortColor );
-                g2d.fillRect ( x, rect.y, w, rect.height );
-            }
-        }
+                final Rectangle hDropLine = getHDropLineRect ( loc );
+                if ( hDropLine != null )
+                {
+                    final int x = hDropLine.x;
+                    final int w = hDropLine.width;
+                    if ( color != null )
+                    {
+                        extendRect ( hDropLine, true );
+                        g2d.setColor ( color );
+                        g2d.fillRect ( hDropLine.x, hDropLine.y, hDropLine.width, hDropLine.height );
+                    }
+                    if ( !loc.isInsertColumn () && shortColor != null )
+                    {
+                        g2d.setColor ( shortColor );
+                        g2d.fillRect ( x, hDropLine.y, w, hDropLine.height );
+                    }
+                }
 
-        rect = getVDropLineRect ( loc );
-        if ( rect != null )
-        {
-            final int y = rect.y;
-            final int h = rect.height;
-            if ( color != null )
-            {
-                extendRect ( rect, false );
-                g2d.setColor ( color );
-                g2d.fillRect ( rect.x, rect.y, rect.width, rect.height );
-            }
-            if ( !loc.isInsertRow () && shortColor != null )
-            {
-                g2d.setColor ( shortColor );
-                g2d.fillRect ( rect.x, y, rect.width, h );
+                final Rectangle vDropLine = getVDropLineRect ( loc );
+                if ( vDropLine != null )
+                {
+                    final int y = vDropLine.y;
+                    final int h = vDropLine.height;
+                    if ( color != null )
+                    {
+                        extendRect ( vDropLine, false );
+                        g2d.setColor ( color );
+                        g2d.fillRect ( vDropLine.x, vDropLine.y, vDropLine.width, vDropLine.height );
+                    }
+                    if ( !loc.isInsertRow () && shortColor != null )
+                    {
+                        g2d.setColor ( shortColor );
+                        g2d.fillRect ( vDropLine.x, y, vDropLine.width, h );
+                    }
+                }
             }
         }
     }
@@ -868,40 +871,39 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
      * @param location drop location
      * @return horizontal drop line bounds
      */
-    protected Rectangle getHDropLineRect ( final JTable.DropLocation location )
+    @Nullable
+    protected Rectangle getHDropLineRect ( @NotNull final JTable.DropLocation location )
     {
-        if ( !location.isInsertRow () )
+        Rectangle rect = null;
+        if ( location.isInsertRow () )
         {
-            return null;
+            int row = location.getRow ();
+            int col = location.getColumn ();
+            if ( col >= component.getColumnCount () )
+            {
+                col--;
+            }
+
+            rect = component.getCellRect ( row, col, true );
+
+            if ( row >= component.getRowCount () )
+            {
+                row--;
+                final Rectangle prevRect = component.getCellRect ( row, col, true );
+                rect.y = prevRect.y + prevRect.height;
+            }
+
+            if ( rect.y == 0 )
+            {
+                rect.y = -1;
+            }
+            else
+            {
+                rect.y -= 2;
+            }
+
+            rect.height = 3;
         }
-
-        int row = location.getRow ();
-        int col = location.getColumn ();
-        if ( col >= component.getColumnCount () )
-        {
-            col--;
-        }
-
-        final Rectangle rect = component.getCellRect ( row, col, true );
-
-        if ( row >= component.getRowCount () )
-        {
-            row--;
-            final Rectangle prevRect = component.getCellRect ( row, col, true );
-            rect.y = prevRect.y + prevRect.height;
-        }
-
-        if ( rect.y == 0 )
-        {
-            rect.y = -1;
-        }
-        else
-        {
-            rect.y -= 2;
-        }
-
-        rect.height = 3;
-
         return rect;
     }
 
@@ -911,41 +913,40 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
      * @param location drop location
      * @return vertical drop line bounds
      */
-    protected Rectangle getVDropLineRect ( final JTable.DropLocation location )
+    @Nullable
+    protected Rectangle getVDropLineRect ( @NotNull final JTable.DropLocation location )
     {
-        if ( !location.isInsertColumn () )
+        Rectangle rect = null;
+        if ( location.isInsertColumn () )
         {
-            return null;
-        }
-
-        int col = location.getColumn ();
-        Rectangle rect = component.getCellRect ( location.getRow (), col, true );
-
-        if ( col >= component.getColumnCount () )
-        {
-            col--;
+            int col = location.getColumn ();
             rect = component.getCellRect ( location.getRow (), col, true );
-            if ( ltr )
+
+            if ( col >= component.getColumnCount () )
+            {
+                col--;
+                rect = component.getCellRect ( location.getRow (), col, true );
+                if ( ltr )
+                {
+                    rect.x = rect.x + rect.width;
+                }
+            }
+            else if ( !ltr )
             {
                 rect.x = rect.x + rect.width;
             }
-        }
-        else if ( !ltr )
-        {
-            rect.x = rect.x + rect.width;
-        }
 
-        if ( rect.x == 0 )
-        {
-            rect.x = -1;
-        }
-        else
-        {
-            rect.x -= 2;
-        }
+            if ( rect.x == 0 )
+            {
+                rect.x = -1;
+            }
+            else
+            {
+                rect.x -= 2;
+            }
 
-        rect.width = 3;
-
+            rect.width = 3;
+        }
         return rect;
     }
 
@@ -981,15 +982,5 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
             }
         }
         return rect;
-    }
-
-    /**
-     * Returns {@link TableToolTipProvider} for {@link JTable} that uses this {@link TablePainter}.
-     *
-     * @return {@link TableToolTipProvider} for {@link JTable} that uses this {@link TablePainter}
-     */
-    protected TableToolTipProvider getToolTipProvider ()
-    {
-        return component != null && component instanceof WebTable ? ( ( WebTable ) component ).getToolTipProvider () : null;
     }
 }

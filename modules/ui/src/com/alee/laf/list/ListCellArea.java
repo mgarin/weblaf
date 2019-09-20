@@ -17,6 +17,8 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.tooltip.AbstractComponentArea;
 import com.alee.managers.tooltip.ComponentArea;
 
@@ -44,7 +46,6 @@ public class ListCellArea<V, C extends JList> extends AbstractComponentArea<V, C
      */
     public ListCellArea ( final int index )
     {
-        super ();
         this.index = index;
     }
 
@@ -59,7 +60,14 @@ public class ListCellArea<V, C extends JList> extends AbstractComponentArea<V, C
     }
 
     @Override
-    public Rectangle getBounds ( final C component )
+    public boolean isAvailable ( @NotNull final C component )
+    {
+        return 0 <= index && index < component.getModel ().getSize ();
+    }
+
+    @Nullable
+    @Override
+    public Rectangle getBounds ( @NotNull final C component )
     {
         // Calculating cell bounds
         final Rectangle bounds = component.getCellBounds ( index, index );
@@ -75,14 +83,15 @@ public class ListCellArea<V, C extends JList> extends AbstractComponentArea<V, C
         return bounds;
     }
 
+    @Nullable
     @Override
-    public V getValue ( final C component )
+    public V getValue ( @NotNull final C component )
     {
         return ( V ) component.getModel ().getElementAt ( index );
     }
 
     @Override
-    public boolean equals ( final Object other )
+    public boolean equals ( @Nullable final Object other )
     {
         return other instanceof ListCellArea &&
                 this.index == ( ( ListCellArea ) other ).index;

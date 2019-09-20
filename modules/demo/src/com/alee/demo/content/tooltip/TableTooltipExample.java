@@ -21,15 +21,14 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
-import com.alee.laf.table.TableCellArea;
-import com.alee.laf.table.TableCellParameters;
-import com.alee.laf.table.TableToolTipProvider;
-import com.alee.laf.table.WebTable;
+import com.alee.laf.table.*;
 import com.alee.laf.table.renderers.WebTableCellRenderer;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.util.List;
 
 /**
@@ -123,17 +122,28 @@ public class TableTooltipExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebTable table = new WebTable ( SampleData.createShortTableModel ( false ) );
-            table.setVisibleRowCount ( table.getModel ().getRowCount () );
-            table.setToolTipProvider ( new TableToolTipProvider<Object> ()
+            final JTable table = new JTable ( SampleData.createShortTableModel ( false ) );
+            table.setPreferredScrollableViewportSize ( table.getPreferredSize () );
+            table.putClientProperty ( WebTable.HEADER_TOOLTIP_PROVIDER_PROPERTY, new TableHeaderToolTipProvider<String> ()
             {
+                @Nullable
                 @Override
-                protected String getToolTipText ( final JTable component, final TableCellArea<Object, JTable> area )
+                protected String getToolTipText ( @NotNull final JTableHeader tableHeader,
+                                                  @NotNull final TableHeaderCellArea<String, JTableHeader> area )
                 {
-                    return String.valueOf ( area.getValue ( component ) );
+                    return LM.get ( getPreviewLanguageKey ( "header" ), area.column (), area.getValue ( tableHeader ) );
                 }
             } );
-            return CollectionUtils.asList (  new JScrollPane ( table ) );
+            table.putClientProperty ( WebTable.TOOLTIP_PROVIDER_PROPERTY, new TableToolTipProvider<Object> ()
+            {
+                @Nullable
+                @Override
+                protected String getToolTipText ( @NotNull final JTable table, @NotNull final TableCellArea<Object, JTable> area )
+                {
+                    return LM.get ( getPreviewLanguageKey ( "cell" ), area.row (), area.column (), area.getValue ( table ) );
+                }
+            } );
+            return CollectionUtils.asList ( new JScrollPane ( table ) );
         }
     }
 }

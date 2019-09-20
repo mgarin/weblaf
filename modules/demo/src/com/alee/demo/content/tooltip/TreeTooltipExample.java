@@ -22,10 +22,12 @@ import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.tree.*;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
     {
         return CollectionUtils.<Preview>asList (
                 new SwingTooltips ( FeatureState.release, StyleId.tooltip ),
-                new AdvancedSwingTooltips ( FeatureState.release, StyleId.tooltip ),
+                new FullRowSwingTooltips ( FeatureState.release, StyleId.tooltip ),
                 new CustomTooltips ( FeatureState.release, StyleId.customtooltip )
         );
     }
@@ -103,9 +105,9 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
     }
 
     /**
-     * Advanced Swing tree tooltips.
+     * Full row Swing tree tooltips.
      */
-    protected class AdvancedSwingTooltips extends AbstractStylePreview
+    protected class FullRowSwingTooltips extends AbstractStylePreview
     {
         /**
          * Constructs new style preview.
@@ -113,9 +115,9 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
          * @param featureState feature state
          * @param styleId      preview style ID
          */
-        public AdvancedSwingTooltips ( final FeatureState featureState, final StyleId styleId )
+        public FullRowSwingTooltips ( final FeatureState featureState, final StyleId styleId )
         {
-            super ( TreeTooltipExample.this, "advanced", featureState, styleId );
+            super ( TreeTooltipExample.this, "fullrow", featureState, styleId );
         }
 
         @NotNull
@@ -158,15 +160,16 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebTree tree = new WebTree ();
+            final JTree tree = new JTree ();
             tree.setVisibleRowCount ( 8 );
-            tree.setToolTipProvider ( new TreeToolTipProvider<UniqueNode> ()
+            tree.putClientProperty ( WebTree.TOOLTIP_PROVIDER_PROPERTY, new TreeToolTipProvider<DefaultMutableTreeNode> ()
             {
+                @Nullable
                 @Override
-                protected String getToolTipText ( final JTree component,
-                                                  final TreeCellArea<UniqueNode, JTree> area )
+                protected String getToolTipText ( @NotNull final JTree component,
+                                                  @NotNull final TreeCellArea<DefaultMutableTreeNode, JTree> area )
                 {
-                    return String.valueOf ( area.getValue ( component ).getUserObject () );
+                    return LM.get ( getPreviewLanguageKey ( "node" ), area.row (), area.getValue ( tree ).getUserObject () );
                 }
             } );
             return CollectionUtils.asList ( new WebScrollPane ( tree ).setPreferredWidth ( 200 ) );

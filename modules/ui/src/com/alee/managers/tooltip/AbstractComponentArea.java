@@ -17,6 +17,8 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -32,11 +34,11 @@ public abstract class AbstractComponentArea<V, C extends JComponent> implements 
     /**
      * Adjusts provided bounds to match actual content area.
      *
-     * @param component component
-     * @param content   area content
+     * @param component {@link JComponent}
+     * @param content   content {@link Component}
      * @param bounds    content bounds to adjust
      */
-    protected void adjustBounds ( final C component, final Component content, final Rectangle bounds )
+    protected void adjustBounds ( @NotNull final C component, @NotNull final Component content, @NotNull final Rectangle bounds )
     {
         if ( content instanceof JLabel )
         {
@@ -53,6 +55,7 @@ public abstract class AbstractComponentArea<V, C extends JComponent> implements 
              * Adjusting checkbox and radiobutton content bounds.
              * It is not reasonable for common buttons as they commonly have outer decoration.
              * It is also not reasonable for menu elements due to the way custom tooltips are displayed.
+             * Also checkbox and radiobutton menu items do not extend {@link JCheckBox} or {@link JRadioButton} so checks are safe.
              */
             final AbstractButton button = ( AbstractButton ) content;
             final int align = button.getHorizontalAlignment ();
@@ -63,12 +66,13 @@ public abstract class AbstractComponentArea<V, C extends JComponent> implements 
     /**
      * Adjusts provided bounds to match actual content area and alignment.
      *
-     * @param component component
-     * @param content   area content
+     * @param component {@link JComponent}
+     * @param content   content {@link Component}
      * @param bounds    content bounds to adjust
      * @param align     content alignment
      */
-    protected void adjustBounds ( final C component, final Component content, final Rectangle bounds, final int align )
+    protected void adjustBounds ( @NotNull final C component, @NotNull final Component content, @NotNull final Rectangle bounds,
+                                  final int align )
     {
         final boolean ltr = content.getComponentOrientation ().isLeftToRight ();
         if ( align == SwingConstants.LEFT || ltr ? align == SwingConstants.LEADING : align == SwingConstants.TRAILING )

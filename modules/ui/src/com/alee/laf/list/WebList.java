@@ -71,6 +71,13 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
      */
 
     /**
+     * Client properties used for backward compatibility with Swing {@link JList}.
+     *
+     * @see ListToolTipProvider
+     */
+    public static final String TOOLTIP_PROVIDER_PROPERTY = "tooltipProvider";
+
+    /**
      * Whether or not this list is editable.
      */
     protected boolean editable = false;
@@ -419,7 +426,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
      */
     public ListToolTipProvider getToolTipProvider ()
     {
-        return toolTipProvider;
+        return ( ListToolTipProvider ) getClientProperty ( TOOLTIP_PROVIDER_PROPERTY );
     }
 
     /**
@@ -429,7 +436,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
      */
     public void setToolTipProvider ( final ListToolTipProvider provider )
     {
-        this.toolTipProvider = provider;
+        putClientProperty ( TOOLTIP_PROVIDER_PROPERTY, provider );
     }
 
     /**

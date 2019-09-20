@@ -66,6 +66,15 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     public static final String ROW_HEIGHT_PROPERTY = "rowHeight";
 
     /**
+     * Client properties used for backward compatibility with Swing {@link JTable}.
+     *
+     * @see TableHeaderToolTipProvider
+     * @see TableToolTipProvider
+     */
+    public static final String HEADER_TOOLTIP_PROVIDER_PROPERTY = "headerTooltipProvider";
+    public static final String TOOLTIP_PROVIDER_PROPERTY = "tooltipProvider";
+
+    /**
      * Whether or not table is editable.
      * This is an additional global editable state switch for the whole table.
      * It is added for the sake of simplicity as it is missing in common {@link javax.swing.JTable}.
@@ -264,13 +273,33 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     }
 
     /**
+     * Returns header {@link TableHeaderToolTipProvider}.
+     *
+     * @return header {@link TableHeaderToolTipProvider}
+     */
+    public TableHeaderToolTipProvider getHeaderToolTipProvider ()
+    {
+        return ( TableHeaderToolTipProvider ) getClientProperty ( HEADER_TOOLTIP_PROVIDER_PROPERTY );
+    }
+
+    /**
+     * Sets header {@link TableHeaderToolTipProvider}.
+     *
+     * @param provider header {@link TableHeaderToolTipProvider}
+     */
+    public void setHeaderToolTipProvider ( final TableHeaderToolTipProvider provider )
+    {
+        putClientProperty ( HEADER_TOOLTIP_PROVIDER_PROPERTY, provider );
+    }
+
+    /**
      * Returns {@link TableToolTipProvider}.
      *
      * @return {@link TableToolTipProvider}
      */
     public TableToolTipProvider getToolTipProvider ()
     {
-        return toolTipProvider;
+        return ( TableToolTipProvider ) getClientProperty ( TOOLTIP_PROVIDER_PROPERTY );
     }
 
     /**
@@ -280,7 +309,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
      */
     public void setToolTipProvider ( final TableToolTipProvider provider )
     {
-        this.toolTipProvider = provider;
+        putClientProperty ( TOOLTIP_PROVIDER_PROPERTY, provider );
     }
 
     /**

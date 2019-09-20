@@ -18,7 +18,6 @@
 package com.alee.demo.frames.examples;
 
 import com.alee.demo.api.example.ExampleElement;
-import com.alee.demo.api.example.ExampleGroup;
 import com.alee.demo.content.ExamplesManager;
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 
@@ -40,25 +39,30 @@ public final class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<E
     @Override
     public List<ExamplesTreeNode> getChildren ( final ExamplesTreeNode parent )
     {
+        final List<ExamplesTreeNode> children;
         switch ( parent.getType () )
         {
             case root:
             {
-                return toNodes ( ExamplesManager.getGroups () );
+                children = toNodes ( ExamplesManager.getGroups () );
             }
+            break;
+
             case group:
             {
-                final ExampleGroup group = parent.getExampleGroup ();
-                final List<ExamplesTreeNode> children = new ArrayList<ExamplesTreeNode> ();
-                children.addAll ( toNodes ( group.getGroups () ) );
-                children.addAll ( toNodes ( group.getExamples () ) );
-                return children;
+                children = new ArrayList<ExamplesTreeNode> ();
+                children.addAll ( toNodes ( parent.getExampleGroup ().getGroups () ) );
+                children.addAll ( toNodes ( parent.getExampleGroup ().getExamples () ) );
             }
+            break;
+
             default:
             {
-                return Collections.emptyList ();
+                children = Collections.emptyList ();
             }
+            break;
         }
+        return children;
     }
 
     /**

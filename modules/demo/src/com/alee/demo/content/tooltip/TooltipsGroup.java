@@ -17,7 +17,6 @@
 
 package com.alee.demo.content.tooltip;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.utils.CollectionUtils;
@@ -44,7 +43,8 @@ public class TooltipsGroup extends AbstractExampleGroup
                 WebCustomTooltipExample.class,
                 ListTooltipExample.class,
                 TableTooltipExample.class,
-                TreeTooltipExample.class
+                TreeTooltipExample.class,
+                TabbedPaneTooltipExample.class
         );
     }
 }

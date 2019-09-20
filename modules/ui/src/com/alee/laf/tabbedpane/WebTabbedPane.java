@@ -19,6 +19,7 @@ package com.alee.laf.tabbedpane;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.laf.table.TableToolTipProvider;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.settings.Configuration;
@@ -83,6 +84,13 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     public static final String REMOVED_TAB_INDEX = "__index_to_remove__";
 
     /**
+     * Client properties used for backward compatibility with Swing {@link JTabbedPane}.
+     *
+     * @see TabbedPaneToolTipProvider
+     */
+    public static final String TOOLTIP_PROVIDER_PROPERTY = "tooltipProvider";
+
+    /**
      * Constructs new tabbed pane.
      */
     public WebTabbedPane ()
@@ -116,7 +124,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      *
      * @param id style ID
      */
-    public WebTabbedPane ( final StyleId id )
+    public WebTabbedPane ( @NotNull final StyleId id )
     {
         this ( id, TOP, WRAP_TAB_LAYOUT );
     }
@@ -127,7 +135,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @param id           style ID
      * @param tabPlacement the placement for the tabs relative to the content
      */
-    public WebTabbedPane ( final StyleId id, final int tabPlacement )
+    public WebTabbedPane ( @NotNull final StyleId id, final int tabPlacement )
     {
         this ( id, tabPlacement, WRAP_TAB_LAYOUT );
     }
@@ -139,7 +147,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @param tabPlacement    the placement for the tabs relative to the content
      * @param tabLayoutPolicy the policy for laying out tabs when all tabs will not fit on one run
      */
-    public WebTabbedPane ( final StyleId id, final int tabPlacement, final int tabLayoutPolicy )
+    public WebTabbedPane ( @NotNull final StyleId id, final int tabPlacement, final int tabLayoutPolicy )
     {
         super ( tabPlacement, tabLayoutPolicy );
         setStyleId ( id );
@@ -151,7 +159,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @see TabbedPaneLayout#invalidateLayout(Container)
      */
     @Override
-    public void setForegroundAt ( final int index, final Color foreground )
+    public void setForegroundAt ( final int index, @Nullable final Color foreground )
     {
         if ( getForegroundAt ( index ) != foreground )
         {
@@ -166,7 +174,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @see TabbedPaneLayout#invalidateLayout(Container)
      */
     @Override
-    public void setBackgroundAt ( final int index, final Color background )
+    public void setBackgroundAt ( final int index, @Nullable final Color background )
     {
         if ( getBackgroundAt ( index ) != background )
         {
@@ -196,7 +204,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @see TabbedPaneLayout#invalidateLayout(Container)
      */
     @Override
-    public void setIconAt ( final int index, final Icon icon )
+    public void setIconAt ( final int index, @Nullable final Icon icon )
     {
         if ( getIconAt ( index ) != icon )
         {
@@ -211,7 +219,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @see TabbedPaneLayout#invalidateLayout(Container)
      */
     @Override
-    public void setDisabledIconAt ( final int index, final Icon disabledIcon )
+    public void setDisabledIconAt ( final int index, @Nullable final Icon disabledIcon )
     {
         if ( getDisabledIconAt ( index ) != disabledIcon )
         {
@@ -226,7 +234,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @param point location
      * @return tab index for the specified location or -1 if there is no tab there
      */
-    public int getTabAt ( final Point point )
+    public int getTabAt ( @NotNull final Point point )
     {
         return getTabAt ( point.x, point.y );
     }
@@ -249,7 +257,8 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @param point location
      * @return tab bounds for the specified location or null if there is no tab there
      */
-    public Rectangle getBoundsAt ( final Point point )
+    @Nullable
+    public Rectangle getBoundsAt ( @NotNull final Point point )
     {
         return getBoundsAt ( point.x, point.y );
     }
@@ -261,10 +270,32 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      * @param y location Y
      * @return tab bounds for the specified location or null if there is no tab there
      */
+    @Nullable
     public Rectangle getBoundsAt ( final int x, final int y )
     {
         final int index = getTabAt ( x, y );
         return index != -1 ? getBoundsAt ( index ) : null;
+    }
+
+    /**
+     * Returns {@link TableToolTipProvider}.
+     *
+     * @return {@link TableToolTipProvider}
+     */
+    @Nullable
+    public TabbedPaneToolTipProvider getToolTipProvider ()
+    {
+        return ( TabbedPaneToolTipProvider ) getClientProperty ( TOOLTIP_PROVIDER_PROPERTY );
+    }
+
+    /**
+     * Sets {@link TableToolTipProvider}.
+     *
+     * @param provider {@link TableToolTipProvider}
+     */
+    public void setToolTipProvider ( @Nullable final TabbedPaneToolTipProvider provider )
+    {
+        putClientProperty ( TOOLTIP_PROVIDER_PROPERTY, provider );
     }
 
     @NotNull

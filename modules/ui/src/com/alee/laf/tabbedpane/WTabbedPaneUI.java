@@ -23,6 +23,8 @@ import com.alee.api.jdk.Objects;
 import com.alee.laf.WebUI;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.viewport.WebViewport;
+import com.alee.managers.hover.GlobalHoverListener;
+import com.alee.managers.hover.HoverManager;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.CoreSwingUtils;
@@ -75,6 +77,14 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
      */
     @Nullable
     protected TabbedPaneInputListener<C> inputListener;
+
+    /**
+     * {@link GlobalHoverListener} used for displaying {@link JTabbedPane} custom tooltips.
+     * We're able to use {@link GlobalHoverListener} due to new {@link WTabbedPaneUI} implementation that uses {@link Tab} components.
+     * With default {@link javax.swing.plaf.basic.BasicTabbedPaneUI} we would have been forced to use {@link MouseListener}.
+     */
+    @Nullable
+    protected GlobalHoverListener toolTipHoverListener;
 
     /**
      * Runtime variables.
@@ -306,6 +316,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
         {
             inputListener.install ( tabbedPane );
         }
+        updateToolTipHoverListener ();
     }
 
     /**
@@ -313,6 +324,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
      */
     protected void uninstallListeners ()
     {
+        uninstallToolTipHoverListener ();
         if ( inputListener != null )
         {
             inputListener.uninstall ( tabbedPane );
@@ -342,6 +354,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
 
     /**
      * Returns {@link PropertyChangeListener} for the {@link JTabbedPane}.
+     * Can be overridden to return {@code null} to disable this particular listener.
      *
      * @return {@link PropertyChangeListener} for the {@link JTabbedPane}
      */
@@ -421,12 +434,17 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                     updateTabAreaStates ();
                     recalculateViewSizes ();
                 }
+                else if ( Objects.equals ( property, WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY ) )
+                {
+                    updateToolTipHoverListener ();
+                }
             }
         };
     }
 
     /**
      * Returns {@link ChangeListener} for the {@link JTabbedPane}.
+     * Can be overridden to return {@code null} to disable this particular listener.
      *
      * @return {@link ChangeListener} for the {@link JTabbedPane}
      */
@@ -446,6 +464,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
 
     /**
      * Returns {@link ContainerListener} for the {@link JTabbedPane}.
+     * Can be overridden to return {@code null} to disable this particular listener.
      *
      * @return {@link ContainerListener} for the {@link JTabbedPane}
      */
@@ -489,6 +508,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
 
     /**
      * Returns {@link ComponentListener} for the {@link JTabbedPane}.
+     * Can be overridden to return {@code null} to disable this particular listener.
      *
      * @return {@link ComponentListener} for the {@link JTabbedPane}
      */
@@ -633,6 +653,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
 
     /**
      * Returns {@link TabbedPaneInputListener} for the {@link JTabbedPane}.
+     * Can be overridden to return {@code null} to disable this particular listener.
      *
      * @return {@link TabbedPaneInputListener} for the {@link JTabbedPane}
      */
@@ -640,6 +661,114 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
     protected TabbedPaneInputListener<C> createTabbedPaneInputListener ()
     {
         return new WTabbedPaneInputListener<C, WTabbedPaneUI<C>> ();
+    }
+
+    /**
+     * Installs {@link GlobalHoverListener} used for displaying {@link JTabbedPane} custom tooltips.
+     */
+    protected void installToolTipHoverListener ()
+    {
+        if ( toolTipHoverListener == null )
+        {
+            toolTipHoverListener = createToolTipHoverListener ();
+            if ( toolTipHoverListener != null )
+            {
+                HoverManager.registerGlobalHoverListener ( tabbedPane, toolTipHoverListener );
+            }
+        }
+    }
+
+    /**
+     * Uninstalls {@link GlobalHoverListener} used for displaying {@link JTabbedPane} custom tooltips.
+     */
+    protected void uninstallToolTipHoverListener ()
+    {
+        if ( toolTipHoverListener != null )
+        {
+            HoverManager.unregisterGlobalHoverListener ( tabbedPane, toolTipHoverListener );
+            toolTipHoverListener = null;
+        }
+    }
+
+    /**
+     * Updates {@link GlobalHoverListener} used for displaying {@link JTabbedPane} custom tooltips.
+     */
+    protected void updateToolTipHoverListener ()
+    {
+        if ( getToolTipProvider () != null )
+        {
+            installToolTipHoverListener ();
+        }
+        else
+        {
+            uninstallToolTipHoverListener ();
+        }
+    }
+
+    /**
+     * Returns {@link GlobalHoverListener} used for displaying {@link JTabbedPane} custom tooltips.
+     * Can be overridden to return {@code null} to disable this particular listener.
+     *
+     * @return {@link GlobalHoverListener} used for displaying {@link JTabbedPane} custom tooltips
+     */
+    @Nullable
+    protected GlobalHoverListener createToolTipHoverListener ()
+    {
+        return new GlobalHoverListener ()
+        {
+            @Override
+            public void hoverChanged ( @Nullable final Component oldHover, @Nullable final Component newHover )
+            {
+                final TabbedPaneToolTipProvider provider = getToolTipProvider ();
+                if ( provider != null )
+                {
+                    final Tab oldHoverTab = getOwnedTab ( oldHover );
+                    final Tab newHoverTab = getOwnedTab ( newHover );
+                    if ( oldHoverTab != newHoverTab )
+                    {
+                        provider.hoverAreaChanged (
+                                tabbedPane,
+                                oldHoverTab != null ? new TabbedPaneTabArea ( oldHoverTab.getIndex () ) : null,
+                                newHoverTab != null ? new TabbedPaneTabArea ( newHoverTab.getIndex () ) : null
+                        );
+                    }
+                }
+            }
+
+            /**
+             * Returns {@link Tab} owned by {@link JTabbedPane} represented by this UI.
+             *
+             * @param component event {@link Component}
+             * @return {@link Tab} owned by {@link JTabbedPane} represented by this UI
+             */
+            @Nullable
+            private Tab getOwnedTab ( @Nullable final Component component )
+            {
+                Tab tab = null;
+                if ( component instanceof Tab )
+                {
+                    final Tab oldHoverTab = ( Tab ) component;
+                    if ( oldHoverTab.getTabbedPane () == tabbedPane )
+                    {
+                        tab = oldHoverTab;
+                    }
+                }
+                return tab;
+            }
+        };
+    }
+
+    /**
+     * Returns {@link TabbedPaneToolTipProvider} for {@link JTabbedPane} or {@code null} if it is not specified.
+     *
+     * @return {@link TabbedPaneToolTipProvider} for {@link JTabbedPane} or {@code null} if it is not specified
+     */
+    @Nullable
+    protected TabbedPaneToolTipProvider getToolTipProvider ()
+    {
+        return tabbedPane != null ?
+                ( TabbedPaneToolTipProvider ) tabbedPane.getClientProperty ( WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY ) :
+                null;
     }
 
     /**

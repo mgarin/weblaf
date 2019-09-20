@@ -21,15 +21,12 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.demo.DemoApplication;
-import com.alee.demo.api.example.FeatureState;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.WebDockableFrame;
-import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.extended.tree.WebTreeFilterField;
-import com.alee.laf.label.WebLabel;
 import com.alee.laf.scroll.ScrollPaneState;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
@@ -38,15 +35,9 @@ import com.alee.laf.tree.TreeState;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.TooltipWay;
-import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
-import com.alee.utils.swing.extensions.MouseEventRunnable;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * {@link DemoApplication} examples frame.
@@ -94,38 +85,6 @@ public final class ExamplesFrame extends WebDockableFrame
 
         // Filtering field
         final WebTreeFilterField filter = new WebTreeFilterField ( DemoStyles.filterfield, examplesTree );
-
-        // Legend for colors
-        final WebLabel legend = new WebLabel ( DemoIcons.legend16 );
-        legend.setCursor ( Cursor.getDefaultCursor () );
-        legend.onMousePress ( MouseButton.left, new MouseEventRunnable ()
-        {
-            private WebStyledLabel legendTip;
-
-            @Override
-            public void run ( @NotNull final MouseEvent e )
-            {
-                if ( legendTip == null )
-                {
-                    // todo Include colors for different states
-                    // todo Make a better markup for legend elements
-                    final FeatureState[] states = FeatureState.values ();
-                    final StringBuilder legendText = new StringBuilder ();
-                    for ( int i = 0; i < states.length; i++ )
-                    {
-                        final FeatureState state = states[ i ];
-                        final String title = state.getTitle ();
-                        legendText.append ( title );
-                        legendText.append ( " - " ).append ( state.geDescription () );
-                        legendText.append ( i < states.length - 1 ? "\n" : "" );
-                    }
-                    legendTip = new WebStyledLabel ( legendText.toString () );
-                    legendTip.setForeground ( Color.WHITE );
-                }
-                TooltipManager.showOneTimeTooltip ( legend, null, legendTip, TooltipWay.down );
-            }
-        } );
-        filter.setTrailingComponent ( legend );
 
         // Frame UI composition
         final WebSeparator separator = new WebSeparator ( StyleId.separatorHorizontal );

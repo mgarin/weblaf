@@ -126,9 +126,11 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
                 final TreeToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    final TreeCellArea oldArea = previousRow != -1 ? new TreeCellArea ( previousRow ) : null;
-                    final TreeCellArea newArea = hoverRow != -1 ? new TreeCellArea ( hoverRow ) : null;
-                    provider.hoverAreaChanged ( tree, oldArea, newArea );
+                    provider.hoverAreaChanged (
+                            tree,
+                            previousRow != -1 ? new TreeCellArea ( previousRow ) : null,
+                            hoverRow != -1 ? new TreeCellArea ( hoverRow ) : null
+                    );
                 }
 
                 // Informing {@link com.alee.laf.tree.WebTree} about hover node change
@@ -470,9 +472,12 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      *
      * @return {@link TreeToolTipProvider} for {@link JTree} that uses this {@link WebTreeUI}
      */
+    @Nullable
     protected TreeToolTipProvider getToolTipProvider ()
     {
-        return tree instanceof WebTree ? ( ( WebTree ) tree ).getToolTipProvider () : null;
+        return tree != null ?
+                ( TreeToolTipProvider ) tree.getClientProperty ( WebTree.TOOLTIP_PROVIDER_PROPERTY ) :
+                null;
     }
 
     @Override

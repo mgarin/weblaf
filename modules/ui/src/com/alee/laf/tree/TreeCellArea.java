@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.tooltip.ComponentArea;
 
 import javax.swing.*;
@@ -44,7 +46,6 @@ public class TreeCellArea<N extends MutableTreeNode, C extends JTree> implements
      */
     public TreeCellArea ( final int row )
     {
-        super ();
         this.row = row;
     }
 
@@ -59,13 +60,21 @@ public class TreeCellArea<N extends MutableTreeNode, C extends JTree> implements
     }
 
     @Override
-    public Rectangle getBounds ( final C component )
+    public boolean isAvailable ( @NotNull final C component )
+    {
+        return 0 <= row && row < component.getRowCount ();
+    }
+
+    @Nullable
+    @Override
+    public Rectangle getBounds ( @NotNull final C component )
     {
         return component.getRowBounds ( row );
     }
 
+    @NotNull
     @Override
-    public N getValue ( final C component )
+    public N getValue ( @NotNull final C component )
     {
         return ( N ) component.getPathForRow ( row ).getLastPathComponent ();
     }

@@ -17,6 +17,9 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
@@ -31,18 +34,30 @@ import java.io.Serializable;
 public interface ComponentArea<V, C extends JComponent> extends Serializable
 {
     /**
-     * Returns component area bounds in component coordinates system.
+     * Returns whether or not this {@link ComponentArea} is still available at the specified {@link JComponent}.
      *
      * @param component {@link JComponent}
-     * @return component area bounds in component coordinates system
+     * @return {@code true} if this {@link ComponentArea} is still available at the specified {@link JComponent}, {@code false} otherwise
      */
-    public Rectangle getBounds ( C component );
+    public boolean isAvailable ( @NotNull C component );
 
     /**
-     * Returns value for the specified component area.
+     * Returns {@link ComponentArea} bounds in the specified {@link JComponent} coordinates system.
+     * Could also return {@code null} at this step in case {@link ComponentArea} is not available anymore or something is wrong.
      *
      * @param component {@link JComponent}
-     * @return value for the specified component area
+     * @return {@link ComponentArea} bounds in the specified {@link JComponent} coordinates system
      */
-    public V getValue ( C component );
+    @Nullable
+    public Rectangle getBounds ( @NotNull C component );
+
+    /**
+     * Returns value for this {@link ComponentArea} at the specified {@link JComponent}.
+     * Could return {@code null} in case value is {@code null}, doesn't exist or couldn't be retrieved.
+     *
+     * @param component {@link JComponent}
+     * @return value for this {@link ComponentArea} at the specified {@link JComponent}
+     */
+    @Nullable
+    public V getValue ( @NotNull C component );
 }

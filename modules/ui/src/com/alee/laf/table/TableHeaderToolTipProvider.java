@@ -15,23 +15,26 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.tooltip;
+package com.alee.laf.table;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.alee.api.annotations.NotNull;
+import com.alee.managers.tooltip.AbstractToolTipProvider;
+import com.alee.managers.tooltip.TooltipWay;
+
+import javax.swing.table.JTableHeader;
 
 /**
- * Represents possible directions for custom tooltip.
- * todo Replace with {@link com.alee.api.data.CompassDirection}
+ * Abstract WebLaF tooltip provider for {@link JTableHeader} component.
  *
+ * @param <V> cell value type
  * @author Mikle Garin
  */
-@XStreamAlias ( "TooltipWay" )
-public enum TooltipWay
+public abstract class TableHeaderToolTipProvider<V> extends AbstractToolTipProvider<V, JTableHeader, TableHeaderCellArea<V, JTableHeader>>
 {
-    up,
-    left,
-    leading,
-    down,
-    right,
-    trailing
+    @NotNull
+    @Override
+    public TooltipWay getDirection ( @NotNull final JTableHeader component, @NotNull final TableHeaderCellArea<V, JTableHeader> area )
+    {
+        return TooltipWay.down;
+    }
 }

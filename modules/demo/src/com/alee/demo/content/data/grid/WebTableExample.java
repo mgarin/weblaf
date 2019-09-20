@@ -22,11 +22,13 @@ import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.table.WebTable;
+import com.alee.laf.table.*;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.util.List;
 
 /**
@@ -62,7 +64,8 @@ public class WebTableExample extends AbstractStylePreviewExample
         return CollectionUtils.<Preview>asList (
                 new BasicTable ( StyleId.table ),
                 new ScrollableTable ( StyleId.table ),
-                new EditableTable ( StyleId.table )
+                new EditableTable ( StyleId.table ),
+                new TableTooltips ( StyleId.table )
         );
     }
 
@@ -145,6 +148,53 @@ public class WebTableExample extends AbstractStylePreviewExample
             table.optimizeColumnWidths ( true );
             table.setOptimizeRowHeight ( true );
             table.setEditable ( true );
+            return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredWidth ( 300 ) );
+        }
+    }
+
+    /**
+     * Custom table tooltips preview.
+     */
+    protected class TableTooltips extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param styleId preview style ID
+         */
+        public TableTooltips ( final StyleId styleId )
+        {
+            super ( WebTableExample.this, "tooltips", FeatureState.updated, styleId );
+        }
+
+        @NotNull
+        @Override
+        protected List<? extends JComponent> createPreviewElements ()
+        {
+            final WebTable table = new WebTable ( getStyleId (), SampleData.createLongTableModel ( true ) );
+            table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
+            table.setVisibleRowCount ( 5 );
+            table.optimizeColumnWidths ( true );
+            table.setOptimizeRowHeight ( true );
+            table.setHeaderToolTipProvider ( new TableHeaderToolTipProvider<String> ()
+            {
+                @Nullable
+                @Override
+                protected String getToolTipText ( @NotNull final JTableHeader tableHeader,
+                                                  @NotNull final TableHeaderCellArea<String, JTableHeader> area )
+                {
+                    return LM.get ( getPreviewLanguageKey ( "header" ), area.column (), area.getValue ( tableHeader ) );
+                }
+            } );
+            table.setToolTipProvider ( new TableToolTipProvider<Object> ()
+            {
+                @Nullable
+                @Override
+                protected String getToolTipText ( @NotNull final JTable table, @NotNull final TableCellArea<Object, JTable> area )
+                {
+                    return LM.get ( getPreviewLanguageKey ( "cell" ), area.row (), area.column (), area.getValue ( table ) );
+                }
+            } );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredWidth ( 300 ) );
         }
     }

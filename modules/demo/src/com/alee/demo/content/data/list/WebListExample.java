@@ -20,8 +20,11 @@ package com.alee.demo.content.data.list;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
+import com.alee.laf.list.ListCellArea;
+import com.alee.laf.list.ListToolTipProvider;
 import com.alee.laf.list.WebList;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
@@ -62,7 +65,8 @@ public class WebListExample extends AbstractStylePreviewExample
         return CollectionUtils.<Preview>asList (
                 new BasicList ( StyleId.list ),
                 new ScrollableList ( StyleId.list ),
-                new EditableList ( StyleId.list )
+                new EditableList ( StyleId.list ),
+                new ListTooltips ( StyleId.list )
         );
     }
 
@@ -137,6 +141,41 @@ public class WebListExample extends AbstractStylePreviewExample
             final WebList list = new WebList ( getStyleId (), createLongData () );
             list.setVisibleRowCount ( 4 );
             list.setEditable ( true );
+            return CollectionUtils.asList ( new WebScrollPane ( list ) );
+        }
+    }
+
+    /**
+     * Custom list tooltips preview.
+     */
+    protected class ListTooltips extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param styleId preview style ID
+         */
+        public ListTooltips ( final StyleId styleId )
+        {
+            super ( WebListExample.this, "tooltips", FeatureState.updated, styleId );
+        }
+
+        @NotNull
+        @Override
+        protected List<? extends JComponent> createPreviewElements ()
+        {
+            final WebList list = new WebList ( getStyleId (), createLongData () );
+            list.setVisibleRowCount ( 4 );
+            list.setToolTipProvider ( new ListToolTipProvider<String> ()
+            {
+                @Nullable
+                @Override
+                protected String getToolTipText ( @NotNull final JList list,
+                                                  @NotNull final ListCellArea<String, JList> area )
+                {
+                    return LM.get ( getPreviewLanguageKey ( "cell" ), area.index (), area.getValue ( list ) );
+                }
+            } );
             return CollectionUtils.asList ( new WebScrollPane ( list ) );
         }
     }

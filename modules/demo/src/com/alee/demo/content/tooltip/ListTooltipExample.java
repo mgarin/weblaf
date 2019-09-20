@@ -22,6 +22,7 @@ import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
 import com.alee.laf.list.*;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -119,15 +120,21 @@ public class ListTooltipExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final WebList list = new WebList ( SampleData.createListModel () );
+            final JList list = new JList ( SampleData.createListModel () );
             list.setVisibleRowCount ( list.getModel ().getSize () );
-            list.setToolTipProvider ( new ListToolTipProvider<SampleData.ListItem> ()
+            list.putClientProperty ( WebList.TOOLTIP_PROVIDER_PROPERTY, new ListToolTipProvider<SampleData.ListItem> ()
             {
+                @Nullable
                 @Override
-                protected String getToolTipText ( final JList list,
-                                                  final ListCellArea<SampleData.ListItem, JList> area )
+                protected String getToolTipText ( @NotNull final JList list,
+                                                  @NotNull final ListCellArea<SampleData.ListItem, JList> area )
                 {
-                    return area.getValue ( list ).getText ( new ListCellParameters<SampleData.ListItem, JList> ( list, area ) );
+                    final SampleData.ListItem value = area.getValue ( list );
+                    return LM.get (
+                            getPreviewLanguageKey ( "cell" ),
+                            area.index (),
+                            value != null ? value.getText ( new ListCellParameters<SampleData.ListItem, JList> ( list, area ) ) : null
+                    );
                 }
             } );
             return CollectionUtils.asList ( new JScrollPane ( list ) );

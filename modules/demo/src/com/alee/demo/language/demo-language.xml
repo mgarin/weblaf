@@ -451,6 +451,10 @@
                         <value lang="en">Custom tooltips</value>
                         <value lang="ru">Кастомные подсказки</value>
                     </record>
+                    <record key="cell">
+                        <value lang="en">List cell tooltip: %s "%s"</value>
+                        <value lang="ru">Подсказка к ячейке списка: %s "%s"</value>
+                    </record>
                 </Dictionary>
             </Dictionary>
             <Dictionary prefix="tabletooltip">
@@ -469,6 +473,14 @@
                         <value lang="en">Custom tooltips</value>
                         <value lang="ru">Кастомные подсказки</value>
                     </record>
+                    <record key="header">
+                        <value lang="en">Column header tooltip: %s</value>
+                        <value lang="ru">Подсказка к заголовоку колонки: %s</value>
+                    </record>
+                    <record key="cell">
+                        <value lang="en">Table cell tooltip: (%s,%s) "%s"</value>
+                        <value lang="ru">Подсказка к ячейке таблицы: (%s,%s) "%s"</value>
+                    </record>
                 </Dictionary>
             </Dictionary>
             <Dictionary prefix="treetooltip">
@@ -482,10 +494,74 @@
                         <value lang="ru">Swing подсказки</value>
                     </record>
                 </Dictionary>
-                <Dictionary prefix="advanced">
+                <Dictionary prefix="fullrow">
                     <record key="title">
-                        <value lang="en">Advanced Swing tooltips</value>
-                        <value lang="ru">Улучшенные Swing подсказки</value>
+                        <value lang="en">Full row Swing tooltips</value>
+                        <value lang="ru">Swing подсказки на строку</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="custom">
+                    <record key="title">
+                        <value lang="en">Custom tooltips</value>
+                        <value lang="ru">Кастомные подсказки</value>
+                    </record>
+                    <record key="node">
+                        <value lang="en">Tree node at row %s and value "%s"</value>
+                        <value lang="ru">Нода на строке %s со значением "%s"</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="tabbedpanetooltip">
+                <record key="title">
+                    <value lang="en">Tooltips in JTabbedPane</value>
+                    <value lang="ru">Подсказки в JTabbedPane</value>
+                </record>
+                <Dictionary prefix="data">
+                    <record key="tab0">
+                        <value lang="en">Tab 0</value>
+                        <value lang="ru">Таб 0</value>
+                    </record>
+                    <record key="tab1">
+                        <value lang="en">Tab 1</value>
+                        <value lang="ru">Таб 1</value>
+                    </record>
+                    <record key="tab2">
+                        <value lang="en">Tab 2</value>
+                        <value lang="ru">Таб 2</value>
+                    </record>
+                    <record key="tab3">
+                        <value lang="en">Tab 3</value>
+                        <value lang="ru">Таб 3</value>
+                    </record>
+                    <record key="tab4">
+                        <value lang="en">Tab 4</value>
+                        <value lang="ru">Таб 4</value>
+                    </record>
+                    <record key="tab5">
+                        <value lang="en">Tab 5</value>
+                        <value lang="ru">Таб 5</value>
+                    </record>
+                    <record key="tab6">
+                        <value lang="en">Tab 6</value>
+                        <value lang="ru">Таб 6</value>
+                    </record>
+                    <record key="tab7">
+                        <value lang="en">Tab 7</value>
+                        <value lang="ru">Таб 7</value>
+                    </record>
+                    <record key="content">
+                        <value lang="en">Sample tab content{br}(click to focus this)</value>
+                        <value lang="ru">Пример таб контента{br}(кликните для передачи фокуса)</value>
+                    </record>
+                    <record key="tooltip">
+                        <value lang="en">Tab at index %s and name "%s"</value>
+                        <value lang="ru">Таб с индексом %s и именем "%s"</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="swing">
+                    <record key="title">
+                        <value lang="en">Swing tooltips</value>
+                        <value lang="ru">Swing подсказки</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="custom">
@@ -1847,6 +1923,16 @@
                             <value lang="ru">Редактируемый</value>
                         </record>
                     </Dictionary>
+                    <Dictionary prefix="tooltips">
+                        <record key="title">
+                            <value lang="en">With tooltips</value>
+                            <value lang="ru">С тултипами</value>
+                        </record>
+                        <record key="cell">
+                            <value lang="en">List cell at index %s and value "%s"</value>
+                            <value lang="ru">Ячейка с индексом %s и значением "%s"</value>
+                        </record>
+                    </Dictionary>
                 </Dictionary>
                 <Dictionary prefix="webfilelist">
                     <record key="title">
@@ -2173,6 +2259,20 @@
                             <value lang="ru">Редактируемая</value>
                         </record>
                     </Dictionary>
+                    <Dictionary prefix="tooltips">
+                        <record key="title">
+                            <value lang="en">With tooltips</value>
+                            <value lang="ru">С тултипами</value>
+                        </record>
+                        <record key="header">
+                            <value lang="en">Header column at index %s with name "%s"</value>
+                            <value lang="ru">Заголовок колонки с индексом %s и именем "%s"</value>
+                        </record>
+                        <record key="cell">
+                            <value lang="en">Table cell at (%s,%s) with value "%s"</value>
+                            <value lang="ru">Ячейка таблицы (%s,%s) со значением "%s"</value>
+                        </record>
+                    </Dictionary>
                 </Dictionary>
                 <Dictionary prefix="webfiletable">
                     <record key="title">
@@ -2237,6 +2337,16 @@
                         <record key="title">
                             <value lang="en">Editable</value>
                             <value lang="ru">Редактируемое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="tooltips">
+                        <record key="title">
+                            <value lang="en">With tooltips</value>
+                            <value lang="ru">С тултипами</value>
+                        </record>
+                        <record key="node">
+                            <value lang="en">Tree node at row %s and value "%s"</value>
+                            <value lang="ru">Нода на строке %s со значением "%s"</value>
                         </record>
                     </Dictionary>
                     <Dictionary prefix="dragndrop">

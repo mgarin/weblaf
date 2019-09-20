@@ -22,36 +22,36 @@ import com.alee.api.annotations.Nullable;
 import com.alee.managers.tooltip.AbstractComponentArea;
 import com.alee.managers.tooltip.ComponentArea;
 
-import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 /**
- * {@link ComponentArea} implementation describing {@link JTable} cell area.
+ * {@link ComponentArea} implementation describing {@link JTableHeader} cell area.
  *
  * @param <V> cell value type
  * @param <C> component type
  * @author Mikle Garin
  */
-public class TableCellArea<V, C extends JTable> extends AbstractComponentArea<V, C>
+public class TableHeaderCellArea<V, C extends JTableHeader> extends AbstractComponentArea<V, C>
 {
     /**
-     * Table cell row index.
+     * Table header cell row index.
+     * There is only one row possible in table header in current implementation, but more will be available in future.
      */
     protected final int row;
 
     /**
-     * Table cell column index.
+     * Table header cell column index.
      */
     protected final int column;
 
     /**
-     * Constructs new {@link TableCellArea}.
+     * Constructs new {@link TableHeaderCellArea}.
      *
      * @param row    table cell row index
      * @param column table cell column index
      */
-    public TableCellArea ( final int row, final int column )
+    public TableHeaderCellArea ( final int row, final int column )
     {
         this.row = row;
         this.column = column;
@@ -80,37 +80,29 @@ public class TableCellArea<V, C extends JTable> extends AbstractComponentArea<V,
     @Override
     public boolean isAvailable ( @NotNull final C component )
     {
-        return 0 <= row && row < component.getRowCount () &&
-                0 <= column && column < component.getColumnCount ();
+        return row == 0 &&
+                0 <= column && column < component.getColumnModel ().getColumnCount ();
     }
 
     @Nullable
     @Override
     public Rectangle getBounds ( @NotNull final C component )
     {
-        // Calculating cell bounds
-        final Rectangle bounds = component.getCellRect ( row, column, false );
-
-        // Adjusting tooltip location
-        final TableCellRenderer cellRenderer = component.getCellRenderer ( row, column );
-        final Component renderer = component.prepareRenderer ( cellRenderer, row, column );
-        adjustBounds ( component, renderer, bounds );
-
-        return bounds;
+        return component.getHeaderRect ( column );
     }
 
     @Nullable
     @Override
     public V getValue ( @NotNull final C component )
     {
-        return ( V ) component.getValueAt ( row, column );
+        return ( V ) component.getTable ().getModel ().getColumnName ( column );
     }
 
     @Override
     public boolean equals ( final Object other )
     {
-        return other instanceof TableCellArea &&
-                this.row == ( ( TableCellArea ) other ).row &&
-                this.column == ( ( TableCellArea ) other ).column;
+        return other instanceof TableHeaderCellArea &&
+                this.row == ( ( TableHeaderCellArea ) other ).row &&
+                this.column == ( ( TableHeaderCellArea ) other ).column;
     }
 }

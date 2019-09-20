@@ -80,6 +80,13 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     public static final String DROP_LOCATION = "dropLocation";
 
     /**
+     * Client properties used for backward compatibility with Swing {@link JTree}.
+     *
+     * @see TreeToolTipProvider
+     */
+    public static final String TOOLTIP_PROVIDER_PROPERTY = "tooltipProvider";
+
+    /**
      * Single selection mode.
      * Only one node can be selected.
      */
@@ -109,12 +116,6 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      */
     @Nullable
     protected transient Predicate<N> editableStateProvider = null;
-
-    /**
-     * Custom WebLaF tooltip provider.
-     */
-    @Nullable
-    protected transient TreeToolTipProvider<N> toolTipProvider = null;
 
     /**
      * Constructs tree with default sample model.
@@ -428,7 +429,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     @Nullable
     public TreeToolTipProvider<N> getToolTipProvider ()
     {
-        return toolTipProvider;
+        return ( TreeToolTipProvider<N> ) getClientProperty ( TOOLTIP_PROVIDER_PROPERTY );
     }
 
     /**
@@ -438,7 +439,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      */
     public void setToolTipProvider ( @Nullable final TreeToolTipProvider<N> provider )
     {
-        this.toolTipProvider = provider;
+        putClientProperty ( TOOLTIP_PROVIDER_PROPERTY, provider );
     }
 
     /**
