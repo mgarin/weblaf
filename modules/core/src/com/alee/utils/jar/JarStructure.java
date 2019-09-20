@@ -300,7 +300,7 @@ public class JarStructure
     @Nullable
     public JarEntry findChildByName ( @Nullable final String name )
     {
-        return root.getChildByName ( name );
+        return root.findChildByName ( name );
     }
 
     /**
