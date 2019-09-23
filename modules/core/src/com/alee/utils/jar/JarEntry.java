@@ -275,7 +275,7 @@ public class JarEntry implements Identifiable
     @Nullable
     public JarEntry findChildByName ( @Nullable final String name )
     {
-        return getChildByName ( name, false );
+        return findChildByName ( name, false );
     }
 
     /**
