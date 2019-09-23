@@ -157,10 +157,18 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
                 rolloverCell = newCell;
 
                 // Updating custom WebLaF tooltip display state
-                final TableHeaderToolTipProvider provider = getToolTipProvider ();
-                if ( provider != null )
+                final TableHeaderToolTipProvider tableProvider = getTableToolTipProvider ();
+                if ( tableProvider != null )
                 {
-                    provider.hoverAreaChanged ( component, oldCell, newCell );
+                    tableProvider.hoverAreaChanged ( component, oldCell, newCell );
+                }
+                else
+                {
+                    final TableHeaderToolTipProvider headerProvider = getHeaderToolTipProvider ();
+                    if ( headerProvider != null )
+                    {
+                        headerProvider.hoverAreaChanged ( component, oldCell, newCell );
+                    }
                 }
             }
         };
@@ -179,15 +187,28 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
     }
 
     /**
+     * Returns {@link TableHeaderToolTipProvider} for {@link JTable} that uses {@link JTableHeader}.
+     *
+     * @return {@link TableHeaderToolTipProvider} for {@link JTable} that uses {@link JTableHeader}
+     */
+    @Nullable
+    protected TableHeaderToolTipProvider getTableToolTipProvider ()
+    {
+        return component != null && component.getTable () != null ?
+                ( TableHeaderToolTipProvider ) component.getTable ().getClientProperty ( WebTable.HEADER_TOOLTIP_PROVIDER_PROPERTY ) :
+                null;
+    }
+
+    /**
      * Returns {@link TableHeaderToolTipProvider} for {@link JTableHeader} that uses this {@link TableHeaderPainter}.
      *
      * @return {@link TableHeaderToolTipProvider} for {@link JTableHeader} that uses this {@link TableHeaderPainter}
      */
     @Nullable
-    protected TableHeaderToolTipProvider getToolTipProvider ()
+    protected TableHeaderToolTipProvider getHeaderToolTipProvider ()
     {
-        return component != null && component.getTable () != null ?
-                ( TableHeaderToolTipProvider ) component.getTable ().getClientProperty ( WebTable.HEADER_TOOLTIP_PROVIDER_PROPERTY ) :
+        return component != null ?
+                ( TableHeaderToolTipProvider ) component.getClientProperty ( WebTableHeader.TOOLTIP_PROVIDER_PROPERTY ) :
                 null;
     }
 

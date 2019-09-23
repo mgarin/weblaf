@@ -21,7 +21,6 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -54,6 +53,13 @@ import java.awt.event.MouseAdapter;
 public class WebTableHeader extends JTableHeader implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
         EventMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebTableHeader>, SizeMethods<WebTableHeader>
 {
+    /**
+     * Client properties used for backward compatibility with Swing {@link JTableHeader}.
+     *
+     * @see TableHeaderToolTipProvider
+     */
+    public static final String TOOLTIP_PROVIDER_PROPERTY = "tooltipProvider";
+
     /**
      * Constructs a {@code JTableHeader} with a default {@code TableColumnModel}.
      *
@@ -106,6 +112,26 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
     public StyleId getDefaultStyleId ()
     {
         return StyleId.tableheader;
+    }
+
+    /**
+     * Returns {@link TableHeaderToolTipProvider}.
+     *
+     * @return {@link TableHeaderToolTipProvider}
+     */
+    public TableHeaderToolTipProvider getToolTipProvider ()
+    {
+        return ( TableHeaderToolTipProvider ) getClientProperty ( TOOLTIP_PROVIDER_PROPERTY );
+    }
+
+    /**
+     * Sets {@link TableHeaderToolTipProvider}.
+     *
+     * @param provider {@link TableHeaderToolTipProvider}
+     */
+    public void setToolTipProvider ( final TableHeaderToolTipProvider provider )
+    {
+        putClientProperty ( TOOLTIP_PROVIDER_PROPERTY, provider );
     }
 
     @NotNull

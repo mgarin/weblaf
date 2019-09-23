@@ -284,6 +284,8 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
 
     /**
      * Sets header {@link TableHeaderToolTipProvider}.
+     * You can also set this provider directly into {@link JTableHeader}, but this one will always be prioritized.
+     * This method is added for convenience as {@link JTableHeader} might be replaced.
      *
      * @param provider header {@link TableHeaderToolTipProvider}
      */
