@@ -76,6 +76,7 @@
                                     <Implementation-Title>${project.artifactId}</Implementation-Title>
                                     <Implementation-Version>${project.version}</Implementation-Version>
                                     <Implementation-Vendor>Mikle Garin</Implementation-Vendor>
+                                    <Multi-Release>true</Multi-Release>
                                 </manifestEntries>
                             </archive>
                             <descriptors>

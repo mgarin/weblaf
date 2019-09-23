@@ -20,6 +20,7 @@ package com.alee.utils;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.utils.collection.ImmutableList;
+import com.alee.utils.reflection.FieldHelper;
 import com.alee.utils.reflection.ModifierType;
 import com.alee.utils.reflection.ReflectionException;
 import org.slf4j.LoggerFactory;
@@ -944,7 +945,7 @@ public final class ReflectUtils
         final int oldModifiers = field.getModifiers ();
         if ( ModifierType.FINAL.is ( oldModifiers ) )
         {
-            setFieldModifiers ( field, oldModifiers & ~Modifier.FINAL );
+            FieldHelper.setFieldModifiers ( field, oldModifiers & ~Modifier.FINAL );
         }
 
         // Updating field value
@@ -953,28 +954,7 @@ public final class ReflectUtils
         // Restoring final modifier if it was removed
         if ( ModifierType.FINAL.is ( oldModifiers ) )
         {
-            setFieldModifiers ( field, oldModifiers );
-        }
-    }
-
-    /**
-     * Changes {@link Field} modifiers.
-     * Be aware that this is not supported JDK feature and only used in some hacky cases.
-     *
-     * @param field     {@link Field}
-     * @param modifiers new {@link Field} modifiers
-     * @throws IllegalAccessException if field is inaccessible
-     */
-    private static void setFieldModifiers ( final Field field, final int modifiers ) throws IllegalAccessException
-    {
-        try
-        {
-            final Field mods = getField ( Field.class, "modifiers" );
-            mods.set ( field, modifiers );
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            throw new ReflectionException ( "Unable to update field modifiers: " + field + " -> " + modifiers );
+            FieldHelper.setFieldModifiers ( field, oldModifiers );
         }
     }
 
@@ -1296,7 +1276,7 @@ public final class ReflectUtils
     /**
      * Returns class constructor for the specified argument types.
      * This method will also find {@code protected}, {@code private} and package local constructors.
-     *
+     * <p>
      * todo 1. Constructors priority check (by super types)
      * todo    Right now some constructor with [Object] arg might be used instead of constructor with [String]
      * todo    To avoid issues don't call constructors with same amount of arguments and which are cast-able to each other
@@ -1819,7 +1799,7 @@ public final class ReflectUtils
      * Returns object's method with the specified name and arguments.
      * If method is not found in the object class all superclasses will be searched for that method.
      * This method will also find {@code protected}, {@code private} and package local methods.
-     *
+     * <p>
      * todo 1. Methods priority check (by super types)
      * todo    Right now some method with [Object] arg might be used instead of method with [String]
      * todo    To avoid issues don't call methods with same amount of arguments and which are cast-able to each other

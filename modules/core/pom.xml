@@ -64,7 +64,26 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
+            <!-- java 12+ compatibility -->
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/java12compiled</directory>
+            </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Multi-Release>true</Multi-Release>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+
         <testSourceDirectory>${basedir}/test</testSourceDirectory>
         <testResources>
             <testResource>
