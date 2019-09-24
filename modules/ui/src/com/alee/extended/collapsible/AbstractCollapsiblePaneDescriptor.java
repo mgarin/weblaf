@@ -17,6 +17,7 @@
 
 package com.alee.extended.collapsible;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
@@ -30,6 +31,8 @@ import javax.swing.plaf.ComponentUI;
  * @param <C> {@link JComponent} type
  * @param <U> base {@link ComponentUI} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
@@ -48,8 +51,9 @@ public abstract class AbstractCollapsiblePaneDescriptor<C extends WebCollapsible
      * @param uiClass        UI class applied to the component by default
      * @param defaultStyleId component default style ID
      */
-    public AbstractCollapsiblePaneDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                               final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractCollapsiblePaneDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
+                                               @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
+                                               @NotNull final Class<? extends U> uiClass, @NotNull final StyleId defaultStyleId )
     {
         super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
     }

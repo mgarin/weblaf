@@ -18,7 +18,6 @@
 package com.alee.extended.accordion;
 
 import com.alee.api.Identifiable;
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -31,6 +30,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
  * @see WebAccordion
+ * @see AccordionPane
  * @see AccordionModel
  * @see WebAccordionModel
  */

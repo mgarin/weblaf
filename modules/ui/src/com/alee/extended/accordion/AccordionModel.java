@@ -26,6 +26,7 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
  * @see WebAccordion
+ * @see AccordionPane
  * @see WebAccordionModel
  */
 public interface AccordionModel extends Serializable

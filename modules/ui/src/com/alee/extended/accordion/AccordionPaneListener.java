@@ -22,17 +22,17 @@ import com.alee.api.annotations.NotNull;
 import java.util.EventListener;
 
 /**
- * Custom {@link EventListener} for {@link WebAccordion} component.
+ * Custom {@link EventListener} for {@link AccordionPane} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
- * @see AccordionAdapter
+ * @see AccordionPaneAdapter
  * @see WebAccordion
  * @see AccordionPane
  * @see AccordionModel
  * @see WebAccordionModel
  */
-public interface AccordionListener extends EventListener
+public interface AccordionPaneListener extends EventListener
 {
     /**
      * Informs about {@link AccordionPane} expansion start.

@@ -17,6 +17,9 @@
 
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.clone.CloneBehavior;
+import com.alee.api.clone.RecursiveClone;
 import com.alee.api.merge.Overwriting;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -26,9 +29,10 @@ import java.io.Serializable;
  * Shape corners round data.
  *
  * @author Mikle Garin
+ * @see RoundConverter
  */
 @XStreamConverter ( RoundConverter.class )
-public final class Round implements Overwriting, Cloneable, Serializable
+public final class Round implements Overwriting, CloneBehavior<Round>, Serializable
 {
     /**
      * Top left corner round.
@@ -85,6 +89,14 @@ public final class Round implements Overwriting, Cloneable, Serializable
         return true;
     }
 
+    @NotNull
+    @Override
+    public Round clone ( @NotNull final RecursiveClone clone, final int depth )
+    {
+        return new Round ( topLeft, topRight, bottomRight, bottomLeft );
+    }
+
+    @NotNull
     @Override
     public String toString ()
     {

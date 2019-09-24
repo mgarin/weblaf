@@ -46,6 +46,8 @@ import java.io.Serializable;
  * It supports 4 header positions, RTL orientation and animated content expansion and collapse.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  */
 @XStreamAlias ( "CollapsiblePaneLayout" )
 public class CollapsiblePaneLayout extends AbstractLayoutManager implements PropertyChangeListener, Mergeable, Cloneable, Serializable

@@ -24,6 +24,8 @@ import com.alee.managers.style.StyleId;
  * For creating custom {@link WebCollapsiblePane} descriptor {@link AbstractCollapsiblePaneDescriptor} class can be extended.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)

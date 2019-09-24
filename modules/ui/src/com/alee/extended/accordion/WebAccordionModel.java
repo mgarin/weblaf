@@ -35,7 +35,9 @@ import java.util.*;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
  * @see WebAccordion
+ * @see AccordionPane
  * @see AccordionModel
+ * @see WebAccordionModel
  */
 public class WebAccordionModel implements AccordionModel, PropertyChangeListener, ContainerListener
 {
@@ -334,8 +336,10 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         }
         else
         {
+            pane.fireExpanding ( accordion );
             accordion.fireExpanding ( pane );
             SwingUtils.update ( accordion );
+            pane.fireExpanded ( accordion );
             accordion.fireExpanded ( pane );
         }
     }
@@ -432,9 +436,11 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         }
         else
         {
+            pane.fireCollapsing ( accordion );
             accordion.fireCollapsing ( pane );
             SwingUtils.update ( accordion );
-            accordion.fireCollapsed ( accordion.getPane ( id ) );
+            pane.fireCollapsed ( accordion );
+            accordion.fireCollapsed ( pane );
         }
     }
 }

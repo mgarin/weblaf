@@ -33,8 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Accordion component implementation.
+ * It represents a set of grouped {@link AccordionPane}s that change their expansion state according to rules set by accordion.
+ *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
+ * @see WebAccordion
+ * @see AccordionPane
  * @see AccordionModel
  * @see WebAccordionModel
  */
@@ -418,7 +423,6 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
         return this;
     }
 
-
     /**
      * Returns {@link AccordionPane} count within the {@link WebAccordion}.
      *
@@ -437,15 +441,17 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      */
     public boolean containsPane ( @NotNull final String id )
     {
+        boolean contains = false;
         for ( int i = 0; i < getComponentCount (); i++ )
         {
             final AccordionPane pane = ( AccordionPane ) getComponent ( i );
             if ( pane.getId ().equals ( id ) )
             {
-                return true;
+                contains = true;
+                break;
             }
         }
-        return false;
+        return contains;
     }
 
     /**
@@ -595,6 +601,18 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
+     * Changes state of {@link AccordionPane} with the specified identifier to either expanded or collapsed.
+     *
+     * @param id       {@link AccordionPane} identifier
+     * @param expanded whether or not {@link AccordionPane} with the specified identifier needs to be expanded or collapsed
+     * @return {@code true} if state of {@link AccordionPane} with the specified identifier was changed
+     */
+    public boolean setExpanded ( @NotNull final String id, final boolean expanded )
+    {
+        return expanded ? expand ( id ) : collapse ( id );
+    }
+
+    /**
      * Asks {@link WebAccordion} to expand {@link AccordionPane} with the specified identifier.
      *
      * @param id {@link AccordionPane} identifier
@@ -614,6 +632,18 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     public boolean isCollapsed ( @NotNull final String id )
     {
         return getModel () != null && getModel ().isCollapsed ( id );
+    }
+
+    /**
+     * Changes state of {@link AccordionPane} with the specified identifier to either collapsed or expanded.
+     *
+     * @param id        {@link AccordionPane} identifier
+     * @param collapsed whether or not {@link AccordionPane} with the specified identifier needs to be collapsed or expanded
+     * @return {@code true} if state of {@link AccordionPane} with the specified identifier was changed
+     */
+    public boolean setCollapsed ( @NotNull final String id, final boolean collapsed )
+    {
+        return collapsed ? collapse ( id ) : expand ( id );
     }
 
     /**

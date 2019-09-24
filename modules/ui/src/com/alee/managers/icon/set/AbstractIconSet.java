@@ -17,7 +17,6 @@
 
 package com.alee.managers.icon.set;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.Overwriting;
@@ -68,8 +67,6 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
      */
     public AbstractIconSet ( final String id )
     {
-        super ();
-
         // Checking that ID is appropriate
         if ( TextUtils.isEmpty ( id ) )
         {

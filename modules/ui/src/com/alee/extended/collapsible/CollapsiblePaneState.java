@@ -27,6 +27,8 @@ import java.io.Serializable;
  * {@link WebCollapsiblePane} state holder.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see CollapsiblePaneSettingsProcessor
  * @see com.alee.managers.settings.UISettingsManager

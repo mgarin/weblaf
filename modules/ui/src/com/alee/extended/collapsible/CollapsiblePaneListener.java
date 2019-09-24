@@ -17,12 +17,17 @@
 
 package com.alee.extended.collapsible;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.EventListener;
 
 /**
  * {@link WebCollapsiblePane} expansion listener.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
+ * @see CollapsiblePaneAdapter
  */
 public interface CollapsiblePaneListener extends EventListener
 {
@@ -32,14 +37,14 @@ public interface CollapsiblePaneListener extends EventListener
      *
      * @param pane {@link WebCollapsiblePane}
      */
-    public void expanding ( WebCollapsiblePane pane );
+    public void expanding ( @NotNull WebCollapsiblePane pane );
 
     /**
      * Informs about {@link WebCollapsiblePane} expansion finish.
      *
      * @param pane {@link WebCollapsiblePane}
      */
-    public void expanded ( WebCollapsiblePane pane );
+    public void expanded ( @NotNull WebCollapsiblePane pane );
 
     /**
      * Informs about {@link WebCollapsiblePane} collapse start.
@@ -47,12 +52,12 @@ public interface CollapsiblePaneListener extends EventListener
      *
      * @param pane {@link WebCollapsiblePane}
      */
-    public void collapsing ( WebCollapsiblePane pane );
+    public void collapsing ( @NotNull WebCollapsiblePane pane );
 
     /**
      * Informs about {@link WebCollapsiblePane} collapse finish.
      *
      * @param pane {@link WebCollapsiblePane}
      */
-    public void collapsed ( WebCollapsiblePane pane );
+    public void collapsed ( @NotNull WebCollapsiblePane pane );
 }

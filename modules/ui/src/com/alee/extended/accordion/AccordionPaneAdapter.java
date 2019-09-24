@@ -15,22 +15,25 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.collapsible;
+package com.alee.extended.accordion;
 
 import com.alee.api.annotations.NotNull;
 
 /**
- * Adapter for {@link CollapsiblePaneListener}.
+ * Adapter for {@link AccordionPaneListener}.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
- * @see WebCollapsiblePane
- * @see CollapsiblePaneListener
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
+ * @see AccordionPaneListener
+ * @see WebAccordion
+ * @see AccordionPane
+ * @see AccordionModel
+ * @see WebAccordionModel
  */
-public abstract class CollapsiblePaneAdapter implements CollapsiblePaneListener
+public abstract class AccordionPaneAdapter implements AccordionPaneListener
 {
     @Override
-    public void expanding ( @NotNull final WebCollapsiblePane pane )
+    public void expanding ( @NotNull final WebAccordion accordion, @NotNull final AccordionPane pane )
     {
         /**
          * Do nothing by default.
@@ -38,7 +41,7 @@ public abstract class CollapsiblePaneAdapter implements CollapsiblePaneListener
     }
 
     @Override
-    public void expanded ( @NotNull final WebCollapsiblePane pane )
+    public void expanded ( @NotNull final WebAccordion accordion, @NotNull final AccordionPane pane )
     {
         /**
          * Do nothing by default.
@@ -46,7 +49,7 @@ public abstract class CollapsiblePaneAdapter implements CollapsiblePaneListener
     }
 
     @Override
-    public void collapsing ( @NotNull final WebCollapsiblePane pane )
+    public void collapsing ( @NotNull final WebAccordion accordion, @NotNull final AccordionPane pane )
     {
         /**
          * Do nothing by default.
@@ -54,7 +57,7 @@ public abstract class CollapsiblePaneAdapter implements CollapsiblePaneListener
     }
 
     @Override
-    public void collapsed ( @NotNull final WebCollapsiblePane pane )
+    public void collapsed ( @NotNull final WebAccordion accordion, @NotNull final AccordionPane pane )
     {
         /**
          * Do nothing by default.

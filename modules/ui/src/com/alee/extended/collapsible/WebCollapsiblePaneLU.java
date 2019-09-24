@@ -24,6 +24,8 @@ import com.alee.managers.language.ToolTipLU;
  * This class provides language updates for {@link WebCollapsiblePane}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  * @see com.alee.managers.language.LanguageManager
  */

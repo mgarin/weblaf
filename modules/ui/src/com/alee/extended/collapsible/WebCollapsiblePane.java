@@ -35,6 +35,13 @@ import java.awt.event.MouseEvent;
  * Pane title, content and style can be modified in any way you like.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see CollapsiblePaneListener
+ * @see CollapsiblePaneLayout
+ * @see WCollapsiblePaneUI
+ * @see WebCollapsiblePaneUI
+ * @see ICollapsiblePanePainter
+ * @see CollapsiblePanePainter
  */
 public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollapsiblePaneUI>
 {

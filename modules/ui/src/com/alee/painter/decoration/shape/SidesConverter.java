@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.TextUtils;
 import com.alee.utils.xml.XmlException;
@@ -43,19 +44,21 @@ public final class SidesConverter extends AbstractSingleValueConverter
     public static final String separator = ",";
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return Sides.class.isAssignableFrom ( type );
     }
 
+    @NotNull
     @Override
-    public String toString ( final Object object )
+    public String toString ( @NotNull final Object object )
     {
         return sidesToString ( ( Sides ) object );
     }
 
+    @NotNull
     @Override
-    public Object fromString ( final String sides )
+    public Object fromString ( @NotNull final String sides )
     {
         return sidesFromString ( sides );
     }
@@ -66,7 +69,8 @@ public final class SidesConverter extends AbstractSingleValueConverter
      * @param sides {@link Sides} to convert
      * @return {@link Sides} converted into string
      */
-    public static String sidesToString ( final Sides sides )
+    @NotNull
+    public static String sidesToString ( @NotNull final Sides sides )
     {
         final List<String> list = new ArrayList<String> ( 4 );
         if ( sides.top )
@@ -95,26 +99,28 @@ public final class SidesConverter extends AbstractSingleValueConverter
     /**
      * Returns {@link Sides} read from string.
      *
-     * @param sides {@link Sides} string
+     * @param string {@link Sides} string
      * @return {@link Sides} read from string
      */
-    public static Sides sidesFromString ( final String sides )
+    @NotNull
+    public static Sides sidesFromString ( final String string )
     {
         try
         {
-            if ( TextUtils.notEmpty ( sides ) )
+            final Sides sides;
+            if ( TextUtils.notEmpty ( string ) )
             {
-                final StringTokenizer tokenizer = new StringTokenizer ( sides, separator, false );
+                final StringTokenizer tokenizer = new StringTokenizer ( string, separator, false );
                 if ( tokenizer.hasMoreTokens () )
                 {
                     final String first = tokenizer.nextToken ().trim ();
                     if ( Objects.equals ( first, TOP, LEFT, BOTTOM, RIGHT, NONE ) )
                     {
-                        final boolean top = sides.contains ( TOP );
-                        final boolean left = sides.contains ( LEFT );
-                        final boolean bottom = sides.contains ( BOTTOM );
-                        final boolean right = sides.contains ( RIGHT );
-                        return new Sides ( top, left, bottom, right );
+                        final boolean top = string.contains ( TOP );
+                        final boolean left = string.contains ( LEFT );
+                        final boolean bottom = string.contains ( BOTTOM );
+                        final boolean right = string.contains ( RIGHT );
+                        sides = new Sides ( top, left, bottom, right );
                     }
                     else if ( first.length () == 1 && ( first.charAt ( 0 ) == '0' || first.charAt ( 0 ) == '1' ) )
                     {
@@ -128,21 +134,21 @@ public final class SidesConverter extends AbstractSingleValueConverter
                                 if ( tokenizer.hasMoreTokens () )
                                 {
                                     final boolean right = Integer.parseInt ( tokenizer.nextToken () ) == 1;
-                                    return new Sides ( top, left, bottom, right );
+                                    sides = new Sides ( top, left, bottom, right );
                                 }
                                 else
                                 {
-                                    return new Sides ( top, left, bottom );
+                                    sides = new Sides ( top, left, bottom );
                                 }
                             }
                             else
                             {
-                                return new Sides ( top, left );
+                                sides = new Sides ( top, left );
                             }
                         }
                         else
                         {
-                            return new Sides ( top );
+                            sides = new Sides ( top );
                         }
                     }
                     else if ( first.equalsIgnoreCase ( "true" ) || first.equalsIgnoreCase ( "false" ) )
@@ -157,41 +163,42 @@ public final class SidesConverter extends AbstractSingleValueConverter
                                 if ( tokenizer.hasMoreTokens () )
                                 {
                                     final boolean right = Boolean.parseBoolean ( tokenizer.nextToken () );
-                                    return new Sides ( top, left, bottom, right );
+                                    sides = new Sides ( top, left, bottom, right );
                                 }
                                 else
                                 {
-                                    return new Sides ( top, left, bottom );
+                                    sides = new Sides ( top, left, bottom );
                                 }
                             }
                             else
                             {
-                                return new Sides ( top, left );
+                                sides = new Sides ( top, left );
                             }
                         }
                         else
                         {
-                            return new Sides ( top );
+                            sides = new Sides ( top );
                         }
                     }
                     else
                     {
-                        throw new ConversionException ( "Unknown Sides format used: " + sides );
+                        throw new ConversionException ( "Unknown Sides format used: " + string );
                     }
                 }
                 else
                 {
-                    return new Sides ( false );
+                    sides = new Sides ( false );
                 }
             }
             else
             {
-                return new Sides ( false );
+                sides = new Sides ( false );
             }
+            return sides;
         }
         catch ( final Exception e )
         {
-            throw new XmlException ( "Unable to parse Sides: " + sides, e );
+            throw new XmlException ( "Unable to parse Sides: " + string, e );
         }
     }
 }

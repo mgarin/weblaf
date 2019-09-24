@@ -27,6 +27,11 @@ import com.alee.painter.Painter;
  * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
+ * @see WebAccordion
+ * @see AccordionPane
+ * @see AccordionModel
+ * @see WebAccordionModel
  */
 public final class AdaptiveAccordionPainter<C extends WebAccordion, U extends WAccordionUI> extends AdaptivePainter<C, U>
         implements IAccordionPainter<C, U>

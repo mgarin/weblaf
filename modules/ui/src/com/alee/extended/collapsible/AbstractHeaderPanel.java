@@ -36,6 +36,8 @@ import java.util.List;
  * Custom {@link WebPanel} used as default {@link WebCollapsiblePane} header component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see WebCollapsiblePane#createHeaderComponent()
  * @see WebCollapsiblePane#setHeaderComponent(Component)
  */
@@ -54,7 +56,7 @@ public abstract class AbstractHeaderPanel extends WebPanel implements Stateful
      *
      * @param id style ID
      */
-    public AbstractHeaderPanel ( final StyleId id )
+    public AbstractHeaderPanel ( @NotNull final StyleId id )
     {
         super ( id, new HeaderLayout () );
 
@@ -95,6 +97,7 @@ public abstract class AbstractHeaderPanel extends WebPanel implements Stateful
         }
     }
 
+    @Nullable
     @Override
     public HeaderLayout getLayout ()
     {
@@ -106,9 +109,11 @@ public abstract class AbstractHeaderPanel extends WebPanel implements Stateful
      *
      * @return title {@link Component}
      */
+    @Nullable
     public Component getTitle ()
     {
-        return getLayout ().getTitle ();
+        final HeaderLayout layout = getLayout ();
+        return layout != null ? layout.getTitle () : null;
     }
 
     /**
@@ -116,9 +121,11 @@ public abstract class AbstractHeaderPanel extends WebPanel implements Stateful
      *
      * @return control {@link Component}
      */
+    @Nullable
     public Component getControl ()
     {
-        return getLayout ().getControl ();
+        final HeaderLayout layout = getLayout ();
+        return layout != null ? layout.getControl () : null;
     }
 
     /**

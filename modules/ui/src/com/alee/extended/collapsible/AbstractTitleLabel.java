@@ -36,6 +36,8 @@ import java.util.List;
  * Custom {@link WebStyledLabel} used as default {@link WebCollapsiblePane} title component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see WebCollapsiblePane#createTitleComponent()
  * @see WebCollapsiblePane#setIcon(Icon)
  * @see WebCollapsiblePane#setTitle(String)
@@ -56,7 +58,7 @@ public abstract class AbstractTitleLabel extends WebStyledLabel implements State
      *
      * @param id style ID
      */
-    public AbstractTitleLabel ( final StyleId id )
+    public AbstractTitleLabel ( @NotNull final StyleId id )
     {
         super ( id );
     }
@@ -71,7 +73,7 @@ public abstract class AbstractTitleLabel extends WebStyledLabel implements State
     @Override
     public void setText ( @Nullable final String text )
     {
-        if ( LM.contains ( text ) )
+        if ( text != null && LM.contains ( text ) )
         {
             setLanguage ( text );
         }

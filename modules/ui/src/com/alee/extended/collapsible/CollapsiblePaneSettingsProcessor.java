@@ -17,6 +17,7 @@
 
 package com.alee.extended.collapsible;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -24,6 +25,8 @@ import com.alee.managers.settings.SettingsProcessor;
  * {@link SettingsProcessor} implementation that handles {@link WebCollapsiblePane} settings.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.UISettingsManager
  * @see com.alee.managers.settings.SettingsManager
@@ -54,13 +57,13 @@ public class CollapsiblePaneSettingsProcessor extends SettingsProcessor<WebColla
         collapsiblePaneListener = new CollapsiblePaneAdapter ()
         {
             @Override
-            public void expanding ( final WebCollapsiblePane pane )
+            public void expanding ( @NotNull final WebCollapsiblePane pane )
             {
                 save ();
             }
 
             @Override
-            public void collapsing ( final WebCollapsiblePane pane )
+            public void collapsing ( @NotNull final WebCollapsiblePane pane )
             {
                 save ();
             }

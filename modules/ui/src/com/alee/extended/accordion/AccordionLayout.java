@@ -45,6 +45,11 @@ import java.util.Map;
  * {@link LayoutManager} for {@link AccordionPane}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
+ * @see WebAccordion
+ * @see AccordionPane
+ * @see AccordionModel
+ * @see WebAccordionModel
  */
 @XStreamAlias ( "AccordionLayout" )
 public class AccordionLayout extends AbstractGroupingLayout implements Mergeable, Cloneable, Serializable
@@ -249,14 +254,18 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
             @Override
             public void run ()
             {
-                accordion.fireExpanding ( accordion.getPane ( id ) );
+                final AccordionPane pane = accordion.getPane ( id );
+                pane.fireExpanding ( accordion );
+                accordion.fireExpanding ( pane );
             }
         }, new Runnable ()
         {
             @Override
             public void run ()
             {
-                accordion.fireExpanded ( accordion.getPane ( id ) );
+                final AccordionPane pane = accordion.getPane ( id );
+                pane.fireExpanded ( accordion );
+                accordion.fireExpanded ( pane );
             }
         } );
     }
@@ -275,14 +284,18 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
             @Override
             public void run ()
             {
-                accordion.fireCollapsing ( accordion.getPane ( id ) );
+                final AccordionPane pane = accordion.getPane ( id );
+                pane.fireCollapsing ( accordion );
+                accordion.fireCollapsing ( pane );
             }
         }, new Runnable ()
         {
             @Override
             public void run ()
             {
-                accordion.fireCollapsed ( accordion.getPane ( id ) );
+                final AccordionPane pane = accordion.getPane ( id );
+                pane.fireCollapsed ( accordion );
+                accordion.fireCollapsed ( pane );
             }
         } );
     }

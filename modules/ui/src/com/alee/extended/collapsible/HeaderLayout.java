@@ -29,6 +29,8 @@ import java.awt.*;
  * Custom {@link LayoutManager} for {@link AbstractHeaderPanel}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  */
 public class HeaderLayout extends AbstractLayoutManager
 {
@@ -45,11 +47,13 @@ public class HeaderLayout extends AbstractLayoutManager
     /**
      * {@link AbstractHeaderPanel} title {@link Component}.
      */
+    @Nullable
     protected Component title;
 
     /**
      * {@link AbstractHeaderPanel} control {@link Component}.
      */
+    @Nullable
     protected Component control;
 
     @Override
@@ -112,6 +116,7 @@ public class HeaderLayout extends AbstractLayoutManager
      *
      * @return title {@link Component}
      */
+    @Nullable
     public Component getTitle ()
     {
         return title;
@@ -122,6 +127,7 @@ public class HeaderLayout extends AbstractLayoutManager
      *
      * @return control {@link Component}
      */
+    @Nullable
     public Component getControl ()
     {
         return control;

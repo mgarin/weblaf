@@ -30,6 +30,7 @@ import com.alee.painter.decoration.IDecoration;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
  * @see WebAccordion
+ * @see AccordionPane
  * @see AccordionModel
  * @see WebAccordionModel
  */

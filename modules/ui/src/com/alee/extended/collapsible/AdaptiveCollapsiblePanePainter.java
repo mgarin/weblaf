@@ -17,6 +17,7 @@
 
 package com.alee.extended.collapsible;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -27,6 +28,8 @@ import com.alee.painter.Painter;
  * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  */
 public final class AdaptiveCollapsiblePanePainter<C extends WebCollapsiblePane, U extends WCollapsiblePaneUI> extends AdaptivePainter<C, U>
         implements ICollapsiblePanePainter<C, U>
@@ -36,7 +39,7 @@ public final class AdaptiveCollapsiblePanePainter<C extends WebCollapsiblePane, 
      *
      * @param painter {@link Painter} to adapt
      */
-    public AdaptiveCollapsiblePanePainter ( final Painter painter )
+    public AdaptiveCollapsiblePanePainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }

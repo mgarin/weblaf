@@ -105,7 +105,7 @@ public class AccordionPane extends WebPanel implements Identifiable
         add ( this.content );
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -359,6 +359,63 @@ public class AccordionPane extends WebPanel implements Identifiable
     }
 
     /**
+     * Changes state of this {@link AccordionPane} to either expanded or collapsed.
+     *
+     * @param expanded whether or not this {@link AccordionPane} needs to be expanded or collapsed
+     * @return {@code true} if state of this {@link AccordionPane} was changed
+     */
+    public boolean setExpanded ( final boolean expanded )
+    {
+        final Container parent = getParent ();
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).setExpanded ( getId (), expanded );
+    }
+
+    /**
+     * Asks this {@link AccordionPane} to expand if possible.
+     *
+     * @return {@code true} if this {@link AccordionPane} was successfully expanded, {@code false} otherwise
+     */
+    public boolean expand ()
+    {
+        final Container parent = getParent ();
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).expand ( getId () );
+    }
+
+    /**
+     * Returns whether or not this {@link AccordionPane} is collapsed.
+     *
+     * @return {@code true} if this {@link AccordionPane} is collapsed, {@code false} otherwise
+     */
+    public boolean isCollapsed ()
+    {
+        final Container parent = getParent ();
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).isCollapsed ( getId () );
+    }
+
+    /**
+     * Changes state of this {@link AccordionPane} to either collapsed or expanded.
+     *
+     * @param collapsed whether or not this {@link AccordionPane} needs to be collapsed or expanded
+     * @return {@code true} if state of this {@link AccordionPane} was changed
+     */
+    public boolean setCollapsed ( final boolean collapsed )
+    {
+        final Container parent = getParent ();
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).setCollapsed ( getId (), collapsed );
+    }
+
+    /**
+     * Asks this {@link AccordionPane} to collapse if possible.
+     *
+     * @return {@code true} if this {@link AccordionPane} was successfully collapsed, {@code false} otherwise
+     */
+    public boolean collapse ()
+    {
+        final Container parent = getParent ();
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).collapse ( getId () );
+    }
+
+    /**
      * Returns whether or not {@link AccordionPane} is in transition to either of two expansion states.
      *
      * @return {@code true} if {@link AccordionPane} is in transition, {@code false} otherwise
@@ -381,5 +438,77 @@ public class AccordionPane extends WebPanel implements Identifiable
     {
         final Container parent = getParent ();
         return parent instanceof WebAccordion ? ( ( WebAccordion ) parent ).getMinimumPaneContentSize () : 0;
+    }
+
+    /**
+     * Adds {@link AccordionPaneListener}.
+     *
+     * @param listener {@link AccordionPaneListener} to add
+     */
+    public void addAccordionPaneListener ( @NotNull final AccordionPaneListener listener )
+    {
+        listenerList.add ( AccordionPaneListener.class, listener );
+    }
+
+    /**
+     * Removes {@link AccordionPaneListener}.
+     *
+     * @param listener {@link AccordionPaneListener} to remove
+     */
+    public void removeAccordionPaneListener ( @NotNull final AccordionPaneListener listener )
+    {
+        listenerList.remove ( AccordionPaneListener.class, listener );
+    }
+
+    /**
+     * Notifies that specified {@link AccordionPane} started expanding.
+     *
+     * @param accordion {@link WebAccordion}
+     */
+    public void fireExpanding ( @NotNull final WebAccordion accordion )
+    {
+        for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
+        {
+            listener.expanding ( accordion,this );
+        }
+    }
+
+    /**
+     * Notifies when {@link WebAccordion} finished expanding.
+     *
+     * @param accordion {@link WebAccordion}
+     */
+    public void fireExpanded ( @NotNull final WebAccordion accordion )
+    {
+        for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
+        {
+            listener.expanded ( accordion,this );
+        }
+    }
+
+    /**
+     * Notifies when {@link WebAccordion} starts to collapse.
+     *
+     * @param accordion {@link WebAccordion}
+     */
+    public void fireCollapsing ( @NotNull final WebAccordion accordion )
+    {
+        for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
+        {
+            listener.collapsing ( accordion,this );
+        }
+    }
+
+    /**
+     * Notifies when {@link WebAccordion} finished collapsing.
+     *
+     * @param accordion {@link WebAccordion}
+     */
+    public void fireCollapsed ( @NotNull final WebAccordion accordion )
+    {
+        for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
+        {
+            listener.collapsed ( accordion,this );
+        }
     }
 }

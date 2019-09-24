@@ -945,6 +945,7 @@ public final class ReflectUtils
         final int oldModifiers = field.getModifiers ();
         if ( ModifierType.FINAL.is ( oldModifiers ) )
         {
+            // todo This shouldn't really be called ever by WebLaF itself under normal circumstances
             FieldHelper.setFieldModifiers ( field, oldModifiers & ~Modifier.FINAL );
         }
 
@@ -1276,7 +1277,7 @@ public final class ReflectUtils
     /**
      * Returns class constructor for the specified argument types.
      * This method will also find {@code protected}, {@code private} and package local constructors.
-     * <p>
+     *
      * todo 1. Constructors priority check (by super types)
      * todo    Right now some constructor with [Object] arg might be used instead of constructor with [String]
      * todo    To avoid issues don't call constructors with same amount of arguments and which are cast-able to each other
@@ -1799,7 +1800,7 @@ public final class ReflectUtils
      * Returns object's method with the specified name and arguments.
      * If method is not found in the object class all superclasses will be searched for that method.
      * This method will also find {@code protected}, {@code private} and package local methods.
-     * <p>
+     *
      * todo 1. Methods priority check (by super types)
      * todo    Right now some method with [Object] arg might be used instead of method with [String]
      * todo    To avoid issues don't call methods with same amount of arguments and which are cast-able to each other

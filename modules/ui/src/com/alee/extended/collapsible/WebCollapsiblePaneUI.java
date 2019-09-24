@@ -39,6 +39,8 @@ import java.beans.PropertyChangeListener;
  *
  * @param <C> component type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  */
 public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollapsiblePaneUI<C>
         implements PropertyChangeListener, CollapsiblePaneListener, ShapeSupport, MarginSupport, PaddingSupport
@@ -183,25 +185,25 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
     }
 
     @Override
-    public void expanding ( final WebCollapsiblePane pane )
+    public void expanding ( @NotNull final WebCollapsiblePane pane )
     {
         updateDecorationStates ();
     }
 
     @Override
-    public void expanded ( final WebCollapsiblePane pane )
+    public void expanded ( @NotNull final WebCollapsiblePane pane )
     {
         updateDecorationStates ();
     }
 
     @Override
-    public void collapsing ( final WebCollapsiblePane pane )
+    public void collapsing ( @NotNull final WebCollapsiblePane pane )
     {
         updateDecorationStates ();
     }
 
     @Override
-    public void collapsed ( final WebCollapsiblePane pane )
+    public void collapsed ( @NotNull final WebCollapsiblePane pane )
     {
         updateDecorationStates ();
     }

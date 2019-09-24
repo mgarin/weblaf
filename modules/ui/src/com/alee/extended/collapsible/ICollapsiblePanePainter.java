@@ -25,6 +25,8 @@ import com.alee.painter.SpecificPainter;
  * @param <C> component type
  * @param <U> component UI type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  */
 public interface ICollapsiblePanePainter<C extends WebCollapsiblePane, U extends WCollapsiblePaneUI> extends SpecificPainter<C, U>
 {

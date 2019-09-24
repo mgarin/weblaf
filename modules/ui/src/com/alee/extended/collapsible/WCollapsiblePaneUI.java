@@ -29,6 +29,8 @@ import javax.swing.plaf.ComponentUI;
  *
  * @param <C> component type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  */
 public abstract class WCollapsiblePaneUI<C extends WebCollapsiblePane> extends ComponentUI implements WebUI<C>
 {

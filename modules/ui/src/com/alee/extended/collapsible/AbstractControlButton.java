@@ -35,6 +35,8 @@ import java.util.List;
  * Custom {@link WebButton} used as default {@link WebCollapsiblePane} expansion control.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  * @see WebCollapsiblePane#createControlComponent()
  * @see WebCollapsiblePane#setControlComponent(Component)
  */
@@ -53,7 +55,7 @@ public abstract class AbstractControlButton extends WebButton implements Statefu
      *
      * @param id style ID
      */
-    public AbstractControlButton ( final StyleId id )
+    public AbstractControlButton ( @NotNull final StyleId id )
     {
         super ( id );
         addActionListener ( new ActionListener ()

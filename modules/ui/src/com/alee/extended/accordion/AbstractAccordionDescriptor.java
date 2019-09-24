@@ -30,6 +30,11 @@ import javax.swing.plaf.ComponentUI;
  * @param <C> {@link JComponent} type
  * @param <U> base {@link ComponentUI} type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
+ * @see WebAccordion
+ * @see AccordionPane
+ * @see AccordionModel
+ * @see WebAccordionModel
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)

@@ -28,6 +28,8 @@ import com.alee.painter.decoration.IDecoration;
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebCollapsiblePane">How to use WebCollapsiblePane</a>
+ * @see WebCollapsiblePane
  */
 public class CollapsiblePanePainter<C extends WebCollapsiblePane, U extends WCollapsiblePaneUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements ICollapsiblePanePainter<C, U>
