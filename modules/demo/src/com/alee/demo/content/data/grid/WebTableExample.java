@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class WebTableExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

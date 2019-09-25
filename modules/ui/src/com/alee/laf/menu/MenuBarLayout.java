@@ -18,7 +18,9 @@
 package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.merge.Mergeable;
 import com.alee.extended.layout.AbstractLineLayout;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +30,8 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-public final class MenuBarLayout extends AbstractLineLayout
+@XStreamAlias ( "MenuBarLayout" )
+public class MenuBarLayout extends AbstractLineLayout implements Mergeable, Cloneable
 {
     /**
      * Constructs new {@link MenuBarLayout}.
@@ -42,5 +45,16 @@ public final class MenuBarLayout extends AbstractLineLayout
     public int getOrientation ( @NotNull final Container container )
     {
         return HORIZONTAL;
+    }
+
+    /**
+     * The UI resource version of {@link MenuBarLayout}.
+     */
+    @XStreamAlias ( "MenuBarLayout$UIResource" )
+    public static final class UIResource extends MenuBarLayout implements javax.swing.plaf.UIResource
+    {
+        /**
+         * Implementation is used completely from {@link MenuBarLayout}.
+         */
     }
 }

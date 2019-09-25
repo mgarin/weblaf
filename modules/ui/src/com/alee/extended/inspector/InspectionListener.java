@@ -17,6 +17,8 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 import java.util.EventListener;
 
@@ -32,7 +34,7 @@ public interface InspectionListener extends EventListener
      *
      * @param component inspected component
      */
-    public void inspected ( Component component );
+    public void inspected ( @NotNull Component component );
 
     /**
      * Informs about inspection cancel.

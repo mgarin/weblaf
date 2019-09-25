@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class JFormattedTextFieldExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

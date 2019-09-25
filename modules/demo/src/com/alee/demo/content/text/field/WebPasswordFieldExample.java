@@ -18,7 +18,6 @@
 package com.alee.demo.content.text.field;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
@@ -35,7 +34,7 @@ import java.util.List;
  */
 public class WebPasswordFieldExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

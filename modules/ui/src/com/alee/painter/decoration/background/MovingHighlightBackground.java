@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.data.Orientation;
 import com.alee.api.merge.behavior.OmitOnMerge;
@@ -107,13 +108,13 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
         visibilityBehavior = new VisibilityBehavior<C> ( c, true )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final C component )
             {
                 playAnimation ( getComponent () );
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final C component )
             {
                 stopAnimation ( getComponent () );
             }

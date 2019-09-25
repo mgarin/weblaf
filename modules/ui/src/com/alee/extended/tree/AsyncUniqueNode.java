@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.IconBridge;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeNodeParameters;
@@ -186,8 +188,9 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
         this.failureCause = failureCause;
     }
 
+    @Nullable
     @Override
-    public Icon getIcon ( final TreeNodeParameters<N, WebAsyncTree<N>> parameters )
+    public Icon getIcon ( @NotNull final TreeNodeParameters<N, WebAsyncTree<N>> parameters )
     {
         final Icon icon;
         if ( isLoading () )

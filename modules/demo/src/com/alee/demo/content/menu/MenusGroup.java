@@ -18,7 +18,6 @@
 package com.alee.demo.content.menu;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CollectionUtils;
@@ -35,7 +34,7 @@ import java.util.List;
  */
 public class MenusGroup extends AbstractExampleGroup
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

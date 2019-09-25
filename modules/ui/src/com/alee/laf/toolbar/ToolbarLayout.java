@@ -18,7 +18,9 @@
 package com.alee.laf.toolbar;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.merge.Mergeable;
 import com.alee.extended.layout.AbstractLineLayout;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +30,8 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-public final class ToolbarLayout extends AbstractLineLayout
+@XStreamAlias ( "ToolBarLayout" )
+public class ToolbarLayout extends AbstractLineLayout implements Mergeable, Cloneable
 {
     /**
      * Constructs new {@link ToolbarLayout}.
@@ -63,5 +66,16 @@ public final class ToolbarLayout extends AbstractLineLayout
     public int getOrientation ( @NotNull final Container container )
     {
         return ( ( JToolBar ) container ).getOrientation ();
+    }
+
+    /**
+     * The UI resource version of {@link ToolbarLayout}.
+     */
+    @XStreamAlias ( "ToolBarLayout$UIResource" )
+    public static final class UIResource extends ToolbarLayout implements javax.swing.plaf.UIResource
+    {
+        /**
+         * Implementation is used completely from {@link ToolbarLayout}.
+         */
     }
 }

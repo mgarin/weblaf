@@ -18,7 +18,6 @@
 package com.alee.demo.content.container;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.layout.CompactFlowLayout;
@@ -37,7 +36,7 @@ import java.util.List;
  */
 public class WebPanelExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

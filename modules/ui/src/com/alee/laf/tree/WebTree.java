@@ -1082,7 +1082,8 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     @Nullable
     public N getRootNode ()
     {
-        return ( N ) getModel ().getRoot ();
+        final TreeModel model = getModel ();
+        return model != null ? ( N ) model.getRoot () : null;
     }
 
     /**

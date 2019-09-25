@@ -17,6 +17,8 @@
 
 package com.alee.utils.filefilter;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.IconBridge;
 import com.alee.api.ui.RenderingParameters;
 import com.alee.api.ui.TextBridge;
@@ -41,8 +43,9 @@ public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFil
      * @param parameters {@link RenderingParameters}
      * @return file filter {@link Icon}
      */
+    @Nullable
     @Override
-    public abstract Icon getIcon ( RenderingParameters parameters );
+    public abstract Icon getIcon ( @NotNull RenderingParameters parameters );
 
     /**
      * Returns file filter title.
@@ -52,7 +55,7 @@ public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFil
      * @return file filter title
      */
     @Override
-    public String getText ( final RenderingParameters parameters )
+    public String getText ( @NotNull final RenderingParameters parameters )
     {
         return getDescription ();
     }

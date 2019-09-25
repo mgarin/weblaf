@@ -17,6 +17,9 @@
 
 package com.alee.api.ui;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 
 /**
@@ -34,5 +37,6 @@ public interface ForegroundBridge<P extends RenderingParameters> extends Renderi
      * @param parameters {@link RenderingParameters}
      * @return foreground {@link Color} based on provided {@link RenderingParameters}.
      */
-    public Color getForeground ( P parameters );
+    @Nullable
+    public Color getForeground ( @NotNull P parameters );
 }

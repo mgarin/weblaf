@@ -17,7 +17,7 @@
 
 package com.alee.demo.content.tooltip;
 
-import com.alee.api.annotations.Nullable;
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.utils.CollectionUtils;
 
@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class TooltipsGroup extends AbstractExampleGroup
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

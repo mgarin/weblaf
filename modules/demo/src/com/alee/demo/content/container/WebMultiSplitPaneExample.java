@@ -18,7 +18,6 @@
 package com.alee.demo.content.container;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Orientation;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
@@ -42,7 +41,7 @@ import java.util.List;
  */
 public class WebMultiSplitPaneExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

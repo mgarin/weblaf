@@ -18,17 +18,20 @@
 package com.alee.managers.style.data;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneBehavior;
 import com.alee.api.clone.RecursiveClone;
 import com.alee.api.clone.behavior.PreserveOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Merge;
+import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.swing.InsetsUIResource;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -36,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import java.awt.*;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -431,6 +435,34 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
                     final PainterStyle style = ( PainterStyle ) value;
                     installPainter ( object, null, false, entry.getKey (), style );
                 }
+                else if ( entry.getKey ().equals ( "layout" ) && object instanceof Container )
+                {
+                    // Ensure we do not replace LayoutManager provided by user
+                    if ( value == null || value instanceof LayoutManager )
+                    {
+                        final Container container = ( Container ) object;
+                        final LayoutManager oldLayout = container.getLayout ();
+                        if ( isReplaceableLayout ( container, oldLayout ) || !( value instanceof UIResource ) )
+                        {
+                            // Creating clone of new layout manager
+                            // This is important to avoid same layout being set everywhere
+                            final LayoutManager newLayout = Clone.deep ().clone ( ( LayoutManager ) value );
+
+                            // Migrating layout manager settings if possible
+                            if ( newLayout != null && newLayout instanceof AbstractLayoutManager )
+                            {
+                                ( ( AbstractLayoutManager ) newLayout ).migrate ( container, oldLayout );
+                            }
+
+                            // Updating layout manager
+                            container.setLayout ( newLayout );
+                        }
+                    }
+                    else
+                    {
+                        throw new StyleException ( "Value provided for Container `layout` property is not LayoutManager" );
+                    }
+                }
                 else
                 {
                     // Other fields are simply set through common means
@@ -438,6 +470,19 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
                 }
             }
         }
+    }
+
+    /**
+     * Returns whether or not {@link LayoutManager} of the specified {@link Container} is replaceable.
+     *
+     * @param container {@link Container}
+     * @param oldLayout {@link LayoutManager}
+     * @return {@code true} if  {@link LayoutManager} of the specified {@link Container} is replaceable, {@code false} otherwise
+     */
+    private boolean isReplaceableLayout ( @NotNull final Container container, @Nullable final LayoutManager oldLayout )
+    {
+        return oldLayout == null || oldLayout instanceof UIResource || container instanceof JViewport &&
+                oldLayout == ReflectUtils.getStaticFieldValueSafely ( ViewportLayout.class, "SHARED_INSTANCE" );
     }
 
     /**
@@ -451,11 +496,11 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     {
         if ( ui instanceof MarginSupport && !uiProperties.containsKey ( ComponentStyleConverter.MARGIN_ATTRIBUTE ) )
         {
-            uiProperties.put ( ComponentStyleConverter.MARGIN_ATTRIBUTE, new Insets ( 0, 0, 0, 0 ) );
+            uiProperties.put ( ComponentStyleConverter.MARGIN_ATTRIBUTE, new InsetsUIResource ( 0, 0, 0, 0 ) );
         }
         if ( ui instanceof PaddingSupport && !uiProperties.containsKey ( ComponentStyleConverter.PADDING_ATTRIBUTE ) )
         {
-            uiProperties.put ( ComponentStyleConverter.PADDING_ATTRIBUTE, new Insets ( 0, 0, 0, 0 ) );
+            uiProperties.put ( ComponentStyleConverter.PADDING_ATTRIBUTE, new InsetsUIResource ( 0, 0, 0, 0 ) );
         }
         return uiProperties;
     }

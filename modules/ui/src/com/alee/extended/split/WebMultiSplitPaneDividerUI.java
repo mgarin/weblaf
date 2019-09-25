@@ -170,13 +170,13 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
         visibilityBehavior = new VisibilityBehavior<WebMultiSplitPaneDivider> ( divider )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final WebMultiSplitPaneDivider component )
             {
                 updateCursor ();
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final WebMultiSplitPaneDivider component )
             {
                 updateCursor ();
             }

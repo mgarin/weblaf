@@ -27,6 +27,7 @@ import java.awt.event.HierarchyListener;
  * Custom {@link Behavior} that allows you to track {@link Component} visibility.
  * You need to specify {@link Component} for which visibility state will be tracked.
  * Use {@link #install()} and {@link #uninstall()} methods to setup and remove this behavior.
+ * Override {@link #displayed(Component)} and {@link #hidden(Component)} methods to perform actions upon component visibility change.
  *
  * @param <C> {@link Component} type
  * @author Mikle Garin
@@ -34,10 +35,10 @@ import java.awt.event.HierarchyListener;
 public abstract class VisibilityBehavior<C extends Component> extends AbstractComponentBehavior<C> implements HierarchyListener
 {
     /**
-     * Whether or not should artificially trigger events on {@link #install()} and {@link #uninstall()}.
-     * If set to {@code true} - {@link #displayed()} and {@link #hidden()} will be triggered according to {@link #component} visibility.
+     * Whether or not should artificially trigger {@link #displayed(Component)} or {@link #hidden(Component)} events
+     * upon {@link #install()} and {@link #uninstall()} calls.
      */
-    private final boolean initTriggers;
+    protected final boolean initTriggers;
 
     /**
      * Whether or not {@link #component} is currently visible and placed on a displayable {@link Window}.
@@ -75,11 +76,12 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
      */
     public void install ()
     {
+        final C component = getComponent ();
         visible = component.isShowing ();
         component.addHierarchyListener ( this );
         if ( initTriggers && visible )
         {
-            displayed ();
+            displayed ( component );
         }
     }
 
@@ -88,9 +90,10 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
      */
     public void uninstall ()
     {
+        final C component = getComponent ();
         if ( initTriggers && visible )
         {
-            hidden ();
+            hidden ( component );
         }
         component.removeHierarchyListener ( this );
         visible = false;
@@ -120,29 +123,45 @@ public abstract class VisibilityBehavior<C extends Component> extends AbstractCo
      */
     protected void checkVisibility ()
     {
-        final boolean nowVisible = component.isShowing ();
+        final boolean nowVisible = getComponent ().isShowing ();
         if ( visible != nowVisible )
         {
             if ( nowVisible )
             {
                 visible = true;
-                displayed ();
+                displayed ( getComponent () );
             }
             else
             {
                 visible = false;
-                hidden ();
+                hidden ( getComponent () );
             }
         }
     }
 
     /**
      * Called when {@link Component} becomes visible according to behavior conditions.
+     *
+     * @param component {@link Component}
      */
-    public abstract void displayed ();
+    protected void displayed ( @NotNull final C component )
+    {
+        /**
+         * Do nothing by default.
+         * Override this method to perform any actions upon {@link Component} becoming visible.
+         */
+    }
 
     /**
      * Called when {@link Component} becomes hidden according to behavior conditions.
+     *
+     * @param component {@link Component}
      */
-    public abstract void hidden ();
+    protected void hidden ( @NotNull final C component )
+    {
+        /**
+         * Do nothing by default.
+         * Override this method to perform any actions upon {@link Component} becoming invisible.
+         */
+    }
 }

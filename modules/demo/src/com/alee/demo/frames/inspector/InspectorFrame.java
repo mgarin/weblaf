@@ -21,7 +21,6 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoIcons;
-import com.alee.extended.dock.DockableFrameAdapter;
 import com.alee.extended.dock.DockableFrameState;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.inspector.InterfaceInspector;
@@ -53,18 +52,5 @@ public final class InspectorFrame extends WebDockableFrame
 
         final InterfaceInspector inspector = new InterfaceInspector ();
         add ( inspector );
-
-        addFrameListener ( new DockableFrameAdapter ()
-        {
-            @Override
-            public void frameStateChanged ( @NotNull final WebDockableFrame frame, @NotNull final DockableFrameState oldState,
-                                            @NotNull final DockableFrameState newState )
-            {
-                if ( newState == DockableFrameState.minimized || newState == DockableFrameState.closed )
-                {
-                    inspector.clearHighlights ();
-                }
-            }
-        } );
     }
 }

@@ -17,6 +17,8 @@
 
 package com.alee.utils.filefilter;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.RenderingParameters;
 
 import javax.swing.*;
@@ -46,13 +48,13 @@ public abstract class DescriptiveFileFilter extends AbstractFileFilter
      */
     public DescriptiveFileFilter ( final ImageIcon icon, final String description )
     {
-        super ();
         this.icon = icon;
         this.description = description;
     }
 
+    @Nullable
     @Override
-    public Icon getIcon ( final RenderingParameters parameters )
+    public Icon getIcon ( @NotNull final RenderingParameters parameters )
     {
         return icon;
     }

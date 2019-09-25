@@ -17,6 +17,9 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.extended.tree.WebTreeFilterField;
@@ -44,6 +47,8 @@ import java.awt.event.ActionListener;
  *
  * @author Mikle Garin
  * @see InterfaceTree
+ * @see ComponentInspectBehavior
+ * @see ComponentHighlighter
  * @see #showFrame(Component)
  * @see #showDialog(Component, Component)
  * @see #showPopOver(Component, Component)
@@ -54,12 +59,14 @@ public class InterfaceInspector extends WebPanel
     /**
      * {@link InterfaceTree}.
      */
-    private final InterfaceTree tree;
+    @NotNull
+    protected final InterfaceTree tree;
 
     /**
      * {@link Component} inspect behavior.
      */
-    private ComponentInspectBehavior inspectBehavior;
+    @Nullable
+    protected transient ComponentInspectBehavior inspectBehavior;
 
     /**
      * Constructs new empty {@link InterfaceInspector}.
@@ -74,7 +81,7 @@ public class InterfaceInspector extends WebPanel
      *
      * @param inspected {@link Component} to inspect
      */
-    public InterfaceInspector ( final Component inspected )
+    public InterfaceInspector ( @Nullable final Component inspected )
     {
         this ( StyleId.inspector, inspected );
     }
@@ -84,7 +91,7 @@ public class InterfaceInspector extends WebPanel
      *
      * @param id style ID
      */
-    public InterfaceInspector ( final StyleId id )
+    public InterfaceInspector ( @NotNull final StyleId id )
     {
         this ( id, null );
     }
@@ -95,7 +102,7 @@ public class InterfaceInspector extends WebPanel
      * @param id        style ID
      * @param inspected {@link Component} to inspect
      */
-    public InterfaceInspector ( final StyleId id, final Component inspected )
+    public InterfaceInspector ( @NotNull final StyleId id, @Nullable final Component inspected )
     {
         super ( id );
 
@@ -119,7 +126,7 @@ public class InterfaceInspector extends WebPanel
         inspectToggle.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 if ( inspectToggle.isSelected () )
                 {
@@ -127,25 +134,29 @@ public class InterfaceInspector extends WebPanel
                     {
                         inspectBehavior = new ComponentInspectBehavior ();
                     }
-                    inspectBehavior.install ( inspected, new InspectionListener ()
+                    if ( !inspectBehavior.isInstalled () )
                     {
-                        @Override
-                        public void inspected ( final Component component )
+                        inspectBehavior.install ( inspected, new InspectionListener ()
                         {
-                            tree.navigate ( component );
-                            inspectToggle.setSelected ( false );
-                        }
+                            @Override
+                            public void inspected ( @NotNull final Component component )
+                            {
+                                tree.navigate ( component );
+                                inspectToggle.setSelected ( false );
+                                tree.requestFocusInWindow ();
+                            }
 
-                        @Override
-                        public void cancelled ()
-                        {
-                            inspectToggle.setSelected ( false );
-                        }
-                    } );
+                            @Override
+                            public void cancelled ()
+                            {
+                                inspectToggle.setSelected ( false );
+                            }
+                        } );
+                    }
                 }
                 else
                 {
-                    if ( inspectBehavior != null )
+                    if ( inspectBehavior != null && inspectBehavior.isInstalled () )
                     {
                         inspectBehavior.uninstall ();
                     }
@@ -160,6 +171,19 @@ public class InterfaceInspector extends WebPanel
 
         // Expanding tree root by default
         tree.expandRoot ();
+
+        // Visibility behavior
+        new VisibilityBehavior<InterfaceInspector> ( this, true )
+        {
+            @Override
+            protected void hidden ( @NotNull final InterfaceInspector inspector )
+            {
+                if ( inspectBehavior != null && inspectBehavior.isInstalled () )
+                {
+                    inspectBehavior.uninstall ();
+                }
+            }
+        }.install ();
     }
 
     /**
@@ -167,7 +191,7 @@ public class InterfaceInspector extends WebPanel
      *
      * @param inspected {@link Component} to inspect
      */
-    public void setInspected ( final Component inspected )
+    public void setInspected ( @Nullable final Component inspected )
     {
         tree.setRootComponent ( inspected );
     }
@@ -186,6 +210,7 @@ public class InterfaceInspector extends WebPanel
      *
      * @return separate {@link WebFrame} with inspector for all visible {@link Component}s
      */
+    @NotNull
     public static WebFrame showFrame ()
     {
         return showFrame ( null );
@@ -198,7 +223,8 @@ public class InterfaceInspector extends WebPanel
      * @param inspected {@link Component} to inspect
      * @return separate {@link WebFrame} with inspector for the specified {@link Component}
      */
-    public static WebFrame showFrame ( final Component inspected )
+    @NotNull
+    public static WebFrame showFrame ( @Nullable final Component inspected )
     {
         final WebFrame frame = new WebFrame ();
         frame.setIconImages ( WebLookAndFeel.getImages () );
@@ -218,7 +244,8 @@ public class InterfaceInspector extends WebPanel
      * @param parent parent {@link Component} for {@link WebDialog}
      * @return separate {@link WebDialog} with inspector for all visible {@link Component}s
      */
-    public static WebDialog showDialog ( final Component parent )
+    @NotNull
+    public static WebDialog showDialog ( @Nullable final Component parent )
     {
         return showDialog ( parent, null );
     }
@@ -231,7 +258,8 @@ public class InterfaceInspector extends WebPanel
      * @param inspected {@link Component} to inspect
      * @return separate {@link WebDialog} with inspector for the specified {@link Component}
      */
-    public static WebDialog showDialog ( final Component parent, final Component inspected )
+    @NotNull
+    public static WebDialog showDialog ( @Nullable final Component parent, @Nullable final Component inspected )
     {
         final WebDialog dialog = new WebDialog ( parent );
         dialog.setIconImages ( WebLookAndFeel.getImages () );
@@ -253,7 +281,8 @@ public class InterfaceInspector extends WebPanel
      * @param parent parent {@link Component} for {@link WebPopOver}
      * @return separate {@link WebPopOver} with inspector for all visible {@link Component}s
      */
-    public static WebPopOver showPopOver ( final Component parent )
+    @NotNull
+    public static WebPopOver showPopOver ( @Nullable final Component parent )
     {
         return showPopOver ( parent, null, PopOverDirection.right );
     }
@@ -266,7 +295,8 @@ public class InterfaceInspector extends WebPanel
      * @param direction {@link PopOverDirection}
      * @return separate {@link WebPopOver} with inspector for all visible {@link Component}s
      */
-    public static WebPopOver showPopOver ( final Component parent, final PopOverDirection direction )
+    @NotNull
+    public static WebPopOver showPopOver ( @Nullable final Component parent, @NotNull final PopOverDirection direction )
     {
         return showPopOver ( parent, null, direction );
     }
@@ -279,7 +309,8 @@ public class InterfaceInspector extends WebPanel
      * @param inspected {@link Component} to inspect
      * @return separate {@link WebPopOver} with inspector for the specified {@link Component}
      */
-    public static WebPopOver showPopOver ( final Component parent, final Component inspected )
+    @NotNull
+    public static WebPopOver showPopOver ( @Nullable final Component parent, @Nullable final Component inspected )
     {
         return showPopOver ( parent, inspected, PopOverDirection.right );
     }
@@ -293,7 +324,9 @@ public class InterfaceInspector extends WebPanel
      * @param direction {@link PopOverDirection}
      * @return separate {@link WebPopOver} with inspector for the specified {@link Component}
      */
-    public static WebPopOver showPopOver ( final Component parent, final Component inspected, final PopOverDirection direction )
+    @NotNull
+    public static WebPopOver showPopOver ( @Nullable final Component parent, @Nullable final Component inspected,
+                                           @NotNull final PopOverDirection direction )
     {
         final WebPopOver popOver = new WebPopOver ( parent );
         popOver.setIconImages ( WebLookAndFeel.getImages () );

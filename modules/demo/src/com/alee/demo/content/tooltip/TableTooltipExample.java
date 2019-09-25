@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class TableTooltipExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

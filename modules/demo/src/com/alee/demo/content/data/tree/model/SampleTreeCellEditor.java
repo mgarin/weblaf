@@ -35,14 +35,6 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
      */
     protected SampleNode sampleNode;
 
-    /**
-     * Constructs sample tree cell editor.
-     */
-    public SampleTreeCellEditor ()
-    {
-        super ();
-    }
-
     @Override
     public Component getTreeCellEditorComponent ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
                                                   final boolean leaf, final int row )

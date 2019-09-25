@@ -62,6 +62,23 @@ public abstract class AbstractLayoutManager implements LayoutManager2
     }
 
     /**
+     * This method is called on layout that is being set by the styling system.
+     * It can be used to migrate settings from the old layout into the new one.
+     * Usually it comes down to constraints of already added components if there are any.
+     * If layout doesn't use any constraints (which is often the case for UI layouts) then this method implementation might not be needed.
+     *
+     * @param container {@link Container} this layout will be set into
+     * @param oldLayout {@link LayoutManager} that {@link Container} currently has
+     */
+    public void migrate ( @NotNull final Container container, @Nullable final LayoutManager oldLayout )
+    {
+        /**
+         * Do nothing by default.
+         * Override this to provide your own migration strategy.
+         */
+    }
+
+    /**
      * Called when component removed from container with this layout.
      *
      * @param component removed component

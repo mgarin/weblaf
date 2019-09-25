@@ -56,7 +56,7 @@ import java.util.List;
  */
 public class EasingExample extends AbstractPreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

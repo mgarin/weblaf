@@ -221,8 +221,6 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
             final AccordionLayout newLayout = ( AccordionLayout ) layout;
             super.setLayout ( newLayout );
             newLayout.install ( this );
-
-
         }
         else
         {

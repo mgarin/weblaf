@@ -40,7 +40,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
      */
     protected transient WindowFocusListener windowFocusListener;
     protected transient WindowStateListener frameStateListener;
-    protected transient VisibilityBehavior windowVisibilityBehavior;
+    protected transient VisibilityBehavior<C> windowVisibilityBehavior;
 
     /**
      * Runtime variables.
@@ -509,10 +509,10 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
      */
     protected void installVisibilityListener ()
     {
-        windowVisibilityBehavior = new VisibilityBehavior ( component )
+        windowVisibilityBehavior = new VisibilityBehavior<C> ( component )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final C component )
             {
                 final Window window = getWindow ();
                 if ( window != null )
@@ -522,7 +522,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final C component )
             {
                 final Window window = getWindow ();
                 if ( window != null )

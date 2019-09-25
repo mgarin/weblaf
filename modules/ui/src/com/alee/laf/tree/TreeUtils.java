@@ -200,6 +200,8 @@ public final class TreeUtils
 
     /**
      * Restores tree expansion and selection states from {@link TreeState}.
+     * todo This method's body can potentially be performed "later" recursively, but it might not always be a desired behavior
+     * todo Probably might be added as an option in the tree state restore methods
      *
      * @param tree             tree to process
      * @param treeState        tree expansion and selection states
@@ -219,21 +221,33 @@ public final class TreeUtils
         final TreePath path = new TreePath ( parent.getPath () );
         if ( treeState.isExpanded ( parent.getId () ) )
         {
-            tree.expandPath ( path );
+            if ( !tree.isExpanded ( path ) )
+            {
+                tree.expandPath ( path );
+            }
         }
         else
         {
-            tree.collapsePath ( path );
+            if ( tree.isExpanded ( path ) )
+            {
+                tree.collapsePath ( path );
+            }
         }
         if ( restoreSelection )
         {
             if ( treeState.isSelected ( parent.getId () ) )
             {
-                tree.addSelectionPath ( path );
+                if ( !tree.isPathSelected ( path ) )
+                {
+                    tree.addSelectionPath ( path );
+                }
             }
             else
             {
-                tree.removeSelectionPath ( path );
+                if ( tree.isPathSelected ( path ) )
+                {
+                    tree.removeSelectionPath ( path );
+                }
             }
         }
     }

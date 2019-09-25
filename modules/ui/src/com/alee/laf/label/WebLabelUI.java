@@ -32,9 +32,10 @@ import java.awt.*;
 /**
  * Custom UI for {@link JLabel} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  */
-public class WebLabelUI extends WLabelUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebLabelUI<C extends JLabel> extends WLabelUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.

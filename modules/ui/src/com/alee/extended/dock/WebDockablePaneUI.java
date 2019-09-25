@@ -70,7 +70,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     /**
      * Listeners.
      */
-    protected transient VisibilityBehavior visibilityBehavior;
+    protected transient VisibilityBehavior<C> visibilityBehavior;
     protected transient DockableFrameListener proxyListener;
 
     /**
@@ -123,13 +123,12 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         super.installListeners ();
 
         // Instaling custom listeners
-        visibilityBehavior = new VisibilityBehavior ( pane )
+        visibilityBehavior = new VisibilityBehavior<C> ( pane )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final C pane )
             {
                 // We have to manually initialize all dialogs for floating frames when dockable pane becomes visible
-                //
                 for ( final WebDockableFrame frame : pane.frames )
                 {
                     if ( frame.isFloating () )
@@ -140,7 +139,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final C pane )
             {
                 for ( final WebDockableFrame frame : pane.frames )
                 {

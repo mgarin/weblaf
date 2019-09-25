@@ -210,6 +210,23 @@ public abstract class AbstractLineLayout extends AbstractLayoutManager implement
     }
 
     @Override
+    public void migrate ( @NotNull final Container container, @Nullable final LayoutManager oldLayout )
+    {
+        if ( oldLayout != null && oldLayout instanceof AbstractLineLayout )
+        {
+            final AbstractLineLayout oldLineLayout = ( AbstractLineLayout ) oldLayout;
+            for ( int i = 0; i < container.getComponentCount (); i++ )
+            {
+                final Component component = container.getComponent ( i );
+                if ( oldLineLayout.constraints.containsKey ( component ) )
+                {
+                    addComponent ( component, oldLineLayout.constraints.get ( component ) );
+                }
+            }
+        }
+    }
+
+    @Override
     public void removeComponent ( @NotNull final Component component )
     {
         final String constraints = this.constraints.get ( component );

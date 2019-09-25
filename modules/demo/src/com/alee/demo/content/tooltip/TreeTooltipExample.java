@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class TreeTooltipExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

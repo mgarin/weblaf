@@ -94,7 +94,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public AccordionPane ( @NotNull final StyleId styleId, @NotNull final WebAccordion accordion, @NotNull final String id,
                            @Nullable final Icon icon, @Nullable final String title, @NotNull final Component content )
     {
-        super ( styleId );
+        super ( styleId, ( LayoutManager ) null );
 
         this.id = id;
 
@@ -469,7 +469,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     {
         for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
         {
-            listener.expanding ( accordion,this );
+            listener.expanding ( accordion, this );
         }
     }
 
@@ -482,7 +482,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     {
         for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
         {
-            listener.expanded ( accordion,this );
+            listener.expanded ( accordion, this );
         }
     }
 
@@ -495,7 +495,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     {
         for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
         {
-            listener.collapsing ( accordion,this );
+            listener.collapsing ( accordion, this );
         }
     }
 
@@ -508,7 +508,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     {
         for ( final AccordionPaneListener listener : listenerList.getListeners ( AccordionPaneListener.class ) )
         {
-            listener.collapsed ( accordion,this );
+            listener.collapsed ( accordion, this );
         }
     }
 }

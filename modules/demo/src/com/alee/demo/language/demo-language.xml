@@ -2610,6 +2610,12 @@
                     <value lang="en">Editable text</value>
                     <value lang="ru">Редактируемый текст</value>
                 </record>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic popover</value>
+                        <value lang="ru">Базовый поповер</value>
+                    </record>
+                </Dictionary>
             </Dictionary>
             <Dictionary prefix="joptionpane">
                 <record key="title">

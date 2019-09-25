@@ -17,6 +17,8 @@
 
 package com.alee.demo.content;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.TextBridge;
 import com.alee.demo.content.data.tree.model.SampleAsyncDataProvider;
 import com.alee.demo.content.data.tree.model.SampleCustomizedExDataProvider;
@@ -117,17 +119,22 @@ public final class SampleData
         @Override
         public Class<?> getColumnClass ( final int column )
         {
+            final Class<?> columnClass;
             switch ( column )
             {
                 case 3:
-                    return Integer.class;
+                    columnClass = Integer.class;
+                    break;
 
                 case 4:
-                    return Boolean.class;
+                    columnClass = Boolean.class;
+                    break;
 
                 default:
-                    return String.class;
+                    columnClass = String.class;
+                    break;
             }
+            return columnClass;
         }
 
         @Override
@@ -139,26 +146,33 @@ public final class SampleData
         @Override
         public String getColumnName ( final int column )
         {
+            final String columnName;
             switch ( column )
             {
                 case 0:
-                    return LM.get ( "demo.example.data.grids.data.column.first.name" );
+                    columnName = LM.get ( "demo.example.data.grids.data.column.first.name" );
+                    break;
 
                 case 1:
-                    return LM.get ( "demo.example.data.grids.data.column.last.name" );
+                    columnName = LM.get ( "demo.example.data.grids.data.column.last.name" );
+                    break;
 
                 case 2:
-                    return LM.get ( "demo.example.data.grids.data.column.hobby" );
+                    columnName = LM.get ( "demo.example.data.grids.data.column.hobby" );
+                    break;
 
                 case 3:
-                    return LM.get ( "demo.example.data.grids.data.column.age" );
+                    columnName = LM.get ( "demo.example.data.grids.data.column.age" );
+                    break;
 
                 case 4:
-                    return LM.get ( "demo.example.data.grids.data.column.vegeterian" );
+                    columnName = LM.get ( "demo.example.data.grids.data.column.vegeterian" );
+                    break;
 
                 default:
                     throw new RuntimeException ( "There is no column for index: " + column );
             }
+            return columnName;
         }
 
         @Override
@@ -253,8 +267,9 @@ public final class SampleData
             this.key = key;
         }
 
+        @Nullable
         @Override
-        public String getText ( final ListCellParameters<ListItem, JList> parameters )
+        public String getText ( @NotNull final ListCellParameters<ListItem, JList> parameters )
         {
             return LM.get ( "demo.sample.list." + key );
         }

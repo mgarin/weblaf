@@ -18,6 +18,7 @@
 package com.alee.extended.statusbar;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.WebContainer;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.toolbar.WhiteSpace;
@@ -56,10 +57,9 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      *
      * @param id style ID
      */
-    public WebStatusBar ( final StyleId id )
+    public WebStatusBar ( @NotNull final StyleId id )
     {
         super ();
-        setLayout ( new StatusBarLayout () );
         updateUI ();
         setStyleId ( id );
     }
@@ -76,7 +76,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      *
      * @param component component to add
      */
-    public void addToMiddle ( final Component component )
+    public void addToMiddle ( @NotNull final Component component )
     {
         add ( component, StatusBarLayout.MIDDLE );
     }
@@ -86,7 +86,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      *
      * @param component component to add
      */
-    public void addFill ( final Component component )
+    public void addFill ( @NotNull final Component component )
     {
         add ( component, StatusBarLayout.FILL );
     }
@@ -96,7 +96,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      *
      * @param component component to add
      */
-    public void addToEnd ( final Component component )
+    public void addToEnd ( @NotNull final Component component )
     {
         add ( component, StatusBarLayout.END );
     }
@@ -122,7 +122,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      *
      * @param constraints layout constraints
      */
-    public void addSeparator ( final String constraints )
+    public void addSeparator ( @Nullable final String constraints )
     {
         add ( createSeparator (), constraints );
     }
@@ -132,6 +132,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      *
      * @return new status bar separator
      */
+    @NotNull
     protected WebSeparator createSeparator ()
     {
         return new WebSeparator ( WebSeparator.VERTICAL );
@@ -179,7 +180,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
      * @param spacing     spacing size
      * @param constraints layout constraints
      */
-    public void addSpacing ( final int spacing, final String constraints )
+    public void addSpacing ( final int spacing, @Nullable final String constraints )
     {
         // todo Add layout implementation instead of wasted component
         add ( new WhiteSpace ( spacing ), constraints );

@@ -23,6 +23,7 @@ import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.swing.InsetsUIResource;
 import com.alee.utils.xml.InsetsConverter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -239,14 +240,16 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final String marginAttribute = reader.getAttribute ( MARGIN_ATTRIBUTE );
         if ( marginAttribute != null )
         {
-            uiProperties.put ( MARGIN_ATTRIBUTE, InsetsConverter.insetsFromString ( marginAttribute ) );
+            final Insets margin = InsetsConverter.insetsFromString ( marginAttribute );
+            uiProperties.put ( MARGIN_ATTRIBUTE, new InsetsUIResource ( margin.top, margin.left, margin.bottom, margin.right ) );
         }
 
         // Reading padding
         final String paddingAttribute = reader.getAttribute ( PADDING_ATTRIBUTE );
         if ( paddingAttribute != null )
         {
-            uiProperties.put ( PADDING_ATTRIBUTE, InsetsConverter.insetsFromString ( paddingAttribute ) );
+            final Insets padding = InsetsConverter.insetsFromString ( paddingAttribute );
+            uiProperties.put ( PADDING_ATTRIBUTE, new InsetsUIResource ( padding.top, padding.left, padding.bottom, padding.right ) );
         }
 
         // Saving previously set context values

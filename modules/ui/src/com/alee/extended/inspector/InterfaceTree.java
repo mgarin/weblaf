@@ -19,7 +19,10 @@ package com.alee.extended.inspector;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.extended.behavior.VisibilityBehavior;
+import com.alee.extended.tree.ExTreeDataProvider;
 import com.alee.extended.tree.WebExTree;
+import com.alee.laf.tree.TreeState;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CoreSwingUtils;
@@ -27,6 +30,7 @@ import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.HoverListener;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
@@ -50,13 +54,22 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
         implements HoverListener<InterfaceTreeNode>, TreeSelectionListener, Filter<Component>
 {
     /**
+     * Root {@link Component}.
+     * Might be {@code null} if all active windows are being tracked.
+     */
+    @Nullable
+    protected final Component root;
+
+    /**
      * Highlighter for hovered tree element.
      */
+    @NotNull
     protected ComponentHighlighter hoverHighlighter;
 
     /**
      * Highlighters for selected tree elements.
      */
+    @NotNull
     protected Map<Component, ComponentHighlighter> selectedHighlighters;
 
     /**
@@ -64,7 +77,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      *
      * @param root root component
      */
-    public InterfaceTree ( final Component root )
+    public InterfaceTree ( @Nullable final Component root )
     {
         this ( StyleId.auto, root );
     }
@@ -75,13 +88,16 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      * @param id   style ID
      * @param root root component
      */
-    public InterfaceTree ( final StyleId id, final Component root )
+    public InterfaceTree ( @NotNull final StyleId id, @Nullable final Component root )
     {
         super ( id );
+        this.root = root;
+
+        // Visual settings
         setVisibleRowCount ( 20 );
 
         // Custom data provider
-        setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
+        setDataProvider ( createEmptyProvider () );
 
         // Nodes hover listener
         this.hoverHighlighter = new ComponentHighlighter ();
@@ -100,6 +116,29 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                 clearSelection ();
             }
         } );
+
+        // Visibility behavior
+        new VisibilityBehavior<InterfaceTree> ( this, true )
+        {
+            /**
+             * Saved {@link TreeState}.
+             */
+            protected TreeState savedState = null;
+
+            @Override
+            protected void displayed ( @NotNull final InterfaceTree tree )
+            {
+                tree.setDataProvider ( createDataProvider () );
+                tree.setTreeState ( savedState );
+            }
+
+            @Override
+            protected void hidden ( @NotNull final InterfaceTree tree )
+            {
+                savedState = tree.getTreeState ();
+                tree.setDataProvider ( tree.createEmptyProvider () );
+            }
+        }.install ();
     }
 
     @NotNull
@@ -107,6 +146,44 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
     public StyleId getDefaultStyleId ()
     {
         return StyleId.interfacetree;
+    }
+
+    @Override
+    public void setDataProvider ( @NotNull final ExTreeDataProvider dataProvider )
+    {
+        // Uninstalling node listeners
+        // todo Nodes are not properly cleared out of memory
+        // todo This is not critical as this is simply a debug tool, but might be worth fixing at some point
+        final InterfaceTreeNode rootNode = getRootNode ();
+        if ( rootNode != null )
+        {
+            rootNode.uninstall ();
+        }
+
+        // Updating data provider
+        super.setDataProvider ( dataProvider );
+    }
+
+    /**
+     * Returns new dummy {@link InterfaceTreeDataProvider} for empty hidden {@link JLabel}.
+     *
+     * @return new dummy {@link InterfaceTreeDataProvider} for empty hidden {@link JLabel}
+     */
+    @NotNull
+    protected InterfaceTreeDataProvider createEmptyProvider ()
+    {
+        return new InterfaceTreeDataProvider ( this, new JLabel () );
+    }
+
+    /**
+     * Returns new {@link InterfaceTreeDataProvider} for the {@link #root} {@link Component}.
+     *
+     * @return new {@link InterfaceTreeDataProvider} for the {@link #root} {@link Component}
+     */
+    @NotNull
+    protected InterfaceTreeDataProvider createDataProvider ()
+    {
+        return new InterfaceTreeDataProvider ( this, root );
     }
 
     @Override
@@ -128,16 +205,17 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                 {
                     hoverHighlighter.uninstall ();
                 }
-                if ( current != null && canHighlight ( current.getUserObject () ) )
+                final Component currentComponent = current != null ? current.getUserObject () : null;
+                if ( currentComponent != null && canHighlight ( currentComponent ) )
                 {
-                    hoverHighlighter.install ( current.getUserObject () );
+                    hoverHighlighter.install ( currentComponent );
                 }
             }
         } );
     }
 
     @Override
-    public void valueChanged ( final TreeSelectionEvent e )
+    public void valueChanged ( @NotNull final TreeSelectionEvent e )
     {
         // Separating action from the tree selection makes UI more responsive
         CoreSwingUtils.invokeLater ( new Runnable ()
@@ -156,19 +234,22 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
                 for ( final InterfaceTreeNode node : selected )
                 {
                     final Component component = node.getUserObject ();
-                    final ComponentHighlighter prevHighlighter = prevHighlighters.get ( component );
-                    if ( prevHighlighter != null )
+                    if ( component != null )
                     {
-                        // Preserving existing highlighter
-                        selectedHighlighters.put ( component, prevHighlighter );
-                        prevHighlighters.remove ( component );
-                    }
-                    else if ( canHighlight ( component ) )
-                    {
-                        // Adding new highlighter
-                        final ComponentHighlighter newHighlighter = new ComponentHighlighter ();
-                        selectedHighlighters.put ( component, newHighlighter );
-                        newHighlighter.install ( component );
+                        final ComponentHighlighter prevHighlighter = prevHighlighters.get ( component );
+                        if ( prevHighlighter != null )
+                        {
+                            // Preserving existing highlighter
+                            selectedHighlighters.put ( component, prevHighlighter );
+                            prevHighlighters.remove ( component );
+                        }
+                        else if ( canHighlight ( component ) )
+                        {
+                            // Adding new highlighter
+                            final ComponentHighlighter newHighlighter = new ComponentHighlighter ();
+                            selectedHighlighters.put ( component, newHighlighter );
+                            newHighlighter.install ( component );
+                        }
                     }
                 }
 
@@ -187,7 +268,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      * @param component component to be highlighted
      * @return {@code true} if component can be highlighted, {@code false} otherwise
      */
-    public boolean canHighlight ( final Component component )
+    public boolean canHighlight ( @Nullable final Component component )
     {
         return component != null && component.isShowing () && !( component instanceof Window );
     }
@@ -197,6 +278,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      *
      * @return root component
      */
+    @Nullable
     public Component getRootComponent ()
     {
         return getDataProvider ().getRoot ().getUserObject ();
@@ -207,7 +289,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      *
      * @param root root component
      */
-    public void setRootComponent ( final Component root )
+    public void setRootComponent ( @Nullable final Component root )
     {
         setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
     }
@@ -217,10 +299,11 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      *
      * @param component component to navigate to
      */
-    public void navigate ( final Component component )
+    public void navigate ( @Nullable final Component component )
     {
-        final String nodeId = Integer.toString ( component.hashCode () );
-        final InterfaceTreeNode node = findNode ( nodeId );
+        final InterfaceTreeNode node = component != null ?
+                findNode ( Integer.toString ( component.hashCode () ) ) :
+                getRootNode ();
         if ( node != null )
         {
             expandNode ( node );
@@ -234,9 +317,11 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
      *
      * @param component component to expand to
      */
-    public void expand ( final Component component )
+    public void expand ( @Nullable final Component component )
     {
-        final InterfaceTreeNode node = findNode ( Integer.toString ( component.hashCode () ) );
+        final InterfaceTreeNode node = component != null ?
+                findNode ( Integer.toString ( component.hashCode () ) ) :
+                getRootNode ();
         if ( node != null )
         {
             expandNode ( node );

@@ -18,7 +18,6 @@
 package com.alee.demo.content.data.tree;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.laf.scroll.WebScrollPane;
@@ -34,7 +33,7 @@ import java.util.List;
  */
 public class WebFileTreeExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

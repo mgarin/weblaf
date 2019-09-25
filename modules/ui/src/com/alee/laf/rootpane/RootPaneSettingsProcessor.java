@@ -17,6 +17,7 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
@@ -53,7 +54,7 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
     /**
      * {@link VisibilityBehavior } for updating {@link JRootPane}'s {@link Window} listeners appropriately.
      */
-    protected transient VisibilityBehavior windowVisibilityBehavior;
+    protected transient VisibilityBehavior<Window> windowVisibilityBehavior;
 
     /**
      * Constructs new {@link RootPaneSettingsProcessor}.
@@ -104,17 +105,17 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
         /**
          * Ensure listeners are only used when {@link Window} is displayed.
          */
-        windowVisibilityBehavior = new VisibilityBehavior ( window, true )
+        windowVisibilityBehavior = new VisibilityBehavior<Window> ( window, true )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final Window window )
             {
                 window.addComponentListener ( componentListener );
                 window.addWindowStateListener ( windowStateListener );
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final Window window )
             {
                 window.removeWindowStateListener ( windowStateListener );
                 window.removeComponentListener ( componentListener );

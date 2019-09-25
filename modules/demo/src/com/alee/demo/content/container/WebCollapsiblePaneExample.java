@@ -18,7 +18,6 @@
 package com.alee.demo.content.container;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.api.data.BoxOrientation;
 import com.alee.demo.api.example.*;
 import com.alee.demo.skin.DemoIcons;
@@ -38,7 +37,7 @@ import java.util.List;
  */
 public class WebCollapsiblePaneExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

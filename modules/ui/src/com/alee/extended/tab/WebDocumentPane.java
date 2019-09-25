@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.panel.WebPanel;
@@ -24,7 +25,6 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.managers.drag.DragManager;
 import com.alee.managers.settings.Configuration;
-import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.StyleId;
@@ -55,7 +55,7 @@ import java.util.Map;
  * @see SplitData
  * @see DocumentData
  */
-public class WebDocumentPane<T extends DocumentData> extends WebPanel implements DocumentPaneEventMethods<T>, SettingsMethods
+public class WebDocumentPane<T extends DocumentData> extends WebPanel implements DocumentPaneEventMethods<T>
 {
     /**
      * todo 1. Separate UI and make use of styling system
@@ -292,16 +292,16 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         dragViewHandler = new DocumentDragViewHandler ( this );
 
         // Special behavior to keep view handler only while document pane is visible
-        new VisibilityBehavior ( this )
+        new VisibilityBehavior<WebDocumentPane<T>> ( this )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final WebDocumentPane<T> component )
             {
                 DragManager.registerViewHandler ( dragViewHandler );
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final WebDocumentPane<T> component )
             {
                 DragManager.unregisterViewHandler ( dragViewHandler );
             }

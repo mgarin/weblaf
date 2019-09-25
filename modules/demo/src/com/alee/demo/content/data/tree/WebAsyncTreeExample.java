@@ -18,7 +18,6 @@
 package com.alee.demo.content.data.tree;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -39,7 +38,7 @@ import java.util.List;
  */
 public class WebAsyncTreeExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

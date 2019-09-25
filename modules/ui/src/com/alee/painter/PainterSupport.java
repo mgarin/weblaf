@@ -35,6 +35,7 @@ import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import java.awt.*;
 
 /**
@@ -329,11 +330,15 @@ public final class PainterSupport
      */
     public static void setMargin ( @NotNull final JComponent component, @Nullable final Insets margin )
     {
-        // Updating margin cache
-        final Insets oldMargin = margins.set ( component, margin );
+        final Insets oldMargin = margins.get ( component );
+        if ( oldMargin == null || oldMargin instanceof UIResource || !( margin instanceof UIResource ) )
+        {
+            // Updating margin cache
+            margins.set ( component, margin );
 
-        // Notifying everyone about component margin changes
-        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_MARGIN_PROPERTY, oldMargin, margin );
+            // Notifying everyone about component margin changes
+            SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_MARGIN_PROPERTY, oldMargin, margin );
+        }
     }
 
     /**
@@ -395,11 +400,15 @@ public final class PainterSupport
      */
     public static void setPadding ( @NotNull final JComponent component, @Nullable final Insets padding )
     {
-        // Updating padding cache
-        final Insets oldPadding = paddings.set ( component, padding );
+        final Insets oldPadding = paddings.get ( component );
+        if ( oldPadding == null || oldPadding instanceof UIResource || !( padding instanceof UIResource ) )
+        {
+            // Updating padding cache
+            paddings.set ( component, padding );
 
-        // Notifying everyone about component padding changes
-        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_PADDING_PROPERTY, oldPadding, padding );
+            // Notifying everyone about component padding changes
+            SwingUtils.firePropertyChanged ( component, WebLookAndFeel.LAF_PADDING_PROPERTY, oldPadding, padding );
+        }
     }
 
     /**

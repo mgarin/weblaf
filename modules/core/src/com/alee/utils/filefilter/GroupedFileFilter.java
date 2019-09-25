@@ -17,6 +17,8 @@
 
 package com.alee.utils.filefilter;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.RenderingParameters;
 
 import javax.swing.*;
@@ -79,8 +81,6 @@ public class GroupedFileFilter extends AbstractFileFilter
      */
     public GroupedFileFilter ( final AbstractFileFilter defaultFilter, final FilterGroupType filterGroupType, final FileFilter... filters )
     {
-        super ();
-
         // Filters grouping type
         this.filterGroupType = filterGroupType;
 
@@ -95,8 +95,9 @@ public class GroupedFileFilter extends AbstractFileFilter
         }
     }
 
+    @Nullable
     @Override
-    public Icon getIcon ( final RenderingParameters parameters )
+    public Icon getIcon ( @NotNull final RenderingParameters parameters )
     {
         return defaultFilter != null ? defaultFilter.getIcon ( parameters ) : null;
     }
@@ -110,27 +111,31 @@ public class GroupedFileFilter extends AbstractFileFilter
     @Override
     public boolean accept ( final File file )
     {
+        boolean accepted;
         if ( filterGroupType.equals ( FilterGroupType.AND ) )
         {
+            accepted = true;
             for ( final FileFilter filter : filters )
             {
                 if ( filter != null && !filter.accept ( file ) )
                 {
-                    return false;
+                    accepted = false;
+                    break;
                 }
             }
-            return true;
         }
         else
         {
+            accepted = false;
             for ( final FileFilter filter : filters )
             {
                 if ( filter == null || filter.accept ( file ) )
                 {
-                    return true;
+                    accepted = true;
+                    break;
                 }
             }
-            return false;
         }
+        return accepted;
     }
 }

@@ -18,9 +18,11 @@
 package com.alee.extended.inspector;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.IconBridge;
 import com.alee.api.ui.TextBridge;
 import com.alee.extended.inspector.info.*;
+import com.alee.laf.VisibleWindowListener;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
@@ -52,6 +54,11 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      */
 
     /**
+     * Identifier of the root node or basically {@code null} inspected {@link Component}.
+     */
+    public static final String ALL_WINDOWS_ID = "all.windows";
+
+    /**
      * {@link ComponentPreview} for all windows root.
      */
     protected static final ComponentPreview windowsPreview = new WindowsPreview ();
@@ -72,12 +79,18 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
     protected static final ComponentPreview awtComponentPreview = new AWTComponentPreview ();
 
     /**
+     * {@link InterfaceTree} this node is used for.
+     */
+    @NotNull
+    protected transient InterfaceTree tree;
+
+    /**
      * Component state listeners.
      */
     protected transient ComponentAdapter componentAdapter;
     protected transient ContainerAdapter containerAdapter;
     protected transient StyleListener styleListener;
-    protected transient InterfaceTree tree;
+    protected transient VisibleWindowListener visibleWindowListener;
 
     /**
      * Constructs new {@link InterfaceTreeNode}.
@@ -85,7 +98,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      * @param tree      {@link InterfaceTree}
      * @param component {@link Component} this node references
      */
-    public InterfaceTreeNode ( final InterfaceTree tree, final Component component )
+    public InterfaceTreeNode ( @NotNull final InterfaceTree tree, @Nullable final Component component )
     {
         super ( id ( component ), component );
         this.tree = tree;
@@ -95,8 +108,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
     @Override
     protected void setId ()
     {
-        final Component component = getUserObject ();
-        this.id = id ( component );
+        setId ( id ( getUserObject () ) );
     }
 
     /**
@@ -105,19 +117,22 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      * @param component {@link Component} to return {@link InterfaceTreeNode} identifier for
      * @return {@link InterfaceTreeNode} identifier based on the specified {@link Component}
      */
-    private static String id ( final Component component )
+    @NotNull
+    protected static String id ( @Nullable final Component component )
     {
-        return component != null ? Integer.toString ( component.hashCode () ) : "all.windows";
+        return component != null ? Integer.toString ( component.hashCode () ) : ALL_WINDOWS_ID;
     }
 
+    @Nullable
     @Override
-    public Icon getIcon ( final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
+    public Icon getIcon ( @NotNull final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
     {
         return getPreview ().getIcon ( getUserObject () );
     }
 
+    @Nullable
     @Override
-    public String getText ( final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
+    public String getText ( @NotNull final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
     {
         return getPreview ().getText ( getUserObject () );
     }
@@ -130,9 +145,43 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
         // Ensure this is invoked on EDT
         WebLookAndFeel.checkEventDispatchThread ();
 
-        // Ensure this is not a root (all windows) node
+        // Adding listeners depending on the node type
         final Component component = getUserObject ();
-        if ( component != null )
+        if ( component == null )
+        {
+            /**
+             * Visible windows listener.
+             */
+            visibleWindowListener = new VisibleWindowListener ()
+            {
+                @Override
+                public void windowDisplayed ( @NotNull final Window window )
+                {
+                    if ( window.isShowing () )
+                    {
+                        final InterfaceTreeNode childNode = new InterfaceTreeNode ( tree, window );
+                        tree.addChildNode ( InterfaceTreeNode.this, childNode );
+                    }
+                }
+
+                @Override
+                public void windowHidden ( @NotNull final Window window )
+                {
+                    for ( int i = 0; i < InterfaceTreeNode.this.getChildCount (); i++ )
+                    {
+                        final InterfaceTreeNode child = InterfaceTreeNode.this.getChildAt ( i );
+                        if ( child.getUserObject () == window )
+                        {
+                            child.uninstall ();
+                            tree.removeNode ( child );
+                            break;
+                        }
+                    }
+                }
+            };
+            WebLookAndFeel.addVisibleWindowListener ( tree, visibleWindowListener );
+        }
+        else
         {
             /**
              * Node component listener.
@@ -140,7 +189,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
             componentAdapter = new ComponentAdapter ()
             {
                 @Override
-                public void componentResized ( final ComponentEvent e )
+                public void componentResized ( @NotNull final ComponentEvent e )
                 {
                     /**
                      * We don't need to react to size changes.
@@ -149,7 +198,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
                 }
 
                 @Override
-                public void componentMoved ( final ComponentEvent e )
+                public void componentMoved ( @NotNull final ComponentEvent e )
                 {
                     /**
                      * We don't need to react to location changes.
@@ -158,13 +207,13 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
                 }
 
                 @Override
-                public void componentShown ( final ComponentEvent e )
+                public void componentShown ( @NotNull final ComponentEvent e )
                 {
                     updateNodeLater ( tree );
                 }
 
                 @Override
-                public void componentHidden ( final ComponentEvent e )
+                public void componentHidden ( @NotNull final ComponentEvent e )
                 {
                     updateNodeLater ( tree );
                 }
@@ -186,7 +235,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
                     containerAdapter = new ContainerAdapter ()
                     {
                         @Override
-                        public void componentAdded ( final ContainerEvent e )
+                        public void componentAdded ( @NotNull final ContainerEvent e )
                         {
                             final Component child = e.getChild ();
                             if ( tree.accept ( child ) )
@@ -197,7 +246,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
                         }
 
                         @Override
-                        public void componentRemoved ( final ContainerEvent e )
+                        public void componentRemoved ( @NotNull final ContainerEvent e )
                         {
                             final Component child = e.getChild ();
                             if ( tree.accept ( child ) )
@@ -251,11 +300,10 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
             child.uninstall ();
         }
 
-        // Ensure this is not a root (all windows) node
+        // Removing all active listeners
         final Component component = getUserObject ();
         if ( component != null )
         {
-            // Destroying this node
             component.removeComponentListener ( componentAdapter );
             if ( containerAdapter != null )
             {
@@ -269,6 +317,11 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
             containerAdapter = null;
             styleListener = null;
         }
+        else
+        {
+            WebLookAndFeel.removeVisibleWindowListener ( tree, visibleWindowListener );
+            visibleWindowListener = null;
+        }
     }
 
     /**
@@ -278,6 +331,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      */
     protected ComponentPreview getPreview ()
     {
+        final ComponentPreview preview;
         final Component component = getUserObject ();
         if ( component != null )
         {
@@ -285,22 +339,23 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
             {
                 if ( StyleManager.isSupported ( ( JComponent ) component ) )
                 {
-                    return wComponentPreview;
+                    preview = wComponentPreview;
                 }
                 else
                 {
-                    return jComponentPreview;
+                    preview = jComponentPreview;
                 }
             }
             else
             {
-                return awtComponentPreview;
+                preview = awtComponentPreview;
             }
         }
         else
         {
-            return windowsPreview;
+            preview = windowsPreview;
         }
+        return preview;
     }
 
     /**

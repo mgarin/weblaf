@@ -4,6 +4,9 @@
 
     <!-- Toolbar -->
     <style type="toolbar" padding="2">
+        <component>
+            <layout class="ToolBarLayout$UIResource" />
+        </component>
         <painter>
             <decorations>
                 <decoration>

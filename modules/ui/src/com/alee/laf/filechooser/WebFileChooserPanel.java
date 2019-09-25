@@ -17,6 +17,8 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Supplier;
 import com.alee.api.ui.RenderingParameters;
@@ -2389,8 +2391,9 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected class HiddenFilesFilter extends NonHiddenFilter
     {
+        @Nullable
         @Override
-        public Icon getIcon ( final RenderingParameters parameters )
+        public Icon getIcon ( @NotNull final RenderingParameters parameters )
         {
             return null;
         }

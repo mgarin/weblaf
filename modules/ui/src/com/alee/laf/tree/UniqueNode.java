@@ -19,7 +19,6 @@ package com.alee.laf.tree;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 
@@ -84,7 +83,7 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
      *
      * @return node ID
      */
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

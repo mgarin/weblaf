@@ -19,15 +19,13 @@ package com.alee.utils.xml;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import java.io.Serializable;
-
 /**
  * Supported {@link Resource} location types.
  *
  * @author Mikle Garin
  */
 @XStreamAlias ( "ResourceLocation" )
-public enum ResourceLocation implements Serializable
+public enum ResourceLocation
 {
     /**
      * Resource referenced through direct URL address.

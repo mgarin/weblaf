@@ -18,7 +18,6 @@
 package com.alee.demo.content.button;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.layout.VerticalFlowLayout;
@@ -35,7 +34,7 @@ import java.util.List;
  */
 public class WebTristateCheckBoxExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

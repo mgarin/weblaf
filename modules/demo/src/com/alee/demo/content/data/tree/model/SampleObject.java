@@ -17,6 +17,8 @@
 
 package com.alee.demo.content.data.tree.model;
 
+import com.alee.api.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -29,11 +31,13 @@ public class SampleObject implements Cloneable, Serializable
     /**
      * {@link SampleObject} type.
      */
-    protected SampleObjectType type;
+    @NotNull
+    protected final SampleObjectType type;
 
     /**
      * {@link SampleObject} title.
      */
+    @NotNull
     protected String title;
 
     /**
@@ -42,7 +46,7 @@ public class SampleObject implements Cloneable, Serializable
      * @param type  {@link SampleObject} type
      * @param title {@link SampleObject} title
      */
-    public SampleObject ( final SampleObjectType type, final String title )
+    public SampleObject ( @NotNull final SampleObjectType type, @NotNull final String title )
     {
         this.type = type;
         this.title = title;
@@ -53,19 +57,10 @@ public class SampleObject implements Cloneable, Serializable
      *
      * @return {@link SampleObject} type
      */
+    @NotNull
     public SampleObjectType getType ()
     {
         return type;
-    }
-
-    /**
-     * Changes {@link SampleObject} type.
-     *
-     * @param type new {@link SampleObject} type
-     */
-    public void setType ( final SampleObjectType type )
-    {
-        this.type = type;
     }
 
     /**
@@ -73,6 +68,7 @@ public class SampleObject implements Cloneable, Serializable
      *
      * @return {@link SampleObject} title
      */
+    @NotNull
     public String getTitle ()
     {
         return title;
@@ -83,7 +79,7 @@ public class SampleObject implements Cloneable, Serializable
      *
      * @param title new {@link SampleObject} title
      */
-    public void setTitle ( final String title )
+    public void setTitle ( @NotNull final String title )
     {
         this.title = title;
     }

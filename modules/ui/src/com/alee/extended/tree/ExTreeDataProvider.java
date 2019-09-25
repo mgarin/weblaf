@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.compare.Filter;
 
@@ -43,6 +45,7 @@ public interface ExTreeDataProvider<N extends UniqueNode> extends Serializable
      * @return root {@link UniqueNode}
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
+    @NotNull
     public N getRoot ();
 
     /**
@@ -53,7 +56,8 @@ public interface ExTreeDataProvider<N extends UniqueNode> extends Serializable
      * @return child {@link UniqueNode}s for the specified parent {@link UniqueNode}
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public List<N> getChildren ( N parent );
+    @NotNull
+    public List<N> getChildren ( @NotNull N parent );
 
     /**
      * Returns {@link Filter} that will be used for the specified {@link UniqueNode} children.
@@ -66,7 +70,8 @@ public interface ExTreeDataProvider<N extends UniqueNode> extends Serializable
      * @return {@link Filter} that will be used for the specified {@link UniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Filter<N> getChildrenFilter ( N parent, List<N> children );
+    @Nullable
+    public Filter<N> getChildrenFilter ( @NotNull N parent, @NotNull List<N> children );
 
     /**
      * Returns {@link Comparator} that will be used for the specified {@link UniqueNode} children.
@@ -79,5 +84,6 @@ public interface ExTreeDataProvider<N extends UniqueNode> extends Serializable
      * @return {@link Comparator} that will be used for the specified {@link UniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Comparator<N> getChildrenComparator ( N parent, List<N> children );
+    @Nullable
+    public Comparator<N> getChildrenComparator ( @NotNull N parent, @NotNull List<N> children );
 }

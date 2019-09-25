@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.tree.model;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneBehavior;
 import com.alee.api.clone.RecursiveClone;
@@ -49,7 +50,7 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
      * @param type  {@link SampleObject} type
      * @param title {@link SampleObject} title
      */
-    public SampleNode ( final String id, final SampleObjectType type, final String title )
+    public SampleNode ( @NotNull final String id, @NotNull final SampleObjectType type, @NotNull final String title )
     {
         this ( id, new SampleObject ( type, title ) );
     }
@@ -60,10 +61,22 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
      * @param id         {@link SampleNode} identifier
      * @param userObject node {@link Object}
      */
-    public SampleNode ( final String id, final SampleObject userObject )
+    public SampleNode ( @NotNull final String id, @NotNull final SampleObject userObject )
     {
         super ( id, userObject );
         this.time = 0;
+    }
+
+    @NotNull
+    @Override
+    public SampleObject getUserObject ()
+    {
+        final SampleObject object = super.getUserObject ();
+        if ( object == null )
+        {
+            throw new RuntimeException ( "Node object must be specified" );
+        }
+        return object;
     }
 
     /**
@@ -91,37 +104,38 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
      *
      * @return node title
      */
+    @NotNull
     public String getTitle ()
     {
         return getUserObject ().getTitle ();
     }
 
+    @NotNull
     @Override
-    public Icon getNodeIcon ( final TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>> parameters )
+    public Icon getNodeIcon ( @NotNull final TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>> parameters )
     {
+        final Icon icon;
         switch ( getUserObject ().getType () )
         {
             case root:
-            {
-                return parameters.isExpanded () ? Icons.rootOpen : Icons.root;
-            }
+                icon = parameters.isExpanded () ? Icons.rootOpen : Icons.root;
+                break;
+
             case folder:
-            {
-                return parameters.isExpanded () ? Icons.folderOpen : Icons.folder;
-            }
+                icon = parameters.isExpanded () ? Icons.folderOpen : Icons.folder;
+                break;
+
             case leaf:
-            {
-                return Icons.leaf;
-            }
             default:
-            {
-                throw new RuntimeException ( "Unknown node type" );
-            }
+                icon = Icons.leaf;
+                break;
         }
+        return icon;
     }
 
+    @Nullable
     @Override
-    public String getText ( final TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>> parameters )
+    public String getText ( @NotNull final TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>> parameters )
     {
         return getTitle ();
     }

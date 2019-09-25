@@ -26,6 +26,7 @@ import com.alee.painter.decoration.Stateful;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class TabContainer extends WebPanel implements Stateful, UIResource
      */
     public TabContainer ( @NotNull final JTabbedPane tabbedPane, @NotNull final JViewport viewport )
     {
-        super ( StyleId.tabbedpaneTabContainer.at ( viewport ) );
+        super ( StyleId.tabbedpaneTabContainer.at ( viewport ), ( LayoutManager ) null );
         this.tabbedPane = tabbedPane;
     }
 

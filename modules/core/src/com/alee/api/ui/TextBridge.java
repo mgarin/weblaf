@@ -17,6 +17,9 @@
 
 package com.alee.api.ui;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 /**
  * Base interface for any classes that can return text for rendering operations.
  *
@@ -32,5 +35,6 @@ public interface TextBridge<P extends RenderingParameters> extends RenderingBrid
      * @param parameters {@link RenderingParameters}
      * @return text based on provided {@link RenderingParameters}
      */
-    public String getText ( P parameters );
+    @Nullable
+    public String getText ( @NotNull P parameters );
 }

@@ -35,7 +35,7 @@ import javax.swing.plaf.ComponentUI;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractMenuBarDescriptor<C extends JMenuBar, U extends WebMenuBarUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractMenuBarDescriptor<C extends JMenuBar, U extends WMenuBarUI> extends AbstractComponentDescriptor<C, U>
 {
     /**
      * Constructs new {@link AbstractMenuBarDescriptor}.

@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.dock.data.DockableElement;
 import com.alee.extended.dock.data.ResizeData;
@@ -240,20 +241,20 @@ public class DockablePaneGlassLayer extends JComponent
         final FrameDragViewHandler dragViewHandler = new FrameDragViewHandler ( dockablePane );
 
         // Visibility listener
-        new VisibilityBehavior ( this )
+        new VisibilityBehavior<DockablePaneGlassLayer> ( this )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final DockablePaneGlassLayer component )
             {
-                DragManager.addDragListener ( DockablePaneGlassLayer.this, dragListener );
+                DragManager.addDragListener ( component, dragListener );
                 DragManager.registerViewHandler ( dragViewHandler );
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final DockablePaneGlassLayer component )
             {
                 DragManager.unregisterViewHandler ( dragViewHandler );
-                DragManager.removeDragListener ( DockablePaneGlassLayer.this, dragListener );
+                DragManager.removeDragListener ( component, dragListener );
             }
         }.install ();
     }

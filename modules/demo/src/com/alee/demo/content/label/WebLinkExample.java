@@ -18,7 +18,6 @@
 package com.alee.demo.content.label;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.WebLafWikiPage;
@@ -40,7 +39,7 @@ import java.util.List;
  */
 public class WebLinkExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

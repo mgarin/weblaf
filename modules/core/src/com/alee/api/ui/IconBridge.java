@@ -17,6 +17,9 @@
 
 package com.alee.api.ui;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 
 /**
@@ -34,5 +37,6 @@ public interface IconBridge<P extends RenderingParameters> extends RenderingBrid
      * @param parameters {@link RenderingParameters}
      * @return {@link Icon} based on provided {@link RenderingParameters}
      */
-    public Icon getIcon ( P parameters );
+    @Nullable
+    public Icon getIcon ( @NotNull P parameters );
 }

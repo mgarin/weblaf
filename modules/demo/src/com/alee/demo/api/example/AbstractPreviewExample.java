@@ -116,7 +116,8 @@ public abstract class AbstractPreviewExample extends AbstractExample
             }
 
             // Equalizing preview elements
-            SwingUtils.equalizeComponentsWidth ( TEXT_PROPERTY, components );
+            // todo Replace with a better implementation, property doesn't work for most layouts
+            SwingUtils.equalizeComponentsWidth ( components );
         }
         return examplesPane;
     }

@@ -176,16 +176,18 @@ public class Resource implements Serializable
     @Override
     public boolean equals ( final Object object )
     {
+        final boolean equals;
         if ( object != null && object instanceof Resource )
         {
             final Resource other = ( Resource ) object;
-            return other.location == location &&
+            equals = other.location == location &&
                     Objects.equals ( other.className, className ) &&
                     Objects.equals ( other.path, path );
         }
         else
         {
-            return false;
+            equals = false;
         }
+        return equals;
     }
 }

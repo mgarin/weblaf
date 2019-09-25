@@ -28,6 +28,7 @@ import com.alee.laf.edt.ExceptionNonEventThreadHandler;
 import com.alee.laf.edt.NonEventThreadHandler;
 import com.alee.laf.list.ListCellParameters;
 import com.alee.laf.list.WebListCellRenderer;
+import com.alee.laf.menu.WMenuBarInputListener;
 import com.alee.laf.splitpane.WSplitPaneInputListener;
 import com.alee.laf.tabbedpane.WTabbedPaneInputListener;
 import com.alee.managers.UIManagers;
@@ -491,6 +492,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Fonts
         initializeFonts ( table );
+
+        // Menu bar
+        table.put ( "MenuBar.windowBindings", new Object[]{
+                "F10", WMenuBarInputListener.Action.TAKE_FOCUS
+        } );
 
         // Button
         table.put ( "Button.showMnemonics", Boolean.TRUE );

@@ -106,16 +106,16 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         container.add ( scrollPane, BorderLayout.CENTER );
 
         // Example visibility behavior
-        new VisibilityBehavior ( container )
+        new VisibilityBehavior<WebPanel> ( container )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final WebPanel component )
             {
                 AbstractExample.this.displayed ();
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final WebPanel component )
             {
                 AbstractExample.this.hidden ();
             }

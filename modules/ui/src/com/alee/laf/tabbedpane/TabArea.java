@@ -26,6 +26,7 @@ import com.alee.painter.decoration.Stateful;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class TabArea extends WebPanel implements Stateful, UIResource
      */
     public TabArea ( @NotNull final JTabbedPane tabbedPane )
     {
-        super ( StyleId.tabbedpaneTabArea.at ( tabbedPane ) );
+        super ( StyleId.tabbedpaneTabArea.at ( tabbedPane ), ( LayoutManager ) null );
         this.tabbedPane = tabbedPane;
     }
 

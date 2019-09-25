@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.utils.CollectionUtils;
@@ -38,6 +40,7 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
      * It is {@code transient} as it can only be set through code.
      * Override {@link #getChildrenComparator(UniqueNode, List)} method to provide parent-related {@link Comparator}.
      */
+    @Nullable
     protected transient Comparator<N> comparator = null;
 
     /**
@@ -45,10 +48,11 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
      * It is {@code transient} as it can only be set through code.
      * Override {@link #getChildrenFilter(UniqueNode, List)} method to provide parent-related {@link Filter}.
      */
+    @Nullable
     protected transient Filter<N> filter = null;
 
     @Override
-    public Comparator<N> getChildrenComparator ( final N parent, final List<N> children )
+    public Comparator<N> getChildrenComparator ( @NotNull final N parent, @NotNull final List<N> children )
     {
         return comparator;
     }
@@ -58,13 +62,13 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
      *
      * @param comparator children comparator for all nodes
      */
-    public void setChildrenComparator ( final Comparator<N> comparator )
+    public void setChildrenComparator ( @Nullable final Comparator<N> comparator )
     {
         this.comparator = comparator;
     }
 
     @Override
-    public Filter<N> getChildrenFilter ( final N parent, final List<N> children )
+    public Filter<N> getChildrenFilter ( @NotNull final N parent, @NotNull final List<N> children )
     {
         return filter;
     }
@@ -74,7 +78,7 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
      *
      * @param filter children filter for all nodes
      */
-    public void setChildrenFilter ( final Filter<N> filter )
+    public void setChildrenFilter ( @Nullable final Filter<N> filter )
     {
         this.filter = filter;
     }
@@ -84,6 +88,7 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
      *
      * @return plain {@link WebTreeModel} with data from this {@link AbstractExTreeDataProvider} implementation
      */
+    @NotNull
     public WebTreeModel<N> createPlainModel ()
     {
         final N root = getRoot ();
@@ -96,7 +101,7 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
      *
      * @param parent parent {@link UniqueNode} to load all children for recursively
      */
-    protected void loadPlainChildren ( final N parent )
+    protected void loadPlainChildren ( @NotNull final N parent )
     {
         final List<N> children = getChildren ( parent );
         final List<N> filtered = CollectionUtils.filter ( children, getChildrenFilter ( parent, children ) );

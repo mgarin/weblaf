@@ -28,6 +28,10 @@ import javax.swing.*;
  */
 public interface ExampleElement extends Identifiable
 {
+    @NotNull
+    @Override
+    public String getId ();
+
     /**
      * Returns parent group ID.
      *

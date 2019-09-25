@@ -53,6 +53,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see JMenuBar
+ * @see WMenuBarUI
  * @see WebMenuBarUI
  * @see MenuBarPainter
  */
@@ -918,20 +919,20 @@ public class WebMenuBar extends JMenuBar implements Styleable, Paintable, ShapeM
     /**
      * Returns the look and feel (LaF) object that renders this component.
      *
-     * @return the {@link WebMenuBarUI} object that renders this component
+     * @return the {@link WMenuBarUI} object that renders this component
      */
     @Override
-    public WebMenuBarUI getUI ()
+    public WMenuBarUI getUI ()
     {
-        return ( WebMenuBarUI ) super.getUI ();
+        return ( WMenuBarUI ) super.getUI ();
     }
 
     /**
      * Sets the LaF object that renders this component.
      *
-     * @param ui {@link WebMenuBarUI}
+     * @param ui {@link WMenuBarUI}
      */
-    public void setUI ( final WebMenuBarUI ui )
+    public void setUI ( final WMenuBarUI ui )
     {
         super.setUI ( ui );
     }

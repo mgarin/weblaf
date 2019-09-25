@@ -15,31 +15,21 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.animation;
+package com.alee.laf.menu;
 
-import com.alee.api.annotations.NotNull;
-import com.alee.demo.api.example.AbstractExampleGroup;
-import com.alee.utils.CollectionUtils;
+import com.alee.laf.UIInputListener;
 
-import java.util.List;
+import javax.swing.*;
 
 /**
+ * Base interface for {@link JMenuBar} UI input listeners.
+ *
+ * @param <C> {@link JComponent} type
  * @author Mikle Garin
  */
-public class AnimationGroup extends AbstractExampleGroup
+public interface MenuBarInputListener<C extends JMenuBar> extends UIInputListener<C>
 {
-    @NotNull
-    @Override
-    public String getId ()
-    {
-        return "animation";
-    }
-
-    @Override
-    protected List<Class> getExampleClasses ()
-    {
-        return CollectionUtils.<Class>asList (
-                EasingExample.class
-        );
-    }
+    /**
+     * Doesn't add anything to {@link UIInputListener}.
+     */
 }

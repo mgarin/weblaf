@@ -50,6 +50,7 @@ import com.alee.extended.split.MultiSplitPaneDescriptor;
 import com.alee.extended.split.MultiSplitPaneDividerDescriptor;
 import com.alee.extended.statusbar.MemoryBarBackground;
 import com.alee.extended.statusbar.StatusBarDescriptor;
+import com.alee.extended.statusbar.StatusBarLayout;
 import com.alee.extended.syntax.SyntaxPanelPainter;
 import com.alee.extended.window.PopOverPainter;
 import com.alee.extended.window.PopupDescriptor;
@@ -91,6 +92,7 @@ import com.alee.laf.table.TableHeaderDescriptor;
 import com.alee.laf.text.*;
 import com.alee.laf.toolbar.ToolBarDescriptor;
 import com.alee.laf.toolbar.ToolBarSeparatorDescriptor;
+import com.alee.laf.toolbar.ToolbarLayout;
 import com.alee.laf.tooltip.StyledToolTipText;
 import com.alee.laf.tooltip.ToolTipDescriptor;
 import com.alee.laf.tooltip.ToolTipText;
@@ -356,6 +358,12 @@ public final class StyleManager
         XmlUtils.processAnnotations ( BreadcrumbPasswordFieldPainter.class );
 
         // Layout aliases
+        XmlUtils.processAnnotations ( ToolbarLayout.class );
+        XmlUtils.processAnnotations ( ToolbarLayout.UIResource.class );
+        XmlUtils.processAnnotations ( MenuBarLayout.class );
+        XmlUtils.processAnnotations ( MenuBarLayout.UIResource.class );
+        XmlUtils.processAnnotations ( StatusBarLayout.class );
+        XmlUtils.processAnnotations ( StatusBarLayout.UIResource.class );
         XmlUtils.processAnnotations ( ScrollPaneLayout.class );
         XmlUtils.processAnnotations ( ScrollPaneLayout.UIResource.class );
         XmlUtils.processAnnotations ( ViewportLayout.class );

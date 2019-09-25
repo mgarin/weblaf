@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Supplier;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.VisibilityBehavior;
@@ -59,7 +60,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
     protected transient ComponentMoveBehavior moveAdapter;
     protected transient WindowFocusListener focusListener;
     protected transient ComponentAdapter resizeAdapter;
-    protected transient VisibilityBehavior windowVisibilityBehavior;
+    protected transient VisibilityBehavior<C> windowVisibilityBehavior;
 
     /**
      * Whether or not popover is focused.
@@ -122,15 +123,17 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
             @Override
             protected Rectangle getDragStartBounds ( final MouseEvent e )
             {
+                final Rectangle bounds;
                 if ( popOver.isMovable () )
                 {
                     final int sw = getShadeWidth ();
-                    return new Rectangle ( sw, sw, component.getWidth () - sw * 2, component.getHeight () - sw * 2 );
+                    bounds = new Rectangle ( sw, sw, component.getWidth () - sw * 2, component.getHeight () - sw * 2 );
                 }
                 else
                 {
-                    return null;
+                    bounds = null;
                 }
+                return bounds;
             }
 
             @Override
@@ -170,10 +173,10 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
 
         // Installs behavior that informs L&F about window visibility changes
         // todo Remove this behavior as soon as this painter extends RootPanePainter
-        windowVisibilityBehavior = new VisibilityBehavior ( component )
+        windowVisibilityBehavior = new VisibilityBehavior<C> ( component )
         {
             @Override
-            public void displayed ()
+            protected void displayed ( @NotNull final C component )
             {
                 /**
                  * Notifying popover listeners.
@@ -189,7 +192,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
             }
 
             @Override
-            public void hidden ()
+            protected void hidden ( @NotNull final C component )
             {
                 /**
                  * Notifying popover listeners.

@@ -18,7 +18,6 @@
 package com.alee.demo.content.menu;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
@@ -42,7 +41,7 @@ import java.util.List;
  */
 public class JMenuBarExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

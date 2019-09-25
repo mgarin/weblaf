@@ -18,7 +18,6 @@
 package com.alee.demo.content.data.tree;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.content.SampleData;
 import com.alee.demo.content.data.tree.model.SampleNode;
@@ -37,7 +36,7 @@ import java.util.List;
  */
 public class WebExTreeExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

@@ -18,7 +18,6 @@
 package com.alee.demo.content.data;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.demo.content.data.combobox.ComboboxesGroup;
 import com.alee.demo.content.data.grid.GridsGroup;
@@ -33,7 +32,7 @@ import java.util.List;
  */
 public class DataGroup extends AbstractExampleGroup
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

@@ -22,7 +22,6 @@ import com.alee.api.annotations.Nullable;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.extended.layout.TableLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.StyleId;
@@ -73,17 +72,15 @@ public abstract class AbstractTitledPreview extends AbstractPreview
     @Override
     protected JComponent createPreview ( @NotNull final List<Preview> previews, final int index )
     {
-        final double[] columns = new double[]{ TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.FILL };
-        final double[] rows = new double[]{ TableLayout.PREFERRED };
-        final TableLayout layout = new TableLayout ( columns, rows, 0, 0 );
+        final HorizontalFlowLayout layout = new HorizontalFlowLayout ( 0, true );
         previewPanel = new PreviewPanel ( previews.get ( index ).getFeatureState (), layout );
 
-        previewPanel.add ( createPreviewContent (), "2,0" );
-
-        previewPanel.add ( createSeparator (), "1,0" );
-
         previewInfo = createPreviewInfo ();
-        previewPanel.add ( previewInfo, "0,0" );
+        previewPanel.add ( previewInfo );
+
+        previewPanel.add ( createSeparator () );
+
+        previewPanel.add ( createPreviewContent () );
 
         return previewPanel;
     }

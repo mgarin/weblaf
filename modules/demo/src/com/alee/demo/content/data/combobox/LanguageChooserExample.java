@@ -18,7 +18,6 @@
 package com.alee.demo.content.data.combobox;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.language.LanguageChooser;
 import com.alee.managers.style.StyleId;
@@ -32,7 +31,7 @@ import java.util.List;
  */
 public class LanguageChooserExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

@@ -31,13 +31,13 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class MenuBarDescriptor extends AbstractMenuBarDescriptor<JMenuBar, WebMenuBarUI>
+public final class MenuBarDescriptor extends AbstractMenuBarDescriptor<JMenuBar, WMenuBarUI>
 {
     /**
      * Constructs new descriptor for {@link JMenuBar} component.
      */
     public MenuBarDescriptor ()
     {
-        super ( "menubar", JMenuBar.class, "MenuBarUI", WebMenuBarUI.class, WebMenuBarUI.class, StyleId.menubar );
+        super ( "menubar", JMenuBar.class, "MenuBarUI", WMenuBarUI.class, WebMenuBarUI.class, StyleId.menubar );
     }
 }

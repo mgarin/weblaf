@@ -17,6 +17,8 @@
 
 package com.alee.api.ui;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.ChildStyleId;
 
 /**
@@ -34,5 +36,6 @@ public interface ChildStyleIdBridge<P extends RenderingParameters> extends Rende
      * @param parameters {@link RenderingParameters}
      * @return {@link ChildStyleId} based on provided {@link RenderingParameters}.
      */
-    public ChildStyleId getChildStyleId ( P parameters );
+    @Nullable
+    public ChildStyleId getChildStyleId ( @NotNull P parameters );
 }

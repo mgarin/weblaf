@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.data.tree.model;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 import com.alee.utils.CollectionUtils;
@@ -31,14 +32,16 @@ import java.util.List;
  */
 public class SampleCustomizedExDataProvider extends AbstractExTreeDataProvider<SampleNode>
 {
+    @NotNull
     @Override
     public SampleNode getRoot ()
     {
         return new SampleNode ( "root", SampleObjectType.root, "Checkbox tree" );
     }
 
+    @NotNull
     @Override
-    public List<SampleNode> getChildren ( final SampleNode parent )
+    public List<SampleNode> getChildren ( @NotNull final SampleNode parent )
     {
         final List<SampleNode> children;
         if ( Objects.equals ( parent.getId (), "root" ) )

@@ -188,6 +188,17 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
     }
 
     /**
+     * Adds new {@link WebToolBarSeparator} under {@link ToolbarLayout#START} constraints with the specified preferred size.
+     *
+     * @param size preferred size
+     */
+    @Override
+    public void addSeparator ( @Nullable final Dimension size )
+    {
+        addSeparator ( ToolbarLayout.START ).setPreferredSize ( size );
+    }
+
+    /**
      * Adds new {@link WebToolBarSeparator} under {@link ToolbarLayout#MIDDLE} constraints.
      *
      * @return added {@link WebToolBarSeparator}

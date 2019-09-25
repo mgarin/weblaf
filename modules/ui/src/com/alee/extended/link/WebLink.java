@@ -19,6 +19,7 @@ package com.alee.extended.link;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CollectionUtils;
@@ -303,7 +304,8 @@ public class WebLink extends WebStyledLabel
                 final String text = action.getText ();
                 if ( text != null )
                 {
-                    setText ( text );
+                    setText ( UILanguageManager.getInitialText ( text ) );
+                    UILanguageManager.registerInitialLanguage ( this, text );
                 }
             }
             listenerList.add ( LinkAction.class, action );

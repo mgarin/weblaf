@@ -17,6 +17,8 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.VisibilityBehavior;
@@ -60,16 +62,19 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     /**
      * Highlighted component.
      */
+    @Nullable
     private transient Component component;
 
     /**
      * Highlighter glasspane.
      */
+    @Nullable
     private transient WebGlassPane glassPane;
 
     /**
      * Highlighted component visibility listener.
      */
+    @Nullable
     private transient VisibilityBehavior visibilityListener;
 
     /**
@@ -87,9 +92,9 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      *
      * @param component component to be highlighted
      */
-    public void install ( final Component component )
+    public void install ( @NotNull final Component component )
     {
-        if ( this.component == null && this.glassPane == null )
+        if ( this.component == null && this.glassPane == null && visibilityListener == null )
         {
             this.component = Objects.requireNonNull ( component, "Component cannot be null" );
 
@@ -103,16 +108,10 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
             // Adding highligthed component listeners
             component.addComponentListener ( this );
             component.addHierarchyBoundsListener ( this );
-            visibilityListener = new VisibilityBehavior ( component )
+            visibilityListener = new VisibilityBehavior<Component> ( component )
             {
                 @Override
-                public void displayed ()
-                {
-                    // Ignored event
-                }
-
-                @Override
-                public void hidden ()
+                protected void hidden ( @NotNull final Component component )
                 {
                     ComponentHighlighter.this.uninstall ();
                 }
@@ -129,7 +128,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      */
     public void uninstall ()
     {
-        if ( component != null && glassPane != null )
+        if ( component != null && glassPane != null && visibilityListener != null )
         {
             // Hiding highlighter from glass pane
             glassPane.hideComponent ( this );
@@ -149,6 +148,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      *
      * @return highlighted component
      */
+    @Nullable
     public Component getComponent ()
     {
         return component;
@@ -195,13 +195,16 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      */
     private void updateBounds ()
     {
-        final Dimension glassPaneSize = glassPane.getSize ();
-        final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
-        final int tipWidth = getTipWidth ();
-        final CompassDirection tipDirection = getTipDirection ( tipWidth, glassPaneSize, componentBounds );
-        final Rectangle tipBounds = getTipBounds ( true, tipWidth, tipDirection, componentBounds );
-        final Rectangle bodyBounds = getBodyBounds ( true, tipWidth, tipDirection, componentBounds );
-        setBounds ( GeometryUtils.getContainingRect ( tipBounds, bodyBounds ) );
+        if ( component != null && glassPane != null )
+        {
+            final Dimension glassPaneSize = glassPane.getSize ();
+            final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
+            final int tipWidth = getTipWidth ();
+            final CompassDirection tipDirection = getTipDirection ( tipWidth, glassPaneSize, componentBounds );
+            final Rectangle tipBounds = getTipBounds ( true, tipWidth, tipDirection, componentBounds );
+            final Rectangle bodyBounds = getBodyBounds ( true, tipWidth, tipDirection, componentBounds );
+            setBounds ( GeometryUtils.getNonNullContainingRect ( tipBounds, bodyBounds ) );
+        }
     }
 
     /**
@@ -224,16 +227,18 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      */
     private CompassDirection getTipDirection ( final int tipWidth, final Dimension glassPaneSize, final Rectangle componentBounds )
     {
+        final CompassDirection direction;
         final boolean fromLeft = componentBounds.x + tipWidth < glassPaneSize.width ||
                 componentBounds.x + componentBounds.width - tipWidth < 0;
         if ( componentBounds.y > sizeTipHeight )
         {
-            return fromLeft ? CompassDirection.northWest : CompassDirection.northEast;
+            direction = fromLeft ? CompassDirection.northWest : CompassDirection.northEast;
         }
         else
         {
-            return fromLeft ? CompassDirection.southWest : CompassDirection.southEast;
+            direction = fromLeft ? CompassDirection.southWest : CompassDirection.southEast;
         }
+        return direction;
     }
 
     /**
@@ -361,10 +366,10 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
                 new Point ( tipBounds.x, tipBounds.y + tipBounds.height )
         };
         final int[] round = new int[]{
-                top || !top && !left && longTip ? 4 : 0,
-                top || !top && left && longTip ? 4 : 0,
-                !top || top && left && longTip ? 4 : 0,
-                !top || top && !left && longTip ? 4 : 0
+                top || !left && longTip ? 4 : 0,
+                top || left && longTip ? 4 : 0,
+                !top || left && longTip ? 4 : 0,
+                !top || !left && longTip ? 4 : 0
         };
         final Shape shape = ShapeUtils.createRoundedShape ( points, round );
 

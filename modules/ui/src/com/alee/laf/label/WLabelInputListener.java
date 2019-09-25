@@ -124,7 +124,7 @@ public class WLabelInputListener<C extends JLabel, U extends WLabelUI<C>> extend
      * When the accelerator is pressed, temporarily make {@link JLabel} focusTraversable by registering a WHEN_FOCUSED action for the
      * release of the accelerator. Then give it focus so it can prevent unwanted keyTyped events from getting to other components.
      *
-     * @param <L>
+     * @param <L> {@link JLabel} type
      */
     public static class Action<L extends JLabel> extends UIAction<L>
     {

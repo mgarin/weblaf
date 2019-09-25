@@ -108,7 +108,7 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
         return ( Example ) getUserObject ();
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -137,8 +137,9 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
         return states;
     }
 
+    @Nullable
     @Override
-    public Icon getIcon ( final TreeNodeParameters<ExamplesTreeNode, JTree> parameters )
+    public Icon getIcon ( @NotNull final TreeNodeParameters<ExamplesTreeNode, JTree> parameters )
     {
         final Icon icon;
         switch ( type )
@@ -159,7 +160,18 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
     }
 
     @Override
-    public String getText ( final TreeNodeParameters<ExamplesTreeNode, JTree> parameters )
+    public String getText ( @NotNull final TreeNodeParameters<ExamplesTreeNode, JTree> parameters )
+    {
+        return getTitle ();
+    }
+
+    /**
+     * Returns node title.
+     *
+     * @return node title
+     */
+    @NotNull
+    private String getTitle ()
     {
         final String title;
         switch ( type )
@@ -188,6 +200,6 @@ public final class ExamplesTreeNode extends UniqueNode<ExamplesTreeNode, Example
     @Override
     public String toString ()
     {
-        return getText ( null );
+        return getTitle ();
     }
 }

@@ -18,7 +18,6 @@
 package com.alee.demo.content.label;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.AbstractExampleGroup;
 import com.alee.utils.CollectionUtils;
 
@@ -29,7 +28,7 @@ import java.util.List;
  */
 public class LabelsGroup extends AbstractExampleGroup
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

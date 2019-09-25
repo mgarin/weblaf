@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class WebTreeExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

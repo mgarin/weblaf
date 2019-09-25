@@ -19,7 +19,6 @@ package com.alee.demo.content.chooser.dialog;
 
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.example.*;
@@ -55,7 +54,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
         }
     };
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -185,7 +184,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
                 {
                     key = "result.selected" + suffix;
                     final String files = TextUtils.arrayToString ( ", ", FILE_NAME, selectedFiles );
-                    data = new Object[]{ TextUtils.shortenText ( files, 100, true ) };
+                    data = new Object[]{ files != null ? TextUtils.shortenText ( files, 100, true ) : "" };
                 }
                 else
                 {

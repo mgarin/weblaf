@@ -57,11 +57,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     protected IToolBarPainter painter;
 
     /**
-     * Preserved old layout.
-     */
-    protected transient LayoutManager oldLayout;
-
-    /**
      * Returns an instance of the {@link WebToolBarUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
@@ -79,9 +74,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
         // Installing UI
         super.installUI ( c );
 
-        // Installing custom layout
-        installLayout ();
-
         // Applying skin
         StyleManager.installSkin ( toolBar );
     }
@@ -91,9 +83,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( toolBar );
-
-        // Uninstalling custom layout
-        uninstallLayout ();
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -153,46 +142,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
                 }
             }
         }
-    }
-
-    /**
-     * Installs layout update listeners.
-     */
-    protected void installLayout ()
-    {
-        // Saving old layout
-        oldLayout = toolBar.getLayout ();
-
-        // Updating initial layout
-        toolBar.setLayout ( createLayout () );
-    }
-
-    /**
-     * Uninstalls layout update listeners.
-     */
-    protected void uninstallLayout ()
-    {
-        // Restoring old layout
-        toolBar.setLayout ( oldLayout );
-
-        // Workaround for DefaultToolBarLayout
-        if ( oldLayout instanceof PropertyChangeListener )
-        {
-            toolBar.addPropertyChangeListener ( ( PropertyChangeListener ) oldLayout );
-        }
-
-        // Cleaning up old layout reference
-        oldLayout = null;
-    }
-
-    /**
-     * Returns custom {@link LayoutManager} for the toolbar.
-     *
-     * @return custom {@link LayoutManager} for the toolbar
-     */
-    protected LayoutManager createLayout ()
-    {
-        return new ToolbarLayout ();
     }
 
     @NotNull

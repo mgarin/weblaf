@@ -17,6 +17,7 @@
 
 package com.alee.demo.frames.examples;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.ExampleElement;
 import com.alee.demo.content.ExamplesManager;
 import com.alee.extended.tree.AbstractExTreeDataProvider;
@@ -30,14 +31,16 @@ import java.util.List;
  */
 public final class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<ExamplesTreeNode>
 {
+    @NotNull
     @Override
     public ExamplesTreeNode getRoot ()
     {
         return new ExamplesTreeNode ();
     }
 
+    @NotNull
     @Override
-    public List<ExamplesTreeNode> getChildren ( final ExamplesTreeNode parent )
+    public List<ExamplesTreeNode> getChildren ( @NotNull final ExamplesTreeNode parent )
     {
         final List<ExamplesTreeNode> children;
         switch ( parent.getType () )

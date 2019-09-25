@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class WebListExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

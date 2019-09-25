@@ -18,7 +18,6 @@
 package com.alee.demo.content.window;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.demo.api.example.wiki.OracleWikiPage;
 import com.alee.demo.api.example.wiki.WikiPage;
@@ -46,7 +45,7 @@ import java.util.List;
  */
 public class JOptionPaneExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -171,7 +170,8 @@ public class JOptionPaneExample extends AbstractStylePreviewExample
                         if ( result != null )
                         {
                             final Throwable exception = ReflectUtils.createInstanceSafely ( result );
-                            final String stackTrace = ExceptionUtils.getStackTrace ( exception );
+                            final Throwable nonNull = exception != null ? exception : new NullPointerException ();
+                            final String stackTrace = ExceptionUtils.getStackTrace ( nonNull );
                             ntf = NotificationManager.showNotification ( parent, String.format ( notification, stackTrace ) );
                         }
                         else
@@ -198,10 +198,7 @@ public class JOptionPaneExample extends AbstractStylePreviewExample
                         JOptionPane.showMessageDialog ( parent, message, title, type );
                         ntf = NotificationManager.showNotification ( parent, closed );
                     }
-                    if ( ntf != null )
-                    {
-                        ntf.setDisplayTime ( 2000 );
-                    }
+                    ntf.setDisplayTime ( 2000 );
 
                     // Restore dialog decoration if needed
                     if ( decoration == Decoration.decorated )

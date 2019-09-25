@@ -9,7 +9,7 @@
             <background>white</background>
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
-            <shadeWidth>12</shadeWidth>
+            <shadeWidth>8</shadeWidth>
             <shadeOpacity>0.75</shadeOpacity>
             <cornerWidth>6</cornerWidth>
             <opacity>0.95</opacity>

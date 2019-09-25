@@ -17,8 +17,11 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.Behavior;
+import com.alee.extended.behavior.BehaviorException;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CoreSwingUtils;
 
@@ -38,124 +41,154 @@ import java.awt.event.MouseEvent;
 public final class ComponentInspectBehavior implements Behavior
 {
     /**
-     * Component inspector used to highlight hovered components.
+     * {@link ComponentHighlighter} used to highlight hovered components.
      */
+    @Nullable
     protected ComponentHighlighter hoverHighlighter;
 
     /**
-     * Events listener.
+     * {@link AWTEventListener} .
      */
+    @Nullable
     protected AWTEventListener awtEventListener;
 
     /**
      * Root component for this highlighter.
      */
+    @Nullable
     protected Component root;
 
     /**
      * Inspection listener.
      */
+    @Nullable
     protected InspectionListener listener;
 
     /**
-     * Installs component inspect behavior in the specified root component.
+     * Returns whether or not this {@link ComponentInspectBehavior} is already installed.
      *
-     * @param root     root component
-     * @param listener inspection listener
+     * @return {@code true} if this {@link ComponentInspectBehavior} is already installed, {@code false} otherwise
      */
-    public void install ( final Component root, final InspectionListener listener )
+    public boolean isInstalled ()
     {
-        // Saving root component
-        this.root = root;
+        return hoverHighlighter != null;
+    }
 
-        // Saving inspection listener
-        this.listener = listener;
-
-        // Creating hover highlighter
-        this.hoverHighlighter = new ComponentHighlighter ();
-
-        // Adding listeners
-        awtEventListener = new AWTEventListener ()
+    /**
+     * Installs {@link ComponentInspectBehavior} in the specified root {@link Component}.
+     * In case {@link Component} is {@code null} behavior will be able to inspect any element on any window.
+     *
+     * @param root     root {@link Component}
+     * @param listener {@link InspectionListener}
+     */
+    public void install ( @Nullable final Component root, @NotNull final InspectionListener listener )
+    {
+        if ( !isInstalled () )
         {
-            @Override
-            public void eventDispatched ( final AWTEvent event )
+            // Saving root component
+            this.root = root;
+
+            // Saving inspection listener
+            this.listener = listener;
+
+            // Creating hover highlighter
+            this.hoverHighlighter = new ComponentHighlighter ();
+
+            // Adding listeners
+            // todo Replace with HoverManager usage?
+            awtEventListener = new AWTEventListener ()
             {
-                final int eventId = event.getID ();
-                if ( event instanceof MouseEvent )
+                @Override
+                public void eventDispatched ( @NotNull final AWTEvent event )
                 {
-                    // Limiting affected area of UI elements by the root
-                    final MouseEvent mouseEvent = ( MouseEvent ) event;
-                    final Component source = ( Component ) event.getSource ();
-                    final Component component = CoreSwingUtils.getTopComponentAt ( source, mouseEvent.getPoint () );
-                    if ( component != null && component.isShowing () && ( ComponentInspectBehavior.this.root == null ||
-                            CoreSwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) ) )
+                    final int eventId = event.getID ();
+                    if ( event instanceof MouseEvent )
                     {
-                        // Performing on-event actions
-                        if ( Objects.equals ( eventId, MouseEvent.MOUSE_PRESSED ) )
+                        // Limiting affected area of UI elements by the root
+                        final MouseEvent mouseEvent = ( MouseEvent ) event;
+                        final Component source = ( Component ) event.getSource ();
+                        final Component component = CoreSwingUtils.getTopComponentAt ( source, mouseEvent.getPoint () );
+                        if ( component != null && component.isShowing () && ( ComponentInspectBehavior.this.root == null ||
+                                CoreSwingUtils.isAncestorOf ( ComponentInspectBehavior.this.root, component ) ) )
+                        {
+                            // Performing on-event actions
+                            if ( Objects.equals ( eventId, MouseEvent.MOUSE_PRESSED ) )
+                            {
+                                // Firing events
+                                ComponentInspectBehavior.this.listener.inspected ( component );
+
+                                // Uninstalling behavior
+                                uninstall ();
+                            }
+                            else if ( Objects.equals ( eventId, MouseEvent.MOUSE_ENTERED, MouseEvent.MOUSE_MOVED ) )
+                            {
+                                // Checking that hovered component has actually changed
+                                if ( hoverHighlighter != null && hoverHighlighter.getComponent () != component )
+                                {
+                                    // Displaying inspector for newly hovered component
+                                    showInspector ( component );
+                                }
+                            }
+                            else if ( Objects.equals ( eventId, MouseEvent.MOUSE_EXITED ) )
+                            {
+                                // Hiding inspector
+                                hideInspector ();
+                            }
+
+                            // Consuming event to avoid it being processed by someone else
+                            mouseEvent.consume ();
+                        }
+                    }
+                    else if ( event instanceof KeyEvent )
+                    {
+                        // Uninstalling behavior on ESCAPE press
+                        final KeyEvent keyEvent = ( KeyEvent ) event;
+                        if ( Objects.equals ( eventId, KeyEvent.KEY_PRESSED ) && Hotkey.ESCAPE.isTriggered ( keyEvent ) )
                         {
                             // Firing events
-                            listener.inspected ( component );
+                            ComponentInspectBehavior.this.listener.cancelled ();
 
                             // Uninstalling behavior
                             uninstall ();
                         }
-                        else if ( Objects.equals ( eventId, MouseEvent.MOUSE_ENTERED, MouseEvent.MOUSE_MOVED ) )
-                        {
-                            // Checking that hovered component has actually changed
-                            if ( hoverHighlighter != null && hoverHighlighter.getComponent () != component )
-                            {
-                                // Displaying inspector for newly hovered component
-                                showInspector ( component );
-                            }
-                        }
-                        else if ( Objects.equals ( eventId, MouseEvent.MOUSE_EXITED ) )
-                        {
-                            // Hiding inspector
-                            hideInspector ();
-                        }
 
                         // Consuming event to avoid it being processed by someone else
-                        mouseEvent.consume ();
+                        keyEvent.consume ();
                     }
                 }
-                else if ( event instanceof KeyEvent )
-                {
-                    // Uninstalling behavior on ESCAPE press
-                    final KeyEvent keyEvent = ( KeyEvent ) event;
-                    if ( Objects.equals ( eventId, KeyEvent.KEY_PRESSED ) && Hotkey.ESCAPE.isTriggered ( keyEvent ) )
-                    {
-                        // Firing events
-                        listener.cancelled ();
-
-                        // Uninstalling behavior
-                        uninstall ();
-                    }
-
-                    // Consuming event to avoid it being processed by someone else
-                    keyEvent.consume ();
-                }
-            }
-        };
-        Toolkit.getDefaultToolkit ().addAWTEventListener ( awtEventListener, AWTEvent.MOUSE_EVENT_MASK );
-        Toolkit.getDefaultToolkit ().addAWTEventListener ( awtEventListener, AWTEvent.MOUSE_MOTION_EVENT_MASK );
-        Toolkit.getDefaultToolkit ().addAWTEventListener ( awtEventListener, AWTEvent.KEY_EVENT_MASK );
+            };
+            Toolkit.getDefaultToolkit ().addAWTEventListener ( awtEventListener, AWTEvent.MOUSE_EVENT_MASK );
+            Toolkit.getDefaultToolkit ().addAWTEventListener ( awtEventListener, AWTEvent.MOUSE_MOTION_EVENT_MASK );
+            Toolkit.getDefaultToolkit ().addAWTEventListener ( awtEventListener, AWTEvent.KEY_EVENT_MASK );
+        }
+        else
+        {
+            throw new BehaviorException ( "ComponentInspectBehavior is already installed" );
+        }
     }
 
     /**
-     * Uninstalls component inspect behavior.
+     * Uninstalls {@link ComponentInspectBehavior}.
      */
     public void uninstall ()
     {
-        // Removing listeners
-        Toolkit.getDefaultToolkit ().removeAWTEventListener ( awtEventListener );
+        if ( isInstalled () )
+        {
+            // Removing listeners
+            Toolkit.getDefaultToolkit ().removeAWTEventListener ( awtEventListener );
 
-        // Hiding inspector
-        hideInspector ();
+            // Hiding inspector
+            hideInspector ();
 
-        // Cleaning up
-        this.hoverHighlighter = null;
-        this.listener = null;
-        this.root = null;
+            // Cleaning up
+            this.hoverHighlighter = null;
+            this.listener = null;
+            this.root = null;
+        }
+        else
+        {
+            throw new BehaviorException ( "ComponentInspectBehavior is not installed" );
+        }
     }
 
     /**
@@ -164,10 +197,17 @@ public final class ComponentInspectBehavior implements Behavior
      *
      * @param component component to display {@link ComponentHighlighter} for
      */
-    protected void showInspector ( final Component component )
+    protected void showInspector ( @NotNull final Component component )
     {
-        hideInspector ();
-        hoverHighlighter.install ( component );
+        if ( isInstalled () )
+        {
+            hideInspector ();
+            hoverHighlighter.install ( component );
+        }
+        else
+        {
+            throw new BehaviorException ( "ComponentInspectBehavior is not installed" );
+        }
     }
 
     /**
@@ -175,6 +215,13 @@ public final class ComponentInspectBehavior implements Behavior
      */
     protected void hideInspector ()
     {
-        hoverHighlighter.uninstall ();
+        if ( isInstalled () )
+        {
+            hoverHighlighter.uninstall ();
+        }
+        else
+        {
+            throw new BehaviorException ( "ComponentInspectBehavior is not installed" );
+        }
     }
 }

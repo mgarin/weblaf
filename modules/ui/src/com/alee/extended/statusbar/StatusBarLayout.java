@@ -18,7 +18,9 @@
 package com.alee.extended.statusbar;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.merge.Mergeable;
 import com.alee.extended.layout.AbstractLineLayout;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.awt.*;
 
@@ -27,7 +29,8 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-public final class StatusBarLayout extends AbstractLineLayout
+@XStreamAlias ( "StatusBarLayout" )
+public class StatusBarLayout extends AbstractLineLayout implements Mergeable, Cloneable
 {
     /**
      * Constructs new {@link StatusBarLayout}.
@@ -41,5 +44,16 @@ public final class StatusBarLayout extends AbstractLineLayout
     public int getOrientation ( @NotNull final Container container )
     {
         return HORIZONTAL;
+    }
+
+    /**
+     * The UI resource version of {@link StatusBarLayout}.
+     */
+    @XStreamAlias ( "StatusBarLayout$UIResource" )
+    public static final class UIResource extends StatusBarLayout implements javax.swing.plaf.UIResource
+    {
+        /**
+         * Implementation is used completely from {@link StatusBarLayout}.
+         */
     }
 }

@@ -18,7 +18,6 @@
 package com.alee.demo.content.chooser.field;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.pathfield.WebPathField;
 import com.alee.managers.style.StyleId;
@@ -33,7 +32,7 @@ import java.util.List;
  */
 public class WebPathFieldExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

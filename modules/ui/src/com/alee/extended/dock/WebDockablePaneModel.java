@@ -101,7 +101,6 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      */
     public WebDockablePaneModel ( final DockableContainer root )
     {
-        super ();
         setGroupButtons ( false );
         setRoot ( root );
     }

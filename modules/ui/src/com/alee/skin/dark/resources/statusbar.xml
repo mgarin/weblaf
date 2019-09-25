@@ -4,6 +4,9 @@
 
     <!-- StatusBar -->
     <style type="statusbar" padding="2">
+        <component>
+            <layout class="StatusBarLayout$UIResource" />
+        </component>
         <painter>
             <decorations>
                 <decoration>

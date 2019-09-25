@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class TabbedPaneTooltipExample extends AbstractStylePreviewExample
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {

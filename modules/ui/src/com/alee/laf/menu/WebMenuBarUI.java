@@ -19,35 +19,30 @@ package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicMenuBarUI;
 import java.awt.*;
 
 /**
  * Custom UI for {@link JMenuBar} component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebMenuBarUI<C extends JMenuBar> extends WMenuBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
     @DefaultPainter ( MenuBarPainter.class )
     protected IMenuBarPainter painter;
-
-    /**
-     * Preserved old layout.
-     */
-    protected transient LayoutManager oldLayout;
 
     /**
      * Returns an instance of the {@link WebMenuBarUI} for the specified component.
@@ -62,57 +57,23 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
-
-        // Installing custom layout
-        installLayout ();
 
         // Applying skin
         StyleManager.installSkin ( menuBar );
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( menuBar );
 
-        // Uninstalling custom layout
-        uninstallLayout ();
-
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    /**
-     * Installs custom {@link LayoutManager} into {@link JMenuBar}.
-     */
-    protected void installLayout ()
-    {
-        oldLayout = menuBar.getLayout ();
-        menuBar.setLayout ( createLayout () );
-    }
-
-    /**
-     * Uninstalls custom {@link LayoutManager} from {@link JMenuBar}.
-     */
-    protected void uninstallLayout ()
-    {
-        menuBar.setLayout ( oldLayout );
-        oldLayout = null;
-    }
-
-    /**
-     * Returns custom {@link LayoutManager} for the menubar.
-     *
-     * @return custom {@link LayoutManager} for the menubar
-     */
-    protected LayoutManager createLayout ()
-    {
-        return new MenuBarLayout ();
     }
 
     @NotNull
