@@ -1,5 +1,10 @@
 About
 ----------
+[![Latest Version](https://img.shields.io/github/release/mgarin/weblaf.svg)](https://github.com/mgarin/weblaf/releases)
+[![Languages](https://img.shields.io/github/languages/top/mgarin/weblaf)](https://github.com/mgarin/weblaf)
+[![License](https://img.shields.io/github/license/mgarin/weblaf)](https://github.com/mgarin/weblaf/blob/master/LICENSE.txt)
+[![Last Commit](https://img.shields.io/github/last-commit/mgarin/weblaf)](https://github.com/mgarin/weblaf/commits/master)
+[![Chat on Gitter](https://img.shields.io/gitter/room/mgarin/weblaf?color=%2342ac8c)](https://gitter.im/mgarin/weblaf)
 
 **WebLaf** is a Look and Feel and component library written in pure Java for cross-platform desktop Swing applications.
 

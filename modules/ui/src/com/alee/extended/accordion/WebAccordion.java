@@ -101,7 +101,18 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      */
     public WebAccordion ()
     {
-        this ( StyleId.auto, BoxOrientation.top );
+        this ( StyleId.auto, BoxOrientation.top, 1, 1 );
+    }
+
+    /**
+     * Constructs new {@link WebAccordion}.
+     *
+     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     */
+    public WebAccordion ( final int minimumExpanded, final int maximumExpanded )
+    {
+        this ( StyleId.auto, BoxOrientation.top, minimumExpanded, maximumExpanded );
     }
 
     /**
@@ -111,7 +122,19 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      */
     public WebAccordion ( @NotNull final BoxOrientation headerPosition )
     {
-        this ( StyleId.auto, headerPosition );
+        this ( StyleId.auto, headerPosition, 1, 1 );
+    }
+
+    /**
+     * Constructs new {@link WebAccordion}.
+     *
+     * @param headerPosition  {@link BoxOrientation} for header panel positioning, also defines accordion orientation
+     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     */
+    public WebAccordion ( @NotNull final BoxOrientation headerPosition, final int minimumExpanded, final int maximumExpanded )
+    {
+        this ( StyleId.auto, headerPosition, minimumExpanded, maximumExpanded );
     }
 
     /**
@@ -121,7 +144,19 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      */
     public WebAccordion ( @NotNull final StyleId id )
     {
-        this ( id, BoxOrientation.top );
+        this ( id, BoxOrientation.top, 1, 1 );
+    }
+
+    /**
+     * Constructs new {@link WebAccordion}.
+     *
+     * @param id              style ID
+     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     */
+    public WebAccordion ( @NotNull final StyleId id, final int minimumExpanded, final int maximumExpanded )
+    {
+        this ( id, BoxOrientation.top, minimumExpanded, maximumExpanded );
     }
 
     /**
@@ -132,9 +167,23 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      */
     public WebAccordion ( @NotNull final StyleId id, @NotNull final BoxOrientation headerPosition )
     {
+        this ( id, headerPosition, 1, 1 );
+    }
+
+    /**
+     * Constructs new {@link WebAccordion}.
+     *
+     * @param id              style ID
+     * @param headerPosition  {@link BoxOrientation} for header panel positioning, also defines accordion orientation
+     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     */
+    public WebAccordion ( @NotNull final StyleId id, @NotNull final BoxOrientation headerPosition,
+                          final int minimumExpanded, final int maximumExpanded )
+    {
         setHeaderPosition ( headerPosition );
-        setMinimumExpanded ( 1 );
-        setMaximumExpanded ( 1 );
+        setMinimumExpanded ( minimumExpanded );
+        setMaximumExpanded ( maximumExpanded );
         setMinimumPaneContentSize ( 100 );
         setModel ( createModel () );
         updateUI ();
