@@ -26,7 +26,7 @@ import javax.swing.plaf.DesktopIconUI;
 import java.awt.*;
 
 /**
- * Pluggable look and feel interface for any component based on {@link JInternalFrame.JDesktopIcon}.
+ * Pluggable look and feel interface for any component based on {@link javax.swing.JInternalFrame.JDesktopIcon}.
  *
  * @param <C> component type
  * @author Mikle Garin
@@ -34,7 +34,7 @@ import java.awt.*;
 public abstract class WDesktopIconUI<C extends JInternalFrame.JDesktopIcon> extends DesktopIconUI implements WebUI<C>
 {
     /**
-     * {@link DesktopIconInputListener} for the {@link JInternalFrame.JDesktopIcon}.
+     * {@link DesktopIconInputListener} for the {@link javax.swing.JInternalFrame.JDesktopIcon}.
      */
     protected DesktopIconInputListener<C> inputListener;
 

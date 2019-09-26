@@ -28,10 +28,10 @@ import java.awt.event.MouseMotionListener;
 import java.beans.PropertyVetoException;
 
 /**
- * Basic UI input listener for {@link JInternalFrame.JDesktopIcon} implementation.
+ * Basic UI input listener for {@link javax.swing.JInternalFrame.JDesktopIcon} implementation.
  * It is partially based on Swing {@link javax.swing.plaf.basic.BasicDesktopIconUI} but cleaned up and optimized.
  *
- * @param <C> {@link JInternalFrame.JDesktopIcon} type
+ * @param <C> {@link javax.swing.JInternalFrame.JDesktopIcon} type
  * @param <U> {@link WDesktopIconUI} type
  * @author Steve Wilson
  * @author Mikle Garin

@@ -22,8 +22,9 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Basic descriptor for {@link JPopupMenu.Separator} component.
- * For creating custom {@link JPopupMenu.Separator} descriptor {@link AbstractPopupMenuSeparatorDescriptor} class can be extended.
+ * Basic descriptor for {@link javax.swing.JPopupMenu.Separator} component.
+ * For creating custom {@link javax.swing.JPopupMenu.Separator} descriptor
+ * {@link AbstractPopupMenuSeparatorDescriptor} class can be extended.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -34,7 +35,7 @@ import javax.swing.*;
 public final class PopupMenuSeparatorDescriptor extends AbstractPopupMenuSeparatorDescriptor<JPopupMenu.Separator, WPopupMenuSeparatorUI>
 {
     /**
-     * Constructs new descriptor for {@link JPopupMenu.Separator} component.
+     * Constructs new descriptor for {@link javax.swing.JPopupMenu.Separator} component.
      */
     public PopupMenuSeparatorDescriptor ()
     {

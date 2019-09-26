@@ -22,7 +22,7 @@ import com.alee.laf.UIInputListener;
 import javax.swing.*;
 
 /**
- * Base interface for {@link JInternalFrame.JDesktopIcon} UI input listeners.
+ * Base interface for {@link javax.swing.JInternalFrame.JDesktopIcon} UI input listeners.
  *
  * @param <C> {@link JComponent} type
  * @author Mikle Garin

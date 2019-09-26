@@ -22,8 +22,9 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Basic descriptor for {@link JInternalFrame.JDesktopIcon} component.
- * For creating custom {@link JInternalFrame.JDesktopIcon} descriptor {@link AbstractDesktopIconDescriptor} class can be extended.
+ * Basic descriptor for {@link javax.swing.JInternalFrame.JDesktopIcon} component.
+ * For creating custom {@link javax.swing.JInternalFrame.JDesktopIcon} descriptor
+ * {@link AbstractDesktopIconDescriptor} class can be extended.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -34,7 +35,7 @@ import javax.swing.*;
 public final class DesktopIconDescriptor extends AbstractDesktopIconDescriptor<JInternalFrame.JDesktopIcon, WDesktopIconUI>
 {
     /**
-     * Constructs new descriptor for {@link JInternalFrame.JDesktopIcon} component.
+     * Constructs new descriptor for {@link javax.swing.JInternalFrame.JDesktopIcon} component.
      */
     public DesktopIconDescriptor ()
     {

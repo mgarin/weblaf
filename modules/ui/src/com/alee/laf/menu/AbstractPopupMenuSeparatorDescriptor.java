@@ -24,8 +24,8 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Abstract descriptor for {@link JPopupMenu.Separator} component.
- * Extend this class for creating custom {@link JPopupMenu.Separator} descriptors.
+ * Abstract descriptor for {@link javax.swing.JPopupMenu.Separator} component.
+ * Extend this class for creating custom {@link javax.swing.JPopupMenu.Separator} descriptors.
  *
  * @param <C> {@link JComponent} type
  * @param <U> base {@link ComponentUI} type

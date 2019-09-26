@@ -6,7 +6,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for {@link JPopupMenu.Separator} component.
+ * Basic painter for {@link javax.swing.JPopupMenu.Separator} component.
  * It is used as {@link WPopupMenuSeparatorUI} default painter.
  *
  * @param <C> component type

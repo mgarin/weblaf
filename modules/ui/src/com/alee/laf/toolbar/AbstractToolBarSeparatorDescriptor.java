@@ -24,8 +24,8 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Abstract descriptor for {@link JToolBar.Separator} component.
- * Extend this class for creating custom {@link JToolBar.Separator} descriptors.
+ * Abstract descriptor for {@link javax.swing.JToolBar.Separator} component.
+ * Extend this class for creating custom {@link javax.swing.JToolBar.Separator} descriptors.
  *
  * @param <C> {@link JComponent} type
  * @param <U> base {@link ComponentUI} type

@@ -30,7 +30,7 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link JInternalFrame.JDesktopIcon} component.
+ * Custom UI for {@link javax.swing.JInternalFrame.JDesktopIcon} component.
  *
  * @param <C> component type
  * @author Mikle Garin

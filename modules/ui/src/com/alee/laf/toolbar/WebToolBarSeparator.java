@@ -38,7 +38,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 
 /**
- * {@link JToolBar.Separator} extension class.
+ * {@link javax.swing.JToolBar.Separator} extension class.
  * It contains various useful methods to simplify core component usage.
  *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.

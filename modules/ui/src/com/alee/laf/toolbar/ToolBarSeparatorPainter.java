@@ -6,7 +6,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for {@link JToolBar.Separator} component.
+ * Basic painter for {@link javax.swing.JToolBar.Separator} component.
  * It is used as {@link WToolBarSeparatorUI} default painter.
  *
  * @param <C> component type

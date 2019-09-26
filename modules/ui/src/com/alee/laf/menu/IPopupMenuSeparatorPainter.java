@@ -5,7 +5,7 @@ import com.alee.laf.separator.IAbstractSeparatorPainter;
 import javax.swing.*;
 
 /**
- * Base interface for {@link JPopupMenu.Separator} component painters.
+ * Base interface for {@link javax.swing.JPopupMenu.Separator} component painters.
  *
  * @param <C> component type
  * @param <U> component UI type

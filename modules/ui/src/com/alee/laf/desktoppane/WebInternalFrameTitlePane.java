@@ -41,7 +41,7 @@ import java.beans.PropertyVetoException;
 import java.io.Serializable;
 
 /**
- * {@link JInternalFrame} and {@link JInternalFrame.JDesktopIcon} title pane.
+ * {@link JInternalFrame} and {@link javax.swing.JInternalFrame.JDesktopIcon} title pane.
  *
  * @author Mikle Garin
  */
@@ -54,7 +54,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
 
     /**
      * Title pane parent.
-     * It is either {@link JInternalFrame} or {@link JInternalFrame.JDesktopIcon}.
+     * It is either {@link JInternalFrame} or {@link javax.swing.JInternalFrame.JDesktopIcon}.
      */
     @NotNull
     protected final JComponent parent;
@@ -90,7 +90,7 @@ public class WebInternalFrameTitlePane extends WebPanel implements SwingConstant
     /**
      * Constructs new internal frame title pane.
      *
-     * @param parent either {@link JInternalFrame} or {@link JInternalFrame.JDesktopIcon}
+     * @param parent either {@link JInternalFrame} or {@link javax.swing.JInternalFrame.JDesktopIcon}
      * @param frame  {@link JInternalFrame} for this title pane
      */
     public WebInternalFrameTitlePane ( @NotNull final JComponent parent, @NotNull final JInternalFrame frame )

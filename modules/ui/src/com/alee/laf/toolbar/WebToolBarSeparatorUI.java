@@ -30,7 +30,7 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link JToolBar.Separator} component.
+ * Custom UI for {@link javax.swing.JToolBar.Separator} component.
  *
  * @param <C> component type
  * @author Mikle Garin

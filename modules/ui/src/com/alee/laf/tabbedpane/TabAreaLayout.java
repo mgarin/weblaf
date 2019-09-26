@@ -28,8 +28,8 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Custom layout for {@link TabArea}. *
- * todo Support for leading/trailing components {@see https://github.com/mgarin/weblaf/issues/539}
+ * Custom layout for {@link TabArea}.
+ * todo Support for leading/trailing components: https://github.com/mgarin/weblaf/issues/539
  *
  * @author Mikle Garin
  */

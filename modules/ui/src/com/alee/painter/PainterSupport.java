@@ -531,12 +531,12 @@ public final class PainterSupport
     }
 
     /**
-     * Returns {@link Component.BaselineResizeBehavior} indicating how baseline of the {@link JComponent} changes as the size changes.
+     * Returns {@link java.awt.Component.BaselineResizeBehavior} indicating how baseline of a {@link Component} changes when resized.
      *
      * @param component   {@link JComponent}
      * @param componentUI {@link ComponentUI}
      * @param painter     {@link Painter}
-     * @return {@link Component.BaselineResizeBehavior} indicating how baseline of the {@link JComponent} changes as the size changes
+     * @return {@link java.awt.Component.BaselineResizeBehavior} indicating how baseline of a {@link Component} changes when resized
      */
     @NotNull
     public static Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent component,

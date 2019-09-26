@@ -25,8 +25,8 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Abstract descriptor for {@link JInternalFrame.JDesktopIcon} component.
- * Extend this class for creating custom {@link JInternalFrame.JDesktopIcon} descriptors.
+ * Abstract descriptor for {@link javax.swing.JInternalFrame.JDesktopIcon} component.
+ * Extend this class for creating custom {@link javax.swing.JInternalFrame.JDesktopIcon} descriptors.
  *
  * @param <C> {@link JComponent} type
  * @param <U> base {@link ComponentUI} type

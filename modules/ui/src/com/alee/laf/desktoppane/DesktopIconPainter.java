@@ -6,7 +6,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for {@link JInternalFrame.JDesktopIcon} component.
+ * Basic painter for {@link javax.swing.JInternalFrame.JDesktopIcon} component.
  * It is used as {@link WebDesktopIconUI} default painter.
  *
  * @param <C> component type

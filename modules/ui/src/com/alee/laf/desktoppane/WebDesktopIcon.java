@@ -41,7 +41,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 
 /**
- * {@link JInternalFrame.JDesktopIcon} extension class.
+ * {@link javax.swing.JInternalFrame.JDesktopIcon} extension class.
  * It contains various useful methods to simplify core component usage.
  *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.

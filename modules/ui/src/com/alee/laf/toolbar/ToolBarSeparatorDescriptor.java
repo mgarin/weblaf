@@ -22,8 +22,8 @@ import com.alee.managers.style.StyleId;
 import javax.swing.*;
 
 /**
- * Basic descriptor for {@link JToolBar.Separator} component.
- * For creating custom {@link JToolBar.Separator} descriptor {@link AbstractToolBarSeparatorDescriptor} class can be extended.
+ * Basic descriptor for {@link javax.swing.JToolBar.Separator} component.
+ * For creating custom {@link javax.swing.JToolBar.Separator} descriptor {@link AbstractToolBarSeparatorDescriptor} class can be extended.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -34,7 +34,7 @@ import javax.swing.*;
 public final class ToolBarSeparatorDescriptor extends AbstractToolBarSeparatorDescriptor<JToolBar.Separator, WToolBarSeparatorUI>
 {
     /**
-     * Constructs new descriptor for {@link JToolBar.Separator} component.
+     * Constructs new descriptor for {@link javax.swing.JToolBar.Separator} component.
      */
     public ToolBarSeparatorDescriptor ()
     {

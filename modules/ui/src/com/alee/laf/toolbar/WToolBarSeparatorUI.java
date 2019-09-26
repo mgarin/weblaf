@@ -22,7 +22,7 @@ import com.alee.laf.separator.WSeparatorUI;
 import javax.swing.*;
 
 /**
- * Pluggable look and feel interface for {@link JToolBar.Separator} component.
+ * Pluggable look and feel interface for {@link javax.swing.JToolBar.Separator} component.
  *
  * @param <C> component type
  * @author Mikle Garin
