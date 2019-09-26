@@ -55,10 +55,10 @@ public class AccordionPane extends WebPanel implements Identifiable
     protected final String id;
 
     /**
-     * Header {@link Component}.
+     * Header {@link JComponent}.
      */
     @NotNull
-    protected Component header;
+    protected JComponent header;
 
     /**
      * Content {@link Component}.
@@ -144,18 +144,18 @@ public class AccordionPane extends WebPanel implements Identifiable
     }
 
     /**
-     * Returns header {@link Component}.
+     * Returns header {@link JComponent}.
      *
-     * @return header {@link Component}
+     * @return header {@link JComponent}
      */
     @NotNull
-    public Component getHeader ()
+    public JComponent getHeader ()
     {
         return header;
     }
 
     /**
-     * Replaces header {@link Component}.
+     * Replaces header {@link JComponent}.
      *
      * @param icon  {@link AccordionPane} title icon
      * @param title {@link AccordionPane} title
@@ -166,11 +166,11 @@ public class AccordionPane extends WebPanel implements Identifiable
     }
 
     /**
-     * Replaces header {@link Component}.
+     * Replaces header {@link JComponent}.
      *
-     * @param header new header {@link Component}
+     * @param header new header {@link JComponent}
      */
-    public void setHeader ( @NotNull final Component header )
+    public void setHeader ( @NotNull final JComponent header )
     {
         if ( this.header != header )
         {
@@ -182,11 +182,11 @@ public class AccordionPane extends WebPanel implements Identifiable
     }
 
     /**
-     * Returns newly created header {@link Component}.
+     * Returns newly created header {@link JComponent}.
      *
      * @param icon  header {@link Icon}
      * @param title header title
-     * @return newly created header {@link Component}
+     * @return newly created header {@link JComponent}
      */
     @NotNull
     protected JComponent createHeaderComponent ( @Nullable final Icon icon, @Nullable final String title )
@@ -224,12 +224,12 @@ public class AccordionPane extends WebPanel implements Identifiable
     }
 
     /**
-     * Returns newly created title {@link Component}.
+     * Returns newly created title {@link JComponent}.
      *
      * @param header header {@link JComponent}
      * @param icon   header {@link Icon}
      * @param title  header title
-     * @return newly created title {@link Component}
+     * @return newly created title {@link JComponent}
      */
     @NotNull
     protected JComponent createTitleComponent ( @NotNull final JComponent header, @Nullable final Icon icon, @Nullable final String title )
@@ -261,10 +261,10 @@ public class AccordionPane extends WebPanel implements Identifiable
     }
 
     /**
-     * Returns newly created control {@link Component}.
+     * Returns newly created control {@link JComponent}.
      *
      * @param header header {@link JComponent}
-     * @return newly created control {@link Component}
+     * @return newly created control {@link JComponent}
      */
     @NotNull
     protected JComponent createControlComponent ( @NotNull final JComponent header )
@@ -303,7 +303,7 @@ public class AccordionPane extends WebPanel implements Identifiable
      *
      * @param e {@link AWTEvent}
      */
-    protected void expandOrCollapse ( final AWTEvent e )
+    protected void expandOrCollapse ( @NotNull final AWTEvent e )
     {
         final Container parent = AccordionPane.this.getParent ();
         if ( parent instanceof WebAccordion )

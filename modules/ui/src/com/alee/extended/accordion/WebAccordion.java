@@ -522,6 +522,18 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
+     * Returns {@link AccordionPane} at the specified index.
+     *
+     * @param index {@link AccordionPane} index
+     * @return {@link AccordionPane} at the specified index.
+     */
+    @NotNull
+    public AccordionPane getPane ( final int index )
+    {
+        return ( AccordionPane ) getComponent ( index );
+    }
+
+    /**
      * Returns {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}.
      *
      * @param id {@link AccordionPane} identifier
@@ -560,7 +572,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Adds new {@link AccordionPane} to this accordion.
      *
-     * @param index   {@link AccordionPane} z-index in this accordion
+     * @param index   {@link AccordionPane} index
      * @param icon    {@link AccordionPane} title icon
      * @param title   {@link AccordionPane} title
      * @param content {@link AccordionPane} content {@link Component}
@@ -593,7 +605,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * Adds new {@link AccordionPane} to this accordion.
      *
      * @param id      {@link AccordionPane} identifier
-     * @param index   {@link AccordionPane} z-index in this accordion
+     * @param index   {@link AccordionPane} index
      * @param icon    {@link AccordionPane} title icon
      * @param title   {@link AccordionPane} title
      * @param content {@link AccordionPane} content {@link Component}
@@ -604,7 +616,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
                                    @NotNull final Component content )
     {
         final AccordionPane accordionPane = createAccordionPane ( id, icon, title, content );
-        return addPane ( accordionPane, index );
+        return addPane ( index, accordionPane );
     }
 
     /**
@@ -632,18 +644,18 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     @NotNull
     public AccordionPane addPane ( @NotNull final AccordionPane pane )
     {
-        return addPane ( pane, getComponentCount () );
+        return addPane ( getComponentCount (), pane );
     }
 
     /**
      * Adds specified {@link AccordionPane} to this accordion.
      *
      * @param pane  {@link AccordionPane} to add
-     * @param index {@link AccordionPane} z-index in this accordion
+     * @param index {@link AccordionPane} index
      * @return added {@link AccordionPane}
      */
     @NotNull
-    public AccordionPane addPane ( @NotNull final AccordionPane pane, final int index )
+    public AccordionPane addPane ( final int index, @NotNull final AccordionPane pane )
     {
         add ( pane, index );
         SwingUtils.update ( this );
@@ -709,6 +721,21 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
         {
             removed = null;
         }
+        return removed;
+    }
+
+    /**
+     * Removes {@link AccordionPane} at the specified index from this {@link WebAccordion}.
+     *
+     * @param index {@link AccordionPane} index
+     * @return removed {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane removePane ( final int index )
+    {
+        final AccordionPane removed = getPane ( index );
+        remove ( index );
+        SwingUtils.update ( this );
         return removed;
     }
 
