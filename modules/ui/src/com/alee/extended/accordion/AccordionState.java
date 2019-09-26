@@ -19,15 +19,13 @@ package com.alee.extended.accordion;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * {@link Serializable} state object for {@link WebAccordion}.
@@ -66,6 +64,20 @@ public class AccordionState implements Mergeable, Cloneable, Serializable
     /**
      * Constructs new {@link AccordionState}.
      *
+     * @param states {@link AccordionPaneState}s
+     */
+    public AccordionState ( @NotNull final AccordionPaneState... states )
+    {
+        this.states = new ArrayList<AccordionPaneState> ( states.length );
+        for ( final AccordionPaneState state : states )
+        {
+            addState ( state );
+        }
+    }
+
+    /**
+     * Constructs new {@link AccordionState}.
+     *
      * @param states {@link Map} of {@link AccordionPaneState}s
      */
     public AccordionState ( @NotNull final Map<String, AccordionPaneState> states )
@@ -90,6 +102,28 @@ public class AccordionState implements Mergeable, Cloneable, Serializable
             }
         }
         return states;
+    }
+
+    /**
+     * Adds specified {@link AccordionPaneState}.
+     *
+     * @param state {@link AccordionPaneState} to add
+     */
+    public void addState ( @NotNull final AccordionPaneState state )
+    {
+        if ( this.states == null )
+        {
+            this.states = new ArrayList<AccordionPaneState> ();
+        }
+        final Iterator<AccordionPaneState> iterator = this.states.iterator ();
+        while ( iterator.hasNext () )
+        {
+            if ( Objects.equals ( iterator.next ().getId (), state.getId () ) )
+            {
+                iterator.remove ();
+            }
+        }
+        this.states.add ( state );
     }
 
     /**

@@ -277,22 +277,6 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
         }
     }
 
-    @Override
-    protected void addImpl ( @NotNull final Component comp, @Nullable final Object constraints, final int index )
-    {
-        final List<AccordionPane> oldPanes = getPanes ();
-        super.addImpl ( comp, constraints, index );
-        firePropertyChange ( PANES_PROPERTY, oldPanes, getPanes () );
-    }
-
-    @Override
-    public void remove ( final int index )
-    {
-        final List<AccordionPane> oldPanes = getPanes ();
-        super.remove ( index );
-        firePropertyChange ( PANES_PROPERTY, oldPanes, getPanes () );
-    }
-
     /**
      * Returns {@link AccordionState} of this {@link WebAccordion}.
      *
@@ -518,10 +502,10 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
-     * Returns {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}.
+     * Returns {@link AccordionPane} with the specified identifier.
      *
      * @param id {@link AccordionPane} identifier
-     * @return {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}
+     * @return {@link AccordionPane} with the specified identifier.
      */
     @NotNull
     public AccordionPane getPane ( @NotNull final String id )
@@ -535,6 +519,27 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
             }
         }
         throw new RuntimeException ( "Cannot find AccordionPane with identifier: " + id );
+    }
+
+    /**
+     * Returns {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}.
+     *
+     * @param id {@link AccordionPane} identifier
+     * @return {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}
+     */
+    @Nullable
+    public AccordionPane findPane ( @NotNull final String id )
+    {
+        AccordionPane result = null;
+        for ( int i = 0; i < getComponentCount (); i++ )
+        {
+            final AccordionPane pane = ( AccordionPane ) getComponent ( i );
+            if ( pane.getId ().equals ( id ) )
+            {
+                result = pane;
+            }
+        }
+        return result;
     }
 
     /**
@@ -599,9 +604,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
                                    @NotNull final Component content )
     {
         final AccordionPane accordionPane = createAccordionPane ( id, icon, title, content );
-        add ( accordionPane, index );
-        SwingUtils.update ( this );
-        return accordionPane;
+        return addPane ( accordionPane, index );
     }
 
     /**
@@ -621,19 +624,100 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
+     * Adds specified {@link AccordionPane} to this accordion.
+     *
+     * @param pane {@link AccordionPane} to add
+     * @return added {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane addPane ( @NotNull final AccordionPane pane )
+    {
+        return addPane ( pane, getComponentCount () );
+    }
+
+    /**
+     * Adds specified {@link AccordionPane} to this accordion.
+     *
+     * @param pane  {@link AccordionPane} to add
+     * @param index {@link AccordionPane} z-index in this accordion
+     * @return added {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane addPane ( @NotNull final AccordionPane pane, final int index )
+    {
+        add ( pane, index );
+        SwingUtils.update ( this );
+        return pane;
+    }
+
+    @Override
+    protected void addImpl ( @NotNull final Component comp, @Nullable final Object constraints, final int index )
+    {
+        if ( comp instanceof AccordionPane )
+        {
+            final AccordionPane pane = ( AccordionPane ) comp;
+            if ( findPane ( pane.getId () ) == null )
+            {
+                final List<AccordionPane> oldPanes = getPanes ();
+                super.addImpl ( pane, constraints, index );
+                firePropertyChange ( PANES_PROPERTY, oldPanes, getPanes () );
+            }
+            else
+            {
+                throw new RuntimeException ( "AccordionPane with identifier already exists: " + pane.getId () );
+            }
+        }
+        else
+        {
+            throw new RuntimeException ( "Only AccordionPane instances can be added to accordion: " + comp );
+        }
+    }
+
+    /**
      * Removes {@link AccordionPane} with the specified identifier from this {@link WebAccordion} if it exists.
      * Returns either removed {@link AccordionPane} or {@code null} if there was no {@link AccordionPane} with the specified identifier.
      *
-     * @param id {@link AccordionPane} identifier
+     * @param id identifier of {@link AccordionPane} to remove
      * @return either removed {@link AccordionPane} or {@code null} if there was no {@link AccordionPane} with the specified identifier
      */
     @Nullable
     public AccordionPane removePane ( @NotNull final String id )
     {
-        final AccordionPane pane = getPane ( id );
-        remove ( pane );
-        SwingUtils.update ( this );
-        return pane;
+        final AccordionPane pane = findPane ( id );
+        return pane != null ? removePane ( pane ) : null;
+    }
+
+    /**
+     * Removes specified {@link AccordionPane} from this {@link WebAccordion} if it exists.
+     * Returns either specified {@link AccordionPane} or {@code null} if it is not a part of this {@link WebAccordion}.
+     *
+     * @param pane {@link AccordionPane} to remove
+     * @return either specified {@link AccordionPane} or {@code null} if it is not a part of this {@link WebAccordion}
+     */
+    @Nullable
+    public AccordionPane removePane ( @NotNull final AccordionPane pane )
+    {
+        final AccordionPane removed;
+        final int zOrder = getComponentZOrder ( pane );
+        if ( zOrder != -1 )
+        {
+            remove ( zOrder );
+            SwingUtils.update ( this );
+            removed = pane;
+        }
+        else
+        {
+            removed = null;
+        }
+        return removed;
+    }
+
+    @Override
+    public void remove ( final int index )
+    {
+        final List<AccordionPane> oldPanes = getPanes ();
+        super.remove ( index );
+        firePropertyChange ( PANES_PROPERTY, oldPanes, getPanes () );
     }
 
     /**

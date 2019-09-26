@@ -63,7 +63,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     /**
      * Content {@link Component}.
      */
-    @NotNull
+    @Nullable
     protected Component content;
 
     /**
@@ -73,10 +73,24 @@ public class AccordionPane extends WebPanel implements Identifiable
      * @param id        unique {@link AccordionPane} identifier
      * @param icon      {@link AccordionPane} title icon
      * @param title     {@link AccordionPane} title
-     * @param content   {@link Component} which this {@link AccordionPane} describes
      */
     public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id,
-                           @Nullable final Icon icon, @Nullable final String title, @NotNull final Component content )
+                           @Nullable final Icon icon, @Nullable final String title )
+    {
+        this ( StyleId.accordionPane.at ( accordion ), accordion, id, icon, title, null );
+    }
+
+    /**
+     * Constructs new {@link AccordionPane}.
+     *
+     * @param accordion {@link WebAccordion} this {@link AccordionPane} is created for
+     * @param id        unique {@link AccordionPane} identifier
+     * @param icon      {@link AccordionPane} title icon
+     * @param title     {@link AccordionPane} title
+     * @param content   content {@link Component}
+     */
+    public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id,
+                           @Nullable final Icon icon, @Nullable final String title, @Nullable final Component content )
     {
         this ( StyleId.accordionPane.at ( accordion ), accordion, id, icon, title, content );
     }
@@ -89,20 +103,37 @@ public class AccordionPane extends WebPanel implements Identifiable
      * @param id        {@link AccordionPane} unique identifier
      * @param icon      {@link AccordionPane} title icon
      * @param title     {@link AccordionPane} title
-     * @param content   {@link Component} which this {@link AccordionPane} describes
      */
     public AccordionPane ( @NotNull final StyleId styleId, @NotNull final WebAccordion accordion, @NotNull final String id,
-                           @Nullable final Icon icon, @Nullable final String title, @NotNull final Component content )
+                           @Nullable final Icon icon, @Nullable final String title )
+    {
+        this ( styleId, accordion, id, icon, title, null );
+    }
+
+    /**
+     * Constructs new {@link AccordionPane}.
+     *
+     * @param styleId   {@link StyleId}
+     * @param accordion {@link WebAccordion} this {@link AccordionPane} is created for
+     * @param id        {@link AccordionPane} unique identifier
+     * @param icon      {@link AccordionPane} title icon
+     * @param title     {@link AccordionPane} title
+     * @param content   content {@link Component}
+     */
+    public AccordionPane ( @NotNull final StyleId styleId, @NotNull final WebAccordion accordion, @NotNull final String id,
+                           @Nullable final Icon icon, @Nullable final String title, @Nullable final Component content )
     {
         super ( styleId, ( LayoutManager ) null );
-
         this.id = id;
 
         this.header = createHeaderComponent ( icon, title );
         add ( this.header );
 
         this.content = content;
-        add ( this.content );
+        if ( content != null )
+        {
+            add ( this.content );
+        }
     }
 
     @NotNull
@@ -126,38 +157,28 @@ public class AccordionPane extends WebPanel implements Identifiable
     /**
      * Replaces header {@link Component}.
      *
+     * @param icon  {@link AccordionPane} title icon
+     * @param title {@link AccordionPane} title
+     */
+    public void setHeader ( @Nullable final Icon icon, @Nullable final String title )
+    {
+        setHeader ( createHeaderComponent ( icon, title ) );
+    }
+
+    /**
+     * Replaces header {@link Component}.
+     *
      * @param header new header {@link Component}
      */
     public void setHeader ( @NotNull final Component header )
     {
-        remove ( this.header );
-        this.header = header;
-        add ( this.header );
-        SwingUtils.update ( this );
-    }
-
-    /**
-     * Returns content {@link Component}.
-     *
-     * @return content {@link Component}
-     */
-    @NotNull
-    public Component getContent ()
-    {
-        return content;
-    }
-
-    /**
-     * Replaces content {@link Component}.
-     *
-     * @param content new content {@link Component}
-     */
-    public void setContent ( @NotNull final Component content )
-    {
-        remove ( this.content );
-        this.content = content;
-        add ( this.content );
-        SwingUtils.update ( this );
+        if ( this.header != header )
+        {
+            remove ( this.header );
+            this.header = header;
+            add ( this.header );
+            SwingUtils.update ( this );
+        }
     }
 
     /**
@@ -314,25 +335,36 @@ public class AccordionPane extends WebPanel implements Identifiable
     }
 
     /**
-     * Returns unique view identifier.
+     * Returns content {@link Component}.
      *
-     * @return unique view identifier
+     * @return content {@link Component}
      */
-    @NotNull
-    public String id ()
+    @Nullable
+    public Component getContent ()
     {
-        return id;
+        return content;
     }
 
     /**
-     * Returns {@link Component} which this {@link AccordionPane} describes.
+     * Replaces content {@link Component}.
      *
-     * @return {@link Component} which this {@link AccordionPane} describes
+     * @param content new content {@link Component}
      */
-    @NotNull
-    public Component component ()
+    public void setContent ( @Nullable final Component content )
     {
-        return content;
+        if ( this.content != content )
+        {
+            if ( this.content != null )
+            {
+                remove ( this.content );
+            }
+            this.content = content;
+            if ( this.content != null )
+            {
+                add ( this.content );
+            }
+            SwingUtils.update ( this );
+        }
     }
 
     /**
