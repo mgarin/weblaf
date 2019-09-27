@@ -68,38 +68,43 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
             /**
              * Adding extra width/height to the view size whenever it should include hovering scroll bar.
              */
+            boolean vExtending = false;
+            boolean hExtending = false;
             final Container scroll = viewport.getParent ();
             if ( scroll instanceof JScrollPane )
             {
                 final JScrollPane scrollPane = ( JScrollPane ) scroll;
-                final LayoutManager layout = scrollPane.getLayout ();
-                if ( layout instanceof ScrollPaneLayout )
+                if ( viewport == scrollPane.getViewport () )
                 {
-                    /**
-                     * Vertical scroll bar width.
-                     */
-                    final ScrollBarSettings vpos = ( ( ScrollPaneLayout ) layout ).getVerticalScrollBarPosition ();
-                    if ( vpos.isHovering () && vpos.isExtending () )
+                    final LayoutManager layout = scrollPane.getLayout ();
+                    if ( layout instanceof ScrollPaneLayout )
                     {
-                        final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
-                        if ( vsb != null && vsb.isShowing () )
+                        /**
+                         * Vertical scroll bar width.
+                         */
+                        final ScrollBarSettings vpos = ( ( ScrollPaneLayout ) layout ).getVerticalScrollBarPosition ();
+                        if ( vpos.isHovering () && vpos.isExtending () )
                         {
-                            viewSize.width += vsb.getPreferredSize ().width;
-                            extentSize.width += vsb.getPreferredSize ().width;
+                            final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
+                            if ( vsb != null && vsb.isShowing () )
+                            {
+                                viewSize.width += vsb.getPreferredSize ().width;
+                                vExtending = true;
+                            }
                         }
-                    }
 
-                    /**
-                     * Horizontal scroll bar height.
-                     */
-                    final ScrollBarSettings hpos = ( ( ScrollPaneLayout ) layout ).getHorizontalScrollBarPosition ();
-                    if ( hpos.isHovering () && hpos.isExtending () )
-                    {
-                        final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
-                        if ( hsb != null && hsb.isShowing () )
+                        /**
+                         * Horizontal scroll bar height.
+                         */
+                        final ScrollBarSettings hpos = ( ( ScrollPaneLayout ) layout ).getHorizontalScrollBarPosition ();
+                        if ( hpos.isHovering () && hpos.isExtending () )
                         {
-                            viewSize.height += hsb.getPreferredSize ().height;
-                            extentSize.height += hsb.getPreferredSize ().height;
+                            final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
+                            if ( hsb != null && hsb.isShowing () )
+                            {
+                                viewSize.height += hsb.getPreferredSize ().height;
+                                hExtending = true;
+                            }
                         }
                     }
                 }
@@ -110,11 +115,11 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
              */
             if ( scrollableView != null )
             {
-                if ( scrollableView.getScrollableTracksViewportWidth () )
+                if ( scrollableView.getScrollableTracksViewportWidth () && !vExtending )
                 {
                     viewSize.width = vpSize.width;
                 }
-                if ( scrollableView.getScrollableTracksViewportHeight () )
+                if ( scrollableView.getScrollableTracksViewportHeight () && !hExtending )
                 {
                     viewSize.height = vpSize.height;
                 }
@@ -164,11 +169,11 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
              */
             if ( scrollableView == null )
             {
-                if ( viewPosition.x == 0 && vpSize.width > viewPrefSize.width )
+                if ( viewPosition.x == 0 && vpSize.width > viewSize.width )
                 {
                     viewSize.width = vpSize.width;
                 }
-                if ( viewPosition.y == 0 && vpSize.height > viewPrefSize.height )
+                if ( viewPosition.y == 0 && vpSize.height > viewSize.height )
                 {
                     viewSize.height = vpSize.height;
                 }
@@ -211,32 +216,35 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
         if ( scroll instanceof JScrollPane )
         {
             final JScrollPane scrollPane = ( JScrollPane ) scroll;
-            final LayoutManager layout = scrollPane.getLayout ();
-            if ( layout instanceof ScrollPaneLayout )
+            if ( viewport == scrollPane.getViewport () )
             {
-                /**
-                 * Vertical scroll bar width.
-                 */
-                final ScrollBarSettings vpos = ( ( ScrollPaneLayout ) layout ).getVerticalScrollBarPosition ();
-                if ( vpos.isHovering () && vpos.isExtending () )
+                final LayoutManager layout = scrollPane.getLayout ();
+                if ( layout instanceof ScrollPaneLayout )
                 {
-                    final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
-                    if ( vsb != null && vsb.isShowing () )
+                    /**
+                     * Vertical scroll bar width.
+                     */
+                    final ScrollBarSettings vpos = ( ( ScrollPaneLayout ) layout ).getVerticalScrollBarPosition ();
+                    if ( vpos.isHovering () && vpos.isExtending () )
                     {
-                        ps.width += vsb.getPreferredSize ().width;
+                        final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
+                        if ( vsb != null && vsb.isShowing () )
+                        {
+                            ps.width += vsb.getPreferredSize ().width;
+                        }
                     }
-                }
 
-                /**
-                 * Horizontal scroll bar height.
-                 */
-                final ScrollBarSettings hpos = ( ( ScrollPaneLayout ) layout ).getHorizontalScrollBarPosition ();
-                if ( hpos.isHovering () && hpos.isExtending () )
-                {
-                    final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
-                    if ( hsb != null && hsb.isShowing () )
+                    /**
+                     * Horizontal scroll bar height.
+                     */
+                    final ScrollBarSettings hpos = ( ( ScrollPaneLayout ) layout ).getHorizontalScrollBarPosition ();
+                    if ( hpos.isHovering () && hpos.isExtending () )
                     {
-                        ps.height += hsb.getPreferredSize ().height;
+                        final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
+                        if ( hsb != null && hsb.isShowing () )
+                        {
+                            ps.height += hsb.getPreferredSize ().height;
+                        }
                     }
                 }
             }

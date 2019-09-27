@@ -18,16 +18,19 @@
 package com.alee.laf.viewport;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.laf.scroll.layout.ScrollBarSettings;
+import com.alee.laf.scroll.layout.ScrollPaneLayout;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * {@link JViewport} extension class.
  * It contains various useful methods to simplify core component usage.
- *
+ * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
@@ -168,5 +171,66 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     public String getUIClassID ()
     {
         return StyleManager.getDescriptor ( this ).getUIClassId ();
+    }
+
+    @Override
+    public void scrollRectToVisible ( final Rectangle newRect )
+    {
+        final Container scroll = getParent ();
+        if ( scroll instanceof JScrollPane )
+        {
+            final JScrollPane scrollPane = ( JScrollPane ) scroll;
+            if ( this == scrollPane.getViewport () )
+            {
+                final LayoutManager layout = scrollPane.getLayout ();
+                if ( layout instanceof ScrollPaneLayout )
+                {
+                    final Rectangle curRect = getVisibleRect ();
+
+                    final ScrollBarSettings vpos = ( ( ScrollPaneLayout ) layout ).getVerticalScrollBarPosition ();
+                    if ( vpos.isHovering () && vpos.isExtending () )
+                    {
+                        final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
+                        if ( vsb != null && vsb.isShowing () )
+                        {
+                            newRect.x += calculateAdjustment ( curRect.x, curRect.width, newRect.x, newRect.width, vsb.getWidth () );
+                        }
+                    }
+
+                    final ScrollBarSettings hpos = ( ( ScrollPaneLayout ) layout ).getHorizontalScrollBarPosition ();
+                    if ( hpos.isHovering () && hpos.isExtending () )
+                    {
+                        final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
+                        if ( hsb != null && hsb.isShowing () )
+                        {
+                            newRect.y += calculateAdjustment ( curRect.y, curRect.height, newRect.y, newRect.height, hsb.getHeight () );
+                        }
+                    }
+                }
+            }
+        }
+
+        super.scrollRectToVisible ( newRect );
+    }
+
+    /**
+     * Calculates new position adjustment.
+     *
+     * @param curPos currents position
+     * @param curLen current length
+     * @param newPos new position
+     * @param newLen new length
+     * @param barLen scrollbar length
+     * @return new position adjustment
+     */
+    private int calculateAdjustment ( final int curPos, final int curLen, final int newPos, final int newLen, final int barLen )
+    {
+        final int len = Math.min ( curLen, newLen );
+        if ( curPos + curLen < newPos + len + barLen )
+        {
+            return barLen;
+        }
+
+        return 0;
     }
 }

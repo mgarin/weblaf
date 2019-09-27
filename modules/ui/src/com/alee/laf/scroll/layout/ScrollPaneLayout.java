@@ -253,7 +253,10 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
          */
         final Rectangle hsbR = new Rectangle ( availR.x - viewInsets.left, 0, 0, 0 );
         boolean hsbNeeded = !isEmpty && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER &&
-                ( hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS || !viewTracksViewportWidth && viewPrefSize.width > extentSize.width );
+                ( hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS ||
+                        ( !viewTracksViewportWidth && viewPrefSize.width > extentSize.width ) ||
+                        ( vsb != null && vsbNeeded && vpos.isHovering () && vpos.isExtending () &&
+                                viewPrefSize.width + vsb.getPreferredSize ().width > extentSize.width ) );
 
         if ( hsb != null && hsbNeeded )
         {
@@ -267,7 +270,9 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
             if ( vsb != null && !vsbNeeded && vsbPolicy != VERTICAL_SCROLLBAR_NEVER )
             {
                 extentSize = viewport.toViewCoordinates ( availR.getSize () );
-                vsbNeeded = viewPrefSize.height > extentSize.height;
+                vsbNeeded = viewPrefSize.height > extentSize.height ||
+                        ( hpos.isHovering () && hpos.isExtending () &&
+                                viewPrefSize.height + hsb.getPreferredSize ().height > extentSize.height );
 
                 if ( vsbNeeded )
                 {
@@ -295,7 +300,9 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
                 viewTracksViewportHeight = sv.getScrollableTracksViewportHeight ();
                 if ( vsb != null && vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED )
                 {
-                    final boolean newVSBNeeded = !viewTracksViewportHeight && viewPrefSize.height > extentSize.height;
+                    final boolean newVSBNeeded = ( !viewTracksViewportHeight && viewPrefSize.height > extentSize.height ) ||
+                            ( hsb != null && hsbNeeded && hpos.isHovering () && hpos.isExtending () &&
+                                    viewPrefSize.height + hsb.getPreferredSize ().height > extentSize.height );
                     if ( newVSBNeeded != vsbNeeded )
                     {
                         vsbNeeded = newVSBNeeded;
@@ -305,7 +312,9 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
                 }
                 if ( hsb != null && hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED )
                 {
-                    final boolean newHSBbNeeded = !viewTracksViewportWidth && viewPrefSize.width > extentSize.width;
+                    final boolean newHSBbNeeded = ( !viewTracksViewportWidth && viewPrefSize.width > extentSize.width ) ||
+                            ( vsb != null && vsbNeeded && vpos.isHovering () && vpos.isExtending () &&
+                                    viewPrefSize.width + vsb.getPreferredSize ().width > extentSize.width );
                     if ( newHSBbNeeded != hsbNeeded )
                     {
                         hsbNeeded = newHSBbNeeded;
@@ -313,7 +322,9 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
                         if ( vsb != null && !vsbNeeded && vsbPolicy != VERTICAL_SCROLLBAR_NEVER )
                         {
                             extentSize = viewport.toViewCoordinates ( availR.getSize () );
-                            vsbNeeded = viewPrefSize.height > extentSize.height;
+                            vsbNeeded = viewPrefSize.height > extentSize.height ||
+                                    ( hsbNeeded && hpos.isHovering () && hpos.isExtending () &&
+                                            viewPrefSize.height + hsb.getPreferredSize ().height > extentSize.height );
                             if ( vsbNeeded )
                             {
                                 adjustForVSB ( vsb, true, availR, vsbR, viewInsets, ltr );
@@ -359,6 +370,13 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
             if ( hpos.isTrailing () )
             {
                 hsbR.width += vsbR.width;
+            }
+            else
+            {
+                if ( !ltr )
+                {
+                    hsbR.x += vsbR.width;
+                }
             }
 
             // Reduce width to give space for the corner
@@ -630,7 +648,7 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
          * extentSize) to the preferredSize of the view. Although we're not responsible for laying out the view we'll assume that the
          * JViewport will always give it its preferredSize.
          */
-        if ( vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER && ( !vpos.isHovering () || vpos.isExtending () ) )
+        if ( vsb != null && vsbPolicy != VERTICAL_SCROLLBAR_NEVER && !vpos.isHovering () )
         {
             if ( vsbPolicy == VERTICAL_SCROLLBAR_ALWAYS )
             {
@@ -649,7 +667,7 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
                 }
             }
         }
-        if ( hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER && ( !hpos.isHovering () || hpos.isExtending () ) )
+        if ( hsb != null && hsbPolicy != HORIZONTAL_SCROLLBAR_NEVER && !hpos.isHovering () )
         {
             if ( hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS )
             {

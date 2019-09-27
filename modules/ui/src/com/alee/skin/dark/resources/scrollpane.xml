@@ -128,7 +128,7 @@
     <style type="scrollpane" id="hovering">
         <component>
             <layout class="ScrollPaneLayout$UIResource">
-                <Vertical leading="false" trailing="true" hovering="true" extending="false" />
+                <Vertical leading="false" trailing="true" hovering="true" extending="true" />
                 <Horizontal leading="false" trailing="false" hovering="true" extending="true" />
             </layout>
         </component>
