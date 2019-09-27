@@ -115,7 +115,7 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
     public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
         final String property = event.getPropertyName ();
-        if ( Objects.equals ( property, WebAccordion.MODEL_PROPERTY ) )
+        if ( Objects.equals ( property, WebAccordion.ANIMATED_PROPERTY ) )
         {
             updateDecorationStates ();
         }

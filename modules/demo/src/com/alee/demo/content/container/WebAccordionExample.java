@@ -89,6 +89,10 @@ public class WebAccordionExample extends AbstractStylePreviewExample
         protected List<? extends JComponent> createPreviewElements ()
         {
             final WebAccordion accordion = new WebAccordion ( getStyleId (), headerPosition );
+            if ( headerPosition == BoxOrientation.left || headerPosition == BoxOrientation.right )
+            {
+                accordion.setMaximumExpandedPaneCount ( 2 );
+            }
 
             final String titleKey = getExampleLanguageKey ( "data.title" );
             accordion.addPane ( DemoIcons.fire16, titleKey, createContent () );

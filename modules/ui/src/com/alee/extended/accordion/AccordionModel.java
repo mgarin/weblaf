@@ -24,6 +24,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Model for {@link WebAccordion} that handles expansion states of {@link AccordionPane}s.
+ *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
  * @see WebAccordion
@@ -98,12 +100,26 @@ public interface AccordionModel extends Serializable
     public List<String> getExpandedPaneIds ();
 
     /**
+     * Changes state of the {@link AccordionPane}s with identifiers from the specified {@link List} to expanded.
+     *
+     * @param ids {@link List} of identifiers of {@link AccordionPane}s to set expanded
+     */
+    public void setExpandedPaneIds ( @NotNull List<String> ids );
+
+    /**
      * Returns array of indices of expanded {@link AccordionPane}s.
      *
      * @return array of indices of expanded {@link AccordionPane}s
      */
     @NotNull
     public int[] getExpandedPaneIndices ();
+
+    /**
+     * Changes state of the {@link AccordionPane}s at the specified indices to expanded.
+     *
+     * @param indices indices of {@link AccordionPane}s to set expanded
+     */
+    public void setExpandedPaneIndices ( @NotNull int[] indices );
 
     /**
      * Returns whether or not {@link AccordionPane} with the specified identifier is expanded.
@@ -116,11 +132,10 @@ public interface AccordionModel extends Serializable
     /**
      * Asks model to expand {@link AccordionPane} with the specified identifier.
      *
-     * @param id       {@link AccordionPane} identifier
-     * @param animated whether or not transition should be animated
+     * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} was successfully expanded, {@code false} otherwise
      */
-    public boolean expandPane ( @NotNull String id, boolean animated );
+    public boolean expandPane ( @NotNull String id );
 
     /**
      * Returns {@link List} of collapsed {@link AccordionPane}s.
@@ -157,9 +172,8 @@ public interface AccordionModel extends Serializable
     /**
      * Asks model to collapse {@link AccordionPane} with the specified identifier.
      *
-     * @param id       {@link AccordionPane} identifier
-     * @param animated whether or not transition should be animated
+     * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} was successfully collapsed, {@code false} otherwise
      */
-    public boolean collapsePane ( @NotNull String id, boolean animated );
+    public boolean collapsePane ( @NotNull String id );
 }

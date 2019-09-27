@@ -96,7 +96,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
             }
 
             // Validating states
-            validateStates ( false );
+            validateStates ();
         }
         else
         {
@@ -170,7 +170,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         states = accordionState.states ();
 
         // Validating states
-        validateStates ( true );
+        validateStates ();
     }
 
     @Override
@@ -182,7 +182,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
                 WebAccordion.MAXIMUM_EXPANDED_PANE_COUNT_PROPERTY ) )
         {
             // Validating states
-            validateStates ( true );
+            validateStates ();
         }
     }
 
@@ -198,7 +198,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         }
 
         // Validating states
-        validateStates ( false );
+        validateStates ();
     }
 
     @Override
@@ -209,16 +209,14 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         states.remove ( pane.getId () );
 
         // Validating states
-        validateStates ( false );
+        validateStates ();
     }
 
     /**
      * Validating that our states comply with {@link WebAccordion} conditions.
      * If they don't - we will automatically adjust states to fix issues.
-     *
-     * @param animated whether or not transition should be animated
      */
-    protected void validateStates ( final boolean animated )
+    protected void validateStates ()
     {
         if ( accordion != null )
         {
@@ -234,7 +232,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
                 final int toExpand = Math.min ( collapsed.size (), accordion.getMinimumExpandedPaneCount () - expanded.size () );
                 for ( int i = 0; i < toExpand; i++ )
                 {
-                    expandPane ( collapsed.get ( i ).getId (), animated );
+                    expandPane ( collapsed.get ( i ).getId () );
                 }
             }
             else if ( expanded.size () > accordion.getMaximumExpandedPaneCount () )
@@ -246,7 +244,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
                 final int toCollapse = expanded.size () - accordion.getMaximumExpandedPaneCount ();
                 for ( int i = 0; i < toCollapse; i++ )
                 {
-                    collapsePane ( expanded.get ( i ).getId (), animated );
+                    collapsePane ( expanded.get ( i ).getId () );
                 }
             }
         }
@@ -341,6 +339,31 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         return expandedIds;
     }
 
+    @Override
+    public void setExpandedPaneIds ( @NotNull final List<String> ids )
+    {
+        final WebAccordion accordion = getAccordion ();
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
+        {
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( ids.contains ( pane.getId () ) )
+            {
+                if ( isPaneCollapsed ( pane.getId () ) )
+                {
+                    expandUnconditionally ( pane.getId () );
+                }
+            }
+            else
+            {
+                if ( isPaneExpanded ( pane.getId () ) )
+                {
+                    collapseUnconditionally ( pane.getId () );
+                }
+            }
+        }
+        validateStates ();
+    }
+
     @NotNull
     @Override
     public int[] getExpandedPaneIndices ()
@@ -359,13 +382,39 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
     }
 
     @Override
+    public void setExpandedPaneIndices ( @NotNull final int[] indices )
+    {
+        final WebAccordion accordion = getAccordion ();
+        final List<Integer> expanded = CollectionUtils.asList ( indices );
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
+        {
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( expanded.contains ( i ) )
+            {
+                if ( isPaneCollapsed ( pane.getId () ) )
+                {
+                    expandUnconditionally ( pane.getId () );
+                }
+            }
+            else
+            {
+                if ( isPaneExpanded ( pane.getId () ) )
+                {
+                    collapseUnconditionally ( pane.getId () );
+                }
+            }
+        }
+        validateStates ();
+    }
+
+    @Override
     public boolean isPaneExpanded ( @NotNull final String id )
     {
         return getPaneState ( id ).isExpanded ();
     }
 
     @Override
-    public boolean expandPane ( @NotNull final String id, final boolean animated )
+    public boolean expandPane ( @NotNull final String id )
     {
         final boolean wasExpanded;
         if ( isPaneCollapsed ( id ) )
@@ -379,7 +428,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
             if ( expanded.size () < accordion.getMaximumExpandedPaneCount () )
             {
                 // Simply expanding pane
-                expandUnconditionally ( id, animated );
+                expandUnconditionally ( id );
                 wasExpanded = true;
             }
             else if ( expanded.size () > 0 )
@@ -388,8 +437,8 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
                 CollectionUtils.sort ( expanded, newToOldPaneComparator );
 
                 // Collapsing previously expanded pane
-                collapseUnconditionally ( expanded.get ( 0 ).getId (), animated );
-                expandUnconditionally ( id, animated );
+                collapseUnconditionally ( expanded.get ( 0 ).getId () );
+                expandUnconditionally ( id );
                 wasExpanded = true;
             }
             else
@@ -409,10 +458,9 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
      * Expands {@link AccordionPane} with the specified identifier without any additional checks.
      * This method is intended for internal use only to avoid issues with overlapping minimum/maximum conditions.
      *
-     * @param id       {@link AccordionPane} identifier
-     * @param animated whether or not transition should be animated
+     * @param id {@link AccordionPane} identifier
      */
-    protected void expandUnconditionally ( @NotNull final String id, final boolean animated )
+    protected void expandUnconditionally ( @NotNull final String id )
     {
         getPaneState ( id ).setExpanded ( true );
 
@@ -422,7 +470,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         final AccordionLayout layout = accordion.getLayout ();
         if ( layout != null )
         {
-            layout.expandPane ( accordion, id, animated );
+            layout.expandPane ( accordion, id );
         }
         else
         {
@@ -492,7 +540,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
     }
 
     @Override
-    public boolean collapsePane ( @NotNull final String id, final boolean animated )
+    public boolean collapsePane ( @NotNull final String id )
     {
         final boolean wasCollapsed;
         if ( isPaneExpanded ( id ) )
@@ -507,7 +555,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
             if ( expanded.size () > accordion.getMinimumExpandedPaneCount () )
             {
                 // Simply collapsing pane
-                collapseUnconditionally ( id, animated );
+                collapseUnconditionally ( id );
                 wasCollapsed = true;
             }
             else if ( collapsed.size () > 0 )
@@ -516,8 +564,8 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
                 CollectionUtils.sort ( collapsed, newToOldPaneComparator );
 
                 // Expanding previously collapsed pane before we collapse new one
-                expandUnconditionally ( collapsed.get ( 0 ).getId (), animated );
-                collapseUnconditionally ( id, animated );
+                expandUnconditionally ( collapsed.get ( 0 ).getId () );
+                collapseUnconditionally ( id );
                 wasCollapsed = true;
             }
             else
@@ -537,10 +585,9 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
      * Collapses {@link AccordionPane} with the specified identifier without any additional checks.
      * This method is intended for internal use only to avoid issues with overlapping minimum/maximum conditions.
      *
-     * @param id       {@link AccordionPane} identifier
-     * @param animated whether or not transition should be animated
+     * @param id {@link AccordionPane} identifier
      */
-    protected void collapseUnconditionally ( @NotNull final String id, final boolean animated )
+    protected void collapseUnconditionally ( @NotNull final String id )
     {
         getPaneState ( id ).setExpanded ( false );
 
@@ -550,7 +597,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         final AccordionLayout layout = accordion.getLayout ();
         if ( layout != null )
         {
-            layout.collapsePane ( accordion, id, animated );
+            layout.collapsePane ( accordion, id );
         }
         else
         {

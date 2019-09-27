@@ -245,11 +245,10 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
      *
      * @param accordion {@link WebAccordion}
      * @param id        {@link AccordionPane} identifier
-     * @param animated  whether or not transition should be animated
      */
-    public void expandPane ( @NotNull final WebAccordion accordion, @NotNull final String id, final boolean animated )
+    public void expandPane ( @NotNull final WebAccordion accordion, @NotNull final String id )
     {
-        changePaneState ( accordion, id, size ( accordion, id ), 1f, animated, new Runnable ()
+        changePaneState ( accordion, id, size ( accordion, id ), 1f, new Runnable ()
         {
             @Override
             public void run ()
@@ -275,11 +274,10 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
      *
      * @param accordion {@link WebAccordion}
      * @param id        {@link AccordionPane} identifier
-     * @param animated  whether or not transition should be animated
      */
-    public void collapsePane ( @NotNull final WebAccordion accordion, @NotNull final String id, final boolean animated )
+    public void collapsePane ( @NotNull final WebAccordion accordion, @NotNull final String id )
     {
-        changePaneState ( accordion, id, size ( accordion, id ), 0f, animated, new Runnable ()
+        changePaneState ( accordion, id, size ( accordion, id ), 0f, new Runnable ()
         {
             @Override
             public void run ()
@@ -307,12 +305,11 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
      * @param id          {@link AccordionPane} identifier
      * @param start       starting {@link AccordionPane} content size
      * @param target      target {@link AccordionPane} content size
-     * @param animated    whether or not transition should be animated
      * @param preChange   {@link Runnable} to be executed once state change has started
      * @param afterChange {@link Runnable} to be executed once state change has completed
      */
     protected void changePaneState ( @NotNull final WebAccordion accordion, @NotNull final String id,
-                                     final float start, final float target, final boolean animated,
+                                     final float start, final float target,
                                      @NotNull final Runnable preChange, @NotNull final Runnable afterChange )
     {
         // Make sure we stop previous transition
@@ -325,7 +322,7 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
 
         final Easing easing = getEasing ();
         final long fullDuration = getDuration ();
-        if ( animated && accordion.isShowing () && easing != null && fullDuration > 0L )
+        if ( accordion.isAnimated () && accordion.isShowing () && easing != null && fullDuration > 0L )
         {
             final TimedTransition<Float> stateTransition = new TimedTransition<Float> ( start, target, easing, fullDuration );
             transitions.put ( id, stateTransition );
