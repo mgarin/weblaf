@@ -50,8 +50,8 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      */
     public static final String MODEL_PROPERTY = "model";
     public static final String HEADER_POSITION_PROPERTY = "headerPosition";
-    public static final String MINIMUM_EXPANDED_PROPERTY = "minimumExpanded";
-    public static final String MAXIMUM_EXPANDED_PROPERTY = "maximumExpanded";
+    public static final String MINIMUM_EXPANDED_PANE_COUNT_PROPERTY = "minimumExpandedPaneCount";
+    public static final String MAXIMUM_EXPANDED_PANE_COUNT_PROPERTY = "maximumExpandedPaneCount";
     public static final String MINIMUM_PANE_CONTENT_SIZE_PROPERTY = "minimumPaneContentSizee";
     public static final String PANES_PROPERTY = "panes";
 
@@ -71,7 +71,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * Cane also be {@code null} in which case default value will be used.
      */
     @Nullable
-    protected Integer minimumExpanded;
+    protected Integer minimumExpandedPaneCount;
 
     /**
      * Maximum amount of {@link AccordionPane}s that can be expanded.
@@ -79,7 +79,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * Cane also be {@code null} in which case default value will be used.
      */
     @Nullable
-    protected Integer maximumExpanded;
+    protected Integer maximumExpandedPaneCount;
 
     /**
      * Minimum size in pixels of a single {@link AccordionPane}'s content.
@@ -107,12 +107,12 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
-     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     * @param minimumExpandedPaneCount minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpandedPaneCount maximum amount of {@link AccordionPane}s that can be expanded
      */
-    public WebAccordion ( final int minimumExpanded, final int maximumExpanded )
+    public WebAccordion ( final int minimumExpandedPaneCount, final int maximumExpandedPaneCount )
     {
-        this ( StyleId.auto, BoxOrientation.top, minimumExpanded, maximumExpanded );
+        this ( StyleId.auto, BoxOrientation.top, minimumExpandedPaneCount, maximumExpandedPaneCount );
     }
 
     /**
@@ -128,13 +128,14 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param headerPosition  {@link BoxOrientation} for header panel positioning, also defines accordion orientation
-     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
-     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     * @param headerPosition           {@link BoxOrientation} for header panel positioning, also defines accordion orientation
+     * @param minimumExpandedPaneCount minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpandedPaneCount maximum amount of {@link AccordionPane}s that can be expanded
      */
-    public WebAccordion ( @NotNull final BoxOrientation headerPosition, final int minimumExpanded, final int maximumExpanded )
+    public WebAccordion ( @NotNull final BoxOrientation headerPosition, final int minimumExpandedPaneCount,
+                          final int maximumExpandedPaneCount )
     {
-        this ( StyleId.auto, headerPosition, minimumExpanded, maximumExpanded );
+        this ( StyleId.auto, headerPosition, minimumExpandedPaneCount, maximumExpandedPaneCount );
     }
 
     /**
@@ -150,13 +151,13 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param id              style ID
-     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
-     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     * @param id                       style ID
+     * @param minimumExpandedPaneCount minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpandedPaneCount maximum amount of {@link AccordionPane}s that can be expanded
      */
-    public WebAccordion ( @NotNull final StyleId id, final int minimumExpanded, final int maximumExpanded )
+    public WebAccordion ( @NotNull final StyleId id, final int minimumExpandedPaneCount, final int maximumExpandedPaneCount )
     {
-        this ( id, BoxOrientation.top, minimumExpanded, maximumExpanded );
+        this ( id, BoxOrientation.top, minimumExpandedPaneCount, maximumExpandedPaneCount );
     }
 
     /**
@@ -173,17 +174,17 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param id              style ID
-     * @param headerPosition  {@link BoxOrientation} for header panel positioning, also defines accordion orientation
-     * @param minimumExpanded minimum amount of {@link AccordionPane}s that should be expanded at all times
-     * @param maximumExpanded maximum amount of {@link AccordionPane}s that can be expanded
+     * @param id                       style ID
+     * @param headerPosition           {@link BoxOrientation} for header panel positioning, also defines accordion orientation
+     * @param minimumExpandedPaneCount minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximumExpandedPaneCount maximum amount of {@link AccordionPane}s that can be expanded
      */
     public WebAccordion ( @NotNull final StyleId id, @NotNull final BoxOrientation headerPosition,
-                          final int minimumExpanded, final int maximumExpanded )
+                          final int minimumExpandedPaneCount, final int maximumExpandedPaneCount )
     {
         setHeaderPosition ( headerPosition );
-        setMinimumExpanded ( minimumExpanded );
-        setMaximumExpanded ( maximumExpanded );
+        setMinimumExpandedPaneCount ( minimumExpandedPaneCount );
+        setMaximumExpandedPaneCount ( maximumExpandedPaneCount );
         setMinimumPaneContentSize ( 100 );
         setModel ( createModel () );
         updateUI ();
@@ -340,9 +341,9 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      *
      * @return minimum amount of {@link AccordionPane}s that should be expanded at all times
      */
-    public int getMinimumExpanded ()
+    public int getMinimumExpandedPaneCount ()
     {
-        return minimumExpanded != null ? minimumExpanded : 1;
+        return minimumExpandedPaneCount != null ? minimumExpandedPaneCount : 1;
     }
 
     /**
@@ -355,20 +356,20 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @return this {@link WebAccordion}
      */
     @NotNull
-    public WebAccordion setMinimumExpanded ( final int minimum )
+    public WebAccordion setMinimumExpandedPaneCount ( final int minimum )
     {
         if ( minimum >= 0 )
         {
-            if ( minimum > getMaximumExpanded () )
+            if ( minimum > getMaximumExpandedPaneCount () )
             {
-                setMaximumExpanded ( minimum );
+                setMaximumExpandedPaneCount ( minimum );
             }
 
-            final int minimumExpanded = getMinimumExpanded ();
+            final int minimumExpanded = getMinimumExpandedPaneCount ();
             if ( Objects.notEquals ( minimumExpanded, minimum ) )
             {
-                this.minimumExpanded = minimum;
-                firePropertyChange ( MINIMUM_EXPANDED_PROPERTY, minimumExpanded, minimum );
+                this.minimumExpandedPaneCount = minimum;
+                firePropertyChange ( MINIMUM_EXPANDED_PANE_COUNT_PROPERTY, minimumExpanded, minimum );
             }
         }
         else
@@ -384,9 +385,9 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      *
      * @return maximum amount of {@link AccordionPane}s that can be expanded
      */
-    public int getMaximumExpanded ()
+    public int getMaximumExpandedPaneCount ()
     {
-        return maximumExpanded != null ? maximumExpanded : 1;
+        return maximumExpandedPaneCount != null ? maximumExpandedPaneCount : 1;
     }
 
     /**
@@ -397,20 +398,20 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @return this {@link WebAccordion}
      */
     @NotNull
-    public WebAccordion setMaximumExpanded ( final int maximum )
+    public WebAccordion setMaximumExpandedPaneCount ( final int maximum )
     {
         if ( maximum >= 1 )
         {
-            if ( maximum < getMinimumExpanded () )
+            if ( maximum < getMinimumExpandedPaneCount () )
             {
-                setMinimumExpanded ( maximum );
+                setMinimumExpandedPaneCount ( maximum );
             }
 
-            final int maximumExpanded = getMaximumExpanded ();
+            final int maximumExpanded = getMaximumExpandedPaneCount ();
             if ( Objects.notEquals ( maximumExpanded, maximum ) )
             {
-                this.maximumExpanded = maximum;
-                firePropertyChange ( MAXIMUM_EXPANDED_PROPERTY, maximumExpanded, maximum );
+                this.maximumExpandedPaneCount = maximum;
+                firePropertyChange ( MAXIMUM_EXPANDED_PANE_COUNT_PROPERTY, maximumExpanded, maximum );
             }
         }
         else
@@ -473,9 +474,9 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     public boolean containsPane ( @NotNull final String id )
     {
         boolean contains = false;
-        for ( int i = 0; i < getComponentCount (); i++ )
+        for ( int i = 0; i < getPaneCount (); i++ )
         {
-            final AccordionPane pane = ( AccordionPane ) getComponent ( i );
+            final AccordionPane pane = getPane ( i );
             if ( pane.getId ().equals ( id ) )
             {
                 contains = true;
@@ -493,10 +494,10 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     @NotNull
     public List<AccordionPane> getPanes ()
     {
-        final List<AccordionPane> panes = new ArrayList<AccordionPane> ( getComponentCount () );
-        for ( int i = 0; i < getComponentCount (); i++ )
+        final List<AccordionPane> panes = new ArrayList<AccordionPane> ( getPaneCount () );
+        for ( int i = 0; i < getPaneCount (); i++ )
         {
-            panes.add ( ( AccordionPane ) getComponent ( i ) );
+            panes.add ( getPane ( i ) );
         }
         return panes;
     }
@@ -510,15 +511,66 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     @NotNull
     public AccordionPane getPane ( @NotNull final String id )
     {
-        for ( int i = 0; i < getComponentCount (); i++ )
+        for ( int i = 0; i < getPaneCount (); i++ )
         {
-            final AccordionPane pane = ( AccordionPane ) getComponent ( i );
+            final AccordionPane pane = getPane ( i );
             if ( pane.getId ().equals ( id ) )
             {
                 return pane;
             }
         }
         throw new RuntimeException ( "Cannot find AccordionPane with identifier: " + id );
+    }
+
+    /**
+     * Returns {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}.
+     *
+     * @param id {@link AccordionPane} identifier
+     * @return {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}
+     */
+    @Nullable
+    public AccordionPane findPane ( @NotNull final String id )
+    {
+        AccordionPane result = null;
+        for ( int i = 0; i < getPaneCount (); i++ )
+        {
+            final AccordionPane pane = getPane ( i );
+            if ( pane.getId ().equals ( id ) )
+            {
+                result = pane;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns index of {@link AccordionPane} with the specified identifier.
+     *
+     * @param id {@link AccordionPane} identifier
+     * @return index of {@link AccordionPane} with the specified identifier
+     */
+    public int getPaneIndex ( @NotNull final String id )
+    {
+        for ( int i = 0; i < getPaneCount (); i++ )
+        {
+            final AccordionPane pane = getPane ( i );
+            if ( pane.getId ().equals ( id ) )
+            {
+                return i;
+            }
+        }
+        throw new RuntimeException ( "Cannot find AccordionPane with identifier: " + id );
+    }
+
+    /**
+     * Returns index of the specified {@link AccordionPane} or {@code -1} if it not a part of this {@link WebAccordion}.
+     *
+     * @param pane {@link AccordionPane} to find index for
+     * @return index of the specified {@link AccordionPane} or {@code -1} if it not a part of this {@link WebAccordion}
+     */
+    public int getPaneIndex ( @Nullable final AccordionPane pane )
+    {
+        return getComponentZOrder ( pane );
     }
 
     /**
@@ -534,27 +586,6 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
-     * Returns {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}.
-     *
-     * @param id {@link AccordionPane} identifier
-     * @return {@link AccordionPane} with the specified identifier or {@code null} if one doesn't exist in {@link WebAccordion}
-     */
-    @Nullable
-    public AccordionPane findPane ( @NotNull final String id )
-    {
-        AccordionPane result = null;
-        for ( int i = 0; i < getComponentCount (); i++ )
-        {
-            final AccordionPane pane = ( AccordionPane ) getComponent ( i );
-            if ( pane.getId ().equals ( id ) )
-            {
-                result = pane;
-            }
-        }
-        return result;
-    }
-
-    /**
      * Adds new {@link AccordionPane} to this accordion.
      *
      * @param icon    {@link AccordionPane} title icon
@@ -566,7 +597,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     public AccordionPane addPane ( @Nullable final Icon icon, @Nullable final String title,
                                    @NotNull final Component content )
     {
-        return addPane ( TextUtils.generateId ( "AP" ), getComponentCount (), icon, title, content );
+        return addPane ( TextUtils.generateId ( "AP" ), getPaneCount (), icon, title, content );
     }
 
     /**
@@ -598,7 +629,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     public AccordionPane addPane ( @NotNull final String id, @Nullable final Icon icon, @Nullable final String title,
                                    @NotNull final Component content )
     {
-        return addPane ( id, getComponentCount (), icon, title, content );
+        return addPane ( id, getPaneCount (), icon, title, content );
     }
 
     /**
@@ -644,7 +675,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     @NotNull
     public AccordionPane addPane ( @NotNull final AccordionPane pane )
     {
-        return addPane ( getComponentCount (), pane );
+        return addPane ( getPaneCount (), pane );
     }
 
     /**
@@ -686,6 +717,21 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
+     * Removes {@link AccordionPane} at the specified index from this {@link WebAccordion}.
+     *
+     * @param index {@link AccordionPane} index
+     * @return removed {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane removePane ( final int index )
+    {
+        final AccordionPane removed = getPane ( index );
+        remove ( index );
+        SwingUtils.update ( this );
+        return removed;
+    }
+
+    /**
      * Removes {@link AccordionPane} with the specified identifier from this {@link WebAccordion} if it exists.
      * Returns either removed {@link AccordionPane} or {@code null} if there was no {@link AccordionPane} with the specified identifier.
      *
@@ -724,21 +770,6 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
         return removed;
     }
 
-    /**
-     * Removes {@link AccordionPane} at the specified index from this {@link WebAccordion}.
-     *
-     * @param index {@link AccordionPane} index
-     * @return removed {@link AccordionPane}
-     */
-    @NotNull
-    public AccordionPane removePane ( final int index )
-    {
-        final AccordionPane removed = getPane ( index );
-        remove ( index );
-        SwingUtils.update ( this );
-        return removed;
-    }
-
     @Override
     public void remove ( final int index )
     {
@@ -748,14 +779,89 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
+     * Returns first expanded {@link AccordionPane}.
+     *
+     * @return first expanded {@link AccordionPane}
+     */
+    @Nullable
+    public AccordionPane getFirstExpandedPane ()
+    {
+        return getModel () != null ? getModel ().getFirstExpandedPane () : null;
+    }
+
+    /**
+     * Returns first expanded {@link AccordionPane} index or {@code -1} if there none are expanded.
+     *
+     * @return first expanded {@link AccordionPane} index or {@code -1} if there none are expanded
+     */
+    public int getFirstExpandedPaneIndex ()
+    {
+        return getModel () != null ? getPaneIndex ( getModel ().getFirstExpandedPane () ) : -1;
+    }
+
+    /**
+     * Returns last expanded {@link AccordionPane}.
+     *
+     * @return last expanded {@link AccordionPane}
+     */
+    @Nullable
+    public AccordionPane getLastExpandedPane ()
+    {
+        return getModel () != null ? getModel ().getLastExpandedPane () : null;
+    }
+
+    /**
+     * Returns last expanded {@link AccordionPane} index or {@code -1} if there none are expanded.
+     *
+     * @return last expanded {@link AccordionPane} index or {@code -1} if there none are expanded
+     */
+    public int getLastExpandedPaneIndex ()
+    {
+        return getModel () != null ? getPaneIndex ( getModel ().getLastExpandedPane () ) : -1;
+    }
+
+    /**
+     * Returns {@link List} of expanded {@link AccordionPane}s.
+     *
+     * @return {@link List} of expanded {@link AccordionPane}s
+     */
+    @NotNull
+    public List<AccordionPane> getExpandedPanes ()
+    {
+        return getModel () != null ? getModel ().getExpandedPanes () : new ArrayList<AccordionPane> ();
+    }
+
+    /**
+     * Returns {@link List} of identifiers of expanded {@link AccordionPane}s.
+     *
+     * @return {@link List} of identifiers of expanded {@link AccordionPane}s
+     */
+    @NotNull
+    public List<String> getExpandedPaneIds ()
+    {
+        return getModel () != null ? getModel ().getExpandedPaneIds () : new ArrayList<String> ();
+    }
+
+    /**
+     * Returns array of indices of expanded {@link AccordionPane}s.
+     *
+     * @return array of indices of expanded {@link AccordionPane}s
+     */
+    @NotNull
+    public int[] getExpandedPaneIndices ()
+    {
+        return getModel () != null ? getModel ().getExpandedPaneIndices () : new int[ 0 ];
+    }
+
+    /**
      * Returns whether or not {@link AccordionPane} with the specified identifier is expanded.
      *
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} with the specified identifier is expanded, {@code false} otherwise
      */
-    public boolean isExpanded ( @NotNull final String id )
+    public boolean isPaneExpanded ( @NotNull final String id )
     {
-        return getModel () != null && getModel ().isExpanded ( id );
+        return getModel () != null && getModel ().isPaneExpanded ( id );
     }
 
     /**
@@ -765,9 +871,9 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @param expanded whether or not {@link AccordionPane} with the specified identifier needs to be expanded or collapsed
      * @return {@code true} if state of {@link AccordionPane} with the specified identifier was changed
      */
-    public boolean setExpanded ( @NotNull final String id, final boolean expanded )
+    public boolean setPaneExpanded ( @NotNull final String id, final boolean expanded )
     {
-        return expanded ? expand ( id ) : collapse ( id );
+        return expanded ? expandPane ( id ) : collapsePane ( id );
     }
 
     /**
@@ -776,9 +882,91 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} was successfully expanded, {@code false} otherwise
      */
-    public boolean expand ( @NotNull final String id )
+    public boolean expandPane ( @NotNull final String id )
     {
-        return getModel () != null && getModel ().expand ( id, true );
+        return getModel () != null && getModel ().expandPane ( id, true );
+    }
+
+    /**
+     * Asks {@link WebAccordion} to expand {@link AccordionPane}s with the specified identifiers.
+     *
+     * @param ids {@link AccordionPane} identifiers
+     */
+    public void expandPanes ( @NotNull final String... ids )
+    {
+        if ( getModel () != null )
+        {
+            for ( final String id : ids )
+            {
+                getModel ().expandPane ( id, true );
+            }
+        }
+    }
+
+    /**
+     * Asks {@link WebAccordion} to expand {@link AccordionPane}s with the specified identifiers.
+     *
+     * @param ids {@link List} of {@link AccordionPane} identifiers
+     */
+    public void expandPanes ( @NotNull final List<String> ids )
+    {
+        if ( getModel () != null )
+        {
+            for ( final String id : ids )
+            {
+                getModel ().expandPane ( id, true );
+            }
+        }
+    }
+
+    /**
+     * Asks {@link WebAccordion} to expand {@link AccordionPane}s at the specified indices.
+     *
+     * @param indices {@link List} of {@link AccordionPane} indices
+     */
+    public void expandPanes ( @NotNull final int[] indices )
+    {
+        if ( getModel () != null )
+        {
+            for ( final int index : indices )
+            {
+                final AccordionPane pane = getPane ( index );
+                getModel ().expandPane ( pane.getId (), true );
+            }
+        }
+    }
+
+    /**
+     * Returns {@link List} of collapsed {@link AccordionPane}s.
+     *
+     * @return {@link List} of collapsed {@link AccordionPane}s
+     */
+    @NotNull
+    public List<AccordionPane> getCollapsedPanes ()
+    {
+        return getModel () != null ? getModel ().getCollapsedPanes () : new ArrayList<AccordionPane> ();
+    }
+
+    /**
+     * Returns {@link List} of identifiers of collapsed {@link AccordionPane}s.
+     *
+     * @return {@link List} of identifiers of collapsed {@link AccordionPane}s
+     */
+    @NotNull
+    public List<String> getCollapsedPaneIds ()
+    {
+        return getModel () != null ? getModel ().getCollapsedPaneIds () : new ArrayList<String> ();
+    }
+
+    /**
+     * Returns array of indices of collapsed {@link AccordionPane}s.
+     *
+     * @return array of indices of collapsed {@link AccordionPane}s
+     */
+    @NotNull
+    public int[] getCollapsedPaneIndices ()
+    {
+        return getModel () != null ? getModel ().getCollapsedPaneIndices () : new int[ 0 ];
     }
 
     /**
@@ -787,9 +975,9 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} with the specified identifier is collapsed, {@code false} otherwise
      */
-    public boolean isCollapsed ( @NotNull final String id )
+    public boolean isPaneCollapsed ( @NotNull final String id )
     {
-        return getModel () != null && getModel ().isCollapsed ( id );
+        return getModel () != null && getModel ().isPaneCollapsed ( id );
     }
 
     /**
@@ -799,9 +987,9 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @param collapsed whether or not {@link AccordionPane} with the specified identifier needs to be collapsed or expanded
      * @return {@code true} if state of {@link AccordionPane} with the specified identifier was changed
      */
-    public boolean setCollapsed ( @NotNull final String id, final boolean collapsed )
+    public boolean setPaneCollapsed ( @NotNull final String id, final boolean collapsed )
     {
-        return collapsed ? collapse ( id ) : expand ( id );
+        return collapsed ? collapsePane ( id ) : expandPane ( id );
     }
 
     /**
@@ -810,31 +998,58 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} was successfully collapsed, {@code false} otherwise
      */
-    public boolean collapse ( @NotNull final String id )
+    public boolean collapsePane ( @NotNull final String id )
     {
-        return getModel () != null && getModel ().collapse ( id, true );
+        return getModel () != null && getModel ().collapsePane ( id, true );
     }
 
     /**
-     * Returns {@link List} of expanded {@link AccordionPane}s.
+     * Asks {@link WebAccordion} to collapse {@link AccordionPane}s with the specified identifiers.
      *
-     * @return {@link List} of expanded {@link AccordionPane}s
+     * @param ids {@link AccordionPane} identifiers
      */
-    @NotNull
-    public List<AccordionPane> getExpanded ()
+    public void collapsePanes ( @NotNull final String... ids )
     {
-        return getModel () != null ? getModel ().getExpanded () : new ArrayList<AccordionPane> ();
+        if ( getModel () != null )
+        {
+            for ( final String id : ids )
+            {
+                getModel ().collapsePane ( id, true );
+            }
+        }
     }
 
     /**
-     * Returns {@link List} of collapsed {@link AccordionPane}s
+     * Asks {@link WebAccordion} to collapse {@link AccordionPane}s with the specified identifiers.
      *
-     * @return {@link List} of collapsed {@link AccordionPane}s
+     * @param ids {@link List} of {@link AccordionPane} identifiers
      */
-    @NotNull
-    public List<AccordionPane> getCollapsed ()
+    public void collapsePanes ( @NotNull final List<String> ids )
     {
-        return getModel () != null ? getModel ().getCollapsed () : new ArrayList<AccordionPane> ();
+        if ( getModel () != null )
+        {
+            for ( final String id : ids )
+            {
+                getModel ().collapsePane ( id, true );
+            }
+        }
+    }
+
+    /**
+     * Asks {@link WebAccordion} to collapse {@link AccordionPane}s at the specified indices.
+     *
+     * @param indices {@link List} of {@link AccordionPane} indices
+     */
+    public void collapsePanes ( @NotNull final int[] indices )
+    {
+        if ( getModel () != null )
+        {
+            for ( final int index : indices )
+            {
+                final AccordionPane pane = getPane ( index );
+                getModel ().collapsePane ( pane.getId (), true );
+            }
+        }
     }
 
     /**
@@ -843,9 +1058,9 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} with the specified identifier is in transition, {@code false} otherwise
      */
-    public boolean isInTransition ( @NotNull final String id )
+    public boolean isPaneInTransition ( @NotNull final String id )
     {
-        return getLayout () != null && getLayout ().isInTransition ( id );
+        return getLayout () != null && getLayout ().isPaneInTransition ( id );
     }
 
     /**

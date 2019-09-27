@@ -234,7 +234,7 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
         }
         else
         {
-            size = accordion.isExpanded ( id ) ? 1f : 0f;
+            size = accordion.isPaneExpanded ( id ) ? 1f : 0f;
             contentSizes.put ( id, size );
         }
         return size;
@@ -247,9 +247,9 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
      * @param id        {@link AccordionPane} identifier
      * @param animated  whether or not transition should be animated
      */
-    public void expand ( @NotNull final WebAccordion accordion, @NotNull final String id, final boolean animated )
+    public void expandPane ( @NotNull final WebAccordion accordion, @NotNull final String id, final boolean animated )
     {
-        changeState ( accordion, id, size ( accordion, id ), 1f, animated, new Runnable ()
+        changePaneState ( accordion, id, size ( accordion, id ), 1f, animated, new Runnable ()
         {
             @Override
             public void run ()
@@ -277,9 +277,9 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
      * @param id        {@link AccordionPane} identifier
      * @param animated  whether or not transition should be animated
      */
-    public void collapse ( @NotNull final WebAccordion accordion, @NotNull final String id, final boolean animated )
+    public void collapsePane ( @NotNull final WebAccordion accordion, @NotNull final String id, final boolean animated )
     {
-        changeState ( accordion, id, size ( accordion, id ), 0f, animated, new Runnable ()
+        changePaneState ( accordion, id, size ( accordion, id ), 0f, animated, new Runnable ()
         {
             @Override
             public void run ()
@@ -311,9 +311,9 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
      * @param preChange   {@link Runnable} to be executed once state change has started
      * @param afterChange {@link Runnable} to be executed once state change has completed
      */
-    protected void changeState ( @NotNull final WebAccordion accordion, @NotNull final String id,
-                                 final float start, final float target, final boolean animated,
-                                 @NotNull final Runnable preChange, @NotNull final Runnable afterChange )
+    protected void changePaneState ( @NotNull final WebAccordion accordion, @NotNull final String id,
+                                     final float start, final float target, final boolean animated,
+                                     @NotNull final Runnable preChange, @NotNull final Runnable afterChange )
     {
         // Make sure we stop previous transition
         final AbstractTransition transition = transitions.get ( id );
@@ -325,7 +325,7 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
 
         final Easing easing = getEasing ();
         final long fullDuration = getDuration ();
-        if ( accordion.isShowing () && easing != null && fullDuration > 0L )
+        if ( animated && accordion.isShowing () && easing != null && fullDuration > 0L )
         {
             final TimedTransition<Float> stateTransition = new TimedTransition<Float> ( start, target, easing, fullDuration );
             transitions.put ( id, stateTransition );
@@ -382,7 +382,7 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} with the specified identifier is in transition, {@code false} otherwise
      */
-    public boolean isInTransition ( @NotNull final String id )
+    public boolean isPaneInTransition ( @NotNull final String id )
     {
         return transitions.containsKey ( id );
     }
@@ -648,11 +648,11 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
         // Accounting for minimum preferred content size
         if ( vertical )
         {
-            ps.height += accordion.getMinimumPaneContentSize () * accordion.getMinimumExpanded ();
+            ps.height += accordion.getMinimumPaneContentSize () * accordion.getMinimumExpandedPaneCount ();
         }
         else
         {
-            ps.width += accordion.getMinimumPaneContentSize () * accordion.getMinimumExpanded ();
+            ps.width += accordion.getMinimumPaneContentSize () * accordion.getMinimumExpandedPaneCount ();
         }
 
         // Counting insets in

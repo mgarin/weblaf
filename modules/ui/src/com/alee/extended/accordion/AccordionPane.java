@@ -311,11 +311,11 @@ public class AccordionPane extends WebPanel implements Identifiable
             final WebAccordion accordion = ( WebAccordion ) parent;
             if ( isExpanded () )
             {
-                accordion.collapse ( getId () );
+                accordion.collapsePane ( getId () );
             }
             else
             {
-                accordion.expand ( getId () );
+                accordion.expandPane ( getId () );
             }
             if ( e instanceof MouseEvent || e instanceof ActionEvent )
             {
@@ -387,7 +387,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public boolean isExpanded ()
     {
         final Container parent = getParent ();
-        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).isExpanded ( getId () );
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).isPaneExpanded ( getId () );
     }
 
     /**
@@ -399,7 +399,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public boolean setExpanded ( final boolean expanded )
     {
         final Container parent = getParent ();
-        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).setExpanded ( getId (), expanded );
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).setPaneExpanded ( getId (), expanded );
     }
 
     /**
@@ -410,7 +410,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public boolean expand ()
     {
         final Container parent = getParent ();
-        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).expand ( getId () );
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).expandPane ( getId () );
     }
 
     /**
@@ -421,7 +421,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public boolean isCollapsed ()
     {
         final Container parent = getParent ();
-        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).isCollapsed ( getId () );
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).isPaneCollapsed ( getId () );
     }
 
     /**
@@ -433,7 +433,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public boolean setCollapsed ( final boolean collapsed )
     {
         final Container parent = getParent ();
-        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).setCollapsed ( getId (), collapsed );
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).setPaneCollapsed ( getId (), collapsed );
     }
 
     /**
@@ -444,7 +444,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public boolean collapse ()
     {
         final Container parent = getParent ();
-        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).collapse ( getId () );
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).collapsePane ( getId () );
     }
 
     /**
@@ -455,7 +455,7 @@ public class AccordionPane extends WebPanel implements Identifiable
     public boolean isInTransition ()
     {
         final Container parent = getParent ();
-        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).isInTransition ( getId () );
+        return parent instanceof WebAccordion && ( ( WebAccordion ) parent ).isPaneInTransition ( getId () );
     }
 
     /**

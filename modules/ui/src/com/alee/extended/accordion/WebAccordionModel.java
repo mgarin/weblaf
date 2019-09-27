@@ -55,11 +55,26 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
     protected Map<String, AccordionPaneState> states;
 
     /**
+     * {@link Comparator} for {@link AccordionPane}s for descending sorting by state change times.
+     */
+    @NotNull
+    protected Comparator<AccordionPane> newToOldPaneComparator;
+
+    /**
      * Constructs new {@link WebAccordionModel}.
      */
     public WebAccordionModel ()
     {
         this.states = new HashMap<String, AccordionPaneState> ();
+        this.newToOldPaneComparator = new Comparator<AccordionPane> ()
+        {
+            @Override
+            public int compare ( final AccordionPane pane1, final AccordionPane pane2 )
+            {
+                return new Long ( getPaneState ( pane2.getId () ).getTime () )
+                        .compareTo ( getPaneState ( pane1.getId () ).getTime () );
+            }
+        };
     }
 
     @Override
@@ -151,7 +166,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
     @Override
     public void setAccordionState ( @NotNull final AccordionState accordionState )
     {
-        // Updating
+        // Updating states
         states = accordionState.states ();
 
         // Validating states
@@ -162,7 +177,9 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
     public void propertyChange ( final PropertyChangeEvent e )
     {
         final String property = e.getPropertyName ();
-        if ( Objects.equals ( property, WebAccordion.MINIMUM_EXPANDED_PROPERTY, WebAccordion.MAXIMUM_EXPANDED_PROPERTY ) )
+        if ( Objects.equals ( property,
+                WebAccordion.MINIMUM_EXPANDED_PANE_COUNT_PROPERTY,
+                WebAccordion.MAXIMUM_EXPANDED_PANE_COUNT_PROPERTY ) )
         {
             // Validating states
             validateStates ( true );
@@ -205,22 +222,31 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
     {
         if ( accordion != null )
         {
-            final List<AccordionPane> expanded = getExpanded ();
-            final List<AccordionPane> collapsed = getCollapsed ();
-            if ( expanded.size () < accordion.getMinimumExpanded () )
+            final List<AccordionPane> expanded = getExpandedPanes ();
+            final List<AccordionPane> collapsed = getCollapsedPanes ();
+
+            if ( expanded.size () < accordion.getMinimumExpandedPaneCount () )
             {
-                final int toExpand = Math.min ( collapsed.size (), accordion.getMinimumExpanded () - expanded.size () );
+                // Sorting from newest to oldest
+                CollectionUtils.sort ( collapsed, newToOldPaneComparator );
+
+                // Expanding collapsed panes
+                final int toExpand = Math.min ( collapsed.size (), accordion.getMinimumExpandedPaneCount () - expanded.size () );
                 for ( int i = 0; i < toExpand; i++ )
                 {
-                    expand ( collapsed.get ( i ).getId (), animated );
+                    expandPane ( collapsed.get ( i ).getId (), animated );
                 }
             }
-            else if ( expanded.size () > accordion.getMaximumExpanded () )
+            else if ( expanded.size () > accordion.getMaximumExpandedPaneCount () )
             {
-                final int toCollapse = expanded.size () - accordion.getMaximumExpanded ();
+                // Sorting from newest to oldest
+                CollectionUtils.sort ( expanded, newToOldPaneComparator );
+
+                // Collapsing excessive expanded panes
+                final int toCollapse = expanded.size () - accordion.getMaximumExpandedPaneCount ();
                 for ( int i = 0; i < toCollapse; i++ )
                 {
-                    collapse ( expanded.get ( i ).getId (), animated );
+                    collapsePane ( expanded.get ( i ).getId (), animated );
                 }
             }
         }
@@ -245,67 +271,131 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         }
     }
 
-    @NotNull
+    @Nullable
     @Override
-    public List<AccordionPane> getExpanded ()
+    public AccordionPane getFirstExpandedPane ()
     {
+        AccordionPane firstExpanded = null;
         final WebAccordion accordion = getAccordion ();
-        final List<AccordionPane> expanded = new ArrayList<AccordionPane> ( accordion.getComponentCount () );
-        for ( int i = 0; i < accordion.getComponentCount (); i++ )
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
         {
-            final AccordionPane pane = ( AccordionPane ) accordion.getComponent ( i );
-            if ( isExpanded ( pane.getId () ) )
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneExpanded ( pane.getId () ) )
             {
-                expanded.add ( pane );
+                firstExpanded = pane;
+                break;
             }
         }
+        return firstExpanded;
+    }
 
-        // Sorting from oldest to newest
-        CollectionUtils.sort ( expanded, new Comparator<AccordionPane> ()
+    @Nullable
+    @Override
+    public AccordionPane getLastExpandedPane ()
+    {
+        AccordionPane lastExpanded = null;
+        final WebAccordion accordion = getAccordion ();
+        for ( int i = accordion.getPaneCount () - 1; i >= 0; i-- )
         {
-            @Override
-            public int compare ( final AccordionPane pane1, final AccordionPane pane2 )
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneExpanded ( pane.getId () ) )
             {
-                return new Long ( getPaneState ( pane1.getId () ).getTime () )
-                        .compareTo ( getPaneState ( pane2.getId () ).getTime () );
+                lastExpanded = pane;
+                break;
             }
-        } );
+        }
+        return lastExpanded;
+    }
 
-        return expanded;
+    @NotNull
+    @Override
+    public List<AccordionPane> getExpandedPanes ()
+    {
+        final WebAccordion accordion = getAccordion ();
+        final List<AccordionPane> expandedPanes = new ArrayList<AccordionPane> ( accordion.getPaneCount () );
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
+        {
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneExpanded ( pane.getId () ) )
+            {
+                expandedPanes.add ( pane );
+            }
+        }
+        return expandedPanes;
+    }
+
+    @NotNull
+    @Override
+    public List<String> getExpandedPaneIds ()
+    {
+        final WebAccordion accordion = getAccordion ();
+        final List<String> expandedIds = new ArrayList<String> ( accordion.getPaneCount () );
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
+        {
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneExpanded ( pane.getId () ) )
+            {
+                expandedIds.add ( pane.getId () );
+            }
+        }
+        return expandedIds;
+    }
+
+    @NotNull
+    @Override
+    public int[] getExpandedPaneIndices ()
+    {
+        final WebAccordion accordion = getAccordion ();
+        final List<Integer> expandedIndices = new ArrayList<Integer> ( accordion.getPaneCount () );
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
+        {
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneExpanded ( pane.getId () ) )
+            {
+                expandedIndices.add ( i );
+            }
+        }
+        return CollectionUtils.toIntArray ( expandedIndices );
     }
 
     @Override
-    public boolean isExpanded ( @NotNull final String id )
+    public boolean isPaneExpanded ( @NotNull final String id )
     {
         return getPaneState ( id ).isExpanded ();
     }
 
     @Override
-    public boolean expand ( @NotNull final String id, final boolean animated )
+    public boolean expandPane ( @NotNull final String id, final boolean animated )
     {
         final boolean wasExpanded;
-        if ( isCollapsed ( id ) )
+        if ( isPaneCollapsed ( id ) )
         {
             /**
-             * Whenever we expand above the maximum allowed expanded panes we have to collapse the oldest one.
+             * Whenever we expand above the maximum allowed expanded panes we will collapse the most recently expanded one.
              * Age is determined by pane expansion times which are saved within {@link AccordionPaneState} object.
-             * All panes returned from {@link #getExpanded()} are automatically sorted by age (from oldest to most recent).
              */
             final WebAccordion accordion = getAccordion ();
-            final List<AccordionPane> expanded = getExpanded ();
-            final int maximumExpanded = accordion.getMaximumExpanded ();
-            if ( expanded.size () < maximumExpanded )
+            final List<AccordionPane> expanded = getExpandedPanes ();
+            if ( expanded.size () < accordion.getMaximumExpandedPaneCount () )
             {
                 // Simply expanding pane
                 expandUnconditionally ( id, animated );
                 wasExpanded = true;
             }
-            else
+            else if ( expanded.size () > 0 )
             {
+                // Sorting from newest to oldest
+                CollectionUtils.sort ( expanded, newToOldPaneComparator );
+
                 // Collapsing previously expanded pane
-                collapseUnconditionally ( expanded.get ( expanded.size () - 1 ).getId (), animated );
+                collapseUnconditionally ( expanded.get ( 0 ).getId (), animated );
                 expandUnconditionally ( id, animated );
                 wasExpanded = true;
+            }
+            else
+            {
+                // We do not have enough panes to collapse to meet maximum expanded panes count
+                wasExpanded = false;
             }
         }
         else
@@ -332,7 +422,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         final AccordionLayout layout = accordion.getLayout ();
         if ( layout != null )
         {
-            layout.expand ( accordion, id, animated );
+            layout.expandPane ( accordion, id, animated );
         }
         else
         {
@@ -346,66 +436,94 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
 
     @NotNull
     @Override
-    public List<AccordionPane> getCollapsed ()
+    public List<AccordionPane> getCollapsedPanes ()
     {
         final WebAccordion accordion = getAccordion ();
-        final List<AccordionPane> collapsed = new ArrayList<AccordionPane> ( accordion.getComponentCount () );
-        for ( int i = 0; i < accordion.getComponentCount (); i++ )
+        final List<AccordionPane> collapsedPanes = new ArrayList<AccordionPane> ( accordion.getPaneCount () );
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
         {
-            final AccordionPane pane = ( AccordionPane ) accordion.getComponent ( i );
-            if ( isCollapsed ( pane.getId () ) )
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneCollapsed ( pane.getId () ) )
             {
-                collapsed.add ( pane );
+                collapsedPanes.add ( pane );
             }
         }
-
-        // Sorting from oldest to newest
-        CollectionUtils.sort ( collapsed, new Comparator<AccordionPane> ()
-        {
-            @Override
-            public int compare ( final AccordionPane pane1, final AccordionPane pane2 )
-            {
-                return new Long ( getPaneState ( pane1.getId () ).getTime () )
-                        .compareTo ( getPaneState ( pane2.getId () ).getTime () );
-            }
-        } );
-
-        return collapsed;
+        return collapsedPanes;
     }
 
+    @NotNull
     @Override
-    public boolean isCollapsed ( @NotNull final String id )
+    public List<String> getCollapsedPaneIds ()
     {
-        return !isExpanded ( id );
+        final WebAccordion accordion = getAccordion ();
+        final List<String> collapsedIds = new ArrayList<String> ( accordion.getPaneCount () );
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
+        {
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneCollapsed ( pane.getId () ) )
+            {
+                collapsedIds.add ( pane.getId () );
+            }
+        }
+        return collapsedIds;
+    }
+
+    @NotNull
+    @Override
+    public int[] getCollapsedPaneIndices ()
+    {
+        final WebAccordion accordion = getAccordion ();
+        final List<Integer> collapsedIndices = new ArrayList<Integer> ( accordion.getPaneCount () );
+        for ( int i = 0; i < accordion.getPaneCount (); i++ )
+        {
+            final AccordionPane pane = accordion.getPane ( i );
+            if ( isPaneCollapsed ( pane.getId () ) )
+            {
+                collapsedIndices.add ( i );
+            }
+        }
+        return CollectionUtils.toIntArray ( collapsedIndices );
     }
 
     @Override
-    public boolean collapse ( @NotNull final String id, final boolean animated )
+    public boolean isPaneCollapsed ( @NotNull final String id )
+    {
+        return !isPaneExpanded ( id );
+    }
+
+    @Override
+    public boolean collapsePane ( @NotNull final String id, final boolean animated )
     {
         final boolean wasCollapsed;
-        if ( isExpanded ( id ) )
+        if ( isPaneExpanded ( id ) )
         {
             /**
-             * We cannot be sure what to expand when we're going below minimum.
-             * This is why we simply ignore such collapse operations to avoid unpredictable result.
-             * The only exception is when amount of panes that can still be expanded besides the collapsed one is one.
+             * Whenever we collapse below the minimum allowed expanded panes we will expand the most recently collapsed one.
+             * Age is determined by pane expansion times which are saved within {@link AccordionPaneState} object.
              */
             final WebAccordion accordion = getAccordion ();
-            final List<AccordionPane> expanded = getExpanded ();
-            final List<AccordionPane> collapsed = getCollapsed ();
-            final int minimumExpanded = accordion.getMinimumExpanded ();
-            if ( expanded.size () > minimumExpanded )
+            final List<AccordionPane> expanded = getExpandedPanes ();
+            final List<AccordionPane> collapsed = getCollapsedPanes ();
+            if ( expanded.size () > accordion.getMinimumExpandedPaneCount () )
             {
                 // Simply collapsing pane
                 collapseUnconditionally ( id, animated );
                 wasCollapsed = true;
             }
-            else
+            else if ( collapsed.size () > 0 )
             {
+                // Sorting from newest to oldest
+                CollectionUtils.sort ( collapsed, newToOldPaneComparator );
+
                 // Expanding previously collapsed pane before we collapse new one
-                expandUnconditionally ( collapsed.get ( collapsed.size () - 1 ).getId (), animated );
+                expandUnconditionally ( collapsed.get ( 0 ).getId (), animated );
                 collapseUnconditionally ( id, animated );
                 wasCollapsed = true;
+            }
+            else
+            {
+                // We don't have enough panes to expand to meet minimum expanded panes count
+                wasCollapsed = false;
             }
         }
         else
@@ -432,7 +550,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
         final AccordionLayout layout = accordion.getLayout ();
         if ( layout != null )
         {
-            layout.collapse ( accordion, id, animated );
+            layout.collapsePane ( accordion, id, animated );
         }
         else
         {

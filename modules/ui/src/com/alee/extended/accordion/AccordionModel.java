@@ -18,6 +18,7 @@
 package com.alee.extended.accordion;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -65,12 +66,44 @@ public interface AccordionModel extends Serializable
     public void setAccordionState ( @NotNull AccordionState state );
 
     /**
+     * Returns first expanded {@link AccordionPane}.
+     *
+     * @return first expanded {@link AccordionPane}
+     */
+    @Nullable
+    public AccordionPane getFirstExpandedPane ();
+
+    /**
+     * Returns last expanded {@link AccordionPane}.
+     *
+     * @return last expanded {@link AccordionPane}
+     */
+    @Nullable
+    public AccordionPane getLastExpandedPane ();
+
+    /**
      * Returns {@link List} of expanded {@link AccordionPane}s.
      *
      * @return {@link List} of expanded {@link AccordionPane}s
      */
     @NotNull
-    public List<AccordionPane> getExpanded ();
+    public List<AccordionPane> getExpandedPanes ();
+
+    /**
+     * Returns {@link List} of identifiers of expanded {@link AccordionPane}s.
+     *
+     * @return {@link List} of identifiers of expanded {@link AccordionPane}s
+     */
+    @NotNull
+    public List<String> getExpandedPaneIds ();
+
+    /**
+     * Returns array of indices of expanded {@link AccordionPane}s.
+     *
+     * @return array of indices of expanded {@link AccordionPane}s
+     */
+    @NotNull
+    public int[] getExpandedPaneIndices ();
 
     /**
      * Returns whether or not {@link AccordionPane} with the specified identifier is expanded.
@@ -78,7 +111,7 @@ public interface AccordionModel extends Serializable
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} with the specified identifier is expanded, {@code false} otherwise
      */
-    public boolean isExpanded ( @NotNull String id );
+    public boolean isPaneExpanded ( @NotNull String id );
 
     /**
      * Asks model to expand {@link AccordionPane} with the specified identifier.
@@ -87,15 +120,31 @@ public interface AccordionModel extends Serializable
      * @param animated whether or not transition should be animated
      * @return {@code true} if {@link AccordionPane} was successfully expanded, {@code false} otherwise
      */
-    public boolean expand ( @NotNull String id, boolean animated );
+    public boolean expandPane ( @NotNull String id, boolean animated );
 
     /**
-     * Returns {@link List} of collapsed {@link AccordionPane}s
+     * Returns {@link List} of collapsed {@link AccordionPane}s.
      *
      * @return {@link List} of collapsed {@link AccordionPane}s
      */
     @NotNull
-    public List<AccordionPane> getCollapsed ();
+    public List<AccordionPane> getCollapsedPanes ();
+
+    /**
+     * Returns {@link List} of identifiers of collapsed {@link AccordionPane}s.
+     *
+     * @return {@link List} of identifiers of collapsed {@link AccordionPane}s
+     */
+    @NotNull
+    public List<String> getCollapsedPaneIds ();
+
+    /**
+     * Returns array of indices of collapsed {@link AccordionPane}s.
+     *
+     * @return array of indices of collapsed {@link AccordionPane}s
+     */
+    @NotNull
+    public int[] getCollapsedPaneIndices ();
 
     /**
      * Returns whether or not {@link AccordionPane} with the specified identifier is collapsed.
@@ -103,7 +152,7 @@ public interface AccordionModel extends Serializable
      * @param id {@link AccordionPane} identifier
      * @return {@code true} if {@link AccordionPane} with the specified identifier is collapsed, {@code false} otherwise
      */
-    public boolean isCollapsed ( @NotNull String id );
+    public boolean isPaneCollapsed ( @NotNull String id );
 
     /**
      * Asks model to collapse {@link AccordionPane} with the specified identifier.
@@ -112,5 +161,5 @@ public interface AccordionModel extends Serializable
      * @param animated whether or not transition should be animated
      * @return {@code true} if {@link AccordionPane} was successfully collapsed, {@code false} otherwise
      */
-    public boolean collapse ( @NotNull String id, boolean animated );
+    public boolean collapsePane ( @NotNull String id, boolean animated );
 }

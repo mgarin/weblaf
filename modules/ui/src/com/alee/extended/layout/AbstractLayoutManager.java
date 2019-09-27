@@ -26,6 +26,8 @@ import java.awt.*;
  * Abstract {@link LayoutManager2} implementation that hides some less frequently used methods.
  * It also unifies different underlying component addition and removal methods.
  *
+ * todo 1. Add generic for {@link Container} type and implement it correctly in all extending layouts
+ *
  * @author Mikle Garin
  */
 public abstract class AbstractLayoutManager implements LayoutManager2
@@ -62,6 +64,18 @@ public abstract class AbstractLayoutManager implements LayoutManager2
     }
 
     /**
+     * Called when component removed from container with this layout.
+     *
+     * @param component removed component
+     */
+    public void removeComponent ( @NotNull final Component component )
+    {
+        /**
+         * Do nothing by default.
+         */
+    }
+
+    /**
      * This method is called on layout that is being set by the styling system.
      * It can be used to migrate settings from the old layout into the new one.
      * Usually it comes down to constraints of already added components if there are any.
@@ -75,18 +89,6 @@ public abstract class AbstractLayoutManager implements LayoutManager2
         /**
          * Do nothing by default.
          * Override this to provide your own migration strategy.
-         */
-    }
-
-    /**
-     * Called when component removed from container with this layout.
-     *
-     * @param component removed component
-     */
-    public void removeComponent ( @NotNull final Component component )
-    {
-        /**
-         * Do nothing by default.
          */
     }
 
