@@ -115,11 +115,11 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
              */
             if ( scrollableView != null )
             {
-                if ( scrollableView.getScrollableTracksViewportWidth () &&  ( !vExtending || vpSize.width > viewSize.width ) )
+                if ( scrollableView.getScrollableTracksViewportWidth () || vExtending && vpSize.width > viewSize.width )
                 {
                     viewSize.width = vpSize.width;
                 }
-                if ( scrollableView.getScrollableTracksViewportHeight () && ( !hExtending || vpSize.height > viewSize.height ) )
+                if ( scrollableView.getScrollableTracksViewportHeight () || hExtending && vpSize.height > viewSize.height )
                 {
                     viewSize.height = vpSize.height;
                 }
