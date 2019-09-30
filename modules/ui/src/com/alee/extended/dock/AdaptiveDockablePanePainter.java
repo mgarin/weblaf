@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -37,7 +38,7 @@ public final class AdaptiveDockablePanePainter<C extends WebDockablePane, U exte
      *
      * @param painter painter to adapt
      */
-    public AdaptiveDockablePanePainter ( final Painter painter )
+    public AdaptiveDockablePanePainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }

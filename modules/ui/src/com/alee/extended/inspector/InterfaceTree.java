@@ -128,15 +128,33 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
             @Override
             protected void displayed ( @NotNull final InterfaceTree tree )
             {
-                tree.setDataProvider ( createDataProvider () );
-                tree.setTreeState ( savedState );
+                // Performing update later to allow tree update it's own visibility state
+                // Otherwise this might cause update issues whenever tree has itself in it's own structure
+                SwingUtilities.invokeLater ( new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        tree.setDataProvider ( createDataProvider () );
+                        tree.setTreeState ( savedState );
+                    }
+                } );
             }
 
             @Override
             protected void hidden ( @NotNull final InterfaceTree tree )
             {
-                savedState = tree.getTreeState ();
-                tree.setDataProvider ( tree.createEmptyProvider () );
+                // Performing update later to allow tree update it's own visibility state
+                // Otherwise this might cause update issues whenever tree has itself in it's own structure
+                SwingUtilities.invokeLater ( new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        savedState = tree.getTreeState ();
+                        tree.setDataProvider ( tree.createEmptyProvider () );
+                    }
+                } );
             }
         }.install ();
     }

@@ -85,7 +85,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      * @param c component that will use UI instance
      * @return instance of the {@link WebDockablePaneUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebDockablePaneUI ();
     }
@@ -270,7 +270,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      * @param oldGlassLayer previously used glass layer
      * @param newGlassLayer currently used glass layer
      */
-    protected void updateGlassLayerVisibility ( final Component oldGlassLayer, final Component newGlassLayer )
+    protected void updateGlassLayerVisibility ( @Nullable final Component oldGlassLayer, @Nullable final Component newGlassLayer )
     {
         if ( oldGlassLayer != null )
         {
@@ -318,7 +318,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      *
      * @param frame {@link WebDockableFrame} to update visibility for
      */
-    protected void updateFrameVisibility ( final WebDockableFrame frame )
+    protected void updateFrameVisibility ( @NotNull final WebDockableFrame frame )
     {
         if ( frame.isPreview () || frame.isDocked () )
         {
@@ -342,7 +342,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      * @param oldContent previously displayed content
      * @param newContent currently displayed content
      */
-    protected void updateContentVisibility ( final JComponent oldContent, final JComponent newContent )
+    protected void updateContentVisibility ( @Nullable final JComponent oldContent, @Nullable final JComponent newContent )
     {
         boolean update = false;
         if ( oldContent != null )
@@ -375,7 +375,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      *
      * @param frame {@link com.alee.extended.dock.WebDockableFrame} to install
      */
-    protected void installFrame ( final WebDockableFrame frame )
+    protected void installFrame ( @NotNull final WebDockableFrame frame )
     {
         boolean updateLayout = false;
 
@@ -508,7 +508,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      *
      * @param frame {@link com.alee.extended.dock.WebDockableFrame} to uninstall
      */
-    private void uninstallFrame ( final WebDockableFrame frame )
+    private void uninstallFrame ( @NotNull final WebDockableFrame frame )
     {
         boolean updateLayout = false;
 
@@ -556,6 +556,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      *
      * @return proxy listener for all dockable frames
      */
+    @NotNull
     protected DockableFrameListener getProxyListener ()
     {
         if ( proxyListener == null )
@@ -597,7 +598,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      *
      * @param frame {@link com.alee.extended.dock.WebDockableFrame}
      */
-    protected void showFrameDialog ( final WebDockableFrame frame )
+    protected void showFrameDialog ( @NotNull final WebDockableFrame frame )
     {
         final StyleId dialogStyle = StyleId.dockablepaneFloating.at ( pane );
         final WebDialog dialog = new WebDialog ( dialogStyle, pane, frame.getTitle () );
@@ -647,7 +648,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      *
      * @param frame {@link com.alee.extended.dock.WebDockableFrame}
      */
-    protected void disposeFrameDialog ( final WebDockableFrame frame )
+    protected void disposeFrameDialog ( @NotNull final WebDockableFrame frame )
     {
         final WebDialog dialog = ( WebDialog ) frame.getClientProperty ( FRAME_DIALOG );
         dialog.remove ( frame );
@@ -655,6 +656,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         frame.putClientProperty ( FRAME_DIALOG, null );
     }
 
+    @NotNull
     @Override
     public JComponent createGlassLayer ()
     {

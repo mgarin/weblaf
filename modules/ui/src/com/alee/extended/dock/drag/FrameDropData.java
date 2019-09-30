@@ -19,9 +19,8 @@ package com.alee.extended.dock.drag;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
-import com.alee.extended.dock.data.DockableElement;
 import com.alee.api.data.CompassDirection;
+import com.alee.extended.dock.data.DockableElement;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -40,21 +39,25 @@ public class FrameDropData implements Identifiable, Serializable
     /**
      * Dragged frame ID.
      */
+    @NotNull
     protected final String id;
 
     /**
      * Drop location highlight bounds.
      */
+    @NotNull
     protected final Rectangle highlight;
 
     /**
      * Element currently placed at the drop location.
      */
+    @NotNull
     protected final DockableElement element;
 
     /**
      * Dropped element placement direction relative to the element.
      */
+    @NotNull
     protected final CompassDirection direction;
 
     /**
@@ -63,7 +66,8 @@ public class FrameDropData implements Identifiable, Serializable
      * @param element   element currently placed at the drop location
      * @param direction dropped element placement direction relative to the element
      */
-    public FrameDropData ( final String id, final Rectangle highlight, final DockableElement element, final CompassDirection direction )
+    public FrameDropData ( @NotNull final String id, @NotNull final Rectangle highlight, @NotNull final DockableElement element,
+                           @NotNull final CompassDirection direction )
     {
         this.id = id;
         this.highlight = highlight;
@@ -71,7 +75,7 @@ public class FrameDropData implements Identifiable, Serializable
         this.direction = direction;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -83,6 +87,7 @@ public class FrameDropData implements Identifiable, Serializable
      *
      * @return drop location highlight bounds
      */
+    @NotNull
     public Rectangle getHighlight ()
     {
         return highlight;
@@ -93,6 +98,7 @@ public class FrameDropData implements Identifiable, Serializable
      *
      * @return element currently placed at the drop location
      */
+    @NotNull
     public DockableElement getElement ()
     {
         return element;
@@ -103,6 +109,7 @@ public class FrameDropData implements Identifiable, Serializable
      *
      * @return dropped element placement direction relative to the element
      */
+    @NotNull
     public CompassDirection getDirection ()
     {
         return direction;

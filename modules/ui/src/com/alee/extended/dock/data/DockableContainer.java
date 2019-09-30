@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Orientation;
 
 /**
@@ -30,17 +32,20 @@ public interface DockableContainer extends DockableElement
 {
     /**
      * Returns container orientation.
+     * todo Probably get rid of this API once grouping is available
      *
      * @return container orientation
      */
+    @NotNull
     public Orientation getOrientation ();
 
     /**
      * Sets container orientation.
+     * todo Probably get rid of this API once grouping is available
      *
      * @param orientation container orientation
      */
-    public void setOrientation ( Orientation orientation );
+    public void setOrientation ( @NotNull Orientation orientation );
 
     /**
      * Returns child elements count.
@@ -50,13 +55,24 @@ public interface DockableContainer extends DockableElement
     public int getElementCount ();
 
     /**
+     * Returns child element with the specified identifier.
+     *
+     * @param id  element ID
+     * @param <E> {@link DockableElement} type
+     * @return child element with the specified identifier
+     */
+    @NotNull
+    public <E extends DockableElement> E get ( @NotNull String id );
+
+    /**
      * Returns child element with the specified ID or {@code null}.
      *
      * @param id  element ID
      * @param <E> {@link DockableElement} type
      * @return child element with the specified ID or {@code null}
      */
-    public <E extends DockableElement> E get ( String id );
+    @Nullable
+    public <E extends DockableElement> E find ( @NotNull String id );
 
     /**
      * Returns whether or not structure contains child element with the specified ID.
@@ -64,15 +80,15 @@ public interface DockableContainer extends DockableElement
      * @param id element ID
      * @return true if structure contains child element with the specified ID, false otherwise
      */
-    public boolean contains ( String id );
+    public boolean contains ( @NotNull String id );
 
     /**
-     * Returns child element index in this container.
+     * Returns child element index in this container or {@code -1} if it is not added to this container.
      *
      * @param element element to retrieve index for
-     * @return child element index in this container
+     * @return child element index in this container or {@code -1} if it is not added to this container
      */
-    public int indexOf ( DockableElement element );
+    public int indexOf ( @NotNull DockableElement element );
 
     /**
      * Returns child element at the specified index.
@@ -80,7 +96,15 @@ public interface DockableContainer extends DockableElement
      * @param index child element index
      * @return child element at the specified index
      */
+    @NotNull
     public DockableElement get ( int index );
+
+    /**
+     * Adds new child element at the end.
+     *
+     * @param element new child element
+     */
+    public void add ( @NotNull DockableElement element );
 
     /**
      * Adds new child element at the specified index.
@@ -88,7 +112,7 @@ public interface DockableContainer extends DockableElement
      * @param index   index to add at
      * @param element new child element
      */
-    public void add ( int index, DockableElement element );
+    public void add ( int index, @NotNull DockableElement element );
 
     /**
      * Removes child element from the list.

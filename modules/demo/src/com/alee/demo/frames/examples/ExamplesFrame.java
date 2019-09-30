@@ -58,8 +58,7 @@ public final class ExamplesFrame extends WebDockableFrame
     {
         super ( ID, DemoIcons.examples16, "demo.examples.title" );
         setPosition ( CompassDirection.west );
-        setPreferredWidth ( 270 );
-        setPreferredHeight ( 400 );
+        setPreferredSize ( 300, 200 );
 
         // Examples tree
         final ExamplesTree examplesTree = new ExamplesTree ();

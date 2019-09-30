@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.dock.DockableFrameState;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.dock.WebDockablePane;
@@ -43,6 +45,7 @@ public class DockableFrameElement extends AbstractDockableElement
      * Saved dockable frame state.
      * It always stores current frame state whatever it could be.
      */
+    @NotNull
     @XStreamAsAttribute
     protected DockableFrameState state;
 
@@ -51,6 +54,7 @@ public class DockableFrameElement extends AbstractDockableElement
      * It is not exactly previous frame state, but the state which is meaningful in terms of restoration.
      * It can be either {@link DockableFrameState#docked} or {@link DockableFrameState#floating}.
      */
+    @NotNull
     @XStreamAsAttribute
     protected DockableFrameState restoreState;
 
@@ -59,6 +63,7 @@ public class DockableFrameElement extends AbstractDockableElement
      * These bounds contain position of the frame on the screen not including dialog decorations.
      * Initially these bounds are {@code null} and only filled in on the first floating state use.
      */
+    @Nullable
     @XStreamAsAttribute
     @XStreamConverter ( RectangleConverter.class )
     protected Rectangle floatingBounds;
@@ -66,15 +71,75 @@ public class DockableFrameElement extends AbstractDockableElement
     /**
      * Constructs new frame element.
      *
-     * @param frame dockable frame
+     * @param frame {@link WebDockableFrame} to take initial settings from
      */
-    public DockableFrameElement ( final WebDockableFrame frame )
+    public DockableFrameElement ( @NotNull final WebDockableFrame frame )
     {
-        super ( frame.getId () );
-        setState ( frame.getState () );
-        setRestoreState ( frame.getRestoreState () );
-        setSize ( frame.getPreferredSize () );
-        setFloatingBounds ( null );
+        this ( frame.getId (), frame.getState (), frame.getRestoreState (), frame.getPreferredSize () );
+    }
+
+    /**
+     * Constructs new frame element.
+     *
+     * @param frame {@link WebDockableFrame} to take initial settings from
+     * @param state initial and restore {@link DockableFrameState}
+     */
+    public DockableFrameElement ( @NotNull final WebDockableFrame frame, @NotNull final DockableFrameState state )
+    {
+        this ( frame.getId (), state, state, frame.getPreferredSize () );
+    }
+
+    /**
+     * Constructs new frame element.
+     *
+     * @param frame {@link WebDockableFrame} to take initial settings from
+     * @param size  initial {@link WebDockableFrame} size
+     */
+    public DockableFrameElement ( @NotNull final WebDockableFrame frame, @NotNull final Dimension size )
+    {
+        this ( frame.getId (), frame.getState (), frame.getRestoreState (), size );
+    }
+
+    /**
+     * Constructs new frame element.
+     *
+     * @param frame {@link WebDockableFrame} to take initial settings from
+     * @param state initial and restore {@link DockableFrameState}
+     * @param size  initial {@link WebDockableFrame} size
+     */
+    public DockableFrameElement ( @NotNull final WebDockableFrame frame, @NotNull final DockableFrameState state,
+                                  @NotNull final Dimension size )
+    {
+        this ( frame.getId (), state, state, size );
+    }
+
+    /**
+     * Constructs new frame element.
+     *
+     * @param id    {@link WebDockableFrame} identifier
+     * @param state initial {@link DockableFrameState}
+     * @param size  initial {@link WebDockableFrame} size
+     */
+    public DockableFrameElement ( @NotNull final String id, @NotNull final DockableFrameState state, @NotNull final Dimension size )
+    {
+        this ( id, state, state, size );
+    }
+
+    /**
+     * Constructs new frame element.
+     *
+     * @param id           {@link WebDockableFrame} identifier
+     * @param state        initial {@link DockableFrameState}
+     * @param restoreState {@link DockableFrameState} to restore to
+     * @param size         initial {@link WebDockableFrame} size
+     */
+    public DockableFrameElement ( @NotNull final String id, @NotNull final DockableFrameState state,
+                                  @NotNull final DockableFrameState restoreState, @NotNull final Dimension size )
+    {
+        super ( id, size );
+        this.state = state;
+        this.restoreState = restoreState;
+        this.floatingBounds = null;
     }
 
     /**
@@ -82,6 +147,7 @@ public class DockableFrameElement extends AbstractDockableElement
      *
      * @return saved dockable frame state
      */
+    @NotNull
     public DockableFrameState getState ()
     {
         return state;
@@ -92,7 +158,7 @@ public class DockableFrameElement extends AbstractDockableElement
      *
      * @param state saved dockable frame state
      */
-    public void setState ( final DockableFrameState state )
+    public void setState ( @NotNull final DockableFrameState state )
     {
         this.state = state;
     }
@@ -102,6 +168,7 @@ public class DockableFrameElement extends AbstractDockableElement
      *
      * @return state to restore frame into from {@link DockableFrameState#minimized}
      */
+    @NotNull
     public DockableFrameState getRestoreState ()
     {
         return restoreState;
@@ -112,7 +179,7 @@ public class DockableFrameElement extends AbstractDockableElement
      *
      * @param state state to restore frame into from {@link DockableFrameState#minimized}
      */
-    public void setRestoreState ( final DockableFrameState state )
+    public void setRestoreState ( @NotNull final DockableFrameState state )
     {
         this.restoreState = state;
     }
@@ -122,6 +189,7 @@ public class DockableFrameElement extends AbstractDockableElement
      *
      * @return bounds for {@link DockableFrameState#floating} frame state dialog
      */
+    @Nullable
     public Rectangle getFloatingBounds ()
     {
         return floatingBounds;
@@ -132,7 +200,7 @@ public class DockableFrameElement extends AbstractDockableElement
      *
      * @param bounds bounds for {@link DockableFrameState#floating} frame state dialog
      */
-    public void setFloatingBounds ( final Rectangle bounds )
+    public void setFloatingBounds ( @Nullable final Rectangle bounds )
     {
         this.floatingBounds = bounds;
     }
@@ -142,7 +210,7 @@ public class DockableFrameElement extends AbstractDockableElement
      *
      * @param frame {@link WebDockableFrame}
      */
-    public void saveFloatingBounds ( final WebDockableFrame frame )
+    public void saveFloatingBounds ( @NotNull final WebDockableFrame frame )
     {
         final Rectangle bounds = CoreSwingUtils.getBoundsOnScreen ( frame, false );
         setFloatingBounds ( bounds );
@@ -155,14 +223,15 @@ public class DockableFrameElement extends AbstractDockableElement
     }
 
     @Override
-    public boolean isVisible ( final WebDockablePane dockablePane )
+    public boolean isVisible ( @NotNull final WebDockablePane dockablePane )
     {
-        final WebDockableFrame frame = dockablePane.getFrame ( getId () );
+        final WebDockableFrame frame = dockablePane.findFrame ( getId () );
         return frame != null && frame.isDocked ();
     }
 
     @Override
-    public void layout ( final WebDockablePane dockablePane, final Rectangle bounds, final List<ResizeData> resizeableAreas )
+    public void layout ( @NotNull final WebDockablePane dockablePane, @NotNull final Rectangle bounds,
+                         @NotNull final List<ResizeData> resizeableAreas )
     {
         // Saving bounds
         setBounds ( bounds );
@@ -171,8 +240,9 @@ public class DockableFrameElement extends AbstractDockableElement
         dockablePane.getFrame ( getId () ).setBounds ( bounds );
     }
 
+    @NotNull
     @Override
-    public Dimension getMinimumSize ( final WebDockablePane dockablePane )
+    public Dimension getMinimumSize ( @NotNull final WebDockablePane dockablePane )
     {
         final Dimension min = dockablePane.getMinimumElementSize ();
 

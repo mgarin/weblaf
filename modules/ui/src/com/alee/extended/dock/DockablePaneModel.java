@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.dock.data.DockableContainer;
 import com.alee.extended.dock.data.DockableElement;
 import com.alee.extended.dock.data.ResizeData;
@@ -42,6 +44,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      *
      * @return root {@link DockableContainer}
      */
+    @NotNull
     public DockableContainer getRoot ();
 
     /**
@@ -49,7 +52,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      *
      * @param root root {@link DockableContainer}
      */
-    public void setRoot ( DockableContainer root );
+    public void setRoot ( @NotNull DockableContainer root );
 
     /**
      * Returns {@link DockableElement} with the specified identifier.
@@ -58,7 +61,8 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      * @param <T> element type
      * @return {@link DockableElement} with the specified identifier
      */
-    public <T extends DockableElement> T getElement ( String id );
+    @NotNull
+    public <T extends DockableElement> T getElement ( @NotNull String id );
 
     /**
      * Ensures specified {@link WebDockableFrame} data exists in the model.
@@ -66,7 +70,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      * @param dockablePane {@link WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to process
      */
-    public void updateFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
+    public void updateFrame ( @NotNull WebDockablePane dockablePane, @NotNull WebDockableFrame frame );
 
     /**
      * Removes specified {@link WebDockableFrame} from model.
@@ -74,7 +78,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      * @param dockablePane {@link WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to remove
      */
-    public void removeFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
+    public void removeFrame ( @NotNull WebDockablePane dockablePane, @NotNull WebDockableFrame frame );
 
     /**
      * Returns information on possible drop location.
@@ -83,16 +87,17 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      * @param support      transfer operation data
      * @return information on possible drop location
      */
-    public FrameDropData dropData ( WebDockablePane dockablePane, TransferHandler.TransferSupport support );
+    @Nullable
+    public FrameDropData dropData ( @NotNull WebDockablePane dockablePane, @NotNull TransferHandler.TransferSupport support );
 
     /**
      * Performs drop operation and returns whether or not drop operation was completed successfully.
      *
      * @param dockablePane {@link WebDockablePane} frame is added to
      * @param support      transfer operation data
-     * @return true if drop operation was completed successfully, false otherwise
+     * @return {@code true} if drop operation was completed successfully, {@code false} otherwise
      */
-    public boolean drop ( WebDockablePane dockablePane, TransferHandler.TransferSupport support );
+    public boolean drop ( @NotNull WebDockablePane dockablePane, @NotNull TransferHandler.TransferSupport support );
 
     /**
      * Returns resize data under specified coordinate or {@code null}.
@@ -101,6 +106,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      * @param y Y coordinate
      * @return resize data under specified coordinate or {@code null}
      */
+    @Nullable
     public ResizeData getResizeData ( int x, int y );
 
     /**
@@ -112,5 +118,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
      * @param dialog       {@link com.alee.laf.window.WebDialog} used to display floating frame
      * @return bounds for the frame dialog created in floating state
      */
-    public Rectangle getFloatingBounds ( WebDockablePane dockablePane, WebDockableFrame frame, WebDialog dialog );
+    @NotNull
+    public Rectangle getFloatingBounds ( @NotNull WebDockablePane dockablePane, @NotNull WebDockableFrame frame,
+                                         @NotNull WebDialog dialog );
 }

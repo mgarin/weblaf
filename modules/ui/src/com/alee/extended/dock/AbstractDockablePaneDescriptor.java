@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
@@ -48,8 +49,9 @@ public abstract class AbstractDockablePaneDescriptor<C extends WebDockablePane, 
      * @param uiClass        UI class applied to the component by default
      * @param defaultStyleId component default style ID
      */
-    public AbstractDockablePaneDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                            final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractDockablePaneDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
+                                            @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
+                                            @NotNull final Class<? extends U> uiClass, @NotNull final StyleId defaultStyleId )
     {
         super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
     }

@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Orientation;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.dock.WebDockablePane;
@@ -42,12 +44,14 @@ public class DockableListContainer extends AbstractDockableElement implements Do
     /**
      * List orientation.
      */
+    @NotNull
     @XStreamAsAttribute
     protected Orientation orientation;
 
     /**
      * List of structure elements.
      */
+    @Nullable
     @XStreamImplicit
     protected List<DockableElement> elements;
 
@@ -57,19 +61,31 @@ public class DockableListContainer extends AbstractDockableElement implements Do
      * @param orientation list orientation
      * @param elements    elements to add
      */
-    public DockableListContainer ( final Orientation orientation, final DockableElement... elements )
+    public DockableListContainer ( @NotNull final Orientation orientation, @NotNull final DockableElement... elements )
     {
-        super ( TextUtils.generateId ( "EL" ) );
-        setOrientation ( orientation );
-        setSize ( new Dimension ( 0, 0 ) );
+        this ( orientation, new Dimension ( 0, 0 ), elements );
+    }
+
+    /**
+     * Constructs new elements list.
+     *
+     * @param orientation list orientation
+     * @param size        container size
+     * @param elements    elements to add
+     */
+    public DockableListContainer ( @NotNull final Orientation orientation, @NotNull final Dimension size,
+                                   @NotNull final DockableElement... elements )
+    {
+        super ( TextUtils.generateId ( "EL" ), size );
+        this.orientation = orientation;
         for ( final DockableElement element : elements )
         {
-            add ( getElementCount (), element );
+            add ( element );
         }
     }
 
     @Override
-    public void added ( final DockableContainer parent )
+    public void added ( @Nullable final DockableContainer parent )
     {
         super.added ( parent );
 
@@ -86,19 +102,22 @@ public class DockableListContainer extends AbstractDockableElement implements Do
     @Override
     public boolean isContent ()
     {
+        boolean isContent = false;
         if ( elements != null )
         {
             for ( final DockableElement element : elements )
             {
                 if ( element.isContent () )
                 {
-                    return true;
+                    isContent = true;
+                    break;
                 }
             }
         }
-        return false;
+        return isContent;
     }
 
+    @NotNull
     @Override
     public Orientation getOrientation ()
     {
@@ -106,7 +125,7 @@ public class DockableListContainer extends AbstractDockableElement implements Do
     }
 
     @Override
-    public void setOrientation ( final Orientation orientation )
+    public void setOrientation ( @NotNull final Orientation orientation )
     {
         this.orientation = orientation;
     }
@@ -117,8 +136,21 @@ public class DockableListContainer extends AbstractDockableElement implements Do
         return elements != null ? elements.size () : 0;
     }
 
+    @NotNull
     @Override
-    public <E extends DockableElement> E get ( final String id )
+    public <E extends DockableElement> E get ( @NotNull final String id )
+    {
+        final DockableElement element = find ( id );
+        if ( element == null )
+        {
+            throw new RuntimeException ( "Unable to find element with identifier: " + id );
+        }
+        return ( E ) element;
+    }
+
+    @Nullable
+    @Override
+    public <E extends DockableElement> E find ( @NotNull final String id )
     {
         DockableElement element = null;
         if ( elements != null )
@@ -132,7 +164,7 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                 }
                 if ( e instanceof DockableContainer )
                 {
-                    element = ( ( DockableContainer ) e ).get ( id );
+                    element = ( ( DockableContainer ) e ).find ( id );
                     if ( element != null )
                     {
                         break;
@@ -144,25 +176,37 @@ public class DockableListContainer extends AbstractDockableElement implements Do
     }
 
     @Override
-    public boolean contains ( final String id )
+    public boolean contains ( @NotNull final String id )
     {
-        return get ( id ) != null;
+        return find ( id ) != null;
     }
 
     @Override
-    public int indexOf ( final DockableElement element )
+    public int indexOf ( @NotNull final DockableElement element )
     {
         return elements != null ? elements.indexOf ( element ) : -1;
     }
 
+    @NotNull
     @Override
     public DockableElement get ( final int index )
     {
-        return elements != null ? elements.get ( index ) : null;
+        final DockableElement element = elements != null ? elements.get ( index ) : null;
+        if ( element == null )
+        {
+            throw new RuntimeException ( "Unable to find element at index: " + index );
+        }
+        return element;
     }
 
     @Override
-    public void add ( final int index, final DockableElement element )
+    public void add ( @NotNull final DockableElement element )
+    {
+        add ( getElementCount (), element );
+    }
+
+    @Override
+    public void add ( final int index, @NotNull final DockableElement element )
     {
         // Ensure elements list is created
         if ( elements == null )
@@ -186,23 +230,26 @@ public class DockableListContainer extends AbstractDockableElement implements Do
     }
 
     @Override
-    public boolean isVisible ( final WebDockablePane dockablePane )
+    public boolean isVisible ( @NotNull final WebDockablePane dockablePane )
     {
+        boolean isVisible = false;
         if ( elements != null )
         {
             for ( final DockableElement element : elements )
             {
                 if ( element.isVisible ( dockablePane ) )
                 {
-                    return true;
+                    isVisible = true;
+                    break;
                 }
             }
         }
-        return false;
+        return isVisible;
     }
 
     @Override
-    public void layout ( final WebDockablePane dockablePane, final Rectangle bounds, final List<ResizeData> resizeableAreas )
+    public void layout ( @NotNull final WebDockablePane dockablePane, @NotNull final Rectangle bounds,
+                         @NotNull final List<ResizeData> resizeableAreas )
     {
         // Saving bounds
         setBounds ( bounds );
@@ -210,8 +257,12 @@ public class DockableListContainer extends AbstractDockableElement implements Do
         // Placing elements
         if ( elements != null )
         {
+            // Settings
+            final boolean horizontal = orientation.isHorizontal ();
+
             // Calculating existing sizes
             int summ = 0;
+            int minSumm = 0;
             int cindex = -1;
             final List<DockableElement> visible = new ArrayList<DockableElement> ( elements.size () );
             final List<Integer> sizes = new ArrayList<Integer> ( elements.size () );
@@ -219,50 +270,83 @@ public class DockableListContainer extends AbstractDockableElement implements Do
             {
                 if ( element.isVisible ( dockablePane ) )
                 {
-                    final int w = orientation.isHorizontal () ? element.getSize ().width : element.getSize ().height;
+                    final int length;
                     if ( element.isContent () )
                     {
-                        cindex = sizes.size ();
+                        length = 0;
+                        cindex = visible.size ();
+                    }
+                    else
+                    {
+                        final Dimension minimumSize = element.getMinimumSize ( dockablePane );
+                        length = horizontal ?
+                                Math.max ( element.getSize ().width, minimumSize.width ) :
+                                Math.max ( element.getSize ().height, minimumSize.height );
+                        final int minLength = horizontal ? minimumSize.width : minimumSize.height;
+                        summ += Math.max ( length, minLength );
+                        minSumm += minLength;
                     }
                     visible.add ( element );
-                    sizes.add ( w );
-                    summ += w;
+                    sizes.add ( length );
                 }
             }
 
             // Continue only if there are visible elements
             if ( visible.size () > 0 )
             {
-                // Add spacings
+                // Minimum content length
+                final int minContentLength = cindex == -1 ? 0 : horizontal ?
+                        visible.get ( cindex ).getMinimumSize ( dockablePane ).width :
+                        visible.get ( cindex ).getMinimumSize ( dockablePane ).height;
+
+                // Calculating required and minimum container length
                 final int spacing = dockablePane.getContentSpacing ();
                 final int spacings = spacing * ( visible.size () - 1 );
-                summ += spacings;
+                final int requiredLength = summ + minContentLength + spacings;
+                final int minimumLength = minSumm + minContentLength + spacings;
+
+                // Calculating total available space
+                // We do not want to scale below minimum required space, so we set it as minimum
+                final int availableSpace = Math.max ( horizontal ? bounds.width : bounds.height, minimumLength );
 
                 // Adjusting sizes if they do not fit into available area
-                final int totalSpace = orientation.isHorizontal () ? bounds.width : bounds.height;
-                if ( summ > totalSpace )
+                if ( requiredLength > availableSpace )
                 {
+                    // Available space minus spacings and minimum content size
+                    final int available = availableSpace - minContentLength - spacings;
+
                     // Shrinking all elements according to their size
-                    final int available = totalSpace - spacings;
                     for ( int i = 0; i < visible.size (); i++ )
                     {
-                        sizes.set ( i, ( int ) Math.floor ( ( float ) available * sizes.get ( i ) / ( summ - spacings ) ) );
+                        if ( i != cindex )
+                        {
+                            // Shrinked element size
+                            // todo Spread possible remaining pixels
+                            sizes.set ( i, ( int ) Math.floor ( ( float ) available * sizes.get ( i ) / summ ) );
+                        }
+                        else
+                        {
+                            // Minimum content size
+                            sizes.set ( i, minContentLength );
+                        }
                     }
                 }
-                else if ( summ < totalSpace )
+                else
                 {
                     if ( cindex != -1 )
                     {
                         // Filling all available space with content
-                        sizes.set ( cindex, totalSpace - summ + sizes.get ( cindex ) );
+                        // We leave all the rest of the sizes intact as they fit into available space
+                        sizes.set ( cindex, availableSpace - summ - spacings );
                     }
                     else
                     {
                         // Stretching elements across the area since there is no content in this container
-                        final int available = totalSpace - spacings;
+                        final int available = availableSpace - spacings;
                         for ( int i = 0; i < visible.size (); i++ )
                         {
-                            sizes.set ( i, ( int ) Math.floor ( ( float ) available * sizes.get ( i ) / ( summ - spacings ) ) );
+                            // todo Spread possible remaining pixels
+                            sizes.set ( i, ( int ) Math.floor ( ( float ) available * sizes.get ( i ) / summ ) );
                         }
                     }
                 }
@@ -274,25 +358,39 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                 {
                     final DockableElement element = visible.get ( i );
 
+                    // Calculating resulting element sizes
+                    final int width = horizontal ? sizes.get ( i ) : bounds.width;
+                    final int height = horizontal ? bounds.height : sizes.get ( i );
+
+                    // Updating sizes for non-content areas
+                    if ( i != cindex )
+                    {
+                        // We only want to update width for horizontal orientation and height for vertical
+                        // The opposite size is handled by the parent container, we don't want to record it's size changes
+                        final Dimension oldSize = element.getSize ();
+                        element.setSize ( new Dimension (
+                                horizontal ? sizes.get ( i ) : oldSize.width,
+                                horizontal ? oldSize.height : sizes.get ( i )
+                        ) );
+                    }
+
                     // Placing element
-                    final int width = orientation.isHorizontal () ? sizes.get ( i ) : bounds.width;
-                    final int height = orientation.isHorizontal () ? bounds.height : sizes.get ( i );
                     element.layout ( dockablePane, new Rectangle ( x, y, width, height ), resizeableAreas );
 
                     // Adding resize element bounds
                     if ( i < visible.size () - 1 )
                     {
                         final int rg = dockablePane.getResizeGripper ();
-                        final int rgx = orientation.isHorizontal () ? x + width + spacing / 2 - rg / 2 : x;
-                        final int rgy = orientation.isHorizontal () ? y : y + height + spacing / 2 - rg / 2;
-                        final int rgw = orientation.isHorizontal () ? rg : width;
-                        final int rgh = orientation.isHorizontal () ? height : rg;
+                        final int rgx = horizontal ? x + width + spacing / 2 - rg / 2 : x;
+                        final int rgy = horizontal ? y : y + height + spacing / 2 - rg / 2;
+                        final int rgw = horizontal ? rg : width;
+                        final int rgh = horizontal ? height : rg;
                         final Rectangle rb = new Rectangle ( rgx, rgy, rgw, rgh );
                         resizeableAreas.add ( new ResizeData ( rb, orientation, element.getId (), visible.get ( i + 1 ).getId () ) );
                     }
 
                     // Incrementing coordinate
-                    if ( orientation.isHorizontal () )
+                    if ( horizontal )
                     {
                         x += width + spacing;
                     }
@@ -305,8 +403,9 @@ public class DockableListContainer extends AbstractDockableElement implements Do
         }
     }
 
+    @NotNull
     @Override
-    public Dimension getMinimumSize ( final WebDockablePane dockablePane )
+    public Dimension getMinimumSize ( @NotNull final WebDockablePane dockablePane )
     {
         // Base minimum size
         Dimension min = dockablePane.getMinimumElementSize ();

@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock.drag;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.dock.WebDockablePane;
 import com.alee.managers.drag.DragException;
@@ -35,24 +36,24 @@ import java.lang.ref.WeakReference;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockableFrame
- * @see com.alee.extended.dock.WebDockablePane
+ * @see WebDockablePane
  * @see com.alee.managers.drag.DragManager
  */
 public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFrame, FrameDragData>
 {
     /**
-     * {@link WeakReference} to {@link com.alee.extended.dock.WebDockablePane} using this drag view handler.
+     * {@link WeakReference} to {@link WebDockablePane} using this drag view handler.
      */
+    @NotNull
     protected final WeakReference<WebDockablePane> dockablePane;
 
     /**
-     * Constructs new {@link com.alee.extended.dock.drag.FrameDragViewHandler}.
+     * Constructs new {@link FrameDragViewHandler}.
      *
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} using this drag view handler
+     * @param dockablePane {@link WebDockablePane} using this drag view handler
      */
-    public FrameDragViewHandler ( final WebDockablePane dockablePane )
+    public FrameDragViewHandler ( @NotNull final WebDockablePane dockablePane )
     {
-        super ();
         this.dockablePane = new WeakReference<WebDockablePane> ( dockablePane );
     }
 
@@ -65,19 +66,23 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     @Override
     public boolean supports ( final FrameDragData object, final DragSourceDragEvent event )
     {
-        return dockablePane.get ().getFrame ( object.getId () ) != null;
+        final WebDockablePane dockablePane = this.dockablePane.get ();
+        return dockablePane != null && dockablePane.findFrame ( object.getId () ) != null;
     }
 
     @Override
     public WebDockableFrame getComponent ( final FrameDragData object, final DragSourceDragEvent event )
     {
         final WebDockablePane pane = dockablePane.get ();
-        if ( pane == null )
+        if ( pane != null )
+        {
+            return pane.findFrame ( object.getId () );
+        }
+        else
         {
             final String msg = "Unable to resolve WebDockablePane for dragged frame with identifier: %s";
             throw new DragException ( String.format ( msg, object.getId () ) );
         }
-        return pane.getFrame ( object.getId () );
     }
 
     @Override
@@ -85,20 +90,34 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     {
         final Point location = super.calculateViewRelativeLocation ( frame, event );
         final WebDockablePane pane = frame.getDockablePane ();
-        final Dimension size = pane.getModel ().getElement ( frame.getId () ).getSize ();
-        final Dimension current = frame.getSize ();
-        if ( current.width > size.width && Math.abs ( location.x ) > size.width )
+        if ( pane != null )
         {
-            location.x = location.x * size.width / current.width;
+            final Dimension size = pane.getModel ().getElement ( frame.getId () ).getSize ();
+            final Dimension current = frame.getSize ();
+            if ( current.width > size.width && Math.abs ( location.x ) > size.width )
+            {
+                location.x = location.x * size.width / current.width;
+            }
+            return location;
         }
-        return location;
+        else
+        {
+            throw new DragException ( "Unable to drag frame that is not attached to a WebDockablePane: " + frame.getId () );
+        }
     }
 
     @Override
     protected BufferedImage createComponentView ( final WebDockableFrame frame )
     {
         final WebDockablePane pane = frame.getDockablePane ();
-        final Dimension size = pane.getModel ().getElement ( frame.getId () ).getSize ();
-        return SwingUtils.createComponentSnapshot ( frame, size.width, size.height, getSnapshotOpacity () );
+        if ( pane != null )
+        {
+            final Dimension size = pane.getModel ().getElement ( frame.getId () ).getSize ();
+            return SwingUtils.createComponentSnapshot ( frame, size.width, size.height, getSnapshotOpacity () );
+        }
+        else
+        {
+            throw new DragException ( "Unable to drag frame that is not attached to a WebDockablePane: " + frame.getId () );
+        }
     }
 }

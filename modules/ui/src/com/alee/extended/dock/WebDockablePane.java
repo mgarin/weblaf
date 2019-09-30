@@ -18,6 +18,7 @@
 package com.alee.extended.dock;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.WebContainer;
@@ -72,11 +73,13 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @see com.alee.extended.dock.SidebarVisibility
      */
+    @NotNull
     protected SidebarVisibility sidebarVisibility;
 
     /**
      * Sidebar button action.
      */
+    @NotNull
     protected SidebarButtonAction sidebarButtonAction;
 
     /**
@@ -94,6 +97,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     /**
      * Minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane.
      */
+    @NotNull
     protected Dimension minimumElementSize;
 
     /**
@@ -139,9 +143,15 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @param id style ID
      */
-    public WebDockablePane ( final StyleId id )
+    public WebDockablePane ( @NotNull final StyleId id )
     {
         super ();
+        this.sidebarVisibility = SidebarVisibility.minimized;
+        this.sidebarButtonAction = SidebarButtonAction.restore;
+        this.contentSpacing = 0;
+        this.resizeGripper = 10;
+        this.minimumElementSize = new Dimension ( 40, 40 );
+        this.occupyMinimumSizeForChildren = true;
         this.frames = new ArrayList<WebDockableFrame> ( 3 );
         setModel ( createDefaultModel () );
         updateUI ();
@@ -160,6 +170,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return sidebar buttons visibility type
      */
+    @NotNull
     public SidebarVisibility getSidebarVisibility ()
     {
         return sidebarVisibility;
@@ -171,7 +182,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param visibility sidebar buttons visibility type
      * @return this pane
      */
-    public WebDockablePane setSidebarVisibility ( final SidebarVisibility visibility )
+    @NotNull
+    public WebDockablePane setSidebarVisibility ( @NotNull final SidebarVisibility visibility )
     {
         if ( this.sidebarVisibility != visibility )
         {
@@ -187,6 +199,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return sidebar button action
      */
+    @NotNull
     public SidebarButtonAction getSidebarButtonAction ()
     {
         return sidebarButtonAction;
@@ -198,7 +211,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param action sidebar button action
      * @return this pane
      */
-    public WebDockablePane setSidebarButtonAction ( final SidebarButtonAction action )
+    @NotNull
+    public WebDockablePane setSidebarButtonAction ( @NotNull final SidebarButtonAction action )
     {
         if ( this.sidebarButtonAction != action )
         {
@@ -225,6 +239,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param spacing spacing between content elements
      * @return this pane
      */
+    @NotNull
     public WebDockablePane setContentSpacing ( final int spacing )
     {
         if ( this.contentSpacing != spacing )
@@ -252,6 +267,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param resizeGripper content elements resize gripper width
      * @return this pane
      */
+    @NotNull
     public WebDockablePane setResizeGripper ( final int resizeGripper )
     {
         if ( this.resizeGripper != resizeGripper )
@@ -268,6 +284,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane
      */
+    @NotNull
     public Dimension getMinimumElementSize ()
     {
         return minimumElementSize;
@@ -279,7 +296,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param size minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane
      * @return this pane
      */
-    public WebDockablePane setMinimumElementSize ( final Dimension size )
+    @NotNull
+    public WebDockablePane setMinimumElementSize ( @NotNull final Dimension size )
     {
         if ( this.minimumElementSize != size )
         {
@@ -306,6 +324,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param occupy whether containers minimum size should include children sizes or simply be equal to {@link #minimumElementSize}
      * @return this pane
      */
+    @NotNull
     public WebDockablePane setOccupyMinimumSizeForChildren ( final boolean occupy )
     {
         if ( this.occupyMinimumSizeForChildren != occupy )
@@ -322,6 +341,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return model containing information about dockable pane elements
      */
+    @NotNull
     public DockablePaneModel getModel ()
     {
         return model;
@@ -333,7 +353,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param model model containing information about dockable pane elements
      * @return this pane
      */
-    public WebDockablePane setModel ( final DockablePaneModel model )
+    @NotNull
+    public WebDockablePane setModel ( @NotNull final DockablePaneModel model )
     {
         if ( this.model != model )
         {
@@ -350,6 +371,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return default {@link DockablePaneModel} implementation to be used
      */
+    @NotNull
     protected DockablePaneModel createDefaultModel ()
     {
         return new WebDockablePaneModel ();
@@ -362,6 +384,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @return dockable pane element states data
      * @see #setState(com.alee.extended.dock.data.DockableContainer)
      */
+    @NotNull
     public DockableContainer getState ()
     {
         return getModel ().getRoot ();
@@ -375,7 +398,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @return this pane
      * @see #getState()
      */
-    public WebDockablePane setState ( final DockableContainer state )
+    @NotNull
+    public WebDockablePane setState ( @NotNull final DockableContainer state )
     {
         // Changing root element
         if ( getModel ().getRoot () != state )
@@ -392,6 +416,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return glass layer component
      */
+    @Nullable
     public JComponent getGlassLayer ()
     {
         return glassLayer;
@@ -403,7 +428,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param glassLayer glass layer component
      * @return this pane
      */
-    public WebDockablePane setGlassLayer ( final JComponent glassLayer )
+    @NotNull
+    public WebDockablePane setGlassLayer ( @Nullable final JComponent glassLayer )
     {
         if ( this.glassLayer != glassLayer )
         {
@@ -419,6 +445,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return list of dockable frames added to this pane
      */
+    @NotNull
     public List<WebDockableFrame> getFrames ()
     {
         return CollectionUtils.copy ( frames );
@@ -430,7 +457,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param position frames position relative to content area
      * @return list of dockable frames added to this pane and positioned on the specified side relative to the content area
      */
-    public List<WebDockableFrame> getFrames ( final CompassDirection position )
+    @NotNull
+    public List<WebDockableFrame> getFrames ( @NotNull final CompassDirection position )
     {
         final List<WebDockableFrame> positioned = new ArrayList<WebDockableFrame> ( frames.size () );
         for ( final WebDockableFrame frame : frames )
@@ -444,12 +472,30 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Returns opened frame with the specified ID or {@code null} if no such frame exists.
+     * Returns frame with the specified identifier.
      *
-     * @param id frame ID
-     * @return opened frame with the specified ID or {@code null} if no such frame exists
+     * @param id frame identifier
+     * @return frame with the specified identifier
      */
-    public WebDockableFrame getFrame ( final String id )
+    @NotNull
+    public WebDockableFrame getFrame ( @NotNull final String id )
+    {
+        final WebDockableFrame frameById = findFrame ( id );
+        if ( frameById == null )
+        {
+            throw new RuntimeException ( "Unable to find frame with identifier: " + id );
+        }
+        return frameById;
+    }
+
+    /**
+     * Returns frame with the specified ID or {@code null} if no such frame exists.
+     *
+     * @param id frame identifier
+     * @return frame with the specified ID or {@code null} if no such frame exists
+     */
+    @Nullable
+    public WebDockableFrame findFrame ( @NotNull final String id )
     {
         WebDockableFrame frameById = null;
         for ( final WebDockableFrame frame : frames )
@@ -471,7 +517,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param frame dockable frame to add
      * @return added frame
      */
-    public WebDockableFrame addFrame ( final WebDockableFrame frame )
+    @NotNull
+    public WebDockableFrame addFrame ( @NotNull final WebDockableFrame frame )
     {
         if ( !frames.contains ( frame ) )
         {
@@ -490,7 +537,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param frame dockable frame to remove
      * @return removed frame
      */
-    public WebDockableFrame removeFrame ( final WebDockableFrame frame )
+    @NotNull
+    public WebDockableFrame removeFrame ( @NotNull final WebDockableFrame frame )
     {
         if ( frames.contains ( frame ) )
         {
@@ -507,6 +555,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return current content component
      */
+    @Nullable
     public JComponent getContent ()
     {
         return content;
@@ -518,7 +567,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param content content component
      * @return previous content component
      */
-    public JComponent setContent ( final JComponent content )
+    @Nullable
+    public JComponent setContent ( @Nullable final JComponent content )
     {
         final JComponent old = this.content;
         if ( this.content != content )
@@ -534,7 +584,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @param listener {@link DockablePaneListener} to add
      */
-    public void addDockablePaneListener ( final DockablePaneListener listener )
+    public void addDockablePaneListener ( @NotNull final DockablePaneListener listener )
     {
         listenerList.add ( DockablePaneListener.class, listener );
     }
@@ -544,7 +594,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @param listener {@link DockablePaneListener} to remove
      */
-    public void removeDockablePaneListener ( final DockablePaneListener listener )
+    public void removeDockablePaneListener ( @NotNull final DockablePaneListener listener )
     {
         listenerList.remove ( DockablePaneListener.class, listener );
     }
@@ -555,7 +605,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was added
      * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was added
      */
-    public void fireFrameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+    public void fireFrameAdded ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
     {
         for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
@@ -570,7 +620,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param oldState previous frame state
      * @param newState current frame state
      */
-    public void fireFrameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState, final DockableFrameState newState )
+    public void fireFrameStateChanged ( @NotNull final WebDockableFrame frame, @NotNull final DockableFrameState oldState,
+                                        @NotNull final DockableFrameState newState )
     {
         for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
@@ -584,7 +635,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
      * @param position current frame position relative to content
      */
-    public void fireFrameMoved ( final WebDockableFrame frame, final CompassDirection position )
+    public void fireFrameMoved ( @NotNull final WebDockableFrame frame, @NotNull final CompassDirection position )
     {
         for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
@@ -598,7 +649,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was removed
      * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was removed from
      */
-    public void fireFrameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+    public void fireFrameRemoved ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
     {
         for ( final DockablePaneListener listener : listenerList.getListeners ( DockablePaneListener.class ) )
         {
@@ -607,12 +658,8 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     @Override
-    public void applyComponentOrientation ( final ComponentOrientation orientation )
+    public void applyComponentOrientation ( @NotNull final ComponentOrientation orientation )
     {
-        if ( orientation == null )
-        {
-            throw new NullPointerException ( "ComponentOrientation must not be null" );
-        }
         setComponentOrientation ( orientation );
         synchronized ( getTreeLock () )
         {

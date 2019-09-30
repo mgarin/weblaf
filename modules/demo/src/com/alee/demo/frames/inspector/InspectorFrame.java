@@ -47,8 +47,7 @@ public final class InspectorFrame extends WebDockableFrame
         super ( ID, DemoIcons.inspector16, "demo.inspector.title" );
         setState ( DockableFrameState.minimized );
         setPosition ( CompassDirection.east );
-        setPreferredWidth ( 300 );
-        setPreferredHeight ( 400 );
+        setPreferredSize ( 300, 200 );
 
         final InterfaceInspector inspector = new InterfaceInspector ();
         add ( inspector );

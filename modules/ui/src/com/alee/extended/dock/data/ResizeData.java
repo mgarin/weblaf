@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.Orientation;
 
 import java.awt.*;
@@ -34,21 +35,25 @@ public final class ResizeData implements Cloneable, Serializable
     /**
      * Resizable area bounds.
      */
+    @NotNull
     private final Rectangle bounds;
 
     /**
      * Resize orientation.
      */
+    @NotNull
     private final Orientation orientation;
 
     /**
      * Left resizable element identifier.
      */
+    @NotNull
     private final String leftElementId;
 
     /**
      * Right resizable element identifier.
      */
+    @NotNull
     private final String rightElementId;
 
     /**
@@ -59,10 +64,9 @@ public final class ResizeData implements Cloneable, Serializable
      * @param leftElementId  left resizable element identifier
      * @param rightElementId right resizable element identifier
      */
-    public ResizeData ( final Rectangle bounds, final Orientation orientation,
-                        final String leftElementId, final String rightElementId )
+    public ResizeData ( @NotNull final Rectangle bounds, @NotNull final Orientation orientation,
+                        @NotNull final String leftElementId, @NotNull final String rightElementId )
     {
-        super ();
         this.bounds = bounds;
         this.orientation = orientation;
         this.leftElementId = leftElementId;
@@ -74,6 +78,7 @@ public final class ResizeData implements Cloneable, Serializable
      *
      * @return resizable area bounds
      */
+    @NotNull
     public Rectangle bounds ()
     {
         return bounds;
@@ -84,6 +89,7 @@ public final class ResizeData implements Cloneable, Serializable
      *
      * @return resize orientation
      */
+    @NotNull
     public Orientation orientation ()
     {
         return orientation;
@@ -94,6 +100,7 @@ public final class ResizeData implements Cloneable, Serializable
      *
      * @return left resizable element identifier
      */
+    @NotNull
     public String leftElementId ()
     {
         return leftElementId;
@@ -104,6 +111,7 @@ public final class ResizeData implements Cloneable, Serializable
      *
      * @return right resizable element identifier
      */
+    @NotNull
     public String rightElementId ()
     {
         return rightElementId;

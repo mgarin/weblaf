@@ -18,6 +18,7 @@
 package com.alee.extended.dock;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.dock.data.DockableElement;
 import com.alee.extended.dock.data.ResizeData;
@@ -56,16 +57,19 @@ public class DockablePaneGlassLayer extends JComponent
     /**
      * {@link WebDockablePane} this glass pane is attached to.
      */
+    @NotNull
     protected final WebDockablePane dockablePane;
 
     /**
      * {@link FrameDropData} containing information about dragged frame.
      */
+    @Nullable
     protected FrameDropData frameDropData;
 
     /**
      * {@link ResizeData} containting information about resized elements.
      */
+    @Nullable
     protected ResizeData resizeData;
 
     /**
@@ -73,7 +77,7 @@ public class DockablePaneGlassLayer extends JComponent
      *
      * @param dockablePane {@link WebDockablePane}
      */
-    public DockablePaneGlassLayer ( final WebDockablePane dockablePane )
+    public DockablePaneGlassLayer ( @NotNull final WebDockablePane dockablePane )
     {
         super ();
         this.dockablePane = dockablePane;
@@ -87,30 +91,84 @@ public class DockablePaneGlassLayer extends JComponent
         // Resize listener
         final MouseAdapter mouseListener = new MouseAdapter ()
         {
+            /**
+             * Resize start {@link Point}.
+             */
+            @Nullable
             private Point initialPoint = null;
-            private DockableElement left;
-            private DockableElement right;
-            private Dimension initialLeftSize;
-            private Dimension initialRightSize;
+
+            /**
+             * Left resized {@link DockableElement}.
+             */
+            @Nullable
+            private DockableElement left = null;
+
+            /**
+             * Right resized {@link DockableElement}.
+             */
+            @Nullable
+            private DockableElement right = null;
+
+            /**
+             * Inital left {@link DockableElement} size.
+             */
+            @Nullable
+            private Dimension initialLeftSize = null;
+
+            /**
+             * Inital right {@link DockableElement} size.
+             */
+            @Nullable
+            private Dimension initialRightSize = null;
 
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void mousePressed ( @NotNull final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
                 {
                     initialPoint = e.getPoint ();
                     resizeData = getResizeData ( e.getX (), e.getY () );
-                    left = dockablePane.getModel ().getElement ( resizeData.leftElementId () );
-                    initialLeftSize = left.getBounds ().getSize ();
-                    right = dockablePane.getModel ().getElement ( resizeData.rightElementId () );
-                    initialRightSize = right.getBounds ().getSize ();
+                    if ( resizeData != null )
+                    {
+                        left = dockablePane.getModel ().getElement ( resizeData.leftElementId () );
+                        right = dockablePane.getModel ().getElement ( resizeData.rightElementId () );
+
+                        final Rectangle leftBounds = left.getBounds ();
+                        if ( leftBounds != null )
+                        {
+                            initialLeftSize = leftBounds.getSize ();
+                        }
+                        else
+                        {
+                            final String leftId = resizeData.leftElementId ();
+                            cleanupResizeVariables ();
+                            throw new RuntimeException ( "Unable to retrieve left element bounds: " + leftId );
+                        }
+
+                        final Rectangle rightBounds = right.getBounds ();
+                        if ( rightBounds != null )
+                        {
+                            initialRightSize = rightBounds.getSize ();
+                        }
+                        else
+                        {
+                            final String rightId = resizeData.rightElementId ();
+                            cleanupResizeVariables ();
+                            throw new RuntimeException ( "Unable to retrieve bounds: " + rightId );
+                        }
+                    }
+                    else
+                    {
+                        cleanupResizeVariables ();
+                    }
                 }
             }
 
             @Override
-            public void mouseDragged ( final MouseEvent e )
+            public void mouseDragged ( @NotNull final MouseEvent e )
             {
-                if ( resizeData != null )
+                if ( initialPoint != null && resizeData != null && left != null && right != null &&
+                        initialLeftSize != null && initialRightSize != null )
                 {
                     // Resizing elements
                     final Dimension minLeft = left.getMinimumSize ( dockablePane );
@@ -150,19 +208,27 @@ public class DockablePaneGlassLayer extends JComponent
             }
 
             @Override
-            public void mouseReleased ( final MouseEvent e )
+            public void mouseReleased ( @NotNull final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) && resizeData != null )
                 {
-                    initialPoint = null;
-                    resizeData = null;
-                    left = null;
-                    right = null;
+                    cleanupResizeVariables ();
                 }
             }
 
+            /**
+             * Cleans up resize variables.
+             */
+            private void cleanupResizeVariables ()
+            {
+                initialPoint = null;
+                resizeData = null;
+                left = null;
+                right = null;
+            }
+
             @Override
-            public void mouseMoved ( final MouseEvent e )
+            public void mouseMoved ( @NotNull final MouseEvent e )
             {
                 final ResizeData data = getResizeData ( e.getX (), e.getY () );
                 if ( data != null )
@@ -190,7 +256,7 @@ public class DockablePaneGlassLayer extends JComponent
         setTransferHandler ( new TransferHandler ()
         {
             @Override
-            public boolean canImport ( final TransferSupport support )
+            public boolean canImport ( @NotNull final TransferSupport support )
             {
                 final FrameDropData old = frameDropData;
                 frameDropData = support.isDataFlavorSupported ( FrameTransferable.dataFlavor ) ?
@@ -203,7 +269,7 @@ public class DockablePaneGlassLayer extends JComponent
             }
 
             @Override
-            public boolean importData ( final TransferSupport support )
+            public boolean importData ( @NotNull final TransferSupport support )
             {
                 return dockablePane.getModel ().drop ( dockablePane, support );
             }
@@ -213,13 +279,13 @@ public class DockablePaneGlassLayer extends JComponent
         final DragAdapter dragListener = new DragAdapter ()
         {
             @Override
-            public void exited ( final DragSourceEvent event )
+            public void exited ( @NotNull final DragSourceEvent event )
             {
                 clearDropLocation ();
             }
 
             @Override
-            public void finished ( final DragSourceDropEvent event )
+            public void finished ( @NotNull final DragSourceDropEvent event )
             {
                 clearDropLocation ();
             }
@@ -260,13 +326,13 @@ public class DockablePaneGlassLayer extends JComponent
     }
 
     @Override
-    protected void paintComponent ( final Graphics g )
+    protected void paintComponent ( @NotNull final Graphics g )
     {
         if ( frameDropData != null )
         {
             final Graphics2D g2d = ( Graphics2D ) g;
             final int sw = 3;
-            final int delta = sw % 2 != 0 ? 1 : 0;
+            final int delta = 1; // sw % 2 != 0 ? 1 : 0;
             final int hf = ( int ) Math.round ( Math.floor ( sw / 2f ) );
             final Stroke os = GraphicsUtils.setupStroke ( g2d, new BasicStroke ( sw ) );
 
@@ -306,7 +372,7 @@ public class DockablePaneGlassLayer extends JComponent
                 {
                     final Transferable transferable = DragManager.getTransferable ();
                     final FrameDragData data = ( FrameDragData ) transferable.getTransferData ( FrameTransferable.dataFlavor );
-                    isDragged = dockablePane.getFrame ( data.getId () ) != null;
+                    isDragged = dockablePane.findFrame ( data.getId () ) != null;
                 }
                 catch ( final Exception ignored )
                 {
@@ -336,6 +402,7 @@ public class DockablePaneGlassLayer extends JComponent
      * @param y Y coordinate
      * @return resize data under specified coordinate or {@code null}
      */
+    @Nullable
     protected ResizeData getResizeData ( final int x, final int y )
     {
         return dockablePane.getModel ().getResizeData ( x, y );

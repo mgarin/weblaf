@@ -53,8 +53,7 @@ public final class SourceFrame extends WebDockableFrame
         super ( ID, DemoIcons.source16, "demo.source.title" );
         setState ( DockableFrameState.minimized );
         setPosition ( CompassDirection.east );
-        setPreferredWidth ( 400 );
-        setPreferredHeight ( 400 );
+        setPreferredSize ( 300, 200 );
 
         // Source code area
         final String emptyText = "Select an example to see its source code...";

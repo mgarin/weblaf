@@ -45,8 +45,9 @@ public abstract class AbstractDockableElement implements DockableElement
     protected transient Rectangle bounds;
 
     /**
-     * Element ID.
+     * Element identifier.
      */
+    @NotNull
     @XStreamAsAttribute
     protected String id;
 
@@ -59,39 +60,42 @@ public abstract class AbstractDockableElement implements DockableElement
     /**
      * Constructs new element with the specified ID.
      *
-     * @param id element ID
+     * @param id   element identifier
+     * @param size element size
      */
-    public AbstractDockableElement ( final String id )
+    public AbstractDockableElement ( @NotNull final String id, @NotNull final Dimension size )
     {
-        super ();
         this.id = id;
+        this.size = size;
     }
 
     @Override
-    public void added ( final DockableContainer parent )
+    public void added ( @Nullable final DockableContainer parent )
     {
         this.parent = parent;
     }
 
-    @Override
-    public void removed ( final DockableContainer parent )
-    {
-        this.parent = null;
-    }
-
+    @Nullable
     @Override
     public DockableContainer getParent ()
     {
         return parent;
     }
 
-    @Nullable
+    @Override
+    public void removed ( @Nullable final DockableContainer parent )
+    {
+        this.parent = null;
+    }
+
+    @NotNull
     @Override
     public String getId ()
     {
         return id;
     }
 
+    @NotNull
     @Override
     public Dimension getSize ()
     {
@@ -99,11 +103,12 @@ public abstract class AbstractDockableElement implements DockableElement
     }
 
     @Override
-    public void setSize ( final Dimension size )
+    public void setSize ( @NotNull final Dimension size )
     {
         this.size = size;
     }
 
+    @Nullable
     @Override
     public Rectangle getBounds ()
     {
@@ -111,13 +116,13 @@ public abstract class AbstractDockableElement implements DockableElement
     }
 
     @Override
-    public void setBounds ( final Rectangle bounds )
+    public void setBounds ( @NotNull final Rectangle bounds )
     {
         this.bounds = bounds;
     }
 
     @Override
-    public void validateSize ( final WebDockablePane dockablePane )
+    public void validateSize ( @NotNull final WebDockablePane dockablePane )
     {
         getMinimumSize ( dockablePane );
     }

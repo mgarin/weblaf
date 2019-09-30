@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Mergeable;
 import com.alee.extended.dock.data.DockableContainer;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -42,6 +44,7 @@ public class DockablePaneState implements Mergeable, Cloneable, Serializable
     /**
      * {@link WebDockablePane} root element.
      */
+    @Nullable
     @XStreamAsAttribute
     protected final DockableContainer root;
 
@@ -58,7 +61,7 @@ public class DockablePaneState implements Mergeable, Cloneable, Serializable
      *
      * @param dockablePane {@link WebDockablePane} to retrieve settings from
      */
-    public DockablePaneState ( final WebDockablePane dockablePane )
+    public DockablePaneState ( @NotNull final WebDockablePane dockablePane )
     {
         this ( dockablePane.getState () );
     }
@@ -68,7 +71,7 @@ public class DockablePaneState implements Mergeable, Cloneable, Serializable
      *
      * @param root {@link WebDockablePane} root element
      */
-    public DockablePaneState ( final DockableContainer root )
+    public DockablePaneState ( @Nullable final DockableContainer root )
     {
         this.root = root;
     }
@@ -78,6 +81,7 @@ public class DockablePaneState implements Mergeable, Cloneable, Serializable
      *
      * @return {@link WebDockablePane} root element
      */
+    @Nullable
     public DockableContainer root ()
     {
         return root;
@@ -88,7 +92,7 @@ public class DockablePaneState implements Mergeable, Cloneable, Serializable
      *
      * @param dockablePane {@link WebDockablePane} to apply this {@link DockablePaneState} to
      */
-    public void apply ( final WebDockablePane dockablePane )
+    public void apply ( @NotNull final WebDockablePane dockablePane )
     {
         if ( root != null )
         {

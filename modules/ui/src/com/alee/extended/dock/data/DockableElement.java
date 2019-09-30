@@ -18,6 +18,8 @@
 package com.alee.extended.dock.data;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Mergeable;
 import com.alee.extended.dock.WebDockablePane;
 
@@ -34,26 +36,31 @@ import java.util.List;
  */
 public interface DockableElement extends Mergeable, Identifiable, Serializable
 {
-    /**
-     * Called upon this element addition to {@link com.alee.extended.dock.data.DockableContainer}.
-     *
-     * @param parent parent {@link com.alee.extended.dock.data.DockableContainer}
-     */
-    public void added ( DockableContainer parent );
+    @NotNull
+    @Override
+    public String getId ();
 
     /**
-     * Called upon this element removal from {@link com.alee.extended.dock.data.DockableContainer}.
+     * Called upon this element addition to {@link DockableContainer}.
      *
-     * @param parent parent {@link com.alee.extended.dock.data.DockableContainer}
+     * @param parent parent {@link DockableContainer} or {@code null} for root element
      */
-    public void removed ( DockableContainer parent );
+    public void added ( @Nullable DockableContainer parent );
 
     /**
-     * Returns parent {@link com.alee.extended.dock.data.DockableContainer}.
+     * Returns parent {@link DockableContainer} or {@code null} for root element.
      *
-     * @return parent {@link com.alee.extended.dock.data.DockableContainer}
+     * @return parent {@link DockableContainer} or {@code null} for root element
      */
+    @Nullable
     public DockableContainer getParent ();
+
+    /**
+     * Called upon this element removal from {@link DockableContainer}.
+     *
+     * @param parent parent {@link DockableContainer} or {@code null} for root element
+     */
+    public void removed ( @Nullable DockableContainer parent );
 
     /**
      * Returns whether this element is or contains {@link DockableContentElement}.
@@ -67,6 +74,7 @@ public interface DockableElement extends Mergeable, Identifiable, Serializable
      *
      * @return element size
      */
+    @NotNull
     public Dimension getSize ();
 
     /**
@@ -74,13 +82,14 @@ public interface DockableElement extends Mergeable, Identifiable, Serializable
      *
      * @param size element size
      */
-    public void setSize ( Dimension size );
+    public void setSize ( @NotNull Dimension size );
 
     /**
      * Returns actual element bounds on dockable pane.
      *
      * @return actual element bounds on dockable pane
      */
+    @Nullable
     public Rectangle getBounds ();
 
     /**
@@ -88,7 +97,7 @@ public interface DockableElement extends Mergeable, Identifiable, Serializable
      *
      * @param bounds actual element bounds on dockable pane
      */
-    public void setBounds ( Rectangle bounds );
+    public void setBounds ( @NotNull Rectangle bounds );
 
     /**
      * Returns whether or not this element is currently visible on the dockable pane.
@@ -96,7 +105,7 @@ public interface DockableElement extends Mergeable, Identifiable, Serializable
      * @param dockablePane dockable pane
      * @return true if this element is currently visible on the dockable pane, false otherwise
      */
-    public boolean isVisible ( WebDockablePane dockablePane );
+    public boolean isVisible ( @NotNull WebDockablePane dockablePane );
 
     /**
      * Layout this element and its children on the specified dockable pane.
@@ -105,7 +114,7 @@ public interface DockableElement extends Mergeable, Identifiable, Serializable
      * @param bounds          element bounds
      * @param resizeableAreas resizeable areas cache
      */
-    public void layout ( WebDockablePane dockablePane, Rectangle bounds, List<ResizeData> resizeableAreas );
+    public void layout ( @NotNull WebDockablePane dockablePane, @NotNull Rectangle bounds, @NotNull List<ResizeData> resizeableAreas );
 
     /**
      * Returns minimum size of this element.
@@ -113,7 +122,8 @@ public interface DockableElement extends Mergeable, Identifiable, Serializable
      * @param dockablePane dockable pane to place element on
      * @return minimum size of this element
      */
-    public Dimension getMinimumSize ( WebDockablePane dockablePane );
+    @NotNull
+    public Dimension getMinimumSize ( @NotNull WebDockablePane dockablePane );
 
     /**
      * Performs element size validation.
@@ -121,5 +131,5 @@ public interface DockableElement extends Mergeable, Identifiable, Serializable
      *
      * @param dockablePane dockable pane
      */
-    public void validateSize ( WebDockablePane dockablePane );
+    public void validateSize ( @NotNull WebDockablePane dockablePane );
 }

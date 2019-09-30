@@ -71,11 +71,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * Frame ID unique within its dockable pane.
      * It is used to connect frame with its position data inside dockable pane model.
      */
+    @NotNull
     protected String frameId;
 
     /**
      * Current frame state.
      */
+    @NotNull
     protected DockableFrameState state;
 
     /**
@@ -84,24 +86,28 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     protected boolean maximized;
 
     /**
-     * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
+     * State to restore frame into from {@link DockableFrameState#minimized}.
      */
+    @NotNull
     protected DockableFrameState restoreState;
 
     /**
      * Position of this frame on dockable pane.
      * This value will only be used if dockable pane didn't save any position for this frame yet.
      */
+    @NotNull
     protected CompassDirection position;
 
     /**
      * Frame icon.
      */
+    @Nullable
     protected Icon icon;
 
     /**
      * Frame title.
      */
+    @Nullable
     protected String title;
 
     /**
@@ -117,8 +123,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
 
     /**
      * Whether or not frame can be maximized.
-     * It can only be maximized when it is in {@link com.alee.extended.dock.DockableFrameState#docked} or
-     * {@link com.alee.extended.dock.DockableFrameState#floating} states.
+     * It can only be maximized when it is in {@link DockableFrameState#docked} or
+     * {@link DockableFrameState#floating} states.
      */
     protected boolean maximizable;
 
@@ -131,80 +137,91 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     /**
      * Dockable pane this frame is added into.
      */
+    @Nullable
     protected WebDockablePane dockablePane;
 
     /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     * Constructs new {@link WebDockableFrame}.
      *
      * @param frameId unique frame ID
      * @param title   frame title
      */
-    public WebDockableFrame ( final String frameId, final String title )
+    public WebDockableFrame ( @NotNull final String frameId, @Nullable final String title )
     {
-        this ( StyleId.auto, frameId, title );
+        this ( StyleId.auto, frameId, null, title );
     }
 
     /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     * Constructs new {@link WebDockableFrame}.
      *
      * @param frameId unique frame ID
      * @param icon    frame icon
      */
-    public WebDockableFrame ( final String frameId, final Icon icon )
+    public WebDockableFrame ( @NotNull final String frameId, @Nullable final Icon icon )
     {
-        this ( StyleId.auto, frameId, icon );
+        this ( StyleId.auto, frameId, icon, null );
     }
 
     /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     * Constructs new {@link WebDockableFrame}.
      *
      * @param frameId unique frame ID
      * @param icon    frame icon
      * @param title   frame title
      */
-    public WebDockableFrame ( final String frameId, final Icon icon, final String title )
+    public WebDockableFrame ( @NotNull final String frameId, @Nullable final Icon icon, @Nullable final String title )
     {
         this ( StyleId.auto, frameId, icon, title );
     }
 
     /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     * Constructs new {@link WebDockableFrame}.
      *
      * @param id      style ID
      * @param frameId unique frame ID
      * @param title   frame title
      */
-    public WebDockableFrame ( final StyleId id, final String frameId, final String title )
+    public WebDockableFrame ( @NotNull final StyleId id, @NotNull final String frameId, @Nullable final String title )
     {
         this ( id, frameId, null, title );
     }
 
     /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     * Constructs new {@link WebDockableFrame}.
      *
      * @param id      style ID
      * @param frameId unique frame ID
      * @param icon    frame icon
      */
-    public WebDockableFrame ( final StyleId id, final String frameId, final Icon icon )
+    public WebDockableFrame ( @NotNull final StyleId id, @NotNull final String frameId, @Nullable final Icon icon )
     {
-        this ( id, frameId, icon, "" );
+        this ( id, frameId, icon, null );
     }
 
     /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     * Constructs new {@link WebDockableFrame}.
      *
      * @param id      style ID
      * @param frameId unique frame ID
      * @param icon    frame icon
      * @param title   frame title
      */
-    public WebDockableFrame ( final StyleId id, final String frameId, final Icon icon, final String title )
+    public WebDockableFrame ( @NotNull final StyleId id, @NotNull final String frameId, @Nullable final Icon icon,
+                              @Nullable final String title )
     {
         super ();
-        setId ( frameId );
-        setIcon ( icon );
-        setTitle ( title );
+        this.frameId = frameId;
+        this.icon = icon;
+        this.title = title;
+        this.state = DockableFrameState.docked;
+        this.maximized = false;
+        this.restoreState = DockableFrameState.docked;
+        this.position = CompassDirection.west;
+        this.draggable = true;
+        this.closable = true;
+        this.floatable = true;
+        this.maximizable = true;
+        setFocusCycleRoot ( true );
         updateUI ();
         setStyleId ( id );
     }
@@ -216,7 +233,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
         return StyleId.dockableframe;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -229,7 +246,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param id frame ID unique within its dockable pane
      * @return this frame
      */
-    public WebDockableFrame setId ( final String id )
+    @NotNull
+    public WebDockableFrame setId ( @NotNull final String id )
     {
         if ( Objects.notEquals ( this.frameId, id ) )
         {
@@ -252,6 +270,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return current frame state
      */
+    @NotNull
     public DockableFrameState getState ()
     {
         return state;
@@ -263,7 +282,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param state frame state
      * @return this frame
      */
-    public WebDockableFrame setState ( final DockableFrameState state )
+    @NotNull
+    public WebDockableFrame setState ( @NotNull final DockableFrameState state )
     {
         if ( this.state != state )
         {
@@ -290,6 +310,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param maximized whether or not frame is maximized
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame setMaximized ( final boolean maximized )
     {
         if ( Objects.notEquals ( this.maximized, maximized ) )
@@ -302,22 +323,24 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     }
 
     /**
-     * Returns state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
+     * Returns state to restore frame into from {@link DockableFrameState#minimized}.
      *
-     * @return state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
+     * @return state to restore frame into from {@link DockableFrameState#minimized}
      */
+    @NotNull
     public DockableFrameState getRestoreState ()
     {
         return restoreState;
     }
 
     /**
-     * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
+     * Sets state to restore frame into from {@link DockableFrameState#minimized}.
      *
-     * @param state state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
+     * @param state state to restore frame into from {@link DockableFrameState#minimized}
      * @return this frame
      */
-    public WebDockableFrame setRestoreState ( final DockableFrameState state )
+    @NotNull
+    public WebDockableFrame setRestoreState ( @NotNull final DockableFrameState state )
     {
         if ( this.restoreState != state )
         {
@@ -333,6 +356,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return position of this frame on dockable pane
      */
+    @NotNull
     public CompassDirection getPosition ()
     {
         return position;
@@ -344,7 +368,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param position position of this frame on dockable pane
      * @return this frame
      */
-    public WebDockableFrame setPosition ( final CompassDirection position )
+    @NotNull
+    public WebDockableFrame setPosition ( @NotNull final CompassDirection position )
     {
         if ( this.position != position )
         {
@@ -360,6 +385,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return frame icon
      */
+    @Nullable
     public Icon getIcon ()
     {
         return icon;
@@ -371,7 +397,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param icon frame icon
      * @return this frame
      */
-    public WebDockableFrame setIcon ( final Icon icon )
+    @NotNull
+    public WebDockableFrame setIcon ( @Nullable final Icon icon )
     {
         if ( this.icon != icon )
         {
@@ -387,6 +414,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return frame title
      */
+    @Nullable
     public String getTitle ()
     {
         return title;
@@ -398,7 +426,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param title frame title
      * @return this frame
      */
-    public WebDockableFrame setTitle ( final String title )
+    @NotNull
+    public WebDockableFrame setTitle ( @Nullable final String title )
     {
         if ( Objects.notEquals ( this.title, title ) )
         {
@@ -425,6 +454,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param draggable whether or not frame can be dragged
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame setDraggable ( final boolean draggable )
     {
         if ( this.draggable != draggable )
@@ -452,6 +482,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param floatable whether or not frame can be separated into floating window from the UI
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame setFloatable ( final boolean floatable )
     {
         if ( this.floatable != floatable )
@@ -479,6 +510,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param maximizable whether or not frame can be maximized
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame setMaximizable ( final boolean maximizable )
     {
         if ( this.maximizable != maximizable )
@@ -506,6 +538,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param closable whether or not frame can be closed from the UI
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame setClosable ( final boolean closable )
     {
         if ( this.closable != closable )
@@ -522,6 +555,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return dockable pane this frame is added into
      */
+    @Nullable
     public WebDockablePane getDockablePane ()
     {
         return dockablePane;
@@ -533,7 +567,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      * @param dockablePane dockable pane this frame is added into
      * @return this frame
      */
-    protected WebDockableFrame setDockablePane ( final WebDockablePane dockablePane )
+    @NotNull
+    protected WebDockableFrame setDockablePane ( @Nullable final WebDockablePane dockablePane )
     {
         if ( this.dockablePane != dockablePane )
         {
@@ -549,6 +584,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return sidebar button for this frame
      */
+    @NotNull
     public JComponent getSidebarButton ()
     {
         return getUI ().getSidebarButton ();
@@ -663,6 +699,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame minimize ()
     {
         return setState ( DockableFrameState.minimized );
@@ -673,6 +710,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame dock ()
     {
         return setState ( DockableFrameState.docked );
@@ -683,6 +721,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame preview ()
     {
         return setState ( DockableFrameState.preview );
@@ -693,6 +732,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame detach ()
     {
         return setState ( DockableFrameState.floating );
@@ -727,6 +767,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame restore ()
     {
         return setState ( getRestoreState () );
@@ -737,6 +778,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      *
      * @return this frame
      */
+    @NotNull
     public WebDockableFrame close ()
     {
         return setState ( DockableFrameState.closed );
@@ -767,9 +809,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      */
     public void fireFrameAdded ()
     {
-        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        final WebDockablePane dockablePane = getDockablePane ();
+        if ( dockablePane != null )
         {
-            listener.frameAdded ( this, dockablePane );
+            for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+            {
+                listener.frameAdded ( this, dockablePane );
+            }
         }
     }
 
@@ -805,9 +851,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
      */
     public void fireFrameRemoved ()
     {
-        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        final WebDockablePane dockablePane = getDockablePane ();
+        if ( dockablePane != null )
         {
-            listener.frameRemoved ( this, dockablePane );
+            for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+            {
+                listener.frameRemoved ( this, dockablePane );
+            }
         }
     }
 

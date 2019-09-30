@@ -476,11 +476,27 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         closeButton.setLanguage ( "weblaf.ex.dockable.frame.close" );
     }
 
+    @NotNull
     @Override
     public Dimension getMinimumDialogSize ()
     {
+        final Dimension ps;
+        if ( titlePanel.isVisible () )
+        {
+            ps = titlePanel.getPreferredSize ();
+        }
+        else
+        {
+            if ( frame.getDockablePane () != null )
+            {
+                ps = frame.getDockablePane ().getMinimumElementSize ();
+            }
+            else
+            {
+                ps = new Dimension ( 0, 0 );
+            }
+        }
         final Insets bi = frame.getInsets ();
-        final Dimension ps = titlePanel.isVisible () ? titlePanel.getPreferredSize () : frame.getDockablePane ().getMinimumElementSize ();
         return SwingUtils.stretch ( ps, bi );
     }
 
@@ -513,6 +529,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         } );
     }
 
+    @NotNull
     @Override
     public JComponent getSidebarButton ()
     {
@@ -643,26 +660,30 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 @Override
                 public void run ( @NotNull final MouseEvent e )
                 {
-                    if ( frame.getDockablePane ().getSidebarButtonAction () == SidebarButtonAction.preview )
+                    final WebDockablePane dockablePane = frame.getDockablePane ();
+                    if ( dockablePane != null )
                     {
-                        if ( frame.isMinimized () )
+                        if ( dockablePane.getSidebarButtonAction () == SidebarButtonAction.preview )
                         {
-                            frame.dock ();
+                            if ( frame.isMinimized () )
+                            {
+                                frame.dock ();
+                            }
+                            else
+                            {
+                                frame.minimize ();
+                            }
                         }
                         else
                         {
-                            frame.minimize ();
-                        }
-                    }
-                    else
-                    {
-                        if ( frame.isMinimized () )
-                        {
-                            frame.preview ();
-                        }
-                        else if ( frame.isPreview () )
-                        {
-                            frame.minimize ();
+                            if ( frame.isMinimized () )
+                            {
+                                frame.preview ();
+                            }
+                            else if ( frame.isPreview () )
+                            {
+                                frame.minimize ();
+                            }
                         }
                     }
                 }
@@ -670,32 +691,36 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
             addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( final ActionEvent e )
+                public void actionPerformed ( @NotNull final ActionEvent e )
                 {
-                    if ( isSelected () )
+                    final WebDockablePane dockablePane = frame.getDockablePane ();
+                    if ( dockablePane != null )
                     {
-                        switch ( frame.getDockablePane ().getSidebarButtonAction () )
+                        if ( isSelected () )
                         {
-                            case restore:
-                                frame.restore ();
-                                break;
+                            switch ( dockablePane.getSidebarButtonAction () )
+                            {
+                                case restore:
+                                    frame.restore ();
+                                    break;
 
-                            case preview:
-                                frame.preview ();
-                                break;
+                                case preview:
+                                    frame.preview ();
+                                    break;
 
-                            case dock:
-                                frame.dock ();
-                                break;
+                                case dock:
+                                    frame.dock ();
+                                    break;
 
-                            case detach:
-                                frame.detach ();
-                                break;
+                                case detach:
+                                    frame.detach ();
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        frame.minimize ();
+                        else
+                        {
+                            frame.minimize ();
+                        }
                     }
                 }
             } );

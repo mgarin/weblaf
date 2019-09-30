@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.dock.WebDockablePane;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -35,8 +36,8 @@ import java.util.List;
 public class DockableContentElement extends AbstractDockableElement
 {
     /**
-     * Content area ID.
-     * It is static because only once content area is allowed per dockable pane instance.
+     * Content area identifier.
+     * Only one content area is allowed per dockable pane instance so identifier is constant.
      */
     public static final String ID = "dockablepane.content";
 
@@ -45,7 +46,7 @@ public class DockableContentElement extends AbstractDockableElement
      */
     public DockableContentElement ()
     {
-        super ( ID );
+        super ( ID, new Dimension ( 0, 0 ) );
     }
 
     @Override
@@ -55,25 +56,20 @@ public class DockableContentElement extends AbstractDockableElement
     }
 
     @Override
-    public Dimension getSize ()
-    {
-        return new Dimension ( 0, 0 );
-    }
-
-    @Override
-    public void setSize ( final Dimension size )
+    public void setSize ( @NotNull final Dimension size )
     {
         throw new RuntimeException ( "Content element size cannot be modified" );
     }
 
     @Override
-    public boolean isVisible ( final WebDockablePane dockablePane )
+    public boolean isVisible ( @NotNull final WebDockablePane dockablePane )
     {
         return true;
     }
 
     @Override
-    public void layout ( final WebDockablePane dockablePane, final Rectangle bounds, final List<ResizeData> resizeableAreas )
+    public void layout ( @NotNull final WebDockablePane dockablePane, @NotNull final Rectangle bounds,
+                         @NotNull final List<ResizeData> resizeableAreas )
     {
         // Saving bounds
         setBounds ( bounds );
@@ -86,8 +82,9 @@ public class DockableContentElement extends AbstractDockableElement
         }
     }
 
+    @NotNull
     @Override
-    public Dimension getMinimumSize ( final WebDockablePane dockablePane )
+    public Dimension getMinimumSize ( @NotNull final WebDockablePane dockablePane )
     {
         return dockablePane.getMinimumElementSize ();
     }

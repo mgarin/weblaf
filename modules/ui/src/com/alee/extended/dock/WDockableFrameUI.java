@@ -18,7 +18,6 @@
 package com.alee.extended.dock;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.data.CompassDirection;
 import com.alee.laf.WebUI;
 import com.alee.utils.LafUtils;
 
@@ -80,15 +79,6 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
     protected void installDefaults ()
     {
         LafUtils.installDefaults ( frame, getPropertyPrefix () );
-        frame.setFocusCycleRoot ( true );
-        frame.setState ( DockableFrameState.docked );
-        frame.setMaximized ( false );
-        frame.setRestoreState ( DockableFrameState.docked );
-        frame.setPosition ( CompassDirection.west );
-        frame.setDraggable ( true );
-        frame.setClosable ( true );
-        frame.setFloatable ( true );
-        frame.setMaximizable ( true );
     }
 
     /**
@@ -125,6 +115,7 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
      *
      * @return sidebar button for this frame
      */
+    @NotNull
     public abstract JComponent getSidebarButton ();
 
     /**
@@ -132,5 +123,6 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
      *
      * @return minimum frame dialog size
      */
+    @NotNull
     public abstract Dimension getMinimumDialogSize ();
 }

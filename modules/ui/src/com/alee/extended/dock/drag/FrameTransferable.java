@@ -17,10 +17,11 @@
 
 package com.alee.extended.dock.drag;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 
 /**
  * Custom {@link Transferable} for {@link com.alee.extended.dock.WebDockableFrame}.
@@ -34,7 +35,7 @@ import java.io.IOException;
 public class FrameTransferable implements Transferable
 {
     /**
-     * {@link com.alee.extended.dock.drag.FrameDragData} flavor.
+     * {@link FrameDragData} flavor.
      */
     public static final DataFlavor dataFlavor = new DataFlavor ( FrameDragData.class, "FrameDragData" );
 
@@ -46,18 +47,20 @@ public class FrameTransferable implements Transferable
     /**
      * {@link FrameDragData} instance.
      */
-    private final FrameDragData data;
+    @NotNull
+    protected final FrameDragData data;
 
     /**
      * Constructs new {@link FrameTransferable} for the specified {@link FrameDragData}.
      *
      * @param data {@link FrameDragData}
      */
-    public FrameTransferable ( final FrameDragData data )
+    public FrameTransferable ( @NotNull final FrameDragData data )
     {
         this.data = data;
     }
 
+    @NotNull
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
@@ -65,13 +68,14 @@ public class FrameTransferable implements Transferable
     }
 
     @Override
-    public boolean isDataFlavorSupported ( final DataFlavor flavor )
+    public boolean isDataFlavorSupported ( @NotNull final DataFlavor flavor )
     {
         return dataFlavor.equals ( flavor );
     }
 
+    @NotNull
     @Override
-    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
+    public Object getTransferData ( @NotNull final DataFlavor flavor ) throws UnsupportedFlavorException
     {
         if ( flavor == dataFlavor )
         {

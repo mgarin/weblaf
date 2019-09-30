@@ -23,7 +23,6 @@ import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import java.awt.*;
 
 /**
  * Pluggable look and feel interface for {@link WebDockablePane} component.
@@ -79,12 +78,6 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
     protected void installDefaults ()
     {
         LafUtils.installDefaults ( pane, getPropertyPrefix () );
-        pane.setSidebarVisibility ( SidebarVisibility.minimized );
-        pane.setSidebarButtonAction ( SidebarButtonAction.restore );
-        pane.setContentSpacing ( 0 );
-        pane.setResizeGripper ( 10 );
-        pane.setMinimumElementSize ( new Dimension ( 40, 40 ) );
-        pane.setOccupyMinimumSizeForChildren ( true );
     }
 
     /**
@@ -120,5 +113,6 @@ public abstract class WDockablePaneUI<C extends WebDockablePane> extends Compone
      *
      * @return dockable pane glass layer component
      */
+    @NotNull
     public abstract JComponent createGlassLayer ();
 }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock.drag;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.dock.WebDockableFrame;
 
 import javax.swing.*;
@@ -32,13 +33,14 @@ import java.awt.datatransfer.Transferable;
 public class DockableFrameTransferHandler extends TransferHandler
 {
     @Override
-    public int getSourceActions ( final JComponent c )
+    public int getSourceActions ( @NotNull final JComponent c )
     {
         return MOVE;
     }
 
+    @NotNull
     @Override
-    protected Transferable createTransferable ( final JComponent c )
+    protected Transferable createTransferable ( @NotNull final JComponent c )
     {
         final WebDockableFrame frame = ( WebDockableFrame ) c;
         final FrameDragData data = new FrameDragData ( frame.getId () );
