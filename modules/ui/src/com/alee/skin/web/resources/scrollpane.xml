@@ -7,10 +7,7 @@
         <component>
             <opaque>false</opaque>
             <background>237,237,237</background>
-            <layout class="ScrollPaneLayout$UIResource">
-                <Vertical leading="false" trailing="false" hovering="false" extending="true" />
-                <Horizontal leading="false" trailing="false" hovering="false" extending="true" />
-            </layout>
+            <layout class="ScrollPaneLayout$UIResource" />
         </component>
         <painter>
             <decorations>
@@ -128,7 +125,7 @@
     <style type="scrollpane" id="hovering">
         <component>
             <layout class="ScrollPaneLayout$UIResource">
-                <Vertical leading="false" trailing="true" hovering="true" extending="true" />
+                <Vertical leading="false" trailing="true" hovering="true" extending="false" />
                 <Horizontal leading="false" trailing="false" hovering="true" extending="true" />
             </layout>
         </component>

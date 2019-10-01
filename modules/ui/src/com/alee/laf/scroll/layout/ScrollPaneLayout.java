@@ -39,6 +39,11 @@ import java.awt.*;
 public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Mergeable, Cloneable
 {
     /**
+     * Default {@link ScrollBarSettings} for vertical and horizontal scroll bars.
+     */
+    protected static final ScrollBarSettings DEFAULT_SCROLL_BAR_SETTINGS = new ScrollBarSettings ();
+
+    /**
      * {@link ScrollBarSettings} for vertical scroll bar.
      * These settings must always be specified otherwise you will have {@link NullPointerException}.
      */
@@ -59,7 +64,7 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
      */
     public ScrollBarSettings getVerticalScrollBarPosition ()
     {
-        return vpos;
+        return vpos != null ? vpos : DEFAULT_SCROLL_BAR_SETTINGS;
     }
 
     /**
@@ -79,7 +84,7 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
      */
     public ScrollBarSettings getHorizontalScrollBarPosition ()
     {
-        return hpos;
+        return hpos != null ? hpos : DEFAULT_SCROLL_BAR_SETTINGS;
     }
 
     /**
@@ -128,6 +133,8 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
         final Component upperRight = scrollPane.getCorner ( UPPER_RIGHT_CORNER );
         final int vsbPolicy = scrollPane.getVerticalScrollBarPolicy ();
         final int hsbPolicy = scrollPane.getHorizontalScrollBarPolicy ();
+        final ScrollBarSettings vpos = getVerticalScrollBarPosition ();
+        final ScrollBarSettings hpos = getHorizontalScrollBarPosition ();
 
         final Rectangle availR = scrollPane.getBounds ();
         availR.x = availR.y = 0;
@@ -507,6 +514,7 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
         if ( needed )
         {
             final int vsbWidth = Math.max ( 0, Math.min ( vsb.getPreferredSize ().width, view.width ) );
+            final ScrollBarSettings vpos = getVerticalScrollBarPosition ();
 
             // Shrink available area width if scroll bar is not hovering
             if ( !vpos.isHovering () )
@@ -551,6 +559,7 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
         if ( needed )
         {
             final int hsbHeight = Math.max ( 0, Math.min ( view.height, hsb.getPreferredSize ().height ) );
+            final ScrollBarSettings hpos = getHorizontalScrollBarPosition ();
 
             // Shrink available area height if scroll bar is not hovering
             if ( !hpos.isHovering () )
@@ -583,6 +592,8 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
         final JViewport colHead = scrollPane.getColumnHeader ();
         final int vsbPolicy = scrollPane.getVerticalScrollBarPolicy ();
         final int hsbPolicy = scrollPane.getHorizontalScrollBarPolicy ();
+        final ScrollBarSettings vpos = getVerticalScrollBarPosition ();
+        final ScrollBarSettings hpos = getHorizontalScrollBarPosition ();
 
         final Insets insets = container.getInsets ();
         int prefWidth = insets.left + insets.right;
@@ -712,6 +723,8 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
         final JViewport colHead = scrollPane.getColumnHeader ();
         final int vsbPolicy = scrollPane.getVerticalScrollBarPolicy ();
         final int hsbPolicy = scrollPane.getHorizontalScrollBarPolicy ();
+        final ScrollBarSettings vpos = getVerticalScrollBarPosition ();
+        final ScrollBarSettings hpos = getHorizontalScrollBarPosition ();
 
         final Insets insets = container.getInsets ();
         int minWidth = insets.left + insets.right;

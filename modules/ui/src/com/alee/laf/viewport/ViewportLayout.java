@@ -68,8 +68,8 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
             /**
              * Adding extra width/height to the view size whenever it should include hovering scroll bar.
              */
-            boolean vExtending = false;
-            boolean hExtending = false;
+            int vExtend = 0;
+            int hExtend = 0;
             final Container scroll = viewport.getParent ();
             if ( scroll instanceof JScrollPane )
             {
@@ -88,8 +88,8 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
                             final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
                             if ( vsb != null && vsb.isShowing () )
                             {
-                                viewSize.width += vsb.getPreferredSize ().width;
-                                vExtending = true;
+                                vExtend = vsb.getPreferredSize ().width;
+                                viewSize.width += vExtend;
                             }
                         }
 
@@ -102,8 +102,8 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
                             final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
                             if ( hsb != null && hsb.isShowing () )
                             {
-                                viewSize.height += hsb.getPreferredSize ().height;
-                                hExtending = true;
+                                hExtend = hsb.getPreferredSize ().height;
+                                viewSize.height += hExtend;
                             }
                         }
                     }
@@ -115,13 +115,26 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
              */
             if ( scrollableView != null )
             {
-                if ( !vExtending && scrollableView.getScrollableTracksViewportWidth () || vExtending && vpSize.width > viewSize.width )
+                Rectangle oldBounds = null;
+                if ( vExtend != 0 || hExtend != 0 )
                 {
-                    viewSize.width = vpSize.width;
+                    oldBounds = viewport.getBounds ();
+                    viewport.setBounds ( oldBounds.x, oldBounds.y, oldBounds.width - vExtend, oldBounds.height - hExtend );
                 }
-                if ( !hExtending && scrollableView.getScrollableTracksViewportHeight () || hExtending && vpSize.height > viewSize.height )
+
+                if ( scrollableView.getScrollableTracksViewportWidth () )
                 {
-                    viewSize.height = vpSize.height;
+                    viewSize.width = vpSize.width /*- vExtend*/;
+                }
+                if ( scrollableView.getScrollableTracksViewportHeight () )
+                {
+                    viewSize.height = vpSize.height /*- hExtend*/;
+                }
+
+                // Restore bounds
+                if ( oldBounds != null )
+                {
+                    viewport.setBounds ( oldBounds );
                 }
             }
 
