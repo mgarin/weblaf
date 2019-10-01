@@ -283,9 +283,23 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                 // Moving single child up
                 if ( container.getElementCount () == 1 )
                 {
+                    // Retrieving container's location in it's parent
                     final DockableContainer containerParent = container.getParent ();
                     final int index = containerParent.indexOf ( container );
-                    containerParent.add ( index, container.get ( 0 ) );
+
+                    // Updating last child that we're moving up
+                    // We need to preserve length container has before we get rid of it
+                    final DockableElement lastChild = container.get ( 0 );
+                    final Dimension oldChildSize = lastChild.getSize ();
+                    final Dimension containerSize = container.getSize ();
+                    final boolean horizontal = containerParent.getOrientation ().isHorizontal ();
+                    lastChild.setSize ( new Dimension (
+                            horizontal ? containerSize.width : oldChildSize.width,
+                            horizontal ? oldChildSize.height : containerSize.height
+                    ) );
+
+                    // Moving last child up
+                    containerParent.add ( index, lastChild );
                 }
 
                 // Removing empty container
@@ -485,8 +499,10 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         final FrameDropData dropData = dropData ( dockablePane, support );
         if ( dropData != null )
         {
-            // Removing frame from initial location first
+            // Dropped element
             final DockableElement element = root.get ( dropData.getId () );
+
+            // Removing frame from initial location first
             removeStructureElement ( element );
 
             // Adding frame to target location
