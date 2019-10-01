@@ -175,20 +175,15 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
      */
     protected void updateDecorationStates ( @NotNull final AccordionPane pane )
     {
-        // Updating pane decoration states
-        DecorationUtils.fireStatesChanged ( pane );
-
-        // Updating pane header decoration states
         final Component header = pane.getHeader ();
-        DecorationUtils.fireStatesChanged ( header );
-
-        // Updating pane header contents decoration states
         if ( header instanceof AbstractHeaderPanel )
         {
             final AbstractHeaderPanel headerPanel = ( AbstractHeaderPanel ) header;
             DecorationUtils.fireStatesChanged ( headerPanel.getTitle () );
             DecorationUtils.fireStatesChanged ( headerPanel.getControl () );
         }
+        DecorationUtils.fireStatesChanged ( header );
+        DecorationUtils.fireStatesChanged ( pane );
     }
 
     @NotNull

@@ -72,7 +72,7 @@ public class TreeDropLocationPainter<C extends JTree, U extends WTreeUI, D exten
     }
 
     @Override
-    protected boolean isDecorationAvailable ( final D decoration )
+    protected boolean isDecorationAvailable ( @NotNull final D decoration )
     {
         // We don't need to paint anything when drop location is not available
         return location != null && super.isDecorationAvailable ( decoration );

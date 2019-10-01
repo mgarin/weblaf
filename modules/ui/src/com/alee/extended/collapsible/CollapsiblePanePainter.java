@@ -17,8 +17,13 @@
 
 package com.alee.extended.collapsible;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.IDecoration;
+
+import java.util.List;
 
 /**
  * Basic painter for {@link WebCollapsiblePane} component.
@@ -35,6 +40,83 @@ public class CollapsiblePanePainter<C extends WebCollapsiblePane, U extends WCol
         extends AbstractDecorationPainter<C, U, D> implements ICollapsiblePanePainter<C, U>
 {
     /**
-     * Implementation is used completely from {@link AbstractDecorationPainter}.
+     * Listeners.
      */
+    protected transient CollapsiblePaneListener collapsiblePaneListener;
+
+    @Override
+    protected void installPropertiesAndListeners ()
+    {
+        super.installPropertiesAndListeners ();
+        installCollapsiblePaneListener ();
+    }
+
+    @Override
+    protected void uninstallPropertiesAndListeners ()
+    {
+        uninstallCollapsiblePaneListener ();
+        super.uninstallPropertiesAndListeners ();
+    }
+
+    /**
+     * Installs {@link CollapsiblePaneListener}.
+     */
+    protected void installCollapsiblePaneListener ()
+    {
+        collapsiblePaneListener = new CollapsiblePaneListener ()
+        {
+            @Override
+            public void expanding ( @NotNull final WebCollapsiblePane pane )
+            {
+                DecorationUtils.fireStatesChanged ( pane );
+            }
+
+            @Override
+            public void expanded ( @NotNull final WebCollapsiblePane pane )
+            {
+                DecorationUtils.fireStatesChanged ( pane );
+            }
+
+            @Override
+            public void collapsing ( @NotNull final WebCollapsiblePane pane )
+            {
+                DecorationUtils.fireStatesChanged ( pane );
+            }
+
+            @Override
+            public void collapsed ( @NotNull final WebCollapsiblePane pane )
+            {
+                DecorationUtils.fireStatesChanged ( pane );
+            }
+        };
+        component.addCollapsiblePaneListener ( collapsiblePaneListener );
+    }
+
+    /**
+     * Uninstalls {@link CollapsiblePaneListener}.
+     */
+    protected void uninstallCollapsiblePaneListener ()
+    {
+        component.removeCollapsiblePaneListener ( collapsiblePaneListener );
+        collapsiblePaneListener = null;
+    }
+
+    @NotNull
+    @Override
+    public List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+
+        // Header position state
+        states.add ( component.getHeaderPosition ().name () );
+
+        // Expansion state
+        states.add ( component.isExpanded () || component.isInTransition () ? DecorationState.expanded : DecorationState.collapsed );
+        if ( component.isInTransition () )
+        {
+            states.add ( component.isExpanded () ? DecorationState.expanding : DecorationState.collapsing );
+        }
+
+        return states;
+    }
 }

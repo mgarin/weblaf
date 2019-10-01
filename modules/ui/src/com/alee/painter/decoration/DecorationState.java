@@ -198,6 +198,15 @@ public interface DecorationState
     public static final String hasIcon = "has-icon";
 
     /**
+     * Used to provide component collapsing state.
+     *
+     * @see com.alee.extended.collapsible.CollapsiblePanePainter#getDecorationStates()
+     * @see com.alee.extended.collapsible.AbstractTitleLabel#getStates()
+     * @see com.alee.extended.collapsible.AbstractHeaderPanel#getStates()
+     */
+    public static final String collapsing = "collapsing";
+
+    /**
      * Used to provide component collapsed state.
      *
      * @see com.alee.laf.combobox.WebComboBoxRenderer#getStates()
@@ -208,10 +217,20 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     * @see com.alee.extended.collapsible.CollapsiblePanePainter#getDecorationStates()
      * @see com.alee.extended.collapsible.AbstractTitleLabel#getStates()
      * @see com.alee.extended.collapsible.AbstractHeaderPanel#getStates()
      */
     public static final String collapsed = "collapsed";
+
+    /**
+     * Used to provide component expanding state.
+     *
+     * @see com.alee.extended.collapsible.CollapsiblePanePainter#getDecorationStates()
+     * @see com.alee.extended.collapsible.AbstractTitleLabel#getStates()
+     * @see com.alee.extended.collapsible.AbstractHeaderPanel#getStates()
+     */
+    public static final String expanding = "expanding";
 
     /**
      * Used to provide component expanded state.
@@ -224,6 +243,7 @@ public interface DecorationState
      * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
      * @see com.alee.extended.tree.WebCheckBoxTreeCellRenderer#getStates()
+     * @see com.alee.extended.collapsible.CollapsiblePanePainter#getDecorationStates()
      * @see com.alee.extended.collapsible.AbstractTitleLabel#getStates()
      * @see com.alee.extended.collapsible.AbstractHeaderPanel#getStates()
      */

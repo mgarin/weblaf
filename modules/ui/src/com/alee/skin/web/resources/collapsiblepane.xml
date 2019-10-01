@@ -39,29 +39,25 @@
                             <color>223,223,223</color>
                         </GradientBackground>
                     </decoration>
+                    <decoration states="in-focused-parent">
+                        <LineBorder color="85,130,190" />
+                    </decoration>
+                    <decoration states="top">
+                        <WebShape sides="0,0,1,0" />
+                    </decoration>
                     <decoration states="left">
+                        <WebShape sides="0,0,0,1" />
                         <GradientBackground from="0,0" to="1,0" />
                     </decoration>
                     <decoration states="right">
+                        <WebShape sides="0,1,0,0" />
                         <GradientBackground from="0,0" to="1,0" />
                     </decoration>
-                    <decoration states="top,expanded">
-                        <WebShape sides="0,0,1,0" />
-                    </decoration>
-                    <decoration states="left,expanded">
-                        <WebShape sides="0,0,0,1" />
-                    </decoration>
-                    <decoration states="right,expanded">
-                        <WebShape sides="0,1,0,0" />
-                    </decoration>
-                    <decoration states="bottom,expanded">
+                    <decoration states="bottom">
                         <WebShape sides="1,0,0,0" />
                     </decoration>
                     <decoration states="collapsed">
                         <WebShape sides="0,0,0,0" />
-                    </decoration>
-                    <decoration states="in-focused-parent">
-                        <LineBorder color="85,130,190" />
                     </decoration>
                 </decorations>
             </painter>

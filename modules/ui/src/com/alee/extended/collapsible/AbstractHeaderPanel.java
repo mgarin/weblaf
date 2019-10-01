@@ -169,6 +169,10 @@ public abstract class AbstractHeaderPanel extends WebPanel implements Stateful
 
         // Expansion state
         states.add ( isExpanded () || isInTransition () ? DecorationState.expanded : DecorationState.collapsed );
+        if ( isInTransition () )
+        {
+            states.add ( isExpanded () ? DecorationState.expanding : DecorationState.collapsing );
+        }
 
         return states;
     }

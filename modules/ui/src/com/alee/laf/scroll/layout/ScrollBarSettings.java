@@ -17,6 +17,7 @@
 
 package com.alee.laf.scroll.layout;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -37,6 +38,7 @@ public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
      * Exact corner taken by the scroll bar depends on the scroll bar orientation.
      * This setting is set to {@code false} by default to replicate common Swing scroll panes behavior.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean leading;
 
@@ -45,6 +47,7 @@ public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
      * Exact corner taken by the scroll bar depends on the scroll bar orientation.
      * This setting is set to {@code false} by default to replicate common Swing scroll panes behavior.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean trailing;
 
@@ -55,6 +58,7 @@ public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
      * It is important to know that hovering non-opaque scroll bar also forces underlying components to be non-opaque,
      * otherwise you will encounter many repainting issues with the content and scroll bar itself.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean hovering;
 
@@ -62,6 +66,7 @@ public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
      * Whether or not scroll bar should be counted in scroll pane preferred size when it is {@link #hovering}.
      * It could be useful to receive a better scroll pane preferred size to avoid scroll bar obstructing any content.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean extending;
 
@@ -81,9 +86,9 @@ public class ScrollBarSettings implements Mergeable, Cloneable, Serializable
      * @param hovering  whether scroll bar should hover above the scroll pane content instead of taking extra space
      * @param extending whether or not scroll bar should be counted in scroll pane preferred size
      */
-    public ScrollBarSettings ( final Boolean leading, final Boolean trailing, final Boolean hovering, final Boolean extending )
+    public ScrollBarSettings ( @Nullable final Boolean leading, @Nullable final Boolean trailing,
+                               @Nullable final Boolean hovering, @Nullable final Boolean extending )
     {
-        super ();
         this.leading = leading;
         this.trailing = trailing;
         this.hovering = hovering;

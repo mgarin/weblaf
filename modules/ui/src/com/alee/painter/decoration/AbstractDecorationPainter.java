@@ -885,6 +885,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      *
      * @return properly sorted current component decoration states
      */
+    @NotNull
     protected final List<String> collectDecorationStates ()
     {
         // Retrieving current decoration states
@@ -992,13 +993,12 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * @param forStates decoration states to retrieve decoration for
      * @return decorations for the specified states
      */
-    @Nullable
+    @NotNull
     protected final List<D> getDecorations ( @NotNull final List<String> forStates )
     {
-        final List<D> result;
+        final List<D> result = new ArrayList<D> (  );
         if ( decorations != null && decorations.size () > 0 )
         {
-            result = new ArrayList<D> ( 1 );
             for ( final D decoration : decorations )
             {
                 if ( decoration.isApplicableTo ( forStates ) )
@@ -1007,10 +1007,6 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 }
             }
         }
-        else
-        {
-            result = null;
-        }
         return result;
     }
 
@@ -1018,7 +1014,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     @Override
     public final D getDecoration ()
     {
-        // Optimization for painter without decorations
+        final D result;
         if ( decorations != null && decorations.size () > 0 )
         {
             // Decoration key
@@ -1135,13 +1131,14 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
             }
 
             // Returning existing decoration
-            return stateDecorationCache.get ( current );
+            result = stateDecorationCache.get ( current );
         }
         else
         {
             // No decorations added
-            return null;
+            result = null;
         }
+        return result;
     }
 
     /**
@@ -1150,7 +1147,8 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * @param decorations decorations to retrieve unique combination key for
      * @return unique decorations combination key
      */
-    protected final String getDecorationsKey ( final List<D> decorations )
+    @NotNull
+    protected final String getDecorationsKey ( @NotNull final List<D> decorations )
     {
         final StringBuilder key = new StringBuilder ( 15 * decorations.size () );
         for ( final D decoration : decorations )
@@ -1169,7 +1167,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      *
      * @param c painted component
      */
-    protected final void deactivateLastDecoration ( final C c )
+    protected final void deactivateLastDecoration ( @NotNull final C c )
     {
         final D decoration = getDecoration ();
         if ( decoration != null )
@@ -1214,7 +1212,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         final Insets insets;
         final D decoration = getDecoration ();
-        if ( isDecorationAvailable ( decoration ) )
+        if ( decoration != null && isDecorationAvailable ( decoration ) )
         {
             insets = decoration.getBorderInsets ( component );
         }
@@ -1248,7 +1246,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         final Boolean opaque;
         final D decoration = getDecoration ();
-        if ( isDecorationAvailable ( decoration ) )
+        if ( decoration != null && isDecorationAvailable ( decoration ) )
         {
             opaque = isOpaqueDecorated ();
         }
@@ -1289,55 +1287,61 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     @Override
     public boolean contains ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds, final int x, final int y )
     {
+        final boolean contains;
         final D decoration = getDecoration ();
-        if ( isDecorationAvailable ( decoration ) )
+        if ( decoration != null && isDecorationAvailable ( decoration ) )
         {
             // Creating additional bounds
             final Bounds marginBounds = new Bounds ( bounds, BoundsType.margin, c, decoration );
 
             // Using decoration contains method
-            return decoration.contains ( c, marginBounds, x, y );
+            contains = decoration.contains ( c, marginBounds, x, y );
         }
         else
         {
             // Using default contains method
-            return super.contains ( c, ui, bounds, x, y );
+            contains = super.contains ( c, ui, bounds, x, y );
         }
+        return contains;
     }
 
     @Override
     public int getBaseline ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
+        final int baseline;
         final D decoration = getDecoration ();
-        if ( isDecorationAvailable ( decoration ) )
+        if ( decoration != null && isDecorationAvailable ( decoration ) )
         {
             // Creating additional bounds
             final Bounds marginBounds = new Bounds ( bounds, BoundsType.margin, c, decoration );
 
             // Calculating decoration baseline
-            return decoration.getBaseline ( c, marginBounds );
+            baseline = decoration.getBaseline ( c, marginBounds );
         }
         else
         {
             // Calculating default baseline
-            return super.getBaseline ( c, ui, bounds );
+            baseline = super.getBaseline ( c, ui, bounds );
         }
+        return baseline;
     }
 
     @Override
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final C c, @NotNull final U ui )
     {
+        final Component.BaselineResizeBehavior behavior;
         final D decoration = getDecoration ();
-        if ( isDecorationAvailable ( decoration ) )
+        if ( decoration != null && isDecorationAvailable ( decoration ) )
         {
             // Returning decoration baseline behavior
-            return decoration.getBaselineResizeBehavior ( c );
+            behavior = decoration.getBaselineResizeBehavior ( c );
         }
         else
         {
             // Returning default baseline behavior
-            return super.getBaselineResizeBehavior ( c, ui );
+            behavior = super.getBaselineResizeBehavior ( c, ui );
         }
+        return behavior;
     }
 
     @Override
@@ -1354,7 +1358,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
 
         // Painting current decoration state
         final D decoration = getDecoration ();
-        if ( isDecorationAvailable ( decoration ) )
+        if ( decoration != null && isDecorationAvailable ( decoration ) )
         {
             // Creating additional bounds
             final Bounds marginBounds = new Bounds ( bounds, BoundsType.margin, c, decoration );
@@ -1402,9 +1406,9 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * @param decoration decoration to be painted
      * @return {@code true} if painting specified decoration is available, {@code false} otherwise
      */
-    protected boolean isDecorationAvailable ( final D decoration )
+    protected boolean isDecorationAvailable ( @NotNull final D decoration )
     {
-        return decoration != null;
+        return true;
     }
 
     @NotNull

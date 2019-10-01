@@ -27,6 +27,8 @@ import com.alee.extended.collapsible.AbstractTitleLabel;
 import com.alee.extended.collapsible.HeaderLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.Stateful;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -34,6 +36,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link AccordionPane} for a single collapsible content {@link Component} within {@link WebAccordion}.
@@ -46,7 +50,7 @@ import java.awt.event.MouseEvent;
  * @see AccordionModel
  * @see WebAccordionModel
  */
-public class AccordionPane extends WebPanel implements Identifiable
+public class AccordionPane extends WebPanel implements Stateful, Identifiable
 {
     /**
      * {@link AccordionPane} unique identifier.
@@ -141,6 +145,25 @@ public class AccordionPane extends WebPanel implements Identifiable
     public String getId ()
     {
         return id;
+    }
+
+    @Nullable
+    @Override
+    public List<String> getStates ()
+    {
+        final List<String> states = new ArrayList<String> ( 3 );
+
+        // Header position state
+        states.add ( getHeaderPosition ().name () );
+
+        // Expansion state
+        states.add ( isExpanded () || isInTransition () ? DecorationState.expanded : DecorationState.collapsed );
+        if ( isInTransition () )
+        {
+            states.add ( isExpanded () ? DecorationState.expanding : DecorationState.collapsing );
+        }
+
+        return states;
     }
 
     /**

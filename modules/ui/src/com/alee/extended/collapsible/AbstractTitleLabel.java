@@ -116,6 +116,10 @@ public abstract class AbstractTitleLabel extends WebStyledLabel implements State
 
         // Expansion state
         states.add ( isExpanded () || isInTransition () ? DecorationState.expanded : DecorationState.collapsed );
+        if ( isInTransition () )
+        {
+            states.add ( isExpanded () ? DecorationState.expanding : DecorationState.collapsing );
+        }
 
         // Icon state
         if ( getIcon () != null )
