@@ -20,6 +20,7 @@ package com.alee.extended.collapsible;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.BoxOrientation;
+import com.alee.api.jdk.Objects;
 import com.alee.extended.WebContainer;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -54,8 +55,15 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     public static final String TITLE_COMPONENT_PROPERTY = "titleComponent";
     public static final String CONTROL_COMPONENT_PROPERTY = "controlComponent";
     public static final String CONTENT_PROPERTY = "content";
+    public static final String ANIMATED_PROPERTY = "animated";
     public static final String EXPANDED_PROPERTY = "expanded";
     public static final String IN_TRANSITION_PROPERTY = "inTransition";
+
+    /**
+     * Header panel position.
+     */
+    @Nullable
+    protected BoxOrientation headerPosition;
 
     /**
      * Title {@link Component}.
@@ -82,10 +90,11 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     protected Component content;
 
     /**
-     * Header panel position.
+     * Whether or not {@link WebCollapsiblePane} expansion and collapse should be animated.
+     * By default it is {@code null} which is equal to {@code true} value.
      */
     @Nullable
-    protected BoxOrientation headerPosition;
+    protected Boolean animated;
 
     /**
      * Whether or not {@link WebCollapsiblePane} is expanded.
@@ -740,6 +749,31 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
             final Component old = this.content;
             this.content = content;
             firePropertyChange ( CONTENT_PROPERTY, old, content );
+        }
+    }
+
+    /**
+     * Returns whether or not {@link WebCollapsiblePane} expansion and collapse is animated.
+     *
+     * @return {@code true} if {@link WebCollapsiblePane} expansion and collapse is animated, {@code false} otherwise
+     */
+    public boolean isAnimated ()
+    {
+        return animated == null || animated;
+    }
+
+    /**
+     * Sets whether or not {@link WebCollapsiblePane} expansion and collapse should be animated.
+     *
+     * @param animated whether or not {@link WebCollapsiblePane} expansion and collapse should be animated
+     */
+    public void setAnimated ( final boolean animated )
+    {
+        final Boolean wasAnimated = this.animated;
+        if ( Objects.notEquals ( animated, wasAnimated ) )
+        {
+            this.animated = animated;
+            firePropertyChange ( ANIMATED_PROPERTY, wasAnimated, ( Boolean ) animated );
         }
     }
 

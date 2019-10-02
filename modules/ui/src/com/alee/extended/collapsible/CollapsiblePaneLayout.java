@@ -244,7 +244,7 @@ public class CollapsiblePaneLayout extends AbstractLayoutManager implements Prop
             final boolean expanded = ( Boolean ) event.getNewValue ();
             final Easing easing = getEasing ();
             final long fullDuration = getDuration ();
-            if ( pane.isShowing () && easing != null && fullDuration > 0L )
+            if ( pane.isAnimated () && pane.isShowing () && easing != null && fullDuration > 0L )
             {
                 // Performing animation
                 final float target = expanded ? 1.0f : 0.0f;
