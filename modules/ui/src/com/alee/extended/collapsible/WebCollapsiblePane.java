@@ -788,9 +788,9 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     }
 
     /**
-     * Sets whether or not {@link WebCollapsiblePane} is expanded
+     * Asks this {@link WebCollapsiblePane} to either expand or collapse.
      *
-     * @param expanded whether or not {@link WebCollapsiblePane} is expanded
+     * @param expanded whether {@link WebCollapsiblePane} should be expanded or collapsed
      */
     public void setExpanded ( final boolean expanded )
     {
@@ -800,6 +800,22 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
             this.expanded = expanded;
             firePropertyChange ( EXPANDED_PROPERTY, old, expanded );
         }
+    }
+
+    /**
+     * Asks this {@link WebCollapsiblePane} to expand if possible.
+     */
+    public void expand ()
+    {
+        setExpanded ( true );
+    }
+
+    /**
+     * Asks this {@link WebCollapsiblePane} to collapse if possible.
+     */
+    public void collapse ()
+    {
+        setExpanded ( false );
     }
 
     /**
