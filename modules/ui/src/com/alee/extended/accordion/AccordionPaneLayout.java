@@ -90,7 +90,6 @@ public class AccordionPaneLayout extends AbstractLayoutManager implements Mergea
     {
         final AccordionPane pane = ( AccordionPane ) parent;
         final Component header = pane.getHeader ();
-        final Component content = pane.getContent ();
         final Insets insets = pane.getInsets ();
         final int availableWidth = pane.getWidth () - insets.left - insets.right;
         final int availableHeight = pane.getHeight () - insets.top - insets.bottom;
@@ -100,6 +99,7 @@ public class AccordionPaneLayout extends AbstractLayoutManager implements Mergea
         final BoxOrientation position = pane.getHeaderPosition ();
         final Dimension hps = header.getPreferredSize ();
 
+        // Positioning header
         final int x;
         if ( position.isTop () || position.isBottom () || ( ltr ? position.isLeft () : position.isRight () ) )
         {
@@ -109,7 +109,6 @@ public class AccordionPaneLayout extends AbstractLayoutManager implements Mergea
         {
             x = bounds.x + bounds.width - Math.min ( availableWidth, hps.width );
         }
-
         final int y;
         if ( position.isTop () || position.isLeft () || position.isRight () )
         {
@@ -119,7 +118,6 @@ public class AccordionPaneLayout extends AbstractLayoutManager implements Mergea
         {
             y = bounds.y + bounds.height - Math.min ( availableHeight, hps.height );
         }
-
         final int w;
         if ( position.isTop () || position.isBottom () )
         {
@@ -129,7 +127,6 @@ public class AccordionPaneLayout extends AbstractLayoutManager implements Mergea
         {
             w = Math.min ( availableWidth, hps.width );
         }
-
         final int h;
         if ( position.isLeft () || position.isRight () )
         {
@@ -139,30 +136,33 @@ public class AccordionPaneLayout extends AbstractLayoutManager implements Mergea
         {
             h = Math.min ( availableHeight, hps.height );
         }
-
         header.setBounds ( x, y, w, h );
 
-        if ( position.isTop () )
+        // Positioning content if available
+        final Component content = pane.getContent ();
+        if ( content != null )
         {
-            bounds.y += h;
-            bounds.height -= h;
+            if ( position.isTop () )
+            {
+                bounds.y += h;
+                bounds.height -= h;
+            }
+            else if ( position.isBottom () )
+            {
+                bounds.height -= h;
+            }
+            else if ( ltr && position.isLeft () || !ltr && position.isRight () )
+            {
+                bounds.x += w;
+                bounds.width -= w;
+            }
+            else
+            {
+                bounds.width -= w;
+            }
+            content.setBounds ( bounds );
+            content.setVisible ( bounds.width > 0 && bounds.height > 0 );
         }
-        else if ( position.isBottom () )
-        {
-            bounds.height -= h;
-        }
-        else if ( ltr && position.isLeft () || !ltr && position.isRight () )
-        {
-            bounds.x += w;
-            bounds.width -= w;
-        }
-        else
-        {
-            bounds.width -= w;
-        }
-
-        content.setBounds ( bounds );
-        content.setVisible ( bounds.width > 0 && bounds.height > 0 );
     }
 
     @NotNull
@@ -177,7 +177,7 @@ public class AccordionPaneLayout extends AbstractLayoutManager implements Mergea
         final Insets insets = pane.getInsets ();
         final Dimension ps = new Dimension ( 0, 0 );
 
-        final Dimension cps = content.getPreferredSize ();
+        final Dimension cps = content != null ? content.getPreferredSize () : new Dimension ();
         ps.width = vertical ? cps.width : 0;
         ps.height = vertical ? 0 : cps.height;
 
