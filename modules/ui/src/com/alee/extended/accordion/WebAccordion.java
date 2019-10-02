@@ -430,6 +430,23 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     }
 
     /**
+     * Sets minimum and maximum amount of {@link AccordionPane}s that can be expanded.
+     * Minimum amount can vary between {@code 0} and any number, even exceeding total amount of {@link AccordionPane}s available.
+     * Maximum amount can vary between {@code 1} and any number, even exceeding total amount of {@link AccordionPane}s available.
+     *
+     * @param minimum minimum amount of {@link AccordionPane}s that should be expanded at all times
+     * @param maximum maximum amount of {@link AccordionPane}s that can be expanded
+     * @return this {@link WebAccordion}
+     */
+    @NotNull
+    public WebAccordion setExpandedPaneLimit ( final int minimum, final int maximum )
+    {
+        setMinimumExpandedPaneCount ( minimum );
+        setMaximumExpandedPaneCount ( maximum );
+        return this;
+    }
+
+    /**
      * Returns minimum size in pixels of a single {@link AccordionPane}'s content.
      * Can be any value from {@code 0} to any reasonable amount of pixels you want for each {@link AccordionPane}'s content.
      * It is used instead of the content's preferred size to ensure that {@link WebAccordion} preserves it's preferred size at all times.
