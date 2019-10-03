@@ -62,7 +62,7 @@
                 </decorations>
             </painter>
 
-            <!-- Defailt title label -->
+            <!-- Default title label -->
             <style type="styledlabel" id="title" extends="shadow">
                 <component>
                     <horizontalAlignment>10</horizontalAlignment>
