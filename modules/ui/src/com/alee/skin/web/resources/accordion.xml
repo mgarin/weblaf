@@ -143,4 +143,13 @@
 
     </style>
 
+    <!-- Undecorated accordion -->
+    <style type="accordion" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
 </skin>

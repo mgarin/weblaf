@@ -802,6 +802,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.accordion.WebAccordion} style identifiers.
      */
     public static final StyleId accordion = StyleId.of ( "accordion" );
+    public static final StyleId accordionUndecorated = StyleId.of ( "undecorated" );
     public static final ChildStyleId accordionPane = ChildStyleId.of ( "pane" );
     public static final ChildStyleId accordionPaneHeaderPanel = ChildStyleId.of ( "header" );
     public static final ChildStyleId accordionPaneTitleLabel = ChildStyleId.of ( "title" );
