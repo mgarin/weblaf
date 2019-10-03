@@ -524,6 +524,7 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getPreferredWidth ( this );
     }
 
+    @NotNull
     @Override
     public WebSeparator setPreferredWidth ( final int preferredWidth )
     {
@@ -536,34 +537,32 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getPreferredHeight ( this );
     }
 
+    @NotNull
     @Override
     public WebSeparator setPreferredHeight ( final int preferredHeight )
     {
         return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
     }
 
+    @NotNull
     @Override
-    public int getMinimumWidth ()
+    public Dimension getPreferredSize ()
     {
-        return SizeMethodsImpl.getMinimumWidth ( this );
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
     }
 
+    @NotNull
     @Override
-    public WebSeparator setMinimumWidth ( final int minimumWidth )
+    public Dimension getOriginalPreferredSize ()
     {
-        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
     }
 
+    @NotNull
     @Override
-    public int getMinimumHeight ()
+    public WebSeparator setPreferredSize ( final int width, final int height )
     {
-        return SizeMethodsImpl.getMinimumHeight ( this );
-    }
-
-    @Override
-    public WebSeparator setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 
     @Override
@@ -572,6 +571,7 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getMaximumWidth ( this );
     }
 
+    @NotNull
     @Override
     public WebSeparator setMaximumWidth ( final int maximumWidth )
     {
@@ -584,28 +584,79 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getMaximumHeight ( this );
     }
 
+    @NotNull
     @Override
     public WebSeparator setMaximumHeight ( final int maximumHeight )
     {
         return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
     }
 
+    @NotNull
     @Override
-    public Dimension getPreferredSize ()
+    public Dimension getMaximumSize ()
     {
-        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMaximumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebSeparator setMaximumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMaximumSize ( this, width, height );
     }
 
     @Override
-    public Dimension getOriginalPreferredSize ()
+    public int getMinimumWidth ()
     {
-        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSeparator setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
     }
 
     @Override
-    public WebSeparator setPreferredSize ( final int width, final int height )
+    public int getMinimumHeight ()
     {
-        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSeparator setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getMinimumSize ()
+    {
+        return SizeMethodsImpl.getMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMinimumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebSeparator setMinimumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMinimumSize ( this, width, height );
     }
 
     /**

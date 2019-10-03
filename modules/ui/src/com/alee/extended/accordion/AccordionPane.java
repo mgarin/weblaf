@@ -75,13 +75,39 @@ public class AccordionPane extends WebPanel implements Stateful, Identifiable
      *
      * @param accordion {@link WebAccordion} this {@link AccordionPane} is created for
      * @param id        unique {@link AccordionPane} identifier
+     * @param title     {@link AccordionPane} title
+     */
+    public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id, @Nullable final String title )
+    {
+        this ( StyleId.accordionPane.at ( accordion ), accordion, id, null, title, null );
+    }
+
+    /**
+     * Constructs new {@link AccordionPane}.
+     *
+     * @param accordion {@link WebAccordion} this {@link AccordionPane} is created for
+     * @param id        unique {@link AccordionPane} identifier
      * @param icon      {@link AccordionPane} title icon
      * @param title     {@link AccordionPane} title
      */
-    public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id,
-                           @Nullable final Icon icon, @Nullable final String title )
+    public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id, @Nullable final Icon icon,
+                           @Nullable final String title )
     {
         this ( StyleId.accordionPane.at ( accordion ), accordion, id, icon, title, null );
+    }
+
+    /**
+     * Constructs new {@link AccordionPane}.
+     *
+     * @param accordion {@link WebAccordion} this {@link AccordionPane} is created for
+     * @param id        unique {@link AccordionPane} identifier
+     * @param title     {@link AccordionPane} title
+     * @param content   content {@link Component}
+     */
+    public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id, @Nullable final String title,
+                           @Nullable final Component content )
+    {
+        this ( StyleId.accordionPane.at ( accordion ), accordion, id, null, title, content );
     }
 
     /**
@@ -93,10 +119,24 @@ public class AccordionPane extends WebPanel implements Stateful, Identifiable
      * @param title     {@link AccordionPane} title
      * @param content   content {@link Component}
      */
-    public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id,
-                           @Nullable final Icon icon, @Nullable final String title, @Nullable final Component content )
+    public AccordionPane ( @NotNull final WebAccordion accordion, @NotNull final String id, @Nullable final Icon icon,
+                           @Nullable final String title, @Nullable final Component content )
     {
         this ( StyleId.accordionPane.at ( accordion ), accordion, id, icon, title, content );
+    }
+
+    /**
+     * Constructs new {@link AccordionPane}.
+     *
+     * @param styleId   {@link StyleId}
+     * @param accordion {@link WebAccordion} this {@link AccordionPane} is created for
+     * @param id        {@link AccordionPane} unique identifier
+     * @param title     {@link AccordionPane} title
+     */
+    public AccordionPane ( @NotNull final StyleId styleId, @NotNull final WebAccordion accordion, @NotNull final String id,
+                           @Nullable final String title )
+    {
+        this ( styleId, accordion, id, null, title, null );
     }
 
     /**
@@ -112,6 +152,21 @@ public class AccordionPane extends WebPanel implements Stateful, Identifiable
                            @Nullable final Icon icon, @Nullable final String title )
     {
         this ( styleId, accordion, id, icon, title, null );
+    }
+
+    /**
+     * Constructs new {@link AccordionPane}.
+     *
+     * @param styleId   {@link StyleId}
+     * @param accordion {@link WebAccordion} this {@link AccordionPane} is created for
+     * @param id        {@link AccordionPane} unique identifier
+     * @param title     {@link AccordionPane} title
+     * @param content   content {@link Component}
+     */
+    public AccordionPane ( @NotNull final StyleId styleId, @NotNull final WebAccordion accordion, @NotNull final String id,
+                           @Nullable final String title, @Nullable final Component content )
+    {
+        this ( styleId, accordion, id, null, title, content );
     }
 
     /**

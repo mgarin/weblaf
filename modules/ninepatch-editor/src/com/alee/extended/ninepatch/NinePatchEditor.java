@@ -17,6 +17,7 @@
 
 package com.alee.extended.ninepatch;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.panel.WebPanel;
@@ -1940,12 +1941,14 @@ public class NinePatchEditor extends WebPanel
         }
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeMethodsImpl.getPreferredSize ( this, getActualPreferredSize () );
     }
 
+    @NotNull
     @Override
     public Dimension getOriginalPreferredSize ()
     {

@@ -413,6 +413,7 @@ public class EasingViewer extends WebCanvas
         SwingUtils.restoreTextAntialias ( g2d, taa );
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

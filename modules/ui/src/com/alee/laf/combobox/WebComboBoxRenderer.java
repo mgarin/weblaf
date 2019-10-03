@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationState;
@@ -77,6 +78,7 @@ public class WebComboBoxRenderer<V, C extends JList, P extends ComboBoxCellParam
         return ( P ) new ComboBoxCellParameters<V, C> ( list, value, index, isSelected, hasFocus );
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

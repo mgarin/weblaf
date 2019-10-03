@@ -643,6 +643,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getPreferredWidth ( this );
     }
 
+    @NotNull
     @Override
     public WebScrollBar setPreferredWidth ( final int preferredWidth )
     {
@@ -655,34 +656,32 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getPreferredHeight ( this );
     }
 
+    @NotNull
     @Override
     public WebScrollBar setPreferredHeight ( final int preferredHeight )
     {
         return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
     }
 
+    @NotNull
     @Override
-    public int getMinimumWidth ()
+    public Dimension getPreferredSize ()
     {
-        return SizeMethodsImpl.getMinimumWidth ( this );
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
     }
 
+    @NotNull
     @Override
-    public WebScrollBar setMinimumWidth ( final int minimumWidth )
+    public Dimension getOriginalPreferredSize ()
     {
-        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
     }
 
+    @NotNull
     @Override
-    public int getMinimumHeight ()
+    public WebScrollBar setPreferredSize ( final int width, final int height )
     {
-        return SizeMethodsImpl.getMinimumHeight ( this );
-    }
-
-    @Override
-    public WebScrollBar setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 
     @Override
@@ -691,6 +690,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getMaximumWidth ( this );
     }
 
+    @NotNull
     @Override
     public WebScrollBar setMaximumWidth ( final int maximumWidth )
     {
@@ -703,28 +703,79 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
         return SizeMethodsImpl.getMaximumHeight ( this );
     }
 
+    @NotNull
     @Override
     public WebScrollBar setMaximumHeight ( final int maximumHeight )
     {
         return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
     }
 
+    @NotNull
     @Override
-    public Dimension getPreferredSize ()
+    public Dimension getMaximumSize ()
     {
-        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMaximumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebScrollBar setMaximumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMaximumSize ( this, width, height );
     }
 
     @Override
-    public Dimension getOriginalPreferredSize ()
+    public int getMinimumWidth ()
     {
-        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebScrollBar setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
     }
 
     @Override
-    public WebScrollBar setPreferredSize ( final int width, final int height )
+    public int getMinimumHeight ()
     {
-        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebScrollBar setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getMinimumSize ()
+    {
+        return SizeMethodsImpl.getMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMinimumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebScrollBar setMinimumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMinimumSize ( this, width, height );
     }
 
     /**

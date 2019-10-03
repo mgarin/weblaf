@@ -318,6 +318,147 @@ public class WebSyntaxScrollPane extends RTextScrollPane
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeMethodsImpl.getPreferredWidth ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeMethodsImpl.getPreferredHeight ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setPreferredSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeMethodsImpl.getMaximumWidth ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeMethodsImpl.getMaximumHeight ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getMaximumSize ()
+    {
+        return SizeMethodsImpl.getMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMaximumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setMaximumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMaximumSize ( this, width, height );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getMinimumSize ()
+    {
+        return SizeMethodsImpl.getMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMinimumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebSyntaxScrollPane setMinimumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMinimumSize ( this, width, height );
+    }
+
     /**
      * Returns the look and feel (LaF) object that renders this component.
      *
@@ -349,95 +490,5 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     public String getUIClassID ()
     {
         return StyleManager.getDescriptor ( this ).getUIClassId ();
-    }
-
-    @Override
-    public int getPreferredWidth ()
-    {
-        return SizeMethodsImpl.getPreferredWidth ( this );
-    }
-
-    @Override
-    public WebSyntaxScrollPane setPreferredWidth ( final int preferredWidth )
-    {
-        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
-    }
-
-    @Override
-    public int getPreferredHeight ()
-    {
-        return SizeMethodsImpl.getPreferredHeight ( this );
-    }
-
-    @Override
-    public WebSyntaxScrollPane setPreferredHeight ( final int preferredHeight )
-    {
-        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
-    }
-
-    @Override
-    public int getMinimumWidth ()
-    {
-        return SizeMethodsImpl.getMinimumWidth ( this );
-    }
-
-    @Override
-    public WebSyntaxScrollPane setMinimumWidth ( final int minimumWidth )
-    {
-        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
-    }
-
-    @Override
-    public int getMinimumHeight ()
-    {
-        return SizeMethodsImpl.getMinimumHeight ( this );
-    }
-
-    @Override
-    public WebSyntaxScrollPane setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
-    }
-
-    @Override
-    public int getMaximumWidth ()
-    {
-        return SizeMethodsImpl.getMaximumWidth ( this );
-    }
-
-    @Override
-    public WebSyntaxScrollPane setMaximumWidth ( final int maximumWidth )
-    {
-        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
-    }
-
-    @Override
-    public int getMaximumHeight ()
-    {
-        return SizeMethodsImpl.getMaximumHeight ( this );
-    }
-
-    @Override
-    public WebSyntaxScrollPane setMaximumHeight ( final int maximumHeight )
-    {
-        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
-    }
-
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    @Override
-    public Dimension getOriginalPreferredSize ()
-    {
-        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    @Override
-    public WebSyntaxScrollPane setPreferredSize ( final int width, final int height )
-    {
-        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 }

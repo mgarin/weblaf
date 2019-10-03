@@ -327,6 +327,7 @@ public class WebButtonPopup extends WebInnerPopup
     {
         final WebButton copy = new WebButton ()
         {
+            @NotNull
             @Override
             public Dimension getPreferredSize ()
             {

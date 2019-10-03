@@ -640,16 +640,42 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Adds new {@link AccordionPane} to this accordion.
      *
+     * @param title   {@link AccordionPane} title
+     * @param content {@link AccordionPane} content {@link Component}
+     * @return created {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane addPane ( @Nullable final String title, @NotNull final Component content )
+    {
+        return addPane ( createAccordionPaneId (), getPaneCount (), null, title, content );
+    }
+
+    /**
+     * Adds new {@link AccordionPane} to this accordion.
+     *
+     * @param index   {@link AccordionPane} index
+     * @param title   {@link AccordionPane} title
+     * @param content {@link AccordionPane} content {@link Component}
+     * @return created {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane addPane ( final int index, @Nullable final String title, @NotNull final Component content )
+    {
+        return addPane ( createAccordionPaneId (), index, null, title, content );
+    }
+
+    /**
+     * Adds new {@link AccordionPane} to this accordion.
+     *
      * @param icon    {@link AccordionPane} title icon
      * @param title   {@link AccordionPane} title
      * @param content {@link AccordionPane} content {@link Component}
      * @return created {@link AccordionPane}
      */
     @NotNull
-    public AccordionPane addPane ( @Nullable final Icon icon, @Nullable final String title,
-                                   @NotNull final Component content )
+    public AccordionPane addPane ( @Nullable final Icon icon, @Nullable final String title, @NotNull final Component content )
     {
-        return addPane ( TextUtils.generateId ( "AP" ), getPaneCount (), icon, title, content );
+        return addPane ( createAccordionPaneId (), getPaneCount (), icon, title, content );
     }
 
     /**
@@ -665,7 +691,37 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     public AccordionPane addPane ( final int index, @Nullable final Icon icon, @Nullable final String title,
                                    @NotNull final Component content )
     {
-        return addPane ( TextUtils.generateId ( "AP" ), index, icon, title, content );
+        return addPane ( createAccordionPaneId (), index, icon, title, content );
+    }
+
+    /**
+     * Adds new {@link AccordionPane} to this accordion.
+     *
+     * @param id      {@link AccordionPane} identifier
+     * @param title   {@link AccordionPane} title
+     * @param content {@link AccordionPane} content {@link Component}
+     * @return created {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane addPane ( @NotNull final String id, @Nullable final String title, @NotNull final Component content )
+    {
+        return addPane ( id, getPaneCount (), null, title, content );
+    }
+
+    /**
+     * Adds new {@link AccordionPane} to this accordion.
+     *
+     * @param id      {@link AccordionPane} identifier
+     * @param index   {@link AccordionPane} index
+     * @param title   {@link AccordionPane} title
+     * @param content {@link AccordionPane} content {@link Component}
+     * @return created {@link AccordionPane}
+     */
+    @NotNull
+    public AccordionPane addPane ( @NotNull final String id, final int index, @Nullable final String title,
+                                   @NotNull final Component content )
+    {
+        return addPane ( id, index, null, title, content );
     }
 
     /**
@@ -700,6 +756,17 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     {
         final AccordionPane accordionPane = createAccordionPane ( id, icon, title, content );
         return addPane ( index, accordionPane );
+    }
+
+    /**
+     * Returns new unique {@link AccordionPane} identifier.
+     *
+     * @return new unique {@link AccordionPane} identifier
+     */
+    @NotNull
+    protected String createAccordionPaneId ()
+    {
+        return TextUtils.generateId ( "AP" );
     }
 
     /**

@@ -184,6 +184,7 @@ public class WebImageGallery extends JComponent
         {
             view = new WebScrollPane ( scrollStyleId, WebImageGallery.this )
             {
+                @NotNull
                 @Override
                 public Dimension getPreferredSize ()
                 {

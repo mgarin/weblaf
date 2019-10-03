@@ -347,6 +347,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
             super.setFocusable ( false );
         }
 
+        @NotNull
         @Override
         public Dimension getPreferredSize ()
         {

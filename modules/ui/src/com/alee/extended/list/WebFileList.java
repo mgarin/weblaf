@@ -17,6 +17,7 @@
 
 package com.alee.extended.list;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.managers.style.StyleId;
@@ -533,6 +534,7 @@ public class WebFileList extends WebList
      *
      * @return preferred size for this list
      */
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

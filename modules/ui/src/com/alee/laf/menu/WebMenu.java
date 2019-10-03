@@ -20,7 +20,6 @@ package com.alee.laf.menu;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.*;
-import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -543,6 +542,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
         return SizeMethodsImpl.getPreferredWidth ( this );
     }
 
+    @NotNull
     @Override
     public WebMenu setPreferredWidth ( final int preferredWidth )
     {
@@ -555,34 +555,32 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
         return SizeMethodsImpl.getPreferredHeight ( this );
     }
 
+    @NotNull
     @Override
     public WebMenu setPreferredHeight ( final int preferredHeight )
     {
         return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
     }
 
+    @NotNull
     @Override
-    public int getMinimumWidth ()
+    public Dimension getPreferredSize ()
     {
-        return SizeMethodsImpl.getMinimumWidth ( this );
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
     }
 
+    @NotNull
     @Override
-    public WebMenu setMinimumWidth ( final int minimumWidth )
+    public Dimension getOriginalPreferredSize ()
     {
-        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
     }
 
+    @NotNull
     @Override
-    public int getMinimumHeight ()
+    public WebMenu setPreferredSize ( final int width, final int height )
     {
-        return SizeMethodsImpl.getMinimumHeight ( this );
-    }
-
-    @Override
-    public WebMenu setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 
     @Override
@@ -591,6 +589,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
         return SizeMethodsImpl.getMaximumWidth ( this );
     }
 
+    @NotNull
     @Override
     public WebMenu setMaximumWidth ( final int maximumWidth )
     {
@@ -603,28 +602,79 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
         return SizeMethodsImpl.getMaximumHeight ( this );
     }
 
+    @NotNull
     @Override
     public WebMenu setMaximumHeight ( final int maximumHeight )
     {
         return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
     }
 
+    @NotNull
     @Override
-    public Dimension getPreferredSize ()
+    public Dimension getMaximumSize ()
     {
-        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMaximumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMaximumSize ( this, super.getMaximumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebMenu setMaximumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMaximumSize ( this, width, height );
     }
 
     @Override
-    public Dimension getOriginalPreferredSize ()
+    public int getMinimumWidth ()
     {
-        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebMenu setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
     }
 
     @Override
-    public WebMenu setPreferredSize ( final int width, final int height )
+    public int getMinimumHeight ()
     {
-        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @NotNull
+    @Override
+    public WebMenu setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getMinimumSize ()
+    {
+        return SizeMethodsImpl.getMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public Dimension getOriginalMinimumSize ()
+    {
+        return SizeMethodsImpl.getOriginalMinimumSize ( this, super.getMinimumSize () );
+    }
+
+    @NotNull
+    @Override
+    public WebMenu setMinimumSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setMinimumSize ( this, width, height );
     }
 
     /**

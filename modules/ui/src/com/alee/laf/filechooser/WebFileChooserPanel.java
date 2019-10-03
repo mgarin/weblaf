@@ -1780,6 +1780,7 @@ public class WebFileChooserPanel extends WebPanel
         }
         final WebScrollPane scroll = new WebScrollPane ( deleteFilesPanel )
         {
+            @NotNull
             @Override
             public Dimension getPreferredSize ()
             {

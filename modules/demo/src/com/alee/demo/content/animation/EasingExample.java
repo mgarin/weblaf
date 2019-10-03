@@ -368,6 +368,7 @@ public class EasingExample extends AbstractPreviewExample
             g2d.drawImage ( icon.getImage (), getWidth () / 2 - w / 2, -h + location, null );
         }
 
+        @NotNull
         @Override
         public Dimension getPreferredSize ()
         {

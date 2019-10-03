@@ -136,6 +136,7 @@ public class WebFileChooserField extends WebPanel
         // Files list scroll
         scroll = new WebScrollPane ( StyleId.filechooserfieldContentScroll.at ( this ) )
         {
+            @NotNull
             @Override
             public Dimension getPreferredSize ()
             {

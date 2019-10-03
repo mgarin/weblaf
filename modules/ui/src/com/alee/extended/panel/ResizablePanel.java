@@ -17,6 +17,7 @@
 
 package com.alee.extended.panel;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.SelectorUtils;
 
@@ -199,6 +200,7 @@ public class ResizablePanel extends WebPanel
                 true, true, true );
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {
