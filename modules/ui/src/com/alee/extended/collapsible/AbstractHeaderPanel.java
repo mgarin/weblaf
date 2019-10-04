@@ -67,7 +67,12 @@ public abstract class AbstractHeaderPanel extends WebPanel implements Stateful
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
-                    onHeaderAction ( e );
+                    final Point point = e.getPoint ();
+                    if ( 0 <= point.x && point.x < AbstractHeaderPanel.this.getWidth () &&
+                            0 <= point.y && point.y < AbstractHeaderPanel.this.getHeight () )
+                    {
+                        onHeaderAction ( e );
+                    }
                 }
             }
         } );
