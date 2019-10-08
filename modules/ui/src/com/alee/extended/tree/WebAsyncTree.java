@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.style.StyleId;
@@ -1101,101 +1102,64 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
         }
     }
 
-    /**
-     * Expands all visible tree rows in a single call.
-     * This method provides similar functionality to {@link WebTree#expandAll()} method and will actually expand all tree elements,
-     * even those which are not yet loaded from data provider. Make sure you know what you are doing before calling this method.
-     */
     @Override
-    public final void expandAll ()
+    protected void expandAllImpl ( @Nullable final N node, @Nullable final Filter<N> filter, final int depth )
     {
         if ( isAsyncLoading () )
         {
-            for ( int i = getRowCount () - 1; i >= 0; i-- )
+            if ( depth > 0 && ( filter == null || filter.accept ( node ) ) && !getModel ().isLeaf ( node ) )
             {
-                final TreePath path = getPathForRow ( i );
-                if ( !getModel ().isLeaf ( getNodeForPath ( path ) ) )
+                if ( hasBeenExpanded ( getPathForNode ( node ) ) )
                 {
-                    performFullPathExpand ( path );
-                }
-            }
-        }
-        else
-        {
-            super.expandAll ();
-        }
-    }
-
-    /**
-     * Expands path right away (if node children were loaded atleast once before or not) or asynchronously.
-     *
-     * @param path path to expand
-     */
-    protected void performFullPathExpand ( final TreePath path )
-    {
-        if ( hasBeenExpanded ( path ) )
-        {
-            performFullSyncPathExpand ( path );
-        }
-        else
-        {
-            performFullAsyncPathExpand ( path );
-        }
-    }
-
-    /**
-     * Expands path right away.
-     *
-     * @param path path to expand
-     */
-    protected void performFullSyncPathExpand ( final TreePath path )
-    {
-        // Expand path
-        expandPath ( path );
-
-        // Expand sub-paths
-        final N node = getNodeForPath ( path );
-        for ( int i = 0; i < node.getChildCount (); i++ )
-        {
-            performFullPathExpand ( getPathForNode ( ( N ) node.getChildAt ( i ) ) );
-        }
-    }
-
-    /**
-     * Expands path asynchronously.
-     *
-     * @param path path to expand
-     */
-    protected void performFullAsyncPathExpand ( final TreePath path )
-    {
-        // Add path expand listener first to get notified when this path will be expanded
-        addAsyncTreeListener ( new AsyncTreeAdapter<N> ()
-        {
-            @Override
-            public void loadCompleted ( final N parent, final List<N> children )
-            {
-                if ( parent == getNodeForPath ( path ) )
-                {
-                    for ( final N child : children )
+                    if ( !isExpanded ( node ) )
                     {
-                        performFullPathExpand ( child.getTreePath () );
+                        expandNode ( node );
                     }
-                    removeAsyncTreeListener ( this );
+                    if ( node != null )
+                    {
+                        for ( int i = 0; i < node.getChildCount (); i++ )
+                        {
+                            expandAllImpl ( ( N ) node.getChildAt ( i ), filter, depth - 1 );
+                        }
+                    }
                 }
-            }
-
-            @Override
-            public void loadFailed ( final N parent, final Throwable cause )
-            {
-                if ( parent == getNodeForPath ( path ) )
+                else
                 {
-                    removeAsyncTreeListener ( this );
+                    if ( !isExpanded ( node ) )
+                    {
+                        addAsyncTreeListener ( new AsyncTreeAdapter<N> ()
+                        {
+                            @Override
+                            public void loadCompleted ( final N parent, final List<N> children )
+                            {
+                                if ( parent == node )
+                                {
+                                    for ( final N child : children )
+                                    {
+                                        expandAllImpl ( child, filter, depth - 1 );
+                                    }
+                                    removeAsyncTreeListener ( this );
+                                }
+                            }
+
+                            @Override
+                            public void loadFailed ( final N parent, final Throwable cause )
+                            {
+                                if ( parent == node )
+                                {
+                                    removeAsyncTreeListener ( this );
+                                }
+                            }
+                        } );
+                        expandNode ( node );
+                    }
                 }
             }
-        } );
-
-        // Force path to expand
-        expandPath ( path );
+        }
+        else
+        {
+            super.expandAllImpl ( node, filter, depth );
+        }
     }
 
     /**

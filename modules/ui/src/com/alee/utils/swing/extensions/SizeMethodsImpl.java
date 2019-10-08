@@ -151,14 +151,15 @@ public final class SizeMethodsImpl
     {
         final Dimension preferredSize = new Dimension ( originalPreferredSize );
         final Dimension ps = preferredSizeCache.get ( component );
-        /*final Dimension min = minimumSizeCache.get ( component );
-        final Dimension max = maximumSizeCache.get ( component );*/
+        final Dimension min = minimumSizeCache.get ( component );
+        final Dimension max = maximumSizeCache.get ( component );
         if ( ps != null && ps.width != SizeMethods.UNDEFINED )
         {
             preferredSize.width = ps.width;
         }
-        /*else
+        else
         {
+            // todo Should it actually account for known min/max values?
             if ( min != null && min.width != SizeMethods.UNDEFINED )
             {
                 preferredSize.width = Math.max ( min.width, preferredSize.width );
@@ -167,13 +168,14 @@ public final class SizeMethodsImpl
             {
                 preferredSize.width = Math.min ( preferredSize.width, max.width );
             }
-        }*/
+        }
         if ( ps != null && ps.height != SizeMethods.UNDEFINED )
         {
             preferredSize.height = ps.height;
         }
-        /*else
+        else
         {
+            // todo Should it actually account for known min/max values?
             if ( min != null && min.height != SizeMethods.UNDEFINED )
             {
                 preferredSize.height = Math.max ( min.height, preferredSize.height );
@@ -182,7 +184,7 @@ public final class SizeMethodsImpl
             {
                 preferredSize.height = Math.min ( preferredSize.height, max.height );
             }
-        }*/
+        }
         return preferredSize;
     }
 

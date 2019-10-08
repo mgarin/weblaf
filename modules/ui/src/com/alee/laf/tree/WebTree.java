@@ -451,107 +451,201 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Expands all tree nodes in a single call.
-     * It is not recommended to expand large trees this way since that might cause huge interface lags.
+     * Expands all tree nodes.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
      */
     public void expandAll ()
     {
-        int i = 0;
-        while ( i < getRowCount () )
-        {
-            expandRow ( i );
-            i++;
-        }
+        expandAllImpl ( getRootNode (), null, Integer.MAX_VALUE );
     }
 
     /**
-     * Expands all tree nodes accepted by filter in a single call.
-     * It is not recommended to expand large trees this way since that might cause huge interface lags.
+     * Expands all tree nodes.
+     * {@link Filter} can be specified to expand only the accepted {@link MutableTreeNode}s.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
      *
-     * @param shouldExpand expand filter
+     * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
      */
-    public void expandAll ( @Nullable final Filter<N> shouldExpand )
+    public void expandAll ( @Nullable final Filter<N> filter )
     {
-        if ( shouldExpand == null )
-        {
-            expandAll ();
-        }
-        else
-        {
-            expandAll ( getRootNode (), shouldExpand );
-        }
+        expandAllImpl ( getRootNode (), filter, Integer.MAX_VALUE );
     }
 
     /**
-     * Expands all child nodes of the specified node.
+     * Expands specified {@link MutableTreeNode} and all of it's child nodes.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
      *
-     * @param node node to expand
+     * @param node {@link MutableTreeNode} to expand
      */
     public void expandAll ( @Nullable final N node )
     {
-        expandAll ( node, null );
+        expandAllImpl ( node, null, Integer.MAX_VALUE );
     }
 
     /**
-     * Expands all child nodes accepted by filter in a single call.
+     * Expands specified {@link MutableTreeNode} and all of it's child nodes.
+     * {@link Filter} can be specified to expand only the accepted {@link MutableTreeNode}s.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
      *
-     * @param node         node to expand
-     * @param shouldExpand expand filter
+     * @param node   {@link MutableTreeNode} to expand
+     * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
      */
-    public void expandAll ( @Nullable final N node, @Nullable final Filter<N> shouldExpand )
+    public void expandAll ( @Nullable final N node, @Nullable final Filter<N> filter )
     {
-        if ( shouldExpand == null || shouldExpand.accept ( node ) )
+        expandAllImpl ( node, filter, Integer.MAX_VALUE );
+    }
+
+    /**
+     * Expands all tree nodes.
+     * Specific depth value can be specified to limit expansion depth, for instance with value of {@code 1} only one level will be expanded.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
+     *
+     * @param depth depth to expand until
+     */
+    public void expandAll ( final int depth )
+    {
+        expandAllImpl ( getRootNode (), null, depth );
+    }
+
+    /**
+     * Expands all tree nodes.
+     * {@link Filter} can be specified to expand only the accepted {@link MutableTreeNode}s.
+     * Specific depth value can be specified to limit expansion depth, for instance with value of {@code 1} only one level will be expanded.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
+     *
+     * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
+     * @param depth  depth to expand until
+     */
+    public void expandAll ( @Nullable final Filter<N> filter, final int depth )
+    {
+        expandAllImpl ( getRootNode (), filter, depth );
+    }
+
+    /**
+     * Expands specified {@link MutableTreeNode} and all of it's child nodes.
+     * Specific depth value can be specified to limit expansion depth, for instance with value of {@code 1} only one level will be expanded.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
+     *
+     * @param node  {@link MutableTreeNode} to expand
+     * @param depth depth to expand until
+     */
+    public void expandAll ( @Nullable final N node, final int depth )
+    {
+        expandAllImpl ( node, null, depth );
+    }
+
+    /**
+     * Expands specified {@link MutableTreeNode} and all of it's child nodes.
+     * {@link Filter} can be specified to expand only the accepted {@link MutableTreeNode}s.
+     * Specific depth value can be specified to limit expansion depth, for instance with value of {@code 1} only one level will be expanded.
+     * It is not recommended to expand large tree chunks this way since that might cause interface lags.
+     *
+     * @param node   {@link MutableTreeNode} to expand
+     * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
+     * @param depth  depth to expand until
+     */
+    public void expandAll ( @Nullable final N node, @Nullable final Filter<N> filter, final int depth )
+    {
+        expandAllImpl ( node, filter, depth );
+    }
+
+    /**
+     * Expands specified {@link MutableTreeNode} and all of it's child nodes.
+     * {@link Filter} can be specified to expand only the accepted {@link MutableTreeNode}s.
+     * Specific depth value can be specified to limit expansion depth, for instance with value of {@code 1} only one level will be expanded.
+     *
+     * @param node   {@link MutableTreeNode} to expand
+     * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
+     * @param depth  depth to expand until
+     */
+    protected void expandAllImpl ( @Nullable final N node, @Nullable final Filter<N> filter, final int depth )
+    {
+        if ( depth > 0 && ( filter == null || filter.accept ( node ) ) && !getModel ().isLeaf ( node ) )
         {
-            expandNode ( node );
+            if ( !isExpanded ( node ) )
+            {
+                expandNode ( node );
+            }
             if ( node != null )
             {
                 for ( int i = 0; i < node.getChildCount (); i++ )
                 {
-                    expandAll ( ( N ) node.getChildAt ( i ), shouldExpand );
+                    expandAllImpl ( ( N ) node.getChildAt ( i ), filter, depth - 1 );
                 }
             }
         }
     }
 
     /**
-     * Expands all child nodes until the specified structure depth is reached.
-     * Depth == 1 will force tree to expand all nodes under the root.
-     *
-     * @param depth max structure depth to be expanded
+     * Collapses all tree nodes.
      */
-    public void expandAll ( final int depth )
+    public void collapseAll ()
     {
-        expandAllImpl ( getRootNode (), 0, depth );
+        collapseAll ( getRootNode (), null );
     }
 
     /**
-     * Expands all child nodes until the specified max structure depth is reached.
+     * Collapses all tree nodes.
+     * {@link Filter} can be specified to collapse only the accepted {@link MutableTreeNode}s.
      *
-     * @param node         current level parent node
-     * @param currentDepth current depth level
-     * @param maxDepth     max depth level
+     * @param filter {@link Filter} to limit collapsed {@link MutableTreeNode}s or {@code null}
      */
-    protected void expandAllImpl ( @Nullable final N node, final int currentDepth, final int maxDepth )
+    public void collapseAll ( @Nullable final Filter<N> filter )
     {
-        final int depth = currentDepth + 1;
-        if ( node != null )
+        collapseAll ( getRootNode (), filter );
+    }
+
+    /**
+     * Collapses specified {@link MutableTreeNode} and all of it's child nodes.
+     *
+     * @param node {@link MutableTreeNode} to collapse
+     */
+    public void collapseAll ( @Nullable final N node )
+    {
+        collapseAll ( node, null );
+    }
+
+    /**
+     * Collapses specified {@link MutableTreeNode} and all of it's child nodes.
+     * {@link Filter} can be specified to collapse only the accepted {@link MutableTreeNode}s.
+     *
+     * @param node   {@link MutableTreeNode} to collapse
+     * @param filter {@link Filter} to limit collapsed {@link MutableTreeNode}s or {@code null}
+     */
+    public void collapseAll ( @Nullable final N node, @Nullable final Filter<N> filter )
+    {
+        collapseAllImpl ( node, filter );
+    }
+
+    /**
+     * Collapses specified {@link MutableTreeNode} and all of it's child nodes.
+     * {@link Filter} can be specified to collapse only the accepted {@link MutableTreeNode}s.
+     *
+     * @param node   {@link MutableTreeNode} to collapse
+     * @param filter {@link Filter} to limit collapsed {@link MutableTreeNode}s or {@code null}
+     */
+    protected void collapseAllImpl ( @Nullable final N node, @Nullable final Filter<N> filter )
+    {
+        if ( ( filter == null || filter.accept ( node ) ) && !getModel ().isLeaf ( node ) )
         {
-            for ( int i = 0; i < node.getChildCount (); i++ )
+            if ( !isCollapsed ( node ) )
             {
-                final N child = ( N ) node.getChildAt ( i );
-                expandNode ( child );
-                if ( depth < maxDepth )
+                collapseNode ( node );
+            }
+            if ( node != null )
+            {
+                for ( int i = 0; i < node.getChildCount (); i++ )
                 {
-                    expandAllImpl ( child, depth, maxDepth );
+                    collapseAllImpl ( ( N ) node.getChildAt ( i ), filter );
                 }
             }
         }
     }
 
     /**
-     * Expands the specified node.
+     * Expands the specified {@link MutableTreeNode}.
      *
-     * @param node node to expand
+     * @param node {@link MutableTreeNode} to expand
      */
     public void expandNode ( @Nullable final N node )
     {
@@ -559,14 +653,35 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
-     * Returns whether node is expanded or not.
+     * Returns whether {@link MutableTreeNode} is expanded or not.
      *
-     * @param node node to check
-     * @return true if node is expanded, false otherwise
+     * @param node {@link MutableTreeNode} to check
+     * @return {@code true} if {@link MutableTreeNode} is expanded, {@code false} otherwise
      */
     public boolean isExpanded ( @Nullable final N node )
     {
         return isExpanded ( getPathForNode ( node ) );
+    }
+
+    /**
+     * Collapses the specified {@link MutableTreeNode}.
+     *
+     * @param node {@link MutableTreeNode} to collapse
+     */
+    public void collapseNode ( @Nullable final N node )
+    {
+        collapsePath ( getPathForNode ( node ) );
+    }
+
+    /**
+     * Returns whether {@link MutableTreeNode} is collapsed or not.
+     *
+     * @param node {@link MutableTreeNode} to check
+     * @return {@code true} if {@link MutableTreeNode} is collapsed, {@code false} otherwise
+     */
+    public boolean isCollapsed ( @Nullable final N node )
+    {
+        return isCollapsed ( getPathForNode ( node ) );
     }
 
     /**
@@ -1094,7 +1209,19 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     @NotNull
     public List<N> getAvailableNodes ()
     {
-        return getAvailableNodes ( getRootNode () );
+        return getAvailableNodes ( getRootNode (), NodesAcceptPolicy.all );
+    }
+
+    /**
+     * Returns {@link List} of all {@link MutableTreeNode}s available in this tree.
+     *
+     * @param policy {@link NodesAcceptPolicy} used for filtering {@link MutableTreeNode}s
+     * @return {@link List} of all {@link MutableTreeNode}s available in this tree
+     */
+    @NotNull
+    public List<N> getAvailableNodes ( @NotNull final NodesAcceptPolicy policy )
+    {
+        return getAvailableNodes ( getRootNode (), policy );
     }
 
     /**
@@ -1106,8 +1233,22 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     @NotNull
     public List<N> getAvailableNodes ( @Nullable final N parent )
     {
+        return getAvailableNodes ( parent, NodesAcceptPolicy.all );
+    }
+
+    /**
+     * Returns {@link List} of all {@link MutableTreeNode}s available under the specified {@link MutableTreeNode} including that node.
+     *
+     * @param parent {@link MutableTreeNode} to collect nodes for
+     * @param policy {@link NodesAcceptPolicy} used for filtering {@link MutableTreeNode}s
+     * @return {@link List} of all {@link MutableTreeNode}s available under the specified {@link MutableTreeNode} including that node
+     */
+    @NotNull
+    public List<N> getAvailableNodes ( @Nullable final N parent, @NotNull final NodesAcceptPolicy policy )
+    {
         final List<N> nodes = new ArrayList<N> ();
         collectAllNodesImpl ( parent, nodes );
+        policy.filter ( this, nodes );
         return nodes;
     }
 
