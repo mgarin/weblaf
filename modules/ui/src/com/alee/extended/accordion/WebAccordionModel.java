@@ -86,15 +86,6 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
             this.accordion.addPropertyChangeListener ( this );
             this.accordion.addContainerListener ( this );
 
-            // Adding all missing states
-            for ( final AccordionPane pane : accordion.getPanes () )
-            {
-                if ( !states.containsKey ( pane.getId () ) )
-                {
-                    states.put ( pane.getId (), new AccordionPaneState ( pane.getId (), false ) );
-                }
-            }
-
             // Validating states
             validateStates ();
         }
@@ -220,9 +211,20 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
     {
         if ( accordion != null )
         {
+            // Ensure no states are missing
+            // This might be the case when states are loaded from settings
+            // Or if some major changes have happened in accordion structure
+            for ( final AccordionPane pane : accordion.getPanes () )
+            {
+                if ( !states.containsKey ( pane.getId () ) )
+                {
+                    states.put ( pane.getId (), new AccordionPaneState ( pane.getId (), false ) );
+                }
+            }
+
+            // Ensure we are meeting minimum/maximum expanded pane counts as much as possible
             final List<AccordionPane> expanded = getExpandedPanes ();
             final List<AccordionPane> collapsed = getCollapsedPanes ();
-
             if ( expanded.size () < accordion.getMinimumExpandedPaneCount () )
             {
                 // Sorting from newest to oldest

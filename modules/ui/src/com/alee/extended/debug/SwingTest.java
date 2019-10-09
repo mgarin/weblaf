@@ -21,6 +21,7 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Skin;
+import com.alee.utils.CoreSwingUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -70,6 +71,7 @@ public final class SwingTest
     private static void run ( @NotNull final String lookAndFeel, @Nullable final Class<? extends Skin> skin,
                               @NotNull final Runnable runnable )
     {
+        CoreSwingUtils.enableEventQueueLogging ();
         SwingUtilities.invokeLater ( new Runnable ()
         {
             @Override
