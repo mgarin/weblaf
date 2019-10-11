@@ -38,13 +38,14 @@
             <!-- Selection background painter -->
             <selectionPainter>
                 <decorations>
-                    <decoration>
+                    <decoration opacity="0.75">
                         <WebShape round="0" />
                         <GradientBackground>
                             <color>218,218,208</color>
                             <color>206,206,196</color>
                         </GradientBackground>
                     </decoration>
+                    <decoration states="focused" opacity="1" />
                     <decoration states="disabled" opacity="0.5" />
                 </decorations>
             </selectionPainter>

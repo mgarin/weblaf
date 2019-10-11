@@ -28,7 +28,7 @@
                         <ColorBackground color="237,237,237" />
                         <Stripes orientation="horizontal" align="bottom" bounds="margin">
                             <Stripe>
-                                <color>156,167,184</color>
+                                <color>170,170,170</color>
                             </Stripe>
                         </Stripes>
                     </decoration>
@@ -67,7 +67,7 @@
                                     <ColorBackground color="237,237,237" />
                                     <Stripes orientation="horizontal" align="bottom" bounds="margin">
                                         <Stripe>
-                                            <color>156,167,184</color>
+                                            <color>170,170,170</color>
                                         </Stripe>
                                     </Stripes>
                                 </decoration>
@@ -90,6 +90,9 @@
                                             <color>156,167,184</color>
                                         </Stripe>
                                     </Stripes>
+                                </decoration>
+                                <decoration states="enabled,selected,hover">
+                                    <ColorBackground color="218,218,218" />
                                 </decoration>
                                 <decoration states="selected,in-focused-parent">
                                     <Stripes>
@@ -149,13 +152,35 @@
                 <style type="popupmenu" id="menu">
                     <painter>
                         <popupStyle>simple</popupStyle>
-                        <round>2</round>
+                        <background>237,237,237</background>
+                        <borderColor>170,170,170</borderColor>
+                        <round>0</round>
                         <shadeWidth>2</shadeWidth>
-                        <opacity>0.98</opacity>
+                        <shadeOpacity>1</shadeOpacity>
+                        <opacity>1</opacity>
                     </painter>
 
                     <!-- Menu item -->
-                    <style type="menuitem" id="item" />
+                    <style type="radiobuttonmenuitem" id="item">
+                        <painter>
+                            <decorations>
+                                <decoration states="selected">
+                                    <ColorBackground color="218,218,218" />
+                                </decoration>
+                                <decoration states="checked">
+                                    <ColorBackground color="white" />
+                                    <Stripes orientation="vertical" align="left" bounds="margin">
+                                        <Stripe stroke="basic;5">
+                                            <color>64,131,201</color>
+                                        </Stripe>
+                                    </Stripes>
+                                </decoration>
+                                <decoration states="checked,selected">
+                                    <ColorBackground color="218,218,218" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
 
                 </style>
 

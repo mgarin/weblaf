@@ -162,6 +162,11 @@
                             <xs:element name="tabContentPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                         </xs:sequence>
 
+                        <!-- com.alee.extended.dock.DockablePanePainter -->
+                        <xs:sequence>
+                            <xs:element name="areaPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+
                     </xs:choice>
 
                 </xs:sequence>

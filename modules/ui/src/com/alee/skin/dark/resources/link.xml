@@ -9,7 +9,7 @@
                 <decoration cursor="hand">
                     <LabelLayout>
                         <LabelIcon constraints="icon" />
-                        <StyledLabelText constraints="text" color="160,160,255" />
+                        <StyledLabelText constraints="text" color="175,170,255" />
                     </LabelLayout>
                 </decoration>
                 <decoration states="visited">
@@ -18,7 +18,7 @@
                     </LabelLayout>
                 </decoration>
                 <decoration states="enabled,focused">
-                    <DashFocus bounds="margin" stroke="basic;1;round;round;0;2,2" color="160,160,255" />
+                    <DashFocus bounds="margin" stroke="basic;1;round;round;0;2,2" color="175,170,255" />
                 </decoration>
                 <decoration states="visited,enabled,focused">
                     <DashFocus color="255,160,160" />

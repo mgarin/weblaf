@@ -71,9 +71,12 @@ public class TabMenuButton extends WebButton implements ActionListener, UIResour
     {
         // Creating menu to show
         final WebPopupMenu menu = new WebPopupMenu ( StyleId.tabbedpaneTabMenu.at ( this ) );
+        final ButtonGroup group = new ButtonGroup ();
         for ( int tabIndex = 0; tabIndex < tabbedPane.getTabCount (); tabIndex++ )
         {
-            menu.add ( new TabMenuItem ( tabbedPane, menu, tabIndex ) );
+            final TabMenuItem menuItem = new TabMenuItem ( tabbedPane, menu, tabIndex );
+            menu.add ( menuItem );
+            group.add ( menuItem );
         }
 
         // Positioning it according to tab placement

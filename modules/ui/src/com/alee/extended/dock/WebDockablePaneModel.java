@@ -28,9 +28,11 @@ import com.alee.extended.dock.drag.FrameDropData;
 import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.laf.grouping.AbstractGroupingLayout;
 import com.alee.laf.window.WebDialog;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.general.Pair;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,12 +49,14 @@ import static com.alee.api.data.Orientation.vertical;
  * Basic {@link DockablePaneModel} implementation.
  * It handles elements location data and also provides appropriate layout for all elements on the dockable pane.
  * It also provides frames drag data and various methods to modify element locations.
+ * todo Separate layout from the model
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockablePane
  * @see DockablePaneModel
  */
+@XStreamAlias ( "DockablePaneModel" )
 public class WebDockablePaneModel extends AbstractGroupingLayout implements DockablePaneModel
 {
     /**
@@ -77,21 +81,22 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     /**
      * Sidebar widths cache.
      */
-    protected final Map<CompassDirection, Integer> sidebarWidths;
+    @NotNull
+    protected transient final Map<CompassDirection, Integer> sidebarSizes;
 
     /**
      * Resizable areas cache.
      * Used to optimize resize areas detection.
      */
     @NotNull
-    protected final List<ResizeData> resizableAreas;
+    protected transient final List<ResizeData> resizableAreas;
 
     /**
      * Preview frame bounds.
      * Saved to check intersection with resizable areas.
      */
     @Nullable
-    protected Rectangle previewBounds;
+    protected transient Rectangle previewBounds;
 
     /**
      * Constructs new {@link DockablePaneModel} implementation with only content in its structure.
@@ -109,7 +114,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     public WebDockablePaneModel ( @NotNull final DockableContainer root )
     {
         this.groupButtons = false;
-        this.sidebarWidths = new HashMap<CompassDirection, Integer> ();
+        this.sidebarSizes = new HashMap<CompassDirection, Integer> ();
         this.resizableAreas = new ArrayList<ResizeData> ();
         this.previewBounds = null;
         setRoot ( root );
@@ -158,6 +163,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         // Ensuring frame position is correct
         final CompassDirection position = getFramePosition ( frame );
         frame.setPosition ( position );
+
+        // Updating grouping
+        resetDescriptors ();
     }
 
     @Override
@@ -168,6 +176,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             // Removing frame state
             final DockableFrameElement element = root.get ( frame.getId () );
             removeStructureElement ( element );
+
+            // Updating grouping
+            resetDescriptors ();
         }
     }
 
@@ -288,15 +299,19 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                     final int index = containerParent.indexOf ( container );
 
                     // Updating last child that we're moving up
-                    // We need to preserve length container has before we get rid of it
+                    // This is only needed for non-content elements or containers
                     final DockableElement lastChild = container.get ( 0 );
-                    final Dimension oldChildSize = lastChild.getSize ();
-                    final Dimension containerSize = container.getSize ();
-                    final boolean horizontal = containerParent.getOrientation ().isHorizontal ();
-                    lastChild.setSize ( new Dimension (
-                            horizontal ? containerSize.width : oldChildSize.width,
-                            horizontal ? oldChildSize.height : containerSize.height
-                    ) );
+                    if ( !( lastChild instanceof DockableContentElement ) )
+                    {
+                        // We need to preserve length container has before we get rid of it
+                        final Dimension oldChildSize = lastChild.getSize ();
+                        final Dimension containerSize = container.getSize ();
+                        final boolean horizontal = containerParent.getOrientation ().isHorizontal ();
+                        lastChild.setSize ( new Dimension (
+                                horizontal ? containerSize.width : oldChildSize.width,
+                                horizontal ? oldChildSize.height : containerSize.height
+                        ) );
+                    }
 
                     // Moving last child up
                     containerParent.add ( index, lastChild );
@@ -513,6 +528,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             final CompassDirection position = getFramePosition ( frame );
             frame.setPosition ( position );
 
+            // Updating grouping
+            resetDescriptors ();
+
             // Updating dockable
             dockablePane.revalidate ();
             dockablePane.repaint ();
@@ -536,47 +554,47 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
 
         // Positioning sidebar elements
         final List<CompassDirection> locations = CollectionUtils.asList ( north, west, south, east );
-        final Map<CompassDirection, List<JComponent>> allButtons = new HashMap<CompassDirection, List<JComponent>> ();
+        final Map<CompassDirection, List<SidebarButton>> allButtons = new HashMap<CompassDirection, List<SidebarButton>> ();
         for ( final CompassDirection location : locations )
         {
-            final List<JComponent> barButtons = getVisibleButtons ( dockablePane, location );
+            final List<SidebarButton> barButtons = getVisibleButtons ( dockablePane, location );
             allButtons.put ( location, barButtons );
-            sidebarWidths.put ( location, calculateBarWidth ( location, barButtons ) );
+            sidebarSizes.put ( location, calculateBarSize ( location, barButtons ) );
         }
         for ( final CompassDirection location : locations )
         {
             // Retrieving bar cache
-            final List<JComponent> buttons = allButtons.get ( location );
+            final List<SidebarButton> buttons = allButtons.get ( location );
             if ( buttons.size () > 0 )
             {
                 // Calculating bar bounds
-                final int barWidth = sidebarWidths.get ( location );
+                final int barWidth = sidebarSizes.get ( location );
                 final Rectangle bounds;
                 final int fw;
                 final int lw;
                 switch ( location )
                 {
                     case north:
-                        fw = sidebarWidths.get ( west );
-                        lw = sidebarWidths.get ( east );
+                        fw = sidebarSizes.get ( west );
+                        lw = sidebarSizes.get ( east );
                         bounds = new Rectangle ( outer.x + fw, outer.y, outer.width - fw - lw, barWidth );
                         break;
 
                     case west:
-                        fw = sidebarWidths.get ( north );
-                        lw = sidebarWidths.get ( south );
+                        fw = sidebarSizes.get ( north );
+                        lw = sidebarSizes.get ( south );
                         bounds = new Rectangle ( outer.x, outer.y + fw, barWidth, outer.height - fw - lw );
                         break;
 
                     case south:
-                        fw = sidebarWidths.get ( west );
-                        lw = sidebarWidths.get ( east );
+                        fw = sidebarSizes.get ( west );
+                        lw = sidebarSizes.get ( east );
                         bounds = new Rectangle ( outer.x + fw, outer.y + outer.height - barWidth, outer.width - fw - lw, barWidth );
                         break;
 
                     case east:
-                        fw = sidebarWidths.get ( north );
-                        lw = sidebarWidths.get ( south );
+                        fw = sidebarSizes.get ( north );
+                        lw = sidebarSizes.get ( south );
                         bounds = new Rectangle ( outer.x + outer.width - barWidth, outer.y + fw, barWidth, outer.height - fw - lw );
                         break;
 
@@ -613,18 +631,15 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         // There could be only single preview and maximized frame at a time
         WebDockableFrame preview = null;
         WebDockableFrame maximized = null;
-        if ( dockablePane.frames != null )
+        for ( final WebDockableFrame frame : dockablePane.frames )
         {
-            for ( final WebDockableFrame frame : dockablePane.frames )
+            if ( frame.isPreview () )
             {
-                if ( frame.isPreview () )
-                {
-                    preview = frame;
-                }
-                if ( frame.isDocked () && frame.isMaximized () )
-                {
-                    maximized = frame;
-                }
+                preview = frame;
+            }
+            else if ( frame.isDocked () && frame.isMaximized () )
+            {
+                maximized = frame;
             }
         }
 
@@ -673,8 +688,8 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         if ( maximized != null )
         {
             // Updating frame bounds
-            maximized.setBounds ( inner );
-            root.get ( maximized.getId () ).setBounds ( inner );
+            maximized.setBounds ( outer );
+            root.get ( maximized.getId () ).setBounds ( outer );
 
             // Moving frame to the topmost possible Z-index after glass pane and preview frame
             dockablePane.setComponentZOrder ( maximized, preview != null ? 2 : 1 );
@@ -689,15 +704,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         }
     }
 
-    /**
-     * Returns outer pane bounds.
-     * These bounds include sidebar and content elements.
-     *
-     * @param dockablePane {@link WebDockablePane}
-     * @return outer pane bounds
-     */
     @NotNull
-    protected Rectangle getOuterBounds ( @NotNull final WebDockablePane dockablePane )
+    @Override
+    public Rectangle getOuterBounds ( @NotNull final WebDockablePane dockablePane )
     {
         final int w = dockablePane.getWidth ();
         final int h = dockablePane.getHeight ();
@@ -705,33 +714,51 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         return new Rectangle ( bi.left, bi.top, w - bi.left - bi.right, h - bi.top - bi.bottom );
     }
 
-    /**
-     * Returns inner pane bounds.
-     * These bounds include only content elements.
-     *
-     * @param dockablePane {@link WebDockablePane}
-     * @return inner pane bounds
-     */
     @NotNull
-    protected Rectangle getInnerBounds ( @NotNull final WebDockablePane dockablePane )
+    @Override
+    public Rectangle getInnerBounds ( @NotNull final WebDockablePane dockablePane )
     {
         final Rectangle bounds = getOuterBounds ( dockablePane );
-        if ( sidebarWidths.size () > 0 )
+        if ( sidebarSizes.size () > 0 )
         {
-            bounds.x += sidebarWidths.get ( west );
-            bounds.width -= sidebarWidths.get ( west ) + sidebarWidths.get ( east );
-            bounds.y += sidebarWidths.get ( north );
-            bounds.height -= sidebarWidths.get ( north ) + sidebarWidths.get ( south );
+            int north = sidebarSizes.get ( CompassDirection.north );
+            if ( north > 0 )
+            {
+                north += dockablePane.getSidebarSpacing ();
+            }
+
+            int west = sidebarSizes.get ( CompassDirection.west );
+            if ( west > 0 )
+            {
+                west += dockablePane.getSidebarSpacing ();
+            }
+
+            int east = sidebarSizes.get ( CompassDirection.east );
+            if ( east > 0 )
+            {
+                east += dockablePane.getSidebarSpacing ();
+            }
+
+            int south = sidebarSizes.get ( CompassDirection.south );
+            if ( south > 0 )
+            {
+                south += dockablePane.getSidebarSpacing ();
+            }
+
+            bounds.x += west;
+            bounds.width -= west + east;
+            bounds.y += north;
+            bounds.height -= north + south;
         }
         return bounds;
     }
 
     /**
-     * Returns frame bounds for {@link DockableFrameState#preview} state.
+     * Returns {@link DockableFrameState#preview} state bounds for the specified {@link WebDockableFrame}.
      *
      * @param dockablePane {@link WebDockablePane}
      * @param frame        {@link WebDockableFrame}
-     * @return frame bounds for {@link DockableFrameState#preview} state
+     * @return {@link DockableFrameState#preview} state bounds for the specified {@link WebDockableFrame}
      */
     @NotNull
     protected Rectangle getPreviewBounds ( @NotNull final WebDockablePane dockablePane, @NotNull final WebDockableFrame frame )
@@ -774,10 +801,10 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
-     * Returns current frame position relative to content.
+     * Returns current position of the specified {@link WebDockableFrame} relative to content.
      *
-     * @param frame dockable frame
-     * @return current frame position relative to content
+     * @param frame {@link WebDockableFrame}
+     * @return current position of the specified {@link WebDockableFrame} relative to content
      */
     @NotNull
     protected CompassDirection getFramePosition ( @NotNull final WebDockableFrame frame )
@@ -840,16 +867,18 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
-     * Returns visible sidebar buttons list.
+     * Returns {@link List} of visible {@link SidebarButton}.
+     * This method is necessary to ensure that {@link SidebarButton}s order doesn't depend on {@link WebDockableFrame}s order.
+     * That is why we collect them from the elements structure rather than going through all {@link WebDockableFrame}s.
      *
      * @param dockablePane {@link WebDockablePane}
      * @param side         buttons side
-     * @return visible sidebar buttons list
+     * @return {@link List} of visible {@link SidebarButton}
      */
     @NotNull
-    protected List<JComponent> getVisibleButtons ( @NotNull final WebDockablePane dockablePane, @NotNull final CompassDirection side )
+    protected List<SidebarButton> getVisibleButtons ( @NotNull final WebDockablePane dockablePane, @NotNull final CompassDirection side )
     {
-        final List<JComponent> buttons = new ArrayList<JComponent> ( 3 );
+        final List<SidebarButton> buttons = new ArrayList<SidebarButton> ( 3 );
         DockableContainer parent = content.getParent ();
         DockableElement previous = content;
         int divider;
@@ -883,14 +912,14 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
-     * Collects visible sidebar buttons at the specified side inside the specified {@link DockableElement}.
+     * Collects visible {@link SidebarButton}s from the specified {@link DockableElement}.
      *
      * @param dockablePane {@link WebDockablePane}
-     * @param element      element to collect sidebar buttons from
-     * @param buttons      buttons list to fill in
+     * @param element      {@link DockableElement} to collect sidebar buttons from
+     * @param buttons      {@link List} to add {@link SidebarButton} to
      */
     protected void collectVisibleButtons ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableElement element,
-                                           @NotNull final List<JComponent> buttons )
+                                           @NotNull final List<SidebarButton> buttons )
     {
         if ( element instanceof DockableFrameElement )
         {
@@ -921,7 +950,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      * @param barButtons sidebar buttons
      * @return sidebar width
      */
-    protected int calculateBarWidth ( @NotNull final CompassDirection side, @NotNull final List<? extends JComponent> barButtons )
+    protected int calculateBarSize ( @NotNull final CompassDirection side, @NotNull final List<? extends JComponent> barButtons )
     {
         int width = 0;
         for ( final JComponent component : barButtons )
@@ -944,28 +973,378 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     @Override
     public Pair<String, String> getDescriptors ( @NotNull final Container container, @NotNull final Component component, final int index )
     {
-        // todo Group buttons for grouped frames (tabs) when grouping is available
-        // todo Group frames in case it is enabled here (simply group up the whole center area)
-        return new Pair<String, String> ();
+        final Pair<String, String> descriptors;
+        final WebDockablePane dockablePane = ( WebDockablePane ) container;
+        if ( dockablePane.isGroupElements () && dockablePane.getContentSpacing () == 0 )
+        {
+            if ( component == dockablePane.getContent () )
+            {
+                // We don't want to affect content decoration, so we'll just let developer handle it's visuals
+                // Normally you wouldn't want to have any extra borders in content as they will be provided by frames and sidebars
+                descriptors = new Pair<String, String> ();
+            }
+            else if ( component instanceof SidebarButton )
+            {
+                // Buttons do not have any sides or lines
+                // todo Probably let buttons have everything and only group them between eachother?
+                // todo Or let them have left/right sides and other two are attached
+                /*final SidebarButton sidebarButton = ( SidebarButton ) component;
+                final WebDockableFrame frame = sidebarButton.getFrame ();
+                final CompassDirection position = frame.getPosition ();*/
+                descriptors = new Pair<String, String> (
+                        DecorationUtils.toString ( false, false, false, false ),
+                        DecorationUtils.toString (
+                                false,
+                                false,
+                                false /*position == west || position == east*/,
+                                false /*position == north || position == south*/
+                        )
+                );
+            }
+            else if ( component instanceof WebDockableFrame )
+            {
+                final WebDockableFrame frame = ( WebDockableFrame ) component;
+                if ( frame.isMaximized () )
+                {
+                    // Maximized frames don't need any sides or lines displayed
+                    descriptors = new Pair<String, String> (
+                            DecorationUtils.toString ( false, false, false, false ),
+                            DecorationUtils.toString ( false, false, false, false )
+                    );
+                }
+                else
+                {
+                    // For non-maximized frames we have to account for their location
+                    // It is pretty complex so it's separated into separate check methods
+                    final DockableElement frameElement = root.get ( frame.getId () );
+                    final DockableContainer frameContainer = frameElement.getParent ();
+                    if ( frameContainer != null )
+                    {
+                        final String sides = DecorationUtils.toString ( false, false, false, false );
+                        final String lines = DecorationUtils.toString (
+                                isStartLineNeeded ( dockablePane, frameElement, frameContainer, vertical ),
+                                isStartLineNeeded ( dockablePane, frameElement, frameContainer, horizontal ),
+                                isEndLineNeeded ( dockablePane, frameElement, frameContainer, vertical ),
+                                isEndLineNeeded ( dockablePane, frameElement, frameContainer, horizontal )
+                        );
+                        descriptors = new Pair<String, String> ( sides, lines );
+                    }
+                    else
+                    {
+                        // This shouldn't normally happen
+                        throw new RuntimeException ( "Frame doesn't have container: " + frame );
+                    }
+                }
+            }
+            else
+            {
+                // This shouldn't normally happen
+                throw new RuntimeException ( "Unknown layout element: " + component );
+            }
+        }
+        else
+        {
+            // Whenever grouping is disabled or spacing is greater than zero we let components handle their borders
+            // It is simply not reasonable to setup any kinds of grouping when components will be at least few pixels away from each other
+            descriptors = new Pair<String, String> ();
+        }
+        return descriptors;
     }
 
-    @Nullable
-    @Override
-    public ResizeData getResizeData ( final int x, final int y )
+    /**
+     * Returns whether or not start line is needed for the specified {@link DockableElement}.
+     * Condition is: (At start in pane for orientation && Start sidebar visible) || (Follows content side-to-side in line)
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param element      {@link DockableElement}
+     * @param container    {@link DockableContainer} of the {@link DockableElement}
+     * @param orientation  check {@link Orientation}
+     * @return {@code true} if start line is needed for the specified {@link DockableElement}, {@code false} otherwise
+     */
+    protected boolean isStartLineNeeded ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableElement element,
+                                          @NotNull final DockableContainer container, @NotNull final Orientation orientation )
     {
-        ResizeData resizeData = null;
-        if ( previewBounds == null || !previewBounds.contains ( x, y ) )
+        final boolean needed;
+        final Orientation containerOrientation = container.getOrientation ();
+        if ( containerOrientation == orientation )
         {
-            for ( final ResizeData area : resizableAreas )
+            // Our element side check orientation is equal to it's container orientation
+            final DockableElement previous = getPreviousVisible ( dockablePane, container, element );
+            if ( previous != null )
             {
-                if ( area.bounds ().contains ( x, y ) )
+                // Element is not first in container
+                // We need to check if it is content or a container with content at the end
+                needed = isContentAtTheEnd ( dockablePane, previous, orientation );
+            }
+            else
+            {
+                // Element is first in container
+                // If we have parent - we don't know yet if we're first overall and we need to check further
+                // If not - we are first element and start line is not needed, it will be handled by the sidebar or outer decoration
+                final DockableContainer containerParent = container.getParent ();
+                needed = containerParent != null && isStartLineNeeded ( dockablePane, container, containerParent, orientation );
+            }
+        }
+        else
+        {
+            // Our element side check orientation is not equal to it's container orientation, we can proceed to parent right away
+            // If we have parent - we don't know yet if we're first overall and we need to check further
+            // If not - we are first element and start line is not needed, it will be handled by the sidebar or outer decoration
+            final DockableContainer containerParent = container.getParent ();
+            needed = containerParent != null && isStartLineNeeded ( dockablePane, container, containerParent, orientation );
+        }
+        return needed;
+    }
+
+    /**
+     * Returns whether or not end line is needed for the specified {@link DockableElement}.
+     * Condition is: (At end in pane for orientation && End sidebar visible) || (At end of container and content is at either side)
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param element      {@link DockableElement}
+     * @param container    {@link DockableContainer} of the {@link DockableElement}
+     * @param orientation  check {@link Orientation}
+     * @return {@code true} if end line is needed for the specified {@link DockableElement}, {@code false} otherwise
+     */
+    protected boolean isEndLineNeeded ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableElement element,
+                                        @NotNull final DockableContainer container, @NotNull final Orientation orientation )
+    {
+        final boolean needed;
+        final Orientation containerOrientation = container.getOrientation ();
+        if ( containerOrientation == orientation )
+        {
+            // Our element side check orientation is equal to it's container orientation
+            final DockableElement next = getNextVisible ( dockablePane, container, element );
+            if ( next != null )
+            {
+                // Element is not last in container, end line always needed
+                needed = true;
+            }
+            else
+            {
+                // Element is last in container
+                // If we have parent - we don't know yet if we're last overall and we need to check further
+                // If not - we are last element and end line is not needed, it will be handled by the sidebar or outer decoration
+                final DockableContainer containerParent = container.getParent ();
+                needed = containerParent != null && isEndLineNeeded ( dockablePane, container, containerParent, orientation );
+            }
+        }
+        else
+        {
+            // Checking all neighbour elements to see if they have content at end
+            boolean contentAtEndOfNearbyElement = false;
+            for ( int index = 0; index < container.getElementCount (); index++ )
+            {
+                final DockableElement other = container.get ( index );
+                if ( other != element && isContentAtTheEnd ( dockablePane, other, orientation ) )
                 {
-                    resizeData = area;
+                    contentAtEndOfNearbyElement = true;
                     break;
                 }
             }
+            if ( contentAtEndOfNearbyElement )
+            {
+                // We don't need end line when we're in line with content end
+                // Even if there is no other elements in front of us line will be handled by sidebar or outer decoration
+                needed = false;
+            }
+            else
+            {
+
+                // Our element side check orientation is not equal to it's container orientation, we can proceed to parent right away
+                // If we have parent - we don't know yet if we're last overall and we need to check further
+                // If not - we are last element and end line is not needed, it will be handled by the sidebar or outer decoration
+                final DockableContainer containerParent = container.getParent ();
+                needed = containerParent != null && isEndLineNeeded ( dockablePane, container, containerParent, orientation );
+            }
         }
-        return resizeData;
+        return needed;
+    }
+
+    /**
+     * Returns whether or not specified {@link DockableElement} is content or has content at the start.
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param element      {@link DockableElement}
+     * @param orientation  check {@link Orientation}
+     * @return {@code true} if specified {@link DockableElement} is content or has content at the start, {@code false} otherwise
+     */
+    protected boolean isContentAtTheStart ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableElement element,
+                                            @NotNull final Orientation orientation )
+    {
+        final boolean contentAtTheStart;
+        if ( element instanceof DockableContentElement )
+        {
+            contentAtTheStart = true;
+        }
+        else if ( element instanceof DockableContainer )
+        {
+            final DockableContainer container = ( DockableContainer ) element;
+            if ( container.getOrientation () == orientation )
+            {
+                final DockableElement firstElement = getFirstVisible ( dockablePane, container );
+                contentAtTheStart = firstElement != null && isContentAtTheStart ( dockablePane, firstElement, orientation );
+            }
+            else
+            {
+                boolean contentAtTheStartOfOne = false;
+                for ( int index = 0; index < container.getElementCount (); index++ )
+                {
+                    if ( isContentAtTheStart ( dockablePane, container.get ( index ), orientation ) )
+                    {
+                        contentAtTheStartOfOne = true;
+                        break;
+                    }
+                }
+                contentAtTheStart = contentAtTheStartOfOne;
+            }
+        }
+        else
+        {
+            contentAtTheStart = false;
+        }
+        return contentAtTheStart;
+    }
+
+    /**
+     * Returns whether or not specified {@link DockableElement} is content or has content at the end.
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param element      {@link DockableElement}
+     * @param orientation  check {@link Orientation}
+     * @return {@code true} if specified {@link DockableElement} is content or has content at the end, {@code false} otherwise
+     */
+    protected boolean isContentAtTheEnd ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableElement element,
+                                          @NotNull final Orientation orientation )
+    {
+        final boolean contentAtTheEnd;
+        if ( element instanceof DockableContentElement )
+        {
+            contentAtTheEnd = true;
+        }
+        else if ( element instanceof DockableContainer )
+        {
+            final DockableContainer container = ( DockableContainer ) element;
+            if ( container.getOrientation () == orientation )
+            {
+                final DockableElement lastElement = getLastVisible ( dockablePane, container );
+                contentAtTheEnd = lastElement != null && isContentAtTheEnd ( dockablePane, lastElement, orientation );
+            }
+            else
+            {
+                boolean contentAtTheEndOfOne = false;
+                for ( int index = 0; index < container.getElementCount (); index++ )
+                {
+                    if ( isContentAtTheEnd ( dockablePane, container.get ( index ), orientation ) )
+                    {
+                        contentAtTheEndOfOne = true;
+                        break;
+                    }
+                }
+                contentAtTheEnd = contentAtTheEndOfOne;
+            }
+        }
+        else
+        {
+            contentAtTheEnd = false;
+        }
+        return contentAtTheEnd;
+    }
+
+    /**
+     * Returns previous visible sibling for the specified {@link DockableElement} in {@link DockableContainer}.
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param container    {@link DockableContainer}
+     * @param element      {@link DockableElement} to find previous visible sibling for
+     * @return previous visible sibling for the specified {@link DockableElement} in {@link DockableContainer}
+     */
+    @Nullable
+    protected DockableElement getPreviousVisible ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableContainer container,
+                                                   @NotNull final DockableElement element )
+    {
+        DockableElement previousVisible = null;
+        for ( int i = container.indexOf ( element ) - 1; i >= 0; i-- )
+        {
+            final DockableElement sibling = container.get ( i );
+            if ( sibling.isVisible ( dockablePane ) )
+            {
+                previousVisible = sibling;
+                break;
+            }
+        }
+        return previousVisible;
+    }
+
+    /**
+     * Returns next visible sibling for the specified {@link DockableElement} in {@link DockableContainer}.
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param container    {@link DockableContainer}
+     * @param element      {@link DockableElement} to find next visible sibling for
+     * @return next visible sibling for the specified {@link DockableElement} in {@link DockableContainer}
+     */
+    @Nullable
+    protected DockableElement getNextVisible ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableContainer container,
+                                               @NotNull final DockableElement element )
+    {
+        DockableElement nextVisible = null;
+        for ( int i = container.indexOf ( element ) + 1; i < container.getElementCount (); i++ )
+        {
+            final DockableElement sibling = container.get ( i );
+            if ( sibling.isVisible ( dockablePane ) )
+            {
+                nextVisible = sibling;
+                break;
+            }
+        }
+        return nextVisible;
+    }
+
+    /**
+     * Returns first visible {@link DockableElement} in {@link DockableContainer}.
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param container    {@link DockableContainer}
+     * @return first visible {@link DockableElement} in {@link DockableContainer}
+     */
+    @Nullable
+    protected DockableElement getFirstVisible ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableContainer container )
+    {
+        DockableElement lastVisible = null;
+        for ( int i = 0; i < container.getElementCount (); i++ )
+        {
+            final DockableElement element = container.get ( i );
+            if ( element.isVisible ( dockablePane ) )
+            {
+                lastVisible = element;
+                break;
+            }
+        }
+        return lastVisible;
+    }
+
+    /**
+     * Returns last visible {@link DockableElement} in {@link DockableContainer}.
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @param container    {@link DockableContainer}
+     * @return last visible {@link DockableElement} in {@link DockableContainer}
+     */
+    @Nullable
+    protected DockableElement getLastVisible ( @NotNull final WebDockablePane dockablePane, @NotNull final DockableContainer container )
+    {
+        DockableElement lastVisible = null;
+        for ( int i = container.getElementCount () - 1; i >= 0; i-- )
+        {
+            final DockableElement element = container.get ( i );
+            if ( element.isVisible ( dockablePane ) )
+            {
+                lastVisible = element;
+                break;
+            }
+        }
+        return lastVisible;
     }
 
     @NotNull
@@ -1002,5 +1381,24 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         previewBounds.height += rpi.top + ci.top + ci.bottom + rpi.bottom;
 
         return previewBounds;
+    }
+
+    @Nullable
+    @Override
+    public ResizeData getResizeData ( final int x, final int y )
+    {
+        ResizeData resizeData = null;
+        if ( previewBounds == null || !previewBounds.contains ( x, y ) )
+        {
+            for ( final ResizeData area : resizableAreas )
+            {
+                if ( area.bounds ().contains ( x, y ) )
+                {
+                    resizeData = area;
+                    break;
+                }
+            }
+        }
+        return resizeData;
     }
 }

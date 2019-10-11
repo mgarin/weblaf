@@ -112,7 +112,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
     }
 
     @Override
-    protected void installFocusListener ()
+    protected void installFocusListeners ()
     {
         final Window window = getWindow ();
         if ( window != null && usesFocusedView () )
@@ -138,12 +138,12 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         else
         {
             // Default focused state listeners
-            super.installFocusListener ();
+            super.installFocusListeners ();
         }
     }
 
     @Override
-    protected void uninstallFocusListener ()
+    protected void uninstallFocusListeners ()
     {
         final Window window = getWindow ();
         if ( window != null && windowFocusListener != null )
@@ -156,7 +156,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         else
         {
             // Default focused state listeners
-            super.uninstallFocusListener ();
+            super.uninstallFocusListeners ();
         }
     }
 
@@ -186,7 +186,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         // Updating focus listener
         if ( Objects.equals ( property, WebWindow.FOCUSABLE_WINDOW_STATE_PROPERTY ) )
         {
-            updateFocusListener ();
+            updateFocusListeners ();
         }
 
         // Updating decoration according to current state

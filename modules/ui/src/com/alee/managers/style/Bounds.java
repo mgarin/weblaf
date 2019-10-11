@@ -17,7 +17,8 @@
 
 package com.alee.managers.style;
 
-import com.alee.painter.SectionPainter;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.SwingUtils;
 
@@ -38,18 +39,21 @@ public final class Bounds
      * Parent bounds.
      * Usually those cover a larger area of component.
      */
+    @Nullable
     private final Bounds parent;
 
     /**
      * Bounds type.
      * Used to retrieve different painting bounds on different abstraction levels.
      */
+    @NotNull
     private final BoundsType type;
 
     /**
      * Actual bounds represented by this class instance.
      * These bounds are always relative to component coordinates system.
      */
+    @NotNull
     private final Rectangle bounds;
 
     /**
@@ -57,9 +61,8 @@ public final class Bounds
      *
      * @param dimension component size
      */
-    public Bounds ( final Dimension dimension )
+    public Bounds ( @NotNull final Dimension dimension )
     {
-        super ();
         this.parent = null;
         this.type = BoundsType.component;
         this.bounds = new Rectangle ( 0, 0, dimension.width, dimension.height );
@@ -70,9 +73,8 @@ public final class Bounds
      *
      * @param component component
      */
-    public Bounds ( final JComponent component )
+    public Bounds ( @NotNull final JComponent component )
     {
-        super ();
         this.parent = null;
         this.type = BoundsType.component;
         this.bounds = new Rectangle ( 0, 0, component.getWidth (), component.getHeight () );
@@ -81,15 +83,14 @@ public final class Bounds
     /**
      * {@link Bounds} for the whole component with the specified (X,Y) shift.
      * todo This is a temporary method for supporting this workaround method:
-     * todo {@link com.alee.painter.AbstractPainter#paintSection(SectionPainter, Graphics2D, Rectangle)}
+     * todo {@code com.alee.painter.AbstractPainter#paintSection(SectionPainter, Graphics2D, Rectangle)}
      *
      * @param component component
      * @param x         X coordinate shift
      * @param y         Y coordinate shift
      */
-    public Bounds ( final JComponent component, final int x, final int y )
+    public Bounds ( @NotNull final JComponent component, final int x, final int y )
     {
-        super ();
         this.parent = null;
         this.type = BoundsType.component;
         this.bounds = new Rectangle ( x, y, component.getWidth (), component.getHeight () );
@@ -101,12 +102,11 @@ public final class Bounds
      * @param parent parent bounds
      * @param bounds actual bounds
      */
-    public Bounds ( final Bounds parent, final Rectangle bounds )
+    public Bounds ( @NotNull final Bounds parent, @NotNull final Rectangle bounds )
     {
-        super ();
         this.parent = parent;
         this.type = BoundsType.section;
-        this.bounds = bounds;
+        this.bounds = new Rectangle ( bounds );
     }
 
     /**
@@ -117,9 +117,9 @@ public final class Bounds
      * @param component  component
      * @param decoration painted decoration
      */
-    public Bounds ( final Bounds parent, final BoundsType type, final JComponent component, final IDecoration decoration )
+    public Bounds ( @NotNull final Bounds parent, @NotNull final BoundsType type, @NotNull final JComponent component,
+                    @NotNull final IDecoration decoration )
     {
-        super ();
         this.parent = parent;
         this.type = type;
         final Insets insets = decoration.isSection () ? type.insets ( component, decoration ) : type.insets ( component );
@@ -131,6 +131,7 @@ public final class Bounds
      *
      * @return bounds type
      */
+    @NotNull
     public BoundsType type ()
     {
         return type;
@@ -141,6 +142,7 @@ public final class Bounds
      *
      * @return actual bounds
      */
+    @NotNull
     public Rectangle get ()
     {
         return bounds;
@@ -152,7 +154,8 @@ public final class Bounds
      * @param type bounds type
      * @return actual bounds of specific type
      */
-    public Rectangle get ( final BoundsType type )
+    @NotNull
+    public Rectangle get ( @NotNull final BoundsType type )
     {
         Bounds bounds = this;
         while ( bounds != null )

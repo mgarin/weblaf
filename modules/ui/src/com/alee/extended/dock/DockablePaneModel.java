@@ -73,7 +73,7 @@ public interface DockablePaneModel extends LayoutManager, Serializable
     public void updateFrame ( @NotNull WebDockablePane dockablePane, @NotNull WebDockableFrame frame );
 
     /**
-     * Removes specified {@link WebDockableFrame} from model.
+     * Removes specified {@link WebDockableFrame} from the model.
      *
      * @param dockablePane {@link WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to remove
@@ -81,11 +81,11 @@ public interface DockablePaneModel extends LayoutManager, Serializable
     public void removeFrame ( @NotNull WebDockablePane dockablePane, @NotNull WebDockableFrame frame );
 
     /**
-     * Returns information on possible drop location.
+     * Returns {@link FrameDropData} containing information about possible drop location.
      *
      * @param dockablePane {@link WebDockablePane} frame is added to
      * @param support      transfer operation data
-     * @return information on possible drop location
+     * @return {@link FrameDropData} containing information about possible drop location
      */
     @Nullable
     public FrameDropData dropData ( @NotNull WebDockablePane dockablePane, @NotNull TransferHandler.TransferSupport support );
@@ -100,25 +100,45 @@ public interface DockablePaneModel extends LayoutManager, Serializable
     public boolean drop ( @NotNull WebDockablePane dockablePane, @NotNull TransferHandler.TransferSupport support );
 
     /**
-     * Returns resize data under specified coordinate or {@code null}.
+     * Returns {@link WebDockablePane} outer bounds.
+     * These bounds include sidebars and {@link DockableElement}s.
      *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return resize data under specified coordinate or {@code null}
+     * @param dockablePane {@link WebDockablePane}
+     * @return {@link WebDockablePane} outer bounds
      */
-    @Nullable
-    public ResizeData getResizeData ( int x, int y );
+    @NotNull
+    public Rectangle getOuterBounds ( @NotNull WebDockablePane dockablePane );
 
     /**
-     * Returns bounds for the frame dialog created in {@link DockableFrameState#floating} state.
+     * Returns {@link WebDockablePane} inner bounds.
+     * These bounds include only {@link DockableElement}s.
+     *
+     * @param dockablePane {@link WebDockablePane}
+     * @return {@link WebDockablePane} inner bounds
+     */
+    @NotNull
+    public Rectangle getInnerBounds ( @NotNull WebDockablePane dockablePane );
+
+    /**
+     * Returns bounds for the {@link WebDockableFrame}'s {@link WebDialog} created in {@link DockableFrameState#floating} state.
      * These bounds are requested when frame is being switched into {@link DockableFrameState#floating}.
      *
      * @param dockablePane {@link WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to returns bounds for
      * @param dialog       {@link com.alee.laf.window.WebDialog} used to display floating frame
-     * @return bounds for the frame dialog created in floating state
+     * @return bounds for the {@link WebDockableFrame}'s {@link WebDialog} created in {@link DockableFrameState#floating} state
      */
     @NotNull
     public Rectangle getFloatingBounds ( @NotNull WebDockablePane dockablePane, @NotNull WebDockableFrame frame,
                                          @NotNull WebDialog dialog );
+
+    /**
+     * Returns {@link ResizeData} under specified coordinate or {@code null}.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return {@link ResizeData} under specified coordinate or {@code null}
+     */
+    @Nullable
+    public ResizeData getResizeData ( int x, int y );
 }

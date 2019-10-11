@@ -56,7 +56,7 @@ public final class ExamplesFrame extends WebDockableFrame
      */
     public ExamplesFrame ()
     {
-        super ( ID, DemoIcons.examples16, "demo.examples.title" );
+        super ( StyleId.dockableframeCompact, ID, DemoIcons.examples16, "demo.examples.title" );
         setPosition ( CompassDirection.west );
         setPreferredSize ( 300, 200 );
 

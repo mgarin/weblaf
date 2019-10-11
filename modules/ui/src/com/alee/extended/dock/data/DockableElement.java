@@ -34,7 +34,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see com.alee.extended.dock.WebDockablePane
  */
-public interface DockableElement extends Mergeable, Identifiable, Serializable
+public interface DockableElement extends Identifiable, Mergeable, Cloneable, Serializable
 {
     @NotNull
     @Override

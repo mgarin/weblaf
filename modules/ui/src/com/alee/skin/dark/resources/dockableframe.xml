@@ -25,21 +25,21 @@
         </painter>
 
         <!-- Dockable frame title panel -->
-        <style type="panel" id="title" padding="0,0,0,2">
+        <style type="panel" id="title" padding="1,1,1,3">
             <painter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" sides="0,0,1,0" />
                         <LineBorder color="20,20,20" />
                         <GradientBackground>
-                            <color>87,91,93</color>
-                            <color>77,81,83</color>
+                            <color>111,115,117</color>
+                            <color>101,105,107</color>
                         </GradientBackground>
                     </decoration>
                     <decoration states="in-focused-parent">
                         <LineBorder color="black" />
                         <GradientBackground>
-                            <color>111,115,117</color>
+                            <color>87,91,93</color>
                             <color>77,81,83</color>
                         </GradientBackground>
                     </decoration>
@@ -141,12 +141,70 @@
                         <WebShadow type="inner" width="6" />
                         <ColorBackground color="57,61,63" />
                     </decoration>
-                    <decoration states="disabled">
-                        <WebShadow type="outer" opacity="0" />
-                        <LineBorder color="68,72,74" />
-                        <IconTextLayout>
-                            <ButtonText color="180,180,180" />
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Compact dockable frame -->
+    <style type="dockableframe" id="compact">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape round="0" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+                <decoration states="focused" />
+            </decorations>
+        </painter>
+
+        <!-- Dockable frame title panel -->
+        <style type="panel" id="title">
+            <painter>
+                <decorations>
+                    <decoration states="in-focused-parent">
+                        <LineBorder color="20,20,20" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Sidebar button -->
+        <style type="togglebutton" id="sidebar" padding="4">
+            <painter>
+                <decorations overwrite="true">
+                    <decoration>
+                        <WebShape round="0" />
+                        <LineBorder color="transparent" />
+                        <IconTextLayout gap="3">
+                            <ButtonIcon constraints="icon" />
+                            <ButtonText constraints="text" color="245,245,245" shadow="true" shadowColor="black" />
                         </IconTextLayout>
+                    </decoration>
+                    <decoration states="west">
+                        <IconTextLayout hpos="center" vpos="top">
+                            <ButtonText rotation="counterClockwise" />
+                        </IconTextLayout>
+                    </decoration>
+                    <decoration states="east">
+                        <IconTextLayout hpos="center" vpos="bottom">
+                            <ButtonText rotation="clockwise" />
+                        </IconTextLayout>
+                    </decoration>
+                    <decoration states="hover">
+                        <ColorBackground color="67,71,73" />
+                    </decoration>
+                    <decoration states="selected">
+                        <ColorBackground color="47,51,53" />
+                    </decoration>
+                    <decoration states="pressed">
+                        <WebShadow type="inner" width="4" />
+                        <ColorBackground color="37,41,43" />
                     </decoration>
                 </decorations>
             </painter>

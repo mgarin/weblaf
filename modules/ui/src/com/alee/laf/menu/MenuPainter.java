@@ -21,14 +21,14 @@ public class MenuPainter<C extends JMenu, U extends WebMenuUI, D extends IDecora
         implements IMenuPainter<C, U>
 {
     @Override
-    protected void hierarchyChanged ( final HierarchyEvent e )
+    protected void hierarchyChanged ( @NotNull final HierarchyEvent event )
     {
         // Ensure default actions are performed
-        super.hierarchyChanged ( e );
+        super.hierarchyChanged ( event );
 
         // Update states on hierarchy changes
         // This is needed due to parent-based decoration states
-        if ( e.getID () == HierarchyEvent.HIERARCHY_CHANGED )
+        if ( event.getID () == HierarchyEvent.HIERARCHY_CHANGED )
         {
             updateDecorationState ();
         }

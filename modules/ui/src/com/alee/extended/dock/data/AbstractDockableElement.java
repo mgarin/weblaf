@@ -34,17 +34,6 @@ import java.awt.*;
 public abstract class AbstractDockableElement implements DockableElement
 {
     /**
-     * Parent structure element.
-     * Available only in runtime and initialized in dockable pane model.
-     */
-    protected transient DockableContainer parent;
-
-    /**
-     * Actual element bounds on dockable pane.
-     */
-    protected transient Rectangle bounds;
-
-    /**
      * Element identifier.
      */
     @NotNull
@@ -56,6 +45,19 @@ public abstract class AbstractDockableElement implements DockableElement
      */
     @XStreamAsAttribute
     protected Dimension size;
+
+    /**
+     * Parent structure element.
+     * Available only in runtime and initialized in dockable pane model.
+     */
+    @Nullable
+    protected transient DockableContainer parent;
+
+    /**
+     * Actual element bounds on dockable pane.
+     */
+    @Nullable
+    protected transient Rectangle bounds;
 
     /**
      * Constructs new element with the specified ID.

@@ -67,6 +67,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * Decoratable states property.
      */
     public static final String DECORATION_STATES_PROPERTY = "decorationStates";
+    public static final String DECORATION_BORDER_PROPERTY = "decorationBorder";
 
     /**
      * Available decorations.
@@ -153,24 +154,24 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         super.installPropertiesAndListeners ();
 
         // Installing various extra listeners
-        installContainerListener ();
-        installFocusListener ();
-        installInFocusedParentListener ();
-        installHoverListener ();
-        installInHoveredParentListener ();
-        installHierarchyListener ();
+        installChildrenListeners ();
+        installFocusListeners ();
+        installInFocusedParentListeners ();
+        installHoverListeners ();
+        installInHoveredParentListeners ();
+        installBorderListeners ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
         // Uninstalling various extra listeners
-        uninstallHierarchyListener ();
-        uninstallInHoveredParentListener ();
-        uninstallHoverListener ();
-        uninstallInFocusedParentListener ();
-        uninstallFocusListener ();
-        uninstallContainerListener ();
+        uninstallBorderListeners ();
+        uninstallInHoveredParentListeners ();
+        uninstallHoverListeners ();
+        uninstallInFocusedParentListeners ();
+        uninstallFocusListeners ();
+        uninstallChildrenListeners ();
 
         super.uninstallPropertiesAndListeners ();
     }
@@ -184,13 +185,19 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
         // Updating focus listener
         if ( Objects.equals ( property, WebLookAndFeel.FOCUSABLE_PROPERTY ) )
         {
-            updateFocusListener ();
+            updateFocusListeners ();
         }
 
         // Updating custom decoration states
         if ( Objects.equals ( property, DECORATION_STATES_PROPERTY ) )
         {
             updateDecorationState ();
+        }
+
+        // Updating border
+        if ( Objects.equals ( property, DECORATION_BORDER_PROPERTY ) )
+        {
+            updateBorder ();
         }
 
         // Updating enabled state
@@ -230,22 +237,22 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Installs {@link ContainerListener} that will perform decoration updates on children change.
      */
-    protected void installContainerListener ()
+    protected void installChildrenListeners ()
     {
         if ( usesContainerView () )
         {
             containerListener = new ContainerListener ()
             {
                 @Override
-                public void componentAdded ( final ContainerEvent e )
+                public void componentAdded ( @NotNull final ContainerEvent event )
                 {
-                    AbstractDecorationPainter.this.childrenChanged ( e );
+                    AbstractDecorationPainter.this.childrenChanged ( event );
                 }
 
                 @Override
-                public void componentRemoved ( final ContainerEvent e )
+                public void componentRemoved ( @NotNull final ContainerEvent event )
                 {
-                    AbstractDecorationPainter.this.childrenChanged ( e );
+                    AbstractDecorationPainter.this.childrenChanged ( event );
                 }
             };
             component.addContainerListener ( containerListener );
@@ -257,7 +264,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      *
      * @param event {@link ContainerEvent}
      */
-    protected void childrenChanged ( final ContainerEvent event )
+    protected void childrenChanged ( @NotNull final ContainerEvent event )
     {
         updateDecorationState ();
     }
@@ -265,7 +272,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Uninstalls {@link ContainerListener}.
      */
-    protected void uninstallContainerListener ()
+    protected void uninstallChildrenListeners ()
     {
         if ( containerListener != null )
         {
@@ -290,7 +297,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Installs listener that will perform decoration updates on focus state change.
      */
-    protected void installFocusListener ()
+    protected void installFocusListeners ()
     {
         if ( usesFocusedView () )
         {
@@ -341,7 +348,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Uninstalls focus listener.
      */
-    protected void uninstallFocusListener ()
+    protected void uninstallFocusListeners ()
     {
         if ( focusStateTracker != null )
         {
@@ -354,15 +361,15 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Updates focus listener usage.
      */
-    protected void updateFocusListener ()
+    protected void updateFocusListeners ()
     {
         if ( usesFocusedView () )
         {
-            installFocusListener ();
+            installFocusListeners ();
         }
         else
         {
-            uninstallFocusListener ();
+            uninstallFocusListeners ();
         }
     }
 
@@ -381,7 +388,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Installs listener that performs decoration updates on focused parent appearance and disappearance.
      */
-    protected void installInFocusedParentListener ()
+    protected void installInFocusedParentListeners ()
     {
         if ( usesInFocusedParentView () )
         {
@@ -498,7 +505,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Uninstalls global focus listener.
      */
-    protected void uninstallInFocusedParentListener ()
+    protected void uninstallInFocusedParentListeners ()
     {
         if ( inFocusedParentTracker != null )
         {
@@ -525,7 +532,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Installs listener that will perform decoration updates on hover state change.
      */
-    protected void installHoverListener ()
+    protected void installHoverListeners ()
     {
         if ( usesHoverView () )
         {
@@ -576,7 +583,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Uninstalls hover listener.
      */
-    protected void uninstallHoverListener ()
+    protected void uninstallHoverListeners ()
     {
         if ( hoverStateTracker != null )
         {
@@ -589,15 +596,15 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Updates hover listener usage.
      */
-    protected void updateHoverListener ()
+    protected void updateHoverListeners ()
     {
         if ( usesHoverView () )
         {
-            installHoverListener ();
+            installHoverListeners ();
         }
         else
         {
-            uninstallHoverListener ();
+            uninstallHoverListeners ();
         }
     }
 
@@ -616,7 +623,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Installs listener that performs decoration updates on hovered parent appearance and disappearance.
      */
-    protected void installInHoveredParentListener ()
+    protected void installInHoveredParentListeners ()
     {
         if ( usesInHoveredParentView () )
         {
@@ -733,7 +740,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Uninstalls global hover listener.
      */
-    protected void uninstallInHoveredParentListener ()
+    protected void uninstallInHoveredParentListeners ()
     {
         if ( inHoveredParentTracker != null )
         {
@@ -760,21 +767,22 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * This is required to properly update decoration borders in case it was moved from or into container with grouping layout.
      * It also tracks neighbour components addition and removal to update this component border accordingly.
      */
-    protected void installHierarchyListener ()
+    protected void installBorderListeners ()
     {
         if ( usesHierarchyBasedView () )
         {
             neighboursTracker = new ContainerListener ()
             {
                 @Override
-                public void componentAdded ( final ContainerEvent e )
+                public void componentAdded ( @NotNull final ContainerEvent event )
                 {
                     // Ensure component is still available
                     // This might happen if painter is replaced from another ContainerListener
                     if ( AbstractDecorationPainter.this.component != null )
                     {
                         // Updating border when a child was added nearby
-                        if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                        if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout &&
+                                event.getChild () != AbstractDecorationPainter.this.component )
                         {
                             AbstractDecorationPainter.this.updateBorder ();
                         }
@@ -782,14 +790,15 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 }
 
                 @Override
-                public void componentRemoved ( final ContainerEvent e )
+                public void componentRemoved ( @NotNull final ContainerEvent event )
                 {
                     // Ensure component is still available
                     // This might happen if painter is replaced from another ContainerListener
                     if ( AbstractDecorationPainter.this.component != null )
                     {
                         // Updating border when a child was removed nearby
-                        if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                        if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout &&
+                                event.getChild () != AbstractDecorationPainter.this.component )
                         {
                             AbstractDecorationPainter.this.updateBorder ();
                         }
@@ -799,9 +808,9 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
             hierarchyTracker = new HierarchyListener ()
             {
                 @Override
-                public void hierarchyChanged ( final HierarchyEvent e )
+                public void hierarchyChanged ( @NotNull final HierarchyEvent event )
                 {
-                    AbstractDecorationPainter.this.hierarchyChanged ( e );
+                    AbstractDecorationPainter.this.hierarchyChanged ( event );
                 }
             };
             component.addHierarchyListener ( hierarchyTracker );
@@ -816,9 +825,9 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * Informs about hierarchy changes.
      * Note that this method will only be fired when component {@link #usesHierarchyBasedView()}.
      *
-     * @param e {@link java.awt.event.HierarchyEvent}
+     * @param event {@link HierarchyEvent}
      */
-    protected void hierarchyChanged ( final HierarchyEvent e )
+    protected void hierarchyChanged ( @NotNull final HierarchyEvent event )
     {
         // Ensure component is still available
         // This might happen if painter is replaced from another HierarchyListener
@@ -827,7 +836,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
             // Listening only for parent change event
             // It will inform us when parent container for this component changes
             // Ancestor listener is not really reliable because it might inform about consequent parent changes
-            if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) == HierarchyEvent.PARENT_CHANGED )
+            if ( ( event.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) == HierarchyEvent.PARENT_CHANGED )
             {
                 // If there was a previous container...
                 if ( ancestor != null )
@@ -837,7 +846,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                 }
 
                 // Updating ancestor
-                ancestor = component.getParent ();
+                ancestor = AbstractDecorationPainter.this.component.getParent ();
 
                 // If there is a new container...
                 if ( ancestor != null )
@@ -855,7 +864,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     /**
      * Uninstalls hierarchy listener.
      */
-    protected void uninstallHierarchyListener ()
+    protected void uninstallBorderListeners ()
     {
         if ( hierarchyTracker != null )
         {
@@ -970,7 +979,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * @param state       decoration state
      * @return {@code true} if specified decorations are associated with specified state, {@code false} otherwise
      */
-    protected final boolean usesState ( final Decorations<C, D> decorations, final String state )
+    protected final boolean usesState ( @Nullable final Decorations<C, D> decorations, final String state )
     {
         boolean usesState = false;
         if ( decorations != null && decorations.size () > 0 )
@@ -996,7 +1005,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     @NotNull
     protected final List<D> getDecorations ( @NotNull final List<String> forStates )
     {
-        final List<D> result = new ArrayList<D> (  );
+        final List<D> result = new ArrayList<D> ();
         if ( decorations != null && decorations.size () > 0 )
         {
             for ( final D decoration : decorations )

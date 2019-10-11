@@ -166,4 +166,17 @@ public final class DecorationUtils
             SwingUtils.firePropertyChanged ( component, AbstractDecorationPainter.DECORATION_STATES_PROPERTY, null, null );
         }
     }
+
+    /**
+     * Informs about {@link Component} decoration border changes.
+     *
+     * @param component {@link Component} decoration border changed for
+     */
+    public static void fireBorderChanged ( @Nullable final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            SwingUtils.firePropertyChanged ( component, AbstractDecorationPainter.DECORATION_BORDER_PROPERTY, null, null );
+        }
+    }
 }

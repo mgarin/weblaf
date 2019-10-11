@@ -24,6 +24,7 @@ import com.alee.demo.skin.DemoIcons;
 import com.alee.extended.dock.DockableFrameState;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.inspector.InterfaceInspector;
+import com.alee.managers.style.StyleId;
 
 /**
  * {@link DemoApplication} inspector frame.
@@ -44,7 +45,7 @@ public final class InspectorFrame extends WebDockableFrame
      */
     public InspectorFrame ( @NotNull final DemoApplication application )
     {
-        super ( ID, DemoIcons.inspector16, "demo.inspector.title" );
+        super ( StyleId.dockableframeCompact, ID, DemoIcons.inspector16, "demo.inspector.title" );
         setState ( DockableFrameState.minimized );
         setPosition ( CompassDirection.east );
         setPreferredSize ( 300, 200 );

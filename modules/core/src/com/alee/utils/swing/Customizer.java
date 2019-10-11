@@ -17,9 +17,12 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * This interface allows you to create customizer for objects of any type.
  * They can be easily passed into any method to customize or modify any component or data when requested.
+ * todo Replace with {@link com.alee.api.jdk.Consumer}
  *
  * @param <T> object type
  * @author Mikle Garin
@@ -31,5 +34,5 @@ public interface Customizer<T>
      *
      * @param object object to customize
      */
-    public void customize ( T object );
+    public void customize ( @NotNull T object );
 }

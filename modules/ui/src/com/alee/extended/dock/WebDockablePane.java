@@ -33,16 +33,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of a pane containing dockable frames.
- * Frames can be added to the pane, repositioned within it, minimized, previewed, made floating or closed.
- * Positioning of the frames is handled by the {@link DockablePaneModel}.
- * Resize of the frames and their drop position while drag is handled by the glass layer.
+ * Implementation of a pane containing {@link WebDockableFrame}s.
+ * {@link WebDockableFrame}s can be added to the pane, repositioned within it, minimized, previewed, made floating or closed.
+ * Note that closing the frame doesn't remove it from the pane, but only changes it's state to {@link DockableFrameState#closed}.
+ * Positioning of the frames is handled by the currently installed {@link DockablePaneModel} implementation.
+ * Resize of the {@link WebDockableFrame}s and their drop position while dragged is handled by the {@link DockablePaneGlassLayer}.
  *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see WebDockablePaneModel
+ * @see DockablePaneModel
+ * @see DockablePaneGlassLayer
  * @see DockablePaneDescriptor
  * @see WDockablePaneUI
  * @see WebDockablePaneUI
@@ -55,10 +59,12 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     /**
      * Component properties.
      */
-    public static final String SIDEBAR_VISIBILITY_PROPERTY = "sidebarVisibility";
+    public static final String SIDEBAR_BUTTON_VISIBILITY_PROPERTY = "sidebarButtonVisibility";
     public static final String SIDEBAR_BUTTON_ACTION_PROPERTY = "sidebarButtonAction";
+    public static final String GROUP_ELEMENTS_PROPERTY = "groupElements";
+    public static final String SIDEBAR_SPACING_PROPERTY = "sidebarSpacing";
     public static final String CONTENT_SPACING_PROPERTY = "contentSpacing";
-    public static final String RESIZE_GRIPPER_PROPERTY = "resizeGripper";
+    public static final String RESIZE_GRIPPER_WIDTH_PROPERTY = "resizeGripperWidth";
     public static final String MINIMUM_ELEMENT_SIZE_PROPERTY = "minimumElementSize";
     public static final String OCCUPY_MINIMUM_SIZE_FOR_CHILDREN_PROPERTY = "occupyMinimumSizeForChildren";
     public static final String MODEL_PROPERTY = "model";
@@ -71,10 +77,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     /**
      * Sidebar buttons visibility type.
      *
-     * @see com.alee.extended.dock.SidebarVisibility
+     * @see SidebarButtonVisibility
      */
     @NotNull
-    protected SidebarVisibility sidebarVisibility;
+    protected SidebarButtonVisibility sidebarButtonVisibility;
 
     /**
      * Sidebar button action.
@@ -83,7 +89,21 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     protected SidebarButtonAction sidebarButtonAction;
 
     /**
+     * Whether or not dockable pane elements should be visually grouped.
+     * This will only work with zero {@link #contentSpacing} as there is no point to visually group elements otherwise.
+     * Also note that {@link #sidebarSpacing} value will have no effect on this setting as it is used to provide correct padding.
+     */
+    protected boolean groupElements;
+
+    /**
+     * Spacing between sidebars elements and other elements.
+     * todo Remove once sidebars are properly implemented as separate containers, it will be covered by container's padding
+     */
+    protected int sidebarSpacing;
+
+    /**
      * Spacing between content elements.
+     * todo Move into DockablePaneLayout once it's separated from the model
      */
     protected int contentSpacing;
 
@@ -92,10 +112,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * This setting represents actual draggable area width and not visual representation width.
      * It can be larger than {@link #contentSpacing} and will overlap elements in that case blocking their mouse events.
      */
-    protected int resizeGripper;
+    protected int resizeGripperWidth;
 
     /**
-     * Minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane.
+     * Minimum size of {@link WebDockableFrame} or content component added onto the dockable pane.
      */
     @NotNull
     protected Dimension minimumElementSize;
@@ -118,7 +138,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     protected JComponent glassLayer;
 
     /**
-     * List of frames added to this pane.
+     * List of frames added to this {@link WebDockablePane}.
      * This list only contains frames opened frames.
      * Upon closing frame it gets removed from the pane and this list.
      */
@@ -145,11 +165,12 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      */
     public WebDockablePane ( @NotNull final StyleId id )
     {
-        super ();
-        this.sidebarVisibility = SidebarVisibility.minimized;
+        this.sidebarButtonVisibility = SidebarButtonVisibility.minimized;
         this.sidebarButtonAction = SidebarButtonAction.restore;
+        this.groupElements = false;
+        this.sidebarSpacing = 0;
         this.contentSpacing = 0;
-        this.resizeGripper = 10;
+        this.resizeGripperWidth = 10;
         this.minimumElementSize = new Dimension ( 40, 40 );
         this.occupyMinimumSizeForChildren = true;
         this.frames = new ArrayList<WebDockableFrame> ( 3 );
@@ -166,30 +187,30 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Returns sidebar buttons visibility type.
+     * Returns {@link SidebarButton}s visibility condition.
      *
-     * @return sidebar buttons visibility type
+     * @return {@link SidebarButton}s visibility condition
      */
     @NotNull
-    public SidebarVisibility getSidebarVisibility ()
+    public SidebarButtonVisibility getSidebarButtonVisibility ()
     {
-        return sidebarVisibility;
+        return sidebarButtonVisibility;
     }
 
     /**
-     * Sets sidebar buttons visibility type.
+     * Sets {@link SidebarButton}s visibility condition.
      *
-     * @param visibility sidebar buttons visibility type
-     * @return this pane
+     * @param condition {@link SidebarButton}s visibility condition
+     * @return this {@link WebDockablePane}
      */
     @NotNull
-    public WebDockablePane setSidebarVisibility ( @NotNull final SidebarVisibility visibility )
+    public WebDockablePane setSidebarButtonVisibility ( @NotNull final SidebarButtonVisibility condition )
     {
-        if ( this.sidebarVisibility != visibility )
+        if ( this.sidebarButtonVisibility != condition )
         {
-            final SidebarVisibility old = this.sidebarVisibility;
-            this.sidebarVisibility = visibility;
-            firePropertyChange ( SIDEBAR_VISIBILITY_PROPERTY, old, visibility );
+            final SidebarButtonVisibility old = this.sidebarButtonVisibility;
+            this.sidebarButtonVisibility = condition;
+            firePropertyChange ( SIDEBAR_BUTTON_VISIBILITY_PROPERTY, old, condition );
         }
         return this;
     }
@@ -209,7 +230,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * Sets sidebar button action.
      *
      * @param action sidebar button action
-     * @return this pane
+     * @return this {@link WebDockablePane}
      */
     @NotNull
     public WebDockablePane setSidebarButtonAction ( @NotNull final SidebarButtonAction action )
@@ -219,6 +240,64 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
             final SidebarButtonAction old = this.sidebarButtonAction;
             this.sidebarButtonAction = action;
             firePropertyChange ( SIDEBAR_BUTTON_ACTION_PROPERTY, old, action );
+        }
+        return this;
+    }
+
+    /**
+     * Returns whether or not dockable pane elements should be visually grouped.
+     *
+     * @return {@code true} if dockable pane elements should be visually grouped, {@code false} otherwise
+     */
+    public boolean isGroupElements ()
+    {
+        return groupElements;
+    }
+
+    /**
+     * Sets whether or not dockable pane elements should be visually grouped.
+     * Note that this will only work with zero {@link #contentSpacing} as there is no point to visually group elements otherwise.
+     * Also note that {@link #sidebarSpacing} value will have no effect on this setting as it is used to provide correct padding.
+     *
+     * @param group whether or not dockable pane elements should be visually grouped
+     * @return this {@link WebDockablePane}
+     */
+    @NotNull
+    public WebDockablePane setGroupElements ( final boolean group )
+    {
+        if ( this.groupElements != group )
+        {
+            final boolean old = this.groupElements;
+            this.groupElements = group;
+            firePropertyChange ( GROUP_ELEMENTS_PROPERTY, old, group );
+        }
+        return this;
+    }
+
+    /**
+     * Returns spacing between sidebars elements and other elements.
+     *
+     * @return spacing between sidebars elements and other elements
+     */
+    public int getSidebarSpacing ()
+    {
+        return sidebarSpacing;
+    }
+
+    /**
+     * Sets spacing between sidebars elements and other elements.
+     *
+     * @param spacing spacing between sidebars elements and other elements
+     * @return this {@link WebDockablePane}
+     */
+    @NotNull
+    public WebDockablePane setSidebarSpacing ( final int spacing )
+    {
+        if ( this.sidebarSpacing != spacing )
+        {
+            final int old = this.sidebarSpacing;
+            this.sidebarSpacing = spacing;
+            firePropertyChange ( SIDEBAR_SPACING_PROPERTY, old, spacing );
         }
         return this;
     }
@@ -237,7 +316,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * Sets spacing between content elements.
      *
      * @param spacing spacing between content elements
-     * @return this pane
+     * @return this {@link WebDockablePane}
      */
     @NotNull
     public WebDockablePane setContentSpacing ( final int spacing )
@@ -256,33 +335,33 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      *
      * @return content elements resize gripper width
      */
-    public int getResizeGripper ()
+    public int getResizeGripperWidth ()
     {
-        return resizeGripper;
+        return resizeGripperWidth;
     }
 
     /**
      * Sets content elements resize gripper width.
      *
-     * @param resizeGripper content elements resize gripper width
-     * @return this pane
+     * @param resizeGripperWidth content elements resize gripper width
+     * @return this {@link WebDockablePane}
      */
     @NotNull
-    public WebDockablePane setResizeGripper ( final int resizeGripper )
+    public WebDockablePane setResizeGripperWidth ( final int resizeGripperWidth )
     {
-        if ( this.resizeGripper != resizeGripper )
+        if ( this.resizeGripperWidth != resizeGripperWidth )
         {
-            final int old = this.resizeGripper;
-            this.resizeGripper = resizeGripper;
-            firePropertyChange ( RESIZE_GRIPPER_PROPERTY, old, resizeGripper );
+            final int old = this.resizeGripperWidth;
+            this.resizeGripperWidth = resizeGripperWidth;
+            firePropertyChange ( RESIZE_GRIPPER_WIDTH_PROPERTY, old, resizeGripperWidth );
         }
         return this;
     }
 
     /**
-     * Returns minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane.
+     * Returns minimum size of {@link WebDockableFrame} or content component added onto the dockable pane.
      *
-     * @return minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane
+     * @return minimum size of {@link WebDockableFrame} or content component added onto the dockable pane
      */
     @NotNull
     public Dimension getMinimumElementSize ()
@@ -291,10 +370,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Sets minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane.
+     * Sets minimum size of {@link WebDockableFrame} or content component added onto the dockable pane.
      *
-     * @param size minimum size of {@link com.alee.extended.dock.WebDockableFrame} or content component added onto the dockable pane
-     * @return this pane
+     * @param size minimum size of {@link WebDockableFrame} or content component added onto the dockable pane
+     * @return this {@link WebDockablePane}
      */
     @NotNull
     public WebDockablePane setMinimumElementSize ( @NotNull final Dimension size )
@@ -322,7 +401,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * Sets whether containers minimum size should include children sizes or simply be equal to {@link #minimumElementSize}.
      *
      * @param occupy whether containers minimum size should include children sizes or simply be equal to {@link #minimumElementSize}
-     * @return this pane
+     * @return this {@link WebDockablePane}
      */
     @NotNull
     public WebDockablePane setOccupyMinimumSizeForChildren ( final boolean occupy )
@@ -351,7 +430,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * Sets model containing information about dockable pane elements.
      *
      * @param model model containing information about dockable pane elements
-     * @return this pane
+     * @return this {@link WebDockablePane}
      */
     @NotNull
     public WebDockablePane setModel ( @NotNull final DockablePaneModel model )
@@ -382,7 +461,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * It contains data which can be used to restore dockable element states.
      *
      * @return dockable pane element states data
-     * @see #setState(com.alee.extended.dock.data.DockableContainer)
+     * @see #setState(DockableContainer)
      */
     @NotNull
     public DockableContainer getState ()
@@ -395,7 +474,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * This data can be retrieved from dockable pane at any time in runtime.
      *
      * @param state dockable pane element states data
-     * @return this pane
+     * @return this {@link WebDockablePane}
      * @see #getState()
      */
     @NotNull
@@ -426,7 +505,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
      * Sets glass layer component.
      *
      * @param glassLayer glass layer component
-     * @return this pane
+     * @return this {@link WebDockablePane}
      */
     @NotNull
     public WebDockablePane setGlassLayer ( @Nullable final JComponent glassLayer )
@@ -441,9 +520,9 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Returns list of dockable frames added to this pane.
+     * Returns list of dockable frames added to this {@link WebDockablePane}.
      *
-     * @return list of dockable frames added to this pane
+     * @return list of dockable frames added to this {@link WebDockablePane}
      */
     @NotNull
     public List<WebDockableFrame> getFrames ()
@@ -452,10 +531,11 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Returns list of dockable frames added to this pane and positioned on the specified side relative to the content area.
+     * Returns {@link List} of {@link WebDockableFrame}s added to this {@link WebDockablePane} and positioned on the specified side.
      *
      * @param position frames position relative to content area
-     * @return list of dockable frames added to this pane and positioned on the specified side relative to the content area
+     * @return {@link List} of {@link WebDockableFrame}s added to this {@link WebDockablePane} and positioned on the specified side
+     * @see WebDockableFrame#getPosition()
      */
     @NotNull
     public List<WebDockableFrame> getFrames ( @NotNull final CompassDirection position )
@@ -472,10 +552,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Returns frame with the specified identifier.
+     * Returns {@link WebDockableFrame} with the specified identifier.
      *
-     * @param id frame identifier
-     * @return frame with the specified identifier
+     * @param id {@link WebDockableFrame} identifier
+     * @return {@link WebDockableFrame} with the specified identifier
      */
     @NotNull
     public WebDockableFrame getFrame ( @NotNull final String id )
@@ -489,10 +569,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Returns frame with the specified ID or {@code null} if no such frame exists.
+     * Returns {@link WebDockableFrame} with the specified identifier or {@code null} if it doesn't exist within {@link WebDockablePane}.
      *
-     * @param id frame identifier
-     * @return frame with the specified ID or {@code null} if no such frame exists
+     * @param id {@link WebDockableFrame} identifier
+     * @return {@link WebDockableFrame} with the specified identifier or {@code null} if it doesn't exist within {@link WebDockablePane}
      */
     @Nullable
     public WebDockableFrame findFrame ( @NotNull final String id )
@@ -510,12 +590,32 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Adds specified dockable frame into this pane.
-     * Position of the frame will get restored by its ID if it was saved at least once before.
-     * Note that this frame might be in closed state, in that case it will still not be visible.
+     * Returns currently maximized {@link WebDockableFrame} or {@code null} if none maximized.
      *
-     * @param frame dockable frame to add
-     * @return added frame
+     * @return currently maximized {@link WebDockableFrame} or {@code null} if none maximized
+     */
+    @Nullable
+    public WebDockableFrame getMaximizedFrame ()
+    {
+        WebDockableFrame maximizedFrame = null;
+        for ( final WebDockableFrame frame : frames )
+        {
+            if ( frame.isMaximized () )
+            {
+                maximizedFrame = frame;
+                break;
+            }
+        }
+        return maximizedFrame;
+    }
+
+    /**
+     * Adds specified {@link WebDockableFrame} into this {@link WebDockablePane}.
+     * Position of {@link WebDockableFrame} will get restored by its identifier if it's state was saved at least once before.
+     * Note that {@link WebDockableFrame} might be in closed state, in that case it will still not be visible.
+     *
+     * @param frame {@link WebDockableFrame} to add
+     * @return added {@link WebDockableFrame}
      */
     @NotNull
     public WebDockableFrame addFrame ( @NotNull final WebDockableFrame frame )
@@ -531,11 +631,11 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Removes specified dockable frame from this pane.
-     * This will completely remove frame and its data from pane model.
+     * Removes specified {@link WebDockableFrame} from this {@link WebDockablePane}.
+     * This will completely remove {@link WebDockableFrame} and its data from {@link WebDockablePaneModel}.
      *
-     * @param frame dockable frame to remove
-     * @return removed frame
+     * @param frame {@link WebDockableFrame} to remove
+     * @return removed {@link WebDockableFrame}
      */
     @NotNull
     public WebDockableFrame removeFrame ( @NotNull final WebDockableFrame frame )
@@ -551,9 +651,9 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Returns current content component.
+     * Returns current content {@link JComponent}.
      *
-     * @return current content component
+     * @return current content {@link JComponent}
      */
     @Nullable
     public JComponent getContent ()
@@ -562,10 +662,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Sets content component.
+     * Sets content {@link JComponent}.
      *
-     * @param content content component
-     * @return previous content component
+     * @param content content {@link JComponent}
+     * @return previous content {@link JComponent}
      */
     @Nullable
     public JComponent setContent ( @Nullable final JComponent content )
@@ -600,10 +700,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Informs listeners about frame being added.
+     * Informs listeners about {@link WebDockableFrame} being added.
      *
-     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was added
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was added
+     * @param frame        {@link WebDockableFrame} which was added
+     * @param dockablePane {@link WebDockablePane} where frame was added
      */
     public void fireFrameAdded ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
     {
@@ -614,9 +714,9 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Informs listeners about frame state change.
+     * Informs listeners about {@link WebDockableFrame} state change.
      *
-     * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
+     * @param frame    {@link WebDockableFrame}
      * @param oldState previous frame state
      * @param newState current frame state
      */
@@ -630,9 +730,9 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Informs listeners about frame being moved.
+     * Informs listeners about {@link WebDockableFrame} being moved.
      *
-     * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
+     * @param frame    {@link WebDockableFrame}
      * @param position current frame position relative to content
      */
     public void fireFrameMoved ( @NotNull final WebDockableFrame frame, @NotNull final CompassDirection position )
@@ -644,10 +744,10 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     }
 
     /**
-     * Informs listeners about frame being removed.
+     * Informs listeners about {@link WebDockableFrame} being removed.
      *
-     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was removed
-     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was removed from
+     * @param frame        {@link WebDockableFrame} which was removed
+     * @param dockablePane {@link WebDockablePane} where frame was removed from
      */
     public void fireFrameRemoved ( @NotNull final WebDockableFrame frame, @NotNull final WebDockablePane dockablePane )
     {

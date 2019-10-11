@@ -428,6 +428,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
             for ( final Map.Entry<Component, Pair<String, String>> entry : children.entrySet () )
             {
                 entry.setValue ( new Pair<String, String> () );
+                DecorationUtils.fireBorderChanged ( entry.getKey () );
             }
         }
     }

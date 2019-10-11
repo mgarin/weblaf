@@ -17,6 +17,7 @@
 
 package com.alee.demo;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.SerializableSupplier;
 import com.alee.api.version.Version;
@@ -32,7 +33,7 @@ import com.alee.demo.skin.decoration.FeatureStateBackground;
 import com.alee.demo.ui.tools.*;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.canvas.WebCanvas;
-import com.alee.extended.dock.SidebarVisibility;
+import com.alee.extended.dock.SidebarButtonVisibility;
 import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.label.TextWrap;
 import com.alee.extended.label.WebStyledLabel;
@@ -47,6 +48,7 @@ import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WindowState;
+import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.language.LM;
@@ -63,6 +65,7 @@ import com.alee.skin.dark.DarkSkin;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.XmlUtils;
+import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -141,36 +144,34 @@ public final class DemoApplication extends WebFrame
     }
 
     /**
-     * Displays demo application.
-     */
-    public void display ()
-    {
-        setVisible ( true );
-        examplesFrame.requestFocusInWindow ();
-    }
-
-    /**
      * Initializes demo application dockable frames.
      */
     private void initializeDocks ()
     {
-        dockablePane = new WebDockablePane ();
-        dockablePane.setSidebarVisibility ( SidebarVisibility.anyMinimized );
-        initializeContent ();
-        initializeFrames ();
-        add ( dockablePane, BorderLayout.CENTER );
-    }
+        /**
+         * Dockable pane.
+         */
 
-    /**
-     * Initializes demo application content pane.
-     */
-    private void initializeContent ()
-    {
+        dockablePane = new WebDockablePane ( StyleId.dockablepaneCompact );
+        dockablePane.setSidebarButtonVisibility ( SidebarButtonVisibility.anyMinimized );
+
+        /**
+         * Content.
+         */
+
         examplesPane = new WebDocumentPane<ExampleData> ( DemoStyles.expamplesPane );
         examplesPane.setClosable ( true );
         examplesPane.setDragEnabled ( true );
         examplesPane.setDragBetweenPanesEnabled ( false );
         examplesPane.setSplitEnabled ( true );
+        examplesPane.setTabbedPaneCustomizer ( new Customizer<WebTabbedPane> ()
+        {
+            @Override
+            public void customize ( @NotNull final WebTabbedPane tabbedPane )
+            {
+                tabbedPane.setTabLayoutPolicy ( JTabbedPane.SCROLL_TAB_LAYOUT );
+            }
+        } );
         examplesPane.onDocumentSelection ( new DocumentDataRunnable<ExampleData> ()
         {
             @Override
@@ -180,7 +181,7 @@ public final class DemoApplication extends WebFrame
             }
         } );
 
-        final WebOverlay overlay = new WebOverlay ( StyleId.panelFocusable, examplesPane );
+        final WebOverlay overlay = new WebOverlay ( StyleId.panel, examplesPane );
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel, new AlignLayout () );
 
         final StyleId guideId = DemoStyles.emptycontentInfoLabel.at ( overlayContainer );
@@ -210,23 +211,11 @@ public final class DemoApplication extends WebFrame
         } );
 
         dockablePane.setContent ( overlay );
-    }
 
-    /**
-     * Returns content pane.
-     *
-     * @return content pane
-     */
-    public WebDocumentPane<ExampleData> getExamplesPane ()
-    {
-        return examplesPane;
-    }
+        /**
+         * Frames.
+         */
 
-    /**
-     * Initializes demo application dockable frames.
-     */
-    private void initializeFrames ()
-    {
         examplesFrame = new ExamplesFrame ();
         dockablePane.addFrame ( examplesFrame );
 
@@ -238,6 +227,23 @@ public final class DemoApplication extends WebFrame
 
         styleFrame = new StyleFrame ( this );
         dockablePane.addFrame ( styleFrame );
+
+        /**
+         * Dockable pane positon.
+         * Added last for optimization purpose.
+         */
+
+        add ( dockablePane, BorderLayout.CENTER );
+    }
+
+    /**
+     * Returns content pane.
+     *
+     * @return content pane
+     */
+    public WebDocumentPane<ExampleData> getExamplesPane ()
+    {
+        return examplesPane;
     }
 
     /**
@@ -319,6 +325,15 @@ public final class DemoApplication extends WebFrame
     public void open ( final Example example )
     {
         examplesPane.openDocument ( ExampleData.forExample ( example ) );
+    }
+
+    /**
+     * Displays demo application.
+     */
+    public void display ()
+    {
+        setVisible ( true );
+        examplesFrame.requestFocusInWindow ();
     }
 
     /**

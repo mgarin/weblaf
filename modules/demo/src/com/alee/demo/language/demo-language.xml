@@ -292,8 +292,8 @@
                 </Dictionary>
                 <Dictionary prefix="action">
                     <record key="title">
-                        <value lang="en">File link</value>
-                        <value lang="ru">Ссылка на файл</value>
+                        <value lang="en">Custom action link</value>
+                        <value lang="ru">Ссылка с действием</value>
                     </record>
                     <record key="link">
                         <value lang="en">Show notification</value>

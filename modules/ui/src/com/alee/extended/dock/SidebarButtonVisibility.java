@@ -18,12 +18,12 @@
 package com.alee.extended.dock;
 
 /**
- * Various visibility settings for {@link com.alee.extended.dock.WebDockablePane} sidebar buttons.
+ * {@link SidebarButton}s visibility condition for {@link WebDockablePane}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  */
-public enum SidebarVisibility
+public enum SidebarButtonVisibility
 {
     /**
      * Do not display sidebar buttons.
@@ -34,7 +34,7 @@ public enum SidebarVisibility
     /**
      * Display sidebar buttons for frames in {@link DockableFrameState#minimized} and {@link DockableFrameState#preview} states.
      * Frames in {@link DockableFrameState#docked} or {@link DockableFrameState#floating} states will not have sidebar buttons available.
-     * This is also default setting used by {@link com.alee.extended.dock.WebDockablePane}.
+     * This is also default setting used by {@link WebDockablePane}.
      */
     minimized,
 

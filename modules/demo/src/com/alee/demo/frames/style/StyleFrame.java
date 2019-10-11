@@ -55,7 +55,7 @@ public final class StyleFrame extends WebDockableFrame
      */
     public StyleFrame ( final DemoApplication application )
     {
-        super ( ID, DemoIcons.style16, "demo.style.title" );
+        super ( StyleId.dockableframeCompact, ID, DemoIcons.style16, "demo.style.title" );
         setState ( DockableFrameState.minimized );
         setPosition ( CompassDirection.east );
         setPreferredSize ( 300, 200 );

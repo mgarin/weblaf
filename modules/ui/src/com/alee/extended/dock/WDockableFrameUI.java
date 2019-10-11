@@ -110,13 +110,12 @@ public abstract class WDockableFrameUI<C extends WebDockableFrame> extends Compo
     }
 
     /**
-     * Returns sidebar button for this frame.
-     * Sidebar button usually acts as a frame tab on the sidebar.
+     * Returns {@link SidebarButton} for {@link WebDockableFrame} represented by this UI.
      *
-     * @return sidebar button for this frame
+     * @return {@link SidebarButton} for {@link WebDockableFrame} represented by this UI
      */
     @NotNull
-    public abstract JComponent getSidebarButton ();
+    public abstract SidebarButton getSidebarButton ();
 
     /**
      * Returns minimum frame dialog size.

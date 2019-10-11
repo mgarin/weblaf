@@ -24,6 +24,7 @@ import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.dock.data.DockableFrameElement;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.*;
@@ -163,12 +164,12 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
             // Handling model and its state changes
             updateFrameData ();
         }
-        else if ( Objects.equals ( property, WebDockablePane.SIDEBAR_VISIBILITY_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockablePane.SIDEBAR_BUTTON_VISIBILITY_PROPERTY ) )
         {
             // Handling sidebar visibility change
             updateSidebarsVisibility ();
         }
-        else if ( Objects.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_WIDTH_PROPERTY ) )
         {
             // Updating dockable pane layout
             pane.revalidate ();
@@ -258,6 +259,9 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         {
             pane.getModel ().updateFrame ( pane, frame );
         }
+
+        WebLookAndFeel.globalControlFont = WebLookAndFeel.globalControlFont.deriveFont ( 11f );
+        WebLookAndFeel.globalTooltipFont = new Font ( "Arial", Font.PLAIN, 10 );
 
         // Ensure dockable pane layout is correct
         pane.revalidate ();
@@ -453,6 +457,9 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                             }
                         }
                     }
+
+                    // Updating frame in the model
+                    pane.getModel ().updateFrame ( pane, frame );
                 }
                 else if ( Objects.equals ( property, WebDockableFrame.RESTORE_STATE_PROPERTY ) )
                 {

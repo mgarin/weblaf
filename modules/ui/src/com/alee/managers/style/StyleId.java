@@ -658,6 +658,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.dock.WebDockablePane} style identifiers.
      */
     public static final StyleId dockablepane = StyleId.of ( "dockablepane" );
+    public static final StyleId dockablepaneCompact = StyleId.of ( "compact" );
     public static final ChildStyleId dockablepaneEmpty = ChildStyleId.of ( "empty" );
     public static final ChildStyleId dockablepaneFloating = ChildStyleId.of ( "floating" );
 
@@ -665,6 +666,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.dock.WebDockableFrame} style identifiers.
      */
     public static final StyleId dockableframe = StyleId.of ( "dockableframe" );
+    public static final StyleId dockableframeCompact = StyleId.of ( "compact" );
     public static final ChildStyleId dockableframeTitlePanel = ChildStyleId.of ( "title" );
     public static final ChildStyleId dockableframeTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId dockableframeTitleButtonsPanel = ChildStyleId.of ( "buttons" );
@@ -794,6 +796,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.collapsible.WebCollapsiblePane} style identifiers.
      */
     public static final StyleId collapsiblepane = StyleId.of ( "collapsiblepane" );
+    public static final StyleId collapsiblepaneUndecorated = StyleId.of ( "undecorated" );
     public static final ChildStyleId collapsiblepaneHeaderPanel = ChildStyleId.of ( "header" );
     public static final ChildStyleId collapsiblepaneTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId collapsiblepaneControlButton = ChildStyleId.of ( "control" );

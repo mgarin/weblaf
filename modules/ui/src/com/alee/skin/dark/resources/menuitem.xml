@@ -22,8 +22,8 @@
                 </decoration>
                 <decoration states="selected">
                     <GradientBackground>
-                        <color>55,55,55</color>
-                        <color>25,25,25</color>
+                        <color>72,72,72</color>
+                        <color>60,60,60</color>
                     </GradientBackground>
                     <MenuItemLayout>
                         <RoundRectangle opacity="1" />

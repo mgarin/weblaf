@@ -375,12 +375,16 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                     }
 
                     // Placing element
-                    element.layout ( dockablePane, new Rectangle ( x, y, width, height ), resizeableAreas );
+                    element.layout (
+                            dockablePane,
+                            new Rectangle ( x, y, width, height ),
+                            resizeableAreas
+                    );
 
                     // Adding resize element bounds
                     if ( i < visible.size () - 1 )
                     {
-                        final int rg = dockablePane.getResizeGripper ();
+                        final int rg = dockablePane.getResizeGripperWidth ();
                         final int rgx = horizontal ? x + width + spacing / 2 - rg / 2 : x;
                         final int rgy = horizontal ? y : y + height + spacing / 2 - rg / 2;
                         final int rgw = horizontal ? rg : width;

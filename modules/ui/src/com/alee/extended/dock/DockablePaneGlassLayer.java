@@ -28,9 +28,11 @@ import com.alee.extended.dock.drag.FrameDropData;
 import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.managers.drag.DragAdapter;
 import com.alee.managers.drag.DragManager;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -271,7 +273,17 @@ public class DockablePaneGlassLayer extends JComponent
             @Override
             public boolean importData ( @NotNull final TransferSupport support )
             {
-                return dockablePane.getModel ().drop ( dockablePane, support );
+                boolean imported;
+                try
+                {
+                    imported = dockablePane.getModel ().drop ( dockablePane, support );
+                }
+                catch ( final Exception e )
+                {
+                    LoggerFactory.getLogger ( CoreSwingUtils.class ).error ( "Unable to complete drop operation", e );
+                    imported = false;
+                }
+                return imported;
             }
         } );
 

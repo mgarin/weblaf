@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
@@ -215,19 +214,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
      */
     protected int getHorizontalAlignment ( final C c, final D d )
     {
-        final int alignment = halign != null ? halign : LEADING;
-        if ( alignment == LEADING )
-        {
-            return isLeftToRight ( c, d ) ? LEFT : RIGHT;
-        }
-        else if ( alignment == TRAILING )
-        {
-            return isLeftToRight ( c, d ) ? RIGHT : LEFT;
-        }
-        else
-        {
-            return alignment;
-        }
+        return halign != null ? halign : LEADING;
     }
 
     /**
@@ -239,18 +226,23 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
      */
     protected int getAdjustedHorizontalAlignment ( final C c, final D d )
     {
+        final int adjusted;
         final int alignment = getHorizontalAlignment ( c, d );
         switch ( alignment )
         {
             case LEADING:
-                return isLeftToRight ( c, d ) ? LEFT : RIGHT;
+                adjusted = isLeftToRight ( c, d ) ? LEFT : RIGHT;
+                break;
 
             case TRAILING:
-                return isLeftToRight ( c, d ) ? RIGHT : LEFT;
+                adjusted = isLeftToRight ( c, d ) ? RIGHT : LEFT;
+                break;
 
             default:
-                return alignment;
+                adjusted = alignment;
+                break;
         }
+        return adjusted;
     }
 
     /**
@@ -418,32 +410,49 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
     @Override
     public int getContentBaseline ( final C c, final D d, final Rectangle bounds )
     {
+        final int baseline;
         if ( !isHtmlText ( c, d ) )
         {
             final FontMetrics fm = getFontMetrics ( c, d );
-            return getTextY ( c, d, bounds, fm );
+            baseline = getTextY ( c, d, bounds, fm );
         }
-        return -1;
+        else
+        {
+            baseline = -1;
+        }
+        return baseline;
     }
 
     @Override
     public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final C c, final D d )
     {
+        final Component.BaselineResizeBehavior result;
         if ( !isHtmlText ( c, d ) )
         {
             switch ( getVerticalAlignment ( c, d ) )
             {
                 case TOP:
-                    return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
+                    result = Component.BaselineResizeBehavior.CONSTANT_ASCENT;
+                    break;
 
                 case BOTTOM:
-                    return Component.BaselineResizeBehavior.CONSTANT_DESCENT;
+                    result = Component.BaselineResizeBehavior.CONSTANT_DESCENT;
+                    break;
 
                 case CENTER:
-                    return Component.BaselineResizeBehavior.CENTER_OFFSET;
+                    result = Component.BaselineResizeBehavior.CENTER_OFFSET;
+                    break;
+
+                default:
+                    result = Component.BaselineResizeBehavior.OTHER;
+                    break;
             }
         }
-        return Component.BaselineResizeBehavior.OTHER;
+        else
+        {
+            result = Component.BaselineResizeBehavior.OTHER;
+        }
+        return result;
     }
 
     @Override
@@ -615,14 +624,19 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
     protected String getPaintedText ( final C c, final D d, final Rectangle bounds, final String text, final FontMetrics fm,
                                       final int width, final int alignment )
     {
+        final String paintedText;
         if ( isTruncate ( c, d ) && bounds.width < width )
         {
-            return SwingUtilities.layoutCompoundLabel ( fm, text, null, 0, alignment, 0, 0, bounds, new Rectangle (), new Rectangle (), 0 );
+            paintedText = SwingUtilities.layoutCompoundLabel (
+                    fm, text, null, 0, alignment, 0, 0,
+                    bounds, new Rectangle (), new Rectangle (), 0
+            );
         }
         else
         {
-            return text;
+            paintedText = text;
         }
+        return paintedText;
     }
 
     /**
@@ -675,7 +689,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
             final Color color = getShadowColor ( c, d );
             final double tx = -size;
             final double ty = 1 - size;
-            final boolean isShadow = true;
+            /* todo final boolean isShadow = true; - replace with shadow type? #557 */
 
             // Configuring graphics
             final Composite oldComposite = g2d.getComposite ();
@@ -696,7 +710,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
             g2d.setPaint ( ColorUtils.opaque ( color ) );
 
             // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
-            final int maxSize = isShadow ? size - 1 : size;
+            final int maxSize = /*isShadow ?*/ size - 1 /*: size*/;
             for ( int i = -size; i <= maxSize; i++ )
             {
                 for ( int j = -size; j <= maxSize; j++ )
@@ -771,6 +785,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
     @Override
     protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
+        final Dimension ps;
         if ( !isEmpty ( c, d ) )
         {
             final int w;
@@ -780,19 +795,20 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
                 final View html = getHtml ( c, d );
                 w = ( int ) html.getPreferredSpan ( View.X_AXIS );
                 h = ( int ) html.getPreferredSpan ( View.Y_AXIS );
-                return new Dimension ( w, h );
+                ps = new Dimension ( w, h );
             }
             else
             {
                 final Dimension pts = getPreferredTextSize ( c, d, available );
                 pts.width += isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0;
-                return pts;
+                ps = pts;
             }
         }
         else
         {
-            return new Dimension ( 0, 0 );
+            ps = new Dimension ( 0, 0 );
         }
+        return ps;
     }
 
     /**

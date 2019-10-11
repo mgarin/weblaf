@@ -133,7 +133,7 @@ public class WebDocumentPaneExample extends AbstractStylePreviewExample
             final WebDocumentPane documentPane = new WebDocumentPane ( getStyleId (), new Customizer<WebTabbedPane> ()
             {
                 @Override
-                public void customize ( final WebTabbedPane tabbedPane )
+                public void customize ( @NotNull final WebTabbedPane tabbedPane )
                 {
                     tabbedPane.setTabLayoutPolicy ( layoutPolicy );
                     tabbedPane.setTabPlacement ( tabPlacement );

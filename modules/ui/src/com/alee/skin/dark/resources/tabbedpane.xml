@@ -91,6 +91,9 @@
                                         </Stripe>
                                     </Stripes>
                                 </decoration>
+                                <decoration states="enabled,selected,hover">
+                                    <ColorBackground color="55,55,55" />
+                                </decoration>
                                 <decoration states="selected,in-focused-parent">
                                     <Stripes>
                                         <Stripe stroke="basic;5">
@@ -149,13 +152,35 @@
                 <style type="popupmenu" id="menu">
                     <painter>
                         <popupStyle>simple</popupStyle>
-                        <round>2</round>
+                        <background>68,68,68</background>
+                        <borderColor>20,20,20</borderColor>
+                        <round>0</round>
                         <shadeWidth>2</shadeWidth>
-                        <opacity>0.98</opacity>
+                        <shadeOpacity>1</shadeOpacity>
+                        <opacity>1</opacity>
                     </painter>
 
                     <!-- Menu item -->
-                    <style type="menuitem" id="item" />
+                    <style type="radiobuttonmenuitem" id="item">
+                        <painter>
+                            <decorations>
+                                <decoration states="selected">
+                                    <ColorBackground color="55,55,55" />
+                                </decoration>
+                                <decoration states="checked">
+                                    <ColorBackground color="45,45,45" />
+                                    <Stripes orientation="vertical" align="left" bounds="margin">
+                                        <Stripe stroke="basic;5">
+                                            <color>64,131,201</color>
+                                        </Stripe>
+                                    </Stripes>
+                                </decoration>
+                                <decoration states="checked,selected">
+                                    <ColorBackground color="55,55,55" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
 
                 </style>
 

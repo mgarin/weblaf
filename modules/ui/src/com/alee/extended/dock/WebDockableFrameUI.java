@@ -26,7 +26,6 @@ import com.alee.extended.dock.drag.DockableFrameTransferHandler;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.focus.DefaultFocusTracker;
@@ -36,8 +35,6 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.painter.decoration.DecorationUtils;
-import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
@@ -51,8 +48,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Custom UI for {@link WebDockableFrame} component.
@@ -136,7 +131,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     protected void installComponents ()
     {
         // Frame sidebar button
-        sidebarButton = new SidebarButton ();
+        sidebarButton = new SidebarButton ( frame );
 
         // Default frame layout
         frame.setLayout ( new BorderLayout () );
@@ -205,8 +200,14 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
      */
     protected void installActions ()
     {
-        dialogMoveBehavior = new ComponentMoveBehavior ( titlePanel );
-        dialogMoveBehavior.setEnabled ( frame.isFloating () );
+        dialogMoveBehavior = new ComponentMoveBehavior ( titlePanel )
+        {
+            @Override
+            public boolean isEnabled ()
+            {
+                return frame.isFloating ();
+            }
+        };
         dialogMoveBehavior.install ();
 
         titlePanel.onMousePress ( MouseButton.left, new MouseEventRunnable ()
@@ -233,7 +234,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
             public void run ( @NotNull final MouseEvent e )
             {
                 // Starting frame drag if transfer handler is available
-                if ( frame.isDraggable () && !frame.isFloating () )
+                if ( frame.isDraggable () && !frame.isFloating () && !frame.isMaximized () )
                 {
                     final TransferHandler handler = frame.getTransferHandler ();
                     if ( handler != null )
@@ -360,9 +361,6 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 frame.setRestoreState ( oldState );
             }
 
-            // Enable dialog move behavior only when frame is floating
-            dialogMoveBehavior.setEnabled ( frame.isFloating () );
-
             // Updating sidebar button states
             sidebarButton.updateStates ();
 
@@ -387,9 +385,20 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
                 requestFocusInFrame ();
             }
         }
-        else if ( Objects.equals ( property, WebDockableFrame.MAXIMIZABLE_PROPERTY, WebDockableFrame.MAXIMIZED_PROPERTY ) )
+        else if ( Objects.equals ( property, WebDockableFrame.MAXIMIZABLE_PROPERTY ) )
         {
-            // Updating maximizebutton
+            // Updating maximize button
+            updateMaximizeButton ();
+
+            // Cancelling maximized state since it is not allowed anymore
+            if ( !frame.isMaximizable () && frame.isMaximized () )
+            {
+                frame.setMaximized ( false );
+            }
+        }
+        else if ( Objects.equals ( property, WebDockableFrame.MAXIMIZED_PROPERTY ) )
+        {
+            // Updating maximize button
             updateMaximizeButton ();
         }
         else if ( Objects.equals ( property, WebDockableFrame.CLOSABLE_PROPERTY ) )
@@ -531,7 +540,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
 
     @NotNull
     @Override
-    public JComponent getSidebarButton ()
+    public SidebarButton getSidebarButton ()
     {
         return sidebarButton;
     }
@@ -640,124 +649,5 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, painter );
-    }
-
-    /**
-     * Custom sidebar button class providing additional decoration states.
-     */
-    protected class SidebarButton extends WebToggleButton implements Stateful
-    {
-        /**
-         * Constructs new sidebar button.
-         */
-        public SidebarButton ()
-        {
-            super ( StyleId.dockableframeSidebarButton.at ( frame ), frame.getTitle (), frame.getIcon () );
-            setFocusable ( false );
-            setSelected ( getSelectionState () );
-            onMousePress ( MouseButton.right, new MouseEventRunnable ()
-            {
-                @Override
-                public void run ( @NotNull final MouseEvent e )
-                {
-                    final WebDockablePane dockablePane = frame.getDockablePane ();
-                    if ( dockablePane != null )
-                    {
-                        if ( dockablePane.getSidebarButtonAction () == SidebarButtonAction.preview )
-                        {
-                            if ( frame.isMinimized () )
-                            {
-                                frame.dock ();
-                            }
-                            else
-                            {
-                                frame.minimize ();
-                            }
-                        }
-                        else
-                        {
-                            if ( frame.isMinimized () )
-                            {
-                                frame.preview ();
-                            }
-                            else if ( frame.isPreview () )
-                            {
-                                frame.minimize ();
-                            }
-                        }
-                    }
-                }
-            } );
-            addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( @NotNull final ActionEvent e )
-                {
-                    final WebDockablePane dockablePane = frame.getDockablePane ();
-                    if ( dockablePane != null )
-                    {
-                        if ( isSelected () )
-                        {
-                            switch ( dockablePane.getSidebarButtonAction () )
-                            {
-                                case restore:
-                                    frame.restore ();
-                                    break;
-
-                                case preview:
-                                    frame.preview ();
-                                    break;
-
-                                case dock:
-                                    frame.dock ();
-                                    break;
-
-                                case detach:
-                                    frame.detach ();
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            frame.minimize ();
-                        }
-                    }
-                }
-            } );
-        }
-
-        @Nullable
-        @Override
-        public List<String> getStates ()
-        {
-            final List<String> states = new ArrayList<String> ();
-            states.add ( frame.getState ().name () );
-            states.add ( frame.getPosition ().name () );
-            return states;
-        }
-
-        /**
-         * Updates decoration states.
-         */
-        public void updateStates ()
-        {
-            final boolean selected = getSelectionState ();
-            if ( selected != isSelected () )
-            {
-                setSelected ( selected );
-            }
-            DecorationUtils.fireStatesChanged ( this );
-        }
-
-        /**
-         * Returns sidebar button selection state.
-         *
-         * @return {@code true} if sidebar button should be selected, {@code false} otherwise
-         */
-        protected boolean getSelectionState ()
-        {
-            return frame.isDocked () || frame.isFloating () || frame.isPreview () && frame.getDockablePane () != null &&
-                    frame.getDockablePane ().getSidebarButtonAction () == SidebarButtonAction.preview;
-        }
     }
 }

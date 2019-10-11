@@ -10,14 +10,6 @@
 
     <!-- Empty central area panel -->
     <style type="panel" id="emptycontent" padding="10">
-        <painter>
-            <decorations>
-                <decoration>
-                    <BoundsShape />
-                    <PresetTextureBackground preset="darkWashedWall" />
-                </decoration>
-            </decorations>
-        </painter>
 
         <!-- Empty content labels -->
         <style type="styledlabel" id="emptycontent">

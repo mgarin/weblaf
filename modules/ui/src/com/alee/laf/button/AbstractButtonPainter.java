@@ -62,7 +62,7 @@ public abstract class AbstractButtonPainter<C extends AbstractButton, U extends 
         // Updating hover listener
         if ( Objects.equals ( property, AbstractButton.ROLLOVER_ENABLED_CHANGED_PROPERTY ) )
         {
-            updateHoverListener ();
+            updateHoverListeners ();
         }
     }
 

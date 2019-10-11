@@ -265,14 +265,16 @@ public class GroupLayout extends AbstractLayoutManager
      */
     protected boolean isFill ( final Component component )
     {
+        final boolean fill;
         if ( constraints.containsKey ( component ) )
         {
             final String constraint = constraints.get ( component );
-            return constraint != null && constraint.equals ( FILL );
+            fill = constraint != null && constraint.equals ( FILL );
         }
         else
         {
-            return false;
+            fill = false;
         }
+        return fill;
     }
 }

@@ -50,7 +50,7 @@ public final class SourceFrame extends WebDockableFrame
      */
     public SourceFrame ( final DemoApplication application )
     {
-        super ( ID, DemoIcons.source16, "demo.source.title" );
+        super ( StyleId.dockableframeCompact, ID, DemoIcons.source16, "demo.source.title" );
         setState ( DockableFrameState.minimized );
         setPosition ( CompassDirection.east );
         setPreferredSize ( 300, 200 );

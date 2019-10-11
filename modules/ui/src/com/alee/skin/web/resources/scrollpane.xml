@@ -63,13 +63,6 @@
             </decorations>
         </painter>
 
-        <!-- Corners -->
-        <style type="canvas" id="corner">
-            <painter>
-                <decorations overwrite="true" />
-            </painter>
-        </style>
-
     </style>
 
     <!-- Scroll pane with no focus display -->
@@ -94,6 +87,13 @@
 
         <!-- Undecorated scrollbar -->
         <style type="scrollbar" id="scrollbar" extends="undecorated" />
+
+        <!-- Corners -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations overwrite="true" />
+            </painter>
+        </style>
 
     </style>
 
@@ -171,6 +171,13 @@
 
         <!-- Transprent viewport -->
         <style type="viewport" id="viewport" extends="transparent" />
+
+        <!-- Corners -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations overwrite="true" />
+            </painter>
+        </style>
 
     </style>
 

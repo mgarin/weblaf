@@ -18,8 +18,8 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
+import com.alee.laf.menu.WebRadioButtonMenuItem;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.LafUtils;
 
@@ -29,12 +29,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Custom {@link WebMenuItem} used as {@link JTabbedPane} tab menu item.
+ * Custom {@link WebRadioButtonMenuItem} used as {@link JTabbedPane} tab menu item.
  * It is also a {@link UIResource} as it should be exclusively used by the UI implementations.
  *
  * @author Mikle Garin
  */
-public class TabMenuItem extends WebMenuItem implements ActionListener, UIResource
+public class TabMenuItem extends WebRadioButtonMenuItem implements ActionListener, UIResource
 {
     /**
      * {@link JTabbedPane} this {@link TabMenuItem} is used for.
@@ -59,6 +59,9 @@ public class TabMenuItem extends WebMenuItem implements ActionListener, UIResour
         super ( StyleId.tabbedpaneTabMenuItem.at ( menu ) );
         this.tabbedPane = tabbedPane;
         this.index = index;
+
+        // Selected state
+        setSelected ( tabbedPane.getSelectedIndex () == index );
 
         // Retrieving icon and title
         final Icon icon;

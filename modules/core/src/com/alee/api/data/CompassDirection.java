@@ -23,6 +23,7 @@ import java.awt.*;
 /**
  * Enumeration representing compass direction constants.
  * It is designed to conveniently provide state titles for various components.
+ * todo Remove {@link #center} direction as it not really correct?
  *
  * @author Mikle Garin
  */
@@ -70,36 +71,47 @@ public enum CompassDirection implements SwingConstants
      */
     public CompassDirection opposite ()
     {
+        final CompassDirection opposite;
         switch ( this )
         {
             case northEast:
-                return southWest;
+                opposite = southWest;
+                break;
 
             case north:
-                return south;
+                opposite = south;
+                break;
 
             case northWest:
-                return southEast;
+                opposite = southEast;
+                break;
 
             case east:
-                return west;
+                opposite = west;
+                break;
 
             case west:
-                return east;
+                opposite = east;
+                break;
 
             case southEast:
-                return northWest;
+                opposite = northWest;
+                break;
 
             case south:
-                return north;
+                opposite = north;
+                break;
 
             case southWest:
-                return northEast;
+                opposite = northEast;
+                break;
 
             case center:
             default:
-                return center;
+                opposite = center;
+                break;
         }
+        return opposite;
     }
 
     /**
@@ -110,30 +122,42 @@ public enum CompassDirection implements SwingConstants
      */
     public CompassDirection adjust ( final ComponentOrientation orientation )
     {
+        final CompassDirection adjusted;
         if ( !orientation.isLeftToRight () )
         {
             switch ( this )
             {
                 case northEast:
-                    return northWest;
+                    adjusted = northWest;
+                    break;
                 case northWest:
-                    return northEast;
+                    adjusted = northEast;
+                    break;
 
                 case east:
-                    return west;
+                    adjusted = west;
+                    break;
                 case west:
-                    return east;
+                    adjusted = east;
+                    break;
 
                 case southEast:
-                    return southWest;
+                    adjusted = southWest;
+                    break;
                 case southWest:
-                    return southEast;
+                    adjusted = southEast;
+                    break;
 
                 default:
-                    return this;
+                    adjusted = this;
+                    break;
             }
         }
-        return this;
+        else
+        {
+            adjusted = this;
+        }
+        return adjusted;
     }
 
     /**
@@ -144,35 +168,46 @@ public enum CompassDirection implements SwingConstants
      */
     public static CompassDirection get ( final int value )
     {
+        final CompassDirection direction;
         switch ( value )
         {
             case NORTH_EAST:
-                return northEast;
+                direction = northEast;
+                break;
 
             case NORTH:
-                return north;
+                direction = north;
+                break;
 
             case NORTH_WEST:
-                return northWest;
+                direction = northWest;
+                break;
 
             case EAST:
-                return east;
+                direction = east;
+                break;
 
             case WEST:
-                return west;
+                direction = west;
+                break;
 
             case SOUTH_EAST:
-                return southEast;
+                direction = southEast;
+                break;
 
             case SOUTH:
-                return south;
+                direction = south;
+                break;
 
             case SOUTH_WEST:
-                return southWest;
+                direction = southWest;
+                break;
 
             case CENTER:
             default:
-                return center;
+                direction = center;
+                break;
         }
+        return direction;
     }
 }

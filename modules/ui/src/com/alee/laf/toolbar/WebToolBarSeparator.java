@@ -45,7 +45,7 @@ import java.awt.event.MouseAdapter;
  * You could still use that component even if WebLaF is not your application LaF as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see JToolBar.Separator
+ * @see javax.swing.JToolBar.Separator
  * @see WebToolBarSeparatorUI
  * @see ToolBarSeparatorPainter
  */

@@ -315,6 +315,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     {
         if ( Objects.notEquals ( this.maximized, maximized ) )
         {
+            // todo Restore frame if maximized on "false"?
             final boolean old = this.maximized;
             this.maximized = maximized;
             firePropertyChange ( MAXIMIZED_PROPERTY, old, maximized );
@@ -580,12 +581,12 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     }
 
     /**
-     * Returns sidebar button for this frame.
+     * Returns {@link SidebarButton} for this {@link WebDockableFrame}.
      *
-     * @return sidebar button for this frame
+     * @return {@link SidebarButton} for this {@link WebDockableFrame}
      */
     @NotNull
-    public JComponent getSidebarButton ()
+    public SidebarButton getSidebarButton ()
     {
         return getUI ().getSidebarButton ();
     }
@@ -601,7 +602,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
         final WebDockablePane dockablePane = getDockablePane ();
         if ( dockablePane != null )
         {
-            switch ( dockablePane.getSidebarVisibility () )
+            switch ( dockablePane.getSidebarButtonVisibility () )
             {
                 case never:
                     visible = false;

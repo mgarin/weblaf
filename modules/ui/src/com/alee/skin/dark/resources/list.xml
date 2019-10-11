@@ -24,8 +24,8 @@
                     <decoration states="enabled,unselected,hover" opacity="0.4">
                         <WebShape round="0" />
                         <GradientBackground>
-                            <color>55,55,55</color>
-                            <color>25,25,25</color>
+                            <color>72,72,72</color>
+                            <color>60,60,60</color>
                         </GradientBackground>
                     </decoration>
                 </decorations>
@@ -34,13 +34,14 @@
             <!-- Selected cells background painter -->
             <selectionPainter>
                 <decorations>
-                    <decoration>
+                    <decoration opacity="0.75">
                         <WebShape round="0" />
                         <GradientBackground>
-                            <color>55,55,55</color>
-                            <color>25,25,25</color>
+                            <color>72,72,72</color>
+                            <color>60,60,60</color>
                         </GradientBackground>
                     </decoration>
+                    <decoration states="focused" opacity="1" />
                     <decoration states="disabled" opacity="0.5" />
                 </decorations>
             </selectionPainter>

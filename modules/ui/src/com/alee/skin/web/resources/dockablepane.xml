@@ -2,10 +2,12 @@
 
     <!-- com.alee.extended.dock.WebDockablePane -->
 
-    <!-- Dockable frame -->
+    <!-- Dockable pane -->
     <style type="dockablepane" padding="2">
         <component>
             <opaque>true</opaque>
+            <groupElements>false</groupElements>
+            <sidebarSpacing>0</sidebarSpacing>
         </component>
         <painter>
             <decorations>
@@ -41,6 +43,81 @@
                 </decorations>
             </painter>
         </style>
+
+    </style>
+
+    <!-- Compact dockable pane -->
+    <style type="dockablepane" id="compact" padding="0">
+        <component>
+            <groupElements>true</groupElements>
+            <sidebarSpacing>1</sidebarSpacing>
+        </component>
+        <painter>
+
+            <!-- Sidebar borders -->
+            <!-- todo This is a temporary solution until sidebar containers are added -->
+            <areaPainter>
+                <decorations>
+                    <decoration states="northWest">
+                        <Stripes orientation="horizontal" align="bottom">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="north">
+                        <Stripes orientation="horizontal" align="bottom">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="northEast">
+                        <Stripes orientation="horizontal" align="bottom">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="west">
+                        <Stripes orientation="vertical" align="right">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="east">
+                        <Stripes orientation="vertical" align="left">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="southWest">
+                        <Stripes orientation="horizontal" align="top">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="south">
+                        <Stripes orientation="horizontal" align="top">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                    <decoration states="southEast">
+                        <Stripes orientation="horizontal" align="top">
+                            <Stripe>
+                                <color>170,170,170</color>
+                            </Stripe>
+                        </Stripes>
+                    </decoration>
+                </decorations>
+            </areaPainter>
+
+        </painter>
 
     </style>
 
