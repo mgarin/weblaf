@@ -120,10 +120,10 @@ https://github.com/mgarin/weblaf/tree/master/ide
 
 You can specify them instead of the default settings in main settings dialog:
 
-Code style (`ide/intellij-idea-code-style.xml`)<br>
+Code style settings (`ide/intellij-idea-code-style.xml`)<br>
 ![Code Style Settings](./screenshots/code-style-settings.png)
 
-Code style (`ide/intellij-idea-inspections.xml`)<br>
-![Code Style Settings](./screenshots/inspection-settings.png)
+Inspection settings (`ide/intellij-idea-inspections.xml`)<br>
+![Inspection Settings](./screenshots/inspection-settings.png)
 
 Once these are set you will be able to safely reformat (`Ctrl+Alt+L` by default) any project file and you should also get some warnings for the stuff mentioned in Code Philosophy section.
