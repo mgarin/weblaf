@@ -34,6 +34,7 @@ import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeListener;
 
 /**
  * {@link JMenu} extension class.
@@ -162,6 +163,83 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     {
         super.init ( UILanguageManager.getInitialText ( text ), icon );
         UILanguageManager.registerInitialLanguage ( this, text );
+    }
+
+    @Override
+    public JMenuItem add ( final String text )
+    {
+        return add ( new WebMenuItem ( text ) );
+    }
+
+    @Override
+    public JMenuItem add ( final Action action )
+    {
+        final JMenuItem menuItem = createActionComponent ( action );
+        menuItem.setAction ( action );
+        return add ( menuItem );
+    }
+
+    @Override
+    public void insert ( final String text, final int index )
+    {
+        final JMenuItem menuItem = new WebMenuItem ( text );
+        insert ( menuItem, index );
+    }
+
+    @Override
+    public JMenuItem insert ( final Action action, final int index )
+    {
+        final JMenuItem menuItem = createActionComponent ( action );
+        menuItem.setAction ( action );
+        return insert ( menuItem, index );
+    }
+
+    @Override
+    protected JMenuItem createActionComponent ( final Action action )
+    {
+        final JMenuItem mi = new WebMenuItem ()
+        {
+            @Override
+            protected PropertyChangeListener createActionPropertyChangeListener ( final Action action )
+            {
+                PropertyChangeListener actionChangeListener = createActionChangeListener ( this );
+                if ( actionChangeListener == null )
+                {
+                    actionChangeListener = super.createActionPropertyChangeListener ( action );
+                }
+                return actionChangeListener;
+            }
+        };
+        mi.setHorizontalTextPosition ( WebMenuItem.TRAILING );
+        mi.setVerticalTextPosition ( WebMenuItem.CENTER );
+        return mi;
+    }
+
+    @Override
+    public void addSeparator ()
+    {
+        add ( new WebPopupMenuSeparator () );
+    }
+
+    /**
+     * Adds separator into menu at the specified Z-index.
+     *
+     * @param index separator Z-index
+     */
+    public void addSeparator ( final int index )
+    {
+        add ( new WebPopupMenuSeparator (), index );
+    }
+
+    /**
+     * Adds separator into menu at the specified Z-index.
+     *
+     * @param index separator Z-index
+     */
+    @Override
+    public void insertSeparator ( final int index )
+    {
+        add ( new WebPopupMenuSeparator (), index );
     }
 
     @NotNull

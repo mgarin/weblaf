@@ -48,6 +48,10 @@
                 </decoration>
             </decorations>
         </painter>
+
+        <!-- Popup menu style -->
+        <style type="popupmenu" id="popupmenu" />
+
     </style>
 
 </skin>

@@ -71,6 +71,14 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
 
         // Applying skin
         StyleManager.installSkin ( popupMenu );
+
+        // Adjusting style for JPopupMenu that uses default style and has a JMenu as invoker
+        // This allows us to customize otherwise unaccessible JPopupMenu created in JMenu's private methods
+        // The trick here is that when JMenu changes JPopupMenu invoker it also updates it's UI
+        if ( StyleManager.getStyleId ( popupMenu ) == StyleId.popupmenu && popupMenu.getInvoker () instanceof JMenu )
+        {
+            StyleId.menuPopupMenu.at ( ( JMenu ) popupMenu.getInvoker () ).set ( popupMenu );
+        }
     }
 
     @Override

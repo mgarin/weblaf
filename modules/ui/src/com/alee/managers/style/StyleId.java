@@ -193,6 +193,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.laf.menu.WebMenu} style identifiers.
      */
     public static final StyleId menu = StyleId.of ( "menu" );
+    public static final ChildStyleId menuPopupMenu = ChildStyleId.of ( "popupmenu" );
 
     /**
      * {@link com.alee.laf.menu.WebPopupMenu} style identifiers.

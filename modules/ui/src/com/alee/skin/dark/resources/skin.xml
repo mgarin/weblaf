@@ -40,13 +40,13 @@
     <include>resources/multisplitpane.xml</include>
     <include>resources/separator.xml</include>
     <include>resources/slider.xml</include>
+    <include>resources/popupmenu.xml</include>
+    <include>resources/popupmenuseparator.xml</include>
     <include>resources/menubar.xml</include>
     <include>resources/menu.xml</include>
     <include>resources/menuitem.xml</include>
     <include>resources/checkboxmenuitem.xml</include>
     <include>resources/radiobuttonmenuitem.xml</include>
-    <include>resources/popupmenu.xml</include>
-    <include>resources/popupmenuseparator.xml</include>
     <include>resources/textfield.xml</include>
     <include>resources/passwordfield.xml</include>
     <include>resources/formattedtextfield.xml</include>
