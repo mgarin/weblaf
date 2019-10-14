@@ -93,7 +93,7 @@ public final class BasicHTML
         }
         final ViewFactory f = kit.getViewFactory ();
         final View hview = f.create ( doc.getDefaultRootElement () );
-        return new Renderer ( f, hview );
+        return new Renderer ( c, f, hview );
     }
 
     /**
@@ -417,14 +417,16 @@ public final class BasicHTML
      */
     private static class Renderer extends View
     {
+        private final JComponent host;
         private final View view;
         private final ViewFactory factory;
 
         private int width;
 
-        public Renderer ( final ViewFactory f, final View v )
+        public Renderer ( final JComponent c, final ViewFactory f, final View v )
         {
             super ( null );
+            host = c;
             factory = f;
             view = v;
             view.setParent ( this );
@@ -705,7 +707,7 @@ public final class BasicHTML
         @Override
         public Container getContainer ()
         {
-            return null;
+            return host;
         }
 
         /**
