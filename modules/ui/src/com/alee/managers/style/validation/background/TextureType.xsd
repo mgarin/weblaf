@@ -18,6 +18,9 @@
             <!-- Graphy texture -->
             <xs:enumeration value="graphy" />
 
+            <!-- Graphy texture -->
+            <xs:enumeration value="darkGraphy" />
+
             <!-- Illusion texture -->
             <xs:enumeration value="illusion" />
 

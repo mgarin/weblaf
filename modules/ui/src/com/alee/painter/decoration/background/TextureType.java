@@ -56,6 +56,13 @@ public enum TextureType
     graphy,
 
     /**
+     * Dark graphy texture.
+     * Pattern source: http://subtlepatterns.com/
+     * Made by We Are Pixel8: http://www.wearepixel8.com/
+     */
+    darkGraphy,
+
+    /**
      * Illusion texture.
      * Pattern source: http://subtlepatterns.com/
      * Made by Mohawk Studios: http://mohawkstudios.com/
