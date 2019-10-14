@@ -21,10 +21,10 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.Skin;
-import com.alee.utils.CoreSwingUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Simple utility for quickly running test Swing code.
@@ -71,7 +71,22 @@ public final class SwingTest
     private static void run ( @NotNull final String lookAndFeel, @Nullable final Class<? extends Skin> skin,
                               @NotNull final Runnable runnable )
     {
-        CoreSwingUtils.enableEventQueueLogging ();
+        Toolkit.getDefaultToolkit ().getSystemEventQueue ().push ( new EventQueue ()
+        {
+            @SuppressWarnings ( "CallToPrintStackTrace" )
+            @Override
+            protected void dispatchEvent ( final AWTEvent event )
+            {
+                try
+                {
+                    super.dispatchEvent ( event );
+                }
+                catch ( final Throwable e )
+                {
+                    e.printStackTrace ();
+                }
+            }
+        } );
         SwingUtilities.invokeLater ( new Runnable ()
         {
             @Override

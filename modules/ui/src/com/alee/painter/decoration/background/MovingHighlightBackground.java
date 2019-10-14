@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.data.Orientation;
 import com.alee.api.merge.behavior.OmitOnMerge;
@@ -46,38 +47,44 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
         extends AbstractBackground<C, D, I>
 {
     /**
-     * Movement orientation.
+     * Highlight movement {@link Orientation}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Orientation orientation;
 
     /**
      * Highlight width.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer width;
 
     /**
-     * Highlight color.
+     * Highlight {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
     /**
-     * Amount of highlight passes before delay.
+     * Highlight passes count.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer passes;
 
     /**
-     * Single pass duration.
+     * Single pass animation duration.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String duration;
 
     /**
-     * Delay between animations.
+     * Delay between repeated animations.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String delay;
 
@@ -98,6 +105,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     /**
      * Transition used for background animations.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient QueueTransition transitionsQueue;
@@ -131,6 +139,72 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     }
 
     /**
+     * Returns highlight movement {@link Orientation}.
+     *
+     * @return highlight movement {@link Orientation}
+     */
+    @Nullable
+    public Orientation getOrientation ()
+    {
+        return orientation;
+    }
+
+    /**
+     * Returns highlight width.
+     *
+     * @return highlight width
+     */
+    @Nullable
+    public Integer getWidth ()
+    {
+        return width;
+    }
+
+    /**
+     * Returns highlight {@link Color}.
+     *
+     * @return highlight {@link Color}
+     */
+    @Nullable
+    public Color getColor ()
+    {
+        return color;
+    }
+
+    /**
+     * Returns highlight passes count.
+     *
+     * @return highlight passes count
+     */
+    @Nullable
+    protected Integer getPasses ()
+    {
+        return passes;
+    }
+
+    /**
+     * Returns delay between repeated animations.
+     *
+     * @return delay between repeated animations
+     */
+    @Nullable
+    protected Long getDelay ()
+    {
+        return delay != null ? DurationUnits.get ().fromString ( delay ) : null;
+    }
+
+    /**
+     * Returns single pass animation duration.
+     *
+     * @return single pass animation duration
+     */
+    @Nullable
+    protected Long getDuration ()
+    {
+        return duration != null ? DurationUnits.get ().fromString ( duration ) : null;
+    }
+
+    /**
      * Starts background animation.
      *
      * @param c painted component
@@ -139,42 +213,50 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     {
         if ( transitionsQueue == null )
         {
-            // Resetting position
-            position = 0f;
-
-            // Custom transition for background animations
-            transitionsQueue = new QueueTransition ( true );
-
-            // Adding delay if required
-            // Delay is added first to avoid repetitive animation
-            final long del = DurationUnits.get ().fromString ( delay );
-            if ( del > 0 )
+            // Checking settings
+            final Orientation orientation = getOrientation ();
+            final Integer width = getWidth ();
+            final Color color = getColor ();
+            final Integer passes = getPasses ();
+            final Long duration = getDuration ();
+            if ( orientation != null && width != null && color != null && passes != null && duration != null )
             {
-                transitionsQueue.add ( new IdleTransition ( passes % 2 == 0 ? 0f : 1f, del ) );
-            }
+                // Resetting position
+                position = 0f;
 
-            // Adding passes
-            final long dur = DurationUnits.get ().fromString ( duration );
-            for ( int i = 0; i < passes; i++ )
-            {
-                final float from = i % 2 == 0 ? 0f : 1f;
-                final float to = i % 2 == 0 ? 1f : 0f;
-                transitionsQueue.add ( new TimedTransition<Float> ( from, to, dur ) );
-            }
+                // Custom transition for background animations
+                transitionsQueue = new QueueTransition ( true );
 
-            // Value update listener
-            transitionsQueue.addListener ( new TransitionAdapter<Float> ()
-            {
-                @Override
-                public void adjusted ( final Transition transition, final Float value )
+                // Adding delay if required
+                // Delay is added first to avoid repetitive animation
+                final Long delay = getDelay ();
+                if ( delay != null && delay > 0 )
                 {
-                    position = value;
-                    c.repaint ();
+                    transitionsQueue.add ( new IdleTransition ( passes % 2 == 0 ? 0f : 1f, delay ) );
                 }
-            } );
 
-            // Playing transition
-            transitionsQueue.play ();
+                // Adding passes
+                for ( int i = 0; i < passes; i++ )
+                {
+                    final float from = i % 2 == 0 ? 0f : 1f;
+                    final float to = i % 2 == 0 ? 1f : 0f;
+                    transitionsQueue.add ( new TimedTransition<Float> ( from, to, duration ) );
+                }
+
+                // Value update listener
+                transitionsQueue.addListener ( new TransitionAdapter<Float> ()
+                {
+                    @Override
+                    public void adjusted ( final Transition transition, final Float value )
+                    {
+                        position = value;
+                        c.repaint ();
+                    }
+                } );
+
+                // Playing transition
+                transitionsQueue.play ();
+            }
         }
     }
 
@@ -204,44 +286,50 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
         final float opacity = getOpacity ();
         if ( opacity > 0 )
         {
-            final Rectangle b = shape.getBounds ();
-            final Paint paint;
-            if ( orientation.isHorizontal () )
+            final Orientation orientation = getOrientation ();
+            final Integer width = getWidth ();
+            final Color color = getColor ();
+            if ( orientation != null && width != null && color != null )
             {
-                if ( c.getComponentOrientation ().isLeftToRight () )
+                final Rectangle b = shape.getBounds ();
+                final Paint paint;
+                if ( orientation.isHorizontal () )
                 {
-                    paint = new RadialGradientPaint ( b.x - width / 2 + ( b.width + width ) * position, b.y + b.height / 2, width / 2,
-                            new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
+                    if ( c.getComponentOrientation ().isLeftToRight () )
+                    {
+                        paint = new RadialGradientPaint ( b.x - width / 2 + ( b.width + width ) * position, b.y + b.height / 2, width / 2,
+                                new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
+                    }
+                    else
+                    {
+                        paint = new RadialGradientPaint ( b.x + b.width + width / 2 - ( b.width + width ) * position, b.y + b.height / 2,
+                                width / 2, new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
+                    }
                 }
                 else
                 {
-                    paint = new RadialGradientPaint ( b.x + b.width + width / 2 - ( b.width + width ) * position, b.y + b.height / 2,
-                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
+                    if ( c.getComponentOrientation ().isLeftToRight () )
+                    {
+                        paint = new RadialGradientPaint ( b.x + b.width / 2, b.y + b.height + width / 2 - ( b.height + width ) * position,
+                                width / 2, new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
+                    }
+                    else
+                    {
+                        paint = new RadialGradientPaint ( b.x + b.width / 2, b.y - width / 2 + ( b.height + width ) * position, width / 2,
+                                new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
+                    }
                 }
+
+                final Shape ocl = GraphicsUtils.intersectClip ( g2d, shape );
+                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
+                final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+
+                g2d.fillRect ( b.x, b.y, b.width, b.height );
+
+                GraphicsUtils.restorePaint ( g2d, op );
+                GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+                GraphicsUtils.restoreClip ( g2d, ocl );
             }
-            else
-            {
-                if ( c.getComponentOrientation ().isLeftToRight () )
-                {
-                    paint = new RadialGradientPaint ( b.x + b.width / 2, b.y + b.height + width / 2 - ( b.height + width ) * position,
-                            width / 2, new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
-                }
-                else
-                {
-                    paint = new RadialGradientPaint ( b.x + b.width / 2, b.y - width / 2 + ( b.height + width ) * position, width / 2,
-                            new float[]{ 0f, 1f }, new Color[]{ color, ColorUtils.transparent () } );
-                }
-            }
-
-            final Shape ocl = GraphicsUtils.intersectClip ( g2d, shape );
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-            final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
-
-            g2d.fillRect ( b.x, b.y, b.width, b.height );
-
-            GraphicsUtils.restorePaint ( g2d, op );
-            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
-            GraphicsUtils.restoreClip ( g2d, ocl );
         }
     }
 }

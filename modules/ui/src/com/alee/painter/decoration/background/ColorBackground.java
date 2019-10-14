@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -41,6 +43,7 @@ public class ColorBackground<C extends JComponent, D extends IDecoration<C, D>, 
     /**
      * Background color.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
@@ -49,6 +52,7 @@ public class ColorBackground<C extends JComponent, D extends IDecoration<C, D>, 
      *
      * @return background color
      */
+    @NotNull
     protected Color getColor ()
     {
         return color != null ? color : Color.WHITE;

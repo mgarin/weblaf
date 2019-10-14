@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.behavior.OverwriteOnMerge;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.IDecoration;
@@ -47,6 +49,7 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
      * Gradient type.
      * {@link GradientType#linear} is used if it is not specified.
      */
+    @Nullable
     @XStreamAsAttribute
     protected GradientType type;
 
@@ -54,6 +57,7 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
      * Bounds width/height percentage representing gradient start point.
      * Point [0,0] is used by default if this value is not specified.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Point2D.Float from;
 
@@ -61,13 +65,15 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
      * Bounds width/height percentage representing gradient end point.
      * Point [0,1] is used by default if this value is not specified.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Point2D.Float to;
 
     /**
-     * Gradient colors.
-     * Must always be provided to properly render separator.
+     * {@link List} of {@link GradientColor}s.
+     * Must be provided to make background visible.
      */
+    @Nullable
     @XStreamImplicit ( itemFieldName = "color" )
     @OverwriteOnMerge
     protected List<GradientColor> colors;
@@ -77,6 +83,7 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
      *
      * @return gradient type
      */
+    @NotNull
     protected GradientType getType ()
     {
         return type != null ? type : GradientType.linear;
@@ -87,6 +94,7 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
      *
      * @return bounds width/height percentage representing gradient start point
      */
+    @NotNull
     protected Point2D.Float getFrom ()
     {
         return from != null ? from : new Point2D.Float ( 0, 0 );
@@ -97,9 +105,21 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
      *
      * @return bounds width/height percentage representing gradient end point
      */
+    @NotNull
     protected Point2D.Float getTo ()
     {
         return to != null ? to : new Point2D.Float ( 0, 1 );
+    }
+
+    /**
+     * Returns {@link List} of {@link GradientColor}s.
+     *
+     * @return {@link List} of {@link GradientColor}s
+     */
+    @Nullable
+    public List<GradientColor> getColors ()
+    {
+        return colors;
     }
 
     @Override
@@ -108,19 +128,23 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
         final float opacity = getOpacity ();
         if ( opacity > 0 )
         {
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-            final Rectangle b = shape.getBounds ();
-            final Point2D.Float from = getFrom ();
-            final Point2D.Float to = getTo ();
-            final int x1 = ( int ) Math.round ( b.x + b.width * from.getX () );
-            final int y1 = ( int ) Math.round ( b.y + b.height * from.getY () );
-            final int x2 = ( int ) Math.round ( b.x + b.width * to.getX () );
-            final int y2 = ( int ) Math.round ( b.y + b.height * to.getY () );
-            final Paint paint = DecorationUtils.getPaint ( getType (), colors, x1, y1, x2, y2 );
-            final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
-            g2d.fill ( shape );
-            GraphicsUtils.restorePaint ( g2d, op );
-            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+            final List<GradientColor> colors = getColors ();
+            if ( colors != null )
+            {
+                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
+                final Rectangle b = shape.getBounds ();
+                final Point2D.Float from = getFrom ();
+                final Point2D.Float to = getTo ();
+                final int x1 = ( int ) Math.round ( b.x + b.width * from.getX () );
+                final int y1 = ( int ) Math.round ( b.y + b.height * from.getY () );
+                final int x2 = ( int ) Math.round ( b.x + b.width * to.getX () );
+                final int y2 = ( int ) Math.round ( b.y + b.height * to.getY () );
+                final Paint paint = DecorationUtils.getPaint ( getType (), colors, x1, y1, x2, y2 );
+                final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+                g2d.fill ( shape );
+                GraphicsUtils.restorePaint ( g2d, op );
+                GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+            }
         }
     }
 }
