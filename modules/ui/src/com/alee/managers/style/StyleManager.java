@@ -294,6 +294,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( ColorBackground.class );
         XmlUtils.processAnnotations ( GradientBackground.class );
         XmlUtils.processAnnotations ( PresetTextureBackground.class );
+        XmlUtils.processAnnotations ( ImageTextureBackground.class );
         XmlUtils.processAnnotations ( AlphaLayerBackground.class );
         XmlUtils.processAnnotations ( MovingHighlightBackground.class );
         XmlUtils.processAnnotations ( BreadcrumbProgressBackground.class );
