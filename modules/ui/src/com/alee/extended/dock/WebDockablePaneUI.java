@@ -24,7 +24,6 @@ import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.dock.data.DockableFrameElement;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.*;
@@ -259,9 +258,6 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         {
             pane.getModel ().updateFrame ( pane, frame );
         }
-
-        WebLookAndFeel.globalControlFont = WebLookAndFeel.globalControlFont.deriveFont ( 11f );
-        WebLookAndFeel.globalTooltipFont = new Font ( "Arial", Font.PLAIN, 10 );
 
         // Ensure dockable pane layout is correct
         pane.revalidate ();
