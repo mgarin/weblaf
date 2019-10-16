@@ -370,7 +370,9 @@ public final class StyleId implements Identifiable
     public static final StyleId scrollpaneUndecoratedButtonless = StyleId.of ( "undecorated-buttonless" );
     public static final StyleId scrollpaneTransparentButtonless = StyleId.of ( "transparent-buttonless" );
     public static final StyleId scrollpaneHovering = StyleId.of ( "hovering" );
+    public static final StyleId scrollpaneHoveringExtending = StyleId.of ( "hovering-extending" );
     public static final StyleId scrollpaneTransparentHovering = StyleId.of ( "transparent-hovering" );
+    public static final StyleId scrollpaneTransparentHoveringExtending = StyleId.of ( "transparent-hovering-extending" );
     public static final StyleId scrollpanePopup = StyleId.of ( "popup" );
     public static final ChildStyleId scrollpaneViewport = ChildStyleId.of ( "viewport" );
     public static final ChildStyleId scrollpaneBar = ChildStyleId.of ( "scrollbar" );

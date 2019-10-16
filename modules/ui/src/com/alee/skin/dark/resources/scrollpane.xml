@@ -159,7 +159,17 @@
 
     </style>
 
-    <!-- Hovering scroll pane -->
+    <!-- Hovering extending scroll pane -->
+    <style type="scrollpane" id="hovering-extending" extends="hovering">
+        <component>
+            <layout class="ScrollPaneLayout$UIResource">
+                <Vertical leading="false" trailing="true" hovering="true" extending="true" />
+                <Horizontal leading="false" trailing="false" hovering="true" extending="true" />
+            </layout>
+        </component>
+    </style>
+
+    <!-- Transparent hovering scroll pane -->
     <style type="scrollpane" id="transparent-hovering" extends="hovering">
         <component>
             <opaque>false</opaque>
@@ -180,6 +190,16 @@
             </painter>
         </style>
 
+    </style>
+
+    <!-- Transparent hovering extending scroll pane -->
+    <style type="scrollpane" id="transparent-hovering-extending" extends="transparent-hovering">
+        <component>
+            <layout class="ScrollPaneLayout$UIResource">
+                <Vertical leading="false" trailing="true" hovering="true" extending="true" />
+                <Horizontal leading="false" trailing="false" hovering="true" extending="true" />
+            </layout>
+        </component>
     </style>
 
     <!-- Popup scroll pane -->
