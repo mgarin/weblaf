@@ -65,7 +65,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     /**
      * Runtime variables.
      */
-    protected transient Map<Corner, JComponent> cornersCache = new HashMap<Corner, JComponent> ( 4 );
+    protected transient Map<Corner, JComponent> cornersCache;
 
     /**
      * Returns an instance of the {@link WebScrollPaneUI} for the specified component.
@@ -85,12 +85,16 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
         // Installing UI
         super.installUI ( c );
 
+        // Applying skin
+        StyleManager.installSkin ( scrollpane );
+
         // Scroll bars styling
         StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
         StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( scrollpane.getVerticalScrollBar () );
         StyleId.scrollpaneHorizontalBar.at ( scrollpane ).set ( scrollpane.getHorizontalScrollBar () );
 
         // Updating scrollpane corner
+        cornersCache = new HashMap<Corner, JComponent> ( 4 );
         updateCorners ();
 
         // Viewport listener
@@ -170,9 +174,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
             }
         };
         scrollpane.addPropertyChangeListener ( propertyChangeListener );
-
-        // Applying skin
-        StyleManager.installSkin ( scrollpane );
     }
 
     @Override
@@ -186,6 +187,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
 
         // Removing listener and custom corners
         removeCorners ();
+        cornersCache = null;
 
         // Resetting layout to default used within JScrollPane
         // This update will ensure that we properly cleanup custom layout
@@ -578,6 +580,23 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
     }
 
     /**
+     * Removes custom scrollpane corners.
+     */
+    protected void removeCorners ()
+    {
+        for ( final Corner type : Corner.values () )
+        {
+            final String key = type.getScrollPaneConstant ();
+            final Component corner = scrollpane.getCorner ( key );
+            if ( corner != null && cornersCache.containsValue ( corner ) )
+            {
+                scrollpane.setCorner ( key, null );
+            }
+        }
+        cornersCache.clear ();
+    }
+
+    /**
      * Returns scroll corner provider.
      *
      * @return scroll corner provider
@@ -606,20 +625,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeSupport, 
             }
         }
         return scp;
-    }
-
-    /**
-     * Removes custom scrollpane corners.
-     */
-    protected void removeCorners ()
-    {
-        // We do not remove corners by types here by components directly
-        // This is required since internal types will be shifted upon component orientation change
-        for ( final JComponent corner : cornersCache.values () )
-        {
-            scrollpane.remove ( corner );
-        }
-        cornersCache.clear ();
     }
 
     @Override
