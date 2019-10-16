@@ -15,44 +15,28 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.button;
+package com.alee.laf.tabbedpane;
 
-import com.alee.api.annotations.Nullable;
-import com.alee.extended.label.AbstractSimpleStyledTextContent;
-import com.alee.laf.WebLookAndFeel;
+import com.alee.extended.label.StyledLabelText;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import javax.swing.*;
+import java.awt.*;
 
 /**
- * Styled text content implementation for {@link AbstractButton}.
+ * Styled text content implementation for {@link Tab}.
  *
  * @param <C> component type
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
  */
-@XStreamAlias ( "StyledButtonText" )
-public class StyledButtonText<C extends AbstractButton, D extends IDecoration<C, D>, I extends StyledButtonText<C, D, I>>
-        extends AbstractSimpleStyledTextContent<C, D, I>
+@XStreamAlias ( "TabText" )
+public class TabText<C extends Tab, D extends IDecoration<C, D>, I extends TabText<C, D, I>> extends StyledLabelText<C, D, I>
 {
-    @Nullable
     @Override
-    protected String getStyledTextProperty ()
+    protected Color getCustomColor ( final C c, final D d )
     {
-        return WebLookAndFeel.TEXT_PROPERTY;
-    }
-
-    @Override
-    protected String getComponentText ( final C c, final D d )
-    {
-        return c.getText ();
-    }
-
-    @Override
-    protected int getComponentMnemonic ( final C c, final D d )
-    {
-        return c.getMnemonic ();
+        return c.getTabbedPane ().getForegroundAt ( c.getIndex () );
     }
 }

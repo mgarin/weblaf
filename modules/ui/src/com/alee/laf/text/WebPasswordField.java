@@ -386,8 +386,9 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @NotNull
     @Override
-    public DocumentChangeBehavior<WebPasswordField> onChange ( final DocumentEventRunnable<WebPasswordField> runnable )
+    public DocumentChangeBehavior<WebPasswordField> onChange ( @NotNull final DocumentEventRunnable<WebPasswordField> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

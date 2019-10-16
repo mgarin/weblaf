@@ -7,6 +7,7 @@
         <component>
             <opaque>true</opaque>
             <background>white</background>
+            <foreground>black</foreground>
             <rowHeight>18</rowHeight>
             <rowMargin>1</rowMargin>
             <fillsViewportHeight>false</fillsViewportHeight>

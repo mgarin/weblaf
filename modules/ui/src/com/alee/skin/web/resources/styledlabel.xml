@@ -4,17 +4,20 @@
 
     <!-- Styled label -->
     <style type="styledlabel">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>
                     <LabelLayout>
                         <LabelIcon constraints="icon" />
-                        <StyledLabelText constraints="text" color="black" />
+                        <StyledLabelText constraints="text" />
                     </LabelLayout>
                 </decoration>
                 <decoration states="disabled">
                     <LabelLayout>
-                        <StyledLabelText color="140,140,140" ignoreStyleColors="true" />
+                        <StyledLabelText color="140,140,140" ignoreCustomColor="true" ignoreStyleColors="true" />
                     </LabelLayout>
                 </decoration>
             </decorations>

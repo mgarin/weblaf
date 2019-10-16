@@ -329,8 +329,9 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @NotNull
     @Override
-    public DocumentChangeBehavior<WebEditorPane> onChange ( final DocumentEventRunnable<WebEditorPane> runnable )
+    public DocumentChangeBehavior<WebEditorPane> onChange ( @NotNull final DocumentEventRunnable<WebEditorPane> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

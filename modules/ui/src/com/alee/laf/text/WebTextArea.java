@@ -372,8 +372,9 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @NotNull
     @Override
-    public DocumentChangeBehavior<WebTextArea> onChange ( final DocumentEventRunnable<WebTextArea> runnable )
+    public DocumentChangeBehavior<WebTextArea> onChange ( @NotNull final DocumentEventRunnable<WebTextArea> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

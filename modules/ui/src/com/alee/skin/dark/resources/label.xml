@@ -4,17 +4,20 @@
 
     <!-- Label -->
     <style type="label">
+        <component>
+            <foreground>245,245,245</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>
                     <LabelLayout>
                         <LabelIcon constraints="icon" />
-                        <LabelText constraints="text" color="245,245,245" />
+                        <LabelText constraints="text" />
                     </LabelLayout>
                 </decoration>
                 <decoration states="disabled">
                     <LabelLayout>
-                        <LabelText color="180,180,180" />
+                        <LabelText color="180,180,180" ignoreCustomColor="true" />
                     </LabelLayout>
                 </decoration>
             </decorations>

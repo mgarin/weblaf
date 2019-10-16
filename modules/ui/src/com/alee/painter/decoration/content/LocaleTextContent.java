@@ -17,13 +17,13 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * {@link AbstractTextContent} implementation displaying {@link JComponent}s current {@link java.util.Locale}.
@@ -42,6 +42,13 @@ public class LocaleTextContent<C extends JComponent, D extends IDecoration<C, D>
     public String getId ()
     {
         return id != null ? id : "locale";
+    }
+
+    @Override
+    protected Color getColor ( final C c, final D d )
+    {
+        // We're not interested in prioritizing component custom foreground in this text
+        return color != null ? color : getCustomColor ( c, d );
     }
 
     @Override

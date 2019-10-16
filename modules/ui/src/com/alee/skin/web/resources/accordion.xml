@@ -6,6 +6,7 @@
     <style type="accordion">
         <component>
             <opaque>false</opaque>
+            <foreground>black</foreground>
             <layout class="AccordionLayout$UIResource">
                 <panesGap>0</panesGap>
                 <easing class="Cubic$InOut" />

@@ -4,6 +4,9 @@
 
     <!-- File chooser -->
     <style type="filechooser">
+        <component>
+            <foreground>245,245,245</foreground>
+        </component>
         <painter />
     </style>
 

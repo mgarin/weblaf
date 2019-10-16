@@ -5,6 +5,7 @@
     <!-- StatusBar -->
     <style type="statusbar" padding="2">
         <component>
+            <foreground>245,245,245</foreground>
             <layout class="StatusBarLayout$UIResource" />
         </component>
         <painter>

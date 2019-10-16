@@ -8,6 +8,7 @@
     <style type="panel">
         <component>
             <opaque>true</opaque>
+            <foreground>245,245,245</foreground>
             <background>68,68,68</background>
         </component>
         <painter />

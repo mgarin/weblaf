@@ -6,6 +6,7 @@
     <style type="slider" padding="0,2,0,2">
         <component>
             <opaque>false</opaque>
+            <foreground>245,245,245</foreground>
         </component>
         <painter>
             <trackHeight>9</trackHeight>

@@ -5,6 +5,7 @@
     <!-- Collapsible pane -->
     <style type="collapsiblepane">
         <component>
+            <foreground>245,245,245</foreground>
             <layout class="CollapsiblePaneLayout$UIResource">
                 <fitHeader>true</fitHeader>
                 <easing class="Cubic$InOut" />

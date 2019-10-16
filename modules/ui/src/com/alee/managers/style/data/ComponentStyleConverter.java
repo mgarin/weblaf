@@ -24,6 +24,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.InsetsUIResource;
+import com.alee.utils.xml.ConverterContext;
 import com.alee.utils.xml.InsetsConverter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -216,6 +217,11 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final LinkedHashMap<String, Object> uiProperties = new LinkedHashMap<String, Object> ();
         final List<ComponentStyle> nestedStyles = new ArrayList<ComponentStyle> ();
 
+        // Enabling context UIResource flag
+        final ConverterContext converterContext = ConverterContext.get ();
+        final boolean oldUIResource = converterContext.isUIResource ();
+        converterContext.setUIResource ( true );
+
         // Reading style component type
         final String type = reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE );
         final ComponentDescriptor descriptor = StyleManager.getDescriptor ( type );
@@ -307,6 +313,9 @@ public final class ComponentStyleConverter extends ReflectionConverter
         // Cleaning up context
         context.put ( CONTEXT_STYLE_ID, oldStyleId );
         context.put ( CONTEXT_COMPONENT_TYPE, oldComponentType );
+
+        // Restoring context UIResource flag
+        converterContext.setUIResource ( oldUIResource );
 
         return style;
     }
@@ -421,7 +430,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
     {
         // Retrieving overwrite policy
         final String ow = reader.getAttribute ( OVERWRITE_ATTRIBUTE );
-        final boolean overwrite = Boolean.valueOf ( ow );
+        final boolean overwrite = Boolean.parseBoolean ( ow );
 
         // Retrieving default painter class based on UI class and default painter field name
         // Basically we are reading this painter as a field of the UI class here

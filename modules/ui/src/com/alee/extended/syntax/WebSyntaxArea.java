@@ -22,9 +22,13 @@ import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.SkinListener;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.skin.dark.DarkSkin;
+import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
-import com.alee.utils.swing.*;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RUndoManager;
 
@@ -53,6 +57,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * Theme preset.
      * Saved separately for usage when editor scroll being created.
      */
+    @Nullable
     protected SyntaxPreset themePreset;
 
     /**
@@ -60,7 +65,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @param presets presets to apply
      */
-    public WebSyntaxArea ( final SyntaxPreset... presets )
+    public WebSyntaxArea ( @NotNull final SyntaxPreset... presets )
     {
         super ();
         initialize ( presets );
@@ -72,7 +77,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * @param text    syntax area text
      * @param presets presets to apply
      */
-    public WebSyntaxArea ( final String text, final SyntaxPreset... presets )
+    public WebSyntaxArea ( @Nullable final String text, @NotNull final SyntaxPreset... presets )
     {
         super ( text );
         initialize ( presets );
@@ -85,7 +90,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * @param cols    visible columns count
      * @param presets presets to apply
      */
-    public WebSyntaxArea ( final int rows, final int cols, final SyntaxPreset... presets )
+    public WebSyntaxArea ( final int rows, final int cols, @NotNull final SyntaxPreset... presets )
     {
         super ( rows, cols );
         initialize ( presets );
@@ -99,7 +104,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * @param cols    visible columns count
      * @param presets presets to apply
      */
-    public WebSyntaxArea ( final String text, final int rows, final int cols, final SyntaxPreset... presets )
+    public WebSyntaxArea ( @Nullable final String text, final int rows, final int cols, @NotNull final SyntaxPreset... presets )
     {
         super ( text, rows, cols );
         initialize ( presets );
@@ -111,7 +116,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * @param textMode text edit mode, either INSERT_MODE or OVERWRITE_MODE
      * @param presets  presets to apply
      */
-    public WebSyntaxArea ( final int textMode, final SyntaxPreset... presets )
+    public WebSyntaxArea ( final int textMode, @NotNull final SyntaxPreset... presets )
     {
         super ( textMode );
         initialize ( presets );
@@ -122,24 +127,26 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @param presets presets to apply
      */
-    protected void initialize ( final SyntaxPreset... presets )
+    protected void initialize ( @NotNull final SyntaxPreset... presets )
     {
         // Applying provided presets
         applyPresets ( presets );
 
         // Applying default theme if it wasn't provided
-        boolean themeProvided = false;
-        for ( final SyntaxPreset preset : presets )
+        if ( themePreset == null )
         {
-            if ( preset.getType () == PresetType.theme )
+            // todo A temporary solution for initial theme selected according to skin
+            applyPresets ( StyleManager.getSkin () instanceof DarkSkin ? SyntaxPreset.darkTheme : SyntaxPreset.ideaTheme );
+
+            // todo A temporary solution for switching theme according to skin
+            StyleManager.addSkinListener ( new SkinListener ()
             {
-                themeProvided = true;
-                break;
-            }
-        }
-        if ( !themeProvided )
-        {
-            applyPresets ( SyntaxPreset.ideaTheme );
+                @Override
+                public void skinChanged ( @Nullable final Skin previous, @NotNull final Skin current )
+                {
+                    applyPresets ( StyleManager.getSkin () instanceof DarkSkin ? SyntaxPreset.darkTheme : SyntaxPreset.ideaTheme );
+                }
+            } );
         }
 
         // Clearing history to avoid initial text removal on undo
@@ -161,6 +168,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @return document history manager
      */
+    @NotNull
     @Override
     protected RUndoManager createUndoManager ()
     {
@@ -173,6 +181,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @return document history manager
      */
+    @NotNull
     public RUndoManager getUndoManager ()
     {
         return undoManager;
@@ -191,6 +200,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @return properly styled and configured scroll
      */
+    @NotNull
     public WebSyntaxScrollPane createScroll ()
     {
         return createScroll ( StyleId.syntaxareaScroll );
@@ -202,7 +212,8 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * @param id style ID
      * @return properly styled and configured scroll
      */
-    public WebSyntaxScrollPane createScroll ( final StyleId id )
+    @NotNull
+    public WebSyntaxScrollPane createScroll ( @NotNull final StyleId id )
     {
         // Creating editor scroll with preferred settings
         final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( id, this );
@@ -221,6 +232,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @return currently used theme preset
      */
+    @Nullable
     public SyntaxPreset getThemePreset ()
     {
         return themePreset;
@@ -231,7 +243,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @param presets presets to apply
      */
-    public void applyPresets ( final SyntaxPreset... presets )
+    public void applyPresets ( @NotNull final SyntaxPreset... presets )
     {
         for ( final SyntaxPreset preset : presets )
         {
@@ -244,7 +256,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @param presets presets to apply
      */
-    public void applyPresets ( final List<SyntaxPreset> presets )
+    public void applyPresets ( @NotNull final List<SyntaxPreset> presets )
     {
         for ( final SyntaxPreset preset : presets )
         {
@@ -257,7 +269,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      *
      * @param preset preset to apply
      */
-    protected void applyPresetImpl ( final SyntaxPreset preset )
+    protected void applyPresetImpl ( @NotNull final SyntaxPreset preset )
     {
         preset.apply ( this );
         if ( preset.getType () == PresetType.theme )
@@ -266,8 +278,9 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
         }
     }
 
+    @NotNull
     @Override
-    public DocumentChangeBehavior<WebSyntaxArea> onChange ( final DocumentEventRunnable<WebSyntaxArea> runnable )
+    public DocumentChangeBehavior<WebSyntaxArea> onChange ( @NotNull final DocumentEventRunnable<WebSyntaxArea> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

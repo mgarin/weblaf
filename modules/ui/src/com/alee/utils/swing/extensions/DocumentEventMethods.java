@@ -17,6 +17,7 @@
 
 package com.alee.utils.swing.extensions;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.behavior.DocumentChangeBehavior;
 
 import javax.swing.text.JTextComponent;
@@ -38,5 +39,6 @@ public interface DocumentEventMethods<C extends JTextComponent> extends MethodEx
      * @param runnable document event runnable
      * @return used document change and property change listeners
      */
-    public DocumentChangeBehavior<C> onChange ( DocumentEventRunnable<C> runnable );
+    @NotNull
+    public DocumentChangeBehavior<C> onChange ( @NotNull DocumentEventRunnable<C> runnable );
 }

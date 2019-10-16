@@ -4,6 +4,9 @@
 
     <!-- Separator -->
     <style type="separator">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>

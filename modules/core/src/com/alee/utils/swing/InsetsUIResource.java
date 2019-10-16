@@ -27,6 +27,7 @@ import java.awt.*;
 
 /**
  * Simple {@link UIResource} for {@link Insets}.
+ * Unlike {@link javax.swing.plaf.InsetsUIResource} it clearly defines merge and clone behaviors.
  *
  * @author Mikle Garin
  */
@@ -43,6 +44,16 @@ public final class InsetsUIResource extends Insets implements UIResource, Overwr
     public InsetsUIResource ( final int top, final int left, final int bottom, final int right )
     {
         super ( top, left, bottom, right );
+    }
+
+    /**
+     * Constructs new {@link InsetsUIResource}.
+     *
+     * @param insets {@link Insets}
+     */
+    public InsetsUIResource ( @NotNull final Insets insets )
+    {
+        super ( insets.top, insets.left, insets.bottom, insets.right );
     }
 
     @Override

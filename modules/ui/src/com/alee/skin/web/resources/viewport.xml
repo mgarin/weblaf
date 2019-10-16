@@ -6,6 +6,7 @@
     <style type="viewport">
         <component>
             <opaque>false</opaque>
+            <foreground>black</foreground>
             <layout class="ViewportLayout$UIResource" />
         </component>
         <painter>

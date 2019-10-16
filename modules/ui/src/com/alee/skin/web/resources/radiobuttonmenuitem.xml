@@ -6,6 +6,7 @@
     <style type="radiobuttonmenuitem">
         <component>
             <opaque>false</opaque>
+            <foreground>black</foreground>
         </component>
         <painter>
             <decorations>
@@ -13,7 +14,7 @@
                     <WebShape round="0" />
                     <MenuItemLayout padding="4,10,5,8" iconTextGap="6" textAcceleratorGap="20">
                         <SimpleButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" color="black" />
+                        <ButtonText constraints="text" />
                         <RoundRectangle constraints="accelerator" round="4" opacity="0">
                             <ColorBackground color="240,240,240" />
                         </RoundRectangle>
@@ -31,7 +32,7 @@
                 </decoration>
                 <decoration states="disabled">
                     <MenuItemLayout>
-                        <ButtonText color="120,120,120" />
+                        <ButtonText color="120,120,120" ignoreCustomColor="true" />
                         <AcceleratorText color="120,120,120" />
                     </MenuItemLayout>
                 </decoration>
@@ -62,6 +63,24 @@
                 </decorations>
             </checkStatePainter>
 
+        </painter>
+    </style>
+
+    <!-- Radio button menu item supporting styled text -->
+    <style type="button" id="styled">
+        <painter>
+            <decorations>
+                <decoration>
+                    <MenuItemLayout>
+                        <StyledButtonText constraints="text" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <MenuItemLayout>
+                        <StyledButtonText color="120,120,120" ignoreCustomColor="true" ignoreStyleColors="true" />
+                    </MenuItemLayout>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

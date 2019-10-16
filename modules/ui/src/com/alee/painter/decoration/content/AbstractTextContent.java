@@ -65,6 +65,13 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
     protected Color color;
 
     /**
+     * Whether or not custom color should be ignored in favor of {@link #color}, unless it is {@code null}.
+     * Custom color is a non-{@link javax.swing.plaf.UIResource} color specified as {@link Component}'s foreground.
+     */
+    @XStreamAsAttribute
+    protected Boolean ignoreCustomColor;
+
+    /**
      * Horizontal text alignment.
      */
     @XStreamAsAttribute
@@ -201,8 +208,34 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
     protected Color getColor ( final C c, final D d )
     {
         // This {@link javax.swing.plaf.UIResource} check allows us to ignore such colors in favor of style ones
-        // But this will not ignore any normal color set from the code as this component foreground
-        return color != null && SwingUtils.isUIResource ( c.getForeground () ) ? color : c.getForeground ();
+        // But this will not ignore custom color set from the code as this component foreground unless explicitly said to do so
+        return color != null && ( isIgnoreCustomColor ( c, d ) || SwingUtils.isUIResource ( getCustomColor ( c, d ) ) ) ?
+                color : getCustomColor ( c, d );
+    }
+
+    /**
+     * Returns custom text foreground color.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return custom text foreground color
+     */
+    protected Color getCustomColor ( final C c, final D d )
+    {
+        return c.getForeground ();
+    }
+
+    /**
+     * Returns whether or not custom color should be ignored in favor of {@link #color}, unless it is {@code null}.
+     * Custom color is a non-{@link javax.swing.plaf.UIResource} color specified as {@link Component}'s foreground.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return {@code true} if custom color should be ignored in favor of {@link #color}, unless it is {@code null}, {@code false} otherwise
+     */
+    public boolean isIgnoreCustomColor ( final C c, final D d )
+    {
+        return ignoreCustomColor != null && ignoreCustomColor;
     }
 
     /**

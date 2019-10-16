@@ -5,6 +5,7 @@
     <!-- Toolbar -->
     <style type="toolbar" padding="2">
         <component>
+            <foreground>245,245,245</foreground>
             <layout class="ToolBarLayout$UIResource" />
         </component>
         <painter>

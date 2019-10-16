@@ -6,6 +6,7 @@
     <style type="tableheader">
         <component>
             <opaque>true</opaque>
+            <foreground>black</foreground>
         </component>
         <painter>
             <headerHeight>22</headerHeight>

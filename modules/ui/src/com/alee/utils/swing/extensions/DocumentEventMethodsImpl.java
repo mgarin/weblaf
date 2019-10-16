@@ -41,6 +41,7 @@ public final class DocumentEventMethodsImpl
      * @param <C>           {@link JTextComponent} type
      * @return used document change and property change listeners
      */
+    @NotNull
     public static <C extends JTextComponent> DocumentChangeBehavior onChange ( @NotNull final C textComponent,
                                                                                @NotNull final DocumentEventRunnable<C> runnable )
     {

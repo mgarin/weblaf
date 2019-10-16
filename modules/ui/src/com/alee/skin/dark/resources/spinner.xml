@@ -6,6 +6,7 @@
     <style type="spinner">
         <component>
             <opaque>false</opaque>
+            <foreground>245,245,245</foreground>
         </component>
         <painter>
             <decorations>

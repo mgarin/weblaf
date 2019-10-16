@@ -7,6 +7,7 @@
         <component>
             <opaque>true</opaque>
             <background>white</background>
+            <foreground>black</foreground>
         </component>
         <ui>
             <selectionStyle>line</selectionStyle>

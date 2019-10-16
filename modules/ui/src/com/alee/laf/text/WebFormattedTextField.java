@@ -466,8 +466,9 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @NotNull
     @Override
-    public DocumentChangeBehavior<WebFormattedTextField> onChange ( final DocumentEventRunnable<WebFormattedTextField> runnable )
+    public DocumentChangeBehavior<WebFormattedTextField> onChange ( @NotNull final DocumentEventRunnable<WebFormattedTextField> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

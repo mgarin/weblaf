@@ -4,12 +4,15 @@
 
     <!-- Link -->
     <style type="link">
+        <component>
+            <foreground>175,170,255</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration cursor="hand">
                     <LabelLayout>
                         <LabelIcon constraints="icon" />
-                        <StyledLabelText constraints="text" color="175,170,255" />
+                        <StyledLabelText constraints="text" />
                     </LabelLayout>
                 </decoration>
                 <decoration states="visited">

@@ -6,6 +6,7 @@
     <style type="image">
         <component>
             <opaque>false</opaque>
+            <foreground>black</foreground>
         </component>
         <painter />
     </style>

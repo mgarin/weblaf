@@ -6,6 +6,7 @@
     <style type="optionpane" padding="15,15,15,15">
         <component>
             <background>68,68,68</background>
+            <foreground>245,245,245</foreground>
         </component>
         <painter />
 
@@ -38,7 +39,7 @@
         </style>
 
         <!-- Buttons area -->
-        <style type="panel" id="button-area" extends="transparent">
+        <style type="panel" id="button-area" extends="transparent" padding="6,0,0,0">
 
             <!-- Buttons -->
             <style type="button" id="button" padding="2,10,2,10" />

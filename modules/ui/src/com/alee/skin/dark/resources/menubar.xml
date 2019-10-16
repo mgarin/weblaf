@@ -5,6 +5,7 @@
     <!-- Menu bar -->
     <style type="menubar" padding="0,8,0,8">
         <component>
+            <foreground>245,245,245</foreground>
             <layout class="MenuBarLayout$UIResource" />
         </component>
         <painter>

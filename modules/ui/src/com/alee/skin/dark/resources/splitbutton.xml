@@ -4,6 +4,9 @@
 
     <!-- Split button -->
     <style type="splitbutton" padding="2,4,2,0">
+        <component>
+            <foreground>245,245,245</foreground>
+        </component>
         <painter>
             <splitLineColor>20,20,20</splitLineColor>
             <splitLineDisabledColor>68,72,74</splitLineDisabledColor>
@@ -20,7 +23,7 @@
                     </GradientBackground>
                     <ButtonLayout>
                         <ButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" color="245,245,245" />
+                        <ButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="focused">
@@ -40,7 +43,7 @@
                     <WebShadow type="outer" opacity="0" />
                     <LineBorder color="68,72,74" />
                     <ButtonLayout>
-                        <ButtonText color="180,180,180" />
+                        <ButtonText color="180,180,180" ignoreCustomColor="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>
@@ -53,12 +56,12 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <StyledButtonText constraints="text" color="245,245,245" />
+                        <StyledButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="disabled">
                     <ButtonLayout>
-                        <StyledButtonText color="180,180,180" ignoreStyleColors="true" />
+                        <StyledButtonText color="180,180,180" ignoreCustomColor="true" ignoreStyleColors="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>

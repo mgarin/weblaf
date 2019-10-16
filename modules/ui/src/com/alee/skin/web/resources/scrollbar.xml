@@ -7,6 +7,7 @@
         <component>
             <opaque>false</opaque>
             <background>237,237,237</background>
+            <foreground>black</foreground>
         </component>
         <ui>
             <displayButtons>true</displayButtons>

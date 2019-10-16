@@ -6,6 +6,7 @@
     <style type="optionpane" padding="15,15,15,15">
         <component>
             <background>237,237,237</background>
+            <foreground>black</foreground>
         </component>
         <painter />
 

@@ -17,9 +17,12 @@
 
 package com.alee.utils.xml;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.MapUtils;
+import com.alee.utils.swing.ColorUIResource;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
@@ -76,22 +79,24 @@ public class ColorConverter extends AbstractSingleValueConverter
     );
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return Color.class.isAssignableFrom ( type );
     }
 
+    @Nullable
     @Override
-    public String toString ( final Object object )
+    public String toString ( @Nullable final Object color )
     {
-        final Color color = ( Color ) object;
-        return colorToString ( color );
+        return colorToString ( ( Color ) color );
     }
 
+    @Nullable
     @Override
-    public Object fromString ( final String color )
+    public Object fromString ( @Nullable final String string )
     {
-        return colorFromString ( color );
+        final Color color = colorFromString ( string );
+        return color != null && ConverterContext.get ().isUIResource () ? new ColorUIResource ( color ) : color;
     }
 
     /**
@@ -100,62 +105,77 @@ public class ColorConverter extends AbstractSingleValueConverter
      * @param color {@link Color} to convert
      * @return string {@link Color} representation.
      */
-    public static String colorToString ( final Color color )
+    @NotNull
+    public static String colorToString ( @Nullable final Color color )
     {
-        if ( defaultColors.containsValue ( color ) )
+        String string = null;
+        if ( color == null )
+        {
+            string = NULL_COLOR;
+        }
+        else if ( defaultColors.containsValue ( color ) )
         {
             for ( final Map.Entry<String, Color> entry : defaultColors.entrySet () )
             {
                 if ( Objects.equals ( color, entry.getValue () ) )
                 {
-                    return entry.getKey ();
+                    string = entry.getKey ();
+                    break;
                 }
             }
-            throw new RuntimeException ( "Unable to find mapping for Color: " + color );
+            if ( string == null )
+            {
+                throw new RuntimeException ( "Unable to find mapping for Color: " + color );
+            }
         }
         else
         {
-            final StringBuilder string = new StringBuilder ( 15 );
-            string.append ( color.getRed () ).append ( "," );
-            string.append ( color.getGreen () ).append ( "," );
-            string.append ( color.getBlue () );
+            final StringBuilder builder = new StringBuilder ( 15 );
+            builder.append ( color.getRed () ).append ( "," );
+            builder.append ( color.getGreen () ).append ( "," );
+            builder.append ( color.getBlue () );
             if ( color.getAlpha () < 255 )
             {
-                string.append ( "," ).append ( color.getAlpha () );
+                builder.append ( "," ).append ( color.getAlpha () );
             }
-            return string.toString ();
+            string = builder.toString ();
         }
+        return string;
     }
 
     /**
      * Parses {@link Color} from its string form.
      *
-     * @param color string {@link Color} form to parse
+     * @param string string {@link Color} form to parse
      * @return parsed {@link Color}
      */
-    public static Color colorFromString ( final String color )
+    @Nullable
+    public static Color colorFromString ( @Nullable final String string )
     {
         try
         {
-            if ( defaultColors.containsKey ( color ) )
+            final Color color;
+            if ( string == null )
             {
-                return defaultColors.get ( color );
+                color = null;
+            }
+            else if ( defaultColors.containsKey ( string ) )
+            {
+                color = defaultColors.get ( string );
+            }
+            else if ( string.contains ( "#" ) )
+            {
+                color = ColorUtils.fromHex ( string );
             }
             else
             {
-                if ( color.contains ( "#" ) )
-                {
-                    return ColorUtils.fromHex ( color );
-                }
-                else
-                {
-                    return ColorUtils.fromRGB ( color );
-                }
+                color = ColorUtils.fromRGB ( string );
             }
+            return color;
         }
         catch ( final Exception e )
         {
-            throw new XmlException ( "Unable to parse Color: " + color, e );
+            throw new XmlException ( "Unable to parse Color: " + string, e );
         }
     }
 }

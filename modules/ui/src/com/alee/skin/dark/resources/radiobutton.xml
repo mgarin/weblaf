@@ -4,17 +4,20 @@
 
     <!-- Radio button -->
     <style type="radiobutton">
+        <component>
+            <foreground>245,245,245</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>
                     <ButtonLayout>
                         <SimpleButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" color="245,245,245" />
+                        <ButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="disabled">
                     <ButtonLayout>
-                        <ButtonText color="180,180,180" />
+                        <ButtonText color="180,180,180" ignoreCustomColor="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>
@@ -57,12 +60,12 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <StyledButtonText constraints="text" color="245,245,245" />
+                        <StyledButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="disabled">
                     <ButtonLayout>
-                        <StyledButtonText color="180,180,180" ignoreStyleColors="true" />
+                        <StyledButtonText color="180,180,180" ignoreCustomColor="true" ignoreStyleColors="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>

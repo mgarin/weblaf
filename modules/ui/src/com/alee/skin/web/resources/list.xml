@@ -6,6 +6,8 @@
     <style type="list">
         <component>
             <opaque>true</opaque>
+            <foreground>black</foreground>
+            <selectionForeground>black</selectionForeground>
         </component>
         <ui>
             <selectionStyle>group</selectionStyle>

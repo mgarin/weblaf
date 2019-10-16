@@ -21,7 +21,7 @@
                                 <decoration>
                                     <SimpleMenuItemLayout textAcceleratorGap="4">
                                         <LabelIcon constraints="icon" />
-                                        <LabelText constraints="text" color="245,245,245" />
+                                        <LabelText constraints="text" />
                                         <LocaleTextContent constraints="accelerator" padding="0,2,0,2" color="225,225,225" />
                                     </SimpleMenuItemLayout>
                                 </decoration>
@@ -36,7 +36,7 @@
                                 <decoration>
                                     <SimpleMenuItemLayout textAcceleratorGap="4">
                                         <LabelIcon constraints="icon" />
-                                        <LabelText constraints="text" color="245,245,245" />
+                                        <LabelText constraints="text" />
                                         <RoundRectangle constraints="accelerator" round="4" opacity="0">
                                             <ColorBackground color="80,80,80" />
                                         </RoundRectangle>

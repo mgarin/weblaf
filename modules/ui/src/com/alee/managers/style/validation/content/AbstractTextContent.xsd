@@ -17,6 +17,9 @@
                 <!-- Text foreground color -->
                 <xs:attribute name="color" type="java.awt:Color" />
 
+                <!-- Whether or not custom color should be ignored in favor of specified color, unless it is null -->
+                <xs:attribute name="ignoreCustomColor" type="xs:boolean" />
+
                 <!-- Horizontal text alignment -->
                 <xs:attribute name="halign" type="xs:integer" />
 

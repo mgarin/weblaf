@@ -9,6 +9,7 @@
         <component>
             <opaque>true</opaque>
             <background>237,237,237</background>
+            <foreground>black</foreground>
         </component>
         <painter />
     </style>

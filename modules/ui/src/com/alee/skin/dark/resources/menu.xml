@@ -6,6 +6,7 @@
     <style type="menu">
         <component>
             <opaque>false</opaque>
+            <foreground>245,245,245</foreground>
         </component>
         <painter>
             <decorations>
@@ -13,7 +14,7 @@
                     <WebShape round="0" />
                     <MenuItemLayout padding="4,4,4,6" iconTextGap="6" textArrowGap="10">
                         <ButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" color="245,245,245" />
+                        <ButtonText constraints="text" />
                     </MenuItemLayout>
                 </decoration>
                 <decoration states="menubar,enabled,hover">
@@ -26,7 +27,7 @@
                     <WebShape round="0" />
                     <MenuItemLayout padding="5,10,5,6" iconTextGap="6" textArrowGap="10">
                         <ButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" color="245,245,245" />
+                        <ButtonText constraints="text" />
                         <SetIcon id="arrow" constraints="arrow" icon="right" />
                     </MenuItemLayout>
                 </decoration>
@@ -43,7 +44,7 @@
                 </decoration>
                 <decoration states="disabled">
                     <MenuItemLayout>
-                        <ButtonText color="180,180,180" />
+                        <ButtonText color="180,180,180" ignoreCustomColor="true" />
                     </MenuItemLayout>
                 </decoration>
             </decorations>
@@ -52,6 +53,29 @@
         <!-- Popup menu style -->
         <style type="popupmenu" id="popupmenu" />
 
+    </style>
+
+    <!-- Menu supporting styled text -->
+    <style type="button" id="styled">
+        <painter>
+            <decorations>
+                <decoration states="menubar">
+                    <MenuItemLayout>
+                        <StyledButtonText constraints="text" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="popupmenu">
+                    <MenuItemLayout>
+                        <StyledButtonText constraints="text" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <MenuItemLayout>
+                        <StyledButtonText color="180,180,180" ignoreCustomColor="true" ignoreStyleColors="true" />
+                    </MenuItemLayout>
+                </decoration>
+            </decorations>
+        </painter>
     </style>
 
 </skin>

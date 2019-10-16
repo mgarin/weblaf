@@ -4,6 +4,9 @@
 
     <!-- Toggle button -->
     <style type="togglebutton" padding="2,4,2,4">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>
@@ -16,7 +19,7 @@
                     </GradientBackground>
                     <ButtonLayout>
                         <ButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" color="black" />
+                        <ButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="selected">
@@ -36,7 +39,7 @@
                     <WebShadow type="outer" opacity="0" />
                     <LineBorder color="lightGray" />
                     <ButtonLayout>
-                        <ButtonText color="120,120,120" />
+                        <ButtonText color="120,120,120" ignoreCustomColor="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>
@@ -49,12 +52,12 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <StyledButtonText constraints="text" color="black" />
+                        <StyledButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="disabled">
                     <ButtonLayout>
-                        <StyledButtonText color="120,120,120" ignoreStyleColors="true" />
+                        <StyledButtonText color="120,120,120" ignoreCustomColor="true" ignoreStyleColors="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>

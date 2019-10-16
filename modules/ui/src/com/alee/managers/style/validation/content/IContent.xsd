@@ -30,6 +30,7 @@
     <xs:include schemaLocation="StyledLabelText.xsd" />
     <xs:include schemaLocation="StyledToolTipText.xsd" />
     <xs:include schemaLocation="ToolTipText.xsd" />
+    <xs:include schemaLocation="TabText.xsd" />
 
     <!-- IContent implementations -->
     <xs:group name="IContent">
@@ -64,6 +65,7 @@
             <xs:element name="StyledLabelText" type="StyledLabelText" />
             <xs:element name="StyledToolTipText" type="StyledToolTipText" />
             <xs:element name="ToolTipText" type="ToolTipText" />
+            <xs:element name="TabText" type="TabText" />
 
             <!-- Any custom content -->
             <xs:any processContents="skip" />

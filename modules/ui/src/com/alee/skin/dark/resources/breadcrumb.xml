@@ -6,6 +6,7 @@
     <style type="breadcrumb">
         <component>
             <opaque>false</opaque>
+            <foreground>245,245,245</foreground>
             <layout class="BreadcrumbLayout$UIResource" overlap="9" />
         </component>
         <painter>

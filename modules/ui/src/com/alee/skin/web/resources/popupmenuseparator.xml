@@ -4,6 +4,9 @@
 
     <!-- Popup menu separator -->
     <style type="popupmenuseparator">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>

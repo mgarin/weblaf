@@ -6,6 +6,7 @@
     <style type="tabbedpane">
         <component>
             <background>68,68,68</background>
+            <foreground>245,245,245</foreground>
             <layout class="TabbedPaneLayout$UIResource">
                 <ContentSize type="preferred" />
             </layout>
@@ -104,27 +105,27 @@
                                 <decoration states="has-no-children">
                                     <LabelLayout>
                                         <LabelIcon constraints="icon" />
-                                        <StyledLabelText constraints="text" color="200,200,200" />
+                                        <TabText constraints="text" color="200,200,200" />
                                     </LabelLayout>
                                 </decoration>
                                 <decoration states="has-no-children,hover">
                                     <LabelLayout>
-                                        <StyledLabelText color="245,245,245" />
+                                        <TabText color="245,245,245" />
                                     </LabelLayout>
                                 </decoration>
                                 <decoration states="has-no-children,selected">
                                     <LabelLayout>
-                                        <StyledLabelText color="245,245,245" />
+                                        <TabText color="245,245,245" />
                                     </LabelLayout>
                                 </decoration>
                                 <decoration states="has-no-children,selected,in-focused-parent">
                                     <LabelLayout>
-                                        <StyledLabelText color="118,185,255" />
+                                        <TabText color="118,185,255" />
                                     </LabelLayout>
                                 </decoration>
                                 <decoration states="has-no-children,disabled">
                                     <LabelLayout>
-                                        <StyledLabelText color="180,180,180" ignoreStyleColors="true" />
+                                        <TabText color="180,180,180" ignoreCustomColor="true" ignoreStyleColors="true" />
                                     </LabelLayout>
                                 </decoration>
                             </decorations>

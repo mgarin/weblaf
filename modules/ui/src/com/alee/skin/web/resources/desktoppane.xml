@@ -6,6 +6,7 @@
     <style type="desktoppane">
         <component>
             <opaque>true</opaque>
+            <foreground>black</foreground>
         </component>
         <painter>
             <decorations>

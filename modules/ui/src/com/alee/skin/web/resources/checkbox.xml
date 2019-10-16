@@ -4,17 +4,20 @@
 
     <!-- Checkbox -->
     <style type="checkbox">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>
                     <ButtonLayout>
                         <SimpleButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" color="black" />
+                        <ButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="disabled">
                     <ButtonLayout>
-                        <ButtonText color="120,120,120" />
+                        <ButtonText color="120,120,120" ignoreCustomColor="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>
@@ -57,12 +60,12 @@
             <decorations>
                 <decoration>
                     <ButtonLayout>
-                        <StyledButtonText constraints="text" color="black" />
+                        <StyledButtonText constraints="text" />
                     </ButtonLayout>
                 </decoration>
                 <decoration states="disabled">
                     <ButtonLayout>
-                        <StyledButtonText color="120,120,120" ignoreStyleColors="true" />
+                        <StyledButtonText color="120,120,120" ignoreCustomColor="true" ignoreStyleColors="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>

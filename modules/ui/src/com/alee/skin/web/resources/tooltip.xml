@@ -4,13 +4,16 @@
 
     <!-- Tooltip -->
     <style type="tooltip">
+        <component>
+            <foreground>245,245,245</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
                     <LineBorder color="black" />
                     <ColorBackground color="black" />
-                    <ToolTipText padding="2,6,2,6" color="245,245,245" />
+                    <ToolTipText padding="2,6,2,6" />
                 </decoration>
             </decorations>
         </painter>
@@ -21,7 +24,7 @@
         <painter>
             <decorations>
                 <decoration>
-                    <StyledToolTipText padding="2,6,2,6" color="245,245,245" />
+                    <StyledToolTipText padding="2,6,2,6" />
                 </decoration>
             </decorations>
         </painter>

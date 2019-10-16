@@ -6,6 +6,7 @@
     <style type="dockablepane" padding="2">
         <component>
             <opaque>true</opaque>
+            <foreground>245,245,245</foreground>
             <groupElements>false</groupElements>
             <sidebarSpacing>0</sidebarSpacing>
         </component>

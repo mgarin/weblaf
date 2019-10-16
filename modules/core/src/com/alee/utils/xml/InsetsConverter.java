@@ -17,6 +17,8 @@
 
 package com.alee.utils.xml;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.utils.swing.InsetsUIResource;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
@@ -35,21 +37,22 @@ public class InsetsConverter extends AbstractSingleValueConverter
     public static final String separator = ",";
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return Insets.class.isAssignableFrom ( type );
     }
 
     @Override
-    public String toString ( final Object object )
+    public String toString ( @NotNull final Object insets )
     {
-        return insetsToString ( ( Insets ) object );
+        return insetsToString ( ( Insets ) insets );
     }
 
     @Override
-    public Object fromString ( final String insets )
+    public Object fromString ( @NotNull final String string )
     {
-        return insetsFromString ( insets );
+        final Insets insets = insetsFromString ( string );
+        return ConverterContext.get ().isUIResource () ? new InsetsUIResource ( insets ) : insets;
     }
 
     /**
@@ -58,29 +61,34 @@ public class InsetsConverter extends AbstractSingleValueConverter
      * @param insets {@link Insets} to convert
      * @return v converted into string
      */
-    public static String insetsToString ( final Insets insets )
+    @NotNull
+    public static String insetsToString ( @NotNull final Insets insets )
     {
+        final String string;
         if ( insets.top == insets.left && insets.left == insets.bottom && insets.bottom == insets.right )
         {
-            return Integer.toString ( insets.top );
+            string = Integer.toString ( insets.top );
         }
         else
         {
-            return insets.top + separator + insets.left + separator + insets.bottom + separator + insets.right;
+            string = insets.top + separator + insets.left + separator + insets.bottom + separator + insets.right;
         }
+        return string;
     }
 
     /**
      * Returns {@link Insets} read from string.
      *
-     * @param insets {@link Insets} string
+     * @param string {@link Insets} string
      * @return {@link Insets} read from string
      */
-    public static Insets insetsFromString ( final String insets )
+    @NotNull
+    public static Insets insetsFromString ( @NotNull final String string )
     {
         try
         {
-            final StringTokenizer tokenizer = new StringTokenizer ( insets, separator, false );
+            final Insets insets;
+            final StringTokenizer tokenizer = new StringTokenizer ( string, separator, false );
             if ( tokenizer.hasMoreTokens () )
             {
                 final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
@@ -91,26 +99,27 @@ public class InsetsConverter extends AbstractSingleValueConverter
                     {
                         final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
                         final int right = Integer.parseInt ( tokenizer.nextToken ().trim () );
-                        return new Insets ( top, left, bottom, right );
+                        insets = new Insets ( top, left, bottom, right );
                     }
                     else
                     {
-                        return new Insets ( top, left, top, left );
+                        insets = new Insets ( top, left, top, left );
                     }
                 }
                 else
                 {
-                    return new Insets ( top, top, top, top );
+                    insets = new Insets ( top, top, top, top );
                 }
             }
             else
             {
-                return new Insets ( 0, 0, 0, 0 );
+                insets = new Insets ( 0, 0, 0, 0 );
             }
+            return insets;
         }
         catch ( final Exception e )
         {
-            throw new XmlException ( "Unable to parse Insets: " + insets, e );
+            throw new XmlException ( "Unable to parse Insets: " + string, e );
         }
     }
 }

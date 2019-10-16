@@ -7,6 +7,7 @@
         <component>
             <opaque>true</opaque>
             <background>106,110,112</background>
+            <foreground>245,245,245</foreground>
             <rowHeight>18</rowHeight>
             <rowMargin>1</rowMargin>
             <fillsViewportHeight>false</fillsViewportHeight>

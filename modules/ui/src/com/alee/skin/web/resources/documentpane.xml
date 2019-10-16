@@ -9,9 +9,7 @@
         </component>
 
         <!-- Split pane -->
-        <style type="splitpane" id="split">
-
-        </style>
+        <style type="splitpane" id="split" />
 
         <!-- Tabbed pane -->
         <style type="tabbedpane" id="tabbedpane">

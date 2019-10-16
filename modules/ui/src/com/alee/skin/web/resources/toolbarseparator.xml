@@ -4,6 +4,9 @@
 
     <!-- Separator -->
     <style type="toolbarseparator">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>

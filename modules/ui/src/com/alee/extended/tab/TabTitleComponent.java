@@ -95,7 +95,10 @@ public class TabTitleComponent<T extends DocumentData> extends WebPanel implemen
     {
         final StyleId titleStyleId = StyleId.documentpaneTabTitle.at ( this );
         final WebStyledLabel titleLabel = new WebStyledLabel ( titleStyleId, document.getTitle (), document.getIcon () );
-        titleLabel.setForeground ( document.getForeground () );
+        if ( document.getForeground () != null )
+        {
+            titleLabel.setForeground ( document.getForeground () );
+        }
         titleLabel.addMouseListener ( mouseAdapter );
         titleLabel.addMouseMotionListener ( mouseAdapter );
         return titleLabel;

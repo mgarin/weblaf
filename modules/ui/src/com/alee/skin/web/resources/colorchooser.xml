@@ -4,6 +4,9 @@
 
     <!-- Color chooser -->
     <style type="colorchooser">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter />
 
         <!-- Main content panel -->

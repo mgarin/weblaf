@@ -386,8 +386,9 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @NotNull
     @Override
-    public DocumentChangeBehavior<WebTextField> onChange ( final DocumentEventRunnable<WebTextField> runnable )
+    public DocumentChangeBehavior<WebTextField> onChange ( @NotNull final DocumentEventRunnable<WebTextField> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

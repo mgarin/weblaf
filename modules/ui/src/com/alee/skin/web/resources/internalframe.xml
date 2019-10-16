@@ -6,6 +6,7 @@
     <style type="internalframe">
         <component>
             <opaque>false</opaque>
+            <foreground>black</foreground>
         </component>
         <painter>
             <decorations>

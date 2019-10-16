@@ -6,6 +6,7 @@
     <style type="progressbar">
         <component>
             <opaque>false</opaque>
+            <foreground>245,245,245</foreground>
         </component>
         <painter>
             <minimumContentSize>100,10</minimumContentSize>
@@ -60,10 +61,10 @@
             <progressTextPainter>
                 <decorations>
                     <decoration>
-                        <ProgressBarText color="245,245,245" halign="0" />
+                        <ProgressBarText halign="0" />
                     </decoration>
                     <decoration states="disabled">
-                        <ProgressBarText color="180,180,180" />
+                        <ProgressBarText color="180,180,180" ignoreCustomColor="true" />
                     </decoration>
                     <decoration states="vertical">
                         <ProgressBarText rotation="counterClockwise" />

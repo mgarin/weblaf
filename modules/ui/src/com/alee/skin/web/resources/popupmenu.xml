@@ -4,6 +4,9 @@
 
     <!-- Popup menu -->
     <style type="popupmenu">
+        <component>
+            <foreground>black</foreground>
+        </component>
         <painter>
             <popupStyle>dropdown</popupStyle>
             <background>white</background>

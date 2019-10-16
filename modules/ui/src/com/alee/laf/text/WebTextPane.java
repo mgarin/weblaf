@@ -277,8 +277,9 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
         PaddingMethodsImpl.setPadding ( this, padding );
     }
 
+    @NotNull
     @Override
-    public DocumentChangeBehavior<WebTextPane> onChange ( final DocumentEventRunnable<WebTextPane> runnable )
+    public DocumentChangeBehavior<WebTextPane> onChange ( @NotNull final DocumentEventRunnable<WebTextPane> runnable )
     {
         return DocumentEventMethodsImpl.onChange ( this, runnable );
     }

@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
@@ -25,6 +24,7 @@ import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Menu item accelerator text content implementation.
@@ -43,6 +43,13 @@ public class AcceleratorText<C extends JMenuItem, D extends IDecoration<C, D>, I
     public String getId ()
     {
         return id != null ? id : "accelerator";
+    }
+
+    @Override
+    protected Color getColor ( final C c, final D d )
+    {
+        // We're not interested in prioritizing component custom foreground in this text
+        return color != null ? color : getCustomColor ( c, d );
     }
 
     @Override

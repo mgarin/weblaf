@@ -6,6 +6,7 @@
     <style type="rootpane">
         <component>
             <background>68,68,68</background>
+            <foreground>245,245,245</foreground>
         </component>
         <ui>
             <installComponents>false</installComponents>
