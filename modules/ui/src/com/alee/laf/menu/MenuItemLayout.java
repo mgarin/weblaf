@@ -54,9 +54,9 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
     @Override
     protected int getMaxIconWidth ( final C c, final D d )
     {
+        int max = 0;
         if ( isAlignTextByIcons ( c, d ) && c.getParent () instanceof JPopupMenu )
         {
-            int max = 0;
             final JPopupMenu popupMenu = ( JPopupMenu ) c.getParent ();
             for ( int i = 0; i < popupMenu.getComponentCount (); i++ )
             {
@@ -70,13 +70,13 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
                     }
                 }
             }
-            return max;
         }
         else
         {
             final Icon icon = c.getIcon ();
-            return icon != null ? icon.getIconWidth () : 0;
+            max = icon != null ? icon.getIconWidth () : 0;
         }
+        return max;
     }
 
     @Override

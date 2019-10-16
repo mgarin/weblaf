@@ -1,5 +1,6 @@
 package com.alee.extended.checkbox;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -26,6 +27,7 @@ public final class AdaptiveTristateCheckBoxPainter<C extends WebTristateCheckBox
         super ( painter );
     }
 
+    @Nullable
     @Override
     public Rectangle getIconBounds ()
     {

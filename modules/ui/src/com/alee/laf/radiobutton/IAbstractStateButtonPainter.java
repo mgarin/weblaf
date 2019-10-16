@@ -1,5 +1,6 @@
 package com.alee.laf.radiobutton;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.button.IAbstractButtonPainter;
 
 import javax.swing.*;
@@ -20,5 +21,6 @@ public interface IAbstractStateButtonPainter<C extends AbstractButton, U extends
      *
      * @return icon bounds
      */
+    @Nullable
     public Rectangle getIconBounds ();
 }

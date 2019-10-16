@@ -1,5 +1,6 @@
 package com.alee.laf.radiobutton;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -27,6 +28,7 @@ public final class AdaptiveRadioButtonPainter<C extends JRadioButton, U extends 
         super ( painter );
     }
 
+    @Nullable
     @Override
     public Rectangle getIconBounds ()
     {

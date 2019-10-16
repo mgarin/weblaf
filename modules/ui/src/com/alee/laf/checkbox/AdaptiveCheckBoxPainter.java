@@ -1,5 +1,6 @@
 package com.alee.laf.checkbox;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -27,6 +28,7 @@ public final class AdaptiveCheckBoxPainter<C extends JCheckBox, U extends WCheck
         super ( painter );
     }
 
+    @Nullable
     @Override
     public Rectangle getIconBounds ()
     {

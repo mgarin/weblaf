@@ -1,6 +1,8 @@
 package com.alee.laf.checkbox;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Objects;
 import com.alee.laf.button.AbstractButtonPainter;
 import com.alee.laf.radiobutton.IAbstractStateButtonPainter;
 import com.alee.painter.DefaultPainter;
@@ -10,6 +12,7 @@ import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.UIResource;
 import java.awt.*;
 import java.util.List;
 
@@ -34,6 +37,7 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
     /**
      * Runtime icon bounds.
      */
+    @Nullable
     protected transient Rectangle iconBounds;
 
     @Nullable
@@ -47,14 +51,53 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
     protected void installPropertiesAndListeners ()
     {
         super.installPropertiesAndListeners ();
-        component.setIcon ( createIcon () );
+        installStateIcon ();
     }
 
     @Override
     protected void uninstallPropertiesAndListeners ()
     {
-        component.setIcon ( null );
+        uninstallStateIcon ();
         super.uninstallPropertiesAndListeners ();
+    }
+
+    @Override
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChanged ( property, oldValue, newValue );
+
+        // Restore state icon upon icon removal
+        if ( Objects.equals ( property, AbstractButton.ICON_CHANGED_PROPERTY ) )
+        {
+            // Installing state icon only if button doesn't have one
+            if ( newValue == null )
+            {
+                installStateIcon ();
+            }
+        }
+    }
+
+    /**
+     * Installs state {@link Icon} if current button {@link Icon} is {@code null} or {@link UIResource}.
+     */
+    protected void installStateIcon ()
+    {
+        if ( component.getIcon () == null || component.getIcon () instanceof UIResource )
+        {
+            component.setIcon ( createIcon () );
+        }
+    }
+
+    /**
+     * Uninstalls state {@link Icon} if current button {@link Icon} is {@link UIResource}.
+     */
+    protected void uninstallStateIcon ()
+    {
+        if ( component.getIcon () instanceof UIResource )
+        {
+            component.setIcon ( null );
+        }
     }
 
     /**
@@ -62,10 +105,11 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
      *
      * @return icon bounds
      */
+    @Nullable
     @Override
     public Rectangle getIconBounds ()
     {
-        return iconBounds != null ? new Rectangle ( iconBounds ) : new Rectangle ();
+        return iconBounds != null ? new Rectangle ( iconBounds ) : null;
     }
 
     /**
@@ -73,6 +117,7 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
      *
      * @return component state icon
      */
+    @NotNull
     protected Icon createIcon ()
     {
         return new StateIcon ();
@@ -81,10 +126,10 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
     /**
      * Custom state icon.
      */
-    protected class StateIcon implements Icon
+    protected class StateIcon implements Icon, UIResource
     {
         @Override
-        public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
+        public void paintIcon ( @NotNull final Component c, @NotNull final Graphics g, final int x, final int y )
         {
             // Updating actual icon rect
             iconBounds = new Rectangle ( new Point ( x, y ), getSize () );
@@ -104,6 +149,7 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
          *
          * @return icon size
          */
+        @NotNull
         protected Dimension getSize ()
         {
             return checkStatePainter != null ? checkStatePainter.getPreferredSize () : new Dimension ( 16, 16 );
