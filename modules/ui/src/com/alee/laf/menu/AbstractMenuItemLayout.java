@@ -133,7 +133,7 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
             Dimension ips = getPreferredSize ( c, d, ICON, available );
             if ( alignTextByIcons )
             {
-                ips = SwingUtils.max ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
+                ips = SwingUtils.maxNonNull ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
             }
             x += ltr ? 0 : -ips.width;
             if ( hasIcon )
@@ -175,7 +175,7 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
             Dimension ips = getPreferredSize ( c, d, ICON, available );
             if ( isAlignTextByIcons ( c, d ) )
             {
-                ips = SwingUtils.max ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
+                ips = SwingUtils.maxNonNull ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
             }
             ps.width += ips.width + getIconTextGap ( c, d );
             ps.height = Math.max ( ps.height, ips.height );
