@@ -41,7 +41,7 @@
     </style>
 
     <!-- Menu item supporting styled text -->
-    <style type="button" id="styled">
+    <style type="menuitem" id="styled">
         <painter>
             <decorations>
                 <decoration>

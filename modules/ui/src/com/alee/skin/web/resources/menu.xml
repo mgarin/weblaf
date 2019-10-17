@@ -56,7 +56,7 @@
     </style>
 
     <!-- Menu supporting styled text -->
-    <style type="button" id="styled">
+    <style type="menu" id="styled">
         <painter>
             <decorations>
                 <decoration states="menubar">

@@ -71,7 +71,7 @@
     </style>
 
     <!-- Check box menu item supporting styled text -->
-    <style type="button" id="styled">
+    <style type="checkboxmenuitem" id="styled">
         <painter>
             <decorations>
                 <decoration>

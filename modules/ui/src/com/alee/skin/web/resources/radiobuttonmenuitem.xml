@@ -67,7 +67,7 @@
     </style>
 
     <!-- Radio button menu item supporting styled text -->
-    <style type="button" id="styled">
+    <style type="radiobuttonmenuitem" id="styled">
         <painter>
             <decorations>
                 <decoration>
