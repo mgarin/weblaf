@@ -387,6 +387,60 @@ public final class LanguageManagerTest
     }
 
     /**
+     * Tests {@link Record}s retrieval with different {@link Dictionary}s order.
+     * todo Right now there is no fixed order for the translations retrieval [ #570 ]
+     */
+    /*@Test
+    public void dictionaryOrder ()
+    {
+        final String simpleKey = "weblaf.test.record";
+        final String first = "First dictionary";
+        final String second = "Second dictionary";
+        final String third = "Second dictionary";
+
+        // Ensuring our records don't exist yet
+        checkTranslationAbsense ( "en", "", simpleKey );
+
+        // Creating two dictionaries with same key but different text
+        final Dictionary firstDictionary = new Dictionary ();
+        firstDictionary.addRecord ( new Record ( simpleKey, new Value ( localeFor ( "en", "" ), new Text ( first ) ) ) );
+        final Dictionary secondDictionary = new Dictionary ();
+        secondDictionary.addRecord ( new Record ( simpleKey, new Value ( localeFor ( "en", "" ), new Text ( second ) ) ) );
+        final Dictionary thirdDictionary = new Dictionary ();
+        thirdDictionary.addRecord ( new Record ( simpleKey, new Value ( localeFor ( "en", "" ), new Text ( third ) ) ) );
+
+        // Checking direct order
+        LanguageManager.addDictionary ( firstDictionary );
+        LanguageManager.addDictionary ( secondDictionary );
+        LanguageManager.addDictionary ( thirdDictionary );
+        checkTranslationRetrieval ( simpleKey, third );
+        LanguageManager.removeDictionary ( firstDictionary );
+        LanguageManager.removeDictionary ( secondDictionary );
+        LanguageManager.removeDictionary ( thirdDictionary );
+
+        // Checking reversed order
+        LanguageManager.addDictionary ( thirdDictionary );
+        LanguageManager.addDictionary ( secondDictionary );
+        LanguageManager.addDictionary ( firstDictionary );
+        checkTranslationRetrieval ( simpleKey, first );
+        LanguageManager.removeDictionary ( firstDictionary );
+        LanguageManager.removeDictionary ( secondDictionary );
+        LanguageManager.removeDictionary ( thirdDictionary );
+
+        // Checking mixed order
+        LanguageManager.addDictionary ( thirdDictionary );
+        LanguageManager.addDictionary ( firstDictionary );
+        LanguageManager.addDictionary ( secondDictionary );
+        checkTranslationRetrieval ( simpleKey, second );
+        LanguageManager.removeDictionary ( firstDictionary );
+        LanguageManager.removeDictionary ( secondDictionary );
+        LanguageManager.removeDictionary ( thirdDictionary );
+
+        // Checking that even after our retrieval attempt records are considered absent
+        checkTranslationAbsense ( "en", "", simpleKey );
+    }*/
+
+    /**
      * Asserts translation existence.
      *
      * @param code    language code
