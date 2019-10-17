@@ -160,7 +160,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
     protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
         // Paints text highligher
-        final Highlighter highlighter = component.getHighlighter ();
+        final Highlighter highlighter = c.getHighlighter ();
         if ( highlighter != null )
         {
             highlighter.paint ( g2d );
@@ -169,19 +169,19 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
 
         // Paints input prompt
-        paintInputPrompt ( g2d );
+        paintInputPrompt ( g2d, c, ui );
 
         // Paints editor view
-        final Rectangle alloc = getEditorRect ();
+        final Rectangle alloc = getEditorRect ( c, ui );
         if ( alloc != null )
         {
-            ui.getRootView ( component ).paint ( g2d, alloc );
+            ui.getRootView ( c ).paint ( g2d, alloc );
         }
 
         SwingUtils.restoreTextAntialias ( g2d, hints );
 
         // Paints caret
-        final Caret caret = component.getCaret ();
+        final Caret caret = c.getCaret ();
         if ( caret != null )
         {
             caret.paint ( g2d );
@@ -199,12 +199,14 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
      * Draws input prompt text if it is available and should be visible at the moment.
      *
      * @param g2d graphics context
+     * @param c   painted component
+     * @param ui  painted component UI
      */
-    protected void paintInputPrompt ( @NotNull final Graphics2D g2d )
+    protected void paintInputPrompt ( @NotNull final Graphics2D g2d, final C c, final U ui )
     {
         if ( isInputPromptVisible () )
         {
-            final Rectangle b = getEditorRect ();
+            final Rectangle b = getEditorRect ( c, ui );
             if ( b != null )
             {
                 final Shape oc = GraphicsUtils.intersectClip ( g2d, b );
@@ -235,7 +237,7 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
                 }
                 else
                 {
-                    y = ui.getBaseline ( component, component.getWidth (), component.getHeight () );
+                    y = this.ui.getBaseline ( component, component.getWidth (), component.getHeight () );
                 }
                 g2d.drawString ( text, x, y );
 
@@ -248,18 +250,30 @@ public abstract class AbstractTextEditorPainter<C extends JTextComponent, U exte
      * Returns the bounding box for the root view.
      * The component must have a non-zero positive size for this translation to be computed.
      *
+     * @param c  painted component
+     * @param ui painted component UI
      * @return the bounding box for the root view
      */
     @Nullable
-    protected Rectangle getEditorRect ()
+    protected Rectangle getEditorRect ( final C c, final U ui )
     {
         final Rectangle editorBounds;
-        final Dimension size = component.getSize ();
+        final Dimension size = c.getSize ();
         if ( size.width > 0 && size.height > 0 )
         {
             final Insets insets = component.getInsets ();
             final Rectangle innerBounds = new Rectangle ( 0, 0, size.width, size.height );
             editorBounds = SwingUtils.shrink ( innerBounds, insets );
+            if ( SystemUtils.isJava9orAbove () )
+            {
+                Integer caretMargin = ReflectUtils.getFieldValueSafely ( ui, "caretMargin" );
+                if ( caretMargin == null )
+                {
+                    // See BasicTextUI#DEFAULT_CARET_MARGIN
+                    caretMargin = 1;
+                }
+                editorBounds.width -= caretMargin;
+            }
         }
         else
         {
