@@ -68,26 +68,27 @@ public class JButtonExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         return CollectionUtils.<Preview>asList (
-                new TextButton ( StyleId.button ),
-                new TextButton ( StyleId.buttonHover ),
+                new BasicButton ( StyleId.button ),
+                new BasicButton ( StyleId.buttonHover ),
                 new IconButton ( StyleId.buttonIcon ),
-                new IconButton ( StyleId.buttonIconHover )
+                new IconButton ( StyleId.buttonIconHover ),
+                new StyledButton ( StyleId.buttonStyled )
         );
     }
 
     /**
      * Button preview.
      */
-    protected class TextButton extends AbstractStylePreview
+    protected class BasicButton extends AbstractStylePreview
     {
         /**
          * Constructs new style preview.
          *
          * @param styleId preview style ID
          */
-        public TextButton ( final StyleId styleId )
+        public BasicButton ( final StyleId styleId )
         {
-            super ( JButtonExample.this, "text", FeatureState.updated, styleId );
+            super ( JButtonExample.this, "basic", FeatureState.updated, styleId );
         }
 
         @NotNull
@@ -96,23 +97,23 @@ public class JButtonExample extends AbstractStylePreviewExample
         {
             final JButton basic = new JButton ();
             basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( basic, getPreviewLanguagePrefix () + "basic" );
+            UILanguageManager.registerComponent ( basic, getExampleLanguageKey ( "plain.text.basic" ) );
 
             final JButton group1 = new JButton ();
             group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( group1, getPreviewLanguagePrefix () + "group1" );
+            UILanguageManager.registerComponent ( group1, getExampleLanguageKey ( "plain.text.group1" ) );
 
             final JButton group2 = new JButton ();
             group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( group2, getPreviewLanguagePrefix () + "group2" );
+            UILanguageManager.registerComponent ( group2, getExampleLanguageKey ( "plain.text.group2" ) );
 
             final JButton group3 = new JButton ();
             group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( group3, getPreviewLanguagePrefix () + "group3" );
+            UILanguageManager.registerComponent ( group3, getExampleLanguageKey ( "plain.text.group3" ) );
 
             final JButton icon = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
             icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( icon, getPreviewLanguagePrefix () + "icon" );
+            UILanguageManager.registerComponent ( icon, getExampleLanguageKey ( "plain.text.icon" ) );
 
             return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ), icon );
         }
@@ -150,6 +151,49 @@ public class JButtonExample extends AbstractStylePreviewExample
             group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
             return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ) );
+        }
+    }
+
+    /**
+     * Styled button preview.
+     */
+    protected class StyledButton extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param styleId preview style ID
+         */
+        public StyledButton ( final StyleId styleId )
+        {
+            super ( JButtonExample.this, "styled", FeatureState.updated, styleId );
+        }
+
+        @NotNull
+        @Override
+        protected List<? extends JComponent> createPreviewElements ()
+        {
+            final JButton basic = new JButton ();
+            basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( basic, getExampleLanguageKey ( "styled.text.basic" ) );
+
+            final JButton group1 = new JButton ();
+            group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( group1, getExampleLanguageKey ( "styled.text.group1" ) );
+
+            final JButton group2 = new JButton ();
+            group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( group2, getExampleLanguageKey ( "styled.text.group2" ) );
+
+            final JButton group3 = new JButton ();
+            group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( group3, getExampleLanguageKey ( "styled.text.group3" ) );
+
+            final JButton icon = new JButton ( WebLookAndFeel.getIcon ( 16 ) );
+            icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( icon, getExampleLanguageKey ( "styled.text.icon" ) );
+
+            return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ), icon );
         }
     }
 }

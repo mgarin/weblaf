@@ -25,10 +25,13 @@ import com.alee.demo.api.example.wiki.WikiPage;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.window.WebDialog;
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.swing.extensions.ComponentEventRunnable;
+import com.alee.utils.swing.menu.JMenuBarGenerator;
+import com.alee.utils.swing.menu.MenuGenerator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -113,6 +116,69 @@ public class JMenuBarExample extends AbstractStylePreviewExample
         }
 
         /**
+         * Returns new menu bar.
+         *
+         * @return new menu bar
+         */
+        protected JMenuBar createMenuBar ()
+        {
+            // Creating new menu bar
+            final JMenuBar menuBar = new JMenuBar ();
+            menuBar.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+
+            // Filling menu bar with items
+            final JMenuBarGenerator generator = new JMenuBarGenerator ( menuBar );
+            generator.setLanguagePrefix ( "demo.example.menus.menu" );
+            generator.setIconSettings ( MenusGroup.class, "icons/menu/", "png" );
+
+            final ActionListener action = new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    final JMenuItem menuItem = ( JMenuItem ) e.getSource ();
+                    notifyAboutEvent ( menuItem.getText () );
+                }
+            };
+
+            final MenuGenerator fileMenu = generator.addSubMenu ( "file", "file" );
+            final MenuGenerator subMenu = fileMenu.addSubMenu ( "new", "new" );
+            subMenu.addItem ( "image", "image", Hotkey.CTRL_N, action );
+            subMenu.addItem ( "video", "video", action );
+            subMenu.addItem ( "music", "music", action );
+            fileMenu.addItem ( "open", "open", Hotkey.CTRL_O, action );
+            fileMenu.addSeparator ();
+            fileMenu.addItem ( "save", "save", Hotkey.CTRL_S, action );
+            fileMenu.addItem ( "print", "print", Hotkey.CTRL_P, action );
+            fileMenu.addSeparator ();
+            fileMenu.addItem ( "exit", "exit", Hotkey.ALT_X, action );
+            menuBar.add ( fileMenu.getMenu () );
+
+            final MenuGenerator editMenu = generator.addSubMenu ( "edit", "edit" );
+            editMenu.addItem ( "undo", "undo", Hotkey.CTRL_Z, action );
+            editMenu.addItem ( "redo", "redo", Hotkey.CTRL_Y, action );
+            editMenu.addSeparator ();
+            editMenu.addItem ( "cut", "cut", Hotkey.CTRL_X, action );
+            editMenu.addItem ( "copy", "copy", Hotkey.CTRL_C, action );
+            editMenu.addItem ( "paste", "paste", Hotkey.CTRL_P, action );
+            menuBar.add ( editMenu.getMenu () );
+
+            final MenuGenerator settingsMenu = generator.addSubMenu ( "settings", "settings" );
+            settingsMenu.openGroup ();
+            settingsMenu.addRadioItem ( "choice1", Hotkey.F1, true, action );
+            settingsMenu.addRadioItem ( "choice2", Hotkey.F2, false, action );
+            settingsMenu.addRadioItem ( "choice3", Hotkey.F3, false, action );
+            settingsMenu.closeGroup ();
+            settingsMenu.addSeparator ();
+            settingsMenu.addCheckItem ( "option1", Hotkey.F4, true, action );
+            settingsMenu.addCheckItem ( "option2", Hotkey.F5, false, action );
+            settingsMenu.addCheckItem ( "option3", Hotkey.F6, false, action );
+            menuBar.add ( settingsMenu.getMenu () );
+
+            return menuBar;
+        }
+
+        /**
          * Returns new dialog preview button.
          *
          * @param text          button text
@@ -163,30 +229,13 @@ public class JMenuBarExample extends AbstractStylePreviewExample
                         dialog.setLocationRelativeTo ( DemoApplication.getInstance () );
                         dialog.setVisible ( true );
                     }
-                    else if ( dialog.isVisible () )
+                    else
                     {
                         dialog.dispose ();
                     }
                 }
             } );
             return showButton;
-        }
-
-        /**
-         * Returns new menu bar.
-         *
-         * @return new menu bar
-         */
-        protected JMenuBar createMenuBar ()
-        {
-            // Creating new menu bar
-            final JMenuBar menuBar = new JMenuBar ();
-
-            // Providing appropriate style
-            menuBar.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-
-            // Filling menu bar with items
-            return MenusGroup.fillMenuBar ( menuBar );
         }
     }
 }

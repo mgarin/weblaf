@@ -582,11 +582,7 @@
                     <value lang="en">JButton</value>
                     <value lang="ru">JButton</value>
                 </record>
-                <Dictionary prefix="text">
-                    <record key="title">
-                        <value lang="en">Text buttons</value>
-                        <value lang="ru">Текстовые кнопки</value>
-                    </record>
+                <Dictionary prefix="plain.text">
                     <record key="basic">
                         <value lang="en">Simple button</value>
                         <value lang="ru">Простая кнопка</value>
@@ -608,10 +604,44 @@
                         <value lang="ru">С иконкой</value>
                     </record>
                 </Dictionary>
+                <Dictionary prefix="styled.text">
+                    <record key="basic">
+                        <value lang="en">{Button:b} with {styled:u} {text:c(255,80,80)}</value>
+                        <value lang="ru">{Кнопка:b} со {стилизованным:u} {текстом:c(255,80,80)}</value>
+                    </record>
+                    <record key="group1">
+                        <value lang="en">{Buttons:b}</value>
+                        <value lang="ru">{Сгруппированные:b}</value>
+                    </record>
+                    <record key="group2">
+                        <value lang="en">{Grouped:u}</value>
+                        <value lang="ru">{Вместе:u}</value>
+                    </record>
+                    <record key="group3">
+                        <value lang="en">{Together:i}</value>
+                        <value lang="ru">{Кнопки:i}</value>
+                    </record>
+                    <record key="icon">
+                        <value lang="en">With icon {tm:sup}</value>
+                        <value lang="ru">С иконкой {tm:sup}</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic buttons</value>
+                        <value lang="ru">Базовые кнопки</value>
+                    </record>
+                </Dictionary>
                 <Dictionary prefix="icon">
                     <record key="title">
                         <value lang="en">Icon buttons</value>
                         <value lang="ru">Кнопки с иконками</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="styled">
+                    <record key="title">
+                        <value lang="en">With styled text</value>
+                        <value lang="ru">Со стилизованным текстом</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -620,11 +650,7 @@
                     <value lang="en">JToggleButton</value>
                     <value lang="ru">JToggleButton</value>
                 </record>
-                <Dictionary prefix="text">
-                    <record key="title">
-                        <value lang="en">Text buttons</value>
-                        <value lang="ru">Текстовые кнопки</value>
-                    </record>
+                <Dictionary prefix="plain.text">
                     <record key="basic">
                         <value lang="en">Simple button</value>
                         <value lang="ru">Простая кнопка</value>
@@ -646,10 +672,44 @@
                         <value lang="ru">С иконкой</value>
                     </record>
                 </Dictionary>
+                <Dictionary prefix="styled.text">
+                    <record key="basic">
+                        <value lang="en">{Button:b} with {styled:u} {text:c(255,80,80)}</value>
+                        <value lang="ru">{Кнопка:b} со {стилизованным:u} {текстом:c(255,80,80)}</value>
+                    </record>
+                    <record key="group1">
+                        <value lang="en">{Buttons:b}</value>
+                        <value lang="ru">{Сгруппированные:b}</value>
+                    </record>
+                    <record key="group2">
+                        <value lang="en">{Grouped:u}</value>
+                        <value lang="ru">{Вместе:u}</value>
+                    </record>
+                    <record key="group3">
+                        <value lang="en">{Together:i}</value>
+                        <value lang="ru">{Кнопки:i}</value>
+                    </record>
+                    <record key="icon">
+                        <value lang="en">With icon {tm:sup}</value>
+                        <value lang="ru">С иконкой {tm:sup}</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="basic">
+                    <record key="title">
+                        <value lang="en">Basic buttons</value>
+                        <value lang="ru">Базовые кнопки</value>
+                    </record>
+                </Dictionary>
                 <Dictionary prefix="icon">
                     <record key="title">
                         <value lang="en">Icon buttons</value>
                         <value lang="ru">Кнопки с иконками</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="styled">
+                    <record key="title">
+                        <value lang="en">With styled text</value>
+                        <value lang="ru">Со стилизованным текстом</value>
                     </record>
                 </Dictionary>
             </Dictionary>

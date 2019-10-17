@@ -68,26 +68,27 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
     protected List<Preview> createPreviews ()
     {
         return CollectionUtils.<Preview>asList (
-                new TextToggleButton ( StyleId.togglebutton ),
-                new TextToggleButton ( StyleId.togglebuttonHover ),
+                new BasicToggleButton ( StyleId.togglebutton ),
+                new BasicToggleButton ( StyleId.togglebuttonHover ),
                 new IconToggleButton ( StyleId.togglebuttonIcon ),
-                new IconToggleButton ( StyleId.togglebuttonIconHover )
+                new IconToggleButton ( StyleId.togglebuttonIconHover ),
+                new StyledToggleButton ( StyleId.togglebuttonStyled )
         );
     }
 
     /**
      * Toggle button preview.
      */
-    protected class TextToggleButton extends AbstractStylePreview
+    protected class BasicToggleButton extends AbstractStylePreview
     {
         /**
          * Constructs new style preview.
          *
          * @param styleId preview style ID
          */
-        public TextToggleButton ( final StyleId styleId )
+        public BasicToggleButton ( final StyleId styleId )
         {
-            super ( JToggleButtonExample.this, "text", FeatureState.updated, styleId );
+            super ( JToggleButtonExample.this, "basic", FeatureState.updated, styleId );
         }
 
         @NotNull
@@ -96,23 +97,23 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
         {
             final JToggleButton basic = new JToggleButton ( "", true );
             basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( basic, getPreviewLanguagePrefix () + "basic" );
+            UILanguageManager.registerComponent ( basic, getExampleLanguageKey ( "plain.text.basic" ) );
 
             final JToggleButton group1 = new JToggleButton ( "", true );
             group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( group1, getPreviewLanguagePrefix () + "group1" );
+            UILanguageManager.registerComponent ( group1, getExampleLanguageKey ( "plain.text.group1" ) );
 
             final JToggleButton group2 = new JToggleButton ();
             group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( group2, getPreviewLanguagePrefix () + "group2" );
+            UILanguageManager.registerComponent ( group2, getExampleLanguageKey ( "plain.text.group2" ) );
 
             final JToggleButton group3 = new JToggleButton ();
             group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( group3, getPreviewLanguagePrefix () + "group3" );
+            UILanguageManager.registerComponent ( group3, getExampleLanguageKey ( "plain.text.group3" ) );
 
             final JToggleButton icon = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
             icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
-            UILanguageManager.registerComponent ( icon, getPreviewLanguagePrefix () + "icon" );
+            UILanguageManager.registerComponent ( icon, getExampleLanguageKey ( "plain.text.icon" ) );
 
             return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ), icon );
         }
@@ -137,16 +138,62 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final JToggleButton button = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
-            button.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JToggleButton basic = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
+            basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
-            final JToggleButton first = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
-            first.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JToggleButton group1 = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
+            group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
-            final JToggleButton second = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
-            second.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            final JToggleButton group2 = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
+            group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
-            return CollectionUtils.asList ( button, new GroupPane ( first, second ) );
+            final JToggleButton group3 = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
+            group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+
+            return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ) );
+        }
+    }
+
+    /**
+     * Styled toggle button preview.
+     */
+    protected class StyledToggleButton extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param styleId preview style ID
+         */
+        public StyledToggleButton ( final StyleId styleId )
+        {
+            super ( JToggleButtonExample.this, "styled", FeatureState.updated, styleId );
+        }
+
+        @NotNull
+        @Override
+        protected List<? extends JComponent> createPreviewElements ()
+        {
+            final JToggleButton basic = new JToggleButton ( "", true );
+            basic.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( basic, getExampleLanguageKey ( "styled.text.basic" ) );
+
+            final JToggleButton group1 = new JToggleButton ( "", true );
+            group1.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( group1, getExampleLanguageKey ( "styled.text.group1" ) );
+
+            final JToggleButton group2 = new JToggleButton ();
+            group2.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( group2, getExampleLanguageKey ( "styled.text.group2" ) );
+
+            final JToggleButton group3 = new JToggleButton ();
+            group3.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( group3, getExampleLanguageKey ( "styled.text.group3" ) );
+
+            final JToggleButton icon = new JToggleButton ( WebLookAndFeel.getIcon ( 16 ) );
+            icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
+            UILanguageManager.registerComponent ( icon, getExampleLanguageKey ( "styled.text.icon" ) );
+
+            return CollectionUtils.asList ( basic, new GroupPane ( group1, group2, group3 ), icon );
         }
     }
 }
