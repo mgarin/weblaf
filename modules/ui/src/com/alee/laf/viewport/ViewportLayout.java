@@ -182,8 +182,10 @@ public class ViewportLayout extends AbstractLayoutManager implements Mergeable, 
              */
             if ( scrollableView == null )
             {
-                if ( viewPosition.x == 0 && vpSize.width > viewSize.width )
+                if ( viewPosition.x <= 0 && vpSize.width > viewSize.width )
                 {
+                    // Fix negative view position in RTL orientation
+                    viewPosition.x = Math.max ( 0, viewPosition.x );
                     viewSize.width = vpSize.width;
                 }
                 if ( viewPosition.y == 0 && vpSize.height > viewSize.height )
