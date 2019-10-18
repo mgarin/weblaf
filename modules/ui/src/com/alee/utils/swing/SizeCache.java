@@ -19,8 +19,10 @@ package com.alee.utils.swing;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.utils.SwingUtils;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -33,11 +35,22 @@ import java.util.WeakHashMap;
 public final class SizeCache
 {
     /**
-     * Size caches.
+     * Maximum {@link Container}'s children sizes cache key.
+     */
+    private static final String MAX_CHILDREN_SIZES = "max.children.sizes:";
+
+    /**
+     * {@link Component}'s {@link Sizes} cache.
      * Uses {@link WeakHashMap} to avoid hard {@link Component} references.
      * If {@link Component} is GCd at any point - it's {@link Sizes} will simply be forgotten without any extra actions.
      */
     private final Map<Component, Sizes> sizes;
+
+    /**
+     * Various custom {@link Sizes} cache.
+     * Uses {@link HashMap} to ensure that {@link Sizes} are kept for as long as needed.
+     */
+    private final Map<String, Sizes> custom;
 
     /**
      * Constructs new {@link SizeCache}.
@@ -57,6 +70,7 @@ public final class SizeCache
     public SizeCache ( final int initialCapacity )
     {
         sizes = new WeakHashMap<Component, Sizes> ( initialCapacity );
+        custom = new HashMap<String, Sizes> ();
     }
 
     /**
@@ -178,6 +192,57 @@ public final class SizeCache
     }
 
     /**
+     * Returns maximum {@link Dimension} combined from preferred sizes of all {@link Container}'s children.
+     *
+     * @param container {@link Container}
+     * @return maximum {@link Dimension} combined from preferred sizes of all {@link Container}'s children
+     */
+    public Dimension maxPreferred ( @NotNull final Container container )
+    {
+        return getSizes ( MAX_CHILDREN_SIZES + container.hashCode () ).maxPreferred ( container, SizeCache.this );
+    }
+
+    /**
+     * Returns maximum {@link Dimension} combined from minimum sizes of all {@link Container}'s children.
+     *
+     * @param container {@link Container}
+     * @return maximum {@link Dimension} combined from minimum sizes of all {@link Container}'s children
+     */
+    public Dimension maxMinimum ( @NotNull final Container container )
+    {
+        return getSizes ( MAX_CHILDREN_SIZES + container.hashCode () ).maxMinimum ( container, SizeCache.this );
+    }
+
+    /**
+     * Returns maximum {@link Dimension} combined from maximum sizes of all {@link Container}'s children.
+     *
+     * @param container {@link Container}
+     * @return maximum {@link Dimension} combined from maximum sizes of all {@link Container}'s children
+     */
+    public Dimension maxMaximum ( @NotNull final Container container )
+    {
+        return getSizes ( MAX_CHILDREN_SIZES + container.hashCode () ).maxMaximum ( container, SizeCache.this );
+    }
+
+    /**
+     * Returns {@link Sizes} for the specified {@link String} key.
+     *
+     * @param key {@link String} key to retrieve {@link Sizes} for
+     * @return {@link Sizes} for the specified {@link String} key
+     */
+    @NotNull
+    private Sizes getSizes ( @NotNull final String key )
+    {
+        Sizes sizes = this.custom.get ( key );
+        if ( sizes == null )
+        {
+            sizes = new Sizes ();
+            this.custom.put ( key, sizes );
+        }
+        return sizes;
+    }
+
+    /**
      * Simple object that contains {@link Component} sizes.
      * It is only used within {@link SizeCache} for convenience and shouldn't be accessed from outside.
      */
@@ -222,6 +287,29 @@ public final class SizeCache
         }
 
         /**
+         * Returns maximum {@link Dimension} combined from maximum sizes of all {@link Container}'s children.
+         *
+         * @param container {@link Container}
+         * @param cache     {@link SizeCache} to reuse sizes from
+         * @return maximum {@link Dimension} combined from maximum sizes of all {@link Container}'s children
+         */
+        public Dimension maxPreferred ( @NotNull final Container container, @NotNull final SizeCache cache )
+        {
+            if ( preferred == null )
+            {
+                preferred = new Dimension ( 0, 0 );
+                for ( int i = 0; i < container.getComponentCount (); i++ )
+                {
+                    preferred = SwingUtils.max (
+                            preferred,
+                            cache.preferred ( container, i )
+                    );
+                }
+            }
+            return preferred;
+        }
+
+        /**
          * Returns {@link Component} minimum size.
          * Note that returned value might have been cached and might not contain actual current minimum size.
          *
@@ -239,6 +327,29 @@ public final class SizeCache
         }
 
         /**
+         * Returns maximum {@link Dimension} combined from minimum sizes of all {@link Container}'s children.
+         *
+         * @param container {@link Container}
+         * @param cache     {@link SizeCache} to reuse sizes from
+         * @return maximum {@link Dimension} combined from minimum sizes of all {@link Container}'s children
+         */
+        public Dimension maxMinimum ( @NotNull final Container container, @NotNull final SizeCache cache )
+        {
+            if ( preferred == null )
+            {
+                preferred = new Dimension ( 0, 0 );
+                for ( int i = 0; i < container.getComponentCount (); i++ )
+                {
+                    preferred = SwingUtils.max (
+                            preferred,
+                            cache.minimum ( container, i )
+                    );
+                }
+            }
+            return preferred;
+        }
+
+        /**
          * Returns {@link Component} maximum size.
          * Note that returned value might have been cached and might not contain actual current maximum size.
          *
@@ -253,6 +364,29 @@ public final class SizeCache
                 maximum = component.getMaximumSize ();
             }
             return maximum;
+        }
+
+        /**
+         * Returns maximum {@link Dimension} combined from maximum sizes of all {@link Container}'s children.
+         *
+         * @param container {@link Container}
+         * @param cache     {@link SizeCache} to reuse sizes from
+         * @return maximum {@link Dimension} combined from maximum sizes of all {@link Container}'s children
+         */
+        public Dimension maxMaximum ( @NotNull final Container container, @NotNull final SizeCache cache )
+        {
+            if ( preferred == null )
+            {
+                preferred = new Dimension ( 0, 0 );
+                for ( int i = 0; i < container.getComponentCount (); i++ )
+                {
+                    preferred = SwingUtils.max (
+                            preferred,
+                            cache.maximum ( container, i )
+                    );
+                }
+            }
+            return preferred;
         }
     }
 }

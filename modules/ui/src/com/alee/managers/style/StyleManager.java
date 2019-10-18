@@ -375,6 +375,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( TabAreaLayout.class );
         XmlUtils.processAnnotations ( TabAreaLayout.UIResource.class );
         XmlUtils.processAnnotations ( TabStretchType.class );
+        XmlUtils.processAnnotations ( TabSize.class );
         XmlUtils.processAnnotations ( TabContainerLayout.class );
         XmlUtils.processAnnotations ( TabContainerLayout.UIResource.class );
         XmlUtils.processAnnotations ( BreadcrumbLayout.class );

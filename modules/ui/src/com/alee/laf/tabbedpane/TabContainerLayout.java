@@ -49,6 +49,13 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
     protected TabStretchType tabStretchType;
 
     /**
+     * {@link TabSize}.
+     */
+    @Nullable
+    @XStreamAlias ( "tabSize" )
+    protected TabSize tabSize;
+
+    /**
      * Total run count.
      */
     protected transient int runCount = 1;
@@ -62,6 +69,17 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
     public TabStretchType getTabStretchType ()
     {
         return tabStretchType != null ? tabStretchType : TabStretchType.multiline;
+    }
+
+    /**
+     * Returns {@link TabSize}.
+     *
+     * @return {@link TabSize}
+     */
+    @Nullable
+    public TabSize getTabSize ()
+    {
+        return tabSize != null ? tabSize : TabSize.preferred;
     }
 
     /**
@@ -98,20 +116,20 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
             final boolean ltr = tabContainer.getTabbedPane ().getComponentOrientation ().isLeftToRight ();
             for ( int i = 0; i < tabCount; i++ )
             {
-                final Dimension cps = sizeCache.preferred ( tabContainer, i );
+                final Dimension cps = getTabPreferredSize ( tabContainer, i, sizeCache );
                 runWidth = horizontal ? runWidth + cps.width : Math.max ( runWidth, cps.width );
                 runHeight = horizontal ? Math.max ( runHeight, cps.height ) : runHeight + cps.height;
                 runLength += horizontal ? cps.width : cps.height;
 
                 if ( i == tabCount - 1 ||
-                        horizontal && runWidth + sizeCache.preferred ( tabContainer, i + 1 ).width > width ||
-                        !horizontal && runHeight + sizeCache.preferred ( tabContainer, i + 1 ).height > height )
+                        horizontal && runWidth + getTabPreferredSize ( tabContainer, i + 1, sizeCache ).width > width ||
+                        !horizontal && runHeight + getTabPreferredSize ( tabContainer, i + 1, sizeCache ).height > height )
                 {
                     final int runComponentCount = 1 + i - runStartIndex;
                     for ( int j = runStartIndex; j <= i; j++ )
                     {
                         final Tab tab = ( Tab ) tabContainer.getComponent ( j );
-                        final Dimension tps = sizeCache.preferred ( tab );
+                        final Dimension tps = getTabPreferredSize ( tabContainer, i, sizeCache );
                         if ( horizontal )
                         {
                             final int w;
@@ -185,7 +203,7 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
         {
             for ( int i = 0; i < tabContainer.getComponentCount (); i++ )
             {
-                final Dimension cps = sizeCache.preferred ( tabContainer, i );
+                final Dimension cps = getTabPreferredSize ( tabContainer, i, sizeCache );
                 ps.width = horizontal ? ps.width + cps.width : Math.max ( ps.width, cps.width );
                 ps.height = horizontal ? Math.max ( ps.height, cps.height ) : ps.height + cps.height;
             }
@@ -198,13 +216,13 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
             int runHeight = 0;
             for ( int i = 0; i < tabContainer.getComponentCount (); i++ )
             {
-                final Dimension cps = sizeCache.preferred ( tabContainer, i );
+                final Dimension cps = getTabPreferredSize ( tabContainer, i, sizeCache );
                 runWidth = horizontal ? runWidth + cps.width : Math.max ( runWidth, cps.width );
                 runHeight = horizontal ? Math.max ( runHeight, cps.height ) : runHeight + cps.height;
 
                 if ( i == tabContainer.getComponentCount () - 1 ||
-                        horizontal && runWidth + sizeCache.preferred ( tabContainer, i + 1 ).width > width ||
-                        !horizontal && runHeight + sizeCache.preferred ( tabContainer, i + 1 ).height > height )
+                        horizontal && runWidth + getTabPreferredSize ( tabContainer, i + 1, sizeCache ).width > width ||
+                        !horizontal && runHeight + getTabPreferredSize ( tabContainer, i + 1, sizeCache ).height > height )
                 {
                     ps.width = horizontal ? Math.min ( Math.max ( ps.width, runWidth ), width ) : ps.width + runWidth;
                     ps.height = horizontal ? ps.height + runHeight : Math.min ( Math.min ( ps.height, runHeight ), height );
@@ -215,6 +233,23 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
         }
         SwingUtils.increase ( ps, insets );
         return ps;
+    }
+
+    /**
+     * Returns preferred size of the {@link Tab} at the specified index in {@link TabContainer}.
+     * This method accounts for {@link TabSize} setting to ensure that it affects used {@link Tab} sizes.
+     *
+     * @param tabContainer {@link TabContainer}
+     * @param index        {@link Tab} index in {@link TabContainer}
+     * @param sizeCache    {@link SizeCache}
+     * @return preferred size of the {@link Tab} at the specified index in {@link TabContainer}
+     */
+    @NotNull
+    private Dimension getTabPreferredSize ( @NotNull final TabContainer tabContainer, final int index, @NotNull final SizeCache sizeCache )
+    {
+        return getTabSize () == TabSize.preferred ?
+                sizeCache.preferred ( tabContainer, index ) :
+                sizeCache.maxPreferred ( tabContainer );
     }
 
     /**
