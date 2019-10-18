@@ -273,6 +273,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.laf.tabbedpane.WebTabbedPane} style identifiers.
      */
     public static final StyleId tabbedpane = StyleId.of ( "tabbedpane" );
+    public static final StyleId tabbedpaneEqual = StyleId.of ( "equal" );
     public static final StyleId tabbedpaneRotated = StyleId.of ( "rotated" );
     public static final ChildStyleId tabbedpaneTabArea = ChildStyleId.of ( "tab-area" );
     public static final ChildStyleId tabbedpaneTabMenuButton = ChildStyleId.of ( "tab-menu-button" );

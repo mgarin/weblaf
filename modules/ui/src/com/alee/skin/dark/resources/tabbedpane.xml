@@ -191,6 +191,30 @@
 
     </style>
 
+    <!-- Tabbed pane with tabs of equal size -->
+    <style type="tabbedpane" id="equal">
+
+        <!-- Tab area -->
+        <style type="panel" id="tab-area" extends="transparent">
+
+            <!-- Tab viewport -->
+            <style type="viewport" id="viewport" extends="transparent">
+
+                <!-- Tab container -->
+                <style type="panel" id="container" extends="transparent">
+                    <component>
+                        <layout class="TabContainerLayout$UIResource">
+                            <tabSize>equal</tabSize>
+                        </layout>
+                    </component>
+                </style>
+
+            </style>
+
+        </style>
+
+    </style>
+
     <!-- Tabbed pane with rotated left/right tabs -->
     <style type="tabbedpane" id="rotated">
 
