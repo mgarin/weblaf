@@ -612,19 +612,14 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
         int prefWidth = insets.left + insets.right;
         int prefHeight = insets.top + insets.bottom;
 
-        /**
-         * Note that viewport.getViewSize() is equivalent to viewport.getView().getPreferredSize()
-         * modulo a null view or a view whose size was explicitly set.
-         */
-
         Dimension extentSize = null;
         Dimension viewSize = null;
         Component view = null;
         if ( viewport != null )
         {
             extentSize = viewport.getPreferredSize ();
-            viewSize = viewport.getViewSize ();
             view = viewport.getView ();
+            viewSize = view != null ? view.getPreferredSize () : new Dimension ( 0, 0 );
         }
 
         /**
