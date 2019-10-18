@@ -284,6 +284,10 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
                 if ( vsbNeeded )
                 {
                     adjustForVSB ( vsb, true, availR, vsbR, viewInsets, ltr );
+                    if ( !ltr && !vpos.isHovering () )
+                    {
+                        hsbR.x += vsbR.width;
+                    }
                 }
             }
         }
@@ -335,6 +339,10 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
                             if ( vsbNeeded )
                             {
                                 adjustForVSB ( vsb, true, availR, vsbR, viewInsets, ltr );
+                                if ( !ltr && !vpos.isHovering () )
+                                {
+                                    hsbR.x += vsbR.width;
+                                }
                             }
                         }
                     }
@@ -378,9 +386,14 @@ public class ScrollPaneLayout extends javax.swing.ScrollPaneLayout implements Me
             {
                 hsbR.width += vsbR.width;
             }
-            else
+
+            if ( !ltr )
             {
-                if ( !ltr )
+                if ( hpos.isTrailing () && !vpos.isHovering () )
+                {
+                    hsbR.x -= vsbR.width;
+                }
+                else if ( !hpos.isTrailing () && vpos.isHovering () )
                 {
                     hsbR.x += vsbR.width;
                 }
