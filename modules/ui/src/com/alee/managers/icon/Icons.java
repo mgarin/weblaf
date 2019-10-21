@@ -28,6 +28,11 @@ package com.alee.managers.icon;
 public final class Icons
 {
     /**
+     * Blank icon.
+     */
+    public static final LazyIcon blank = new LazyIcon ( "blank" );
+
+    /**
      * General purpose icons.
      */
     public static final LazyIcon underline = new LazyIcon ( "underline" );

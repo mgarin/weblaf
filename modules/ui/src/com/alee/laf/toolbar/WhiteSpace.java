@@ -20,7 +20,7 @@ package com.alee.laf.toolbar;
 import com.alee.extended.layout.AbstractLineLayout;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.utils.SwingUtils;
+import com.alee.laf.WebLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +76,7 @@ public class WhiteSpace extends JComponent implements SwingConstants
     public WhiteSpace ( final int spacing, final int orientation )
     {
         super ();
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
         setSpacing ( spacing );
         setOrientation ( orientation );
     }

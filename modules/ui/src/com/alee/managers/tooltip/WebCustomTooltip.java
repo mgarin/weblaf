@@ -246,7 +246,9 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
     {
         super ();
 
-        SwingUtils.setOrientation ( this );
+        // Orientation
+        WebLookAndFeel.setOrientation ( this );
+
         // SwingUtils.setForegroundRecursively ( tooltip, textColor );
         setOpaque ( false );
 

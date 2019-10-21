@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.system.JavaVersion;
 import com.alee.utils.system.SystemType;
@@ -45,16 +47,19 @@ public final class SystemUtils
     /**
      * Java version application is running on.
      */
+    @Nullable
     private static JavaVersion javaVersion;
 
     /**
      * Cached OS name.
      */
+    @NotNull
     private static final String osName;
 
     /**
      * Cached OS type.
      */
+    @NotNull
     private static final SystemType osType;
 
     /**
@@ -99,6 +104,7 @@ public final class SystemUtils
     /**
      * Transparent cursor.
      */
+    @Nullable
     private static Cursor transparentCursor;
 
     /**
@@ -114,7 +120,7 @@ public final class SystemUtils
      *
      * @param text text to copy into clipboard
      */
-    public static void copyToClipboard ( final String text )
+    public static void copyToClipboard ( @Nullable final String text )
     {
         try
         {
@@ -132,25 +138,25 @@ public final class SystemUtils
      *
      * @return string clipboard content
      */
+    @Nullable
     public static String getStringFromClipboard ()
     {
+        String string = null;
         final Transferable t = Toolkit.getDefaultToolkit ().getSystemClipboard ().getContents ( null );
         if ( t != null && t.isDataFlavorSupported ( DataFlavor.stringFlavor ) )
         {
             try
             {
-                return ( String ) t.getTransferData ( DataFlavor.stringFlavor );
+                string = ( String ) t.getTransferData ( DataFlavor.stringFlavor );
             }
-            catch ( final UnsupportedFlavorException e )
+            catch ( final UnsupportedFlavorException ignored )
             {
-                return null;
             }
-            catch ( final IOException e )
+            catch ( final IOException ignored )
             {
-                return null;
             }
         }
-        return null;
+        return string;
     }
 
     /**
@@ -158,6 +164,7 @@ public final class SystemUtils
      *
      * @return java version
      */
+    @NotNull
     public static String getJavaVersionString ()
     {
         return System.getProperty ( "java.version" );
@@ -168,6 +175,7 @@ public final class SystemUtils
      *
      * @return java version application is running on
      */
+    @NotNull
     public static JavaVersion getJavaVersion ()
     {
         if ( javaVersion == null )
@@ -268,6 +276,7 @@ public final class SystemUtils
      *
      * @return java vm name
      */
+    @NotNull
     public static String getJavaName ()
     {
         return System.getProperty ( "java.vm.name" );
@@ -278,6 +287,7 @@ public final class SystemUtils
      *
      * @return java vm vendor
      */
+    @NotNull
     public static String getJavaVendor ()
     {
         return System.getProperty ( "java.vm.vendor" );
@@ -288,6 +298,7 @@ public final class SystemUtils
      *
      * @return OS icon
      */
+    @NotNull
     public static ImageIcon getOsIcon ()
     {
         return getOsIcon ( true );
@@ -299,6 +310,7 @@ public final class SystemUtils
      * @param color whether return colored icon or not
      * @return OS icon
      */
+    @NotNull
     public static ImageIcon getOsIcon ( final boolean color )
     {
         return getOsIcon ( 16, color );
@@ -310,6 +322,7 @@ public final class SystemUtils
      * @param size preferred icon size
      * @return OS icon
      */
+    @NotNull
     public static ImageIcon getOsIcon ( final int size )
     {
         return getOsIcon ( size, true );
@@ -322,22 +335,14 @@ public final class SystemUtils
      * @param color whether return colored icon or not
      * @return OS icon
      */
+    @NotNull
     public static ImageIcon getOsIcon ( final int size, final boolean color )
     {
-        final ImageIcon icon;
         final String os = getShortOsName ();
-        if ( os != null )
-        {
-            final int iconSize = Objects.equals ( size, 16, 32 ) ? size : 16;
-            final String mark = color ? "_colored" : "";
-            final String path = "icons/os/" + iconSize + "/" + os + mark + ".png";
-            icon = new ImageIcon ( SystemUtils.class.getResource ( path ) );
-        }
-        else
-        {
-            icon = null;
-        }
-        return icon;
+        final int iconSize = Objects.equals ( size, 16, 32 ) ? size : 16;
+        final String mark = color ? "_colored" : "";
+        final String path = "icons/os/" + iconSize + "/" + os + mark + ".png";
+        return new ImageIcon ( SystemUtils.class.getResource ( path ) );
     }
 
     /**
@@ -345,6 +350,7 @@ public final class SystemUtils
      *
      * @return OS type
      */
+    @NotNull
     public static SystemType getOsType ()
     {
         return osType;
@@ -395,6 +401,7 @@ public final class SystemUtils
      *
      * @return OS architecture
      */
+    @NotNull
     public static String getOsArch ()
     {
         return ManagementFactory.getOperatingSystemMXBean ().getArch ();
@@ -405,6 +412,7 @@ public final class SystemUtils
      *
      * @return OS name
      */
+    @NotNull
     public static String getOsName ()
     {
         return osName;
@@ -415,6 +423,7 @@ public final class SystemUtils
      *
      * @return short OS name
      */
+    @NotNull
     public static String getShortOsName ()
     {
         return osType.shortName ();
@@ -425,28 +434,27 @@ public final class SystemUtils
      *
      * @return OS vendor site address
      */
+    @NotNull
     public static String getOsSite ()
     {
+        final String site;
         if ( isWindows () )
         {
-            return "http://www.microsoft.com/";
+            site = "http://www.microsoft.com/";
         }
         else if ( isMac () )
         {
-            return "http://www.apple.com/";
-        }
-        else if ( isUnix () )
-        {
-            return "http://www.unix.org/";
+            site = "http://www.apple.com/";
         }
         else if ( isSolaris () )
         {
-            return "http://www.oracle.com/";
+            site = "http://www.oracle.com/";
         }
         else
         {
-            return null;
+            site = "http://www.unix.org/";
         }
+        return site;
     }
 
     /**
@@ -454,6 +462,7 @@ public final class SystemUtils
      *
      * @return OS version
      */
+    @NotNull
     public static String getOsVersion ()
     {
         return ManagementFactory.getOperatingSystemMXBean ().getVersion ();
@@ -474,6 +483,7 @@ public final class SystemUtils
      *
      * @return JRE architecture
      */
+    @NotNull
     public static String getJreArch ()
     {
         return getJreArchName ().contains ( "64" ) ? "64" : "32";
@@ -484,6 +494,7 @@ public final class SystemUtils
      *
      * @return JRE architecture name
      */
+    @NotNull
     public static String getJreArchName ()
     {
         return System.getProperty ( "sun.arch.data.model" );
@@ -524,6 +535,7 @@ public final class SystemUtils
      *
      * @return default GraphicsEnvironment
      */
+    @NotNull
     public static GraphicsEnvironment getGraphicsEnvironment ()
     {
         return GraphicsEnvironment.getLocalGraphicsEnvironment ();
@@ -544,6 +556,7 @@ public final class SystemUtils
      *
      * @return default screen device
      */
+    @NotNull
     public static GraphicsDevice getDefaultScreenDevice ()
     {
         return getGraphicsEnvironment ().getDefaultScreenDevice ();
@@ -554,6 +567,7 @@ public final class SystemUtils
      *
      * @return default screen GraphicsConfiguration
      */
+    @NotNull
     public static GraphicsConfiguration getGraphicsConfiguration ()
     {
         return getDefaultScreenDevice ().getDefaultConfiguration ();
@@ -564,6 +578,7 @@ public final class SystemUtils
      *
      * @return list of available screen devices
      */
+    @NotNull
     public static List<GraphicsDevice> getGraphicsDevices ()
     {
         // Retrieving system devices
@@ -596,7 +611,8 @@ public final class SystemUtils
      * @param window window to find screen device for
      * @return screen device for the specified window
      */
-    public static GraphicsDevice getGraphicsDevice ( final Window window )
+    @NotNull
+    public static GraphicsDevice getGraphicsDevice ( @Nullable final Window window )
     {
         return window != null ? window.getGraphicsConfiguration ().getDevice () : getDefaultScreenDevice ();
     }
@@ -607,16 +623,23 @@ public final class SystemUtils
      * @param location location to find screen device for
      * @return screen device for the specified location
      */
-    public static GraphicsDevice getGraphicsDevice ( final Point location )
+    @NotNull
+    public static GraphicsDevice getGraphicsDevice ( @NotNull final Point location )
     {
+        GraphicsDevice graphicsDevice = null;
         for ( final GraphicsDevice device : getGraphicsDevices () )
         {
             if ( device.getDefaultConfiguration ().getBounds ().contains ( location ) )
             {
-                return device;
+                graphicsDevice = device;
+                break;
             }
         }
-        return getDefaultScreenDevice ();
+        if ( graphicsDevice == null )
+        {
+            graphicsDevice = getDefaultScreenDevice ();
+        }
+        return graphicsDevice;
     }
 
     /**
@@ -625,7 +648,8 @@ public final class SystemUtils
      * @param bounds bounds to find screen device for
      * @return screen device where most part of specified bounds is placed
      */
-    public static GraphicsDevice getGraphicsDevice ( final Rectangle bounds )
+    @NotNull
+    public static GraphicsDevice getGraphicsDevice ( @NotNull final Rectangle bounds )
     {
         // Determining screen on which most part of our bounds is placed
         int maxArea = 0;
@@ -656,7 +680,8 @@ public final class SystemUtils
      * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
      * @return screen device bounds
      */
-    public static Rectangle getDeviceBounds ( final GraphicsDevice device, final boolean applyScreenInsets )
+    @NotNull
+    public static Rectangle getDeviceBounds ( @Nullable final GraphicsDevice device, final boolean applyScreenInsets )
     {
         return getDeviceBounds ( device != null ? device.getDefaultConfiguration () : getGraphicsConfiguration (), applyScreenInsets );
     }
@@ -668,7 +693,8 @@ public final class SystemUtils
      * @param applyScreenInsets whether or not should extract screen insets from screen device bounds
      * @return screen device bounds
      */
-    public static Rectangle getDeviceBounds ( final GraphicsConfiguration gc, final boolean applyScreenInsets )
+    @NotNull
+    public static Rectangle getDeviceBounds ( @Nullable final GraphicsConfiguration gc, final boolean applyScreenInsets )
     {
         // Ensure we have some configuration
         final GraphicsConfiguration conf = gc != null ? gc : getGraphicsConfiguration ();
@@ -695,6 +721,7 @@ public final class SystemUtils
      * @param applyScreenInsets whether or not should extract screen insets from screen device bounds
      * @return screen device bounds
      */
+    @NotNull
     public static List<Rectangle> getDevicesBounds ( final boolean applyScreenInsets )
     {
         final List<GraphicsDevice> devices = getGraphicsDevices ();
@@ -713,7 +740,8 @@ public final class SystemUtils
      * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
      * @return screen bounds for the specified location
      */
-    public static Rectangle getDeviceBounds ( final Point location, final boolean applyScreenInsets )
+    @NotNull
+    public static Rectangle getDeviceBounds ( @NotNull final Point location, final boolean applyScreenInsets )
     {
         final GraphicsDevice device = getGraphicsDevice ( location );
         return getDeviceBounds ( device, applyScreenInsets );
@@ -726,7 +754,8 @@ public final class SystemUtils
      * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
      * @return screen bounds within which most part of the specified bounds is placed
      */
-    public static Rectangle getDeviceBounds ( final Rectangle bounds, final boolean applyScreenInsets )
+    @NotNull
+    public static Rectangle getDeviceBounds ( @NotNull final Rectangle bounds, final boolean applyScreenInsets )
     {
         final GraphicsDevice device = getGraphicsDevice ( bounds );
         return getDeviceBounds ( device, applyScreenInsets );
@@ -739,7 +768,8 @@ public final class SystemUtils
      * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
      * @return screen bounds within which most part of the specified component is placed
      */
-    public static Rectangle getDeviceBounds ( final Component component, final boolean applyScreenInsets )
+    @NotNull
+    public static Rectangle getDeviceBounds ( @NotNull final Component component, final boolean applyScreenInsets )
     {
         final Rectangle bounds = CoreSwingUtils.getBoundsOnScreen ( component, true );
         return getDeviceBounds ( bounds, applyScreenInsets );
@@ -753,7 +783,8 @@ public final class SystemUtils
      * @param frame frame to provide maximized bounds for
      * @return maximized bounds for the screen where specified frame is displayed
      */
-    public static Rectangle getMaximizedBounds ( final Frame frame )
+    @NotNull
+    public static Rectangle getMaximizedBounds ( @NotNull final Frame frame )
     {
         final GraphicsConfiguration gc = frame.getGraphicsConfiguration ();
         final Rectangle max = getDeviceBounds ( gc, true );
@@ -769,7 +800,8 @@ public final class SystemUtils
      * @param frame frame to provide maximized bounds for
      * @return maximized bounds for the west half of the screen where specified frame is displayed
      */
-    public static Rectangle getMaximizedWestBounds ( final Frame frame )
+    @NotNull
+    public static Rectangle getMaximizedWestBounds ( @NotNull final Frame frame )
     {
         final Rectangle b = getMaximizedBounds ( frame );
         return new Rectangle ( b.x, b.y, b.width / 2, b.height );
@@ -783,7 +815,8 @@ public final class SystemUtils
      * @param frame frame to provide maximized bounds for
      * @return maximized bounds for the east half of the screen where specified frame is displayed
      */
-    public static Rectangle getMaximizedEastBounds ( final Frame frame )
+    @NotNull
+    public static Rectangle getMaximizedEastBounds ( @NotNull final Frame frame )
     {
         final Rectangle b = getMaximizedBounds ( frame );
         return new Rectangle ( b.x + b.width - b.width / 2, b.y, b.width / 2, b.height );
@@ -805,6 +838,7 @@ public final class SystemUtils
      *
      * @return fully transparent cursor
      */
+    @NotNull
     public static Cursor getTransparentCursor ()
     {
         if ( transparentCursor == null )

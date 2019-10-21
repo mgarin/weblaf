@@ -19,6 +19,7 @@ package com.alee.laf.window;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
@@ -33,7 +34,6 @@ import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.ComponentEventRunnable;
 import com.alee.utils.swing.extensions.WindowCloseAdapter;
 
@@ -187,7 +187,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
         ProprietaryUtils.checkAndSetPolicy ( this );
 
         // Additional settings
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
 
         // Installing root pane style
         setStyleId ( id );

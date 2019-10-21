@@ -75,11 +75,15 @@ public class DockablePanePainter<C extends WebDockablePane, U extends WDockableP
         if ( areaPainter != null && c.getMaximizedFrame () == null )
         {
             final DockablePaneModel model = c.getModel ();
+            final ComponentOrientation componentOrientation = c.getComponentOrientation ();
             final Rectangle outerBounds = model.getOuterBounds ( c );
             final Rectangle innerBounds = model.getInnerBounds ( c );
             for ( final CompassDirection area : CompassDirection.values () )
             {
-                final Rectangle areaBounds = getAreaBounds ( area, outerBounds, innerBounds );
+                // Adjusting area to ensure we do not preemptively consider RTL in state
+                // This is necessary because inner and outer bounds are already adjusted for RTL
+                final CompassDirection adjustedArea = area.adjust ( componentOrientation );
+                final Rectangle areaBounds = getAreaBounds ( adjustedArea, outerBounds, innerBounds );
                 if ( areaBounds.width > 0 && areaBounds.height > 0 && areaPainter.hasDecorationFor ( area ) )
                 {
                     areaPainter.prepareToPaint ( area );

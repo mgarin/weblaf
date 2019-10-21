@@ -1,5 +1,8 @@
 <IconSet id="weblaf" nearClass="com.alee.iconset.DarkIconSet" base="icons/flat/" xmlns="http://weblookandfeel.com/XmlIconSet">
 
+    <!-- Blank icon -->
+    <SvgIcon id="blank" path="blank.svg" size="16,16" />
+
     <!-- General purpose icons -->
     <SvgIcon id="underline" path="underline.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />

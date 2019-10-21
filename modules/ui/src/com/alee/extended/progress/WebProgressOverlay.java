@@ -18,6 +18,7 @@
 package com.alee.extended.progress;
 
 import com.alee.extended.panel.WebOverlay;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -126,7 +127,7 @@ public class WebProgressOverlay extends WebOverlay
         public ProgressLayer ()
         {
             super ();
-            SwingUtils.setOrientation ( this );
+            WebLookAndFeel.setOrientation ( this );
             NoOpMouseListener.install ( this );
         }
 

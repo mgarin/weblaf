@@ -1540,36 +1540,36 @@
                 </record>
                 <Dictionary prefix="data">
                     <record key="tab0">
-                        <value lang="en">Tab 0</value>
-                        <value lang="ru">Таб 0</value>
+                        <value lang="en">Simple tab</value>
+                        <value lang="ru">Простой таб</value>
                     </record>
                     <record key="tab1">
-                        <value lang="en">Tab 1</value>
-                        <value lang="ru">Таб 1</value>
+                        <value lang="en">Another tab</value>
+                        <value lang="ru">Ещё один таб</value>
                     </record>
                     <record key="tab2">
-                        <value lang="en">Tab 2</value>
-                        <value lang="ru">Таб 2</value>
+                        <value lang="en">Tab</value>
+                        <value lang="ru">Таб</value>
                     </record>
                     <record key="tab3">
-                        <value lang="en">Tab 3</value>
-                        <value lang="ru">Таб 3</value>
+                        <value lang="en">Colored</value>
+                        <value lang="ru">Цветной</value>
                     </record>
                     <record key="tab4">
-                        <value lang="en">Tab 4</value>
-                        <value lang="ru">Таб 4</value>
+                        <value lang="en">Very-very long tab title</value>
+                        <value lang="ru">Очень-очень длинный заголовок</value>
                     </record>
                     <record key="tab5">
-                        <value lang="en">Tab 5</value>
-                        <value lang="ru">Таб 5</value>
+                        <value lang="en">{Underlined:u} tab</value>
+                        <value lang="ru">{Подчёркнутый:u} таб</value>
                     </record>
                     <record key="tab6">
-                        <value lang="en">Tab 6</value>
-                        <value lang="ru">Таб 6</value>
+                        <value lang="en">Disabled tab</value>
+                        <value lang="ru">Заблокированный таб</value>
                     </record>
                     <record key="tab7">
-                        <value lang="en">Tab 7</value>
-                        <value lang="ru">Таб 7</value>
+                        <value lang="en">Last tab</value>
+                        <value lang="ru">Последний таб</value>
                     </record>
                     <record key="content">
                         <value lang="en">Sample tab content{br}(click to focus this)</value>
@@ -1598,6 +1598,18 @@
                     <record key="title">
                         <value lang="en">Tabs at the right</value>
                         <value lang="ru">Табы справа</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="equal">
+                    <record key="title">
+                        <value lang="en">Tabs of equal size</value>
+                        <value lang="ru">Табы одинакового размера</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="vertical">
+                    <record key="title">
+                        <value lang="en">Vertical tabs</value>
+                        <value lang="ru">Вертикальные табы</value>
                     </record>
                 </Dictionary>
             </Dictionary>

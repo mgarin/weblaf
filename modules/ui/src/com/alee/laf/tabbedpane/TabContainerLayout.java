@@ -129,7 +129,7 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
                     for ( int j = runStartIndex; j <= i; j++ )
                     {
                         final Tab tab = ( Tab ) tabContainer.getComponent ( j );
-                        final Dimension tps = getTabPreferredSize ( tabContainer, i, sizeCache );
+                        final Dimension tps = getTabPreferredSize ( tabContainer, j, sizeCache );
                         if ( horizontal )
                         {
                             final int w;

@@ -298,11 +298,11 @@ public final class SizeCache
             if ( preferred == null )
             {
                 preferred = new Dimension ( 0, 0 );
-                for ( int i = 0; i < container.getComponentCount (); i++ )
+                for ( int index = 0; index < container.getComponentCount (); index++ )
                 {
-                    preferred = SwingUtils.max (
+                    preferred = SwingUtils.maxNonNull (
                             preferred,
-                            cache.preferred ( container, i )
+                            cache.preferred ( container, index )
                     );
                 }
             }
@@ -338,11 +338,11 @@ public final class SizeCache
             if ( preferred == null )
             {
                 preferred = new Dimension ( 0, 0 );
-                for ( int i = 0; i < container.getComponentCount (); i++ )
+                for ( int index = 0; index < container.getComponentCount (); index++ )
                 {
-                    preferred = SwingUtils.max (
+                    preferred = SwingUtils.maxNonNull (
                             preferred,
-                            cache.minimum ( container, i )
+                            cache.minimum ( container, index )
                     );
                 }
             }
@@ -378,11 +378,11 @@ public final class SizeCache
             if ( preferred == null )
             {
                 preferred = new Dimension ( 0, 0 );
-                for ( int i = 0; i < container.getComponentCount (); i++ )
+                for ( int index = 0; index < container.getComponentCount (); index++ )
                 {
-                    preferred = SwingUtils.max (
+                    preferred = SwingUtils.maxNonNull (
                             preferred,
-                            cache.maximum ( container, i )
+                            cache.maximum ( container, index )
                     );
                 }
             }

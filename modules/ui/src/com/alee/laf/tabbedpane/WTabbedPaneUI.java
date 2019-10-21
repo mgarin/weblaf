@@ -552,8 +552,8 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
 
         // Calculating new view and extent sizes
         final Dimension tabContainerSize = tabContainer.getPreferredSize ();
-        final Dimension viewSize = new Dimension ( tabContainerSize );
         final Dimension extentSize = new Dimension ( tabContainerSize );
+        final Dimension viewSize = new Dimension ( tabContainerSize );
         switch ( tabbedPane.getTabPlacement () )
         {
             default:
@@ -563,8 +563,8 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                 // We have to check JTabbedPane width here because TabArea could still be placed at the old location
                 final Insets tpInsets = tabbedPane.getInsets ();
                 final Insets taInsets = tabArea.getInsets ();
-                viewSize.width = tabbedPane.getWidth () - tpInsets.left - tpInsets.right - taInsets.left - taInsets.right;
-                extentSize.width = Math.max ( extentSize.width, viewSize.width );
+                extentSize.width = tabbedPane.getWidth () - tpInsets.left - tpInsets.right - taInsets.left - taInsets.right;
+                viewSize.width = Math.max ( viewSize.width, extentSize.width );
             }
             break;
 
@@ -574,80 +574,64 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                 // We have to check JTabbedPane width here because TabArea could still be placed at the old location
                 final Insets tpInsets = tabbedPane.getInsets ();
                 final Insets taInsets = tabArea.getInsets ();
-                viewSize.height = tabbedPane.getHeight () - tpInsets.top - tpInsets.bottom - taInsets.top - taInsets.bottom;
-                extentSize.height = Math.max ( extentSize.height, viewSize.height );
+                extentSize.height = tabbedPane.getHeight () - tpInsets.top - tpInsets.bottom - taInsets.top - taInsets.bottom;
+                viewSize.height = Math.max ( viewSize.height, extentSize.height );
             }
             break;
         }
 
         // Perform updates only if values changed
-        if ( !oldViewSize.equals ( viewSize ) || !oldExtentSize.equals ( extentSize ) )
+        if ( !oldViewSize.equals ( extentSize ) || !oldExtentSize.equals ( viewSize ) )
         {
-            // Updating viewport values
-            tabViewport.setViewSize ( viewSize );
-            tabViewport.setExtentSize ( extentSize );
-            tabContainer.revalidate ();
-            tabContainer.repaint ();
-
             // Updating menu button visibility before we update the layout
-            updateTabMenuButtonVisibility ();
+            if ( tabbedPane.getTabLayoutPolicy () == JTabbedPane.SCROLL_TAB_LAYOUT )
+            {
+                final int tabPlacement = tabbedPane.getTabPlacement ();
+                final boolean horizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
+                tabMenuButton.setVisible (
+                        horizontal ?
+                                viewSize.width > extentSize.width :
+                                viewSize.height > extentSize.height
+                );
+            }
+            else
+            {
+                tabMenuButton.setVisible ( false );
+            }
 
             // Moving selected tab into visible area
-            moveSelectedTabIntoVisibleArea ();
-        }
-    }
-
-    /**
-     * Updates {@link TabMenuButton} visibility.
-     */
-    protected void updateTabMenuButtonVisibility ()
-    {
-        if ( tabbedPane.getTabLayoutPolicy () == JTabbedPane.SCROLL_TAB_LAYOUT )
-        {
-            final int tabPlacement = tabbedPane.getTabPlacement ();
-            final boolean horizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
-            final Dimension extentSize = tabViewport.getExtentSize ();
-            final Dimension viewSize = tabViewport.getViewSize ();
-            tabMenuButton.setVisible (
-                    horizontal ?
-                            extentSize.width > viewSize.width :
-                            extentSize.height > viewSize.height
-            );
-        }
-        else
-        {
-            tabMenuButton.setVisible ( false );
-        }
-    }
-
-    /**
-     * Moves selected {@link Tab} into visible part of {@link TabViewport}.
-     */
-    protected void moveSelectedTabIntoVisibleArea ()
-    {
-        if ( tabbedPane.getTabLayoutPolicy () == JTabbedPane.SCROLL_TAB_LAYOUT )
-        {
-            // We have to do this update later, after the layout update
-            SwingUtilities.invokeLater ( new Runnable ()
+            if ( tabbedPane.getTabLayoutPolicy () == JTabbedPane.SCROLL_TAB_LAYOUT )
             {
-                @Override
-                public void run ()
+                // We have to do this update later, after the layout update
+                SwingUtilities.invokeLater ( new Runnable ()
                 {
-                    final int selectedIndex = tabbedPane.getSelectedIndex ();
-                    if ( selectedIndex != -1 )
+                    @Override
+                    public void run ()
                     {
-                        final Tab selectedTab = getTab ( selectedIndex );
-                        if ( selectedTab != null )
+                        final int selectedIndex = tabbedPane.getSelectedIndex ();
+                        if ( selectedIndex != -1 )
                         {
-                            final Rectangle selectedBounds = selectedTab.getBounds ();
-                            if ( !tabContainer.getVisibleRect ().contains ( selectedBounds ) )
+                            final Tab selectedTab = getTab ( selectedIndex );
+                            if ( selectedTab != null )
                             {
-                                tabContainer.scrollRectToVisible ( selectedBounds );
+                                final Rectangle selectedBounds = selectedTab.getBounds ();
+                                if ( !tabContainer.getVisibleRect ().contains ( selectedBounds ) )
+                                {
+                                    tabContainer.scrollRectToVisible ( selectedBounds );
+                                }
                             }
                         }
                     }
-                }
-            } );
+                } );
+            }
+
+            // Hacky workaround for properly updating the view
+            tabViewport.setViewSize ( extentSize );
+            tabViewport.setExtentSize ( viewSize );
+
+            // Updating viewport values
+            tabContainer.revalidate ();
+            tabContainer.repaint ();
         }
     }
 

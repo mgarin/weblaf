@@ -165,6 +165,12 @@
                     <style type="radiobuttonmenuitem" id="item">
                         <painter>
                             <decorations>
+                                <decoration>
+                                    <MenuItemLayout>
+                                        <ButtonIcon constraints="icon" />
+                                        <TabMenuItemText constraints="text" />
+                                    </MenuItemLayout>
+                                </decoration>
                                 <decoration states="selected">
                                     <ColorBackground color="55,55,55" />
                                 </decoration>
@@ -175,11 +181,23 @@
                                             <color>64,131,201</color>
                                         </Stripe>
                                     </Stripes>
+                                    <MenuItemLayout>
+                                        <TabMenuItemText color="118,185,255" />
+                                    </MenuItemLayout>
                                 </decoration>
                                 <decoration states="checked,selected">
                                     <ColorBackground color="55,55,55" />
                                 </decoration>
+                                <decoration states="disabled">
+                                    <MenuItemLayout>
+                                        <TabMenuItemText color="180,180,180" ignoreCustomColor="true" ignoreStyleColors="true" />
+                                    </MenuItemLayout>
+                                </decoration>
                             </decorations>
+
+                            <!-- Radio state painter -->
+                            <checkStatePainter overwrite="true" />
+
                         </painter>
                     </style>
 
@@ -215,8 +233,8 @@
 
     </style>
 
-    <!-- Tabbed pane with rotated left/right tabs -->
-    <style type="tabbedpane" id="rotated">
+    <!-- Tabbed pane with vertical tabs -->
+    <style type="tabbedpane" id="vertical">
 
         <!-- Tab area -->
         <style type="panel" id="tab-area">

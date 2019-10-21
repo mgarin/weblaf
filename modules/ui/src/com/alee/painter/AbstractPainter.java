@@ -512,7 +512,7 @@ public abstract class AbstractPainter<C extends JComponent, U extends ComponentU
     {
         if ( isSettingsUpdateAllowed () )
         {
-            SwingUtils.setOrientation ( component );
+            WebLookAndFeel.setOrientation ( component );
         }
     }
 

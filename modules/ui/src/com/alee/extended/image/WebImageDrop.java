@@ -17,11 +17,11 @@
 
 package com.alee.extended.image;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.transfer.ImageTransferHandler;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.MathUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,7 +103,7 @@ public class WebImageDrop extends JComponent
         this.image = image;
         updatePreview ();
 
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
 
         // Image drop handler
         setTransferHandler ( new ImageTransferHandler ( false, true )

@@ -20,6 +20,7 @@ package com.alee.extended.ninepatch;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.extended.layout.TableLayout;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
@@ -103,7 +104,7 @@ public class NinePatchEditor extends WebPanel
         ninePatchImage = null;
         ninePatchIcon = null;
 
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
         setOpaque ( false );
         setFocusable ( true );
         setLayout ( new TableLayout ( new double[][]{ { RULER_LENGTH, TableLayout.PREFERRED, TableLayout.FILL },

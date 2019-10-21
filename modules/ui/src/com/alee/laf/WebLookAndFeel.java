@@ -246,7 +246,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @see #getOrientation()
      * @see #setOrientation(java.awt.ComponentOrientation)
-     * @see #setOrientation(boolean)
+     * @see #setLeftToRightOrientation(boolean)
      */
     protected static ComponentOrientation orientation;
 
@@ -1505,6 +1505,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
+     * Sets current global component orientation.
+     *
+     * @param leftToRight whether should set LTR orientation or RTL one
+     */
+    public static void setLeftToRightOrientation ( final boolean leftToRight )
+    {
+        setOrientation ( leftToRight ? ComponentOrientation.LEFT_TO_RIGHT : ComponentOrientation.RIGHT_TO_LEFT );
+    }
+
+    /**
      * Returns current global component orientation.
      *
      * @return current global component orientation
@@ -1516,27 +1526,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns orientation opposite to current global component orientation.
-     *
-     * @return orientation opposite to current global component orientation
-     */
-    @NotNull
-    public static ComponentOrientation getOppositeOrientation ()
-    {
-        return isLeftToRight () ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT;
-    }
-
-    /**
-     * Sets current global component orientation.
-     *
-     * @param leftToRight whether should set LTR orientation or RTL one
-     */
-    public static void setOrientation ( final boolean leftToRight )
-    {
-        setOrientation ( leftToRight ? ComponentOrientation.LEFT_TO_RIGHT : ComponentOrientation.RIGHT_TO_LEFT );
-    }
-
-    /**
      * Sets current global component orientation.
      *
      * @param orientation new global component orientation
@@ -1544,7 +1533,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setOrientation ( @NotNull final ComponentOrientation orientation )
     {
         WebLookAndFeel.orientation = orientation;
-        SwingUtils.updateGlobalOrientation ();
+        SwingUtils.updateGlobalOrientation ( WebLookAndFeel.orientation );
     }
 
     /**
@@ -1552,7 +1541,29 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void changeOrientation ()
     {
-        setOrientation ( !getOrientation ().isLeftToRight () );
+        setLeftToRightOrientation ( !getOrientation ().isLeftToRight () );
+    }
+
+    /**
+     * Updates component orientation for all existing components.
+     */
+    public static void updateOrientation ()
+    {
+        SwingUtils.updateGlobalOrientation ( WebLookAndFeel.orientation );
+    }
+
+    /**
+     * Sets component orientation to specified component.
+     *
+     * @param component component to modify
+     */
+    public static void setOrientation ( @NotNull final Component component )
+    {
+        final ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
+        if (  orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
+        {
+            component.setComponentOrientation ( orientation );
+        }
     }
 
     /**

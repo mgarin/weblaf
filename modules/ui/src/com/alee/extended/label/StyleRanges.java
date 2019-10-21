@@ -60,7 +60,6 @@ public class StyleRanges implements IStyleRanges
      */
     public StyleRanges ( final String styledText )
     {
-        super ();
         this.styledText = styledText;
     }
 

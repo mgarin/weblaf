@@ -19,13 +19,13 @@ package com.alee.laf.window;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WRootPaneUI;
 import com.alee.laf.rootpane.WebRootPane;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.*;
-import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -35,7 +35,6 @@ import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.ComponentEventRunnable;
 import com.alee.utils.swing.extensions.WindowCloseAdapter;
 
@@ -270,7 +269,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
         // Updating base settings
         setFocusable ( true );
         setFocusableWindowState ( true );
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
 
         // Installing root pane style
         setStyleId ( id );

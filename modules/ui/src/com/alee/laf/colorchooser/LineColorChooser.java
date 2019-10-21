@@ -18,10 +18,10 @@
 package com.alee.laf.colorchooser;
 
 import com.alee.extended.layout.TableLayout;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.icon.Icons;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -68,7 +68,7 @@ public class LineColorChooser extends WebPanel
         public LinePalette ()
         {
             super ();
-            SwingUtils.setOrientation ( this );
+            WebLookAndFeel.setOrientation ( this );
         }
 
         @Override

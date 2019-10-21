@@ -17,8 +17,8 @@
 
 package com.alee.extended.colorchooser;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class WebColorPicker extends JComponent
     public WebColorPicker ()
     {
         super ();
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
         setPreferredSize ( new Dimension ( 44, 44 ) );
         initListeners ();
     }

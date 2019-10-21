@@ -274,7 +274,7 @@ public final class StyleId implements Identifiable
      */
     public static final StyleId tabbedpane = StyleId.of ( "tabbedpane" );
     public static final StyleId tabbedpaneEqual = StyleId.of ( "equal" );
-    public static final StyleId tabbedpaneRotated = StyleId.of ( "rotated" );
+    public static final StyleId tabbedpaneVertical = StyleId.of ( "vertical" );
     public static final ChildStyleId tabbedpaneTabArea = ChildStyleId.of ( "tab-area" );
     public static final ChildStyleId tabbedpaneTabMenuButton = ChildStyleId.of ( "tab-menu-button" );
     public static final ChildStyleId tabbedpaneTabMenu = ChildStyleId.of ( "menu" );
@@ -1014,7 +1014,6 @@ public final class StyleId implements Identifiable
      */
     private StyleId ( final String id, final JComponent parent )
     {
-        super ();
         this.id = id;
         this.parent = parent != null ? new WeakReference<JComponent> ( parent ) : null;
     }

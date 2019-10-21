@@ -24,6 +24,7 @@ import com.alee.api.jdk.Objects;
 import com.alee.extended.collapsible.WebCollapsiblePaneLU;
 import com.alee.extended.dock.WebDockableFrameLU;
 import com.alee.extended.filechooser.WebFileDropLU;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.AbstractButtonLU;
 import com.alee.laf.desktoppane.JInternalFrameLU;
 import com.alee.laf.filechooser.JFileChooserLU;
@@ -36,7 +37,6 @@ import com.alee.laf.tooltip.SwingToolTipLanguage;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.tooltip.CustomToolTipLanguage;
 import com.alee.utils.ArrayUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WeakComponentData;
 import com.alee.utils.swing.WeakComponentDataList;
 
@@ -227,7 +227,7 @@ public final class UILanguageManager
                     final ComponentOrientation no = ComponentOrientation.getOrientation ( newLanguage.getLocale () );
                     if ( oo.isLeftToRight () != no.isLeftToRight () )
                     {
-                        SwingUtils.updateGlobalOrientation ();
+                        WebLookAndFeel.updateOrientation ();
                     }
 
                     // Updating registered components

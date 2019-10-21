@@ -18,9 +18,9 @@
 package com.alee.extended.transition;
 
 import com.alee.extended.transition.effects.TransitionEffect;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MathUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -70,7 +70,7 @@ public class ImageTransition extends JComponent implements ActionListener
         this.currentImage = currentImage;
         this.otherImage = otherImage;
 
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
         setOpaque ( false );
     }
 

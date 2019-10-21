@@ -19,6 +19,7 @@ package com.alee.extended.image;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
@@ -77,7 +78,7 @@ public class WebImageGallery extends JComponent
     {
         super ();
 
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
         setFocusable ( true );
         setFont ( new JLabel ().getFont ().deriveFont ( Font.BOLD ) );
 

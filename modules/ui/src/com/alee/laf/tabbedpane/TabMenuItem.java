@@ -20,6 +20,8 @@ package com.alee.laf.tabbedpane;
 import com.alee.api.annotations.NotNull;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.menu.WebRadioButtonMenuItem;
+import com.alee.managers.language.LM;
+import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.LafUtils;
 
@@ -60,6 +62,9 @@ public class TabMenuItem extends WebRadioButtonMenuItem implements ActionListene
         this.tabbedPane = tabbedPane;
         this.index = index;
 
+        // Enabled state
+        setEnabled ( tabbedPane.isEnabledAt ( index ) );
+
         // Selected state
         setSelected ( tabbedPane.getSelectedIndex () == index );
 
@@ -77,13 +82,17 @@ public class TabMenuItem extends WebRadioButtonMenuItem implements ActionListene
                     // Retrieving icon and title from tab component
                     final TabComponent tabComponent = ( TabComponent ) tab.getComponent ();
                     icon = tabComponent.getIcon ();
-                    title = tabComponent.getTitle ();
+                    title = tabComponent instanceof JComponent && UILanguageManager.isRegisteredComponent ( ( JComponent ) tabComponent ) ?
+                            UILanguageManager.getComponentKey ( ( JComponent ) tabComponent ) :
+                            tabComponent.getTitle ();
                 }
                 else
                 {
                     // Trying to retrieve icon and title from tab directly
                     icon = tab.getIcon ();
-                    title = tab.getText ();
+                    title = UILanguageManager.isRegisteredComponent ( tab ) ?
+                            UILanguageManager.getComponentKey ( tab ) :
+                            tab.getText ();
                 }
             }
             else
@@ -100,19 +109,30 @@ public class TabMenuItem extends WebRadioButtonMenuItem implements ActionListene
             title = tabbedPane.getTitleAt ( index );
         }
 
-        // Updating menu item settings
+        // Using retrieved icon and title
+        setIcon ( icon );
+
+        // Updating text
         if ( icon != null || title != null )
         {
-            // Using retrieved icon and title
-            setIcon ( icon );
-            setText ( title );
+            // Checking for translation
+            // todo This won't work with data correctly
+            if ( title != null && LM.contains ( title ) )
+            {
+                // Using translation
+                setLanguage ( title );
+            }
+            else
+            {
+                // Using plain text
+                setText ( title );
+            }
         }
         else
         {
             // Using default fallback title
             setLanguage ( "weblaf.tabbedpane.menu.tab", index + 1 );
         }
-        setEnabled ( tabbedPane.isEnabledAt ( index ) );
 
         // Tab selection action
         addActionListener ( this );

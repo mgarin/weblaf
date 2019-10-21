@@ -21,10 +21,10 @@ import com.alee.api.annotations.NotNull;
 import com.alee.graphics.filters.GaussianFilter;
 import com.alee.graphics.filters.GrayscaleFilter;
 import com.alee.graphics.filters.MotionBlurFilter;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.ShapeMethods;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,14 +83,14 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
     public WebDecoratedImage ( final Image image )
     {
         super ();
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
         setImage ( image );
     }
 
     public WebDecoratedImage ( final ImageIcon icon )
     {
         super ();
-        SwingUtils.setOrientation ( this );
+        WebLookAndFeel.setOrientation ( this );
         setIcon ( icon );
     }
 

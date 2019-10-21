@@ -548,6 +548,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         final WebDockablePane dockablePane = ( WebDockablePane ) container;
         final int w = dockablePane.getWidth ();
         final int h = dockablePane.getHeight ();
+        final boolean ltr = dockablePane.getComponentOrientation ().isLeftToRight ();
 
         // Outer bounds, sidebars are placed within these bounds
         final Rectangle outer = getOuterBounds ( dockablePane );
@@ -583,7 +584,14 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                     case west:
                         fw = sidebarSizes.get ( north );
                         lw = sidebarSizes.get ( south );
-                        bounds = new Rectangle ( outer.x, outer.y + fw, barWidth, outer.height - fw - lw );
+                        if ( ltr )
+                        {
+                            bounds = new Rectangle ( outer.x, outer.y + fw, barWidth, outer.height - fw - lw );
+                        }
+                        else
+                        {
+                            bounds = new Rectangle ( outer.x + outer.width - barWidth, outer.y + fw, barWidth, outer.height - fw - lw );
+                        }
                         break;
 
                     case south:
@@ -595,7 +603,14 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                     case east:
                         fw = sidebarSizes.get ( north );
                         lw = sidebarSizes.get ( south );
-                        bounds = new Rectangle ( outer.x + outer.width - barWidth, outer.y + fw, barWidth, outer.height - fw - lw );
+                        if ( ltr )
+                        {
+                            bounds = new Rectangle ( outer.x + outer.width - barWidth, outer.y + fw, barWidth, outer.height - fw - lw );
+                        }
+                        else
+                        {
+                            bounds = new Rectangle ( outer.x, outer.y + fw, barWidth, outer.height - fw - lw );
+                        }
                         break;
 
                     default:
@@ -721,34 +736,36 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         final Rectangle bounds = getOuterBounds ( dockablePane );
         if ( sidebarSizes.size () > 0 )
         {
-            int north = sidebarSizes.get ( CompassDirection.north );
-            if ( north > 0 )
+            final boolean ltr = dockablePane.getComponentOrientation ().isLeftToRight ();
+
+            int northSide = sidebarSizes.get ( north );
+            if ( northSide > 0 )
             {
-                north += dockablePane.getSidebarSpacing ();
+                northSide += dockablePane.getSidebarSpacing ();
             }
 
-            int west = sidebarSizes.get ( CompassDirection.west );
-            if ( west > 0 )
+            int westSide = ltr ? sidebarSizes.get ( west ) : sidebarSizes.get ( east );
+            if ( westSide > 0 )
             {
-                west += dockablePane.getSidebarSpacing ();
+                westSide += dockablePane.getSidebarSpacing ();
             }
 
-            int east = sidebarSizes.get ( CompassDirection.east );
-            if ( east > 0 )
+            int southSide = sidebarSizes.get ( south );
+            if ( southSide > 0 )
             {
-                east += dockablePane.getSidebarSpacing ();
+                southSide += dockablePane.getSidebarSpacing ();
             }
 
-            int south = sidebarSizes.get ( CompassDirection.south );
-            if ( south > 0 )
+            int eastSide = ltr ? sidebarSizes.get ( east ) : sidebarSizes.get ( west );
+            if ( eastSide > 0 )
             {
-                south += dockablePane.getSidebarSpacing ();
+                eastSide += dockablePane.getSidebarSpacing ();
             }
 
-            bounds.x += west;
-            bounds.width -= west + east;
-            bounds.y += north;
-            bounds.height -= north + south;
+            bounds.x += westSide;
+            bounds.width -= westSide + eastSide;
+            bounds.y += northSide;
+            bounds.height -= northSide + southSide;
         }
         return bounds;
     }

@@ -589,14 +589,6 @@ public final class SwingUtils
     }
 
     /**
-     * Updates component orientation for all existing components.
-     */
-    public static void updateGlobalOrientation ()
-    {
-        updateGlobalOrientation ( WebLookAndFeel.getOrientation () );
-    }
-
-    /**
      * Sets specified component orientation for all existing components.
      *
      * @param orientation component orientation to set
@@ -618,31 +610,6 @@ public final class SwingUtils
             {
                 update ( window );
             }
-        }
-    }
-
-    /**
-     * Sets component orientation to specified component.
-     *
-     * @param component component to modify
-     */
-    public static void setOrientation ( @NotNull final Component component )
-    {
-        setOrientation ( component, false );
-    }
-
-    /**
-     * Sets component orientation to specified component if needed or if forced.
-     *
-     * @param component component to modify
-     * @param forced    force orientation change
-     */
-    public static void setOrientation ( @NotNull final Component component, final boolean forced )
-    {
-        final ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
-        if ( forced || orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
-        {
-            component.setComponentOrientation ( orientation );
         }
     }
 

@@ -352,7 +352,8 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                 }
 
                 // Placing structure elements
-                int x = bounds.x;
+                final boolean ltr = dockablePane.getComponentOrientation ().isLeftToRight ();
+                int x = ltr ? bounds.x : bounds.x + bounds.width;
                 int y = bounds.y;
                 for ( int i = 0; i < visible.size (); i++ )
                 {
@@ -377,26 +378,45 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                     // Placing element
                     element.layout (
                             dockablePane,
-                            new Rectangle ( x, y, width, height ),
+                            new Rectangle (
+                                    ltr ? x : x - width,
+                                    y,
+                                    width,
+                                    height
+                            ),
                             resizeableAreas
                     );
 
                     // Adding resize element bounds
                     if ( i < visible.size () - 1 )
                     {
+                        // Resize gripper bounds
                         final int rg = dockablePane.getResizeGripperWidth ();
-                        final int rgx = horizontal ? x + width + spacing / 2 - rg / 2 : x;
+                        final int rgx = horizontal ? ltr ? x + width + spacing / 2 - rg / 2 : x - width - spacing / 2 - rg / 2 : x;
                         final int rgy = horizontal ? y : y + height + spacing / 2 - rg / 2;
                         final int rgw = horizontal ? rg : width;
                         final int rgh = horizontal ? height : rg;
                         final Rectangle rb = new Rectangle ( rgx, rgy, rgw, rgh );
-                        resizeableAreas.add ( new ResizeData ( rb, orientation, element.getId (), visible.get ( i + 1 ).getId () ) );
+
+                        // Resizeable elements
+                        final String leftElementId = !horizontal || ltr ? element.getId () : visible.get ( i + 1 ).getId ();
+                        final String rightElementId = !horizontal || ltr ? visible.get ( i + 1 ).getId () : element.getId ();
+
+                        // ResizeData
+                        resizeableAreas.add ( new ResizeData ( rb, orientation, leftElementId, rightElementId ) );
                     }
 
                     // Incrementing coordinate
                     if ( horizontal )
                     {
-                        x += width + spacing;
+                        if ( ltr )
+                        {
+                            x += width + spacing;
+                        }
+                        else
+                        {
+                            x -= width - spacing;
+                        }
                     }
                     else
                     {
