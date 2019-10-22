@@ -75,6 +75,12 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     protected Integer rowGap;
 
     /**
+     * Maximum preferred text width.
+     */
+    @XStreamAsAttribute
+    protected Integer maximumTextWidth;
+
+    /**
      * Global text style.
      * It can be specified to add an additional {@link StyleRange} with range [0,text.length].
      * It uses the style part of the standard styled text syntax.
@@ -162,6 +168,18 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     protected int getRowGap ( final C c, final D d )
     {
         return rowGap != null ? rowGap : 0;
+    }
+
+    /**
+     * Returns maximum preferred text width.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return maximum preferred text width
+     */
+    protected int getMaximumTextWidth ( final C c, final D d )
+    {
+        return maximumTextWidth != null ? maximumTextWidth : Short.MAX_VALUE;
     }
 
     /**
@@ -747,10 +765,13 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     @Override
     protected Dimension getPreferredTextSize ( final C c, final D d, final Dimension available )
     {
+        final int maximumTextWidth = getMaximumTextWidth ( c, d );
+
         // Preferred size for maximum possible space
-        final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
+        final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( maximumTextWidth, Short.MAX_VALUE ) );
 
         // Preferred size for available space
+        available.width = Math.min ( available.width, maximumTextWidth );
         final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
 
         return SwingUtils.max ( vSize, hSize );

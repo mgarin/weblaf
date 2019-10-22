@@ -116,4 +116,10 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
     {
         return valign != null ? valign : c.getVerticalTextAlignment ();
     }
+
+    @Override
+    protected int getMaximumTextWidth ( final C c, final D d )
+    {
+        return maximumTextWidth != null ? maximumTextWidth : c.getMaximumTextWidth ();
+    }
 }

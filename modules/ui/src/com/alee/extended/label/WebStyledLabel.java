@@ -75,6 +75,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     public static final String ROWS_PROPERTY = "rows";
     public static final String MAXIMUM_ROWS_PROPERTY = "maximumRows";
     public static final String MINIMUM_ROWS_PROPERTY = "minimumRows";
+    public static final String MAXIMUM_TEXT_WIDTH_PROPERTY = "maximumTextWidth";
     public static final String HORIZONTAL_TEXT_ALIGNMENT_PROPERTY = "horizontalTextAlignment";
     public static final String VERTICAL_TEXT_ALIGNMENT_PROPERTY = "verticalTextAlignment";
 
@@ -112,6 +113,11 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      * Minimum amount of rows.
      */
     protected int minimumRows;
+
+    /**
+     * Maximum preferred text width.
+     */
+    protected int maximumTextWidth;
 
     /**
      * Constructs empty label.
@@ -291,6 +297,13 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     {
         super ( UILanguageManager.getInitialText ( text, data ), icon, horizontalAlignment );
         UILanguageManager.registerInitialLanguage ( this, text, data );
+        setWrap ( TextWrap.mixed );
+        setHorizontalTextAlignment ( -1 );
+        setVerticalTextAlignment ( CENTER );
+        setRows ( 0 );
+        setMinimumRows ( 0 );
+        setMaximumRows ( 0 );
+        setMaximumTextWidth ( Short.MAX_VALUE );
         setStyleId ( id );
     }
 
@@ -615,6 +628,29 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
         final int old = this.minimumRows;
         this.minimumRows = minimumRows;
         firePropertyChange ( MINIMUM_ROWS_PROPERTY, old, minimumRows );
+    }
+
+    /**
+     * Returns maximum preferred text width.
+     *
+     * @return maximum preferred text width
+     */
+    public int getMaximumTextWidth ()
+    {
+        return maximumTextWidth;
+    }
+
+    /**
+     * Sets maximum preferred text width.
+     * By default it is set to {@code Short.MAX_VALUE}.
+     *
+     * @param maximumTextWidth preferred text width
+     */
+    public void setMaximumTextWidth ( final int maximumTextWidth )
+    {
+        final int old = this.maximumTextWidth;
+        this.maximumTextWidth = maximumTextWidth;
+        firePropertyChange ( MAXIMUM_TEXT_WIDTH_PROPERTY, old, maximumTextWidth );
     }
 
     @NotNull

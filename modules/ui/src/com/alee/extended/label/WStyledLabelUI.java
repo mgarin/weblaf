@@ -38,19 +38,4 @@ public abstract class WStyledLabelUI<C extends WebStyledLabel> extends WLabelUI<
     {
         return "StyledLabel.";
     }
-
-    @Override
-    protected void installDefaults ()
-    {
-        // Installing label defaults
-        super.installDefaults ();
-
-        // Installing styled label defaults
-        label.setWrap ( TextWrap.mixed );
-        label.setHorizontalTextAlignment ( -1 );
-        label.setVerticalTextAlignment ( CENTER );
-        label.setRows ( 0 );
-        label.setMinimumRows ( 0 );
-        label.setMaximumRows ( 0 );
-    }
 }
