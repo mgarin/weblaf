@@ -189,6 +189,7 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
         for ( final AccordionPane pane : accordion.getPanes () )
         {
             addComponent ( pane, null );
+            paneAdded ( accordion, pane );
         }
     }
 
@@ -203,18 +204,45 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
         for ( final AccordionPane pane : accordion.getPanes () )
         {
             removeComponent ( pane );
+            paneRemoved ( accordion, pane );
         }
 
         // Cleaning up resources
-        if ( transitions != null )
-        {
-            for ( final Map.Entry<String, AbstractTransition> entry : transitions.entrySet () )
-            {
-                entry.getValue ().stop ();
-            }
-            transitions = null;
-        }
+        transitions = null;
         contentSizes = null;
+    }
+
+    /**
+     * Informs about {@link AccordionPane} addition to {@link WebAccordion}.
+     * This method is used instead of the layout one to ensure the operations order is correct.
+     *
+     * @param accordion {@link WebAccordion}
+     * @param pane      added {@link AccordionPane}
+     */
+    public void paneAdded ( @NotNull final WebAccordion accordion, @NotNull final AccordionPane pane )
+    {
+        size ( accordion, pane.getId () );
+    }
+
+    /**
+     * Informs about {@link AccordionPane} removal from {@link WebAccordion}.
+     * This method is used instead of the layout one to ensure the operations order is correct.
+     *
+     * @param accordion {@link WebAccordion}
+     * @param pane      removed {@link AccordionPane}
+     */
+    public void paneRemoved ( @NotNull final WebAccordion accordion, @NotNull final AccordionPane pane )
+    {
+        // Stopping transition
+        final AbstractTransition transition = transitions.get ( pane.getId () );
+        if ( transition != null )
+        {
+            transition.stop ();
+            transitions.remove ( pane.getId () );
+        }
+
+        // Removing cached size
+        contentSizes.remove ( pane.getId () );
     }
 
     /**
@@ -679,7 +707,7 @@ public class AccordionLayout extends AbstractGroupingLayout implements Mergeable
             final boolean top = ( hor || index == 0 ) && isPaintTop ();
             final boolean left = ( index == 0 || !hor ) && isPaintLeft ();
             final boolean bottom = ( hor || index == last ) && isPaintBottom ();
-            final boolean right = ( index == last || !hor ) && isPaintLeft ();
+            final boolean right = ( index == last || !hor ) && isPaintRight ();
             final String sides = DecorationUtils.toString ( top, left, bottom, right );
             final String lines = DecorationUtils.toString ( false, false, !hor && index != last, hor && index != last );
             descriptors = new Pair<String, String> ( sides, lines );

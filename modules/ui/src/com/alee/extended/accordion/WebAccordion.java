@@ -889,6 +889,21 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
         return removed;
     }
 
+    /**
+     * Removes all {@link AccordionPane}s from this {@link WebAccordion}.
+     * Returns {@link List} of removed {@link AccordionPane}s.
+     *
+     * @return {@link List} of removed {@link AccordionPane}s
+     */
+    @NotNull
+    public List<AccordionPane> removeAllPanes ()
+    {
+        final List<AccordionPane> removed = getPanes ();
+        removeAll ();
+        SwingUtils.update ( this );
+        return removed;
+    }
+
     @Override
     public void remove ( final int index )
     {

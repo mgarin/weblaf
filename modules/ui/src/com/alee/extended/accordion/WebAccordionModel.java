@@ -190,6 +190,16 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
 
         // Validating states
         validateStates ();
+
+        // Inform layout about addition
+        if ( accordion != null )
+        {
+            final AccordionLayout layout = accordion.getLayout ();
+            if ( layout != null )
+            {
+                layout.paneAdded ( accordion, pane );
+            }
+        }
     }
 
     @Override
@@ -201,6 +211,16 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
 
         // Validating states
         validateStates ();
+
+        // Inform layout about removal
+        if ( accordion != null )
+        {
+            final AccordionLayout layout = accordion.getLayout ();
+            if ( layout != null )
+            {
+                layout.paneRemoved ( accordion, pane );
+            }
+        }
     }
 
     /**
@@ -214,6 +234,7 @@ public class WebAccordionModel implements AccordionModel, PropertyChangeListener
             // Ensure no states are missing
             // This might be the case when states are loaded from settings
             // Or if some major changes have happened in accordion structure
+            // Note that we do not remove states for non-existing panes as they might be added later
             for ( final AccordionPane pane : accordion.getPanes () )
             {
                 if ( !states.containsKey ( pane.getId () ) )
