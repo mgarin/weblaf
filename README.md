@@ -108,6 +108,89 @@ If you are new to WebLaF or Swing in general I recommend reading these wiki arti
 You can also check [other wiki articles](https://github.com/mgarin/weblaf/wiki) - there are quite a few available for different WebLaF components and features and they might save you a lot of time.
 
 
+Java 9+
+----------
+Starting from Java 9 once you run an application with WebLaF you will most probably see next warning: 
+```
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.alee.utils.ReflectUtils (file:weblaf-core-x.x.x.jar) to method {method.name}
+WARNING: Please consider reporting this to the maintainers of com.alee.utils.ReflectUtils
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+```
+Or a similar one pointing at a different JAR or method.
+
+This warning appears because WebLaF uses Reflection API a lot to access various private/proprietary Java features as it is nearly impossible to have a robust Look and Feel otherwise due to some Swing limitations and bad design decisions. Starting from Java 9 - such "unauthorized" access displays a warning like the one shown above. Start from Java 12 some of Reflection API features were also made unavailable, but workaround for that was already made.
+
+To avoid receiving warnings - application must specify at launch which modules specifically should be accessible to other modules through Reflection API. If suchs permissions are not given or given incorrectly - you will keep encountering warning from above pointing at "illegal" reflective access point.
+
+Here is a list of JVM options that can be used with Java 9 and higher to avoid the warnings:
+```
+--add-opens
+java.desktop/javax.swing=ALL-UNNAMED
+--add-opens
+java.desktop/javax.swing.text=ALL-UNNAMED
+--add-opens
+java.desktop/java.awt.font=ALL-UNNAMED
+--add-opens
+java.desktop/java.awt=ALL-UNNAMED
+--add-opens
+java.desktop/javax.swing.table=ALL-UNNAMED
+--add-opens
+java.desktop/com.sun.awt=ALL-UNNAMED
+--add-opens
+java.desktop/sun.awt=ALL-UNNAMED
+--add-opens
+java.desktop/sun.swing=ALL-UNNAMED
+--add-opens
+java.desktop/sun.font=ALL-UNNAMED
+--add-opens
+java.base/java.util=ALL-UNNAMED
+--add-opens
+java.base/java.text=ALL-UNNAMED
+--add-opens
+java.base/java.lang.reflect=ALL-UNNAMED
+--add-opens
+java.base/java.net=ALL-UNNAMED
+--add-opens
+java.base/java.lang=ALL-UNNAMED
+--add-opens
+java.base/jdk.internal.loader=ALL-UNNAMED
+--add-opens
+java.desktop/javax.swing.plaf.basic=ALL-UNNAMED
+--add-opens
+java.desktop/javax.swing.plaf.synth=ALL-UNNAMED
+--add-opens
+java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
+--add-opens
+java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED
+--add-opens
+java.desktop/com.apple.laf=ALL-UNNAMED
+```
+This should hide the "illegal reflective access" warnings, but you would instead see new ones: 
+```
+WARNING: package com.sun.java.swing.plaf.gtk not in java.desktop
+WARNING: package com.apple.laf not in java.desktop
+```
+This happens because the list above is made for cross-platform use and includes all different modules accessed by WebLaF which you most probably won't ever have all at once. And JVM simply warns you in that case that some modules you're granting access to do not exist in your application.
+
+These are the modules that are platform-related:
+```
+java.desktop/com.sun.java.swing.plaf.windows
+java.desktop/com.sun.java.swing.plaf.gtk
+java.desktop/com.apple.laf
+```
+If you want to completely avoid any warnings - you will need to use a platform-related list of JVM options for your application, basically excluding some of these three.
+
+Also note that some new warnings might appear at some point if you would be accessing your custom components through the styling system because it uses Reflection API to access fields and methods in various classes it uses, including any custom ones. You can block any illegal reflection access to make those cases visible faster by adding next JVM option:
+```
+--illegal-access=deny
+```
+This will force JVM to throw an exception whenever Reflection API is used illegally anywhere with a full stack trace that can be used to track down the source and add aother JVM option for the module access.
+
+If you would find any JVM modules that I've missed in the list above - I would appreciate if you can post an issue here or contact me directly so I could update the information for other WebLaF users.
+
+
 Licensing
 ----------
 
