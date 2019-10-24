@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.TimeUtils;
@@ -103,28 +105,30 @@ public class WebTimer implements Serializable
     /**
      * Action command for fired events.
      */
-    protected String actionCommand = "";
+    @NotNull
+    protected String actionCommand;
 
     /**
      * Internal timer thread name.
      */
-    protected String name = null;
+    @NotNull
+    protected String name;
 
     /**
      * Timer cycles execution limit.
      * Zero and less = unlimited amount of execution cycles.
      */
-    protected int cyclesLimit = 0;
+    protected int cyclesLimit;
 
     /**
      * Timer event listeners list.
      */
-    protected final EventListenerList listeners = new EventListenerList ();
+    protected final EventListenerList listeners;
 
     /**
      * Unique (within one timer instance) ID of currently running thread.
      */
-    protected transient int id = 0;
+    protected transient int id;
 
     /**
      * ID of previously executed thread.
@@ -134,34 +138,36 @@ public class WebTimer implements Serializable
     /**
      * Map of marks for currently active threads.
      */
-    protected transient final Map<Integer, Boolean> running = new Hashtable<Integer, Boolean> ();
+    @NotNull
+    protected transient final Map<Integer, Boolean> running;
 
     /**
      * Last timer cycle start time.
      */
-    protected transient long sleepStart = 0;
+    protected transient long sleepStart;
 
     /**
      * Last timer cycle delay time.
      */
-    protected transient long sleepTime = 0;
+    protected transient long sleepTime;
 
     /**
      * Number of executed cycles;
      */
-    protected transient int cycleCount = 0;
+    protected transient int cycleCount;
 
     /**
      * Last timer thread.
      */
-    protected transient Thread exec = null;
+    @Nullable
+    protected transient Thread exec;
 
     /**
      * Constructs timer with specified delay.
      *
      * @param delay delay between timer cycles
      */
-    public WebTimer ( final String delay )
+    public WebTimer ( @NotNull final String delay )
     {
         this ( DurationUnits.get ().fromString ( delay ) );
     }
@@ -182,7 +188,7 @@ public class WebTimer implements Serializable
      * @param name  internal thread name
      * @param delay delay between timer cycles
      */
-    public WebTimer ( final String name, final String delay )
+    public WebTimer ( @NotNull final String name, @NotNull final String delay )
     {
         this ( name, DurationUnits.get ().fromString ( delay ) );
     }
@@ -193,7 +199,7 @@ public class WebTimer implements Serializable
      * @param name  internal thread name
      * @param delay delay between timer cycles in milliseconds
      */
-    public WebTimer ( final String name, final long delay )
+    public WebTimer ( @NotNull final String name, final long delay )
     {
         this ( name, delay, null );
     }
@@ -216,7 +222,7 @@ public class WebTimer implements Serializable
      * @param delay        delay between timer cycles in milliseconds
      * @param initialDelay delay before the first timer cycle run in milliseconds
      */
-    public WebTimer ( final String name, final long delay, final long initialDelay )
+    public WebTimer ( @NotNull final String name, final long delay, final long initialDelay )
     {
         this ( name, delay, initialDelay, null );
     }
@@ -227,7 +233,7 @@ public class WebTimer implements Serializable
      * @param delay    delay between timer cycles
      * @param listener action listener
      */
-    public WebTimer ( final String delay, final ActionListener listener )
+    public WebTimer ( @NotNull final String delay, @Nullable final ActionListener listener )
     {
         this ( DurationUnits.get ().fromString ( delay ), listener );
     }
@@ -238,7 +244,7 @@ public class WebTimer implements Serializable
      * @param delay    delay between timer cycles in milliseconds
      * @param listener action listener
      */
-    public WebTimer ( final long delay, final ActionListener listener )
+    public WebTimer ( final long delay, @Nullable final ActionListener listener )
     {
         this ( defaultThreadName, delay, listener );
     }
@@ -250,7 +256,7 @@ public class WebTimer implements Serializable
      * @param delay    delay between timer cycles
      * @param listener action listener
      */
-    public WebTimer ( final String name, final String delay, final ActionListener listener )
+    public WebTimer ( @NotNull final String name, @NotNull final String delay, @Nullable final ActionListener listener )
     {
         this ( name, DurationUnits.get ().fromString ( delay ), listener );
     }
@@ -262,7 +268,7 @@ public class WebTimer implements Serializable
      * @param delay    delay between timer cycles in milliseconds
      * @param listener action listener
      */
-    public WebTimer ( final String name, final long delay, final ActionListener listener )
+    public WebTimer ( @NotNull final String name, final long delay, @Nullable final ActionListener listener )
     {
         this ( name, delay, -1, listener );
     }
@@ -274,7 +280,7 @@ public class WebTimer implements Serializable
      * @param initialDelay delay before the first timer cycle run in milliseconds
      * @param listener     action listener
      */
-    public WebTimer ( final long delay, final long initialDelay, final ActionListener listener )
+    public WebTimer ( final long delay, final long initialDelay, @Nullable final ActionListener listener )
     {
         this ( defaultThreadName, delay, initialDelay, listener );
     }
@@ -287,7 +293,8 @@ public class WebTimer implements Serializable
      * @param initialDelay delay before the first timer cycle run
      * @param listener     action listener
      */
-    public WebTimer ( final String name, final String delay, final String initialDelay, final ActionListener listener )
+    public WebTimer ( @NotNull final String name, final String delay, @NotNull final String initialDelay,
+                      @Nullable final ActionListener listener )
     {
         this ( name, DurationUnits.get ().fromString ( delay ), DurationUnits.get ().fromString ( initialDelay ), listener );
     }
@@ -300,13 +307,32 @@ public class WebTimer implements Serializable
      * @param initialDelay delay before the first timer cycle run in milliseconds
      * @param listener     action listener
      */
-    public WebTimer ( final String name, final long delay, final long initialDelay, final ActionListener listener )
+    public WebTimer ( @NotNull final String name, final long delay, final long initialDelay, @Nullable final ActionListener listener )
     {
-        super ();
-        setName ( name );
+        // Settings
+        this.actionCommand = "";
+        this.name = name;
+        this.cyclesLimit = 0;
+        this.listeners = new EventListenerList ();
+
+        // Runtime variables
+        this.id = 0;
+        this.lastId = -1;
+        this.running = new Hashtable<Integer, Boolean> ();
+        this.sleepStart = 0;
+        this.sleepTime = 0;
+        this.cycleCount = 0;
+        this.exec = null;
+
+        // Provided settings
         setDelay ( delay );
         setInitialDelay ( initialDelay );
-        addActionListener ( listener );
+
+        // Action listener
+        if ( listener != null )
+        {
+            addActionListener ( listener );
+        }
     }
 
     /**
@@ -324,6 +350,7 @@ public class WebTimer implements Serializable
      *
      * @return delay before the first timer cycle run
      */
+    @NotNull
     public String getInitialStringDelay ()
     {
         return DurationUnits.get ().toString ( initialDelay );
@@ -333,9 +360,10 @@ public class WebTimer implements Serializable
      * Sets delay before the first timer cycle run.
      *
      * @param initialDelay delay before the first timer cycle run
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer setInitialDelay ( final String initialDelay )
+    @NotNull
+    public WebTimer setInitialDelay ( @NotNull final String initialDelay )
     {
         setInitialDelay ( DurationUnits.get ().fromString ( initialDelay ) );
         return this;
@@ -345,8 +373,9 @@ public class WebTimer implements Serializable
      * Sets delay before the first timer cycle run in milliseconds.
      *
      * @param initialDelay delay before the first timer cycle run in milliseconds
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setInitialDelay ( final long initialDelay )
     {
         if ( initialDelay != -1 && initialDelay < 0 )
@@ -375,6 +404,7 @@ public class WebTimer implements Serializable
      *
      * @return delay between timer cycles
      */
+    @NotNull
     public String getStringDelay ()
     {
         return DurationUnits.get ().toString ( delay );
@@ -384,9 +414,10 @@ public class WebTimer implements Serializable
      * Sets delay between timer cycles.
      *
      * @param delay delay between timer cycles
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer setDelay ( final String delay )
+    @NotNull
+    public WebTimer setDelay ( @NotNull final String delay )
     {
         setDelay ( DurationUnits.get ().fromString ( delay ) );
         return this;
@@ -396,8 +427,9 @@ public class WebTimer implements Serializable
      * Sets delay between timer cycles in milliseconds.
      *
      * @param delay delay between timer cycles in milliseconds
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setDelay ( final long delay )
     {
         if ( delay < 0 )
@@ -425,8 +457,9 @@ public class WebTimer implements Serializable
      * Sets whether timer should repeat its cycles or not.
      *
      * @param repeats whether timer should repeat its cycles or not
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setRepeats ( final boolean repeats )
     {
         this.repeats = repeats;
@@ -447,8 +480,9 @@ public class WebTimer implements Serializable
      * Sets whether each action should be fired from a separate invoke and wait call or not.
      *
      * @param coalesce whether each action should be fired from a separate invoke and wait call or not
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setCoalesce ( final boolean coalesce )
     {
         this.coalesce = coalesce;
@@ -469,8 +503,9 @@ public class WebTimer implements Serializable
      * Sets whether actions should be fired from Event Dispatch Thread or not.
      *
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setUseEventDispatchThread ( final boolean useEventDispatchThread )
     {
         this.useEventDispatchThread = useEventDispatchThread;
@@ -493,8 +528,9 @@ public class WebTimer implements Serializable
      * This option should be set before starting timer to have any effect.
      *
      * @param useDaemonThread whether should use daemon thread instead of user one or not
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setUseDaemonThread ( final boolean useDaemonThread )
     {
         this.useDaemonThread = useDaemonThread;
@@ -515,8 +551,9 @@ public class WebTimer implements Serializable
      * Sets whether or not timer should use non-blocking stop method behavior.
      *
      * @param nonBlockingStop whether or not timer should use non-blocking stop method behavior
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setNonBlockingStop ( final boolean nonBlockingStop )
     {
         this.nonBlockingStop = nonBlockingStop;
@@ -528,6 +565,7 @@ public class WebTimer implements Serializable
      *
      * @return action command for fired events
      */
+    @NotNull
     public String getActionCommand ()
     {
         return actionCommand;
@@ -537,9 +575,10 @@ public class WebTimer implements Serializable
      * Sets action command for fired events.
      *
      * @param actionCommand action command for fired events
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer setActionCommand ( final String actionCommand )
+    @NotNull
+    public WebTimer setActionCommand ( @NotNull final String actionCommand )
     {
         this.actionCommand = actionCommand;
         return this;
@@ -560,8 +599,9 @@ public class WebTimer implements Serializable
      * Zero and less = unlimited amount of execution cycles.
      *
      * @param cyclesLimit timer cycles execution limit
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer setCyclesLimit ( final int cyclesLimit )
     {
         this.cyclesLimit = cyclesLimit;
@@ -573,6 +613,7 @@ public class WebTimer implements Serializable
      *
      * @return internal timer thread name
      */
+    @NotNull
     public String getName ()
     {
         return name;
@@ -582,9 +623,10 @@ public class WebTimer implements Serializable
      * Sets internal timer thread name.
      *
      * @param name internal timer thread name
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer setName ( final String name )
+    @NotNull
+    public WebTimer setName ( @NotNull final String name )
     {
         this.name = name;
         if ( exec != null )
@@ -650,8 +692,9 @@ public class WebTimer implements Serializable
     /**
      * Starts timer execution.
      *
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer start ()
     {
         startExec ();
@@ -661,8 +704,9 @@ public class WebTimer implements Serializable
     /**
      * Stops timer execution.
      *
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer stop ()
     {
         stopExec ();
@@ -672,8 +716,9 @@ public class WebTimer implements Serializable
     /**
      * Restarts timer execution.
      *
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer restart ()
     {
         stopExec ();
@@ -685,8 +730,9 @@ public class WebTimer implements Serializable
      * Restarts timer execution and modifies timer delay.
      *
      * @param delay delay between timer cycles
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer restart ( final long delay )
     {
         stopExec ();
@@ -701,8 +747,9 @@ public class WebTimer implements Serializable
      *
      * @param initialDelay delay before the first timer cycle run
      * @param delay        delay between timer cycles
-     * @return this timer
+     * @return this {@link WebTimer}
      */
+    @NotNull
     public WebTimer restart ( final long initialDelay, final long delay )
     {
         stopExec ();
@@ -716,9 +763,10 @@ public class WebTimer implements Serializable
      * Restarts timer execution and modifies timer delay.
      *
      * @param delay delay between timer cycles
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer restart ( final String delay )
+    @NotNull
+    public WebTimer restart ( @NotNull final String delay )
     {
         stopExec ();
         setInitialDelay ( delay );
@@ -732,9 +780,10 @@ public class WebTimer implements Serializable
      *
      * @param initialDelay delay before the first timer cycle run
      * @param delay        delay between timer cycles
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer restart ( final String initialDelay, final String delay )
+    @NotNull
+    public WebTimer restart ( @NotNull final String initialDelay, @NotNull final String delay )
     {
         stopExec ();
         setInitialDelay ( initialDelay );
@@ -744,9 +793,9 @@ public class WebTimer implements Serializable
     }
 
     /**
-     * Returns whether this timer is running or not.
+     * Returns whether this {@link WebTimer} is running or not.
      *
-     * @return true if this timer is running, false otherwise
+     * @return {@code true} if this {@link WebTimer} is running, {@code false} otherwise
      */
     public synchronized boolean isRunning ()
     {
@@ -759,91 +808,89 @@ public class WebTimer implements Serializable
     protected synchronized void startExec ()
     {
         // Ignore if timer is already running
-        if ( isRunning () )
+        if ( !isRunning () )
         {
-            return;
-        }
+            // Saving current thread unique id
+            lastId = id;
+            id++;
 
-        // Saving current thread unique id
-        lastId = id;
-        id++;
-
-        // Starting new cycling thread
-        final int currentId = lastId;
-        exec = new Thread ( new Runnable ()
-        {
-            @Override
-            public void run ()
+            // Starting new cycling thread
+            final int currentId = lastId;
+            exec = new Thread ( new Runnable ()
             {
-                // Adding a live thread into map
-                setAlive ( currentId, true );
-
-                try
+                @Override
+                public void run ()
                 {
-                    // Initial delay
-                    final long actualInitialDelay = getInitialDelay () < 0 ? getDelay () : getInitialDelay ();
-                    if ( actualInitialDelay > 0 )
-                    {
-                        sleepStart = System.currentTimeMillis ();
-                        sleepTime = actualInitialDelay;
-                        Thread.sleep ( actualInitialDelay );
-                    }
+                    // Adding a live thread into map
+                    setAlive ( currentId, true );
 
-                    // Checking if we should stop execution
-                    if ( shouldContinue ( -1, currentId ) )
+                    try
                     {
-                        // Clearing cycles count
-                        cycleCount = 0;
-
-                        // Starting cycles execution
-                        if ( repeats )
+                        // Initial delay
+                        final long actualInitialDelay = getInitialDelay () < 0 ? getDelay () : getInitialDelay ();
+                        if ( actualInitialDelay > 0 )
                         {
-                            // Repeated events
-                            while ( shouldContinue ( cycleCount, currentId ) )
+                            sleepStart = System.currentTimeMillis ();
+                            sleepTime = actualInitialDelay;
+                            Thread.sleep ( actualInitialDelay );
+                        }
+
+                        // Checking if we should stop execution
+                        if ( shouldContinue ( -1, currentId ) )
+                        {
+                            // Clearing cycles count
+                            cycleCount = 0;
+
+                            // Starting cycles execution
+                            if ( repeats )
                             {
-                                // Firing events
+                                // Repeated events
+                                while ( shouldContinue ( cycleCount, currentId ) )
+                                {
+                                    // Firing events
+                                    fireActionPerformed ( currentId );
+
+                                    // Incrementing cycles count
+                                    cycleCount++;
+
+                                    // Checking if we should stop execution due to changes through events
+                                    if ( !shouldContinue ( cycleCount, currentId ) )
+                                    {
+                                        break;
+                                    }
+
+                                    // Waiting for next execution
+                                    if ( getDelay () > 0 )
+                                    {
+                                        final long currentDelay = getDelay ();
+                                        sleepStart = System.currentTimeMillis ();
+                                        sleepTime = currentDelay;
+                                        Thread.sleep ( currentDelay );
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // Single event
                                 fireActionPerformed ( currentId );
 
                                 // Incrementing cycles count
                                 cycleCount++;
-
-                                // Checking if we should stop execution due to changes through events
-                                if ( !shouldContinue ( cycleCount, currentId ) )
-                                {
-                                    break;
-                                }
-
-                                // Waiting for next execution
-                                if ( getDelay () > 0 )
-                                {
-                                    final long currentDelay = getDelay ();
-                                    sleepStart = System.currentTimeMillis ();
-                                    sleepTime = currentDelay;
-                                    Thread.sleep ( currentDelay );
-                                }
                             }
                         }
-                        else
-                        {
-                            // Single event
-                            fireActionPerformed ( currentId );
-
-                            // Incrementing cycles count
-                            cycleCount++;
-                        }
                     }
-                }
-                catch ( final InterruptedException ignored )
-                {
-                    // Execution interrupted
-                }
+                    catch ( final InterruptedException ignored )
+                    {
+                        // Execution interrupted
+                    }
 
-                // Removing finished thread from map
-                cleanUp ( currentId );
-            }
-        }, name );
-        exec.setDaemon ( useDaemonThread );
-        exec.start ();
+                    // Removing finished thread from map
+                    cleanUp ( currentId );
+                }
+            }, name );
+            exec.setDaemon ( useDaemonThread );
+            exec.start ();
+        }
     }
 
     /**
@@ -884,7 +931,7 @@ public class WebTimer implements Serializable
      */
     protected synchronized void stopExec ()
     {
-        if ( exec != null )
+        if ( exec != null && isRunning () )
         {
             // Interrupt thread
             exec.interrupt ();
@@ -913,14 +960,12 @@ public class WebTimer implements Serializable
      * You can use TimerActionListener instead of simple ActionListener to simplify interaction with timer.
      *
      * @param listener new action listener
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer addActionListener ( final ActionListener listener )
+    @NotNull
+    public WebTimer addActionListener ( @NotNull final ActionListener listener )
     {
-        if ( listener != null )
-        {
-            listeners.add ( ActionListener.class, listener );
-        }
+        listeners.add ( ActionListener.class, listener );
         return this;
     }
 
@@ -928,14 +973,12 @@ public class WebTimer implements Serializable
      * Removes an action listener.
      *
      * @param listener action listener
-     * @return this timer
+     * @return this {@link WebTimer}
      */
-    public WebTimer removeActionListener ( final ActionListener listener )
+    @NotNull
+    public WebTimer removeActionListener ( @NotNull final ActionListener listener )
     {
-        if ( listener != null )
-        {
-            listeners.remove ( ActionListener.class, listener );
-        }
+        listeners.remove ( ActionListener.class, listener );
         return this;
     }
 
@@ -944,6 +987,7 @@ public class WebTimer implements Serializable
      *
      * @return available action listeners list
      */
+    @NotNull
     public List<ActionListener> getListeners ()
     {
         return CollectionUtils.asList ( listeners.getListeners ( ActionListener.class ) );
@@ -1026,11 +1070,13 @@ public class WebTimer implements Serializable
      *
      * @return action event
      */
+    @NotNull
     protected ActionEvent createActionEvent ()
     {
         return new ActionEvent ( WebTimer.this, 0, actionCommand, TimeUtils.currentTime (), 0 );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
@@ -1044,7 +1090,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final String delay, final ActionListener listener )
+    public static WebTimer delay ( @NotNull final String delay, @Nullable final ActionListener listener )
     {
         return delay ( DurationUnits.get ().fromString ( delay ), listener );
     }
@@ -1056,7 +1102,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final long delay, final ActionListener listener )
+    public static WebTimer delay ( final long delay, @Nullable final ActionListener listener )
     {
         return delay ( defaultThreadName, delay, listener );
     }
@@ -1069,7 +1115,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final String name, final String delay, final ActionListener listener )
+    public static WebTimer delay ( @NotNull final String name, @NotNull final String delay, @Nullable final ActionListener listener )
     {
         return delay ( name, DurationUnits.get ().fromString ( delay ), listener );
     }
@@ -1082,7 +1128,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final String name, final long delay, final ActionListener listener )
+    public static WebTimer delay ( @NotNull final String name, final long delay, @Nullable final ActionListener listener )
     {
         return delay ( name, delay, true, listener );
     }
@@ -1095,7 +1141,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
+    public static WebTimer delay ( @NotNull final String delay, final boolean useEventDispatchThread,
+                                   @Nullable final ActionListener listener )
     {
         return delay ( DurationUnits.get ().fromString ( delay ), useEventDispatchThread, listener );
     }
@@ -1108,7 +1155,7 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final long delay, final boolean useEventDispatchThread, final ActionListener listener )
+    public static WebTimer delay ( final long delay, final boolean useEventDispatchThread, @Nullable final ActionListener listener )
     {
         return delay ( defaultThreadName, delay, useEventDispatchThread, listener );
     }
@@ -1122,8 +1169,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final String name, final String delay, final boolean useEventDispatchThread,
-                                   final ActionListener listener )
+    public static WebTimer delay ( @NotNull final String name, @NotNull final String delay, final boolean useEventDispatchThread,
+                                   @Nullable final ActionListener listener )
     {
         return delay ( name, DurationUnits.get ().fromString ( delay ), useEventDispatchThread, listener );
     }
@@ -1137,8 +1184,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( final String name, final long delay, final boolean useEventDispatchThread,
-                                   final ActionListener listener )
+    public static WebTimer delay ( @NotNull final String name, final long delay, final boolean useEventDispatchThread,
+                                   @Nullable final ActionListener listener )
     {
         final WebTimer once = new WebTimer ( name, delay, listener );
         once.setRepeats ( false );
@@ -1154,7 +1201,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String delay, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String delay, @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
@@ -1168,7 +1215,7 @@ public class WebTimer implements Serializable
      * @param listener    action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String delay, final int cyclesLimit, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String delay, final int cyclesLimit, @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEdtByDefault, listener );
@@ -1181,7 +1228,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final long delay, final ActionListener listener )
+    public static WebTimer repeat ( final long delay, @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, delay, defaultCyclesLimit, useEdtByDefault, listener );
     }
@@ -1194,7 +1241,7 @@ public class WebTimer implements Serializable
      * @param listener    action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final long delay, final int cyclesLimit, final ActionListener listener )
+    public static WebTimer repeat ( final long delay, final int cyclesLimit, @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, delay, cyclesLimit, useEdtByDefault, listener );
     }
@@ -1207,7 +1254,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final String delay, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, @NotNull final String delay, @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
@@ -1222,7 +1269,8 @@ public class WebTimer implements Serializable
      * @param listener    action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final String delay, final int cyclesLimit,
+                                    @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, cyclesLimit, useEdtByDefault, listener );
@@ -1236,7 +1284,7 @@ public class WebTimer implements Serializable
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, @Nullable final ActionListener listener )
     {
         return repeat ( name, delay, delay, defaultCyclesLimit, useEdtByDefault, listener );
     }
@@ -1250,7 +1298,8 @@ public class WebTimer implements Serializable
      * @param listener    action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final int cyclesLimit, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, final int cyclesLimit,
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( name, delay, delay, cyclesLimit, useEdtByDefault, listener );
     }
@@ -1263,7 +1312,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String delay, final boolean useEventDispatchThread,
+                                    @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
@@ -1278,8 +1328,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
+                                    @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEventDispatchThread, listener );
@@ -1293,7 +1343,7 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final long delay, final boolean useEventDispatchThread, final ActionListener listener )
+    public static WebTimer repeat ( final long delay, final boolean useEventDispatchThread, @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, delay, defaultCyclesLimit, useEventDispatchThread, listener );
     }
@@ -1308,7 +1358,7 @@ public class WebTimer implements Serializable
      * @return newly created and started timer
      */
     public static WebTimer repeat ( final long delay, final int cyclesLimit, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, delay, cyclesLimit, useEventDispatchThread, listener );
     }
@@ -1322,8 +1372,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final String delay, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, @NotNull final String delay, final boolean useEventDispatchThread,
+                                    @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
@@ -1339,8 +1389,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, @NotNull final String delay, final int cyclesLimit,
+                                    final boolean useEventDispatchThread, @Nullable final ActionListener listener )
     {
         final long pd = DurationUnits.get ().fromString ( delay );
         return repeat ( name, pd, pd, cyclesLimit, useEventDispatchThread, listener );
@@ -1355,8 +1405,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, final boolean useEventDispatchThread,
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( name, delay, delay, defaultCyclesLimit, useEventDispatchThread, listener );
     }
@@ -1371,8 +1421,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final int cyclesLimit, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, final int cyclesLimit,
+                                    final boolean useEventDispatchThread, @Nullable final ActionListener listener )
     {
         return repeat ( name, delay, delay, cyclesLimit, useEventDispatchThread, listener );
     }
@@ -1385,7 +1435,7 @@ public class WebTimer implements Serializable
      * @param listener     action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final long delay, final long initialDelay, final ActionListener listener )
+    public static WebTimer repeat ( final long delay, final long initialDelay, @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, initialDelay, defaultCyclesLimit, useEdtByDefault, listener );
     }
@@ -1399,7 +1449,8 @@ public class WebTimer implements Serializable
      * @param listener     action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final long delay, final long initialDelay, final int cyclesLimit, final ActionListener listener )
+    public static WebTimer repeat ( final long delay, final long initialDelay, final int cyclesLimit,
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, initialDelay, cyclesLimit, useEdtByDefault, listener );
     }
@@ -1413,7 +1464,8 @@ public class WebTimer implements Serializable
      * @param listener     action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, final long initialDelay,
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( name, delay, initialDelay, defaultCyclesLimit, useEdtByDefault, listener );
     }
@@ -1428,8 +1480,8 @@ public class WebTimer implements Serializable
      * @param listener     action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final int cyclesLimit,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, final long initialDelay, final int cyclesLimit,
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( name, delay, initialDelay, cyclesLimit, useEdtByDefault, listener );
     }
@@ -1444,7 +1496,7 @@ public class WebTimer implements Serializable
      * @return newly created and started timer
      */
     public static WebTimer repeat ( final long delay, final long initialDelay, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, initialDelay, defaultCyclesLimit, useEventDispatchThread, listener );
     }
@@ -1460,7 +1512,7 @@ public class WebTimer implements Serializable
      * @return newly created and started timer
      */
     public static WebTimer repeat ( final long delay, final long initialDelay, final int cyclesLimit, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, initialDelay, cyclesLimit, useEventDispatchThread, listener );
     }
@@ -1475,8 +1527,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final boolean useEventDispatchThread,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, final long initialDelay,
+                                    final boolean useEventDispatchThread, @Nullable final ActionListener listener )
     {
         return repeat ( name, delay, initialDelay, defaultCyclesLimit, useEventDispatchThread, listener );
     }
@@ -1492,8 +1544,8 @@ public class WebTimer implements Serializable
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final int cyclesLimit,
-                                    final boolean useEventDispatchThread, final ActionListener listener )
+    public static WebTimer repeat ( @NotNull final String name, final long delay, final long initialDelay, final int cyclesLimit,
+                                    final boolean useEventDispatchThread, @Nullable final ActionListener listener )
     {
         final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
@@ -1512,7 +1564,8 @@ public class WebTimer implements Serializable
      * @param listener        action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final ActionListener listener )
+    public static WebTimer repeat ( final boolean useDaemonThread, @NotNull final String name, final long delay,
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( useDaemonThread, name, delay, delay, listener );
     }
@@ -1527,8 +1580,8 @@ public class WebTimer implements Serializable
      * @param listener        action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final long initialDelay,
-                                    final ActionListener listener )
+    public static WebTimer repeat ( final boolean useDaemonThread, @NotNull final String name, final long delay, final long initialDelay,
+                                    @Nullable final ActionListener listener )
     {
         return repeat ( useDaemonThread, name, delay, initialDelay, defaultCyclesLimit, listener );
     }
@@ -1544,8 +1597,8 @@ public class WebTimer implements Serializable
      * @param listener        action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final long initialDelay,
-                                    final int cyclesLimit, final ActionListener listener )
+    public static WebTimer repeat ( final boolean useDaemonThread, @NotNull final String name, final long delay, final long initialDelay,
+                                    final int cyclesLimit, @Nullable final ActionListener listener )
     {
         final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
