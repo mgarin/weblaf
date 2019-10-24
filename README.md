@@ -126,46 +126,26 @@ To avoid receiving warnings - application must specify at launch which modules s
 
 Here is a list of JVM options that can be used with Java 9 and higher to avoid the warnings:
 ```
---add-opens
-java.desktop/javax.swing=ALL-UNNAMED
---add-opens
-java.desktop/javax.swing.text=ALL-UNNAMED
---add-opens
-java.desktop/java.awt.font=ALL-UNNAMED
---add-opens
-java.desktop/java.awt=ALL-UNNAMED
---add-opens
-java.desktop/javax.swing.table=ALL-UNNAMED
---add-opens
-java.desktop/com.sun.awt=ALL-UNNAMED
---add-opens
-java.desktop/sun.awt=ALL-UNNAMED
---add-opens
-java.desktop/sun.swing=ALL-UNNAMED
---add-opens
-java.desktop/sun.font=ALL-UNNAMED
---add-opens
-java.base/java.util=ALL-UNNAMED
---add-opens
-java.base/java.text=ALL-UNNAMED
---add-opens
-java.base/java.lang.reflect=ALL-UNNAMED
---add-opens
-java.base/java.net=ALL-UNNAMED
---add-opens
-java.base/java.lang=ALL-UNNAMED
---add-opens
-java.base/jdk.internal.loader=ALL-UNNAMED
---add-opens
-java.desktop/javax.swing.plaf.basic=ALL-UNNAMED
---add-opens
-java.desktop/javax.swing.plaf.synth=ALL-UNNAMED
---add-opens
-java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
---add-opens
-java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED
---add-opens
-java.desktop/com.apple.laf=ALL-UNNAMED
+--add-opens java.base/java.util=ALL-UNNAMED
+--add-opens java.base/java.text=ALL-UNNAMED
+--add-opens java.base/java.lang.reflect=ALL-UNNAMED
+--add-opens java.base/java.net=ALL-UNNAMED
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-opens java.base/jdk.internal.loader=ALL-UNNAMED
+--add-opens java.desktop/javax.swing=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.text=ALL-UNNAMED
+--add-opens java.desktop/java.awt.font=ALL-UNNAMED
+--add-opens java.desktop/java.awt=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.table=ALL-UNNAMED
+--add-opens java.desktop/com.sun.awt=ALL-UNNAMED
+--add-opens java.desktop/sun.awt=ALL-UNNAMED
+--add-opens java.desktop/sun.swing=ALL-UNNAMED
+--add-opens java.desktop/sun.font=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.plaf.basic=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.plaf.synth=ALL-UNNAMED
+--add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
+--add-opens java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED
+--add-opens java.desktop/com.apple.laf=ALL-UNNAMED
 ```
 This should hide the "illegal reflective access" warnings, but you would instead see new ones: 
 ```
