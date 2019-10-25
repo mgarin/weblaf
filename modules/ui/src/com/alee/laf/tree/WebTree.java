@@ -76,8 +76,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Component properties.
      */
-    @NotNull
-    public static final String DROP_LOCATION = "dropLocation";
+    public static final String DROP_LOCATION_PROPERTY = "dropLocation";
 
     /**
      * Client properties used for backward compatibility with Swing {@link JTree}.
@@ -264,6 +263,19 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         setStyleId ( id );
     }
 
+    @Nullable
+    @Override
+    public TreeModel getModel ()
+    {
+        return super.getModel ();
+    }
+
+    @Override
+    public void setModel ( @Nullable final TreeModel newModel )
+    {
+        super.setModel ( newModel );
+    }
+
     @Override
     public void setCellEditor ( @Nullable final TreeCellEditor cellEditor )
     {
@@ -313,7 +325,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
                 final Object value = path.getLastPathComponent ();
                 final boolean selected = isRowSelected ( row );
                 final boolean expanded = isExpanded ( row );
-                final boolean leaf = getModel ().isLeaf ( value );
+                final boolean leaf = isLeaf ( ( N ) value );
                 final Component renderer = cellRenderer.getTreeCellRendererComponent ( this, value, selected, expanded, leaf, row, true );
                 if ( renderer instanceof JComponent )
                 {
@@ -477,7 +489,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node {@link MutableTreeNode} to expand
      */
-    public void expandAll ( @Nullable final N node )
+    public void expandAll ( @NotNull final N node )
     {
         expandAllImpl ( node, null, Integer.MAX_VALUE );
     }
@@ -490,7 +502,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node   {@link MutableTreeNode} to expand
      * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
      */
-    public void expandAll ( @Nullable final N node, @Nullable final Filter<N> filter )
+    public void expandAll ( @NotNull final N node, @Nullable final Filter<N> filter )
     {
         expandAllImpl ( node, filter, Integer.MAX_VALUE );
     }
@@ -529,7 +541,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node  {@link MutableTreeNode} to expand
      * @param depth depth to expand until
      */
-    public void expandAll ( @Nullable final N node, final int depth )
+    public void expandAll ( @NotNull final N node, final int depth )
     {
         expandAllImpl ( node, null, depth );
     }
@@ -544,7 +556,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
      * @param depth  depth to expand until
      */
-    public void expandAll ( @Nullable final N node, @Nullable final Filter<N> filter, final int depth )
+    public void expandAll ( @NotNull final N node, @Nullable final Filter<N> filter, final int depth )
     {
         expandAllImpl ( node, filter, depth );
     }
@@ -558,20 +570,17 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param filter {@link Filter} to limit expanded {@link MutableTreeNode}s or {@code null}
      * @param depth  depth to expand until
      */
-    protected void expandAllImpl ( @Nullable final N node, @Nullable final Filter<N> filter, final int depth )
+    protected void expandAllImpl ( @NotNull final N node, @Nullable final Filter<N> filter, final int depth )
     {
-        if ( depth > 0 && ( filter == null || filter.accept ( node ) ) && !getModel ().isLeaf ( node ) )
+        if ( depth > 0 && ( filter == null || filter.accept ( node ) ) && !isLeaf ( node ) )
         {
             if ( !isExpanded ( node ) )
             {
                 expandNode ( node );
             }
-            if ( node != null )
+            for ( int i = 0; i < node.getChildCount (); i++ )
             {
-                for ( int i = 0; i < node.getChildCount (); i++ )
-                {
-                    expandAllImpl ( ( N ) node.getChildAt ( i ), filter, depth - 1 );
-                }
+                expandAllImpl ( ( N ) node.getChildAt ( i ), filter, depth - 1 );
             }
         }
     }
@@ -600,7 +609,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @param node {@link MutableTreeNode} to collapse
      */
-    public void collapseAll ( @Nullable final N node )
+    public void collapseAll ( @NotNull final N node )
     {
         collapseAll ( node, null );
     }
@@ -612,7 +621,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node   {@link MutableTreeNode} to collapse
      * @param filter {@link Filter} to limit collapsed {@link MutableTreeNode}s or {@code null}
      */
-    public void collapseAll ( @Nullable final N node, @Nullable final Filter<N> filter )
+    public void collapseAll ( @NotNull final N node, @Nullable final Filter<N> filter )
     {
         collapseAllImpl ( node, filter );
     }
@@ -624,20 +633,17 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @param node   {@link MutableTreeNode} to collapse
      * @param filter {@link Filter} to limit collapsed {@link MutableTreeNode}s or {@code null}
      */
-    protected void collapseAllImpl ( @Nullable final N node, @Nullable final Filter<N> filter )
+    protected void collapseAllImpl ( @NotNull final N node, @Nullable final Filter<N> filter )
     {
-        if ( ( filter == null || filter.accept ( node ) ) && !getModel ().isLeaf ( node ) )
+        if ( ( filter == null || filter.accept ( node ) ) && !isLeaf ( node ) )
         {
             if ( !isCollapsed ( node ) )
             {
                 collapseNode ( node );
             }
-            if ( node != null )
+            for ( int i = 0; i < node.getChildCount (); i++ )
             {
-                for ( int i = 0; i < node.getChildCount (); i++ )
-                {
-                    collapseAllImpl ( ( N ) node.getChildAt ( i ), filter );
-                }
+                collapseAllImpl ( ( N ) node.getChildAt ( i ), filter );
             }
         }
     }
@@ -883,6 +889,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      * @return {@link List} of all selected {@link MutableTreeNode}s
      * @see NodesAcceptPolicy#all
      */
+    @NotNull
     public List<N> getSelectedNodes ()
     {
         return getSelectedNodes ( NodesAcceptPolicy.all );
@@ -907,12 +914,12 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
             {
                 selectedNodes.add ( getNodeForPath ( path ) );
             }
+            policy.filter ( this, selectedNodes );
         }
         else
         {
             selectedNodes = new ArrayList<N> ();
         }
-        policy.filter ( this, selectedNodes );
         return selectedNodes;
     }
 
@@ -1083,6 +1090,18 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     }
 
     /**
+     * Returns whether or not specified {@link MutableTreeNode} is a leaf.
+     *
+     * @param node {@link MutableTreeNode}
+     * @return {@code true} if specified {@link MutableTreeNode} is a leaf, {@code false} otherwise
+     */
+    public boolean isLeaf ( @NotNull final N node )
+    {
+        final TreeModel model = getModel ();
+        return model != null && model.isLeaf ( node );
+    }
+
+    /**
      * Returns first visible leaf {@link MutableTreeNode} from the top of the tree.
      * This doesn't include {@link MutableTreeNode}s under collapsed paths.
      * This does include {@link MutableTreeNode}s which are not in visible rect.
@@ -1096,7 +1115,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
         for ( int i = 0; i < getRowCount (); i++ )
         {
             final N node = getNodeForRow ( i );
-            if ( getModel ().isLeaf ( node ) )
+            if ( node != null && isLeaf ( node ) )
             {
                 firstVisibleLeafNode = node;
                 break;
@@ -1194,8 +1213,24 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
      *
      * @return root {@link MutableTreeNode}
      */
-    @Nullable
+    @NotNull
     public N getRootNode ()
+    {
+        final N rootNode = getNullableRootNode ();
+        if ( rootNode == null )
+        {
+            throw new RuntimeException ( "Tree doesn't have a root" );
+        }
+        return rootNode;
+    }
+
+    /**
+     * Returns root {@link MutableTreeNode}, might return {@code null} if model is not installed or it has a {@code null} root.
+     *
+     * @return root {@link MutableTreeNode}, might return {@code null} if model is not installed or it has a {@code null} root
+     */
+    @Nullable
+    public N getNullableRootNode ()
     {
         final TreeModel model = getModel ();
         return model != null ? ( N ) model.getRoot () : null;

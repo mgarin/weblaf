@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
@@ -43,6 +44,7 @@ public interface TreeDropHandler<N extends UniqueNode, T extends WebTree<N>, M e
      *
      * @return list of data flavors supported by this drop handler
      */
+    @NotNull
     public List<DataFlavor> getSupportedFlavors ();
 
     /**
@@ -54,9 +56,10 @@ public interface TreeDropHandler<N extends UniqueNode, T extends WebTree<N>, M e
      * @param tree        destination tree
      * @param model       tree model
      * @param destination drop destination node
-     * @return true if drop operation can be performed on the specified destination node, false otherwise
+     * @return {@code true} if drop operation can be performed on the specified destination node, {@code false} otherwise
      */
-    public boolean canDrop ( TransferHandler.TransferSupport support, T tree, M model, N destination );
+    public boolean canDrop ( @NotNull TransferHandler.TransferSupport support, @NotNull T tree, @NotNull M model,
+                             @NotNull N destination );
 
     /**
      * Returns whether or not drop operation can be performed on the specified destination node.
@@ -68,9 +71,10 @@ public interface TreeDropHandler<N extends UniqueNode, T extends WebTree<N>, M e
      * @param model       tree model
      * @param destination drop destination node
      * @param index       nodes drop index
-     * @return true if drop operation can be performed on the specified destination node, false otherwise
+     * @return {@code true} if drop operation can be performed on the specified destination node, {@code false} otherwise
      */
-    public boolean prepareDrop ( TransferHandler.TransferSupport support, T tree, M model, N destination, int index );
+    public boolean prepareDrop ( @NotNull TransferHandler.TransferSupport support, @NotNull T tree, @NotNull M model,
+                                 @NotNull N destination, int index );
 
     /**
      * Performs nodes drop operations.
@@ -84,6 +88,6 @@ public interface TreeDropHandler<N extends UniqueNode, T extends WebTree<N>, M e
      * @param index       nodes drop index
      * @param callback    operation callback
      */
-    public void performDrop ( TransferHandler.TransferSupport support, T tree, M model, N destination, int index,
-                              NodesDropCallback<N> callback );
+    public void performDrop ( @NotNull TransferHandler.TransferSupport support, @NotNull T tree, @NotNull M model,
+                              @NotNull N destination, int index, @NotNull NodesDropCallback<N> callback );
 }

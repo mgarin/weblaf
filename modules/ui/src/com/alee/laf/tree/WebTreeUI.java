@@ -150,7 +150,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
              */
             private void repaintRow ( final int row )
             {
-                if ( row != -1 )
+                if ( 0 <= row && row < tree.getRowCount () )
                 {
                     tree.repaint ( getRowBounds ( row, true ) );
                 }

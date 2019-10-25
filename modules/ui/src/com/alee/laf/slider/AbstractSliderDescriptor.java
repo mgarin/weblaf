@@ -17,6 +17,7 @@
 
 package com.alee.laf.slider;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.ReflectUtils;
@@ -55,7 +56,7 @@ public abstract class AbstractSliderDescriptor<C extends JSlider, U extends WebS
     }
 
     @Override
-    public void updateUI ( final C component )
+    public void updateUI ( @NotNull final C component )
     {
         // Updating component UI
         super.updateUI ( component );

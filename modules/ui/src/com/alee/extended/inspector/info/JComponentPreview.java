@@ -17,6 +17,7 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.heatmap.HeatMap;
 
 import javax.swing.*;
@@ -35,8 +36,9 @@ public class JComponentPreview<C extends JComponent> extends AWTComponentPreview
     public static final ImageIcon layeredPaneType = new ImageIcon ( JComponentPreview.class.getResource ( "icons/layeredpane.png" ) );
     public static final ImageIcon heatMapType = new ImageIcon ( JComponentPreview.class.getResource ( "icons/heatmap.png" ) );
 
+    @NotNull
     @Override
-    public Icon getIconImpl ( final C component )
+    public Icon getIconImpl ( @NotNull final C component )
     {
         final Icon icon;
         if ( component instanceof JLayeredPane )
@@ -54,8 +56,9 @@ public class JComponentPreview<C extends JComponent> extends AWTComponentPreview
         return icon;
     }
 
+    @NotNull
     @Override
-    public String getText ( final C component )
+    public String getText ( @NotNull final C component )
     {
         return super.getText ( component ) + renderLayout ( component.getLayout () );
     }

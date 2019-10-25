@@ -43,6 +43,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return {@link JComponent} class
      */
+    @NotNull
     public Class<C> getComponentClass ();
 
     /**
@@ -59,6 +60,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return base UI class applicable to this component
      */
+    @NotNull
     public Class<U> getBaseUIClass ();
 
     /**
@@ -67,6 +69,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return UI class applied to the component by default
      */
+    @NotNull
     public Class<? extends U> getUIClass ();
 
     /**
@@ -74,6 +77,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return component default style ID
      */
+    @NotNull
     public StyleId getDefaultStyleId ();
 
     /**
@@ -82,7 +86,8 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      * @param component component instance to retrieve default style ID for
      * @return component instance-specific default style ID
      */
-    public StyleId getDefaultStyleId ( JComponent component );
+    @NotNull
+    public StyleId getDefaultStyleId ( @NotNull JComponent component );
 
     /**
      * Returns component identifier.
@@ -99,6 +104,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return component {@link Icon}
      */
+    @NotNull
     public Icon getIcon ();
 
     /**
@@ -106,6 +112,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return component name
      */
+    @NotNull
     public String getTitle ();
 
     /**
@@ -114,7 +121,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @param table {@link UIDefaults}
      */
-    public void updateDefaults ( UIDefaults table );
+    public void updateDefaults ( @NotNull UIDefaults table );
 
     /**
      * Asks descriptor to update {@link ComponentUI} instance for the specified {@link JComponent}.
@@ -123,5 +130,5 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @param component component instance
      */
-    public void updateUI ( C component );
+    public void updateUI ( @NotNull C component );
 }

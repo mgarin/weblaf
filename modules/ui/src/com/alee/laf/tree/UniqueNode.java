@@ -19,6 +19,7 @@ package com.alee.laf.tree;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 
@@ -44,6 +45,7 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
     /**
      * Unique node ID.
      */
+    @NotNull
     protected String id;
 
     /**
@@ -51,8 +53,7 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
      */
     public UniqueNode ()
     {
-        super ();
-        setId ();
+        this ( null );
     }
 
     /**
@@ -60,10 +61,9 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
      *
      * @param userObject optional node {@link Object}
      */
-    public UniqueNode ( final T userObject )
+    public UniqueNode ( @Nullable final T userObject )
     {
-        super ( userObject );
-        setId ();
+        this ( TextUtils.generateId ( ID_PREFIX ), userObject );
     }
 
     /**
@@ -72,10 +72,10 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
      * @param id         unique node identifier
      * @param userObject optional node {@link Object}
      */
-    public UniqueNode ( final String id, final T userObject )
+    public UniqueNode ( @NotNull final String id, @Nullable final T userObject )
     {
         super ( userObject );
-        setId ( id );
+        this.id = id;
     }
 
     /**
@@ -87,10 +87,6 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
     @Override
     public String getId ()
     {
-        if ( id == null )
-        {
-            setId ();
-        }
         return id;
     }
 
@@ -99,17 +95,9 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
      *
      * @param id new node ID
      */
-    public void setId ( final String id )
+    public void setId ( @NotNull final String id )
     {
         this.id = id;
-    }
-
-    /**
-     * Changes node ID to new random ID.
-     */
-    protected void setId ()
-    {
-        this.id = TextUtils.generateId ( ID_PREFIX );
     }
 
     /**
@@ -117,6 +105,7 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
      *
      * @return text node representation
      */
+    @Nullable
     @Override
     public String toString ()
     {

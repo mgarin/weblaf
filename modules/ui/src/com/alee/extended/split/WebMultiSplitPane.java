@@ -53,7 +53,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     public static final String ORIENTATION_PROPERTY = "orientation";
     public static final String CONTINUOUS_LAYOUT_PROPERTY = "continuousLayout";
     public static final String DIVIDER_SIZE_PROPERTY = "dividerSize";
-    public final static String ONE_TOUCH_EXPANDABLE_PROPERTY = "oneTouchExpandable";
+    public static final String ONE_TOUCH_EXPANDABLE_PROPERTY = "oneTouchExpandable";
     public static final String MODEL_PROPERTY = "model";
 
     /**

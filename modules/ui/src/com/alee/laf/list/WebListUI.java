@@ -41,8 +41,8 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     /**
      * Static fields from {@link javax.swing.plaf.basic.BasicListUI}.
      */
-    public final static int heightChanged = 1 << 8;
-    public final static int widthChanged = 1 << 9;
+    public static final int heightChanged = 1 << 8;
+    public static final int widthChanged = 1 << 9;
 
     /**
      * List selection style.

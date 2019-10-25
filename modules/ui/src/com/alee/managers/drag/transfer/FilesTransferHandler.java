@@ -17,6 +17,8 @@
 
 package com.alee.managers.drag.transfer;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
@@ -53,30 +55,21 @@ public class FilesTransferHandler extends AbstractTransferHandler
         super ( dragEnabled, dropEnabled );
     }
 
+    @Nullable
     @Override
-    protected Transferable createTransferable ( final JComponent component )
+    protected Transferable createTransferable ( @NotNull final JComponent component )
     {
+        final Transferable transferable;
         if ( isDragEnabled () )
         {
             final List<File> draggedFiles = getDraggedFiles ();
-            return draggedFiles != null && draggedFiles.size () > 0 ? new FilesTransferable ( draggedFiles ) : null;
+            transferable = draggedFiles != null && draggedFiles.size () > 0 ? new FilesTransferable ( draggedFiles ) : null;
         }
         else
         {
-            return null;
+            transferable = null;
         }
-    }
-
-    /**
-     * Returns list of dragged {@link File}s.
-     * You can override this method to provide custom list of dragged {@link File}s.
-     *
-     * @return list of dragged {@link File}s
-     */
-    public List<File> getDraggedFiles ()
-    {
-        final File file = getDraggedFile ();
-        return file != null ? CollectionUtils.asList ( file ) : null;
+        return transferable;
     }
 
     /**
@@ -85,21 +78,44 @@ public class FilesTransferHandler extends AbstractTransferHandler
      *
      * @return dragged file
      */
+    @Nullable
     public File getDraggedFile ()
     {
         return null;
     }
 
+    /**
+     * Returns list of dragged {@link File}s.
+     * You can override this method to provide custom list of dragged {@link File}s.
+     *
+     * @return list of dragged {@link File}s
+     */
+    @Nullable
+    public List<File> getDraggedFiles ()
+    {
+        final File file = getDraggedFile ();
+        return file != null ? CollectionUtils.asList ( file ) : null;
+    }
+
     @Override
-    public boolean canImport ( final TransferHandler.TransferSupport support )
+    public boolean canImport ( @NotNull final TransferHandler.TransferSupport support )
     {
         return isDropEnabled () && FilesTransferable.hasFilesList ( support.getTransferable () );
     }
 
     @Override
-    public boolean importData ( final TransferHandler.TransferSupport info )
+    public boolean importData ( @NotNull final TransferHandler.TransferSupport info )
     {
-        return isDropEnabled () && info.isDrop () && filesDropped ( FilesTransferable.getFilesList ( info.getTransferable () ) );
+        boolean imported = false;
+        if ( isDropEnabled () && info.isDrop () )
+        {
+            final List<File> files = FilesTransferable.getFilesList ( info.getTransferable () );
+            if ( CollectionUtils.notEmpty ( files ) )
+            {
+                imported = filesDropped ( files );
+            }
+        }
+        return imported;
     }
 
     /**
@@ -109,7 +125,7 @@ public class FilesTransferHandler extends AbstractTransferHandler
      * @param files list of dropped files
      * @return true if drop was successfully completed, false otherwise
      */
-    public boolean filesDropped ( final List<File> files )
+    public boolean filesDropped ( @NotNull final List<File> files )
     {
         return true;
     }

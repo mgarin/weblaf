@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.file.FileComparator;
 
 import java.util.Comparator;
@@ -35,7 +36,7 @@ public class FileTreeNodeComparator implements Comparator<FileTreeNode>
     protected FileComparator fileComparator = new FileComparator ();
 
     @Override
-    public int compare ( final FileTreeNode o1, final FileTreeNode o2 )
+    public int compare ( @NotNull final FileTreeNode o1, @NotNull final FileTreeNode o2 )
     {
         return fileComparator.compare ( o1.getFile (), o2.getFile () );
     }

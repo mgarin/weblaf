@@ -159,6 +159,82 @@ public final class GeometryUtils
     }
 
     /**
+     * Returns rectangle containing all specified points.
+     *
+     * @param points points to process
+     * @return rectangle containing all specified points
+     */
+    @NotNull
+    public static Rectangle getNonNullContainingRect ( @NotNull final List<Point> points )
+    {
+        final Rectangle rect;
+        if ( points.size () > 0 )
+        {
+            rect = getNonNullContainingRect ( points.toArray ( new Point[ points.size () ] ) );
+        }
+        else
+        {
+            throw new RuntimeException ( "At least one point must be specified" );
+        }
+        return rect;
+    }
+
+    /**
+     * Returns rectangle containing all specified points.
+     *
+     * @param points points to process
+     * @return rectangle containing all specified points
+     */
+    @NotNull
+    public static Rectangle getNonNullContainingRect ( @NotNull final Point... points )
+    {
+        final Rectangle rect;
+        if ( points.length > 0 )
+        {
+            rect = new Rectangle ( points[ 0 ], new Dimension ( 0, 0 ) );
+            int i = 1;
+            while ( i < points.length )
+            {
+                final Point p = points[ i ];
+                if ( p.x < rect.x )
+                {
+                    final int diff = rect.x - p.x;
+                    rect.x = p.x;
+                    rect.width += diff;
+                }
+                else if ( rect.x + rect.width < p.x )
+                {
+                    rect.width = p.x - rect.x;
+                }
+                if ( p.y < rect.y )
+                {
+                    final int diff = rect.y - p.y;
+                    rect.y = p.y;
+                    rect.height += diff;
+                }
+                else if ( rect.y + rect.height < p.y )
+                {
+                    rect.height = p.y - rect.y;
+                }
+                i++;
+            }
+            if ( rect.width == 0 )
+            {
+                rect.width = 1;
+            }
+            if ( rect.height == 0 )
+            {
+                rect.height = 1;
+            }
+        }
+        else
+        {
+            throw new RuntimeException ( "At least one point must be specified" );
+        }
+        return rect;
+    }
+
+    /**
      * Returns rectangle containing all specified rectangles.
      *
      * @param rectangles rectangles to process
@@ -167,12 +243,20 @@ public final class GeometryUtils
     @NotNull
     public static Rectangle getNonNullContainingRect ( @NotNull final Rectangle... rectangles )
     {
-        Rectangle rect = rect = rectangles[ 0 ];
-        int i = 1;
-        while ( i < rectangles.length )
+        Rectangle rect;
+        if ( rectangles.length > 0 )
         {
-            rect = getNonNullContainingRect ( rect, rectangles[ i ] );
-            i++;
+            rect = rectangles[ 0 ];
+            int i = 1;
+            while ( i < rectangles.length )
+            {
+                rect = getNonNullContainingRect ( rect, rectangles[ i ] );
+                i++;
+            }
+        }
+        else
+        {
+            throw new RuntimeException ( "At least one rectangle must be specified" );
         }
         return rect;
     }

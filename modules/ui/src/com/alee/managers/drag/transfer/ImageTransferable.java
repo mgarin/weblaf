@@ -17,6 +17,9 @@
 
 package com.alee.managers.drag.transfer;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -44,6 +47,7 @@ public class ImageTransferable implements Transferable
     /**
      * Transferred image.
      */
+    @NotNull
     protected final Image image;
 
     /**
@@ -51,12 +55,12 @@ public class ImageTransferable implements Transferable
      *
      * @param image transferred image
      */
-    public ImageTransferable ( final Image image )
+    public ImageTransferable ( @NotNull final Image image )
     {
-        super ();
         this.image = image;
     }
 
+    @NotNull
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
@@ -64,22 +68,25 @@ public class ImageTransferable implements Transferable
     }
 
     @Override
-    public boolean isDataFlavorSupported ( final DataFlavor flavor )
+    public boolean isDataFlavorSupported ( @NotNull final DataFlavor flavor )
     {
         return flavor.equals ( DataFlavor.imageFlavor );
     }
 
+    @NotNull
     @Override
-    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
+    public Object getTransferData ( @NotNull final DataFlavor flavor ) throws UnsupportedFlavorException
     {
+        final Object transferData;
         if ( flavor.equals ( DataFlavor.imageFlavor ) )
         {
-            return image;
+            transferData = image;
         }
         else
         {
             throw new UnsupportedFlavorException ( flavor );
         }
+        return transferData;
     }
 
     /**
@@ -88,7 +95,7 @@ public class ImageTransferable implements Transferable
      * @param transferable transferable
      * @return true if transferable contains images, false otherwise
      */
-    public static boolean hasImagesList ( final Transferable transferable )
+    public static boolean hasImagesList ( @NotNull final Transferable transferable )
     {
         final DataFlavor[] df = transferable.getTransferDataFlavors ();
         return hasImageFlavor ( df ) || FilesTransferable.hasURIListFlavor ( df ) || FilesTransferable.hasFileListFlavor ( df );
@@ -100,7 +107,8 @@ public class ImageTransferable implements Transferable
      * @param transferable transferable
      * @return list of imported images
      */
-    public static List<ImageIcon> getImagesList ( final Transferable transferable )
+    @NotNull
+    public static List<ImageIcon> getImagesList ( @NotNull final Transferable transferable )
     {
         final List<ImageIcon> images = new ArrayList<ImageIcon> ();
 
@@ -130,34 +138,38 @@ public class ImageTransferable implements Transferable
      * @param flavors flavors array
      * @return true if flavors array has image flavor, false otherwise
      */
-    public static boolean hasImageFlavor ( final DataFlavor[] flavors )
+    public static boolean hasImageFlavor ( @NotNull final DataFlavor[] flavors )
     {
+        boolean hasImageFlavor = false;
         for ( final DataFlavor flavor : flavors )
         {
             if ( DataFlavor.imageFlavor.equals ( flavor ) )
             {
-                return true;
+                hasImageFlavor = true;
+                break;
             }
         }
-        return false;
+        return hasImageFlavor;
     }
 
     /**
      * Returns imported image retrieved from the specified transferable.
      *
-     * @param t transferable
+     * @param transferable transferable
      * @return imported image
      */
-    public static Image getImage ( final Transferable t )
+    @Nullable
+    public static Image getImage ( @NotNull final Transferable transferable )
     {
-        if ( t.isDataFlavorSupported ( DataFlavor.imageFlavor ) )
+        Image image = null;
+        if ( transferable.isDataFlavorSupported ( DataFlavor.imageFlavor ) )
         {
             try
             {
-                final Object data = t.getTransferData ( DataFlavor.imageFlavor );
+                final Object data = transferable.getTransferData ( DataFlavor.imageFlavor );
                 if ( data instanceof Image )
                 {
-                    return ( Image ) data;
+                    image = ( Image ) data;
                 }
             }
             catch ( final UnsupportedFlavorException ignored )
@@ -169,6 +181,6 @@ public class ImageTransferable implements Transferable
                 //
             }
         }
-        return null;
+        return image;
     }
 }

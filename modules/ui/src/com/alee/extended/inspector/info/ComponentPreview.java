@@ -17,6 +17,8 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,17 +31,13 @@ import java.awt.*;
 public interface ComponentPreview<C extends Component>
 {
     /**
-     * Windows root icon.
-     */
-    public static final ImageIcon windows = new ImageIcon ( ComponentPreview.class.getResource ( "icons/windows.png" ) );
-
-    /**
      * Returns icon for the specified {@link Component}.
      *
      * @param component {@link Component} to provide icon for
      * @return icon for the specified {@link Component}
      */
-    public Icon getIcon ( C component );
+    @NotNull
+    public Icon getIcon ( @NotNull C component );
 
     /**
      * Returns text value for the specified {@link Component}.
@@ -47,5 +45,6 @@ public interface ComponentPreview<C extends Component>
      * @param component {@link Component} to provide text for
      * @return text value for the specified {@link Component}
      */
-    public String getText ( C component );
+    @NotNull
+    public String getText ( @NotNull C component );
 }

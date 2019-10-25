@@ -60,15 +60,11 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
         super ( root, asksAllowsChildren );
     }
 
-    /**
-     * Returns root node.
-     *
-     * @return root node
-     */
     @Nullable
-    public N getRootNode ()
+    @Override
+    public N getRoot ()
     {
-        return ( N ) getRoot ();
+        return ( N ) super.getRoot ();
     }
 
     @Override
@@ -299,7 +295,7 @@ public class WebTreeModel<N extends MutableTreeNode> extends DefaultTreeModel
      */
     public void updateTree ()
     {
-        final N rootNode = getRootNode ();
+        final N rootNode = getRoot ();
         if ( rootNode != null )
         {
             final TreeNode[] path = TreeUtils.getPath ( rootNode );

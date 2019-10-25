@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree.walker;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Predicate;
 
@@ -37,11 +39,13 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
     /**
      * {@link JTree} to walk through.
      */
-    protected JTree tree;
+    @NotNull
+    protected final JTree tree;
 
     /**
      * Current parent within walking sequence.
      */
+    @Nullable
     protected N parent;
 
     /**
@@ -54,14 +58,13 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
      *
      * @param tree {@link JTree} to walk through
      */
-    public AbstractTreeWalker ( final JTree tree )
+    public AbstractTreeWalker ( @NotNull final JTree tree )
     {
-        super ();
         this.tree = tree;
     }
 
     @Override
-    public void forEach ( final Consumer<N> action )
+    public void forEach ( @NotNull final Consumer<N> action )
     {
         N node;
         while ( ( node = nextNode () ) != null )
@@ -72,7 +75,7 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
     }
 
     @Override
-    public boolean anyMatch ( final Predicate<N> predicate )
+    public boolean anyMatch ( @NotNull final Predicate<N> predicate )
     {
         boolean anyMatch = false;
         N node;
@@ -88,7 +91,7 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
     }
 
     @Override
-    public boolean allMatch ( final Predicate<N> predicate )
+    public boolean allMatch ( @NotNull final Predicate<N> predicate )
     {
         boolean allMatch = true;
         N node;
@@ -104,7 +107,7 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
     }
 
     @Override
-    public boolean noneMatch ( final Predicate<N> predicate )
+    public boolean noneMatch ( @NotNull final Predicate<N> predicate )
     {
         boolean noneMatch = true;
         N node;
@@ -124,6 +127,7 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
      *
      * @return next tree node from the tree
      */
+    @Nullable
     protected N nextNode ()
     {
         final N node;
@@ -183,7 +187,8 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
      * @param model {@link TreeModel}
      * @return tree root node
      */
-    protected abstract N getRootNode ( M model );
+    @NotNull
+    protected abstract N getRootNode ( @NotNull M model );
 
     /**
      * Returns child count for the specified {@link TreeNode}.
@@ -192,7 +197,7 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
      * @param parent {@link TreeNode} to return child count for
      * @return child count for the specified {@link TreeNode}
      */
-    protected abstract int getChildCount ( M model, N parent );
+    protected abstract int getChildCount ( @NotNull M model, @NotNull N parent );
 
     /**
      * Returns child {@link TreeNode} under parent {@link TreeNode} at the specified index.
@@ -202,7 +207,8 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
      * @param index  child {@link TreeNode} index
      * @return child {@link TreeNode} under parent {@link TreeNode} at the specified index
      */
-    protected abstract N getChild ( M model, N parent, int index );
+    @NotNull
+    protected abstract N getChild ( @NotNull M model, @NotNull N parent, int index );
 
     /**
      * Returns child {@link TreeNode} index within specified parent {@link TreeNode}.
@@ -212,5 +218,5 @@ public abstract class AbstractTreeWalker<N extends TreeNode, M extends TreeModel
      * @param child  child {@link TreeNode}
      * @return child {@link TreeNode} index within specified parent {@link TreeNode}
      */
-    protected abstract int getIndexOfChild ( M model, N parent, N child );
+    protected abstract int getIndexOfChild ( @NotNull M model, @NotNull N parent, @NotNull N child );
 }

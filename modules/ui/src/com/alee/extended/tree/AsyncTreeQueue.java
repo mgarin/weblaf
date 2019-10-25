@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Supplier;
 import com.alee.utils.concurrent.DaemonThreadFactory;
@@ -52,6 +54,7 @@ public final class AsyncTreeQueue
     /**
      * ExecutorService to limit simultaneously running threads.
      */
+    @Nullable
     private ExecutorService executorService;
 
     /**
@@ -61,12 +64,13 @@ public final class AsyncTreeQueue
      * @param asyncTree asynchronous tree to process
      * @return an instance of queue for the specified asynchronous tree
      */
-    public static AsyncTreeQueue getInstance ( final WebAsyncTree asyncTree )
+    @NotNull
+    public static AsyncTreeQueue getInstance ( @NotNull final WebAsyncTree asyncTree )
     {
         return queues.get ( asyncTree, new Function<WebAsyncTree, AsyncTreeQueue> ()
         {
             @Override
-            public AsyncTreeQueue apply ( final WebAsyncTree webAsyncTree )
+            public AsyncTreeQueue apply ( @NotNull final WebAsyncTree webAsyncTree )
             {
                 return new AsyncTreeQueue ();
             }
@@ -78,7 +82,6 @@ public final class AsyncTreeQueue
      */
     private AsyncTreeQueue ()
     {
-        super ();
         restartService ( threadsNumber );
     }
 
@@ -144,8 +147,11 @@ public final class AsyncTreeQueue
      *
      * @param runnable runnable to execute
      */
-    public synchronized void execute ( final Runnable runnable )
+    public synchronized void execute ( @NotNull final Runnable runnable )
     {
-        executorService.execute ( runnable );
+        if ( executorService != null )
+        {
+            executorService.execute ( runnable );
+        }
     }
 }

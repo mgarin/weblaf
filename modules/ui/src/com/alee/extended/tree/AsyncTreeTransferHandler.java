@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -64,29 +66,31 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
      * - Doesn't allow drop on a failed nodes as they are considered to have no chidren
      */
     @Override
-    protected boolean canDropTo ( final TransferSupport support, final T tree, final M model, final N destination )
+    protected boolean canDropTo ( @NotNull final TransferSupport support, @NotNull final T tree, @NotNull final M model,
+                                  @NotNull final N destination )
     {
-        return super.canDropTo ( support, tree, model, destination ) && !destination.isLoading () && !destination.isFailed ();
+        return !destination.isLoading () && !destination.isFailed ();
     }
 
     @Override
-    protected boolean prepareDropOperation ( final TransferSupport support, final T tree, final M model, final N parent,
-                                             final int dropIndex )
+    protected boolean prepareDropOperation ( @NotNull final TransferSupport support, @NotNull final T tree, @NotNull final M model,
+                                             @NotNull final N destination, final int dropIndex )
     {
+        final boolean prepared;
         if ( allowUncheckedDrop )
         {
             // Acting differently in case parent node children are not yet loaded
             // We don't want to modify model (insert children) before existing children are actually loaded
-            if ( parent.isLoaded () )
+            if ( destination.isLoaded () )
             {
                 // Expanding parent first
-                if ( !tree.isExpanded ( parent ) )
+                if ( !tree.isExpanded ( destination ) )
                 {
-                    tree.expandNode ( parent );
+                    tree.expandNode ( destination );
                 }
 
                 // Adjust drop index after we ensure parent is loaded and expanded
-                final int adjustedDropIndex = getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent );
+                final int adjustedDropIndex = getAdjustedDropIndex ( support, tree, model, destination, dropIndex );
 
                 // Adding data to model
                 // Performing it in a separate non-EDT thread
@@ -95,19 +99,19 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
                     @Override
                     public void run ()
                     {
-                        performDropOperation ( support, tree, model, parent, adjustedDropIndex );
+                        performDropOperation ( support, tree, model, destination, adjustedDropIndex );
                     }
                 } );
             }
             else
             {
                 // Loading children first
-                tree.addAsyncTreeListener ( new AsyncTreeAdapter ()
+                tree.addAsyncTreeListener ( new AsyncTreeAdapter<N> ()
                 {
                     @Override
-                    public void loadCompleted ( final AsyncUniqueNode loadedFor, final List children )
+                    public void loadCompleted ( @NotNull final N parent, @NotNull final List<N> children )
                     {
-                        if ( loadedFor == parent )
+                        if ( parent == destination )
                         {
                             // Adding data to model
                             // Performing it in a separate non-EDT thread
@@ -116,7 +120,7 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
                                 @Override
                                 public void run ()
                                 {
-                                    performDropOperation ( support, tree, model, parent, parent.getChildCount () );
+                                    performDropOperation ( support, tree, model, destination, destination.getChildCount () );
                                 }
                             } );
 
@@ -126,30 +130,36 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
                     }
 
                     @Override
-                    public void loadFailed ( final AsyncUniqueNode loadedFor, final Throwable cause )
+                    public void loadFailed ( @NotNull final N parent, @NotNull final Throwable cause )
                     {
-                        if ( loadedFor == parent )
+                        if ( parent == destination )
                         {
                             // Removing listener
                             tree.removeAsyncTreeListener ( this );
                         }
                     }
                 } );
-                tree.reloadNode ( parent );
+                tree.reloadNode ( destination );
             }
-            return true;
+            prepared = true;
         }
         else
         {
             // We have to load children synchronously, otherwise we cannot say for sure if drop succeed or not
-            if ( !parent.isLoaded () )
+            if ( !destination.isLoaded () )
             {
-                tree.reloadNodeSync ( parent );
+                tree.reloadNodeSync ( destination );
             }
 
             // If children were loaded right away with our attempt - perform the drop
-            return parent.isLoaded () && performDropOperation ( support, tree, model, parent,
-                    getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent ) );
+            prepared = destination.isLoaded () && performDropOperation (
+                    support,
+                    tree,
+                    model,
+                    destination,
+                    getAdjustedDropIndex ( support, tree, model, destination, dropIndex )
+            );
         }
+        return prepared;
     }
 }

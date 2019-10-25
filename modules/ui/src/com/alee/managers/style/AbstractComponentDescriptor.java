@@ -109,6 +109,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         this.defaultStyleId = defaultStyleId;
     }
 
+    @NotNull
     @Override
     public Class<C> getComponentClass ()
     {
@@ -122,26 +123,30 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         return uiClassId;
     }
 
+    @NotNull
     @Override
     public Class<U> getBaseUIClass ()
     {
         return baseUIClass;
     }
 
+    @NotNull
     @Override
     public Class<? extends U> getUIClass ()
     {
         return uiClass;
     }
 
+    @NotNull
     @Override
     public StyleId getDefaultStyleId ()
     {
         return defaultStyleId;
     }
 
+    @NotNull
     @Override
-    public StyleId getDefaultStyleId ( final JComponent component )
+    public StyleId getDefaultStyleId ( @NotNull final JComponent component )
     {
         final StyleId styleId;
         if ( component instanceof Styleable )
@@ -163,6 +168,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         return getDefaultStyleId ().getId ();
     }
 
+    @NotNull
     @Override
     public Icon getIcon ()
     {
@@ -201,6 +207,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         return AbstractComponentDescriptor.class.getResource ( path );
     }
 
+    @NotNull
     @Override
     public String getTitle ()
     {
@@ -208,14 +215,14 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     }
 
     @Override
-    public void updateDefaults ( final UIDefaults table )
+    public void updateDefaults ( @NotNull final UIDefaults table )
     {
         // Updating UI class mapping
         table.put ( getUIClassId (), getUIClass ().getName () );
     }
 
     @Override
-    public void updateUI ( final C component )
+    public void updateUI ( @NotNull final C component )
     {
         // Check whether or not we need to create new UI instance
         // It will be created and applied if component doesn't have its own UI instance yet

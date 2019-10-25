@@ -17,6 +17,7 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.ReflectUtils;
@@ -58,7 +59,7 @@ public abstract class AbstractFileChooserDescriptor<C extends JFileChooser, U ex
     }
 
     @Override
-    public void updateUI ( final C component )
+    public void updateUI ( @NotNull final C component )
     {
         // Removing all files filter
         if ( component.isAcceptAllFileFilterUsed () )

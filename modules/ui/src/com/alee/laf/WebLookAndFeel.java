@@ -112,24 +112,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String TRAILING_COMPONENT_PROPERTY = "trailingComponent";
 
     /**
-     * Bound property name for tree data provider.
-     * Data provider is not supported by WebTree, but it is a base for various extensions so property is located here.
-     */
-    public final static String TREE_DATA_PROVIDER_PROPERTY = "dataProvider";
-
-    /**
-     * Bound property name for tree filter.
-     * Filtering is not supported by WebTree, but it is a base for various extensions so property is located here.
-     */
-    public final static String TREE_FILTER_PROPERTY = "filter";
-
-    /**
-     * Bound property name for tree comparator.
-     * Sorting is not supported by WebTree, but it is a base for various extensions so property is located here.
-     */
-    public final static String TREE_COMPARATOR_PROPERTY = "comparator";
-
-    /**
      * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
      * Enabling this might allow you to find out places where you try to interact with UI elements outside of the EDT.
      * By default it is disabled to avoid issues this might cause in different applications not following proper Swing design patterns.

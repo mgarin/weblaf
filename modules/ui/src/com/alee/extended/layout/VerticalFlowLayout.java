@@ -34,9 +34,9 @@ public class VerticalFlowLayout extends AbstractLayoutManager
     /**
      * Description of the Field
      */
-    public final static int TOP = 0;
-    public final static int MIDDLE = 1;
-    public final static int BOTTOM = 2;
+    public static final int TOP = 0;
+    public static final int MIDDLE = 1;
+    public static final int BOTTOM = 2;
 
     protected int align;
     @Deprecated

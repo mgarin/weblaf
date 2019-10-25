@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.tree.MutableTreeNode;
 import java.util.EventListener;
 import java.util.List;
@@ -35,5 +37,5 @@ public interface CheckStateChangeListener<N extends MutableTreeNode> extends Eve
      * @param tree         {@link WebCheckBoxTree}
      * @param stateChanges {@link List} of {@link CheckStateChange}s
      */
-    public void checkStateChanged ( WebCheckBoxTree<N> tree, List<CheckStateChange<N>> stateChanges );
+    public void checkStateChanged ( @NotNull WebCheckBoxTree<N> tree, @NotNull List<CheckStateChange<N>> stateChanges );
 }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.filefilter.NonHiddenFilter;
 
@@ -32,6 +33,7 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
     /**
      * {@link Filter} used for filtering {@link File}s.
      */
+    @NotNull
     protected Filter<File> filter;
 
     /**
@@ -47,9 +49,8 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
      *
      * @param filter file filter
      */
-    public FileTreeNodeFilter ( final Filter<File> filter )
+    public FileTreeNodeFilter ( @NotNull final Filter<File> filter )
     {
-        super ();
         this.filter = filter;
     }
 
@@ -58,6 +59,7 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
      *
      * @return {@link Filter} used for filtering {@link File}s
      */
+    @NotNull
     public Filter<File> getFilter ()
     {
         return filter;
@@ -68,13 +70,13 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
      *
      * @param filter {@link Filter} used for filtering {@link File}s
      */
-    public void setFilter ( final Filter<File> filter )
+    public void setFilter ( @NotNull final Filter<File> filter )
     {
         this.filter = filter;
     }
 
     @Override
-    public boolean accept ( final FileTreeNode object )
+    public boolean accept ( @NotNull final FileTreeNode object )
     {
         return filter.accept ( object.getFile () );
     }

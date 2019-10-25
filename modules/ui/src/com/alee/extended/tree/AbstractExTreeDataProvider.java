@@ -36,14 +36,6 @@ import java.util.List;
 public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implements ExTreeDataProvider<N>
 {
     /**
-     * {@link Comparator} for all child nodes.
-     * It is {@code transient} as it can only be set through code.
-     * Override {@link #getChildrenComparator(UniqueNode, List)} method to provide parent-related {@link Comparator}.
-     */
-    @Nullable
-    protected transient Comparator<N> comparator = null;
-
-    /**
      * {@link Filter} for all child nodes.
      * It is {@code transient} as it can only be set through code.
      * Override {@link #getChildrenFilter(UniqueNode, List)} method to provide parent-related {@link Filter}.
@@ -51,22 +43,15 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
     @Nullable
     protected transient Filter<N> filter = null;
 
-    @Override
-    public Comparator<N> getChildrenComparator ( @NotNull final N parent, @NotNull final List<N> children )
-    {
-        return comparator;
-    }
-
     /**
-     * Sets children comparator for all nodes.
-     *
-     * @param comparator children comparator for all nodes
+     * {@link Comparator} for all child nodes.
+     * It is {@code transient} as it can only be set through code.
+     * Override {@link #getChildrenComparator(UniqueNode, List)} method to provide parent-related {@link Comparator}.
      */
-    public void setChildrenComparator ( @Nullable final Comparator<N> comparator )
-    {
-        this.comparator = comparator;
-    }
+    @Nullable
+    protected transient Comparator<N> comparator = null;
 
+    @Nullable
     @Override
     public Filter<N> getChildrenFilter ( @NotNull final N parent, @NotNull final List<N> children )
     {
@@ -81,6 +66,23 @@ public abstract class AbstractExTreeDataProvider<N extends UniqueNode> implement
     public void setChildrenFilter ( @Nullable final Filter<N> filter )
     {
         this.filter = filter;
+    }
+
+    @Nullable
+    @Override
+    public Comparator<N> getChildrenComparator ( @NotNull final N parent, @NotNull final List<N> children )
+    {
+        return comparator;
+    }
+
+    /**
+     * Sets children comparator for all nodes.
+     *
+     * @param comparator children comparator for all nodes
+     */
+    public void setChildrenComparator ( @Nullable final Comparator<N> comparator )
+    {
+        this.comparator = comparator;
     }
 
     /**

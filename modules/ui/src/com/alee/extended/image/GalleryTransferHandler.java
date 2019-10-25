@@ -17,6 +17,7 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.utils.ImageUtils;
 
@@ -38,7 +39,7 @@ public class GalleryTransferHandler extends FilesTransferHandler
     }
 
     @Override
-    public boolean filesDropped ( final List<File> files )
+    public boolean filesDropped ( @NotNull final List<File> files )
     {
         boolean added = false;
         if ( gallery != null )

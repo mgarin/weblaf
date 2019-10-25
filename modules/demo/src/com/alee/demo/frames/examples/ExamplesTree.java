@@ -23,12 +23,14 @@ import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.language.LanguageSensitive;
 
 /**
+ * Structure of all {@link com.alee.demo.DemoApplication} examples.
+ *
  * @author Mikle Garin
  */
 public final class ExamplesTree extends WebExTree<ExamplesTreeNode> implements LanguageSensitive
 {
     /**
-     * Constructs new examples tree.
+     * Constructs new {@link ExamplesTree}.
      */
     public ExamplesTree ()
     {

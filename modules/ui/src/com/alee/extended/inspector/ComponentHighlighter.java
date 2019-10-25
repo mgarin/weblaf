@@ -155,37 +155,37 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     }
 
     @Override
-    public void ancestorMoved ( final HierarchyEvent e )
+    public void ancestorMoved ( @NotNull final HierarchyEvent e )
     {
         updateBounds ();
     }
 
     @Override
-    public void ancestorResized ( final HierarchyEvent e )
+    public void ancestorResized ( @NotNull final HierarchyEvent e )
     {
         updateBounds ();
     }
 
     @Override
-    public void componentResized ( final ComponentEvent e )
+    public void componentResized ( @NotNull final ComponentEvent e )
     {
         updateBounds ();
     }
 
     @Override
-    public void componentMoved ( final ComponentEvent e )
+    public void componentMoved ( @NotNull final ComponentEvent e )
     {
         updateBounds ();
     }
 
     @Override
-    public void componentShown ( final ComponentEvent e )
+    public void componentShown ( @NotNull final ComponentEvent e )
     {
         // Ignored event
     }
 
     @Override
-    public void componentHidden ( final ComponentEvent e )
+    public void componentHidden ( @NotNull final ComponentEvent e )
     {
         uninstall ();
     }
@@ -225,7 +225,9 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      * @param componentBounds inspected component bounds
      * @return tip {@link CompassDirection}
      */
-    private CompassDirection getTipDirection ( final int tipWidth, final Dimension glassPaneSize, final Rectangle componentBounds )
+    @NotNull
+    private CompassDirection getTipDirection ( final int tipWidth, @NotNull final Dimension glassPaneSize,
+                                               @NotNull final Rectangle componentBounds )
     {
         final CompassDirection direction;
         final boolean fromLeft = componentBounds.x + tipWidth < glassPaneSize.width ||
@@ -250,8 +252,9 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      * @param componentBounds inspected component bounds
      * @return tip bounds
      */
-    private Rectangle getTipBounds ( final boolean relative, final int tipWidth, final CompassDirection tipDirection,
-                                     final Rectangle componentBounds )
+    @NotNull
+    private Rectangle getTipBounds ( final boolean relative, final int tipWidth, @NotNull final CompassDirection tipDirection,
+                                     @NotNull final Rectangle componentBounds )
     {
         final int x;
         if ( tipDirection == CompassDirection.northWest || tipDirection == CompassDirection.southWest )
@@ -285,8 +288,9 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      * @param componentBounds inspected component bounds
      * @return body bounds
      */
-    private Rectangle getBodyBounds ( final boolean relative, final int tipWidth, final CompassDirection tipDirection,
-                                      final Rectangle componentBounds )
+    @NotNull
+    private Rectangle getBodyBounds ( final boolean relative, final int tipWidth, @NotNull final CompassDirection tipDirection,
+                                      @NotNull final Rectangle componentBounds )
     {
         final int x;
         if ( tipDirection == CompassDirection.northWest || tipDirection == CompassDirection.southWest )
@@ -316,41 +320,55 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      *
      * @return highlighted component size tip text
      */
+    @NotNull
     private String getSizeTip ()
     {
-        return component.getWidth () + " x " + component.getHeight () + " px";
+        return component != null ? component.getWidth () + " x " + component.getHeight () + " px" : "? x ?";
     }
 
     @Override
-    protected void paintComponent ( final Graphics g )
+    protected void paintComponent ( @NotNull final Graphics g )
     {
-        if ( component != null )
+        if ( component != null && glassPane != null )
         {
-            final Graphics2D g2d = ( Graphics2D ) g;
-
-            final Dimension glassPaneSize = glassPane.getSize ();
-            final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
-            final int tipWidth = getTipWidth ();
-            final CompassDirection tipPosition = getTipDirection ( tipWidth, glassPaneSize, componentBounds );
-            final Rectangle tipBounds = getTipBounds ( false, tipWidth, tipPosition, componentBounds );
-            final Rectangle bodyBounds = getBodyBounds ( false, tipWidth, tipPosition, componentBounds );
-
-            // Painting size tip
-            paintSizeTip ( g2d, tipBounds, tipPosition );
-
-            // Painting areas
-            paintAreas ( g2d, bodyBounds );
+            paintHighlight ( ( Graphics2D ) g, component, glassPane );
         }
+    }
+
+    /**
+     * Paints highlight.
+     *
+     * @param g2d       {@link Graphics2D}
+     * @param component {@link Component} to highlight
+     * @param glassPane {@link WebGlassPane}
+     */
+    private void paintHighlight ( @NotNull final Graphics2D g2d, @NotNull final Component component,
+                                  @NotNull final WebGlassPane glassPane )
+    {
+        final Dimension glassPaneSize = glassPane.getSize ();
+        final Rectangle componentBounds = CoreSwingUtils.getRelativeBounds ( component, glassPane );
+        final int tipWidth = getTipWidth ();
+        final CompassDirection tipPosition = getTipDirection ( tipWidth, glassPaneSize, componentBounds );
+        final Rectangle tipBounds = getTipBounds ( false, tipWidth, tipPosition, componentBounds );
+        final Rectangle bodyBounds = getBodyBounds ( false, tipWidth, tipPosition, componentBounds );
+
+        // Painting size tip
+        paintSizeTip ( g2d, component, tipBounds, tipPosition );
+
+        // Painting areas
+        paintAreas ( g2d, component, bodyBounds );
     }
 
     /**
      * Paints component size tip.
      *
-     * @param g2d         graphics context
+     * @param g2d         {@link Graphics2D}
+     * @param component   {@link Component} to highlight
      * @param tipBounds   tip bounds
      * @param tipPosition tip position
      */
-    private void paintSizeTip ( final Graphics2D g2d, final Rectangle tipBounds, final CompassDirection tipPosition )
+    private void paintSizeTip ( @NotNull final Graphics2D g2d, @NotNull final Component component, @NotNull final Rectangle tipBounds,
+                                @NotNull final CompassDirection tipPosition )
     {
         final FontMetrics fm = g2d.getFontMetrics ( g2d.getFont () );
         final int shearY = LafUtils.getTextCenterShiftY ( fm );
@@ -391,10 +409,11 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
     /**
      * Paints component areas.
      *
-     * @param g2d        graphics context
+     * @param g2d        {@link Graphics2D}
+     * @param component  {@link Component} to highlight
      * @param bodyBounds body bounds
      */
-    private void paintAreas ( final Graphics2D g2d, final Rectangle bodyBounds )
+    private void paintAreas ( @NotNull final Graphics2D g2d, @NotNull final Component component, @NotNull final Rectangle bodyBounds )
     {
         if ( component instanceof JComponent && LafUtils.hasWebLafUI ( ( JComponent ) component ) )
         {
@@ -458,8 +477,8 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      * @param inner  inner area bounds
      * @param color  area color
      */
-    private void paintComplexArea ( final Graphics2D g2d, final Insets insets, final Rectangle outer, final Rectangle inner,
-                                    final Color color )
+    private void paintComplexArea ( @NotNull final Graphics2D g2d, @NotNull final Insets insets, @NotNull final Rectangle outer,
+                                    @NotNull final Rectangle inner, @NotNull final Color color )
     {
         if ( !insets.equals ( emptyInsets ) )
         {
@@ -476,7 +495,7 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
      * @param g2d    graphics context
      * @param bounds content area bounds
      */
-    private void paintContentArea ( final Graphics2D g2d, final Rectangle bounds )
+    private void paintContentArea ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds )
     {
         g2d.setPaint ( contentColor );
         g2d.fill ( bounds );

@@ -173,7 +173,7 @@ public class WebExTreeExample extends AbstractStylePreviewExample
              * Forcing this {@link TransferHandler} to move nodes.
              */
             @Override
-            public int getSourceActions ( final JComponent c )
+            public int getSourceActions ( @NotNull final JComponent c )
             {
                 return MOVE;
             }
@@ -181,15 +181,16 @@ public class WebExTreeExample extends AbstractStylePreviewExample
             /**
              * Blocks drop on {@link SampleObjectType#leaf} nodes.
              */
+            @NotNull
             @Override
             protected List<? extends TreeDropHandler> createDropHandlers ()
             {
                 return CollectionUtils.asList ( new NodesDropHandler<SampleNode, WebExTree<SampleNode>, ExTreeModel<SampleNode>> ()
                 {
                     @Override
-                    protected boolean canDrop ( final TransferSupport support, final WebExTree<SampleNode> tree,
-                                                final ExTreeModel<SampleNode> model, final SampleNode dropLocation, final int dropIndex,
-                                                final List<SampleNode> nodes )
+                    protected boolean canDrop ( @NotNull final TransferSupport support, @NotNull final WebExTree<SampleNode> tree,
+                                                @NotNull final ExTreeModel<SampleNode> model, @NotNull final SampleNode dropLocation,
+                                                final int dropIndex, @NotNull final List<SampleNode> nodes )
                     {
                         return dropLocation.getUserObject ().getType () != SampleObjectType.leaf;
                     }
@@ -200,8 +201,10 @@ public class WebExTreeExample extends AbstractStylePreviewExample
              * We do not need to copy children as {@link ExTreeDataProvider} will do that instead.
              * We only need to provide a copy of the specified node here.
              */
+            @NotNull
             @Override
-            protected SampleNode copy ( final WebExTree<SampleNode> tree, final ExTreeModel<SampleNode> model, final SampleNode node )
+            protected SampleNode copy ( @NotNull final WebExTree<SampleNode> tree, @NotNull final ExTreeModel<SampleNode> model, @NotNull
+            final SampleNode node )
             {
                 return node.clone ();
             }
@@ -210,8 +213,8 @@ public class WebExTreeExample extends AbstractStylePreviewExample
              * Blocks root element drag.
              */
             @Override
-            protected boolean canBeDragged ( final WebExTree<SampleNode> tree, final ExTreeModel<SampleNode> model,
-                                             final List<SampleNode> nodes )
+            protected boolean canBeDragged ( @NotNull final WebExTree<SampleNode> tree, @NotNull final ExTreeModel<SampleNode> model,
+                                             @NotNull final List<SampleNode> nodes )
             {
                 boolean allowed = true;
                 for ( final SampleNode node : nodes )

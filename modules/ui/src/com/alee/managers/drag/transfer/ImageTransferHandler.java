@@ -17,6 +17,9 @@
 
 package com.alee.managers.drag.transfer;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Transferable;
@@ -43,18 +46,21 @@ public class ImageTransferHandler extends FilesTransferHandler
         super ( dragEnabled, dropEnabled );
     }
 
+    @Nullable
     @Override
-    protected Transferable createTransferable ( final JComponent component )
+    protected Transferable createTransferable ( @NotNull final JComponent component )
     {
+        final Transferable transferable;
         if ( isDragEnabled () )
         {
             final Image image = getDraggedImage ();
-            return image != null ? new ImageTransferable ( image ) : null;
+            transferable = image != null ? new ImageTransferable ( image ) : null;
         }
         else
         {
-            return null;
+            transferable = null;
         }
+        return transferable;
     }
 
     /**
@@ -63,19 +69,20 @@ public class ImageTransferHandler extends FilesTransferHandler
      *
      * @return dragged image
      */
+    @Nullable
     public Image getDraggedImage ()
     {
         return null;
     }
 
     @Override
-    public boolean canImport ( final TransferHandler.TransferSupport support )
+    public boolean canImport ( @NotNull final TransferHandler.TransferSupport support )
     {
         return isDropEnabled () && ImageTransferable.hasImagesList ( support.getTransferable () );
     }
 
     @Override
-    public boolean importData ( final TransferHandler.TransferSupport info )
+    public boolean importData ( @NotNull final TransferHandler.TransferSupport info )
     {
         return isDropEnabled () && info.isDrop () && imagesImported ( ImageTransferable.getImagesList ( info.getTransferable () ) );
     }
@@ -87,7 +94,7 @@ public class ImageTransferHandler extends FilesTransferHandler
      * @param images list of dropped images
      * @return true if drop was successfully completed, false otherwise
      */
-    protected boolean imagesImported ( final List<ImageIcon> images )
+    protected boolean imagesImported ( @NotNull final List<ImageIcon> images )
     {
         return true;
     }

@@ -93,7 +93,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
             tree.setCellRenderer ( new WebTreeCellRenderer<TreeNode, JTree, TreeNodeParameters<TreeNode, JTree>> ()
             {
                 @Override
-                protected void updateView ( final TreeNodeParameters<TreeNode, JTree> parameters )
+                protected void updateView ( @NotNull final TreeNodeParameters<TreeNode, JTree> parameters )
                 {
                     super.updateView ( parameters );
                     setToolTipText ( textForValue ( parameters ) );
@@ -129,7 +129,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
             tree.setCellRenderer ( new WebTreeCellRenderer<TreeNode, JTree, TreeNodeParameters<TreeNode, JTree>> ()
             {
                 @Override
-                protected void updateView ( final TreeNodeParameters<TreeNode, JTree> parameters )
+                protected void updateView ( @NotNull final TreeNodeParameters<TreeNode, JTree> parameters )
                 {
                     super.updateView ( parameters );
                     setToolTipText ( textForValue ( parameters ) );

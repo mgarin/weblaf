@@ -21,11 +21,16 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.IconBridge;
 import com.alee.api.ui.TextBridge;
-import com.alee.extended.inspector.info.*;
+import com.alee.extended.inspector.info.AWTComponentPreview;
+import com.alee.extended.inspector.info.ComponentPreview;
+import com.alee.extended.inspector.info.JComponentPreview;
+import com.alee.extended.inspector.info.WComponentPreview;
+import com.alee.extended.tree.ExTreeModel;
 import com.alee.laf.VisibleWindowListener;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
+import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleAdapter;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleListener;
@@ -59,9 +64,9 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
     public static final String ALL_WINDOWS_ID = "all.windows";
 
     /**
-     * {@link ComponentPreview} for all windows root.
+     * Windows root icon.
      */
-    protected static final ComponentPreview windowsPreview = new WindowsPreview ();
+    protected static final ImageIcon windowsIcon = new ImageIcon ( ComponentPreview.class.getResource ( "icons/windows.png" ) );
 
     /**
      * {@link ComponentPreview} for extended components.
@@ -105,36 +110,20 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
         install ();
     }
 
-    @Override
-    protected void setId ()
-    {
-        setId ( id ( getUserObject () ) );
-    }
-
-    /**
-     * Returns {@link InterfaceTreeNode} identifier based on the specified {@link Component}.
-     *
-     * @param component {@link Component} to return {@link InterfaceTreeNode} identifier for
-     * @return {@link InterfaceTreeNode} identifier based on the specified {@link Component}
-     */
-    @NotNull
-    protected static String id ( @Nullable final Component component )
-    {
-        return component != null ? Integer.toString ( component.hashCode () ) : ALL_WINDOWS_ID;
-    }
-
     @Nullable
     @Override
     public Icon getIcon ( @NotNull final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
     {
-        return getPreview ().getIcon ( getUserObject () );
+        final Component component = getUserObject ();
+        return component != null ? getPreview ().getIcon ( component ) : windowsIcon;
     }
 
     @Nullable
     @Override
     public String getText ( @NotNull final TreeNodeParameters<InterfaceTreeNode, InterfaceTree> parameters )
     {
-        return getPreview ().getText ( getUserObject () );
+        final Component component = getUserObject ();
+        return component != null ? getPreview ().getText ( component ) : LM.get ( "weblaf.ex.inspector.windows" );
     }
 
     /**
@@ -252,7 +241,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
                             if ( tree.accept ( child ) )
                             {
                                 final String nodeId = id ( child );
-                                final InterfaceTreeNode childNode = tree.findNode ( nodeId );
+                                final InterfaceTreeNode childNode = tree.getNode ( nodeId );
                                 childNode.uninstall ();
                                 tree.removeNode ( childNode );
                             }
@@ -295,9 +284,13 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
 
         // Destroying all child nodes first
         // We access raw children directly to ensure we don't miss out any if they are currently filtered
-        for ( final InterfaceTreeNode child : tree.getModel ().getRawChildren ( InterfaceTreeNode.this ) )
+        final ExTreeModel<InterfaceTreeNode> model = tree.getModel ();
+        if ( model != null )
         {
-            child.uninstall ();
+            for ( final InterfaceTreeNode child : model.getRawChildren ( InterfaceTreeNode.this ) )
+            {
+                child.uninstall ();
+            }
         }
 
         // Removing all active listeners
@@ -329,6 +322,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      *
      * @return component descriptor
      */
+    @NotNull
     protected ComponentPreview getPreview ()
     {
         final ComponentPreview preview;
@@ -353,7 +347,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
         }
         else
         {
-            preview = windowsPreview;
+            throw new RuntimeException ( "ComponentPreview is not available for null Component" );
         }
         return preview;
     }
@@ -363,7 +357,7 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      *
      * @param tree {@link InterfaceTree}
      */
-    protected void updateNodeLater ( final InterfaceTree tree )
+    protected void updateNodeLater ( @NotNull final InterfaceTree tree )
     {
         CoreSwingUtils.invokeLater ( new Runnable ()
         {
@@ -381,9 +375,23 @@ public class InterfaceTreeNode extends UniqueNode<InterfaceTreeNode, Component>
      *
      * @return proper node text representation
      */
+    @NotNull
     @Override
     public String toString ()
     {
-        return getPreview ().getText ( getUserObject () );
+        final Component component = getUserObject ();
+        return component != null ? getPreview ().getText ( component ) : LM.get ( "weblaf.ex.inspector.windows" );
+    }
+
+    /**
+     * Returns {@link InterfaceTreeNode} identifier based on the specified {@link Component}.
+     *
+     * @param component {@link Component} to return {@link InterfaceTreeNode} identifier for
+     * @return {@link InterfaceTreeNode} identifier based on the specified {@link Component}
+     */
+    @NotNull
+    protected static String id ( @Nullable final Component component )
+    {
+        return component != null ? Integer.toString ( component.hashCode () ) : ALL_WINDOWS_ID;
     }
 }

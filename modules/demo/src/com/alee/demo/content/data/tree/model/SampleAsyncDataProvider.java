@@ -17,6 +17,7 @@
 
 package com.alee.demo.content.data.tree.model;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.tree.AbstractAsyncTreeDataProvider;
 import com.alee.extended.tree.NodesLoadCallback;
 import com.alee.utils.CollectionUtils;
@@ -31,6 +32,7 @@ import com.alee.utils.ThreadUtils;
  */
 public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<SampleNode>
 {
+    @NotNull
     @Override
     public SampleNode getRoot ()
     {
@@ -38,7 +40,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
     }
 
     @Override
-    public void loadChildren ( final SampleNode parent, final NodesLoadCallback<SampleNode> listener )
+    public void loadChildren ( @NotNull final SampleNode parent, @NotNull final NodesLoadCallback<SampleNode> listener )
     {
         // Excluding root node children to avoid awkward demo startup
         if ( parent.getUserObject ().getType () != SampleObjectType.root )
@@ -85,7 +87,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
     }
 
     @Override
-    public boolean isLeaf ( final SampleNode node )
+    public boolean isLeaf ( @NotNull final SampleNode node )
     {
         return node.getUserObject ().getType ().equals ( SampleObjectType.leaf );
     }

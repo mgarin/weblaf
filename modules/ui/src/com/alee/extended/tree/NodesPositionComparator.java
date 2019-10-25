@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.tree.TreeUtils;
 
 import javax.swing.tree.MutableTreeNode;
@@ -35,22 +36,23 @@ import java.util.Comparator;
 public class NodesPositionComparator<N extends MutableTreeNode> implements Comparator<N>
 {
     @Override
-    public int compare ( final N n1, final N n2 )
+    public int compare ( @NotNull final N n1, @NotNull final N n2 )
     {
+        final int result;
         if ( n1 == n2 )
         {
             // Same nodes do not need to be sorted
-            return 0;
+            result = 0;
         }
         else if ( TreeUtils.isNodeAncestor ( n1, n2 ) )
         {
             // If second node is ancestor of first one
-            return 1;
+            result = 1;
         }
         else if ( TreeUtils.isNodeAncestor ( n2, n1 ) )
         {
             // If first node is ancestor of second one
-            return -1;
+            result = -1;
         }
         else
         {
@@ -85,13 +87,14 @@ public class NodesPositionComparator<N extends MutableTreeNode> implements Compa
                 // Now we have parent node for both of our nodes with the biggest level value
                 // We can simply compare position of each parent of our nodes under this node
                 final N parent = ( N ) p1.getParent ();
-                return new Integer ( parent.getIndex ( p1 ) ).compareTo ( parent.getIndex ( p2 ) );
+                result = new Integer ( parent.getIndex ( p1 ) ).compareTo ( parent.getIndex ( p2 ) );
             }
             else
             {
-                // Something went wrong
-                return 0;
+                // Something went wrong, can't compare
+                result = 0;
             }
         }
+        return result;
     }
 }

@@ -17,6 +17,9 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.tree.TreeNode;
 import java.util.Comparator;
 
@@ -33,6 +36,7 @@ public interface SortableNodes<N extends TreeNode>
      *
      * @return {@link Comparator} used for {@link TreeNode}s
      */
+    @Nullable
     public Comparator<N> getComparator ();
 
     /**
@@ -41,7 +45,7 @@ public interface SortableNodes<N extends TreeNode>
      *
      * @param comparator {@link Comparator} for {@link TreeNode}s
      */
-    public void setComparator ( Comparator<N> comparator );
+    public void setComparator ( @Nullable Comparator<N> comparator );
 
     /**
      * Uninstalls {@link Comparator} used for {@link TreeNode}s.
@@ -56,15 +60,15 @@ public interface SortableNodes<N extends TreeNode>
     /**
      * Updates {@link TreeNode}s sorting for the specified {@link TreeNode} children.
      *
-     * @param node {@link TreeNode} to update children sorting for
+     * @param parent {@link TreeNode} to update children sorting for
      */
-    public void sort ( N node );
+    public void sort ( @NotNull N parent );
 
     /**
      * Updates {@link TreeNode}s sorting for the specified {@link TreeNode} children.
      *
-     * @param node        {@link TreeNode} to update children sorting for
+     * @param parent        {@link TreeNode} to update children sorting for
      * @param recursively whether should update the whole children structure recursively or not
      */
-    public void sort ( N node, boolean recursively );
+    public void sort ( @NotNull N parent, boolean recursively );
 }

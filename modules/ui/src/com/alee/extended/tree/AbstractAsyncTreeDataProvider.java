@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.compare.Filter;
 
 import java.util.Comparator;
@@ -31,50 +33,20 @@ import java.util.List;
 public abstract class AbstractAsyncTreeDataProvider<N extends AsyncUniqueNode> implements AsyncTreeDataProvider<N>
 {
     /**
-     * {@link Comparator} for all child nodes.
-     * It is {@code transient} as it can only be set through code.
-     * Override {@link #getChildrenComparator(AsyncUniqueNode, List)} method to provide parent-related {@link Comparator}.
-     */
-    protected transient Comparator<N> comparator = null;
-
-    /**
      * {@link Filter} for all child nodes.
      * It is {@code transient} as it can only be set through code.
      * Override {@link #getChildrenFilter(AsyncUniqueNode, List)} method to provide parent-related {@link Filter}.
      */
+    @Nullable
     protected transient Filter<N> filter = null;
 
-    @Override
-    public Comparator<N> getChildrenComparator ( final N parent, final List<N> children )
-    {
-        return comparator;
-    }
-
     /**
-     * Sets {@link Comparator} for all child nodes.
-     *
-     * @param comparator {@link Comparator} for all child nodes
+     * {@link Comparator} for all child nodes.
+     * It is {@code transient} as it can only be set through code.
+     * Override {@link #getChildrenComparator(AsyncUniqueNode, List)} method to provide parent-related {@link Comparator}.
      */
-    public void setChildrenComparator ( final Comparator<N> comparator )
-    {
-        this.comparator = comparator;
-    }
-
-    @Override
-    public Filter<N> getChildrenFilter ( final N parent, final List<N> children )
-    {
-        return filter;
-    }
-
-    /**
-     * Sets {@link Filter} for all child nodes.
-     *
-     * @param filter {@link Filter} for all child nodes
-     */
-    public void setChildrenFilter ( final Filter<N> filter )
-    {
-        this.filter = filter;
-    }
+    @Nullable
+    protected transient Comparator<N> comparator = null;
 
     /**
      * Returns {@code false} by default to allow children load requests to pass through for any node.
@@ -84,8 +56,42 @@ public abstract class AbstractAsyncTreeDataProvider<N extends AsyncUniqueNode> i
      * @return {@code false}
      */
     @Override
-    public boolean isLeaf ( final N node )
+    public boolean isLeaf ( @NotNull final N node )
     {
         return false;
+    }
+
+    @Nullable
+    @Override
+    public Filter<N> getChildrenFilter ( @NotNull final N parent, @NotNull final List<N> children )
+    {
+        return filter;
+    }
+
+    /**
+     * Sets {@link Filter} for all child nodes.
+     *
+     * @param filter {@link Filter} for all child nodes
+     */
+    public void setChildrenFilter ( @Nullable final Filter<N> filter )
+    {
+        this.filter = filter;
+    }
+
+    @Nullable
+    @Override
+    public Comparator<N> getChildrenComparator ( @NotNull final N parent, @NotNull final List<N> children )
+    {
+        return comparator;
+    }
+
+    /**
+     * Sets {@link Comparator} for all child nodes.
+     *
+     * @param comparator {@link Comparator} for all child nodes
+     */
+    public void setChildrenComparator ( @Nullable final Comparator<N> comparator )
+    {
+        this.comparator = comparator;
     }
 }

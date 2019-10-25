@@ -17,6 +17,8 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -64,8 +66,9 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
     protected static final String marginColor = "190,190,0";
     protected static final String paddingColor = "0,150,70";
 
+    @NotNull
     @Override
-    public Icon getIcon ( final C component )
+    public Icon getIcon ( @NotNull final C component )
     {
         // Retrieving component icon
         Icon icon = getIconImpl ( component );
@@ -94,7 +97,8 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
      * @param component component to provide icon for
      * @return actual icon for the specified component
      */
-    protected abstract Icon getIconImpl ( C component );
+    @NotNull
+    protected abstract Icon getIconImpl ( @NotNull C component );
 
     /**
      * Returns main title foreground color.
@@ -102,7 +106,8 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
      * @param component inspected component
      * @return main title foreground color
      */
-    protected String getTitleColor ( final C component )
+    @NotNull
+    protected String getTitleColor ( @NotNull final C component )
     {
         return component.isShowing () ? component instanceof JComponent ? visibleColor : visibleAwtColor : hiddenColor;
     }
@@ -113,7 +118,8 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
      * @param layout {@link LayoutManager}
      * @return {@link LayoutManager} text
      */
-    protected String renderLayout ( final LayoutManager layout )
+    @NotNull
+    protected String renderLayout ( @Nullable final LayoutManager layout )
     {
         return layout != null ? " {[" + ReflectUtils.getCompleteClassName ( layout ) + "]:b}" : "";
     }
@@ -125,7 +131,8 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
      * @param color  text color
      * @return {@link Insets} text
      */
-    protected String renderInsets ( final Insets insets, final String color )
+    @NotNull
+    protected String renderInsets ( @Nullable final Insets insets, @NotNull final String color )
     {
         final String text;
         if ( !SwingUtils.isEmpty ( insets ) )

@@ -17,6 +17,8 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -185,6 +187,7 @@ public class WebFilePlate extends WebPanel
                 return WebFilePlate.this.getDragAction ();
             }
 
+            @Nullable
             @Override
             public File getDraggedFile ()
             {
@@ -203,7 +206,7 @@ public class WebFilePlate extends WebPanel
             }
 
             @Override
-            public boolean importData ( final TransferSupport info )
+            public boolean importData ( @NotNull final TransferSupport info )
             {
                 // Special workaround to make this plate drop-transparent
                 return dropProxy.importData ( info );

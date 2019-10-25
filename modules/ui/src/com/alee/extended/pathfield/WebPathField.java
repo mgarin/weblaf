@@ -158,7 +158,7 @@ public class WebPathField extends WebPanel
             }
 
             @Override
-            public boolean filesDropped ( final List<File> files )
+            public boolean filesDropped ( @NotNull final List<File> files )
             {
                 // Setting dragged files
                 final FileFilter filter = getFileFilter ();

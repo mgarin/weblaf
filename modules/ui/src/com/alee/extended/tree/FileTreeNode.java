@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.TextBridge;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.utils.FileUtils;
@@ -41,16 +42,18 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
     /**
      * Custom node title.
      */
-    protected String title = null;
+    @Nullable
+    protected String title;
 
     /**
      * Constructs file node for the specified file.
      *
      * @param file node file
      */
-    public FileTreeNode ( final File file )
+    public FileTreeNode ( @Nullable final File file )
     {
         super ( file );
+        this.title = null;
     }
 
     @NotNull
@@ -66,6 +69,7 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
      *
      * @return file for this node
      */
+    @Nullable
     public File getFile ()
     {
         return getUserObject ();
@@ -76,13 +80,14 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
      *
      * @param file file for this node
      */
-    public void setFile ( final File file )
+    public void setFile ( @Nullable final File file )
     {
         setUserObject ( file );
     }
 
+    @Nullable
     @Override
-    public Icon getNodeIcon ( final TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>> parameters )
+    public Icon getNodeIcon ( @NotNull final TreeNodeParameters<FileTreeNode, WebAsyncTree<FileTreeNode>> parameters )
     {
         final File file = getUserObject ();
         return file != null ? FileUtils.getFileIcon ( file, false ) : null;
@@ -99,6 +104,7 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
      *
      * @return node title
      */
+    @NotNull
     public String getTitle ()
     {
         final String title;
@@ -121,7 +127,7 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
                     name = file.getName ();
                     if ( !name.trim ().equals ( "" ) )
                     {
-                        title = name != null ? name : "";
+                        title = name;
                     }
                     else
                     {
@@ -142,7 +148,7 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
      *
      * @param title custom name for this node
      */
-    public void setTitle ( final String title )
+    public void setTitle ( @Nullable final String title )
     {
         this.title = title;
     }
@@ -153,18 +159,21 @@ public class FileTreeNode extends AsyncUniqueNode<FileTreeNode, File>
      * @param file file to search for in child nodes
      * @return index of child node with the specified file
      */
-    public int indexOfFileChild ( final File file )
+    public int indexOfFileChild ( @Nullable final File file )
     {
+        int index = -1;
         for ( int i = 0; i < getChildCount (); i++ )
         {
             if ( FileUtils.equals ( getChildAt ( i ).getFile (), file ) )
             {
-                return i;
+                index = i;
+                break;
             }
         }
-        return -1;
+        return index;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

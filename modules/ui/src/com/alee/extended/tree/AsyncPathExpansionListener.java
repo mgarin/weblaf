@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * This custom listener is used to track async tree path expansion action.
  *
@@ -31,7 +33,7 @@ public interface AsyncPathExpansionListener<N extends AsyncUniqueNode>
      *
      * @param expandedNode recently expanded node from the specified path
      */
-    public void pathNodeExpanded ( N expandedNode );
+    public void pathNodeExpanded ( @NotNull N expandedNode );
 
     /**
      * Notifies that path expansion has finished succesfully.
@@ -39,7 +41,7 @@ public interface AsyncPathExpansionListener<N extends AsyncUniqueNode>
      *
      * @param lastNode last path node
      */
-    public void pathExpanded ( N lastNode );
+    public void pathExpanded ( @NotNull N lastNode );
 
     /**
      * Notifies that path expansion was not fully finished and cannot be continued.
@@ -48,7 +50,7 @@ public interface AsyncPathExpansionListener<N extends AsyncUniqueNode>
      *
      * @param lastFoundNode last reached path node
      */
-    public void pathPartiallyExpanded ( N lastFoundNode );
+    public void pathPartiallyExpanded ( @NotNull N lastFoundNode );
 
     /**
      * Notifies that path expansion has failed and did not find even a single node.

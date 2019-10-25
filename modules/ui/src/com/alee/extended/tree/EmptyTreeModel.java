@@ -41,7 +41,7 @@ public final class EmptyTreeModel implements TreeModel
      */
     public EmptyTreeModel ()
     {
-        this.root = new WebTreeNode ( "Empty model" );
+        this.root = new WebTreeNode ( "Root" );
     }
 
     @Override

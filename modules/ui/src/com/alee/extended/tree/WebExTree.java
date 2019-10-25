@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
@@ -52,13 +53,22 @@ import java.util.List;
 public class WebExTree<N extends UniqueNode> extends WebTree<N> implements FilterableNodes<N>, SortableNodes<N>
 {
     /**
+     * Component properties.
+     */
+    public static final String DATA_PROVIDER_PROPERTY = "dataProvider";
+    public static final String FILTER_PROPERTY = "filter";
+    public static final String COMPARATOR_PROPERTY = "comparator";
+
+    /**
      * Tree nodes filter.
      */
+    @Nullable
     protected Filter<N> filter;
 
     /**
      * Tree nodes comparator.
      */
+    @Nullable
     protected Comparator<N> comparator;
 
     /**
@@ -74,7 +84,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param dataProvider {@link ExTreeDataProvider} implementation
      */
-    public WebExTree ( final ExTreeDataProvider dataProvider )
+    public WebExTree ( @Nullable final ExTreeDataProvider dataProvider )
     {
         this ( StyleId.auto, dataProvider );
     }
@@ -85,7 +95,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param dataProvider {@link ExTreeDataProvider} implementation
      * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
      */
-    public WebExTree ( final ExTreeDataProvider dataProvider, final TreeCellRenderer renderer )
+    public WebExTree ( @Nullable final ExTreeDataProvider dataProvider, @Nullable final TreeCellRenderer renderer )
     {
         this ( StyleId.auto, dataProvider, renderer );
     }
@@ -96,7 +106,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param dataProvider {@link ExTreeDataProvider} implementation
      * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
      */
-    public WebExTree ( final ExTreeDataProvider dataProvider, final TreeCellEditor editor )
+    public WebExTree ( @Nullable final ExTreeDataProvider dataProvider, @Nullable final TreeCellEditor editor )
     {
         this ( StyleId.auto, dataProvider, editor );
     }
@@ -108,7 +118,8 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
      * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
      */
-    public WebExTree ( final ExTreeDataProvider dataProvider, final TreeCellRenderer renderer, final TreeCellEditor editor )
+    public WebExTree ( @Nullable final ExTreeDataProvider dataProvider, @Nullable final TreeCellRenderer renderer,
+                       @Nullable final TreeCellEditor editor )
     {
         this ( StyleId.auto, dataProvider, renderer, editor );
     }
@@ -118,7 +129,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param id {@link StyleId}
      */
-    public WebExTree ( final StyleId id )
+    public WebExTree ( @NotNull final StyleId id )
     {
         this ( id, null, null, null );
     }
@@ -129,7 +140,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param id           {@link StyleId}
      * @param dataProvider {@link ExTreeDataProvider} implementation
      */
-    public WebExTree ( final StyleId id, final ExTreeDataProvider dataProvider )
+    public WebExTree ( @NotNull final StyleId id, @Nullable final ExTreeDataProvider dataProvider )
     {
         this ( id, dataProvider, null, null );
     }
@@ -141,7 +152,8 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param dataProvider {@link ExTreeDataProvider} implementation
      * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
      */
-    public WebExTree ( final StyleId id, final ExTreeDataProvider dataProvider, final TreeCellRenderer renderer )
+    public WebExTree ( @NotNull final StyleId id, @Nullable final ExTreeDataProvider dataProvider,
+                       @Nullable final TreeCellRenderer renderer )
     {
         this ( id, dataProvider, renderer, null );
     }
@@ -153,7 +165,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param dataProvider {@link ExTreeDataProvider} implementation
      * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
      */
-    public WebExTree ( final StyleId id, final ExTreeDataProvider dataProvider, final TreeCellEditor editor )
+    public WebExTree ( @NotNull final StyleId id, @Nullable final ExTreeDataProvider dataProvider, @Nullable final TreeCellEditor editor )
     {
         this ( id, dataProvider, null, editor );
     }
@@ -166,14 +178,10 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param renderer     {@link TreeCellRenderer} implementation, default implementation is used if {@code null} is provided
      * @param editor       {@link TreeCellEditor} implementation, default implementation is used if {@code null} is provided
      */
-    public WebExTree ( final StyleId id, final ExTreeDataProvider dataProvider,
-                       final TreeCellRenderer renderer, final TreeCellEditor editor )
+    public WebExTree ( @NotNull final StyleId id, @Nullable final ExTreeDataProvider dataProvider,
+                       @Nullable final TreeCellRenderer renderer, @Nullable final TreeCellEditor editor )
     {
-        super ( id, new EmptyTreeModel () );
-        if ( dataProvider != null )
-        {
-            setDataProvider ( dataProvider );
-        }
+        super ( id, dataProvider != null ? new ExTreeModel<N> ( dataProvider ) : null );
         if ( renderer != null )
         {
             setCellRenderer ( renderer );
@@ -192,6 +200,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
         return StyleId.extree;
     }
 
+    @Nullable
     @Override
     public ExTreeModel<N> getModel ()
     {
@@ -199,7 +208,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
     }
 
     @Override
-    public void setModel ( final TreeModel newModel )
+    public void setModel ( @Nullable final TreeModel newModel )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -212,19 +221,27 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
         if ( newModel instanceof ExTreeModel )
         {
             final ExTreeModel<N> old = getModel ();
+            final ExTreeDataProvider<N> oldDataProvider;
             if ( old != null )
             {
+                oldDataProvider = old.getDataProvider ();
                 old.uninstall ( this );
+            }
+            else
+            {
+                oldDataProvider = null;
             }
 
             final ExTreeModel model = ( ExTreeModel ) newModel;
             model.install ( this );
 
-            super.setModel ( newModel );
+            super.setModel ( model );
+
+            firePropertyChange ( DATA_PROVIDER_PROPERTY, oldDataProvider, model.getDataProvider () );
         }
-        else if ( newModel == null )
+        else if ( newModel != null )
         {
-            throw new NullPointerException ( "ExTreeModel cannot be null" );
+            throw new NullPointerException ( "Only ExTreeModel implementations can be used for WebExTree" );
         }
     }
 
@@ -233,6 +250,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @return {@link ExTreeDataProvider} used by this {@link WebExTree}
      */
+    @Nullable
     public ExTreeDataProvider<N> getDataProvider ()
     {
         final ExTreeModel<N> model = getModel ();
@@ -244,7 +262,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param dataProvider new {@link ExTreeDataProvider} for this {@link WebExTree}
      */
-    public void setDataProvider ( final ExTreeDataProvider dataProvider )
+    public void setDataProvider ( @NotNull final ExTreeDataProvider dataProvider )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -253,18 +271,10 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
          * Initializing new {@link ExTreeModel} based on specified {@link ExTreeDataProvider}.
          * This is necessary as the model will keep {@link ExTreeDataProvider} instead of {@link WebExTree}.
          */
-        if ( dataProvider != null )
-        {
-            final ExTreeDataProvider<N> oldDataProvider = getDataProvider ();
-            setModel ( new ExTreeModel<N> ( dataProvider ) );
-            firePropertyChange ( WebLookAndFeel.TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
-        }
-        else
-        {
-            throw new NullPointerException ( "ExTreeDataProvider cannot be null" );
-        }
+        setModel ( new ExTreeModel<N> ( dataProvider ) );
     }
 
+    @Nullable
     @Override
     public Filter<N> getFilter ()
     {
@@ -272,12 +282,12 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
     }
 
     @Override
-    public void setFilter ( final Filter<N> filter )
+    public void setFilter ( @Nullable final Filter<N> filter )
     {
         final Filter<N> oldFilter = this.filter;
         this.filter = filter;
         filter ();
-        firePropertyChange ( WebLookAndFeel.TREE_FILTER_PROPERTY, oldFilter, filter );
+        firePropertyChange ( FILTER_PROPERTY, oldFilter, filter );
     }
 
     @Override
@@ -289,21 +299,34 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
     @Override
     public void filter ()
     {
-        getModel ().filter ();
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.filter ();
+        }
     }
 
     @Override
-    public void filter ( final N node )
+    public void filter ( @NotNull final N parent )
     {
-        getModel ().filter ( node );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.filter ( parent );
+        }
     }
 
     @Override
-    public void filter ( final N node, final boolean recursively )
+    public void filter ( @NotNull final N parent, final boolean recursively )
     {
-        getModel ().filter ( node, recursively );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.filter ( parent, recursively );
+        }
     }
 
+    @Nullable
     @Override
     public Comparator<N> getComparator ()
     {
@@ -311,12 +334,12 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
     }
 
     @Override
-    public void setComparator ( final Comparator<N> comparator )
+    public void setComparator ( @Nullable final Comparator<N> comparator )
     {
         final Comparator<N> oldComparator = this.comparator;
         this.comparator = comparator;
         sort ();
-        firePropertyChange ( WebLookAndFeel.TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
+        firePropertyChange ( COMPARATOR_PROPERTY, oldComparator, comparator );
     }
 
     @Override
@@ -328,19 +351,31 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
     @Override
     public void sort ()
     {
-        getModel ().sort ();
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.sort ();
+        }
     }
 
     @Override
-    public void sort ( final N node )
+    public void sort ( @NotNull final N parent )
     {
-        getModel ().sort ( node );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.sort ( parent );
+        }
     }
 
     @Override
-    public void sort ( final N node, final boolean recursively )
+    public void sort ( @NotNull final N parent, final boolean recursively )
     {
-        getModel ().sort ( node, recursively );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.sort ( parent, recursively );
+        }
     }
 
     /**
@@ -348,28 +383,40 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      */
     public void filterAndSort ()
     {
-        getModel ().filterAndSort ( true );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.filterAndSort ( true );
+        }
     }
 
     /**
      * Updates sorting and filtering for the specified node children.
      *
-     * @param node node to update sorting and filtering for
+     * @param parent node to update sorting and filtering for
      */
-    public void filterAndSort ( final N node )
+    public void filterAndSort ( @NotNull final N parent )
     {
-        getModel ().filterAndSort ( node, false );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.filterAndSort ( parent, false );
+        }
     }
 
     /**
      * Updates sorting and filtering for the specified node children.
      *
-     * @param node        node to update sorting and filter for
+     * @param parent      node to update sorting and filter for
      * @param recursively whether should update the whole children structure recursively or not
      */
-    public void filterAndSort ( final N node, final boolean recursively )
+    public void filterAndSort ( @NotNull final N parent, final boolean recursively )
     {
-        getModel ().filterAndSort ( node, recursively );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.filterAndSort ( parent, recursively );
+        }
     }
 
     /**
@@ -379,9 +426,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param parent   node to process
      * @param children new node children
      */
-    public void setChildNodes ( final N parent, final List<N> children )
+    public void setChildNodes ( @NotNull final N parent, @NotNull final List<N> children )
     {
-        getModel ().setChildNodes ( parent, children );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.setChildNodes ( parent, children );
+        }
     }
 
     /**
@@ -391,9 +442,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param parent node to process
      * @param child  new node child
      */
-    public void addChildNode ( final N parent, final N child )
+    public void addChildNode ( @NotNull final N parent, @NotNull final N child )
     {
-        getModel ().addChildNode ( parent, child );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.addChildNode ( parent, child );
+        }
     }
 
     /**
@@ -403,9 +458,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param parent   node to process
      * @param children new node children
      */
-    public void addChildNodes ( final N parent, final List<N> children )
+    public void addChildNodes ( @NotNull final N parent, @NotNull final List<N> children )
     {
-        getModel ().addChildNodes ( parent, children );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.addChildNodes ( parent, children );
+        }
     }
 
     /**
@@ -416,9 +475,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final List<N> children, final N parent, final int index )
+    public void insertChildNodes ( @NotNull final List<N> children, @NotNull final N parent, final int index )
     {
-        getModel ().insertNodesInto ( children, parent, index );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.insertNodesInto ( children, parent, index );
+        }
     }
 
     /**
@@ -429,9 +492,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertChildNodes ( final N[] children, final N parent, final int index )
+    public void insertChildNodes ( @NotNull final N[] children, @NotNull final N parent, final int index )
     {
-        getModel ().insertNodesInto ( children, parent, index );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.insertNodesInto ( children, parent, index );
+        }
     }
 
     /**
@@ -442,9 +509,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param parent parent node
      * @param index  insert index
      */
-    public void insertChildNode ( final N child, final N parent, final int index )
+    public void insertChildNode ( @NotNull final N child, @NotNull final N parent, final int index )
     {
-        getModel ().insertNodeInto ( child, parent, index );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.insertNodeInto ( child, parent, index );
+        }
     }
 
     /**
@@ -453,9 +524,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param nodeId ID of the node to remove
      */
-    public void removeNode ( final String nodeId )
+    public void removeNode ( @NotNull final String nodeId )
     {
-        removeNode ( findNode ( nodeId ) );
+        final N node = findNode ( nodeId );
+        if ( node != null )
+        {
+            removeNode ( node );
+        }
     }
 
     /**
@@ -464,9 +539,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param node node to remove
      */
-    public void removeNode ( final N node )
+    public void removeNode ( @NotNull final N node )
     {
-        getModel ().removeNodeFromParent ( node );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.removeNodeFromParent ( node );
+        }
     }
 
     /**
@@ -475,9 +554,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param nodes list of nodes to remove
      */
-    public void removeNodes ( final List<N> nodes )
+    public void removeNodes ( @NotNull final List<N> nodes )
     {
-        getModel ().removeNodesFromParent ( nodes );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.removeNodesFromParent ( nodes );
+        }
     }
 
     /**
@@ -486,9 +569,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param nodes array of nodes to remove
      */
-    public void removeNodes ( final N[] nodes )
+    public void removeNodes ( @NotNull final N[] nodes )
     {
-        getModel ().removeNodesFromParent ( nodes );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.removeNodesFromParent ( nodes );
+        }
     }
 
     /**
@@ -497,9 +584,28 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param nodeId node ID
      * @return node with the specified ID or null if it was not found
      */
-    public N findNode ( final String nodeId )
+    @NotNull
+    public N getNode ( @NotNull final String nodeId )
     {
-        return getModel ().findNode ( nodeId );
+        final N node = findNode ( nodeId );
+        if ( node == null )
+        {
+            throw new RuntimeException ( "Node with identifier is not available: " + nodeId );
+        }
+        return node;
+    }
+
+    /**
+     * Looks for the node with the specified ID in the tree model and returns it or null if it was not found.
+     *
+     * @param nodeId node ID
+     * @return node with the specified ID or null if it was not found
+     */
+    @Nullable
+    public N findNode ( @NotNull final String nodeId )
+    {
+        final ExTreeModel<N> model = getModel ();
+        return model != null ? model.findNode ( nodeId ) : null;
     }
 
     /**
@@ -507,7 +613,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param nodeId ID of the tree node to be updated
      */
-    public void updateNode ( final String nodeId )
+    public void updateNode ( @NotNull final String nodeId )
     {
         updateNode ( findNode ( nodeId ) );
     }
@@ -517,7 +623,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param nodeId ID of the tree node to be updated
      */
-    public void updateNodeStructure ( final String nodeId )
+    public void updateNodeStructure ( @NotNull final String nodeId )
     {
         updateNodeStructure ( findNode ( nodeId ) );
     }
@@ -527,9 +633,13 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param node tree node to be updated
      */
-    public void updateNodeStructure ( final N node )
+    public void updateNodeStructure ( @Nullable final N node )
     {
-        getModel ().updateNodeStructure ( node );
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
+        {
+            model.updateNodeStructure ( node );
+        }
     }
 
     /**
@@ -561,7 +671,8 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param point point to look for node
      * @return reloaded node or null if none reloaded
      */
-    public N reloadNodeUnderPoint ( final Point point )
+    @Nullable
+    public N reloadNodeUnderPoint ( @NotNull final Point point )
     {
         return reloadNodeUnderPoint ( point.x, point.y );
     }
@@ -573,6 +684,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param y point Y coordinate
      * @return reloaded node or null if none reloaded
      */
+    @Nullable
     public N reloadNodeUnderPoint ( final int x, final int y )
     {
         return reloadPath ( getPathForLocation ( x, y ) );
@@ -583,6 +695,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @return reloaded root node
      */
+    @Nullable
     public N reloadRootNode ()
     {
         return reloadNode ( getRootNode () );
@@ -594,7 +707,8 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param nodeId ID of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public N reloadNode ( final String nodeId )
+    @Nullable
+    public N reloadNode ( @NotNull final String nodeId )
     {
         return reloadNode ( findNode ( nodeId ) );
     }
@@ -605,7 +719,8 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param node node to reload
      * @return reloaded node or null if none reloaded
      */
-    public N reloadNode ( final N node )
+    @Nullable
+    public N reloadNode ( @Nullable final N node )
     {
         return reloadNode ( node, false );
     }
@@ -617,16 +732,20 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public N reloadNode ( final N node, final boolean select )
+    @Nullable
+    public N reloadNode ( @Nullable final N node, final boolean select )
     {
-        // Checking that node is not null
+        N reloadedNode = null;
         if ( node != null )
         {
-            // Reloading node children
-            performReload ( node, getPathForNode ( node ), select );
-            return node;
+            final TreePath path = getPathForNode ( node );
+            if ( path != null )
+            {
+                performReload ( node, path, select );
+                reloadedNode = node;
+            }
         }
-        return null;
+        return reloadedNode;
     }
 
     /**
@@ -635,7 +754,8 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param path path of the node to reload
      * @return reloaded node or null if none reloaded
      */
-    public N reloadPath ( final TreePath path )
+    @Nullable
+    public N reloadPath ( @Nullable final TreePath path )
     {
         return reloadPath ( path, false );
     }
@@ -647,21 +767,20 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param select whether select the node or not
      * @return reloaded node or null if none reloaded
      */
-    public N reloadPath ( final TreePath path, final boolean select )
+    @Nullable
+    public N reloadPath ( @Nullable final TreePath path, final boolean select )
     {
-        // Checking that path is not null
+        N reloadedNode = null;
         if ( path != null )
         {
-            // Checking if node is not null and not busy yet
             final N node = getNodeForPath ( path );
             if ( node != null )
             {
-                // Reloading node children
                 performReload ( node, path, select );
-                return node;
+                reloadedNode = node;
             }
         }
-        return null;
+        return reloadedNode;
     }
 
     /**
@@ -671,7 +790,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param path   path to node
      * @param select whether select the node or not
      */
-    protected void performReload ( final N node, final TreePath path, final boolean select )
+    protected void performReload ( @NotNull final N node, @NotNull final TreePath path, final boolean select )
     {
         // Select node under the mouse
         if ( select && !isPathSelected ( path ) )
@@ -688,9 +807,10 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
 
         // Reload selected node children
         // This won't be called if node was not loaded yet since expand would call load before
-        if ( node != null )
+        final ExTreeModel<N> model = getModel ();
+        if ( model != null )
         {
-            getModel ().reload ( node );
+            model.reload ( node );
         }
     }
 
@@ -699,7 +819,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param nodeId ID of the node to expand
      */
-    public void expandNode ( final String nodeId )
+    public void expandNode ( @NotNull final String nodeId )
     {
         expandNode ( findNode ( nodeId ) );
     }
@@ -711,7 +831,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      *
      * @param pathNodeIds node path IDs
      */
-    public void expandPath ( final List<String> pathNodeIds )
+    public void expandPath ( @NotNull final List<String> pathNodeIds )
     {
         expandPath ( pathNodeIds, true, true );
     }
@@ -724,7 +844,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param pathNodeIds    node path IDs
      * @param expandLastNode whether should expand last found path node or not
      */
-    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode )
+    public void expandPath ( @NotNull final List<String> pathNodeIds, final boolean expandLastNode )
     {
         expandPath ( pathNodeIds, expandLastNode, true );
     }
@@ -738,7 +858,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode )
+    public void expandPath ( @NotNull final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode )
     {
         final List<String> ids = CollectionUtils.copy ( pathNodeIds );
         for ( int initial = 0; initial < ids.size (); initial++ )
@@ -754,7 +874,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
                 {
                     expandPathImpl ( initialNode, ids, expandLastNode, selectLastNode );
                 }
-                return;
+                break;
             }
         }
     }
@@ -768,7 +888,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    protected void expandPathImpl ( final N currentNode, final List<String> leftToExpand, final boolean expandLastNode,
+    protected void expandPathImpl ( @NotNull final N currentNode, @NotNull final List<String> leftToExpand, final boolean expandLastNode,
                                     final boolean selectLastNode )
     {
         // There is still more to load
@@ -804,7 +924,7 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
      * @param expandLastNode whether should expand last found path node or not
      * @param selectLastNode whether should select last found path node or not
      */
-    protected void expandPathEndImpl ( final N lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
+    protected void expandPathEndImpl ( @NotNull final N lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
     {
         if ( selectLastNode )
         {

@@ -17,12 +17,15 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.tree.UniqueNode;
 
 /**
  * Default checking model for {@link WebExCheckBoxTree}.
  *
  * @param <N> {@link UniqueNode} type
+ * @param <T> {@link WebExCheckBoxTree} type
  * @author Mikle Garin
  */
 public class DefaultExTreeCheckingModel<N extends UniqueNode, T extends WebExCheckBoxTree<N>> extends DefaultTreeCheckingModel<N, T>
@@ -32,27 +35,31 @@ public class DefaultExTreeCheckingModel<N extends UniqueNode, T extends WebExChe
      *
      * @param checkBoxTree {@link WebExCheckBoxTree} which uses this {@link DefaultExTreeCheckingModel}
      */
-    public DefaultExTreeCheckingModel ( final T checkBoxTree )
+    public DefaultExTreeCheckingModel ( @NotNull final T checkBoxTree )
     {
         super ( checkBoxTree );
     }
 
+    @Nullable
     @Override
-    protected N getParent ( final N node )
+    protected N getParent ( @NotNull final N node )
     {
-        return checkBoxTree.getModel ().getRawParent ( node );
+        final ExTreeModel<N> model = checkBoxTree.getModel ();
+        return model != null ? model.getRawParent ( node ) : super.getParent ( node );
+    }
+
+    @NotNull
+    @Override
+    protected N getChildAt ( @NotNull final N parent, final int index )
+    {
+        final ExTreeModel<N> model = checkBoxTree.getModel ();
+        return model != null ? model.getRawChildAt ( parent, index ) : super.getChildAt ( parent, index );
     }
 
     @Override
-    protected N getChildAt ( final N parent, final int index )
+    protected int getChildCount ( @NotNull final N parent )
     {
-        return checkBoxTree.getModel ().getRawChildAt ( parent, index );
-    }
-
-    @Override
-    protected int getChildCount ( final N parent )
-    {
-
-        return checkBoxTree.getModel ().getRawChildrenCount ( parent );
+        final ExTreeModel<N> model = checkBoxTree.getModel ();
+        return model != null ? model.getRawChildrenCount ( parent ) : super.getChildCount ( parent );
     }
 }

@@ -17,11 +17,13 @@
 
 package com.alee.extended.image;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.drag.transfer.ImageTransferHandler;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.MathUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,21 +111,23 @@ public class WebImageDrop extends JComponent
         setTransferHandler ( new ImageTransferHandler ( false, true )
         {
             @Override
-            protected boolean imagesImported ( final List<ImageIcon> images )
+            protected boolean imagesImported ( @NotNull final List<ImageIcon> images )
             {
+                boolean imported = false;
                 for ( final ImageIcon image : images )
                 {
                     try
                     {
                         setImage ( ImageUtils.getBufferedImage ( image ) );
-                        return true;
+                        imported = true;
+                        break;
                     }
                     catch ( final Exception e )
                     {
-                        //
+                        LoggerFactory.getLogger ( WebImageDrop.class ).error ( e.toString (), e );
                     }
                 }
-                return false;
+                return imported;
             }
         } );
     }

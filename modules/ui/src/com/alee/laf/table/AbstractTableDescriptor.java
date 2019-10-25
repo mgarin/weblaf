@@ -17,6 +17,7 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.ReflectUtils;
@@ -61,7 +62,7 @@ public abstract class AbstractTableDescriptor<C extends JTable, U extends WebTab
     }
 
     @Override
-    public void updateUI ( final C component )
+    public void updateUI ( @NotNull final C component )
     {
         // Update the UIs of the cell renderers, cell editors and header renderers.
         final TableColumnModel cm = component.getColumnModel ();

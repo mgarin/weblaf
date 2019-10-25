@@ -51,7 +51,7 @@ public final class TreeUtils
      * @return tree expansion and selection states
      */
     @NotNull
-    public static TreeState getTreeState ( final JTree tree )
+    public static TreeState getTreeState ( @NotNull final JTree tree )
     {
         return getTreeState ( tree, true );
     }

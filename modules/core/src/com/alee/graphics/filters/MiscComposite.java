@@ -24,38 +24,37 @@ import java.awt.image.ColorModel;
  */
 public final class MiscComposite implements Composite
 {
+    public static final int BLEND = 0;
+    public static final int ADD = 1;
+    public static final int SUBTRACT = 2;
+    public static final int DIFFERENCE = 3;
 
-    public final static int BLEND = 0;
-    public final static int ADD = 1;
-    public final static int SUBTRACT = 2;
-    public final static int DIFFERENCE = 3;
+    public static final int MULTIPLY = 4;
+    public static final int DARKEN = 5;
+    public static final int BURN = 6;
+    public static final int COLOR_BURN = 7;
 
-    public final static int MULTIPLY = 4;
-    public final static int DARKEN = 5;
-    public final static int BURN = 6;
-    public final static int COLOR_BURN = 7;
+    public static final int SCREEN = 8;
+    public static final int LIGHTEN = 9;
+    public static final int DODGE = 10;
+    public static final int COLOR_DODGE = 11;
 
-    public final static int SCREEN = 8;
-    public final static int LIGHTEN = 9;
-    public final static int DODGE = 10;
-    public final static int COLOR_DODGE = 11;
+    public static final int HUE = 12;
+    public static final int SATURATION = 13;
+    public static final int VALUE = 14;
+    public static final int COLOR = 15;
 
-    public final static int HUE = 12;
-    public final static int SATURATION = 13;
-    public final static int VALUE = 14;
-    public final static int COLOR = 15;
+    public static final int OVERLAY = 16;
+    public static final int SOFT_LIGHT = 17;
+    public static final int HARD_LIGHT = 18;
+    public static final int PIN_LIGHT = 19;
 
-    public final static int OVERLAY = 16;
-    public final static int SOFT_LIGHT = 17;
-    public final static int HARD_LIGHT = 18;
-    public final static int PIN_LIGHT = 19;
+    public static final int EXCLUSION = 20;
+    public static final int NEGATION = 21;
+    public static final int AVERAGE = 22;
 
-    public final static int EXCLUSION = 20;
-    public final static int NEGATION = 21;
-    public final static int AVERAGE = 22;
-
-    public final static int STENCIL = 23;
-    public final static int SILHOUETTE = 24;
+    public static final int STENCIL = 23;
+    public static final int SILHOUETTE = 24;
 
     private static final int MIN_RULE = BLEND;
     private static final int MAX_RULE = SILHOUETTE;

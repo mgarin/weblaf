@@ -17,8 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.tree.UniqueNode;
-import org.slf4j.LoggerFactory;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -35,8 +35,9 @@ import java.util.List;
 public class NodesTransferable<N extends UniqueNode> implements Transferable, Serializable
 {
     /**
-     * Nodes flavor.
+     * Nodes {@link DataFlavor}.
      */
+    @NotNull
     public static DataFlavor FLAVOR;
 
     static
@@ -45,15 +46,16 @@ public class NodesTransferable<N extends UniqueNode> implements Transferable, Se
         {
             FLAVOR = new DataFlavor ( DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + List.class.getName () + "\"" );
         }
-        catch ( final ClassNotFoundException e )
+        catch ( final Exception e )
         {
-            LoggerFactory.getLogger ( NodesTransferable.class ).error ( e.toString (), e );
+            throw new RuntimeException ( "Unable to initialize DataFlavor for NodesTransferable", e );
         }
     }
 
     /**
      * Transferred nodes.
      */
+    @NotNull
     protected final List<N> nodes;
 
     /**
@@ -61,22 +63,12 @@ public class NodesTransferable<N extends UniqueNode> implements Transferable, Se
      *
      * @param nodes transferred nodes
      */
-    public NodesTransferable ( final List<N> nodes )
+    public NodesTransferable ( @NotNull final List<N> nodes )
     {
-        super ();
         this.nodes = nodes;
     }
 
-    @Override
-    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
-    {
-        if ( !isDataFlavorSupported ( flavor ) )
-        {
-            throw new UnsupportedFlavorException ( flavor );
-        }
-        return nodes;
-    }
-
+    @NotNull
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
@@ -84,8 +76,19 @@ public class NodesTransferable<N extends UniqueNode> implements Transferable, Se
     }
 
     @Override
-    public boolean isDataFlavorSupported ( final DataFlavor flavor )
+    public boolean isDataFlavorSupported ( @NotNull final DataFlavor flavor )
     {
         return FLAVOR.equals ( flavor );
+    }
+
+    @NotNull
+    @Override
+    public Object getTransferData ( @NotNull final DataFlavor flavor ) throws UnsupportedFlavorException
+    {
+        if ( !isDataFlavorSupported ( flavor ) )
+        {
+            throw new UnsupportedFlavorException ( flavor );
+        }
+        return nodes;
     }
 }

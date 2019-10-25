@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.tree.TreeNode;
@@ -40,5 +41,5 @@ public interface NodesFilter<N extends TreeNode> extends Filter<N>
      *
      * @param node {@link TreeNode} to clear filter cache for
      */
-    public void clearCache ( N node );
+    public void clearCache ( @NotNull N node );
 }

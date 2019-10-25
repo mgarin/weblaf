@@ -24,6 +24,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.swing.BroadcastImageObserver;
 import com.alee.utils.swing.LoadIconType;
 
@@ -49,6 +50,16 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      */
 
     /**
+     * Default load icon type.
+     */
+    public static LoadIconType loadIconType = LoadIconType.roller;
+
+    /**
+     * Prefix for node ID.
+     */
+    protected static final String ID_PREFIX = "AUN";
+
+    /**
      * Special failed state icon.
      */
     protected static final Icon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
@@ -59,23 +70,21 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
     protected static final Map<Icon, Icon> failedStateIcons = new WeakHashMap<Icon, Icon> ( 5 );
 
     /**
-     * Default load icon type.
-     */
-    public static LoadIconType loadIconType = LoadIconType.roller;
-
-    /**
      * Current async node state.
      */
+    @NotNull
     protected AsyncNodeState state = AsyncNodeState.waiting;
 
     /**
      * Children load failure cause.
      */
+    @Nullable
     protected Throwable failureCause = null;
 
     /**
      * Load icon observer.
      */
+    @Nullable
     protected transient ImageObserver observer = null;
 
     /**
@@ -83,7 +92,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      */
     public AsyncUniqueNode ()
     {
-        super ();
+        this ( null );
     }
 
     /**
@@ -91,9 +100,9 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      *
      * @param userObject custom user object
      */
-    public AsyncUniqueNode ( final T userObject )
+    public AsyncUniqueNode ( @Nullable final T userObject )
     {
-        super ( userObject );
+        this ( TextUtils.generateId ( ID_PREFIX ), userObject );
     }
 
     /**
@@ -102,7 +111,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      * @param id         node ID
      * @param userObject custom user object
      */
-    public AsyncUniqueNode ( final String id, final T userObject )
+    public AsyncUniqueNode ( @NotNull final String id, @Nullable final T userObject )
     {
         super ( id, userObject );
     }
@@ -112,6 +121,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      *
      * @return async node state
      */
+    @NotNull
     public AsyncNodeState getState ()
     {
         return state;
@@ -163,7 +173,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      *
      * @param state new async node state
      */
-    public void setState ( final AsyncNodeState state )
+    public void setState ( @NotNull final AsyncNodeState state )
     {
         this.state = state;
     }
@@ -173,6 +183,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      *
      * @return children load failure cause
      */
+    @Nullable
     public Throwable getFailureCause ()
     {
         return failureCause;
@@ -183,7 +194,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      *
      * @param failureCause children load failure cause
      */
-    public void setFailureCause ( final Throwable failureCause )
+    public void setFailureCause ( @Nullable final Throwable failureCause )
     {
         this.failureCause = failureCause;
     }
@@ -212,7 +223,8 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      * @param parameters {@link TreeNodeParameters}
      * @return load {@link Icon}
      */
-    public Icon getLoadIcon ( final TreeNodeParameters<N, WebAsyncTree<N>> parameters )
+    @Nullable
+    public Icon getLoadIcon ( @NotNull final TreeNodeParameters<N, WebAsyncTree<N>> parameters )
     {
         return loadIconType != null ? loadIconType.getIcon () : null;
     }
@@ -223,7 +235,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      *
      * @param tree {@link WebAsyncTree}
      */
-    public void attachLoadIconObserver ( final WebAsyncTree tree )
+    public void attachLoadIconObserver ( @NotNull final WebAsyncTree tree )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -273,7 +285,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      *
      * @param tree {@link WebAsyncTree}
      */
-    public void detachLoadIconObserver ( final WebAsyncTree tree )
+    public void detachLoadIconObserver ( @NotNull final WebAsyncTree tree )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -302,7 +314,8 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      * @param parameters {@link TreeNodeParameters}
      * @return specific icon for this node
      */
-    public abstract Icon getNodeIcon ( TreeNodeParameters<N, WebAsyncTree<N>> parameters );
+    @Nullable
+    public abstract Icon getNodeIcon ( @NotNull TreeNodeParameters<N, WebAsyncTree<N>> parameters );
 
     /**
      * Returns failed state icon for this node.
@@ -311,7 +324,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      * @param icon       node icon
      * @return failed state icon for this node
      */
-    public Icon getFailedStateIcon ( final TreeNodeParameters<N, WebAsyncTree<N>> parameters, final Icon icon )
+    public Icon getFailedStateIcon ( @NotNull final TreeNodeParameters<N, WebAsyncTree<N>> parameters, @NotNull final Icon icon )
     {
         Icon failedIcon = failedStateIcons.get ( icon );
         if ( failedIcon == null )

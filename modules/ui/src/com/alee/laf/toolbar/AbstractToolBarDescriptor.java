@@ -17,6 +17,7 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
@@ -54,7 +55,7 @@ public abstract class AbstractToolBarDescriptor<C extends JToolBar, U extends We
     }
 
     @Override
-    public void updateUI ( final C component )
+    public void updateUI ( @NotNull final C component )
     {
         // Updating component UI
         super.updateUI ( component );

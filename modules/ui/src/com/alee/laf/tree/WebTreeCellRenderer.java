@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.ui.*;
@@ -63,11 +64,13 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
     /**
      * Renderer unique ID used to cache tree icons.
      */
+    @NotNull
     protected final String id;
 
     /**
      * Additional renderer decoration states.
      */
+    @NotNull
     protected final List<String> states;
 
     /**
@@ -81,7 +84,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
         states = new ArrayList<String> ( 5 );
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> getStates ()
     {
@@ -93,7 +96,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      *
      * @param parameters {@link TreeNodeParameters}
      */
-    protected void updateStates ( final P parameters )
+    protected void updateStates ( @NotNull final P parameters )
     {
         // Resetting states
         states.clear ();
@@ -135,7 +138,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      *
      * @param parameters {@link TreeNodeParameters}
      */
-    protected void updateStyleId ( final P parameters )
+    protected void updateStyleId ( @NotNull final P parameters )
     {
         StyleId id = null;
         if ( parameters.node () instanceof ChildStyleIdBridge )
@@ -168,7 +171,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      *
      * @param parameters {@link TreeNodeParameters}
      */
-    protected void updateView ( final P parameters )
+    protected void updateView ( @NotNull final P parameters )
     {
         setEnabled ( enabledForValue ( parameters ) );
         setComponentOrientation ( orientationForValue ( parameters ) );
@@ -184,7 +187,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param parameters {@link TreeNodeParameters}
      * @return {@code true} if renderer for the specified {@link TreeNode} should be enabled, {@code false} otherwise
      */
-    protected boolean enabledForValue ( final P parameters )
+    protected boolean enabledForValue ( @NotNull final P parameters )
     {
         return parameters.tree ().isEnabled ();
     }
@@ -195,7 +198,8 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param parameters {@link TreeNodeParameters}
      * @return renderer {@link ComponentOrientation} for the specified {@link TreeNode}
      */
-    protected ComponentOrientation orientationForValue ( final P parameters )
+    @NotNull
+    protected ComponentOrientation orientationForValue ( @NotNull final P parameters )
     {
         return parameters.tree ().getComponentOrientation ();
     }
@@ -206,7 +210,8 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param parameters {@link TreeNodeParameters}
      * @return renderer {@link Font} for the specified {@link TreeNode}
      */
-    protected Font fontForValue ( final P parameters )
+    @Nullable
+    protected Font fontForValue ( @NotNull final P parameters )
     {
         return parameters.tree ().getFont ();
     }
@@ -217,7 +222,8 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param parameters {@link TreeNodeParameters}
      * @return renderer foreground color for the specified {@link TreeNode}
      */
-    protected Color foregroundForValue ( final P parameters )
+    @Nullable
+    protected Color foregroundForValue ( @NotNull final P parameters )
     {
         final Color foreground;
         if ( parameters.node () instanceof ForegroundBridge )
@@ -246,7 +252,8 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param parameters {@link TreeNodeParameters}
      * @return renderer icon for the specified {@link TreeNode}
      */
-    protected Icon iconForValue ( final P parameters )
+    @Nullable
+    protected Icon iconForValue ( @NotNull final P parameters )
     {
         final Icon icon;
         final String disabledCacheKey;
@@ -295,7 +302,8 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param parameters {@link TreeNodeParameters}
      * @return renderer text for the specified {@link TreeNode}
      */
-    protected String textForValue ( final P parameters )
+    @Nullable
+    protected String textForValue ( @NotNull final P parameters )
     {
         final String text;
         if ( parameters.node () instanceof TextBridge )
@@ -305,8 +313,14 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
         }
         else
         {
-            text = parameters.tree ().convertValueToText ( parameters.node (), parameters.isSelected (),
-                    parameters.isExpanded (), parameters.isLeaf (), parameters.row (), parameters.isFocused () );
+            text = parameters.tree ().convertValueToText (
+                    parameters.node (),
+                    parameters.isSelected (),
+                    parameters.isExpanded (),
+                    parameters.isLeaf (),
+                    parameters.row (),
+                    parameters.isFocused ()
+            );
         }
         return text;
     }
@@ -326,7 +340,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @return renderer component for the specified {@link TreeNode}
      */
     @Override
-    public Component getTreeCellRendererComponent ( final JTree tree, final Object node, final boolean isSelected,
+    public Component getTreeCellRendererComponent ( @NotNull final JTree tree, @NotNull final Object node, final boolean isSelected,
                                                     final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         // Forming rendering parameters
@@ -359,7 +373,8 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param hasFocus   whether or not {@link TreeNode} has focus
      * @return {@link TreeNodeParameters}
      */
-    protected P getRenderingParameters ( final C tree, final N node, final boolean isSelected,
+    @NotNull
+    protected P getRenderingParameters ( @NotNull final C tree, @NotNull final N node, final boolean isSelected,
                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         return ( P ) new TreeNodeParameters<N, C> ( tree, node, row, leaf, isSelected, expanded, hasFocus );
@@ -398,7 +413,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
     }
 
     @Override
-    public final void repaint ( final Rectangle r )
+    public final void repaint ( @NotNull final Rectangle r )
     {
         /**
          * Overridden for performance reasons.
@@ -421,7 +436,8 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param oldValue     old property value
      * @param newValue     new property value
      */
-    protected void checkPropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
+    protected void checkPropertyChange ( @NotNull final String propertyName, @Nullable final Object oldValue,
+                                         @Nullable final Object newValue )
     {
         if ( Objects.equals ( propertyName, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY,
                 AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY,
@@ -443,61 +459,63 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
      * @param oldValue     old property value
      * @param newValue     new property value
      */
-    protected void allowPropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
+    protected void allowPropertyChange ( @NotNull final String propertyName, @Nullable final Object oldValue,
+                                         @Nullable final Object newValue )
     {
         super.firePropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    protected final void firePropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
+    protected final void firePropertyChange ( @NotNull final String propertyName, @Nullable final Object oldValue,
+                                              @Nullable final Object newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final byte oldValue, final byte newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final char oldValue, final char newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final short oldValue, final short newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final int oldValue, final int newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final long oldValue, final long newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final float oldValue, final float newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final double oldValue, final double newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }
 
     @Override
-    public final void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
+    public final void firePropertyChange ( @NotNull final String propertyName, final boolean oldValue, final boolean newValue )
     {
         checkPropertyChange ( propertyName, oldValue, newValue );
     }

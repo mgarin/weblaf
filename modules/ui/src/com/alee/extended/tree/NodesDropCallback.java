@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.tree.UniqueNode;
 
 import java.util.EventListener;
@@ -39,7 +40,7 @@ public interface NodesDropCallback<N extends UniqueNode> extends EventListener
      *
      * @param nodes nodes that were dropped successfully
      */
-    public void dropped ( N... nodes );
+    public void dropped ( @NotNull N... nodes );
 
     /**
      * Informs transfer handler that specified nodes drop was successfully completed.
@@ -49,7 +50,7 @@ public interface NodesDropCallback<N extends UniqueNode> extends EventListener
      *
      * @param nodes nodes that were dropped successfully
      */
-    public void dropped ( List<N> nodes );
+    public void dropped ( @NotNull List<N> nodes );
 
     /**
      * Informs transfer handler that nodes drop was successfully completed.
@@ -63,5 +64,5 @@ public interface NodesDropCallback<N extends UniqueNode> extends EventListener
      *
      * @param cause exception
      */
-    public void failed ( Throwable cause );
+    public void failed ( @NotNull Throwable cause );
 }

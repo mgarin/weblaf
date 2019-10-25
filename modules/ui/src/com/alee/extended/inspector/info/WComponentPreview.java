@@ -17,6 +17,7 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
@@ -35,8 +36,9 @@ import java.awt.*;
  */
 public class WComponentPreview<C extends JComponent> extends AbstractComponentPreview<C>
 {
+    @NotNull
     @Override
-    public Icon getIconImpl ( final C component )
+    public Icon getIconImpl ( @NotNull final C component )
     {
         final Icon icon;
         final JRootPane rootPane = CoreSwingUtils.getRootPane ( component );
@@ -51,8 +53,9 @@ public class WComponentPreview<C extends JComponent> extends AbstractComponentPr
         return icon;
     }
 
+    @NotNull
     @Override
-    public String getText ( final C component )
+    public String getText ( @NotNull final C component )
     {
         final String title = "{" + ReflectUtils.getCompleteClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
 

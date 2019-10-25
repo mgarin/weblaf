@@ -17,6 +17,7 @@
 
 package com.alee.utils.parsing;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
 
@@ -34,6 +35,7 @@ public abstract class AbstractUnits
     /**
      * Supported {@link Unit}s.
      */
+    @NotNull
     protected List<Unit> units;
 
     /**
@@ -41,7 +43,7 @@ public abstract class AbstractUnits
      *
      * @param units supported {@link Unit}s.
      */
-    public AbstractUnits ( final Unit... units )
+    public AbstractUnits ( @NotNull final Unit... units )
     {
         this ( CollectionUtils.asList ( units ) );
     }
@@ -51,9 +53,8 @@ public abstract class AbstractUnits
      *
      * @param units supported {@link Unit}s.
      */
-    public AbstractUnits ( final List<Unit> units )
+    public AbstractUnits ( @NotNull final List<Unit> units )
     {
-        super ();
         this.units = units;
         Collections.sort ( this.units );
     }
@@ -64,7 +65,7 @@ public abstract class AbstractUnits
      * @param text user-friendly unit-based text
      * @return single {@code long} value parsed from user-friendly unit-based text
      */
-    public long fromString ( final String text )
+    public long fromString ( @NotNull final String text )
     {
         try
         {
@@ -153,10 +154,12 @@ public abstract class AbstractUnits
      * @param value {@code long} value
      * @return user-friendly unit-based text of the {@code long} value
      */
+    @NotNull
     public String toString ( final long value )
     {
         if ( value >= 0 )
         {
+            final String text;
             if ( value > 0 )
             {
                 // Resolving user-friendly unit-based text
@@ -173,14 +176,15 @@ public abstract class AbstractUnits
                         result.append ( amount );
                     }
                 }
-                return result.toString ();
+                text = result.toString ();
             }
             else
             {
                 // Sepcial zero value case
                 final Unit smallest = units.get ( units.size () - 1 );
-                return "0" + smallest.names.get ( 0 );
+                text = "0" + smallest.names.get ( 0 );
             }
+            return text;
         }
         else
         {
@@ -210,6 +214,7 @@ public abstract class AbstractUnits
          * Multiple options mostly provided for usage convenience.
          * For example for minites you might want to have "m", "min", "minute" and maybe even some others.
          */
+        @NotNull
         private final List<String> names;
 
         /**
@@ -219,10 +224,8 @@ public abstract class AbstractUnits
          * @param limit  value used to limit displayed value with this unit
          * @param names  displayable unit names
          */
-        public Unit ( final long amount, final long limit, final String... names )
+        public Unit ( final long amount, final long limit, @NotNull final String... names )
         {
-            super ();
-
             // Saving amount and limit
             this.amount = amount;
             this.limit = limit;
@@ -255,16 +258,18 @@ public abstract class AbstractUnits
          * @param name {@link Unit} name
          * @return {@code true} if this {@link Unit} uses specified name, {@code false} otherwise
          */
-        public boolean uses ( final String name )
+        public boolean uses ( @NotNull final String name )
         {
+            boolean uses = false;
             for ( final String n : names )
             {
                 if ( n.equalsIgnoreCase ( name ) )
                 {
-                    return true;
+                    uses = true;
+                    break;
                 }
             }
-            return false;
+            return uses;
         }
 
         /**
@@ -273,7 +278,7 @@ public abstract class AbstractUnits
          * @param value unit {@link String} value
          * @return base {@code long} value calculated from the unit {@link String} value
          */
-        public long fromString ( final String value )
+        public long fromString ( @NotNull final String value )
         {
             return Math.round ( Double.parseDouble ( value ) * amount );
         }
@@ -291,7 +296,7 @@ public abstract class AbstractUnits
         }
 
         @Override
-        public int compareTo ( final Unit other )
+        public int compareTo ( @NotNull final Unit other )
         {
             return amount < other.amount ? 1 : amount > other.amount ? -1 : 0;
         }

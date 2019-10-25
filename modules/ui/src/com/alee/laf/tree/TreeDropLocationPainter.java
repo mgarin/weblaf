@@ -18,6 +18,7 @@
 package com.alee.laf.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -44,12 +45,133 @@ public class TreeDropLocationPainter<C extends JTree, U extends WTreeUI, D exten
      * Tree drop location to paint visual representation for.
      * It is passed into this painter right before painting operation call.
      */
+    @Nullable
     protected JTree.DropLocation location;
 
     @Override
     public String getSectionId ()
     {
         return "drop.location";
+    }
+
+    @Nullable
+    @Override
+    public Rectangle getDropViewBounds ( @NotNull final JTree.DropLocation location )
+    {
+        Rectangle dropViewBounds = null;
+        if ( component.getRowCount () > 0 )
+        {
+            final TreeModel model = component.getModel ();
+            final TreePath path = location.getPath ();
+            if ( model != null && path != null )
+            {
+                if ( isDropBetween ( location, model, path ) )
+                {
+                    dropViewBounds = getDropBetweenViewBounds ( location, model, path, location.getChildIndex () );
+                }
+                else
+                {
+                    dropViewBounds = getDropOnViewBounds ( location, model, path );
+                }
+            }
+        }
+        return dropViewBounds;
+    }
+
+    /**
+     * Returns whether the specified drop location should be displayed as line or not.
+     *
+     * @param location {@link javax.swing.JTree.DropLocation}
+     * @param model    {@link TreeModel}
+     * @param path     {@link TreePath}
+     * @return true if the specified drop location should be displayed as line, false otherwise
+     */
+    protected boolean isDropBetween ( @NotNull final JTree.DropLocation location, @NotNull final TreeModel model,
+                                      @NotNull final TreePath path )
+    {
+        return location.getChildIndex () != -1 && model.getChildCount ( path.getLastPathComponent () ) > 0;
+    }
+
+    /**
+     * Returns drop ON view bounds.
+     * Might return {@code null} if {@link TreePath} bounds are not available.
+     *
+     * @param location {@link javax.swing.JTree.DropLocation}
+     * @param model    {@link TreeModel}
+     * @param path     drop {@link TreePath}
+     * @return drop ON view bounds
+     */
+    @Nullable
+    protected Rectangle getDropOnViewBounds ( @NotNull final JTree.DropLocation location, @NotNull final TreeModel model,
+                                              @NotNull final TreePath path )
+    {
+        return component.getPathBounds ( path );
+    }
+
+    /**
+     * Returns drop BETWEEN view bounds.
+     *
+     * @param location {@link javax.swing.JTree.DropLocation}
+     * @param model    {@link TreeModel}
+     * @param path     parent {@link TreePath}
+     * @param index    drop index at parent {@link TreePath}
+     * @return drop BETWEEN view bounds
+     */
+    @Nullable
+    protected Rectangle getDropBetweenViewBounds ( @NotNull final JTree.DropLocation location, @NotNull final TreeModel model,
+                                                   @NotNull final TreePath path, final int index )
+    {
+        final Object parent = path.getLastPathComponent ();
+        final int childCount = model.getChildCount ( parent );
+
+        // Retrieving actual child index
+        final int actualIndex;
+        final boolean atStart;
+        if ( index < childCount )
+        {
+            // Simply using child at [index] as it exists
+            actualIndex = index;
+            atStart = true;
+        }
+        else
+        {
+            // Using child at [childCount-1], it should be the same as [index-1] but safer
+            actualIndex = childCount - 1;
+            atStart = false;
+        }
+
+        // Retrieving child bounds
+        final Object child = model.getChild ( parent, actualIndex );
+        final TreePath childPath = path.pathByAddingChild ( child );
+        final Rectangle bounds = component.getPathBounds ( childPath );
+
+        // Adjusting drop indicator bounds
+        if ( bounds != null )
+        {
+            // Adjusting for RTL
+            final Dimension ps = getPreferredSize ();
+            if ( !ltr )
+            {
+                bounds.x = bounds.x + bounds.width - ps.width;
+            }
+
+            // Adjusting to start or end of the node bounds
+            if ( atStart )
+            {
+                bounds.y -= ps.height / 2;
+            }
+            else
+            {
+                bounds.y += bounds.height - ps.height / 2;
+            }
+
+            // Simply using preferred width and height
+            // We want preferred sizes to avoid painting extremely long or wide location indicator
+            bounds.width = ps.width;
+            bounds.height = ps.height;
+        }
+
+        return bounds;
     }
 
     @NotNull
@@ -59,13 +181,18 @@ public class TreeDropLocationPainter<C extends JTree, U extends WTreeUI, D exten
         final List<String> states = super.getDecorationStates ();
         if ( location != null )
         {
-            states.add ( isDropBetween ( location ) ? DecorationState.dropBetween : DecorationState.dropOn );
+            final TreeModel model = component.getModel ();
+            final TreePath path = location.getPath ();
+            if ( model != null && path != null )
+            {
+                states.add ( isDropBetween ( location, model, path ) ? DecorationState.dropBetween : DecorationState.dropOn );
+            }
         }
         return states;
     }
 
     @Override
-    public void prepareToPaint ( final JTree.DropLocation location )
+    public void prepareToPaint ( @NotNull final JTree.DropLocation location )
     {
         this.location = location;
         updateDecorationState ();
@@ -76,106 +203,5 @@ public class TreeDropLocationPainter<C extends JTree, U extends WTreeUI, D exten
     {
         // We don't need to paint anything when drop location is not available
         return location != null && super.isDecorationAvailable ( decoration );
-    }
-
-    @Override
-    public Rectangle getDropViewBounds ( final JTree.DropLocation location )
-    {
-        return isDropBetween ( location ) ? getDropBetweenViewBounds ( location ) : getDropOnViewBounds ( location );
-    }
-
-    /**
-     * Returns whether the specified drop location should be displayed as line or not.
-     *
-     * @param location drop location
-     * @return true if the specified drop location should be displayed as line, false otherwise
-     */
-    protected boolean isDropBetween ( final JTree.DropLocation location )
-    {
-        return location != null && location.getPath () != null && location.getChildIndex () != -1;
-    }
-
-    /**
-     * Returns drop ON view bounds.
-     *
-     * @param location drop location
-     * @return drop ON view bounds
-     */
-    protected Rectangle getDropOnViewBounds ( final JTree.DropLocation location )
-    {
-        final TreePath dropPath = location.getPath ();
-        return component.getPathBounds ( dropPath );
-    }
-
-    /**
-     * Returns drop BETWEEN view bounds.
-     *
-     * @param location drop location
-     * @return drop BETWEEN view bounds
-     */
-    protected Rectangle getDropBetweenViewBounds ( final JTree.DropLocation location )
-    {
-        final Rectangle rect;
-        final TreePath path = location.getPath ();
-        final int index = location.getChildIndex ();
-        final Insets insets = component.getInsets ();
-        final Dimension ps = getPreferredSize ();
-
-        if ( component.getRowCount () == 0 )
-        {
-            rect = new Rectangle ( insets.left, insets.top, component.getWidth () - insets.left - insets.right, 0 );
-        }
-        else
-        {
-            final TreeModel model = component.getModel ();
-            final Object root = model.getRoot ();
-            if ( path.getLastPathComponent () == root && index >= model.getChildCount ( root ) )
-            {
-                rect = component.getRowBounds ( component.getRowCount () - 1 );
-                rect.y = rect.y + rect.height;
-                final Rectangle xRect;
-
-                if ( !component.isRootVisible () )
-                {
-                    xRect = component.getRowBounds ( 0 );
-                }
-                else if ( model.getChildCount ( root ) == 0 )
-                {
-                    final int totalChildIndent = ui.getLeftChildIndent () + ui.getRightChildIndent ();
-                    xRect = component.getRowBounds ( 0 );
-                    xRect.x += totalChildIndent;
-                    xRect.width -= totalChildIndent + totalChildIndent;
-                }
-                else
-                {
-                    final int lastIndex = model.getChildCount ( root ) - 1;
-                    final Object lastObject = model.getChild ( root, lastIndex );
-                    final TreePath lastChildPath = path.pathByAddingChild ( lastObject );
-                    xRect = component.getPathBounds ( lastChildPath );
-                }
-
-                rect.x = xRect.x;
-                rect.width = xRect.width;
-            }
-            else
-            {
-                rect = component.getPathBounds ( path.pathByAddingChild ( model.getChild ( path.getLastPathComponent (), index ) ) );
-            }
-        }
-
-        if ( rect.y != 0 )
-        {
-            rect.y--;
-        }
-
-        if ( !ltr )
-        {
-            rect.x = rect.x + rect.width - ps.width;
-        }
-
-        rect.width = ps.width;
-        rect.height = ps.height;
-
-        return rect;
     }
 }

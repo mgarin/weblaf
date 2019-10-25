@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.compare.Filter;
 
 import java.io.Serializable;
@@ -42,6 +44,7 @@ public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serial
      * @return root {@link AsyncUniqueNode}
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
+    @NotNull
     public N getRoot ();
 
     /**
@@ -52,7 +55,7 @@ public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serial
      * @param parent   {@link AsyncUniqueNode} to load children for
      * @param listener {@link NodesLoadCallback} for informing tree about operation result
      */
-    public void loadChildren ( N parent, NodesLoadCallback<N> listener );
+    public void loadChildren ( @NotNull N parent, @NotNull NodesLoadCallback<N> listener );
 
     /**
      * Returns whether or not specified {@link AsyncUniqueNode} doesn't have any children.
@@ -64,7 +67,7 @@ public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serial
      * @return {@code true} if the specified {@link AsyncUniqueNode} doesn't have any children, {@code false} otherwise
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public boolean isLeaf ( N node );
+    public boolean isLeaf ( @NotNull N node );
 
     /**
      * Returns {@link Filter} that will be used for the specified {@link AsyncUniqueNode} children.
@@ -77,7 +80,8 @@ public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serial
      * @return {@link Filter} that will be used for the specified {@link AsyncUniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Filter<N> getChildrenFilter ( N parent, List<N> children );
+    @Nullable
+    public Filter<N> getChildrenFilter ( @NotNull N parent, @NotNull List<N> children );
 
     /**
      * Returns {@link Comparator} that will be used for the specified {@link AsyncUniqueNode} children.
@@ -90,5 +94,6 @@ public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serial
      * @return {@link Comparator} that will be used for the specified {@link AsyncUniqueNode} children
      * @see <a href="https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread">Event Dispatch Thread</a>
      */
-    public Comparator<N> getChildrenComparator ( N parent, List<N> children );
+    @Nullable
+    public Comparator<N> getChildrenComparator ( @NotNull N parent, @NotNull List<N> children );
 }

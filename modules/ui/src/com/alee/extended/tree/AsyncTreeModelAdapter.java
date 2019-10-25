@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ import java.util.List;
 public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implements AsyncTreeModelListener<N>
 {
     @Override
-    public void loadStarted ( final N parent )
+    public void loadStarted ( @NotNull final N parent )
     {
         /**
          * Do nothing by default.
@@ -36,7 +38,7 @@ public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implement
     }
 
     @Override
-    public void loadCompleted ( final N parent, final List<N> children )
+    public void loadCompleted ( @NotNull final N parent, @NotNull final List<N> children )
     {
         /**
          * Do nothing by default.
@@ -44,7 +46,7 @@ public abstract class AsyncTreeModelAdapter<N extends AsyncUniqueNode> implement
     }
 
     @Override
-    public void loadFailed ( final N parent, final Throwable cause )
+    public void loadFailed ( @NotNull final N parent, @NotNull final Throwable cause )
     {
         /**
          * Do nothing by default.

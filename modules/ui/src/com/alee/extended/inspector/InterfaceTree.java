@@ -172,7 +172,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
         // Uninstalling node listeners
         // todo Nodes are not properly cleared out of memory
         // todo This is not critical as this is simply a debug tool, but might be worth fixing at some point
-        final InterfaceTreeNode rootNode = getRootNode ();
+        final InterfaceTreeNode rootNode = getNullableRootNode ();
         if ( rootNode != null )
         {
             rootNode.uninstall ();
@@ -207,7 +207,8 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
     @Override
     public boolean accept ( final Component component )
     {
-        return ( ( InterfaceTreeDataProvider ) super.getDataProvider () ).accept ( component );
+        final InterfaceTreeDataProvider provider = ( InterfaceTreeDataProvider ) super.getDataProvider ();
+        return provider != null && provider.accept ( component );
     }
 
     @Override
@@ -299,7 +300,8 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
     @Nullable
     public Component getRootComponent ()
     {
-        return getDataProvider ().getRoot ().getUserObject ();
+        final ExTreeDataProvider<InterfaceTreeNode> provider = getDataProvider ();
+        return provider != null ? provider.getRoot ().getUserObject () : null;
     }
 
     /**

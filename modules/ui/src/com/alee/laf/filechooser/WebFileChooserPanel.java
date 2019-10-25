@@ -2364,7 +2364,7 @@ public class WebFileChooserPanel extends WebPanel
         }
 
         @Override
-        public boolean filesDropped ( final List<File> files )
+        public boolean filesDropped ( @NotNull final List<File> files )
         {
             if ( files.size () > 0 )
             {

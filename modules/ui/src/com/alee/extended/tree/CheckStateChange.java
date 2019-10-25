@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.checkbox.CheckState;
 
 import javax.swing.tree.MutableTreeNode;
@@ -32,16 +33,19 @@ public final class CheckStateChange<N extends MutableTreeNode>
     /**
      * Node which state was changed.
      */
+    @NotNull
     private final N node;
 
     /**
      * Old node check state.
      */
+    @NotNull
     private final CheckState oldState;
 
     /**
      * New node check state.
      */
+    @NotNull
     private final CheckState newState;
 
     /**
@@ -51,9 +55,8 @@ public final class CheckStateChange<N extends MutableTreeNode>
      * @param oldState old node check state
      * @param newState new node check state
      */
-    public CheckStateChange ( final N node, final CheckState oldState, final CheckState newState )
+    public CheckStateChange ( @NotNull final N node, @NotNull final CheckState oldState, @NotNull final CheckState newState )
     {
-        super ();
         this.node = node;
         this.oldState = oldState;
         this.newState = newState;
@@ -64,6 +67,7 @@ public final class CheckStateChange<N extends MutableTreeNode>
      *
      * @return node which state was changed
      */
+    @NotNull
     public N getNode ()
     {
         return node;
@@ -74,6 +78,7 @@ public final class CheckStateChange<N extends MutableTreeNode>
      *
      * @return old node check state
      */
+    @NotNull
     public CheckState getOldState ()
     {
         return oldState;
@@ -84,6 +89,7 @@ public final class CheckStateChange<N extends MutableTreeNode>
      *
      * @return new node check state
      */
+    @NotNull
     public CheckState getNewState ()
     {
         return newState;

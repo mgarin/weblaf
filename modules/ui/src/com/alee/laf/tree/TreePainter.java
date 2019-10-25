@@ -650,20 +650,38 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         super.propertyChanged ( property, oldValue, newValue );
 
         // Update visual drop location
-        if ( Objects.equals ( property, WebTree.DROP_LOCATION ) && dropLocationPainter != null )
+        if ( Objects.equals ( property, WebTree.DROP_LOCATION_PROPERTY ) && dropLocationPainter != null )
         {
-            // Repainting previous drop location
+            boolean changed = false;
+            Rectangle repaint = null;
+
+            // Checking previous drop location
             final JTree.DropLocation oldLocation = ( JTree.DropLocation ) oldValue;
             if ( oldLocation != null && oldLocation.getPath () != null )
             {
-                component.repaint ( dropLocationPainter.getDropViewBounds ( oldLocation ) );
+                changed = true;
+                repaint = dropLocationPainter.getDropViewBounds ( oldLocation );
             }
 
-            // Repainting current drop location
+            // Checking current drop location
             final JTree.DropLocation newLocation = ( JTree.DropLocation ) newValue;
             if ( newLocation != null && newLocation.getPath () != null )
             {
-                component.repaint ( dropLocationPainter.getDropViewBounds ( newLocation ) );
+                changed = true;
+                repaint = GeometryUtils.getContainingRect ( repaint, dropLocationPainter.getDropViewBounds ( newLocation ) );
+            }
+
+            // Repainting tree if needed
+            if ( changed )
+            {
+                if ( repaint != null )
+                {
+                    repaint ( repaint );
+                }
+                else
+                {
+                    repaint ();
+                }
             }
         }
     }
@@ -1564,12 +1582,14 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
             final JTree.DropLocation dropLocation = component.getDropLocation ();
             if ( dropLocation != null && dropLocation.getPath () != null )
             {
-                // Calculating drop location bounds
+                // Ensure that drop location bounds are available
                 final Rectangle dropViewBounds = dropLocationPainter.getDropViewBounds ( dropLocation );
-
-                // Painting drop location view
-                dropLocationPainter.prepareToPaint ( dropLocation );
-                paintSection ( dropLocationPainter, g2d, dropViewBounds );
+                if ( dropViewBounds != null )
+                {
+                    // Painting drop location view
+                    dropLocationPainter.prepareToPaint ( dropLocation );
+                    paintSection ( dropLocationPainter, g2d, dropViewBounds );
+                }
             }
         }
     }
@@ -1584,7 +1604,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         if ( isSelectorAvailable () && selectionStart != null && selectionEnd != null )
         {
             // Calculating selector bounds
-            final Rectangle rawBounds = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+            final Rectangle rawBounds = GeometryUtils.getNonNullContainingRect ( selectionStart, selectionEnd );
             final Rectangle bounds = rawBounds.intersection ( BoundsType.component.bounds ( component ) );
             bounds.width -= 1;
             bounds.height -= 1;

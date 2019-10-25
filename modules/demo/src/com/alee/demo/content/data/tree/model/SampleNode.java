@@ -110,7 +110,7 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
         return getUserObject ().getTitle ();
     }
 
-    @NotNull
+    @Nullable
     @Override
     public Icon getNodeIcon ( @NotNull final TreeNodeParameters<SampleNode, WebAsyncTree<SampleNode>> parameters )
     {
@@ -157,6 +157,7 @@ public class SampleNode extends AsyncUniqueNode<SampleNode, SampleObject>
         return Clone.deep ().clone ( this );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

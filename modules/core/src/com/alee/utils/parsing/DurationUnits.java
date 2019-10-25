@@ -17,6 +17,8 @@
 
 package com.alee.utils.parsing;
 
+import com.alee.api.annotations.Nullable;
+
 /**
  * Custom class providing duration units support.
  * You can mix any units (using upper/lower cases) in any order and also provide fractional values.
@@ -42,6 +44,7 @@ public class DurationUnits extends AbstractUnits
      * Global {@link DurationUnits} instance.
      * Kept for the sake of optimizing overhead.
      */
+    @Nullable
     protected static DurationUnits instance;
 
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -58,7 +59,7 @@ public abstract class AbstractPasswordFieldDescriptor<C extends JPasswordField, 
     }
 
     @Override
-    public void updateUI ( final C component )
+    public void updateUI ( @NotNull final C component )
     {
         // Default echo char
         if ( !component.echoCharIsSet () )

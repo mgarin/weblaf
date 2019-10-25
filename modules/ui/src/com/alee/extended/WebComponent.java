@@ -21,7 +21,6 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
-import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
@@ -55,6 +54,15 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
         ShapeMethods, MarginMethods, PaddingMethods, EventMethods, ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods,
         FontMethods<C>, SizeMethods<C>
 {
+    /* todo Implement this across all custom components
+    @Override
+    public JToolTip createToolTip ()
+    {
+        final JToolTip tip = new WebToolTip ();
+        tip.setComponent ( this );
+        return tip;
+    }*/
+
     @NotNull
     @Override
     public StyleId getStyleId ()

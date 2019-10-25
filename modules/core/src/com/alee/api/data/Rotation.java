@@ -50,17 +50,22 @@ public enum Rotation
      */
     public Rotation rightToLeft ()
     {
+        final Rotation rotation;
         switch ( this )
         {
             case clockwise:
-                return counterClockwise;
+                rotation = counterClockwise;
+                break;
 
             case counterClockwise:
-                return clockwise;
+                rotation = clockwise;
+                break;
 
             default:
-                return this;
+                rotation = this;
+                break;
         }
+        return rotation;
     }
 
     /**
@@ -93,13 +98,15 @@ public enum Rotation
      */
     public Component.BaselineResizeBehavior adjust ( final Component.BaselineResizeBehavior behavior )
     {
+        Component.BaselineResizeBehavior adjusted = behavior;
         switch ( this )
         {
             case clockwise:
             case counterClockwise:
             {
                 // Behavior is not valid anymore with these rotation options
-                return Component.BaselineResizeBehavior.OTHER;
+                adjusted = Component.BaselineResizeBehavior.OTHER;
+                break;
             }
             case upsideDown:
             {
@@ -107,20 +114,16 @@ public enum Rotation
                 switch ( behavior )
                 {
                     case CONSTANT_ASCENT:
-                        return Component.BaselineResizeBehavior.CONSTANT_DESCENT;
+                        adjusted = Component.BaselineResizeBehavior.CONSTANT_DESCENT;
+                        break;
 
                     case CONSTANT_DESCENT:
-                        return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
-
-                    default:
-                        return behavior;
+                        adjusted = Component.BaselineResizeBehavior.CONSTANT_ASCENT;
+                        break;
                 }
-            }
-            default:
-            {
-                // Simply return behavior "as is"
-                return behavior;
+                break;
             }
         }
+        return adjusted;
     }
 }

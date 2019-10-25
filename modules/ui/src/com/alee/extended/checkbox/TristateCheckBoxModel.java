@@ -35,7 +35,7 @@ public class TristateCheckBoxModel extends JToggleButton.ToggleButtonModel
     /**
      * Mixed state bit constant used to store into state mask.
      */
-    public final static int MIXED = 1 << 7;
+    public static final int MIXED = 1 << 7;
 
     /**
      * Whether partially checked tristate checkbox should be checked or unchecked on toggle.

@@ -17,10 +17,10 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.List;
 
@@ -37,10 +37,11 @@ public enum FileTreeRootType
      */
     system
             {
+                @NotNull
                 @Override
                 public List<File> getRoots ()
                 {
-                    return CollectionUtils.asList ( FileSystemView.getFileSystemView ().getRoots () );
+                    return CollectionUtils.asList ( FileUtils.getSystemRoots () );
                 }
             },
 
@@ -49,6 +50,7 @@ public enum FileTreeRootType
      */
     drives
             {
+                @NotNull
                 @Override
                 public List<File> getRoots ()
                 {
@@ -61,6 +63,7 @@ public enum FileTreeRootType
      */
     userHome
             {
+                @NotNull
                 @Override
                 public List<File> getRoots ()
                 {
@@ -73,5 +76,6 @@ public enum FileTreeRootType
      *
      * @return root files for current tree root type
      */
+    @NotNull
     public abstract List<File> getRoots ();
 }

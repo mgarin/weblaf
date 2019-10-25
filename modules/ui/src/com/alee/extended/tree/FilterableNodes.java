@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.tree.TreeNode;
@@ -34,6 +36,7 @@ public interface FilterableNodes<N extends TreeNode>
      *
      * @return {@link Filter} used for {@link TreeNode}s.
      */
+    @Nullable
     public Filter<N> getFilter ();
 
     /**
@@ -42,7 +45,7 @@ public interface FilterableNodes<N extends TreeNode>
      *
      * @param filter {@link Filter} for {@link TreeNode}s.
      */
-    public void setFilter ( Filter<N> filter );
+    public void setFilter ( @Nullable Filter<N> filter );
 
     /**
      * Uninstalls {@link Filter} used for {@link TreeNode}s.
@@ -57,15 +60,15 @@ public interface FilterableNodes<N extends TreeNode>
     /**
      * Updates {@link TreeNode}s filtering for the specified {@link TreeNode} children.
      *
-     * @param node {@link TreeNode} to update filtering for
+     * @param parent {@link TreeNode} to update filtering for
      */
-    public void filter ( N node );
+    public void filter ( @NotNull N parent );
 
     /**
      * Updates {@link TreeNode}s filtering for the specified {@link TreeNode} children.
      *
-     * @param node        {@link TreeNode} to update filtering for
+     * @param parent        {@link TreeNode} to update filtering for
      * @param recursively whether should update the whole children structure recursively or not
      */
-    public void filter ( N node, boolean recursively );
+    public void filter ( @NotNull N parent, boolean recursively );
 }

@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeState;
@@ -52,11 +53,13 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * {@link AsyncTreeDataProvider} implementation.
      * It is used to provide all {@link AsyncUniqueNode}s for the tree.
      */
+    @NotNull
     protected final AsyncTreeDataProvider<N> dataProvider;
 
     /**
      * Event listeners.
      */
+    @NotNull
     protected final EventListenerList listeners;
 
     /**
@@ -87,16 +90,19 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * Root node cache.
      * Cached when root is requested for the first time.
      */
+    @Nullable
     protected transient N rootNode;
 
     /**
      * {@link Filter} for {@link AsyncUniqueNode}s.
      */
+    @Nullable
     protected transient Filter<N> filter;
 
     /**
      * {@link Comparator} for {@link AsyncUniqueNode}s.
      */
+    @Nullable
     protected transient Comparator<N> comparator;
 
     /**
@@ -104,7 +110,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param dataProvider {@link AsyncTreeDataProvider}
      */
-    public AsyncTreeModel ( final AsyncTreeDataProvider<N> dataProvider )
+    public AsyncTreeModel ( @NotNull final AsyncTreeDataProvider<N> dataProvider )
     {
         super ( null );
         this.dataProvider = dataProvider;
@@ -116,6 +122,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @return data provider
      */
+    @NotNull
     public AsyncTreeDataProvider<N> getDataProvider ()
     {
         return dataProvider;
@@ -126,7 +133,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param tree {@link WebAsyncTree}
      */
-    public void install ( final WebAsyncTree<N> tree )
+    public void install ( @NotNull final WebAsyncTree<N> tree )
     {
         WebLookAndFeel.checkEventDispatchThread ();
         this.nodeCached = new HashMap<String, Boolean> ( 50 );
@@ -142,7 +149,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param tree {@link WebAsyncTree}
      */
-    public void uninstall ( final WebAsyncTree<N> tree )
+    public void uninstall ( @NotNull final WebAsyncTree<N> tree )
     {
         WebLookAndFeel.checkEventDispatchThread ();
         removeAsyncTreeModelListener ( tree );
@@ -176,10 +183,11 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     {
         if ( !isInstalled () )
         {
-            throw new IllegalStateException ( "This operation cannot be performed before model is installed into WebAsyncTree" );
+            throw new RuntimeException ( "This operation cannot be performed before model is installed into WebAsyncTree" );
         }
     }
 
+    @NotNull
     @Override
     public N getRoot ()
     {
@@ -206,7 +214,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     @Override
-    public boolean isLeaf ( final Object node )
+    public boolean isLeaf ( @NotNull final Object node )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -223,7 +231,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * todo There should be a separate UI for async tree where we would listen for nodes expansion and perform loading and updates
      */
     @Override
-    public int getChildCount ( final Object parent )
+    public int getChildCount ( @NotNull final Object parent )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -252,8 +260,9 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         return count;
     }
 
+    @NotNull
     @Override
-    public N getChild ( final Object parent, final int index )
+    public N getChild ( @NotNull final Object parent, final int index )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -269,14 +278,13 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         }
         else
         {
-            // todo This probably shouldn't ever be returned anyway?
-            child = null;
+            throw new RuntimeException ( "There are no loaded children at node: " + node );
         }
         return child;
     }
 
     @Override
-    public void reload ( final TreeNode node )
+    public void reload ( @NotNull final TreeNode node )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -302,7 +310,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent node to load empty children for
      * @return {@code 0} children count
      */
-    protected int loadEmptyChildren ( final N parent )
+    protected int loadEmptyChildren ( @NotNull final N parent )
     {
         // Caching empty raw children
         rawNodeChildrenCache.put ( parent.getId (), new ArrayList<N> ( 0 ) );
@@ -325,7 +333,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @return zero or children count if async mode is off
      * @see AsyncTreeDataProvider#loadChildren(AsyncUniqueNode, NodesLoadCallback)
      */
-    protected int loadChildren ( final N parent )
+    protected int loadChildren ( @NotNull final N parent )
     {
         final int loadedCount;
         if ( !parent.isLoading () )
@@ -432,7 +440,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent   parent node
      * @param children loaded child nodes
      */
-    protected void loadChildrenCompleted ( final N parent, final List<N> children )
+    protected void loadChildrenCompleted ( @NotNull final N parent, @NotNull final List<N> children )
     {
         // Operation might have finished after model was removed from the tree
         if ( isInstalled () )
@@ -459,7 +467,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             nodeCached.put ( parent.getId (), true );
 
             // Checking if any nodes loaded
-            if ( realChildren != null && realChildren.size () > 0 )
+            if ( realChildren.size () > 0 )
             {
                 // Inserting loaded nodes
                 insertNodesIntoImpl ( realChildren, parent, 0 );
@@ -480,7 +488,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent parent node
      * @param cause  failure cause
      */
-    protected void loadChildrenFailed ( final N parent, final Throwable cause )
+    protected void loadChildrenFailed ( @NotNull final N parent, @NotNull final Throwable cause )
     {
         // Operation might have finished after model was removed from the tree
         if ( isInstalled () )
@@ -503,7 +511,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     @Override
-    public void valueForPathChanged ( final TreePath path, final Object newValue )
+    public void valueForPathChanged ( @NotNull final TreePath path, @Nullable final Object newValue )
     {
         // Ensure model is installed
         checkInstalled ();
@@ -530,7 +538,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent   node to process
      * @param children new node children
      */
-    public void setChildNodes ( final N parent, final List<N> children )
+    public void setChildNodes ( @NotNull final N parent, @NotNull final List<N> children )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -553,7 +561,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             nodeCached.put ( parent.getId (), true );
 
             // Checking if any nodes loaded
-            if ( realChildren != null && realChildren.size () > 0 )
+            if ( realChildren.size () > 0 )
             {
                 // Clearing raw nodes cache
                 // That might be required in case nodes were moved inside of the tree
@@ -579,7 +587,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent node to process
      * @param child  new child node
      */
-    public void addChildNode ( final N parent, final N child )
+    public void addChildNode ( @NotNull final N parent, @NotNull final N child )
     {
         addChildNodes ( parent, CollectionUtils.asList ( child ) );
     }
@@ -591,7 +599,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent   node to process
      * @param children new node children
      */
-    public void addChildNodes ( final N parent, final List<N> children )
+    public void addChildNodes ( @NotNull final N parent, @NotNull final List<N> children )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -675,7 +683,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent parent node
      * @param index  insert index
      */
-    protected void insertNodeIntoImpl ( final N child, final N parent, final int index )
+    protected void insertNodeIntoImpl ( @NotNull final N child, @NotNull final N parent, final int index )
     {
         super.insertNodeInto ( child, parent, index );
 
@@ -731,7 +739,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent   parent node
      * @param index    insert index
      */
-    protected void insertNodesIntoImpl ( final List<N> children, final N parent, final int index )
+    protected void insertNodesIntoImpl ( @NotNull final List<N> children, @NotNull final N parent, final int index )
     {
         super.insertNodesInto ( children, parent, index );
 
@@ -793,7 +801,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent   parent node
      * @param index    insert index
      */
-    protected void insertNodesIntoImpl ( final N[] children, final N parent, final int index )
+    protected void insertNodesIntoImpl ( @NotNull final N[] children, @NotNull final N parent, final int index )
     {
         super.insertNodesInto ( children, parent, index );
 
@@ -927,6 +935,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
         }
     }
 
+    @Nullable
     @Override
     public Filter<N> getFilter ()
     {
@@ -934,7 +943,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     @Override
-    public void setFilter ( final Filter<N> filter )
+    public void setFilter ( @Nullable final Filter<N> filter )
     {
         this.filter = filter;
         filter ();
@@ -953,17 +962,18 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     @Override
-    public void filter ( final N node )
+    public void filter ( @NotNull final N parent )
     {
-        filterAndSort ( node, false );
+        filterAndSort ( parent, false );
     }
 
     @Override
-    public void filter ( final N node, final boolean recursively )
+    public void filter ( @NotNull final N parent, final boolean recursively )
     {
-        filterAndSort ( node, recursively );
+        filterAndSort ( parent, recursively );
     }
 
+    @Nullable
     @Override
     public Comparator<N> getComparator ()
     {
@@ -971,7 +981,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     @Override
-    public void setComparator ( final Comparator<N> comparator )
+    public void setComparator ( @Nullable final Comparator<N> comparator )
     {
         this.comparator = comparator;
         sort ();
@@ -990,15 +1000,15 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
     }
 
     @Override
-    public void sort ( final N node )
+    public void sort ( @NotNull final N parent )
     {
-        filterAndSort ( node, false );
+        filterAndSort ( parent, false );
     }
 
     @Override
-    public void sort ( final N node, final boolean recursively )
+    public void sort ( @NotNull final N parent, final boolean recursively )
     {
-        filterAndSort ( node, recursively );
+        filterAndSort ( parent, recursively );
     }
 
     /**
@@ -1008,7 +1018,11 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      */
     public void filterAndSort ( final boolean recursively )
     {
-        filterAndSort ( null, recursively );
+        // Operation might have finished after model was removed from the tree
+        if ( isInstalled () )
+        {
+            filterAndSort ( getRoot (), recursively );
+        }
     }
 
     /**
@@ -1017,7 +1031,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent      node which children sorting and filtering should be updated
      * @param recursively whether should update the whole children structure recursively or not
      */
-    public void filterAndSort ( final N parent, final boolean recursively )
+    public void filterAndSort ( @NotNull final N parent, final boolean recursively )
     {
         // Operation might have finished after model was removed from the tree
         if ( isInstalled () )
@@ -1025,11 +1039,8 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             // Event Dispatch Thread check
             WebLookAndFeel.checkEventDispatchThread ();
 
-            // Determining actual parent
-            final N actualParent = parent != null ? parent : getRoot ();
-
             // Redirecting call to internal implementation
-            filterAndSort ( actualParent, recursively, true );
+            filterAndSort ( parent, recursively, true );
         }
     }
 
@@ -1040,7 +1051,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param recursively    whether should update the whole children structure recursively or not
      * @param performUpdates whether tree updates should be triggered within this method
      */
-    protected void filterAndSort ( final N parent, final boolean recursively, final boolean performUpdates )
+    protected void filterAndSort ( @NotNull final N parent, final boolean recursively, final boolean performUpdates )
     {
         // Process this action only if node children are already loaded and cached
         if ( parent.isLoaded () && rawNodeChildrenCache.containsKey ( parent.getId () ) )
@@ -1054,7 +1065,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             addAsyncTreeModelListener ( new AsyncTreeModelAdapter ()
             {
                 @Override
-                public void loadCompleted ( final AsyncUniqueNode completedFor, final List children )
+                public void loadCompleted ( @NotNull final AsyncUniqueNode completedFor, @NotNull final List children )
                 {
                     // Performing delayed filtering and sorting
                     if ( Objects.equals ( parent.getId (), completedFor.getId () ) )
@@ -1065,7 +1076,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
                 }
 
                 @Override
-                public void loadFailed ( final AsyncUniqueNode failedFor, final Throwable cause )
+                public void loadFailed ( @NotNull final AsyncUniqueNode failedFor, @NotNull final Throwable cause )
                 {
                     // Cancelling any further operations
                     if ( Objects.equals ( parent.getId (), failedFor.getId () ) )
@@ -1085,7 +1096,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param recursively    whether should update the whole children structure recursively or not
      * @param performUpdates whether tree updates should be triggered within this method
      */
-    protected void filterAndSortRecursively ( final N parent, final boolean recursively, final boolean performUpdates )
+    protected void filterAndSortRecursively ( @NotNull final N parent, final boolean recursively, final boolean performUpdates )
     {
         // Saving tree state to restore it right after children update
         // todo This doesn't work if some of the children updates are delayed using listener
@@ -1136,7 +1147,8 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param children children to filter and sort
      * @return list of filtered and sorted children
      */
-    protected List<N> filterAndSort ( final N parent, final List<N> children )
+    @NotNull
+    protected List<N> filterAndSort ( @NotNull final N parent, @NotNull final List<N> children )
     {
         final List<N> result;
         if ( CollectionUtils.notEmpty ( children ) )
@@ -1170,7 +1182,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param nodeId node identifier
      * @return node with the specified identifier or null if it was not found
      */
-    public N findNode ( final String nodeId )
+    public N findNode ( @NotNull final String nodeId )
     {
         // Ensure model is installed
         checkInstalled ();
@@ -1185,7 +1197,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param node node to process
      * @return true if children for the specified node are already loaded, false otherwise
      */
-    public boolean areChildrenLoaded ( final N node )
+    public boolean areChildrenLoaded ( @NotNull final N node )
     {
         // Ensure model is installed
         checkInstalled ();
@@ -1201,7 +1213,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param node      node to clear cache for
      * @param clearNode whether should clear node cache or not
      */
-    protected void clearNodeChildrenCache ( final N node, final boolean clearNode )
+    protected void clearNodeChildrenCache ( @NotNull final N node, final boolean clearNode )
     {
         // Clears node cache
         if ( clearNode )
@@ -1228,7 +1240,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param nodes      nodes to clear cache for
      * @param clearNodes whether should clear nodes cache or not
      */
-    protected void clearNodeChildrenCache ( final List<N> nodes, final boolean clearNodes )
+    protected void clearNodeChildrenCache ( @NotNull final List<N> nodes, final boolean clearNodes )
     {
         for ( final N node : nodes )
         {
@@ -1242,7 +1254,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param nodes      nodes to clear cache for
      * @param clearNodes whether should clear nodes cache or not
      */
-    protected void clearNodeChildrenCache ( final N[] nodes, final boolean clearNodes )
+    protected void clearNodeChildrenCache ( @NotNull final N[] nodes, final boolean clearNodes )
     {
         for ( final N node : nodes )
         {
@@ -1255,7 +1267,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param node node to cache
      */
-    protected void cacheNodeById ( final N node )
+    protected void cacheNodeById ( @NotNull final N node )
     {
         nodeById.put ( node.getId (), node );
     }
@@ -1265,7 +1277,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param nodes list of nodes to cache
      */
-    protected void cacheNodesById ( final List<N> nodes )
+    protected void cacheNodesById ( @NotNull final List<N> nodes )
     {
         for ( final N node : nodes )
         {
@@ -1278,12 +1290,8 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param listener asynchronous tree model listener to add
      */
-    public void addAsyncTreeModelListener ( final AsyncTreeModelListener listener )
+    public void addAsyncTreeModelListener ( @NotNull final AsyncTreeModelListener listener )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        // Adding new listener
         listeners.add ( AsyncTreeModelListener.class, listener );
     }
 
@@ -1292,12 +1300,8 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param listener asynchronous tree model listener to remove
      */
-    public void removeAsyncTreeModelListener ( final AsyncTreeModelListener listener )
+    public void removeAsyncTreeModelListener ( @NotNull final AsyncTreeModelListener listener )
     {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        // Removing existing listener
         listeners.remove ( AsyncTreeModelListener.class, listener );
     }
 
@@ -1306,7 +1310,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      *
      * @param parent node which children are being loaded
      */
-    protected void fireChildrenLoadStarted ( final N parent )
+    protected void fireChildrenLoadStarted ( @NotNull final N parent )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -1324,7 +1328,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent   node which children were loaded
      * @param children loaded child nodes
      */
-    protected void fireChildrenLoadCompleted ( final N parent, final List<N> children )
+    protected void fireChildrenLoadCompleted ( @NotNull final N parent, @NotNull final List<N> children )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -1342,7 +1346,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
      * @param parent node which children were loaded
      * @param cause  children load failure cause
      */
-    protected void fireChildrenLoadFailed ( final N parent, final Throwable cause )
+    protected void fireChildrenLoadFailed ( @NotNull final N parent, @NotNull final Throwable cause )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();

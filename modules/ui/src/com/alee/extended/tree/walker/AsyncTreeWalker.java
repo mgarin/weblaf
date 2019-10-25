@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree.walker;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.tree.AsyncTreeModel;
 import com.alee.extended.tree.AsyncUniqueNode;
 import com.alee.laf.tree.walker.AbstractTreeWalker;
@@ -38,31 +39,33 @@ public class AsyncTreeWalker<N extends AsyncUniqueNode> extends AbstractTreeWalk
      *
      * @param tree {@link JTree} to walk through
      */
-    public AsyncTreeWalker ( final JTree tree )
+    public AsyncTreeWalker ( @NotNull final JTree tree )
     {
         super ( tree );
     }
 
+    @NotNull
     @Override
-    protected N getRootNode ( final AsyncTreeModel<N> model )
+    protected N getRootNode ( @NotNull final AsyncTreeModel<N> model )
     {
         return model.getRoot ();
     }
 
     @Override
-    protected int getChildCount ( final AsyncTreeModel<N> model, final N parent )
+    protected int getChildCount ( @NotNull final AsyncTreeModel<N> model, @NotNull final N parent )
     {
         return model.areChildrenLoaded ( parent ) ? model.getChildCount ( parent ) : 0;
     }
 
+    @NotNull
     @Override
-    protected N getChild ( final AsyncTreeModel<N> model, final N parent, final int index )
+    protected N getChild ( @NotNull final AsyncTreeModel<N> model, @NotNull final N parent, final int index )
     {
         return model.getChild ( parent, index );
     }
 
     @Override
-    protected int getIndexOfChild ( final AsyncTreeModel<N> model, final N parent, final N child )
+    protected int getIndexOfChild ( @NotNull final AsyncTreeModel<N> model, @NotNull final N parent, @NotNull final N child )
     {
         return model.getIndexOfChild ( parent, child );
     }

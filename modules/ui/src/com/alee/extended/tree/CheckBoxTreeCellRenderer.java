@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 
 import javax.swing.tree.TreeCellRenderer;
@@ -33,5 +34,6 @@ public interface CheckBoxTreeCellRenderer extends TreeCellRenderer
      *
      * @return {@link WebTristateCheckBox} used for rendering
      */
+    @NotNull
     public WebTristateCheckBox getCheckBox ();
 }

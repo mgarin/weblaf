@@ -125,7 +125,7 @@ public class WebFileChooserField extends WebPanel
             }
 
             @Override
-            public boolean filesDropped ( final List<File> files )
+            public boolean filesDropped ( @NotNull final List<File> files )
             {
                 // Setting dragged files
                 setSelectedFiles ( files );

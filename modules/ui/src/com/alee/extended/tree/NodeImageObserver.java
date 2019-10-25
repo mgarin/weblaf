@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CoreSwingUtils;
 
 import java.awt.*;
@@ -32,11 +33,13 @@ public class NodeImageObserver implements ImageObserver
     /**
      * {@link WebAsyncTree}.
      */
+    @NotNull
     protected WebAsyncTree tree;
 
     /**
      * Observed {@link AsyncUniqueNode}.
      */
+    @NotNull
     protected AsyncUniqueNode node;
 
     /**
@@ -45,7 +48,7 @@ public class NodeImageObserver implements ImageObserver
      * @param tree updated tree
      * @param node observed node
      */
-    public NodeImageObserver ( final WebAsyncTree tree, final AsyncUniqueNode node )
+    public NodeImageObserver ( @NotNull final WebAsyncTree tree, @NotNull final AsyncUniqueNode node )
     {
         this.tree = tree;
         this.node = node;
@@ -63,7 +66,7 @@ public class NodeImageObserver implements ImageObserver
      * @return {@code false} if the infoflags indicate that the image is completely loaded, {@code true} otherwise
      */
     @Override
-    public boolean imageUpdate ( final Image img, final int flags, final int x, final int y, final int w, final int h )
+    public boolean imageUpdate ( @NotNull final Image img, final int flags, final int x, final int y, final int w, final int h )
     {
         if ( node.isLoading () && ( flags & ( FRAMEBITS | ALLBITS ) ) != 0 )
         {

@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Adapter for {@link AsyncPathExpansionListener}.
  *
@@ -26,7 +28,7 @@ package com.alee.extended.tree;
 public abstract class AsyncPathExpansionAdapter<N extends AsyncUniqueNode> implements AsyncPathExpansionListener<N>
 {
     @Override
-    public void pathNodeExpanded ( final N expandedNode )
+    public void pathNodeExpanded ( @NotNull final N expandedNode )
     {
         /**
          * Do nothing by default.
@@ -34,7 +36,7 @@ public abstract class AsyncPathExpansionAdapter<N extends AsyncUniqueNode> imple
     }
 
     @Override
-    public void pathExpanded ( final N lastNode )
+    public void pathExpanded ( @NotNull final N lastNode )
     {
         /**
          * Do nothing by default.
@@ -42,7 +44,7 @@ public abstract class AsyncPathExpansionAdapter<N extends AsyncUniqueNode> imple
     }
 
     @Override
-    public void pathPartiallyExpanded ( final N lastFoundNode )
+    public void pathPartiallyExpanded ( @NotNull final N lastFoundNode )
     {
         /**
          * Do nothing by default.

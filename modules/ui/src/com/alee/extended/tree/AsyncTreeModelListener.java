@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.EventListener;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public interface AsyncTreeModelListener<N extends AsyncUniqueNode> extends Event
      *
      * @param parent {@link AsyncUniqueNode} which children are being loaded
      */
-    public void loadStarted ( N parent );
+    public void loadStarted ( @NotNull N parent );
 
     /**
      * Invoked when {@link AsyncUniqueNode} children load operation finishes.
@@ -41,7 +43,7 @@ public interface AsyncTreeModelListener<N extends AsyncUniqueNode> extends Event
      * @param parent   {@link AsyncUniqueNode} which children were loaded
      * @param children {@link List} of loaded child {@link AsyncUniqueNode}s
      */
-    public void loadCompleted ( N parent, List<N> children );
+    public void loadCompleted ( @NotNull N parent, @NotNull List<N> children );
 
     /**
      * Invoked when {@link AsyncUniqueNode} children load operation fails.
@@ -49,5 +51,5 @@ public interface AsyncTreeModelListener<N extends AsyncUniqueNode> extends Event
      * @param parent {@link AsyncUniqueNode} which children were loaded
      * @param cause  children load failure cause
      */
-    public void loadFailed ( N parent, Throwable cause );
+    public void loadFailed ( @NotNull N parent, @NotNull Throwable cause );
 }

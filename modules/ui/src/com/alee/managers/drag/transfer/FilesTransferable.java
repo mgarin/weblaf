@@ -17,6 +17,8 @@
 
 package com.alee.managers.drag.transfer;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 import org.slf4j.LoggerFactory;
 
@@ -62,6 +64,7 @@ public class FilesTransferable implements Transferable
     /**
      * Transferred files.
      */
+    @NotNull
     protected final List<File> files;
 
     /**
@@ -69,7 +72,7 @@ public class FilesTransferable implements Transferable
      *
      * @param file transferred file
      */
-    public FilesTransferable ( final File file )
+    public FilesTransferable ( @NotNull final File file )
     {
         this ( CollectionUtils.asList ( file ) );
     }
@@ -79,12 +82,12 @@ public class FilesTransferable implements Transferable
      *
      * @param files transferred files list
      */
-    public FilesTransferable ( final List<File> files )
+    public FilesTransferable ( @NotNull final List<File> files )
     {
-        super ();
         this.files = files;
     }
 
+    @NotNull
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
@@ -92,33 +95,38 @@ public class FilesTransferable implements Transferable
     }
 
     @Override
-    public boolean isDataFlavorSupported ( final DataFlavor flavor )
+    public boolean isDataFlavorSupported ( @NotNull final DataFlavor flavor )
     {
+        boolean dataFlavorSupported = false;
         for ( final DataFlavor dataFlavor : flavors )
         {
             if ( dataFlavor.equals ( flavor ) )
             {
-                return true;
+                dataFlavorSupported = true;
+                break;
             }
         }
-        return false;
+        return dataFlavorSupported;
     }
 
+    @NotNull
     @Override
-    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
+    public Object getTransferData ( @NotNull final DataFlavor flavor ) throws UnsupportedFlavorException
     {
+        final Object transferData;
         if ( flavor.equals ( DataFlavor.javaFileListFlavor ) )
         {
-            return files;
+            transferData = files;
         }
         else if ( flavor.equals ( getUriListDataFlavor () ) )
         {
-            return fileListToTextURIList ( files );
+            transferData = fileListToTextURIList ( files );
         }
         else
         {
             throw new UnsupportedFlavorException ( flavor );
         }
+        return transferData;
     }
 
     /**
@@ -127,7 +135,7 @@ public class FilesTransferable implements Transferable
      * @param transferable transferable
      * @return true if transferable contains files, false otherwise
      */
-    public static boolean hasFilesList ( final Transferable transferable )
+    public static boolean hasFilesList ( @NotNull final Transferable transferable )
     {
         final DataFlavor[] flavors = transferable.getTransferDataFlavors ();
         return hasURIListFlavor ( flavors ) || hasFileListFlavor ( flavors );
@@ -139,8 +147,10 @@ public class FilesTransferable implements Transferable
      * @param transferable transferable
      * @return list of imported files
      */
-    public static List<File> getFilesList ( final Transferable transferable )
+    @Nullable
+    public static List<File> getFilesList ( @NotNull final Transferable transferable )
     {
+        List<File> result = null;
         final DataFlavor[] flavors = transferable.getTransferDataFlavors ();
 
         // From files list (Linux/MacOS)
@@ -149,7 +159,7 @@ public class FilesTransferable implements Transferable
             if ( hasURIListFlavor ( flavors ) )
             {
                 // Parsing incoming files
-                return textURIListToFileList ( ( String ) transferable.getTransferData ( getUriListDataFlavor () ) );
+                result = textURIListToFileList ( ( String ) transferable.getTransferData ( getUriListDataFlavor () ) );
             }
         }
         catch ( final Exception ignored )
@@ -158,38 +168,44 @@ public class FilesTransferable implements Transferable
         }
 
         // From URL
-        try
+        if ( result == null )
         {
-            if ( hasURIListFlavor ( flavors ) )
+            try
             {
-                // File link
-                final String url = ( String ) transferable.getTransferData ( getUriListDataFlavor () );
-                final File file = new File ( new URL ( url ).getPath () );
+                if ( hasURIListFlavor ( flavors ) )
+                {
+                    // File link
+                    final String url = ( String ) transferable.getTransferData ( getUriListDataFlavor () );
+                    final File file = new File ( new URL ( url ).getPath () );
 
-                // Returning file
-                return CollectionUtils.asList ( file );
+                    // Returning file
+                    result = CollectionUtils.asList ( file );
+                }
             }
-        }
-        catch ( final Exception ignored )
-        {
-            //
+            catch ( final Exception ignored )
+            {
+                //
+            }
         }
 
         // From files list (Windows)
-        try
+        if ( result == null )
         {
-            if ( hasFileListFlavor ( flavors ) )
+            try
             {
-                // Getting files list
-                return ( List<File> ) transferable.getTransferData ( DataFlavor.javaFileListFlavor );
+                if ( hasFileListFlavor ( flavors ) )
+                {
+                    // Getting files list
+                    result = ( List<File> ) transferable.getTransferData ( DataFlavor.javaFileListFlavor );
+                }
+            }
+            catch ( final Exception ignored )
+            {
+                //
             }
         }
-        catch ( final Exception ignored )
-        {
-            //
-        }
 
-        return null;
+        return result;
     }
 
     /**
@@ -198,7 +214,8 @@ public class FilesTransferable implements Transferable
      * @param data text list of URI
      * @return list of files
      */
-    public static List<File> textURIListToFileList ( final String data )
+    @NotNull
+    public static List<File> textURIListToFileList ( @NotNull final String data )
     {
         final List<File> list = new ArrayList<File> ( 1 );
         for ( final StringTokenizer st = new StringTokenizer ( data, uriListSeparator ); st.hasMoreTokens (); )
@@ -227,7 +244,8 @@ public class FilesTransferable implements Transferable
      * @param files list of files to convert
      * @return text URI list
      */
-    public static String fileListToTextURIList ( final List<File> files )
+    @NotNull
+    public static String fileListToTextURIList ( @NotNull final List<File> files )
     {
         final StringBuilder sb = new StringBuilder ();
         for ( final File file : files )
@@ -244,16 +262,18 @@ public class FilesTransferable implements Transferable
      * @param flavors flavors array
      * @return true if flavors array has URI list flavor, false otherwise
      */
-    public static boolean hasURIListFlavor ( final DataFlavor[] flavors )
+    public static boolean hasURIListFlavor ( @NotNull final DataFlavor[] flavors )
     {
+        boolean hasURIListFlavor = false;
         for ( final DataFlavor flavor : flavors )
         {
             if ( getUriListDataFlavor ().equals ( flavor ) )
             {
-                return true;
+                hasURIListFlavor = true;
+                break;
             }
         }
-        return false;
+        return hasURIListFlavor;
     }
 
     /**
@@ -262,16 +282,18 @@ public class FilesTransferable implements Transferable
      * @param flavors flavors array
      * @return true if flavors array has file list flavor, false otherwise
      */
-    public static boolean hasFileListFlavor ( final DataFlavor[] flavors )
+    public static boolean hasFileListFlavor ( @NotNull final DataFlavor[] flavors )
     {
+        boolean hasFileListFlavor = false;
         for ( final DataFlavor flavor : flavors )
         {
             if ( DataFlavor.javaFileListFlavor.equals ( flavor ) )
             {
-                return true;
+                hasFileListFlavor = true;
+                break;
             }
         }
-        return false;
+        return hasFileListFlavor;
     }
 
     /**
@@ -279,6 +301,7 @@ public class FilesTransferable implements Transferable
      *
      * @return URI list data flavor
      */
+    @NotNull
     public static DataFlavor getUriListDataFlavor ()
     {
         if ( uriListFlavor == null )

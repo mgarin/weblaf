@@ -320,7 +320,8 @@ public final class FileUtils
      * @param file file to process
      * @return list of files contained in path of the specified file
      */
-    public static List<File> getFilePath ( File file )
+    @NotNull
+    public static List<File> getFilePath ( @Nullable File file )
     {
         final List<File> path = new ArrayList<File> ();
         while ( file != null )
@@ -431,6 +432,7 @@ public final class FileUtils
      *
      * @return first available file system root
      */
+    @Nullable
     public static File getSystemRoot ()
     {
         final File[] roots = getSystemRoots ();
@@ -442,21 +444,24 @@ public final class FileUtils
      *
      * @return array of available file system roots
      */
+    @NotNull
     public static File[] getSystemRoots ()
     {
-        final File[] roots;
+        final File[] systemRoots;
         synchronized ( fsv )
         {
-            roots = fsv.getRoots ();
+            systemRoots = fsv.getRoots ();
         }
-        if ( roots != null && roots.length > 0 )
+        final File[] roots;
+        if ( systemRoots != null && systemRoots.length > 0 )
         {
-            return roots;
+            roots = systemRoots;
         }
         else
         {
-            return getDiskRoots ();
+            roots = getDiskRoots ();
         }
+        return roots;
     }
 
     /**
@@ -464,6 +469,7 @@ public final class FileUtils
      *
      * @return array of available system disks
      */
+    @NotNull
     public static File[] getDiskRoots ()
     {
         final File[] roots = File.listRoots ();
@@ -649,6 +655,7 @@ public final class FileUtils
      *
      * @return user home directory
      */
+    @NotNull
     public static File getUserHome ()
     {
         return new File ( getUserHomePath () );
@@ -659,6 +666,7 @@ public final class FileUtils
      *
      * @return path to user home directory
      */
+    @NotNull
     public static String getUserHomePath ()
     {
         String home = System.getProperty ( "user.home" );
@@ -676,27 +684,30 @@ public final class FileUtils
      */
     public static File getDesktop ()
     {
-        // Trying file system roots
-        final File[] roots = FileSystemView.getFileSystemView ().getRoots ();
+        File desktop = null;
+        final File[] roots = fsv.getRoots ();
         if ( roots.length > 0 )
         {
+            // Trying file system roots
             for ( final File root : roots )
             {
                 if ( root.getName ().toLowerCase ( Locale.ROOT ).contains ( "desktop" ) )
                 {
-                    return root;
+                    desktop = root;
+                    break;
                 }
             }
         }
-
-        // Trying common known locations
-        final File desktop = new File ( getUserHome (), "Desktop" );
-        if ( desktop.exists () )
+        if ( desktop == null )
         {
-            return desktop;
+            // Trying common known location
+            final File common = new File ( getUserHome (), "Desktop" );
+            if ( common.exists () )
+            {
+                desktop = common;
+            }
         }
-
-        return null;
+        return desktop;
     }
 
     /**
@@ -719,22 +730,24 @@ public final class FileUtils
      */
     public static boolean equals ( final File file1, final File file2 )
     {
+        boolean equals;
         if ( file1 == null && file2 == null )
         {
-            return true;
+            equals = true;
         }
         else
         {
-            final boolean notNull = file1 != null && file2 != null;
             try
             {
-                return notNull && file1.getCanonicalPath ().equals ( file2.getCanonicalPath () );
+                final boolean notNull = file1 != null && file2 != null;
+                equals = notNull && file1.getCanonicalPath ().equals ( file2.getCanonicalPath () );
             }
             catch ( final IOException e )
             {
-                return notNull && file1.getAbsolutePath ().equals ( file2.getAbsolutePath () );
+                equals = file1.getAbsolutePath ().equals ( file2.getAbsolutePath () );
             }
         }
+        return equals;
     }
 
     /**
@@ -746,25 +759,27 @@ public final class FileUtils
      */
     public static boolean equals ( final List<File> files1, final List<File> files2 )
     {
-        if ( files1.size () != files2.size () )
+        boolean equals;
+        if ( files1.size () == files2.size () )
         {
-            return false;
-        }
-        else if ( files1.size () == files2.size () && files2.size () == 0 )
-        {
-            return true;
+            equals = true;
+            if ( files1.size () != 0 )
+            {
+                for ( int i = 0; i < files1.size (); i++ )
+                {
+                    if ( !equals ( files1.get ( i ), files2.get ( i ) ) )
+                    {
+                        equals = false;
+                        break;
+                    }
+                }
+            }
         }
         else
         {
-            for ( int i = 0; i < files1.size (); i++ )
-            {
-                if ( !files1.get ( i ).getAbsolutePath ().equals ( files2.get ( i ).getAbsolutePath () ) )
-                {
-                    return false;
-                }
-            }
-            return true;
+            equals = false;
         }
+        return equals;
     }
 
     /**

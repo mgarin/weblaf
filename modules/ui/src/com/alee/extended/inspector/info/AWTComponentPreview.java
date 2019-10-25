@@ -17,6 +17,7 @@
 
 package com.alee.extended.inspector.info;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -30,8 +31,9 @@ import java.awt.*;
  */
 public class AWTComponentPreview<C extends Component> extends AbstractComponentPreview<C>
 {
+    @NotNull
     @Override
-    public Icon getIconImpl ( final C component )
+    public Icon getIconImpl ( @NotNull final C component )
     {
         final Icon icon;
         if ( component instanceof Frame )
@@ -53,8 +55,9 @@ public class AWTComponentPreview<C extends Component> extends AbstractComponentP
         return icon;
     }
 
+    @NotNull
     @Override
-    public String getText ( final C component )
+    public String getText ( @NotNull final C component )
     {
         return "{" + ReflectUtils.getCompleteClassName ( component.getClass () ) + ":c(" + getTitleColor ( component ) + ")}";
     }

@@ -272,19 +272,19 @@ public class WTabbedPaneInputListener<C extends JTabbedPane, U extends WTabbedPa
         /**
          * Supported actions.
          */
-        public final static String NEXT = "navigateNext";
-        public final static String PREVIOUS = "navigatePrevious";
-        public final static String RIGHT = "navigateRight";
-        public final static String LEFT = "navigateLeft";
-        public final static String UP = "navigateUp";
-        public final static String DOWN = "navigateDown";
-        public final static String PAGE_UP = "navigatePageUp";
-        public final static String PAGE_DOWN = "navigatePageDown";
-        public final static String REQUEST_FOCUS = "requestFocus";
-        public final static String REQUEST_FOCUS_FOR_VISIBLE = "requestFocusForVisibleComponent";
-        public final static String SET_SELECTED = "setSelectedIndex";
-        public final static String SCROLL_FORWARD = "scrollTabsForwardAction";
-        public final static String SCROLL_BACKWARD = "scrollTabsBackwardAction";
+        public static final String NEXT = "navigateNext";
+        public static final String PREVIOUS = "navigatePrevious";
+        public static final String RIGHT = "navigateRight";
+        public static final String LEFT = "navigateLeft";
+        public static final String UP = "navigateUp";
+        public static final String DOWN = "navigateDown";
+        public static final String PAGE_UP = "navigatePageUp";
+        public static final String PAGE_DOWN = "navigatePageDown";
+        public static final String REQUEST_FOCUS = "requestFocus";
+        public static final String REQUEST_FOCUS_FOR_VISIBLE = "requestFocusForVisibleComponent";
+        public static final String SET_SELECTED = "setSelectedIndex";
+        public static final String SCROLL_FORWARD = "scrollTabsForwardAction";
+        public static final String SCROLL_BACKWARD = "scrollTabsBackwardAction";
 
         /**
          * Constructs new button {@link Actions} with the specified name.

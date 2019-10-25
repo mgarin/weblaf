@@ -203,13 +203,15 @@ public class WebTreeExample extends AbstractStylePreviewExample
         return new AbstractTreeTransferHandler<UniqueNode, WebTree<UniqueNode>, WebTreeModel<UniqueNode>> ()
         {
             @Override
-            public int getSourceActions ( final JComponent c )
+            public int getSourceActions ( @NotNull final JComponent c )
             {
                 return MOVE;
             }
 
+            @NotNull
             @Override
-            protected UniqueNode copy ( final WebTree<UniqueNode> tree, final WebTreeModel<UniqueNode> model, final UniqueNode node )
+            protected UniqueNode copy ( @NotNull final WebTree<UniqueNode> tree, @NotNull final WebTreeModel<UniqueNode> model, @NotNull
+            final UniqueNode node )
             {
                 // Custom node and its children copy algorithm
                 final UniqueNode copy = new UniqueNode ( node.getId (), node.getUserObject () );
@@ -221,8 +223,8 @@ public class WebTreeExample extends AbstractStylePreviewExample
             }
 
             @Override
-            protected boolean canBeDragged ( final WebTree<UniqueNode> tree, final WebTreeModel<UniqueNode> model,
-                                             final List<UniqueNode> nodes )
+            protected boolean canBeDragged ( @NotNull final WebTree<UniqueNode> tree, @NotNull final WebTreeModel<UniqueNode> model,
+                                             @NotNull final List<UniqueNode> nodes )
             {
                 // Blocking root drag
                 boolean allowed = true;

@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
@@ -40,8 +42,10 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
     /**
      * Supported flavors.
      */
+    @Nullable
     protected ArrayList<DataFlavor> flavors;
 
+    @NotNull
     @Override
     public List<DataFlavor> getSupportedFlavors ()
     {
@@ -53,21 +57,24 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
     }
 
     @Override
-    public boolean canDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination )
+    public boolean canDrop ( @NotNull final TransferHandler.TransferSupport support, @NotNull final T tree, @NotNull final M model,
+                             @NotNull final N destination )
     {
+        boolean canDrop;
         try
         {
             // Checking possibility to drop nodes
             final List<N> nodes = ( List<N> ) support.getTransferable ().getTransferData ( NodesTransferable.FLAVOR );
             final JTree.DropLocation dl = ( JTree.DropLocation ) support.getDropLocation ();
-            return canDrop ( support, tree, model, destination, dl.getChildIndex (), nodes );
+            canDrop = canDrop ( support, tree, model, destination, dl.getChildIndex (), nodes );
         }
         catch ( final Exception ufe )
         {
             // Simply ignore any issues here
             // We are only checking possibility to drop, anything could go wrong
-            return false;
+            canDrop = false;
         }
+        return canDrop;
     }
 
     /**
@@ -83,29 +90,31 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
      * @param nodes       list of nodes to drop
      * @return true if nodes can be dropped to the specified location and index, false otherwise
      */
-    protected boolean canDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
-                                final N destination, final int dropIndex, final List<N> nodes )
+    protected boolean canDrop ( @NotNull final TransferHandler.TransferSupport support, @NotNull final T tree, @NotNull final M model,
+                                @NotNull final N destination, final int dropIndex, @NotNull final List<N> nodes )
     {
         return true;
     }
 
     @Override
-    public boolean prepareDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
-                                 final N destination, final int index )
+    public boolean prepareDrop ( @NotNull final TransferHandler.TransferSupport support, @NotNull final T tree, @NotNull final M model,
+                                 @NotNull final N destination, final int index )
     {
+        boolean prepared;
         try
         {
             // Checking possibility to drop nodes
             final List<N> nodes = ( List<N> ) support.getTransferable ().getTransferData ( NodesTransferable.FLAVOR );
             final JTree.DropLocation dl = ( JTree.DropLocation ) support.getDropLocation ();
-            return prepareDrop ( support, tree, model, destination, dl.getChildIndex (), nodes );
+            prepared = prepareDrop ( support, tree, model, destination, dl.getChildIndex (), nodes );
         }
         catch ( final Exception ufe )
         {
             // Simply ignore any issues here
             // We are only checking possibility to drop, anything could go wrong
-            return false;
+            prepared = false;
         }
+        return prepared;
     }
 
     /**
@@ -121,15 +130,15 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M exte
      * @param nodes       list of nodes to drop
      * @return true if nodes can be dropped to the specified location and index, false otherwise
      */
-    protected boolean prepareDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
-                                    final N destination, final int dropIndex, final List<N> nodes )
+    protected boolean prepareDrop ( @NotNull final TransferHandler.TransferSupport support, @NotNull final T tree, @NotNull final M model,
+                                    @NotNull final N destination, final int dropIndex, @NotNull final List<N> nodes )
     {
         return canDrop ( support, tree, model, destination, dropIndex, nodes );
     }
 
     @Override
-    public void performDrop ( final TransferHandler.TransferSupport support, final T tree, final M model,
-                              final N destination, final int index, final NodesDropCallback<N> callback )
+    public void performDrop ( @NotNull final TransferHandler.TransferSupport support, @NotNull final T tree, @NotNull final M model,
+                              @NotNull final N destination, final int index, @NotNull final NodesDropCallback<N> callback )
     {
         try
         {

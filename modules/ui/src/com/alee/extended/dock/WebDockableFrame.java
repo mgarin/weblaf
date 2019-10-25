@@ -209,7 +209,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     public WebDockableFrame ( @NotNull final StyleId id, @NotNull final String frameId, @Nullable final Icon icon,
                               @Nullable final String title )
     {
-        super ();
         this.frameId = frameId;
         this.icon = icon;
         this.title = title;

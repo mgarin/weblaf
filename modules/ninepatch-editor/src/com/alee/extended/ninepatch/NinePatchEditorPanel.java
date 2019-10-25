@@ -17,6 +17,7 @@
 
 package com.alee.extended.ninepatch;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.Orientation;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.ninepatch.skin.NinePatchEditorStyles;
@@ -337,7 +338,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.setTransferHandler ( new FilesTransferHandler ( false, true )
         {
             @Override
-            public boolean filesDropped ( final List<File> files )
+            public boolean filesDropped ( @NotNull final List<File> files )
             {
                 if ( files != null )
                 {

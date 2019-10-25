@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree.walker;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
@@ -34,31 +36,33 @@ public class SimpleTreeWalker<N extends TreeNode> extends AbstractTreeWalker<N, 
      *
      * @param tree {@link JTree} to walk through
      */
-    public SimpleTreeWalker ( final JTree tree )
+    public SimpleTreeWalker ( @NotNull final JTree tree )
     {
         super ( tree );
     }
 
+    @NotNull
     @Override
-    protected N getRootNode ( final TreeModel model )
+    protected N getRootNode ( @NotNull final TreeModel model )
     {
         return ( N ) model.getRoot ();
     }
 
     @Override
-    protected int getChildCount ( final TreeModel model, final N parent )
+    protected int getChildCount ( @NotNull final TreeModel model, @NotNull final N parent )
     {
         return model.getChildCount ( parent );
     }
 
+    @NotNull
     @Override
-    protected N getChild ( final TreeModel model, final N parent, final int index )
+    protected N getChild ( @NotNull final TreeModel model, @NotNull final N parent, final int index )
     {
         return ( N ) model.getChild ( parent, index );
     }
 
     @Override
-    protected int getIndexOfChild ( final TreeModel model, final N parent, final N child )
+    protected int getIndexOfChild ( @NotNull final TreeModel model, @NotNull final N parent, @NotNull final N child )
     {
         return model.getIndexOfChild ( parent, child );
     }

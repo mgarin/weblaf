@@ -57,7 +57,7 @@ public abstract class AbstractDockablePaneDescriptor<C extends WebDockablePane, 
     }
 
     @Override
-    public void updateUI ( final C component )
+    public void updateUI ( @NotNull final C component )
     {
         // Updating component UI
         super.updateUI ( component );

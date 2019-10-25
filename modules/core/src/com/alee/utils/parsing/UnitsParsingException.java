@@ -17,6 +17,8 @@
 
 package com.alee.utils.parsing;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Exception that may be thrown upon parsing text units.
  *
@@ -29,7 +31,7 @@ public class UnitsParsingException extends IllegalArgumentException
      *
      * @param message exception message
      */
-    public UnitsParsingException ( final String message )
+    public UnitsParsingException ( @NotNull final String message )
     {
         super ( message );
     }
@@ -39,7 +41,7 @@ public class UnitsParsingException extends IllegalArgumentException
      *
      * @param cause {@link Throwable} cause
      */
-    public UnitsParsingException ( final Throwable cause )
+    public UnitsParsingException ( @NotNull final Throwable cause )
     {
         super ( cause );
     }
@@ -50,7 +52,7 @@ public class UnitsParsingException extends IllegalArgumentException
      * @param message exception message
      * @param cause   {@link Throwable} cause
      */
-    public UnitsParsingException ( final String message, final Throwable cause )
+    public UnitsParsingException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
     }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.checkbox.CheckState;
 import com.alee.laf.tree.NodesAcceptPolicy;
 
@@ -39,7 +40,8 @@ public interface TreeCheckingModel<N extends MutableTreeNode>
      * @param policy {@link NodesAcceptPolicy} that defines a way to filter nodes
      * @return list of nodes for the specified state
      */
-    public List<N> getNodes ( CheckState state, NodesAcceptPolicy policy );
+    @NotNull
+    public List<N> getNodes ( @NotNull CheckState state, @NotNull NodesAcceptPolicy policy );
 
     /**
      * Returns specified tree node check state.
@@ -47,7 +49,8 @@ public interface TreeCheckingModel<N extends MutableTreeNode>
      * @param node tree node to process
      * @return specified tree node check state
      */
-    public CheckState getCheckState ( N node );
+    @NotNull
+    public CheckState getCheckState ( @NotNull N node );
 
     /**
      * Sets whether the specified tree node is checked or not.
@@ -55,7 +58,7 @@ public interface TreeCheckingModel<N extends MutableTreeNode>
      * @param node    tree node to process
      * @param checked whether the specified tree node should be checked or not
      */
-    public void setChecked ( N node, boolean checked );
+    public void setChecked ( @NotNull N node, boolean checked );
 
     /**
      * Sets specified nodes state to checked.
@@ -63,21 +66,21 @@ public interface TreeCheckingModel<N extends MutableTreeNode>
      * @param nodes   nodes to check
      * @param checked whether the specified tree nodes should be checked or not
      */
-    public void setChecked ( Collection<N> nodes, boolean checked );
+    public void setChecked ( @NotNull Collection<N> nodes, boolean checked );
 
     /**
      * Inverts tree node check.
      *
      * @param node tree node to process
      */
-    public void invertCheck ( N node );
+    public void invertCheck ( @NotNull N node );
 
     /**
      * Inverts tree nodes check.
      *
      * @param nodes list of tree nodes to process
      */
-    public void invertCheck ( Collection<N> nodes );
+    public void invertCheck ( @NotNull Collection<N> nodes );
 
     /**
      * Checks all tree nodes.
@@ -101,12 +104,12 @@ public interface TreeCheckingModel<N extends MutableTreeNode>
      *
      * @param listener check state change listener to add
      */
-    public void addCheckStateChangeListener ( CheckStateChangeListener listener );
+    public void addCheckStateChangeListener ( @NotNull CheckStateChangeListener listener );
 
     /**
      * Removes check state change listener.
      *
      * @param listener check state change listener to remove
      */
-    public void removeCheckStateChangeListener ( CheckStateChangeListener listener );
+    public void removeCheckStateChangeListener ( @NotNull CheckStateChangeListener listener );
 }

@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.compare.Filter;
@@ -91,6 +93,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
         this.filter = filter;
     }
 
+    @NotNull
     @Override
     public FileTreeNode getRoot ()
     {
@@ -98,7 +101,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     }
 
     @Override
-    public void loadChildren ( final FileTreeNode parent, final NodesLoadCallback<FileTreeNode> listener )
+    public void loadChildren ( @NotNull final FileTreeNode parent, @NotNull final NodesLoadCallback<FileTreeNode> listener )
     {
         try
         {
@@ -149,15 +152,16 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
         }
     }
 
+    @Nullable
     @Override
-    public Filter<FileTreeNode> getChildrenFilter ( final FileTreeNode parent, final List<FileTreeNode> children )
+    public Filter<FileTreeNode> getChildrenFilter ( @NotNull final FileTreeNode parent, @NotNull final List<FileTreeNode> children )
     {
         // We must not filter out given roots
         return parent.getFile () != null ? super.getChildrenFilter ( parent, children ) : null;
     }
 
     @Override
-    public boolean isLeaf ( final FileTreeNode node )
+    public boolean isLeaf ( @NotNull final FileTreeNode node )
     {
         return node.getFile () != null && !FileUtils.isDirectory ( node.getFile () );
     }

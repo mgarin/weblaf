@@ -15,29 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.inspector.info;
+package com.alee.extended.tree;
 
-import com.alee.managers.language.LM;
-
-import javax.swing.*;
-import java.awt.*;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Function;
+import com.alee.laf.tree.UniqueNode;
 
 /**
- * Default {@link JComponent} information provider.
+ * Default {@link UniqueNode} text provider.
  *
+ * @param <N> {@link UniqueNode} type
  * @author Mikle Garin
  */
-public class WindowsPreview implements ComponentPreview<Component>
+public class UniqueNodeTextProvider<N extends UniqueNode> implements Function<N, String>
 {
     @Override
-    public Icon getIcon ( final Component component )
+    public String apply ( @Nullable final N node )
     {
-        return windows;
-    }
-
-    @Override
-    public String getText ( final Component component )
-    {
-        return LM.get ("weblaf.ex.inspector.windows");
+        return node != null ? node.toString () : "";
     }
 }

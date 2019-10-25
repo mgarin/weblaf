@@ -182,7 +182,7 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
              * Forcing this {@link TransferHandler} to move nodes.
              */
             @Override
-            public int getSourceActions ( final JComponent c )
+            public int getSourceActions ( @NotNull final JComponent c )
             {
                 return MOVE;
             }
@@ -190,15 +190,16 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
             /**
              * Blocks drop on {@link SampleObjectType#leaf} nodes.
              */
+            @NotNull
             @Override
             protected List<? extends TreeDropHandler> createDropHandlers ()
             {
                 return CollectionUtils.asList ( new NodesDropHandler<SampleNode, WebAsyncTree<SampleNode>, AsyncTreeModel<SampleNode>> ()
                 {
                     @Override
-                    protected boolean canDrop ( final TransferSupport support, final WebAsyncTree<SampleNode> tree,
-                                                final AsyncTreeModel<SampleNode> model, final SampleNode destination, final int dropIndex,
-                                                final List<SampleNode> nodes )
+                    protected boolean canDrop ( @NotNull final TransferSupport support, @NotNull final WebAsyncTree<SampleNode> tree,
+                                                @NotNull final AsyncTreeModel<SampleNode> model, @NotNull final SampleNode destination,
+                                                final int dropIndex, @NotNull final List<SampleNode> nodes )
                     {
                         return destination.getUserObject ().getType () != SampleObjectType.leaf;
                     }
@@ -209,8 +210,10 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
              * We do not need to copy children as {@link AsyncTreeDataProvider} will do that instead.
              * We only need to provide a copy of the specified node here.
              */
+            @NotNull
             @Override
-            protected SampleNode copy ( final WebAsyncTree<SampleNode> tree, final AsyncTreeModel<SampleNode> model, final SampleNode node )
+            protected SampleNode copy ( @NotNull final WebAsyncTree<SampleNode> tree, @NotNull final AsyncTreeModel<SampleNode> model, @NotNull
+            final SampleNode node )
             {
                 return node.clone ();
             }
@@ -219,8 +222,8 @@ public class WebAsyncTreeExample extends AbstractStylePreviewExample
              * Blocks root element drag.
              */
             @Override
-            protected boolean canBeDragged ( final WebAsyncTree<SampleNode> tree, final AsyncTreeModel<SampleNode> model,
-                                             final List<SampleNode> nodes )
+            protected boolean canBeDragged ( @NotNull final WebAsyncTree<SampleNode> tree, @NotNull final AsyncTreeModel<SampleNode> model,
+                                             @NotNull final List<SampleNode> nodes )
             {
                 boolean allowed = true;
                 for ( final SampleNode node : nodes )

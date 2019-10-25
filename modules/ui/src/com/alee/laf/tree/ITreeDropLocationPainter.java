@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.SectionPainter;
 
 import javax.swing.*;
@@ -32,17 +34,18 @@ import java.awt.*;
 public interface ITreeDropLocationPainter<C extends JTree, U extends WTreeUI> extends SectionPainter<C, U>
 {
     /**
-     * Prepares painter to paint tree drop location.
-     *
-     * @param location drop location
-     */
-    public void prepareToPaint ( JTree.DropLocation location );
-
-    /**
      * Returns drop view bounds.
      *
-     * @param location drop location
+     * @param location {@link javax.swing.JTree.DropLocation}
      * @return drop view bounds
      */
-    public Rectangle getDropViewBounds ( JTree.DropLocation location );
+    @Nullable
+    public Rectangle getDropViewBounds ( @NotNull JTree.DropLocation location );
+
+    /**
+     * Prepares painter to paint tree drop location.
+     *
+     * @param location {@link javax.swing.JTree.DropLocation}
+     */
+    public void prepareToPaint ( @NotNull JTree.DropLocation location );
 }

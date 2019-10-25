@@ -17,7 +17,7 @@
 
 package com.alee.extended.tree;
 
-import com.alee.api.annotations.Nullable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.ui.ChildStyleIdBridge;
 import com.alee.api.ui.StyleIdBridge;
 import com.alee.extended.checkbox.WebTristateCheckBox;
@@ -30,7 +30,6 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 
 import javax.swing.*;
-import javax.swing.plaf.TreeUI;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
@@ -57,15 +56,17 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
     /**
      * Current renderer states.
      */
+    @NotNull
     protected List<String> states;
 
     /**
      * Checkbox component used to renderer checkbox on the tree.
      */
+    @NotNull
     protected WebTristateCheckBox checkBox;
 
     /**
-     * Constructs new checkbox tree cell renderer.
+     * Constructs new {@link WebCheckBoxTreeCellRenderer}.
      */
     public WebCheckBoxTreeCellRenderer ()
     {
@@ -75,13 +76,14 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
         checkBox = new WebTristateCheckBox ();
     }
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> getStates ()
     {
         return states;
     }
 
+    @NotNull
     @Override
     public WebTristateCheckBox getCheckBox ()
     {
@@ -93,7 +95,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
      *
      * @param parameters {@link CheckBoxTreeNodeParameters}
      */
-    protected void updateStates ( final P parameters )
+    protected void updateStates ( @NotNull final P parameters )
     {
         states.clear ();
 
@@ -116,10 +118,10 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
         }
 
         // Hover state
-        final TreeUI ui = parameters.tree ().getUI ();
-        if ( ui instanceof WTreeUI )
+        final WTreeUI ui = parameters.tree ().getUI ();
+        if ( ui != null )
         {
-            if ( ( ( WTreeUI ) ui ).getHoverRow () == parameters.row () )
+            if ( ui.getHoverRow () == parameters.row () )
             {
                 states.add ( DecorationState.hover );
             }
@@ -140,7 +142,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
      *
      * @param parameters {@link CheckBoxTreeNodeParameters}
      */
-    protected void updateStyleId ( final P parameters )
+    protected void updateStyleId ( @NotNull final P parameters )
     {
         // Renderer style identifier
         StyleId id = null;
@@ -177,7 +179,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
      *
      * @param parameters {@link CheckBoxTreeNodeParameters}
      */
-    protected void updateView ( final P parameters )
+    protected void updateView ( @NotNull final P parameters )
     {
         // Updating renderer
         removeAll ();
@@ -195,9 +197,18 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
 
         // Updating actual cell renderer
         final TreeCellRenderer actual = parameters.tree ().getActualRenderer ();
-        final Component renderer = actual.getTreeCellRendererComponent ( parameters.tree (), parameters.node (), parameters.isSelected (),
-                parameters.isExpanded (), parameters.isLeaf (), parameters.row (), parameters.isFocused () );
-        add ( renderer, BorderLayout.CENTER );
+        if ( actual != null )
+        {
+            add ( actual.getTreeCellRendererComponent (
+                    parameters.tree (),
+                    parameters.node (),
+                    parameters.isSelected (),
+                    parameters.isExpanded (),
+                    parameters.isLeaf (),
+                    parameters.row (),
+                    parameters.isFocused ()
+            ), BorderLayout.CENTER );
+        }
     }
 
     /**
@@ -206,7 +217,8 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
      * @param parameters {@link CheckBoxTreeNodeParameters}
      * @return renderer {@link ComponentOrientation} for the specified {@link MutableTreeNode}
      */
-    protected ComponentOrientation orientationForValue ( final P parameters )
+    @NotNull
+    protected ComponentOrientation orientationForValue ( @NotNull final P parameters )
     {
         return parameters.tree ().getComponentOrientation ();
     }
@@ -223,8 +235,9 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
      * @param hasFocus   whether or not {@link MutableTreeNode} has focus
      * @return cell renderer component
      */
+    @NotNull
     @Override
-    public Component getTreeCellRendererComponent ( final JTree tree, final Object node, final boolean isSelected,
+    public Component getTreeCellRendererComponent ( @NotNull final JTree tree, @NotNull final Object node, final boolean isSelected,
                                                     final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         // Forming rendering parameters
@@ -257,7 +270,8 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
      * @param hasFocus   whether or not {@link MutableTreeNode} has focus
      * @return {@link CheckBoxTreeNodeParameters}
      */
-    protected P getRenderingParameters ( final C tree, final N node, final boolean isSelected,
+    @NotNull
+    protected P getRenderingParameters ( @NotNull final C tree, @NotNull final N node, final boolean isSelected,
                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         return ( P ) new CheckBoxTreeNodeParameters<N, C> ( tree, node, row, leaf, isSelected, expanded, hasFocus );
@@ -272,7 +286,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
     }
 
     @Override
-    public final void repaint ( final Rectangle r )
+    public final void repaint ( @NotNull final Rectangle r )
     {
         /**
          * Overridden for performance reasons.
