@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -51,10 +52,11 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
         return alignTextByIcons == null || alignTextByIcons;
     }
 
+    @NotNull
     @Override
-    protected int getMaxIconWidth ( final C c, final D d )
+    protected PopupMenuIcons getPopupMenuIcons ( @NotNull final C c, @NotNull final D d )
     {
-        int max = 0;
+        final PopupMenuIcons popupMenuIcons = new PopupMenuIcons ( false, false, 0, 0 );
         if ( isAlignTextByIcons ( c, d ) && c.getParent () instanceof JPopupMenu )
         {
             final JPopupMenu popupMenu = ( JPopupMenu ) c.getParent ();
@@ -63,20 +65,54 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
                 final Component component = popupMenu.getComponent ( i );
                 if ( component instanceof JMenuItem )
                 {
-                    final AbstractButton otherItem = ( AbstractButton ) component;
-                    if ( otherItem.getIcon () != null )
-                    {
-                        max = Math.max ( max, otherItem.getIcon ().getIconWidth () );
-                    }
+                    final JMenuItem item = ( JMenuItem ) component;
+                    adjustForMenuItem ( popupMenuIcons, item );
                 }
             }
         }
         else
         {
-            final Icon icon = c.getIcon ();
-            max = icon != null ? icon.getIconWidth () : 0;
+            adjustForMenuItem ( popupMenuIcons, c );
         }
-        return max;
+        return popupMenuIcons;
+    }
+
+    /**
+     * Adjusts {@link com.alee.laf.menu.AbstractMenuItemLayout.PopupMenuIcons} information according to {@link JMenuItem} settings.
+     *
+     * @param popupMenuIcons {@link com.alee.laf.menu.AbstractMenuItemLayout.PopupMenuIcons}
+     * @param menuItem       {@link JMenuItem}
+     */
+    protected void adjustForMenuItem ( @NotNull final PopupMenuIcons popupMenuIcons, @NotNull final JMenuItem menuItem )
+    {
+        final Object stateIcon = menuItem.getClientProperty ( AbstractStateMenuItemPainter.STATE_ICON_PROPERTY );
+        final boolean hasStateIcon = stateIcon instanceof Icon;
+        if ( hasStateIcon )
+        {
+            popupMenuIcons.maxStateIconWidth = Math.max (
+                    popupMenuIcons.maxStateIconWidth,
+                    ( ( Icon ) stateIcon ).getIconWidth ()
+            );
+        }
+
+        final Icon icon = menuItem.getIcon ();
+        final boolean hasIcon = icon != null;
+        if ( hasIcon )
+        {
+            popupMenuIcons.maxIconWidth = Math.max (
+                    popupMenuIcons.maxIconWidth,
+                    icon.getIconWidth ()
+            );
+        }
+
+        popupMenuIcons.hasAnyIcons = popupMenuIcons.hasAnyIcons || hasStateIcon || hasIcon;
+        popupMenuIcons.hasBothIcons = popupMenuIcons.hasBothIcons || hasStateIcon && hasIcon;
+    }
+
+    @Override
+    protected int getStateIconGap ( final C c, final D d )
+    {
+        return stateIconGap != null ? stateIconGap : getIconTextGap ( c, d );
     }
 
     @Override
@@ -94,7 +130,12 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
         // Extra conditions for menu items
         if ( !empty )
         {
-            if ( Objects.equals ( constraints, ACCELERATOR ) )
+            if ( Objects.equals ( constraints, STATE_ICON ) )
+            {
+                // State icon is only dispayed for specific menu item types
+                empty = !( c instanceof JCheckBoxMenuItem ) && !( c instanceof JRadioButtonMenuItem );
+            }
+            else if ( Objects.equals ( constraints, ACCELERATOR ) )
             {
                 // Accelerator is only displayed for menu items within popup menu and when it is specified
                 empty = !isInPopupMenu ( c, d ) || c.getAccelerator () == null;

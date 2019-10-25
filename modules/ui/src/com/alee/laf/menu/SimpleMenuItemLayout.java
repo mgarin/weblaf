@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -42,8 +43,9 @@ public class SimpleMenuItemLayout<C extends JComponent, D extends IDecoration<C,
         return false;
     }
 
+    @NotNull
     @Override
-    protected int getMaxIconWidth ( final C c, final D d )
+    protected PopupMenuIcons getPopupMenuIcons ( @NotNull final C c, @NotNull final D d )
     {
         final Icon icon;
         if ( c instanceof AbstractButton )
@@ -58,7 +60,13 @@ public class SimpleMenuItemLayout<C extends JComponent, D extends IDecoration<C,
         {
             icon = null;
         }
-        return icon != null ? icon.getIconWidth () : 0;
+        return new PopupMenuIcons ( icon != null, false, 0, icon != null ? icon.getIconWidth () : 0 );
+    }
+
+    @Override
+    protected int getStateIconGap ( final C c, final D d )
+    {
+        return 0;
     }
 
     @Override

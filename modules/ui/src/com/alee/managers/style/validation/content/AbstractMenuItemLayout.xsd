@@ -10,6 +10,9 @@
         <xs:complexContent>
             <xs:extension base="AbstractContentLayout">
 
+                <!-- Gap between state icon and icon contents -->
+                <xs:attribute name="stateIconGap" type="xs:integer" />
+
                 <!-- Gap between icon and text contents -->
                 <xs:attribute name="iconTextGap" type="xs:integer" />
 

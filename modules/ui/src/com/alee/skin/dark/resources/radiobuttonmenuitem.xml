@@ -12,7 +12,8 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" />
-                    <MenuItemLayout padding="4,10,5,8" iconTextGap="6" textAcceleratorGap="20">
+                    <MenuItemLayout padding="4,10,5,8" stateIconGap="8" iconTextGap="6" textAcceleratorGap="20">
+                        <MenuItemStateIcon constraints="state-icon" />
                         <SimpleButtonIcon constraints="icon" />
                         <ButtonText constraints="text" />
                         <RoundRectangle constraints="accelerator" round="4" opacity="0">
@@ -38,12 +39,12 @@
                 </decoration>
             </decorations>
 
-            <!-- Radio state painter -->
-            <checkStatePainter>
+            <!-- State icon painter -->
+            <stateIconPainter>
                 <decorations>
-                    <decoration size="17,17">
+                    <decoration size="15,15">
                         <EllipseShape />
-                        <WebShadow type="outer" width="2" />
+                        <WebShadow type="outer" width="1" />
                         <LineBorder color="20,20,20" />
                         <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
                             <color>77,81,83</color>
@@ -65,7 +66,7 @@
                         <RadioIcon padding="2" leftColor="120,120,120" rightColor="130,130,130" />
                     </decoration>
                 </decorations>
-            </checkStatePainter>
+            </stateIconPainter>
 
         </painter>
     </style>

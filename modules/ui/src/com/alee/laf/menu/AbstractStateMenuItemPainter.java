@@ -18,12 +18,20 @@
 package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.laf.checkbox.AbstractStateButtonPainter;
+import com.alee.api.annotations.Nullable;
+import com.alee.laf.button.AbstractButtonPainter;
+import com.alee.laf.checkbox.ButtonStatePainter;
+import com.alee.laf.checkbox.IButtonStatePainter;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.MenuItemUI;
+import javax.swing.plaf.UIResource;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -36,12 +44,45 @@ import java.util.List;
  * @author Mikle Garin
  */
 public abstract class AbstractStateMenuItemPainter<C extends JMenuItem, U extends MenuItemUI, D extends IDecoration<C, D>>
-        extends AbstractStateButtonPainter<C, U, D> implements IAbstractMenuItemPainter<C, U>
+        extends AbstractButtonPainter<C, U, D> implements IAbstractMenuItemPainter<C, U>
 {
+    /**
+     * Client property for {@link JMenuItem} state {@link Icon}.
+     */
+    public static final String STATE_ICON_PROPERTY = "menuItemStateIcon";
+
     /**
      * Menu item change listener.
      */
     protected transient MenuItemChangeListener menuItemChangeListener;
+
+    /**
+     * State icon painter.
+     */
+    @Nullable
+    @DefaultPainter ( ButtonStatePainter.class )
+    protected IButtonStatePainter stateIconPainter;
+
+    @Nullable
+    @Override
+    protected List<SectionPainter<C, U>> getSectionPainters ()
+    {
+        return asList ( stateIconPainter );
+    }
+
+    @Override
+    public void install ( @NotNull final C c, @NotNull final U ui )
+    {
+        super.install ( c, ui );
+        installStateIcon ();
+    }
+
+    @Override
+    public void uninstall ( @NotNull final C c, @NotNull final U ui )
+    {
+        uninstallStateIcon ();
+        super.uninstall ( c, ui );
+    }
 
     @Override
     protected void installPropertiesAndListeners ()
@@ -76,6 +117,38 @@ public abstract class AbstractStateMenuItemPainter<C extends JMenuItem, U extend
     }
 
     /**
+     * Installs state {@link Icon} if current button {@link Icon} is {@code null} or {@link UIResource}.
+     */
+    protected void installStateIcon ()
+    {
+        if ( stateIconPainter != null )
+        {
+            // todo Workaround to allow disabling icon, replace with omit in style later
+            final Dimension size = stateIconPainter.getPreferredSize ();
+            if ( size.width > 0 && size.height > 0 )
+            {
+                component.putClientProperty ( STATE_ICON_PROPERTY, createIcon () );
+            }
+        }
+    }
+
+    /**
+     * Uninstalls state {@link Icon} if current button {@link Icon} is {@link UIResource}.
+     */
+    protected void uninstallStateIcon ()
+    {
+        if ( stateIconPainter != null )
+        {
+            // todo Workaround to allow disabling icon, replace with omit in style later
+            final Dimension size = stateIconPainter.getPreferredSize ();
+            if ( size.width > 0 && size.height > 0 )
+            {
+                component.putClientProperty ( STATE_ICON_PROPERTY, null );
+            }
+        }
+    }
+
+    /**
      * Installs {@link MenuItemChangeListener} into {@link JMenuItem}.
      */
     protected void installMenuItemChangeListener ()
@@ -89,5 +162,57 @@ public abstract class AbstractStateMenuItemPainter<C extends JMenuItem, U extend
     protected void uninstallMenuItemChangeListener ()
     {
         menuItemChangeListener = MenuItemChangeListener.uninstall ( menuItemChangeListener, component );
+    }
+
+    /**
+     * Creates and returns component state icon.
+     *
+     * @return component state icon
+     */
+    @NotNull
+    protected Icon createIcon ()
+    {
+        return new StateIcon ();
+    }
+
+    /**
+     * Custom state icon.
+     */
+    protected class StateIcon implements Icon, UIResource
+    {
+        @Override
+        public void paintIcon ( @NotNull final Component c, @NotNull final Graphics g, final int x, final int y )
+        {
+            if ( stateIconPainter != null )
+            {
+                final Graphics2D g2d = ( Graphics2D ) g;
+                final Object aa = GraphicsUtils.setupAntialias ( g2d );
+                paintSection ( stateIconPainter, g2d, new Rectangle ( new Point ( x, y ), getSize () ) );
+                GraphicsUtils.restoreAntialias ( g2d, aa );
+            }
+        }
+
+        /**
+         * Returns icon size.
+         *
+         * @return icon size
+         */
+        @NotNull
+        protected Dimension getSize ()
+        {
+            return stateIconPainter != null ? stateIconPainter.getPreferredSize () : new Dimension ( 16, 16 );
+        }
+
+        @Override
+        public int getIconWidth ()
+        {
+            return getSize ().width;
+        }
+
+        @Override
+        public int getIconHeight ()
+        {
+            return getSize ().height;
+        }
     }
 }

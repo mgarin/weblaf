@@ -164,9 +164,10 @@
                     <!-- Menu item -->
                     <style type="radiobuttonmenuitem" id="item">
                         <painter>
-                            <decorations>
+                            <decorations overwrite="true">
                                 <decoration>
-                                    <MenuItemLayout>
+                                    <WebShape round="0" />
+                                    <MenuItemLayout padding="4,10,5,8" stateIconGap="8" iconTextGap="6" textAcceleratorGap="20">
                                         <ButtonIcon constraints="icon" />
                                         <TabMenuItemText constraints="text" />
                                     </MenuItemLayout>
@@ -195,8 +196,8 @@
                                 </decoration>
                             </decorations>
 
-                            <!-- Radio state painter -->
-                            <checkStatePainter overwrite="true" />
+                            <!-- State icon painter -->
+                            <stateIconPainter overwrite="true" />
 
                         </painter>
                     </style>

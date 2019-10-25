@@ -32,7 +32,7 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
      * State icon painter.
      */
     @DefaultPainter ( ButtonStatePainter.class )
-    protected IButtonStatePainter checkStatePainter;
+    protected IButtonStatePainter stateIconPainter;
 
     /**
      * Runtime icon bounds.
@@ -44,7 +44,7 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
     @Override
     protected List<SectionPainter<C, U>> getSectionPainters ()
     {
-        return asList ( checkStatePainter );
+        return asList ( stateIconPainter );
     }
 
     @Override
@@ -135,11 +135,11 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
             iconBounds = new Rectangle ( new Point ( x, y ), getSize () );
 
             // Painting check state icon
-            if ( checkStatePainter != null )
+            if ( stateIconPainter != null )
             {
                 final Graphics2D g2d = ( Graphics2D ) g;
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
-                paintSection ( checkStatePainter, g2d, iconBounds );
+                paintSection ( stateIconPainter, g2d, iconBounds );
                 GraphicsUtils.restoreAntialias ( g2d, aa );
             }
         }
@@ -152,7 +152,7 @@ public abstract class AbstractStateButtonPainter<C extends AbstractButton, U ext
         @NotNull
         protected Dimension getSize ()
         {
-            return checkStatePainter != null ? checkStatePainter.getPreferredSize () : new Dimension ( 16, 16 );
+            return stateIconPainter != null ? stateIconPainter.getPreferredSize () : new Dimension ( 16, 16 );
         }
 
         @Override

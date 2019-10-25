@@ -335,6 +335,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( StyledLabelText.class );
         XmlUtils.processAnnotations ( MenuItemLayout.class );
         XmlUtils.processAnnotations ( SimpleMenuItemLayout.class );
+        XmlUtils.processAnnotations ( MenuItemStateIcon.class );
         XmlUtils.processAnnotations ( AcceleratorText.class );
         XmlUtils.processAnnotations ( ProgressBarText.class );
         XmlUtils.processAnnotations ( HotkeyLabelBackground.class );

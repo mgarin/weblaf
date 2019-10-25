@@ -17,10 +17,10 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.layout.AbstractContentLayout;
 import com.alee.painter.decoration.layout.ContentLayoutData;
-import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -29,6 +29,7 @@ import java.awt.*;
 /**
  * Abstract implementation of simple menu item layout.
  * It only paints contents placed under {@link #ICON}, {@link #TEXT}, {@link #ACCELERATOR} and {@link #ARROW} constraints.
+ * It doesn't use {@link JMenuItem} as base type to allow other custom menu items to use this layout if necessary.
  *
  * @param <C> component type
  * @param <D> decoration type
@@ -41,10 +42,17 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
     /**
      * Layout constraints.
      */
+    protected static final String STATE_ICON = "state-icon";
     protected static final String ICON = "icon";
     protected static final String TEXT = "text";
     protected static final String ACCELERATOR = "accelerator";
     protected static final String ARROW = "arrow";
+
+    /**
+     * Gap between state icon and icon contents.
+     */
+    @XStreamAsAttribute
+    protected Integer stateIconGap;
 
     /**
      * Gap between icon and text contents.
@@ -74,14 +82,26 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
     protected abstract boolean isAlignTextByIcons ( C c, D d );
 
     /**
-     * Returns maximum icon width for the specified menu item.
-     * It might take into account other menu items within popup menu.
+     * Returns {@link PopupMenuIcons} information.
      *
      * @param c painted component
      * @param d painted decoration state
-     * @return maximum icon width for the specified menu item
+     * @return {@link PopupMenuIcons} information
      */
-    protected abstract int getMaxIconWidth ( C c, D d );
+    @NotNull
+    protected abstract PopupMenuIcons getPopupMenuIcons ( @NotNull C c, @NotNull D d );
+
+    /**
+     * Returns gap between state and icon contents.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return gap between state and icon contents
+     */
+    protected int getStateIconGap ( final C c, final D d )
+    {
+        return stateIconGap != null ? stateIconGap : getIconTextGap ( c, d );
+    }
 
     /**
      * Returns gap between icon and text contents.
@@ -126,14 +146,40 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final Dimension available = new Dimension ( bounds.width, bounds.height );
         int x = ltr ? bounds.x : bounds.x + bounds.width;
-        final boolean hasIcon = !isEmpty ( c, d, ICON );
         final boolean alignTextByIcons = isAlignTextByIcons ( c, d );
-        if ( hasIcon || alignTextByIcons )
+        final boolean hasStateIcon = !isEmpty ( c, d, STATE_ICON );
+        final boolean hasIcon = !isEmpty ( c, d, ICON );
+        final PopupMenuIcons popupMenuIcons = getPopupMenuIcons ( c, d );
+        if ( hasStateIcon || alignTextByIcons && popupMenuIcons.hasBothIcons )
         {
-            Dimension ips = getPreferredSize ( c, d, ICON, available );
+            final Dimension ips = getPreferredSize ( c, d, STATE_ICON, available );
             if ( alignTextByIcons )
             {
-                ips = SwingUtils.maxNonNull ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
+                ips.width = Math.max ( ips.width, popupMenuIcons.maxStateIconWidth );
+                if ( !popupMenuIcons.hasBothIcons )
+                {
+                    ips.width = Math.max ( ips.width, popupMenuIcons.maxIconWidth );
+                }
+            }
+            x += ltr ? 0 : -ips.width;
+            if ( hasStateIcon )
+            {
+                layoutData.put ( STATE_ICON, new Rectangle ( x, bounds.y, ips.width, bounds.height ) );
+            }
+            final int stateIconGap = getStateIconGap ( c, d );
+            x += ltr ? ips.width + stateIconGap : -stateIconGap;
+            available.width -= ips.width + stateIconGap;
+        }
+        if ( hasIcon || alignTextByIcons && popupMenuIcons.hasBothIcons )
+        {
+            final Dimension ips = getPreferredSize ( c, d, ICON, available );
+            if ( alignTextByIcons )
+            {
+                ips.width = Math.max ( ips.width, popupMenuIcons.maxIconWidth );
+                if ( !popupMenuIcons.hasBothIcons )
+                {
+                    ips.width = Math.max ( ips.width, popupMenuIcons.maxStateIconWidth );
+                }
             }
             x += ltr ? 0 : -ips.width;
             if ( hasIcon )
@@ -143,6 +189,12 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
             final int iconTextGap = getIconTextGap ( c, d );
             x += ltr ? ips.width + iconTextGap : -iconTextGap;
             available.width -= ips.width + iconTextGap;
+        }
+        if ( !hasStateIcon && !hasIcon && alignTextByIcons && popupMenuIcons.hasAnyIcons && !popupMenuIcons.hasBothIcons )
+        {
+            final int maxIcon = Math.max ( popupMenuIcons.maxStateIconWidth, popupMenuIcons.maxIconWidth );
+            x += ltr ? maxIcon + iconTextGap : -iconTextGap;
+            available.width -= maxIcon + iconTextGap;
         }
         if ( !isEmpty ( c, d, ARROW ) )
         {
@@ -170,15 +222,42 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
     protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
     {
         final Dimension ps = new Dimension ();
-        if ( !isEmpty ( c, d, ICON ) || isAlignTextByIcons ( c, d ) )
+        final boolean alignTextByIcons = isAlignTextByIcons ( c, d );
+        final boolean hasStateIcon = !isEmpty ( c, d, STATE_ICON );
+        final boolean hasIcon = !isEmpty ( c, d, ICON );
+        final PopupMenuIcons popupMenuIcons = getPopupMenuIcons ( c, d );
+        if ( hasStateIcon || alignTextByIcons && popupMenuIcons.hasBothIcons )
         {
-            Dimension ips = getPreferredSize ( c, d, ICON, available );
-            if ( isAlignTextByIcons ( c, d ) )
+            final Dimension ips = getPreferredSize ( c, d, STATE_ICON, available );
+            if ( alignTextByIcons )
             {
-                ips = SwingUtils.maxNonNull ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
+                ips.width = Math.max ( ips.width, popupMenuIcons.maxStateIconWidth );
+                if ( !popupMenuIcons.hasBothIcons )
+                {
+                    ips.width = Math.max ( ips.width, popupMenuIcons.maxIconWidth );
+                }
+            }
+            ps.width += ips.width + getStateIconGap ( c, d );
+            ps.height = Math.max ( ps.height, ips.height );
+        }
+        if ( hasIcon || alignTextByIcons && popupMenuIcons.hasBothIcons )
+        {
+            final Dimension ips = getPreferredSize ( c, d, ICON, available );
+            if ( alignTextByIcons )
+            {
+                ips.width = Math.max ( ips.width, popupMenuIcons.maxIconWidth );
+                if ( !popupMenuIcons.hasBothIcons )
+                {
+                    ips.width = Math.max ( ips.width, popupMenuIcons.maxStateIconWidth );
+                }
             }
             ps.width += ips.width + getIconTextGap ( c, d );
             ps.height = Math.max ( ps.height, ips.height );
+        }
+        if ( !hasStateIcon && !hasIcon && alignTextByIcons && popupMenuIcons.hasAnyIcons && !popupMenuIcons.hasBothIcons )
+        {
+            final int maxIcon = Math.max ( popupMenuIcons.maxStateIconWidth, popupMenuIcons.maxIconWidth );
+            ps.width += maxIcon + iconTextGap;
         }
         if ( !isEmpty ( c, d, TEXT ) )
         {
@@ -199,5 +278,49 @@ public abstract class AbstractMenuItemLayout<C extends JComponent, D extends IDe
             ps.height = Math.max ( ps.height, aps.height );
         }
         return ps;
+    }
+
+    /**
+     * Information about state {@link Icon} and custom {@link Icon} of all menu items in {@link JPopupMenu}.
+     */
+    protected static class PopupMenuIcons
+    {
+        /**
+         * Whether or not at least one menu item has a non-{@code null} state {@link Icon} or custom {@link Icon}.
+         */
+        public boolean hasAnyIcons;
+
+        /**
+         * Whether or not at least one menu item has both state {@link Icon} and custom {@link Icon}.
+         */
+        public boolean hasBothIcons;
+
+        /**
+         * Maximum width of state {@link Icon}s of all menu items in {@link JPopupMenu}.
+         * Will simply be {@code 0} if no items in menu have state {@link Icon}.
+         */
+        public int maxStateIconWidth;
+
+        /**
+         * Maximum width of custom {@link Icon}s of all menu items in {@link JPopupMenu}.
+         * Will simply be {@code 0} if no items in menu have custom {@link Icon}.
+         */
+        public int maxIconWidth;
+
+        /**
+         * Constructs new {@link PopupMenuIcons}.
+         *
+         * @param hasAnyIcons       whether or not at least one menu item has a non-{@code null} state {@link Icon} or custom {@link Icon}
+         * @param hasBothIcons      whether or not at least one menu item has both state {@link Icon} and custom {@link Icon}
+         * @param maxStateIconWidth maximum width of state {@link Icon}s of all menu items in {@link JPopupMenu}
+         * @param maxIconWidth      maximum width of custom {@link Icon}s of all menu items in {@link JPopupMenu}
+         */
+        public PopupMenuIcons ( final boolean hasAnyIcons, final boolean hasBothIcons, final int maxStateIconWidth, final int maxIconWidth )
+        {
+            this.hasAnyIcons = hasAnyIcons;
+            this.hasBothIcons = hasBothIcons;
+            this.maxStateIconWidth = maxStateIconWidth;
+            this.maxIconWidth = maxIconWidth;
+        }
     }
 }

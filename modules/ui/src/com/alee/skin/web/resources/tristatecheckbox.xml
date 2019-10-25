@@ -22,8 +22,8 @@
                 </decoration>
             </decorations>
 
-            <!-- Check state painter -->
-            <checkStatePainter>
+            <!-- State icon painter -->
+            <stateIconPainter>
                 <decorations>
                     <decoration size="17,17">
                         <WebShape round="2" />
@@ -55,7 +55,7 @@
                         <MixedIcon leftColor="gray" rightColor="lightGray" />
                     </decoration>
                 </decorations>
-            </checkStatePainter>
+            </stateIconPainter>
 
         </painter>
     </style>

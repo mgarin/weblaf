@@ -18,6 +18,7 @@
     <xs:include schemaLocation="LabelText.xsd" />
     <xs:include schemaLocation="MenuItemLayout.xsd" />
     <xs:include schemaLocation="SimpleMenuItemLayout.xsd" />
+    <xs:include schemaLocation="MenuItemStateIcon.xsd" />
     <xs:include schemaLocation="MixedIcon.xsd" />
     <xs:include schemaLocation="ProgressBarText.xsd" />
     <xs:include schemaLocation="RadioIcon.xsd" />
@@ -53,6 +54,7 @@
             <xs:element name="LabelText" type="LabelText" />
             <xs:element name="MenuItemLayout" type="MenuItemLayout" />
             <xs:element name="SimpleMenuItemLayout" type="SimpleMenuItemLayout" />
+            <xs:element name="MenuItemStateIcon" type="MenuItemStateIcon" />
             <xs:element name="MixedIcon" type="MixedIcon" />
             <xs:element name="ProgressBarText" type="ProgressBarText" />
             <xs:element name="RadioIcon" type="RadioIcon" />

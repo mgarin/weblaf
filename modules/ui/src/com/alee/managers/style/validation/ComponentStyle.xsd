@@ -123,8 +123,9 @@
                     <xs:choice>
 
                         <!-- com.alee.laf.checkbox.AbstractStateButtonPainter -->
+                        <!-- com.alee.laf.menu.AbstractStateMenuItemPainter -->
                         <xs:sequence>
-                            <xs:element name="checkStatePainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="stateIconPainter" type="PainterSettings" minOccurs="0" maxOccurs="1" />
                         </xs:sequence>
 
                         <!-- com.alee.laf.list.ListPainter -->
