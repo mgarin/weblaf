@@ -284,10 +284,17 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
     @Override
     public void setFilter ( @Nullable final Filter<N> filter )
     {
-        final Filter<N> oldFilter = this.filter;
-        this.filter = filter;
-        filter ();
-        firePropertyChange ( FILTER_PROPERTY, oldFilter, filter );
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure parameter changed
+        if ( filter != getFilter () )
+        {
+            final Filter<N> old = getFilter ();
+            this.filter = filter;
+            filter ();
+            firePropertyChange ( FILTER_PROPERTY, old, filter );
+        }
     }
 
     @Override
@@ -336,10 +343,17 @@ public class WebExTree<N extends UniqueNode> extends WebTree<N> implements Filte
     @Override
     public void setComparator ( @Nullable final Comparator<N> comparator )
     {
-        final Comparator<N> oldComparator = this.comparator;
-        this.comparator = comparator;
-        sort ();
-        firePropertyChange ( COMPARATOR_PROPERTY, oldComparator, comparator );
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure parameter changed
+        if ( comparator != getComparator () )
+        {
+            final Comparator<N> old = getComparator ();
+            this.comparator = comparator;
+            sort ();
+            firePropertyChange ( COMPARATOR_PROPERTY, old, comparator );
+        }
     }
 
     @Override

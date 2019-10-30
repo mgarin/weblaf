@@ -68,7 +68,8 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
     /**
      * Whether to load children asynchronously or not.
      */
-    protected boolean asyncLoading = true;
+    @Nullable
+    protected Boolean asyncLoading;
 
     /**
      * Tree nodes filter.
@@ -212,34 +213,6 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
         return StyleId.asynctree;
     }
 
-    /**
-     * Returns whether children are loaded asynchronously or not.
-     *
-     * @return true if children are loaded asynchronously, false otherwise
-     */
-    public boolean isAsyncLoading ()
-    {
-        return asyncLoading;
-    }
-
-    /**
-     * Sets whether to load children asynchronously or not.
-     *
-     * @param asyncLoading whether to load children asynchronously or not
-     */
-    public void setAsyncLoading ( final boolean asyncLoading )
-    {
-        // Event Dispatch Thread check
-        WebLookAndFeel.checkEventDispatchThread ();
-
-        // Updating loading mode
-        final boolean old = this.asyncLoading;
-        this.asyncLoading = asyncLoading;
-
-        // Notifying about property change
-        firePropertyChange ( ASYNC_LOADING_PROPERTY, old, asyncLoading );
-    }
-
     @Nullable
     @Override
     public AsyncTreeModel<N> getModel ()
@@ -314,6 +287,35 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
         setModel ( new AsyncTreeModel<N> ( dataProvider ) );
     }
 
+    /**
+     * Returns whether children are loaded asynchronously or not.
+     *
+     * @return true if children are loaded asynchronously, false otherwise
+     */
+    public boolean isAsyncLoading ()
+    {
+        return asyncLoading == null || asyncLoading;
+    }
+
+    /**
+     * Sets whether to load children asynchronously or not.
+     *
+     * @param asyncLoading whether to load children asynchronously or not
+     */
+    public void setAsyncLoading ( final boolean asyncLoading )
+    {
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure parameter changed
+        if ( asyncLoading != isAsyncLoading () )
+        {
+            final boolean old = isAsyncLoading ();
+            this.asyncLoading = asyncLoading;
+            firePropertyChange ( ASYNC_LOADING_PROPERTY, old, asyncLoading );
+        }
+    }
+
     @Nullable
     @Override
     public Filter<N> getFilter ()
@@ -324,10 +326,17 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
     @Override
     public void setFilter ( @Nullable final Filter<N> filter )
     {
-        final Filter<N> oldFilter = this.filter;
-        this.filter = filter;
-        filter ();
-        firePropertyChange ( FILTER_PROPERTY, oldFilter, filter );
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure parameter changed
+        if ( filter != getFilter () )
+        {
+            final Filter<N> old = getFilter ();
+            this.filter = filter;
+            filter ();
+            firePropertyChange ( FILTER_PROPERTY, old, filter );
+        }
     }
 
     @Override
@@ -376,10 +385,17 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
     @Override
     public void setComparator ( @Nullable final Comparator<N> comparator )
     {
-        final Comparator<N> oldComparator = this.comparator;
-        this.comparator = comparator;
-        sort ();
-        firePropertyChange ( COMPARATOR_PROPERTY, oldComparator, comparator );
+        // Event Dispatch Thread check
+        WebLookAndFeel.checkEventDispatchThread ();
+
+        // Ensure parameter changed
+        if ( comparator != getComparator () )
+        {
+            final Comparator<N> old = getComparator ();
+            this.comparator = comparator;
+            sort ();
+            firePropertyChange ( COMPARATOR_PROPERTY, old, comparator );
+        }
     }
 
     @Override
