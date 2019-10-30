@@ -476,19 +476,26 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
             @Override
             public void componentAdded ( @NotNull final ContainerEvent e )
             {
+                // We're not interested in doing anything with tab area here
                 final Component component = e.getChild ();
                 if ( component != tabArea )
                 {
-                    // Simply asking tabbed pane to find added component index
+                    // Ensure tab component exists within tabbed pane at a known index
                     final int index = tabbedPane.indexOfComponent ( component );
                     if ( index != -1 )
                     {
-                        addTab ( index );
+                        // Ensure that our custom tabs count is less than tab components
+                        // It will not be less if the addition was simply replacing component of an existing tab
+                        if ( tabbedPane.getComponentCount () - 1 > tabContainer.getComponentCount () )
+                        {
+                            addTab ( index );
+                        }
                     }
                 }
             }
 
             /* This part is not needed as it is handled within PropertyChangeListener workaround */
+            /* Also this will not work correctly with tab component change as it simply removes/adds component */
             /*@Override
             public void componentRemoved ( @NotNull final ContainerEvent e )
             {

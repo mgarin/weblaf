@@ -17,6 +17,9 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 import java.util.EventListener;
 
@@ -37,7 +40,7 @@ public interface DocumentDataListener<T extends DocumentData> extends EventListe
      *
      * @param document modified {@link DocumentData}
      */
-    public void titleChanged ( T document );
+    public void titleChanged ( @NotNull T document );
 
     /**
      * Inform about {@link DocumentData} background {@link Color} change.
@@ -46,7 +49,7 @@ public interface DocumentDataListener<T extends DocumentData> extends EventListe
      * @param oldBackground previous background {@link Color}
      * @param newBackground new background {@link Color}
      */
-    public void backgroundChanged ( T document, Color oldBackground, Color newBackground );
+    public void backgroundChanged ( @NotNull T document, @Nullable Color oldBackground, @Nullable Color newBackground );
 
     /**
      * Informs about {@link DocumentData} content {@link Component} change.
@@ -55,5 +58,5 @@ public interface DocumentDataListener<T extends DocumentData> extends EventListe
      * @param oldComponent previous tab content {@link Component}
      * @param newComponent new tab content {@link Component}
      */
-    public void contentChanged ( T document, Component oldComponent, Component newComponent );
+    public void contentChanged ( @NotNull T document, @Nullable Component oldComponent, @Nullable Component newComponent );
 }

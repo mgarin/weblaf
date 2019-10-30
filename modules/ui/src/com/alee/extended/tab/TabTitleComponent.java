@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
@@ -48,11 +49,13 @@ public class TabTitleComponent<T extends DocumentData> extends WebPanel implemen
     /**
      * Title {@link JComponent}.
      */
+    @NotNull
     protected JComponent title;
 
     /**
      * Tab close {@link AbstractButton}.
      */
+    @Nullable
     protected AbstractButton closeButton;
 
     /**
@@ -77,7 +80,8 @@ public class TabTitleComponent<T extends DocumentData> extends WebPanel implemen
         // Document close button
         if ( paneData.getDocumentPane ().isClosable () && document.isClosable () )
         {
-            add ( createCloseButton ( paneData, document ), BorderLayout.LINE_END );
+            closeButton = createCloseButton ( paneData, document );
+            add ( closeButton, BorderLayout.LINE_END );
         }
     }
 
@@ -128,12 +132,14 @@ public class TabTitleComponent<T extends DocumentData> extends WebPanel implemen
         return closeButton;
     }
 
+    @Nullable
     @Override
     public Icon getIcon ()
     {
         return title instanceof JLabel ? ( ( JLabel ) title ).getIcon () : null;
     }
 
+    @Nullable
     @Override
     public String getTitle ()
     {

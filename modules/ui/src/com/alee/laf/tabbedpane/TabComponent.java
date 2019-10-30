@@ -17,6 +17,8 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 
 /**
@@ -32,6 +34,7 @@ public interface TabComponent
      *
      * @return {@link Tab} component {@link Icon}
      */
+    @Nullable
     public Icon getIcon ();
 
     /**
@@ -39,5 +42,6 @@ public interface TabComponent
      *
      * @return {@link Tab} component title
      */
+    @Nullable
     public String getTitle ();
 }

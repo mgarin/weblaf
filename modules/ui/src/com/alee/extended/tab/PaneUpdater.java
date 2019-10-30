@@ -17,6 +17,9 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 
 /**
@@ -39,7 +42,6 @@ public class PaneUpdater<T extends DocumentData> implements DocumentDataListener
      */
     public PaneUpdater ( final PaneData paneData )
     {
-        super ();
         this.paneData = paneData;
     }
 
@@ -54,19 +56,19 @@ public class PaneUpdater<T extends DocumentData> implements DocumentDataListener
     }
 
     @Override
-    public void titleChanged ( final T document )
+    public void titleChanged ( @NotNull final T document )
     {
         paneData.updateTabTitleComponent ( document );
     }
 
     @Override
-    public void backgroundChanged ( final T document, final Color oldBackground, final Color newBackground )
+    public void backgroundChanged ( @NotNull final T document, @Nullable final Color oldBackground, @Nullable final Color newBackground )
     {
         paneData.updateTabBackground ( document );
     }
 
     @Override
-    public void contentChanged ( final T document, final Component oldComponent, final Component newComponent )
+    public void contentChanged ( @NotNull final T document, @Nullable final Component oldComponent, @Nullable final Component newComponent )
     {
         paneData.updateTabComponent ( document );
     }
