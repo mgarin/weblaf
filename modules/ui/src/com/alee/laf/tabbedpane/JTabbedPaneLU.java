@@ -22,6 +22,7 @@ import com.alee.managers.language.LanguageUpdater;
 import com.alee.managers.language.ToolTipLU;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Custom {@link LanguageUpdater} for {@link JTabbedPane}.
@@ -96,7 +97,8 @@ public class JTabbedPaneLU extends ToolTipLU<JTabbedPane>
         {
             // Updating tab text and mnemonic
             // todo Use tab information from WebDocumentPane in case this tabbed pane is part of it
-            final String tabKey = key + "." + ( useComponentNames ? component.getComponentAt ( i ).getName () : "" + i );
+            final Component componentAt = component.getComponentAt ( i );
+            final String tabKey = key + "." + ( useComponentNames && componentAt != null ? componentAt.getName () : "" + i );
             if ( language.containsText ( tabKey ) )
             {
                 component.setTitleAt ( i, language.get ( tabKey, data ) );

@@ -484,9 +484,9 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                     final int index = tabbedPane.indexOfComponent ( component );
                     if ( index != -1 )
                     {
-                        // Ensure that our custom tabs count is less than tab components
+                        // Ensure that our custom tabs count is less than registered tabs in tabbed pane
                         // It will not be less if the addition was simply replacing component of an existing tab
-                        if ( tabbedPane.getComponentCount () - 1 > tabContainer.getComponentCount () )
+                        if ( tabContainer.getComponentCount () < tabbedPane.getTabCount () )
                         {
                             addTab ( index );
                         }
@@ -524,10 +524,21 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
     {
         return new ComponentAdapter ()
         {
+            /**
+             * Previously recorded size.
+             */
+            private Dimension oldSize = null;
+
             @Override
             public void componentResized ( @NotNull final ComponentEvent e )
             {
-                recalculateViewSizes ();
+                // The extra check to avoid unnecessary updates if size didn't change
+                final Dimension newSize = tabbedPane.getSize ();
+                if ( Objects.notEquals ( oldSize, newSize ) )
+                {
+                    recalculateViewSizes ();
+                    oldSize = newSize;
+                }
             }
         };
     }

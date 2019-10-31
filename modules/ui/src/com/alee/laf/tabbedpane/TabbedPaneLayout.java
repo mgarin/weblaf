@@ -154,6 +154,16 @@ public class TabbedPaneLayout extends AbstractLayoutManager implements Mergeable
         }
         else
         {
+            // Hiding previously displayed content
+            for ( int i = 0; i < tabbedPane.getTabCount (); i++ )
+            {
+                final Component componentAt = tabbedPane.getComponentAt ( i );
+                if ( componentAt != null && componentAt.isVisible () )
+                {
+                    componentAt.setVisible ( false );
+                }
+            }
+
             // Updating content bounds
             this.contentBounds = BoundsType.padding.bounds ( tabbedPane );
         }
