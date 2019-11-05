@@ -48,12 +48,14 @@ public class ColorBackground<C extends JComponent, D extends IDecoration<C, D>, 
     protected Color color;
 
     /**
-     * Returns background color.
+     * Returns background {@link Color}.
      *
-     * @return background color
+     * @param c painted component
+     * @param d painted decoration state
+     * @return background {@link Color}
      */
     @NotNull
-    protected Color getColor ()
+    protected Color getColor ( @NotNull final C c, @NotNull final D d )
     {
         return color != null ? color : Color.WHITE;
     }
@@ -65,7 +67,7 @@ public class ColorBackground<C extends JComponent, D extends IDecoration<C, D>, 
         if ( opacity > 0 )
         {
             final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-            final Paint op = GraphicsUtils.setupPaint ( g2d, getColor () );
+            final Paint op = GraphicsUtils.setupPaint ( g2d, getColor ( c, d ) );
             g2d.fill ( shape );
             GraphicsUtils.restorePaint ( g2d, op );
             GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );

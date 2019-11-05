@@ -324,6 +324,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( StyledToolTipText.class );
         XmlUtils.processAnnotations ( TabText.class );
         XmlUtils.processAnnotations ( TabMenuItemText.class );
+        XmlUtils.processAnnotations ( TabBackground.class );
         XmlUtils.processAnnotations ( ButtonLayout.class );
         XmlUtils.processAnnotations ( ButtonIcon.class );
         XmlUtils.processAnnotations ( ButtonText.class );

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="ColorBackground.xsd" />
+
+    <!-- com.alee.laf.tabbedpane.TabBackground -->
+    <xs:complexType name="TabBackground">
+        <xs:complexContent>
+            <xs:extension base="ColorBackground">
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

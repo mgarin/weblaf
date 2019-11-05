@@ -8,6 +8,7 @@
     <xs:include schemaLocation="AlphaLayerBackground.xsd" />
     <xs:include schemaLocation="MovingHighlightBackground.xsd" />
     <xs:include schemaLocation="BreadcrumbProgressBackground.xsd" />
+    <xs:include schemaLocation="TabBackground.xsd" />
 
     <!-- IBackground implementations -->
     <xs:group name="Backgrounds">
@@ -21,6 +22,7 @@
                 <xs:element name="AlphaLayerBackground" type="AlphaLayerBackground" />
                 <xs:element name="MovingHighlightBackground" type="MovingHighlightBackground" />
                 <xs:element name="BreadcrumbProgressBackground" type="BreadcrumbProgressBackground" />
+                <xs:element name="TabBackground" type="TabBackground" />
 
                 <!-- Any custom backgrounds -->
                 <xs:any processContents="skip" />
