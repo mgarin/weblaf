@@ -77,6 +77,8 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     public static final String DISABLED_ICON_AT_PROPERTY = "disabledIconAt";
     public static final String MNEMONIC_AT_PROPERTY = "mnemonicAt";
     public static final String DISPLAYED_MNEMONIC_INDEX_AT_PROPERTY = "displayedMnemonicIndexAt";
+    public static final String STYLE_ID_AT_PROPERTY = "styleIdAt";
+    public static final String CHILD_STYLE_ID_AT_PROPERTY = "childStyleIdAt";
 
     /**
      * Workaround Swing property for removed tab.
@@ -154,6 +156,18 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     }
 
     /**
+     * Returns {@link Tab} at the specified index.
+     *
+     * @param index {@link Tab} index
+     * @return {@link Tab} at the specified index
+     */
+    @NotNull
+    public Tab getTab ( final int index )
+    {
+        return getUI ().getTab ( index );
+    }
+
+    /**
      * Workaround for no event being fired in {@link JTabbedPane}.
      *
      * @see TabbedPaneLayout#invalidateLayout(Container)
@@ -226,6 +240,43 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
             super.setDisabledIconAt ( index, disabledIcon );
             firePropertyChange ( DISABLED_ICON_AT_PROPERTY, null, index );
         }
+    }
+
+    /**
+     * Returns {@link StyleId} of the {@link Tab} component at the specified index.
+     *
+     * @param index {@link Tab} index
+     * @return {@link StyleId} of the {@link Tab} component at the specified index
+     */
+    @NotNull
+    public StyleId getStyleIdAt ( final int index )
+    {
+        return getUI ().getStyleIdAt ( index );
+    }
+
+    /**
+     * Changes {@link StyleId} for {@link Tab} component at the specified index.
+     * Use this method to provide a standalone {@link StyleId} for any particular {@link Tab}.
+     *
+     * @param index   {@link Tab} index
+     * @param styleId new {@link StyleId}
+     */
+    public void setStyleIdAt ( final int index, @NotNull final StyleId styleId )
+    {
+        firePropertyChange ( STYLE_ID_AT_PROPERTY, null, new Object[]{ index, styleId } );
+    }
+
+    /**
+     * Changes {@link StyleId} for {@link Tab} component at the specified index.
+     * Use this method to provide a {@link StyleId} with {@link TabContainer} as parent for any particular {@link Tab}.
+     * Resulting {@link StyleId} will be retrieved through {@link ChildStyleId#at(JComponent)} with {@link TabContainer} provided.
+     *
+     * @param index   {@link Tab} index
+     * @param styleId new {@link ChildStyleId}, {@link TabContainer} will become it's parent
+     */
+    public void setStyleIdAt ( final int index, @NotNull final ChildStyleId styleId )
+    {
+        firePropertyChange ( CHILD_STYLE_ID_AT_PROPERTY, null, new Object[]{ index, styleId } );
     }
 
     /**

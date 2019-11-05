@@ -75,31 +75,22 @@ public class TabMenuItem extends WebRadioButtonMenuItem implements ActionListene
         if ( ui != null )
         {
             final Tab tab = ui.getTab ( index );
-            if ( tab != null )
+            if ( tab.getComponent () instanceof TabComponent )
             {
-                if ( tab.getComponent () instanceof TabComponent )
-                {
-                    // Retrieving icon and title from tab component
-                    final TabComponent tabComponent = ( TabComponent ) tab.getComponent ();
-                    icon = tabComponent.getIcon ();
-                    title = tabComponent instanceof JComponent && UILanguageManager.isRegisteredComponent ( ( JComponent ) tabComponent ) ?
-                            UILanguageManager.getComponentKey ( ( JComponent ) tabComponent ) :
-                            tabComponent.getTitle ();
-                }
-                else
-                {
-                    // Trying to retrieve icon and title from tab directly
-                    icon = tab.getIcon ();
-                    title = UILanguageManager.isRegisteredComponent ( tab ) ?
-                            UILanguageManager.getComponentKey ( tab ) :
-                            tab.getText ();
-                }
+                // Retrieving icon and title from tab component
+                final TabComponent tabComponent = ( TabComponent ) tab.getComponent ();
+                icon = tabComponent.getIcon ();
+                title = tabComponent instanceof JComponent && UILanguageManager.isRegisteredComponent ( ( JComponent ) tabComponent ) ?
+                        UILanguageManager.getComponentKey ( ( JComponent ) tabComponent ) :
+                        tabComponent.getTitle ();
             }
             else
             {
-                // Retrieving icon and title provided by JTabbedPane
-                icon = tabbedPane.getIconAt ( index );
-                title = tabbedPane.getTitleAt ( index );
+                // Trying to retrieve icon and title from tab directly
+                icon = tab.getIcon ();
+                title = UILanguageManager.isRegisteredComponent ( tab ) ?
+                        UILanguageManager.getComponentKey ( tab ) :
+                        tab.getText ();
             }
         }
         else

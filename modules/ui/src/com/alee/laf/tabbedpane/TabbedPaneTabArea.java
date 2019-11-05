@@ -80,10 +80,7 @@ public class TabbedPaneTabArea<V, C extends JTabbedPane> extends AbstractCompone
             if ( ui instanceof WTabbedPaneUI )
             {
                 final Tab tab = ( ( WTabbedPaneUI ) ui ).getTab ( this.tab );
-                if ( tab != null )
-                {
-                    adjustBounds ( component, tab, bounds );
-                }
+                adjustBounds ( component, tab, bounds );
             }
         }
 

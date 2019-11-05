@@ -26,6 +26,8 @@ import com.alee.laf.viewport.WebViewport;
 import com.alee.managers.hover.GlobalHoverListener;
 import com.alee.managers.hover.HoverManager;
 import com.alee.managers.language.UILanguageManager;
+import com.alee.managers.style.ChildStyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.LafUtils;
@@ -434,6 +436,26 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                     updateTabAreaStates ();
                     recalculateViewSizes ();
                 }
+                else if ( Objects.equals ( property, WebTabbedPane.STYLE_ID_AT_PROPERTY ) )
+                {
+                    final Object[] newValue = ( Object[] ) evt.getNewValue ();
+                    final int index = ( Integer ) newValue[ 0 ];
+                    final StyleId styleId = ( StyleId ) newValue[ 1 ];
+                    final Tab tab = ( Tab ) tabContainer.getComponent ( index );
+                    tab.setStyleId ( styleId );
+                    updateTabAreaStates ();
+                    recalculateViewSizes ();
+                }
+                else if ( Objects.equals ( property, WebTabbedPane.CHILD_STYLE_ID_AT_PROPERTY ) )
+                {
+                    final Object[] newValue = ( Object[] ) evt.getNewValue ();
+                    final int index = ( Integer ) newValue[ 0 ];
+                    final ChildStyleId styleId = ( ChildStyleId ) newValue[ 1 ];
+                    final Tab tab = ( Tab ) tabContainer.getComponent ( index );
+                    tab.setStyleId ( styleId.at ( tabContainer ) );
+                    updateTabAreaStates ();
+                    recalculateViewSizes ();
+                }
                 else if ( Objects.equals ( property, WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY ) )
                 {
                     updateToolTipHoverListener ();
@@ -630,13 +652,10 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                         if ( selectedIndex != -1 )
                         {
                             final Tab selectedTab = getTab ( selectedIndex );
-                            if ( selectedTab != null )
+                            final Rectangle selectedBounds = selectedTab.getBounds ();
+                            if ( !tabContainer.getVisibleRect ().contains ( selectedBounds ) )
                             {
-                                final Rectangle selectedBounds = selectedTab.getBounds ();
-                                if ( !tabContainer.getVisibleRect ().contains ( selectedBounds ) )
-                                {
-                                    tabContainer.scrollRectToVisible ( selectedBounds );
-                                }
+                                tabContainer.scrollRectToVisible ( selectedBounds );
                             }
                         }
                     }
@@ -812,10 +831,29 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
      * @param index {@link Tab} index
      * @return {@link Tab} at the specified index
      */
-    @Nullable
+    @NotNull
     public Tab getTab ( final int index )
     {
-        return tabContainer != null ? ( Tab ) tabContainer.getComponent ( index ) : null;
+        if ( tabContainer != null )
+        {
+            return ( Tab ) tabContainer.getComponent ( index );
+        }
+        else
+        {
+            throw new RuntimeException ( "JTabbedPane UI is not yet initialized" );
+        }
+    }
+
+    /**
+     * Returns {@link StyleId} of the {@link Tab} component at the specified index.
+     *
+     * @param index {@link Tab} index
+     * @return {@link StyleId} of the {@link Tab} component at the specified index
+     */
+    @NotNull
+    public StyleId getStyleIdAt ( final int index )
+    {
+        return getTab ( index ).getStyleId ();
     }
 
     @Override
@@ -830,7 +868,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
         }
         else
         {
-            throw new RuntimeException ( "UI have not been initialized" );
+            throw new RuntimeException ( "JTabbedPane UI is not yet initialized" );
         }
         return tabIndex;
     }
@@ -856,7 +894,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
         }
         else
         {
-            throw new RuntimeException ( "UI have not been initialized" );
+            throw new RuntimeException ( "JTabbedPane UI is not yet initialized" );
         }
         return tabBounds;
     }
@@ -879,7 +917,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
         }
         else
         {
-            throw new RuntimeException ( "UI have not been initialized" );
+            throw new RuntimeException ( "JTabbedPane UI is not yet initialized" );
         }
         return runCount;
     }
