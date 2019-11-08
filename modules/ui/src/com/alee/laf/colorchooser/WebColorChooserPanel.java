@@ -17,6 +17,8 @@
 
 package com.alee.laf.colorchooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.colorchooser.DoubleColorField;
 import com.alee.extended.colorchooser.DoubleColorFieldListener;
 import com.alee.extended.layout.LineLayout;
@@ -500,16 +502,17 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         brightnessField.setText ( "" + Math.round ( 100 * values[ 2 ] ) );
     }
 
+    @NotNull
     public Color getColor ()
     {
         return color;
     }
 
-    public void setColor ( final Color color )
+    public void setColor ( @Nullable final Color color )
     {
-        this.color = color;
+        this.color = color != null ? color : Color.RED;
         setOldColor ( color );
-        updateColors ( color, UpdateSource.outer );
+        updateColors ( this.color, UpdateSource.outer );
     }
 
     public Color getOldColor ()

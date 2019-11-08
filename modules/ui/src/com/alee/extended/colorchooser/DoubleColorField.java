@@ -18,10 +18,14 @@
 package com.alee.extended.colorchooser;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.colorchooser.HSBColor;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.language.*;
+import com.alee.managers.language.LM;
+import com.alee.managers.language.Language;
+import com.alee.managers.language.LanguageListener;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
@@ -40,10 +44,16 @@ public class DoubleColorField extends WebPanel
 {
     private final List<DoubleColorFieldListener> listeners = new ArrayList<DoubleColorFieldListener> ( 1 );
 
+    @Nullable
     private Color newColor;
+
+    @Nullable
+    private HSBColor newHSBColor;
+
+    @Nullable
     private Color oldColor;
 
-    private HSBColor newHSBColor;
+    @Nullable
     private HSBColor oldHSBColor;
 
     public DoubleColorField ()
@@ -81,60 +91,99 @@ public class DoubleColorField extends WebPanel
     }
 
     @Override
-    public void paint ( final Graphics g )
+    protected void paintComponent ( @NotNull final Graphics g )
     {
-        super.paint ( g );
+        super.paintComponent ( g );
 
         final Graphics2D g2d = ( Graphics2D ) g;
-        final FontMetrics fm = g2d.getFontMetrics ();
-
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
 
+        g2d.setPaint ( getBackground () );
+        g2d.fillRect ( 0, 0, getWidth (), getHeight () );
         g2d.setPaint ( Color.GRAY );
         g2d.drawRect ( 0, 0, getWidth () - 1, getHeight () - 1 );
         g2d.setPaint ( Color.WHITE );
         g2d.drawRect ( 1, 1, getWidth () - 3, getHeight () - 3 );
+        g2d.drawLine ( 1, getHeight () / 2, getWidth () - 3, getHeight () / 2 );
 
-        g2d.setPaint ( newColor );
-        g2d.fillRect ( 2, 2, getWidth () - 4, getHeight () / 2 - 2 );
-
-        final String newText = LM.get ( "weblaf.colorchooser.color.new" );
-        final Point nts = LafUtils.getTextCenterShift ( fm, newText );
-        g2d.setPaint ( newHSBColor.getBrightness () >= 0.7f && newHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
-        g2d.drawString ( newText, getWidth () / 2 + nts.x, 2 + ( getHeight () - 4 ) / 4 + nts.y );
-
-        g2d.setPaint ( oldColor );
-        g2d.fillRect ( 2, getHeight () / 2, getWidth () - 4, getHeight () - getHeight () / 2 - 2 );
-
-        final String currentText = LM.get ( "weblaf.colorchooser.color.current" );
-        final Point cts = LafUtils.getTextCenterShift ( fm, currentText );
-        g2d.setPaint ( oldHSBColor.getBrightness () >= 0.7f && oldHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
-        g2d.drawString ( currentText, getWidth () / 2 + cts.x, 2 + ( getHeight () - 4 ) * 3 / 4 + cts.y );
+        paintColorRectangle (
+                g2d,
+                new Rectangle ( 2, 2, getWidth () - 5, getHeight () / 2 - 3 ),
+                this.newColor,
+                this.newHSBColor,
+                LM.get ( "weblaf.colorchooser.color.new" )
+        );
+        paintColorRectangle (
+                g2d,
+                new Rectangle ( 2, getHeight () / 2 + 1, getWidth () - 5, getHeight () / 2 - 4 ),
+                this.oldColor,
+                this.oldHSBColor,
+                LM.get ( "weblaf.colorchooser.color.current" )
+        );
 
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 
+    private void paintColorRectangle ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @Nullable final Color color,
+                                       @Nullable final HSBColor hsbColor, @NotNull final String text )
+    {
+        final FontMetrics fm = g2d.getFontMetrics ();
+
+        if ( color != null )
+        {
+            g2d.setPaint ( color );
+            g2d.fillRect ( bounds.x, bounds.y, bounds.width + 1, bounds.height + 1 );
+        }
+        else
+        {
+            g2d.setPaint ( Color.GRAY );
+            g2d.drawRect ( bounds.x, bounds.y, bounds.width, bounds.height );
+            g2d.drawLine ( bounds.x, bounds.y, bounds.x + bounds.width, bounds.y + bounds.height );
+            g2d.drawLine ( bounds.x + bounds.width, bounds.y, bounds.x, bounds.y + bounds.height );
+        }
+
+        final Point nts = LafUtils.getTextCenterShift ( fm, text );
+        final boolean newColorIsLight = hsbColor == null || hsbColor.getBrightness () >= 0.7f && hsbColor.getSaturation () < 0.7f;
+        if ( color == null )
+        {
+            final int fw = fm.stringWidth ( text );
+            final int fh = fm.getHeight ();
+            g2d.setPaint ( new RadialGradientPaint (
+                    bounds.x + bounds.width / 2,
+                    bounds.y + bounds.height / 2, bounds.width / 2,
+                    new float[]{ 0f, 1f },
+                    new Color[]{ getBackground (), ColorUtils.transparent () },
+                    MultipleGradientPaint.CycleMethod.NO_CYCLE
+            ) );
+            g2d.fillRect ( bounds.x + bounds.width / 2 - fw / 2, bounds.y + bounds.height / 2 - fh / 2 + 1, fw, fh );
+        }
+        g2d.setPaint ( newColorIsLight ? Color.BLACK : Color.WHITE );
+        g2d.drawString ( text, bounds.x + bounds.width / 2 + nts.x, bounds.y + bounds.height / 2 + nts.y );
+    }
+
+    @Nullable
     public Color getNewColor ()
     {
         return newColor;
     }
 
-    public void setNewColor ( final Color newColor )
+    public void setNewColor ( @Nullable final Color newColor )
     {
         this.newColor = newColor;
-        this.newHSBColor = new HSBColor ( newColor );
+        this.newHSBColor = newColor != null ? new HSBColor ( newColor ) : null;
         this.repaint ();
     }
 
+    @Nullable
     public Color getOldColor ()
     {
         return oldColor;
     }
 
-    public void setOldColor ( final Color oldColor )
+    public void setOldColor ( @Nullable final Color oldColor )
     {
         this.oldColor = oldColor;
-        this.oldHSBColor = new HSBColor ( oldColor );
+        this.oldHSBColor = oldColor != null ? new HSBColor ( oldColor ) : null;
         this.repaint ();
     }
 

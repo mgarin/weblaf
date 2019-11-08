@@ -465,6 +465,7 @@ public class WebColorChooserField extends WebTextField
                             @Override
                             public void windowClosed ( final WindowEvent e )
                             {
+                                window.removeWindowListener ( this );
                                 if ( screenshot != null )
                                 {
                                     if ( shouldUpdateColor )

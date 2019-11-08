@@ -17,6 +17,7 @@
 
 package com.alee.laf.colorchooser;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.ColorUtils;
 
 import java.awt.*;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public class PaletteColorChooserPaint implements Paint
 {
-    private Color cornerColor = Color.RED;
+    private Color cornerColor;
     private boolean webSafe = false;
 
     private ColorModel model = ColorModel.getRGBdefault ();
@@ -43,9 +44,8 @@ public class PaletteColorChooserPaint implements Paint
     private int width;
     private int height;
 
-    public PaletteColorChooserPaint ( final int x, final int y, final int width, final int height, final Color cornerColor )
+    public PaletteColorChooserPaint ( final int x, final int y, final int width, final int height, @NotNull final Color cornerColor )
     {
-        super ();
         this.x = x;
         this.y = y;
         this.width = width;
