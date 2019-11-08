@@ -128,7 +128,7 @@ public class TabbedPaneTooltipExample extends AbstractStylePreviewExample
         protected List<? extends JComponent> createPreviewElements ()
         {
             final JTabbedPane tabbedPane = createTabbedPane ( JTabbedPane.SCROLL_TAB_LAYOUT, JTabbedPane.TOP );
-            tabbedPane.putClientProperty ( WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY, new TabbedPaneToolTipProvider<Component> ()
+            WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY.set ( tabbedPane, new TabbedPaneToolTipProvider<Component> ()
             {
                 @Nullable
                 @Override
