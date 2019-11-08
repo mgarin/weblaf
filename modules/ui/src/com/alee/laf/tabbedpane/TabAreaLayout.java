@@ -29,7 +29,6 @@ import java.io.Serializable;
 
 /**
  * Custom layout for {@link TabArea}.
- * todo Support for leading/trailing components: https://github.com/mgarin/weblaf/issues/539
  *
  * @author Mikle Garin
  */
@@ -40,6 +39,7 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
     public void layoutContainer ( @NotNull final Container parent )
     {
         final TabArea tabArea = ( TabArea ) parent;
+        final JTabbedPane tabbedPane = tabArea.getTabbedPane ();
 
         // Looking for components
         // todo Replace with get(Class) in ContainerMethods
@@ -66,11 +66,11 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
         );
 
         // Placing TabMenuButton
-        final int tabPlacement = tabArea.getTabbedPane ().getTabPlacement ();
+        final int tabPlacement = tabbedPane.getTabPlacement ();
         final boolean horizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
         if ( tabMenuButton != null && tabMenuButton.isVisible () )
         {
-            final boolean ltr = tabArea.getTabbedPane ().getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = tabbedPane.getComponentOrientation ().isLeftToRight ();
             final Dimension mps = tabMenuButton.getPreferredSize ();
             tabMenuButton.setBounds (
                     horizontal ?
@@ -101,6 +101,7 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
     public Dimension preferredLayoutSize ( @NotNull final Container parent )
     {
         final TabArea tabArea = ( TabArea ) parent;
+        final JTabbedPane tabbedPane = tabArea.getTabbedPane ();
 
         // Looking for components
         // todo Replace with get(Class) in ContainerMethods
@@ -126,7 +127,7 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
         // Resulting preferred size
         // Minimum length is either viewport preferred width or menu button 2x width to have some space left for tabs
         final Insets insets = tabArea.getInsets ();
-        final int tabPlacement = tabArea.getTabbedPane ().getTabPlacement ();
+        final int tabPlacement = tabbedPane.getTabPlacement ();
         final boolean horizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
         return new Dimension (
                 horizontal ?

@@ -87,7 +87,7 @@ public class TabbedPaneLayout extends AbstractLayoutManager implements Mergeable
 
         // Positioning tab area
         final TabArea tabArea = getTabArea ( tabbedPane );
-        if ( tabArea != null )
+        if ( tabArea != null && tabArea.isVisible () )
         {
             final boolean ltr = tabbedPane.getComponentOrientation ().isLeftToRight ();
             final Dimension tabAreaSize = tabArea.getPreferredSize ();
@@ -193,29 +193,36 @@ public class TabbedPaneLayout extends AbstractLayoutManager implements Mergeable
 
         // Calculating resulting preferred size
         final TabArea tabArea = getTabArea ( tabbedPane );
-        final Dimension tabAreaSize = tabArea != null ? tabArea.getPreferredSize () : new Dimension ();
-        switch ( tabbedPane.getTabPlacement () )
+        if ( tabArea != null && tabArea.isVisible () )
         {
-            default:
-            case SwingConstants.TOP:
-            case SwingConstants.BOTTOM:
+            final Dimension tabAreaSize = tabArea.getPreferredSize ();
+            switch ( tabbedPane.getTabPlacement () )
             {
-                preferredSize = new Dimension (
-                        Math.max ( tabAreaSize.width, contentPreferredSize.width ),
-                        tabAreaSize.height + contentPreferredSize.height
-                );
-            }
-            break;
+                default:
+                case SwingConstants.TOP:
+                case SwingConstants.BOTTOM:
+                {
+                    preferredSize = new Dimension (
+                            Math.max ( tabAreaSize.width, contentPreferredSize.width ),
+                            tabAreaSize.height + contentPreferredSize.height
+                    );
+                }
+                break;
 
-            case SwingConstants.LEFT:
-            case SwingConstants.RIGHT:
-            {
-                preferredSize = new Dimension (
-                        tabAreaSize.width + contentPreferredSize.width,
-                        Math.max ( tabAreaSize.height, contentPreferredSize.height )
-                );
+                case SwingConstants.LEFT:
+                case SwingConstants.RIGHT:
+                {
+                    preferredSize = new Dimension (
+                            tabAreaSize.width + contentPreferredSize.width,
+                            Math.max ( tabAreaSize.height, contentPreferredSize.height )
+                    );
+                }
+                break;
             }
-            break;
+        }
+        else
+        {
+            preferredSize = contentPreferredSize;
         }
 
         // Adding tabbed pane insets

@@ -29,7 +29,9 @@ import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.swing.ClientProperty;
 import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.NullableClientProperty;
 import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
@@ -90,7 +92,10 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      *
      * @see TabbedPaneToolTipProvider
      */
-    public static final String TOOLTIP_PROVIDER_PROPERTY = "tooltipProvider";
+    public static final ClientProperty<Boolean> HIDE_SINGLE_TAB_PROPERTY =
+            new ClientProperty<Boolean> ( "hideSingleTab", false );
+    public static final NullableClientProperty<TabbedPaneToolTipProvider> TOOLTIP_PROVIDER_PROPERTY =
+            new NullableClientProperty<TabbedPaneToolTipProvider> ( "tooltipProvider", null );
 
     /**
      * Constructs new tabbed pane.
@@ -329,6 +334,26 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     }
 
     /**
+     * Returns whether or not tab area should be hidden when only one tab is opened.
+     *
+     * @return {@code true} if tab area should be hidden when only one tab is opened, {@code false} otherwise
+     */
+    public boolean isHideSingleTab ()
+    {
+        return HIDE_SINGLE_TAB_PROPERTY.get ( this );
+    }
+
+    /**
+     * Sets whether or not tab area should be hidden when only one tab is opened.
+     *
+     * @param hide whether or not tab area should be hidden when only one tab is opened
+     */
+    public void setHideSingleTab ( final boolean hide )
+    {
+        HIDE_SINGLE_TAB_PROPERTY.set ( this, hide );
+    }
+
+    /**
      * Returns {@link TableToolTipProvider}.
      *
      * @return {@link TableToolTipProvider}
@@ -336,7 +361,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     @Nullable
     public TabbedPaneToolTipProvider getToolTipProvider ()
     {
-        return ( TabbedPaneToolTipProvider ) getClientProperty ( TOOLTIP_PROVIDER_PROPERTY );
+        return TOOLTIP_PROVIDER_PROPERTY.get ( this );
     }
 
     /**
@@ -346,7 +371,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
      */
     public void setToolTipProvider ( @Nullable final TabbedPaneToolTipProvider provider )
     {
-        putClientProperty ( TOOLTIP_PROVIDER_PROPERTY, provider );
+        TOOLTIP_PROVIDER_PROPERTY.set ( this, provider );
     }
 
     @NotNull

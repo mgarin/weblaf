@@ -22,6 +22,7 @@ import com.alee.api.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Base interface for custom tooltip providers for complex components.
@@ -32,7 +33,7 @@ import java.awt.*;
  * @param <A> component area type
  * @author Mikle Garin
  */
-public interface ToolTipProvider<V, C extends JComponent, A extends ComponentArea<V, C>>
+public interface ToolTipProvider<V, C extends JComponent, A extends ComponentArea<V, C>> extends Serializable
 {
     /**
      * Returns tooltip display delay.

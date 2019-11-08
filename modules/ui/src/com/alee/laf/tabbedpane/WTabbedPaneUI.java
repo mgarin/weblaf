@@ -456,7 +456,12 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                     updateTabAreaStates ();
                     recalculateViewSizes ();
                 }
-                else if ( Objects.equals ( property, WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY ) )
+                else if ( Objects.equals ( property, WebTabbedPane.HIDE_SINGLE_TAB_PROPERTY.key () ) )
+                {
+                    updateTabAreaStates ();
+                    recalculateViewSizes ();
+                }
+                else if ( Objects.equals ( property, WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY.key () ) )
                 {
                     updateToolTipHoverListener ();
                 }
@@ -570,6 +575,11 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
      */
     protected void updateTabAreaStates ()
     {
+        // Updating visibility state
+        final int tabCount = tabbedPane.getTabCount ();
+        tabArea.setVisible ( tabCount > ( WebTabbedPane.HIDE_SINGLE_TAB_PROPERTY.get ( tabbedPane ) ? 1 : 0 ) );
+
+        // Updating decorationg states
         for ( int i = 0; i < tabContainer.getComponentCount (); i++ )
         {
             DecorationUtils.fireStatesChanged ( tabContainer.getComponent ( i ) );
@@ -787,9 +797,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
     @Nullable
     protected TabbedPaneToolTipProvider getToolTipProvider ()
     {
-        return tabbedPane != null ?
-                ( TabbedPaneToolTipProvider ) tabbedPane.getClientProperty ( WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY ) :
-                null;
+        return tabbedPane != null ? WebTabbedPane.TOOLTIP_PROVIDER_PROPERTY.get ( tabbedPane ) : null;
     }
 
     /**
