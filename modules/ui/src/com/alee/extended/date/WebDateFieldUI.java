@@ -190,6 +190,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
                 }
                 if ( Objects.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
                 {
+                    setDate ( dateField.getDate (), UpdateSource.datefield );
                     updateExpectedFieldLength ();
                 }
                 else if ( Objects.equals ( property, WebDateField.DATE_PROPERTY ) )
