@@ -868,11 +868,18 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
     public int tabForCoordinate ( @NotNull final JTabbedPane pane, final int x, final int y )
     {
         final int tabIndex;
-        if ( tabArea != null )
+        if ( tabContainer != null )
         {
-            final Point tabAreaLocation = CoreSwingUtils.getRelativeLocation ( tabContainer, tabbedPane );
-            final Component possibleTab = tabContainer.getComponentAt ( x - tabAreaLocation.x, y - tabAreaLocation.y );
-            tabIndex = tabContainer.getComponentZOrder ( possibleTab );
+            if ( tabContainer.isShowing () )
+            {
+                final Point tabAreaLocation = CoreSwingUtils.getRelativeLocation ( tabContainer, tabbedPane );
+                final Component possibleTab = tabContainer.getComponentAt ( x - tabAreaLocation.x, y - tabAreaLocation.y );
+                tabIndex = tabContainer.getComponentZOrder ( possibleTab );
+            }
+            else
+            {
+                tabIndex = -1;
+            }
         }
         else
         {
