@@ -184,11 +184,23 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
                 {
                     field.setEditable ( ( Boolean ) evt.getNewValue () );
                 }
-                if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+                else if ( Objects.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
                 {
                     updateEnabledState ();
                 }
-                if ( Objects.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
+                else if ( Objects.equals ( property, WebLookAndFeel.FONT_PROPERTY ) )
+                {
+                    field.setFont ( dateField.getFont () );
+                }
+                else if ( Objects.equals ( property, WebLookAndFeel.BACKGROUND_PROPERTY ) )
+                {
+                    field.setBackground ( dateField.getBackground () );
+                }
+                else if ( Objects.equals ( property, WebLookAndFeel.FOREGROUND_PROPERTY ) )
+                {
+                    field.setForeground ( dateField.getForeground () );
+                }
+                else if ( Objects.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
                 {
                     setDate ( dateField.getDate (), UpdateSource.datefield );
                     updateExpectedFieldLength ();
