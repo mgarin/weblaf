@@ -308,11 +308,18 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
 
     /**
      * Updates expected text field length.
+     * todo Probably it is worth using minimum size at some point?
      */
     protected void updateExpectedFieldLength ()
     {
         final DateFormat dateFormat = dateField.getDateFormat ();
-        field.setColumns ( dateFormat.format ( new Date () ).length () );
+        final String sampleDateText = dateFormat.format ( new Date () );
+
+        final Insets insets = field.getInsets ();
+        final FontMetrics fm = field.getFontMetrics ( field.getFont () );
+        final int stringWidth = fm.stringWidth ( sampleDateText );
+
+        field.setPreferredWidth ( insets.left + stringWidth + 5 + insets.right );
     }
 
     /**
