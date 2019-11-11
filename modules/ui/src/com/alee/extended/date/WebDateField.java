@@ -134,7 +134,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      */
     public Date getDate ()
     {
-        return date;
+        return new Date ( date.getTime () );
     }
 
     /**
@@ -145,9 +145,9 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
     public void setDate ( final Date date )
     {
         final Date previous = this.date;
-        this.date = date;
-        firePropertyChange ( DATE_PROPERTY, previous, date );
-        fireDateChanged ( date );
+        this.date = new Date ( date.getTime () );
+        firePropertyChange ( DATE_PROPERTY, previous, this.date );
+        fireDateChanged ( this.date );
     }
 
     /**
