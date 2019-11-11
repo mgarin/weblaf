@@ -20,6 +20,7 @@ package com.alee.laf.tabbedpane;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Mergeable;
 import com.alee.extended.layout.AbstractLayoutManager;
+import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -40,6 +41,9 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
     {
         final TabArea tabArea = ( TabArea ) parent;
         final JTabbedPane tabbedPane = tabArea.getTabbedPane ();
+        final int tabPlacement = tabbedPane.getTabPlacement ();
+        final boolean horizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
+        final boolean ltr = tabbedPane.getComponentOrientation ().isLeftToRight ();
 
         // Looking for components
         // todo Replace with get(Class) in ContainerMethods
@@ -58,19 +62,63 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
             }
         }
 
-        // Actual available bounds
+        // Calculating initially available bounds
         final Insets insets = tabArea.getInsets ();
         final Rectangle available = SwingUtils.shrink (
                 new Rectangle ( 0, 0, parent.getWidth (), parent.getHeight () ),
                 insets
         );
 
+        // Placing leading component
+        final JComponent leading = WebTabbedPane.LEADING_TAB_AREA_COMPONENT_PROPERTY.get ( tabbedPane );
+        if ( leading != null )
+        {
+            final Dimension lps = leading.getPreferredSize ();
+            leading.setBounds (
+                    horizontal ?
+                            ltr ? available.x : available.x + available.width - lps.width :
+                            available.x,
+                    available.y,
+                    horizontal ?
+                            lps.width :
+                            available.width,
+                    horizontal ?
+                            available.height :
+                            lps.height
+            );
+            available.x += horizontal && ltr ? lps.width : 0;
+            available.y += horizontal ? 0 : lps.height;
+            available.width -= horizontal ? lps.width : 0;
+            available.height -= horizontal ? 0 : lps.height;
+        }
+
+        // Placing trailing component
+        final JComponent trailing = WebTabbedPane.TRAILING_TAB_AREA_COMPONENT_PROPERTY.get ( tabbedPane );
+        if ( trailing != null )
+        {
+            final Dimension tps = trailing.getPreferredSize ();
+            trailing.setBounds (
+                    horizontal ?
+                            ltr ? available.x + available.width - tps.width : available.x :
+                            available.x,
+                    horizontal ?
+                            available.y :
+                            available.y + available.height - tps.height,
+                    horizontal ?
+                            tps.width :
+                            available.width,
+                    horizontal ?
+                            available.height :
+                            tps.height
+            );
+            available.x += horizontal && !ltr ? tps.width : 0;
+            available.width -= horizontal ? tps.width : 0;
+            available.height -= horizontal ? 0 : tps.height;
+        }
+
         // Placing TabMenuButton
-        final int tabPlacement = tabbedPane.getTabPlacement ();
-        final boolean horizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
         if ( tabMenuButton != null && tabMenuButton.isVisible () )
         {
-            final boolean ltr = tabbedPane.getComponentOrientation ().isLeftToRight ();
             final Dimension mps = tabMenuButton.getPreferredSize ();
             tabMenuButton.setBounds (
                     horizontal ?
@@ -106,7 +154,7 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
         // Looking for components
         // todo Replace with get(Class) in ContainerMethods
         TabViewport tabViewport = null;
-        TabMenuButton tabMenuButton = null;
+        TabMenuButton tabMenu = null;
         for ( int i = 0; i < tabArea.getComponentCount (); i++ )
         {
             final Component component = tabArea.getComponent ( i );
@@ -116,13 +164,19 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
             }
             else if ( component instanceof TabMenuButton )
             {
-                tabMenuButton = ( TabMenuButton ) component;
+                tabMenu = ( TabMenuButton ) component;
             }
         }
 
         // Preferred sizes
-        final Dimension vps = tabViewport != null ? tabViewport.getPreferredSize () : new Dimension ();
-        final Dimension mps = tabMenuButton != null && tabMenuButton.isVisible () ? tabMenuButton.getPreferredSize () : new Dimension ();
+        final Dimension vps = tabViewport != null ? tabViewport.getPreferredSize () : new Dimension ( 0, 0 );
+        final Dimension mps = tabMenu != null && tabMenu.isVisible () ? tabMenu.getPreferredSize () : new Dimension ( 0, 0 );
+
+        // Leading and trailing component sizes
+        final JComponent leading = WebTabbedPane.LEADING_TAB_AREA_COMPONENT_PROPERTY.get ( tabbedPane );
+        final Dimension lps = leading != null ? leading.getPreferredSize () : new Dimension ( 0, 0 );
+        final JComponent trailing = WebTabbedPane.TRAILING_TAB_AREA_COMPONENT_PROPERTY.get ( tabbedPane );
+        final Dimension tps = trailing != null ? trailing.getPreferredSize () : new Dimension ( 0, 0 );
 
         // Resulting preferred size
         // Minimum length is either viewport preferred width or menu button 2x width to have some space left for tabs
@@ -131,11 +185,11 @@ public class TabAreaLayout extends AbstractLayoutManager implements Mergeable, C
         final boolean horizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
         return new Dimension (
                 horizontal ?
-                        insets.left + Math.max ( vps.width, mps.width * 2 ) + insets.right :
-                        insets.left + Math.max ( vps.width, mps.width ) + insets.right,
+                        insets.left + lps.width + Math.max ( vps.width, mps.width * 2 ) + tps.width + insets.right :
+                        insets.left + MathUtils.max ( lps.width, vps.width, mps.width, tps.width ) + insets.right,
                 horizontal ?
-                        insets.top + Math.max ( vps.height, mps.height ) + insets.bottom :
-                        insets.top + Math.max ( vps.height, mps.height * 2 ) + insets.bottom
+                        insets.top + MathUtils.max ( lps.height, vps.height, mps.height, tps.height ) + insets.bottom :
+                        insets.top + lps.height + Math.max ( vps.height, mps.height * 2 ) + tps.height + insets.bottom
         );
     }
 

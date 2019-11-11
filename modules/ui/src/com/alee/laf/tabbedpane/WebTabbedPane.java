@@ -96,6 +96,10 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
             new ClientProperty<Boolean> ( "hideSingleTab", false );
     public static final NullableClientProperty<TabbedPaneToolTipProvider> TOOLTIP_PROVIDER_PROPERTY =
             new NullableClientProperty<TabbedPaneToolTipProvider> ( "tooltipProvider", null );
+    public static final NullableClientProperty<JComponent> LEADING_TAB_AREA_COMPONENT_PROPERTY =
+            new NullableClientProperty<JComponent> ( "leadingTabAreaComponent", null );
+    public static final NullableClientProperty<JComponent> TRAILING_TAB_AREA_COMPONENT_PROPERTY =
+            new NullableClientProperty<JComponent> ( "trailingTabAreaComponent", null );
 
     /**
      * Constructs new tabbed pane.
@@ -372,6 +376,56 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     public void setToolTipProvider ( @Nullable final TabbedPaneToolTipProvider provider )
     {
         TOOLTIP_PROVIDER_PROPERTY.set ( this, provider );
+    }
+
+    /**
+     * Returns leading {@link JComponent} for {@link TabArea}.
+     *
+     * @return leading {@link JComponent} for {@link TabArea}
+     */
+    @Nullable
+    public JComponent getLeadingTabAreaComponent ()
+    {
+        return LEADING_TAB_AREA_COMPONENT_PROPERTY.get ( this );
+    }
+
+    /**
+     * Sets leading {@link JComponent} for {@link TabArea}.
+     *
+     * @param component new leading {@link JComponent} for {@link TabArea}
+     * @return previous leading {@link JComponent} for {@link TabArea}
+     */
+    @Nullable
+    public JComponent setLeadingTabAreaComponent ( @Nullable final JComponent component )
+    {
+        final JComponent old = LEADING_TAB_AREA_COMPONENT_PROPERTY.get ( this );
+        LEADING_TAB_AREA_COMPONENT_PROPERTY.set ( this, component );
+        return old;
+    }
+
+    /**
+     * Returns trailing {@link JComponent} for {@link TabArea}.
+     *
+     * @return trailing {@link JComponent} for {@link TabArea}
+     */
+    @Nullable
+    public JComponent getTrailingTabAreaComponent ()
+    {
+        return TRAILING_TAB_AREA_COMPONENT_PROPERTY.get ( this );
+    }
+
+    /**
+     * Sets trailing {@link JComponent} for {@link TabArea}.
+     *
+     * @param component new trailing {@link JComponent} for {@link TabArea}
+     * @return previous trailing {@link JComponent} for {@link TabArea}
+     */
+    @Nullable
+    public JComponent setTrailingTabAreaComponent ( @Nullable final JComponent component )
+    {
+        final JComponent old = TRAILING_TAB_AREA_COMPONENT_PROPERTY.get ( this );
+        TRAILING_TAB_AREA_COMPONENT_PROPERTY.set ( this, component );
+        return old;
     }
 
     @NotNull

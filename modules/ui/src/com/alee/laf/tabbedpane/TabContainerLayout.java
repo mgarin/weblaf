@@ -132,6 +132,11 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
                         final Dimension tps = getTabPreferredSize ( tabContainer, j, sizeCache );
                         if ( horizontal )
                         {
+                            if ( i == tabCount - 1 )
+                            {
+                                runHeight = insets.top + height - y;
+                            }
+
                             final int w;
                             if ( tabStretchType == TabStretchType.always ||
                                     tabStretchType == TabStretchType.multiline && ( i < tabCount - 1 || runCount > 0 ) )
@@ -150,6 +155,11 @@ public class TabContainerLayout extends AbstractLayoutManager implements Mergeab
                         }
                         else
                         {
+                            if ( i == tabCount - 1 )
+                            {
+                                runWidth = insets.left + width - x;
+                            }
+
                             final int h;
                             if ( tabStretchType == TabStretchType.always ||
                                     tabStretchType == TabStretchType.multiline && ( i < tabCount - 1 || runCount > 0 ) )

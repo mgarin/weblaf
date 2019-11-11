@@ -34,6 +34,10 @@ import java.io.Serializable;
 public final class NullableClientProperty<V extends Serializable> implements Serializable
 {
     /**
+     * todo 1. Add Optional return when moved to JDK8+
+     */
+
+    /**
      * {@link NullableClientProperty} key.
      */
     @NotNull

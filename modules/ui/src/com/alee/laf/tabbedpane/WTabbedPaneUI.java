@@ -465,6 +465,22 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                 {
                     updateToolTipHoverListener ();
                 }
+                else if ( Objects.equals ( property, WebTabbedPane.LEADING_TAB_AREA_COMPONENT_PROPERTY.key (),
+                        WebTabbedPane.TRAILING_TAB_AREA_COMPONENT_PROPERTY.key () ) )
+                {
+                    final JComponent oldComponent = ( JComponent ) evt.getOldValue ();
+                    if ( oldComponent != null )
+                    {
+                        tabArea.remove ( oldComponent );
+                    }
+                    final JComponent newComponent = ( JComponent ) evt.getNewValue ();
+                    if ( newComponent != null )
+                    {
+                        tabArea.add ( newComponent );
+                    }
+                    updateTabAreaStates ();
+                    recalculateViewSizes ();
+                }
             }
         };
     }
@@ -601,9 +617,15 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
         tabbedPane.revalidate ();
 
         // Calculating new view and extent sizes
+        final Insets tpInsets = tabbedPane.getInsets ();
+        final Insets taInsets = tabArea.getInsets ();
         final Dimension tabContainerSize = tabContainer.getPreferredSize ();
         final Dimension extentSize = new Dimension ( tabContainerSize );
         final Dimension viewSize = new Dimension ( tabContainerSize );
+        final JComponent leading = WebTabbedPane.LEADING_TAB_AREA_COMPONENT_PROPERTY.get ( tabbedPane );
+        final Dimension leadingSize = leading != null ? leading.getPreferredSize () : new Dimension ( 0, 0 );
+        final JComponent trailing = WebTabbedPane.TRAILING_TAB_AREA_COMPONENT_PROPERTY.get ( tabbedPane );
+        final Dimension trailingSize = trailing != null ? trailing.getPreferredSize () : new Dimension ( 0, 0 );
         switch ( tabbedPane.getTabPlacement () )
         {
             default:
@@ -611,9 +633,10 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
             case SwingConstants.BOTTOM:
             {
                 // We have to check JTabbedPane width here because TabArea could still be placed at the old location
-                final Insets tpInsets = tabbedPane.getInsets ();
-                final Insets taInsets = tabArea.getInsets ();
-                extentSize.width = tabbedPane.getWidth () - tpInsets.left - tpInsets.right - taInsets.left - taInsets.right;
+                extentSize.width = tabbedPane.getWidth ()
+                        - leadingSize.width - trailingSize.width
+                        - tpInsets.left - tpInsets.right
+                        - taInsets.left - taInsets.right;
                 viewSize.width = Math.max ( viewSize.width, extentSize.width );
             }
             break;
@@ -622,9 +645,10 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
             case SwingConstants.RIGHT:
             {
                 // We have to check JTabbedPane width here because TabArea could still be placed at the old location
-                final Insets tpInsets = tabbedPane.getInsets ();
-                final Insets taInsets = tabArea.getInsets ();
-                extentSize.height = tabbedPane.getHeight () - tpInsets.top - tpInsets.bottom - taInsets.top - taInsets.bottom;
+                extentSize.height = tabbedPane.getHeight ()
+                        - leadingSize.height - trailingSize.height
+                        - tpInsets.top - tpInsets.bottom
+                        - taInsets.top - taInsets.bottom;
                 viewSize.height = Math.max ( viewSize.height, extentSize.height );
             }
             break;
@@ -672,7 +696,7 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                 } );
             }
 
-            // Hacky workaround for properly updating the view
+            // Hacky workaround for properly updating tab layout
             tabViewport.setViewSize ( extentSize );
             tabViewport.setExtentSize ( viewSize );
 
