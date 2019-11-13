@@ -1007,7 +1007,7 @@ public class WebFileChooserPanel extends WebPanel
     protected Component createControls ()
     {
         final TableLayout layout = new TableLayout ( new double[][]{
-                { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.PREFERRED },
+                { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED },
                 { TableLayout.PREFERRED }
         }, 4, 4 );
         controlsPanel = new WebPanel ( StyleId.filechooserSouthPanel.at ( this ), layout );
