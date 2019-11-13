@@ -18,6 +18,7 @@
 package com.alee.extended.date;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.WebComponent;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
@@ -56,11 +57,13 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
     /**
      * Currently selected date.
      */
+    @Nullable
     protected Date date;
 
     /**
      * Date display format.
      */
+    @NotNull
     protected DateFormat dateFormat;
 
     /**
@@ -72,6 +75,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
     /**
      * Calendar component customizer.
      */
+    @Nullable
     protected Customizer<WebCalendar> calendarCustomizer;
 
     /**
@@ -87,7 +91,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param date selected date
      */
-    public WebDateField ( final Date date )
+    public WebDateField ( @Nullable final Date date )
     {
         this ( StyleId.auto, date );
     }
@@ -97,7 +101,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param id style ID
      */
-    public WebDateField ( final StyleId id )
+    public WebDateField ( @NotNull final StyleId id )
     {
         this ( id, null );
     }
@@ -108,7 +112,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      * @param id   style ID
      * @param date selected date
      */
-    public WebDateField ( final StyleId id, final Date date )
+    public WebDateField ( @NotNull final StyleId id,@Nullable  final Date date )
     {
         super ();
         this.date = null;
@@ -132,9 +136,10 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @return selected date
      */
+    @Nullable
     public Date getDate ()
     {
-        return new Date ( date.getTime () );
+        return date != null ? new Date ( date.getTime () ) : null;
     }
 
     /**
@@ -142,10 +147,10 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param date selected date
      */
-    public void setDate ( final Date date )
+    public void setDate ( @Nullable final Date date )
     {
         final Date previous = this.date;
-        this.date = new Date ( date.getTime () );
+        this.date = date != null ? new Date ( date.getTime () ) : null;
         firePropertyChange ( DATE_PROPERTY, previous, this.date );
         fireDateChanged ( this.date );
     }
@@ -155,6 +160,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @return date format
      */
+    @NotNull
     public DateFormat getDateFormat ()
     {
         return dateFormat;
@@ -165,7 +171,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param dateFormat date format
      */
-    public void setDateFormat ( final DateFormat dateFormat )
+    public void setDateFormat ( @NotNull final DateFormat dateFormat )
     {
         final DateFormat previous = this.dateFormat;
         this.dateFormat = dateFormat;
@@ -199,6 +205,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @return calendar component customizer
      */
+    @Nullable
     public Customizer<WebCalendar> getCalendarCustomizer ()
     {
         return calendarCustomizer;
@@ -209,7 +216,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param customizer calendar component customizer
      */
-    public void setCalendarCustomizer ( final Customizer<WebCalendar> customizer )
+    public void setCalendarCustomizer ( @Nullable final Customizer<WebCalendar> customizer )
     {
         final Customizer<WebCalendar> previous = this.calendarCustomizer;
         this.calendarCustomizer = customizer;
@@ -221,7 +228,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param listener date change listener to add
      */
-    public void addDateListener ( final DateListener listener )
+    public void addDateListener ( @NotNull final DateListener listener )
     {
         listenerList.add ( DateListener.class, listener );
     }
@@ -231,7 +238,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param listener date change listener to remove
      */
-    public void removeDateListener ( final DateListener listener )
+    public void removeDateListener ( @NotNull final DateListener listener )
     {
         listenerList.remove ( DateListener.class, listener );
     }
@@ -241,7 +248,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      *
      * @param date selected date
      */
-    protected void fireDateChanged ( final Date date )
+    protected void fireDateChanged ( @Nullable final Date date )
     {
         for ( final DateListener listener : listenerList.getListeners ( DateListener.class ) )
         {
