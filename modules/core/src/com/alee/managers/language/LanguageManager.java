@@ -21,6 +21,7 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Objects;
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.language.data.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.XmlUtils;
@@ -143,7 +144,7 @@ public final class LanguageManager
             initialized = true;
 
             // Adding core module dictionary
-            addDictionary ( new Dictionary ( LanguageManager.class, "resources/core-language.xml" ) );
+            addDictionary ( new Dictionary ( new ClassResource ( LanguageManager.class, "resources/core-language.xml" ) ) );
         }
     }
 

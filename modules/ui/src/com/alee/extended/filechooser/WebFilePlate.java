@@ -313,7 +313,7 @@ public class WebFilePlate extends WebPanel
         }
     }
 
-    protected ImageIcon getDisplayIcon ( final File file )
+    protected Icon getDisplayIcon ( final File file )
     {
         return FileUtils.getFileIcon ( file, false );
     }

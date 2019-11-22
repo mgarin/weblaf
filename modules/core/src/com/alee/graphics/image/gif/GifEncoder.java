@@ -37,6 +37,9 @@ import java.io.OutputStream;
  *     e.addFrame(image2);
  *     e.finish();
  * </pre>
+ *
+ * @author Kevin Weiner, FM Software
+ * @version 1.03 November 2003
  */
 public class GifEncoder
 {

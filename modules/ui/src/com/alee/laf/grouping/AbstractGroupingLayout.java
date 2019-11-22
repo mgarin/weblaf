@@ -47,6 +47,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      * It is always enabled by default but can be disabled if required.
      * Disabling this option will automatically ungroup all components.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean group;
 
@@ -54,12 +55,14 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      * Whether or not should group toggle state elements like togglebuttons, radiobuttons or checkboxes.
      * Only elements placed straight within this {@link com.alee.laf.grouping.GroupPane} are grouped.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean groupButtons;
 
     /**
      * Whether or not this button group should allow empty selection state.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean unselectableGrouping;
 
@@ -67,17 +70,20 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      * Displayed children decoration sides.
      * It might be useful to disable sides decoration while keeping it between the child components.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String sides;
 
     /**
      * Container children components.
      */
+    @Nullable
     protected transient Map<Component, Pair<String, String>> children;
 
     /**
      * Button group used to group toggle state elements placed within container.
      */
+    @Nullable
     protected transient UnselectableButtonGroup buttonGroup;
 
     @Override
@@ -142,7 +148,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      */
     public void setUnselectableGrouping ( final boolean unselectable )
     {
-        if ( isUnselectableGrouping () != unselectableGrouping )
+        if ( isUnselectableGrouping () != unselectable )
         {
             this.unselectableGrouping = unselectable;
             updateButtonGrouping ();
@@ -154,6 +160,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      *
      * @return newly created button group
      */
+    @NotNull
     protected UnselectableButtonGroup createButtonGroup ()
     {
         return new UnselectableButtonGroup ( isUnselectableGrouping () );
@@ -215,6 +222,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      *
      * @return button group used to group toggle state elements placed within container using this layout
      */
+    @Nullable
     public UnselectableButtonGroup getButtonGroup ()
     {
         return buttonGroup;
@@ -368,12 +376,14 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
         resetDescriptors ();
     }
 
+    @Nullable
     @Override
     public final String getSides ( @NotNull final Component component )
     {
         return children != null ? getDescriptors ( component ).getKey () : null;
     }
 
+    @Nullable
     @Override
     public final String getLines ( @NotNull final Component component )
     {
@@ -389,19 +399,27 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
     @NotNull
     protected Pair<String, String> getDescriptors ( @NotNull final Component component )
     {
-        Pair<String, String> pair = children.get ( component );
-        if ( pair == null || pair.getKey () == null )
+        Pair<String, String> pair;
+        if ( children != null )
         {
-            final Container parent = component.getParent ();
-            if ( parent != null && isGrouping () )
+            pair = children.get ( component );
+            if ( pair == null || pair.getKey () == null )
             {
-                pair = getDescriptors ( parent, component, SwingUtils.indexOf ( parent, component ) );
+                final Container parent = component.getParent ();
+                if ( parent != null && isGrouping () )
+                {
+                    pair = getDescriptors ( parent, component, SwingUtils.indexOf ( parent, component ) );
+                }
+                else
+                {
+                    pair = new Pair<String, String> ();
+                }
+                children.put ( component, pair );
             }
-            else
-            {
-                pair = new Pair<String, String> ();
-            }
-            children.put ( component, pair );
+        }
+        else
+        {
+            pair = new Pair<String, String> ();
         }
         return pair;
     }

@@ -17,6 +17,8 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -52,7 +54,7 @@ public class TabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, 
     }
 
     @Override
-    protected void register ( final JTabbedPane tabbedPane )
+    protected void register ( @NotNull final JTabbedPane tabbedPane )
     {
         changeListener = new ChangeListener ()
         {
@@ -66,12 +68,13 @@ public class TabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, 
     }
 
     @Override
-    protected void unregister ( final JTabbedPane tabbedPane )
+    protected void unregister ( @NotNull final JTabbedPane tabbedPane )
     {
         tabbedPane.removeChangeListener ( changeListener );
         changeListener = null;
     }
 
+    @Nullable
     @Override
     protected TabbedPaneState createDefaultValue ()
     {
@@ -79,13 +82,13 @@ public class TabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, 
     }
 
     @Override
-    protected void loadSettings ( final JTabbedPane tabbedPane )
+    protected void loadSettings ( @NotNull final JTabbedPane tabbedPane )
     {
         loadSettings ().apply ( tabbedPane );
     }
 
     @Override
-    protected void saveSettings ( final JTabbedPane tabbedPane )
+    protected void saveSettings ( @NotNull final JTabbedPane tabbedPane )
     {
         saveSettings ( new TabbedPaneState ( tabbedPane ) );
     }

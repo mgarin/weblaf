@@ -30,6 +30,7 @@ import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.language.Language;
 import com.alee.managers.language.LanguageListener;
 import com.alee.managers.language.LanguageManager;
@@ -47,8 +48,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Custom calendar component.
@@ -62,14 +63,6 @@ public class WebCalendar extends WebPanel implements LanguageListener
      * todo 1. Create WebCalendarUI with all ui data there
      * todo 2. Move animation/transition into styles
      */
-
-    /**
-     * Used icons.
-     */
-    public static final ImageIcon previousSkipIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/previous_skip.png" ) );
-    public static final ImageIcon previousIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/previous.png" ) );
-    public static final ImageIcon nextIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/next.png" ) );
-    public static final ImageIcon nextSkipIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/next_skip.png" ) );
 
     /**
      * Date selection listeners.
@@ -195,7 +188,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
         final WebPanel header = new WebPanel ( StyleId.calendarHeaderPanel.at ( this ) );
         add ( header, BorderLayout.NORTH );
 
-        previousSkip = new WebButton ( StyleId.calendarPrevYearButton.at ( header ), previousSkipIcon );
+        previousSkip = new WebButton ( StyleId.calendarPrevYearButton.at ( header ), Icons.doubleLeftBig );
         previousSkip.addActionListener ( new ActionListener ()
         {
             @Override
@@ -205,7 +198,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
             }
         } );
 
-        previous = new WebButton ( StyleId.calendarPrevMonthButton.at ( header ), previousIcon );
+        previous = new WebButton ( StyleId.calendarPrevMonthButton.at ( header ), Icons.leftBig );
         previous.addActionListener ( new ActionListener ()
         {
             @Override
@@ -226,7 +219,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
         updateTitleLabel ();
         header.add ( titleLabel, BorderLayout.CENTER );
 
-        next = new WebButton ( StyleId.calendarNextMonthButton.at ( header ), nextIcon );
+        next = new WebButton ( StyleId.calendarNextMonthButton.at ( header ), Icons.rightBig );
         next.addActionListener ( new ActionListener ()
         {
             @Override
@@ -236,7 +229,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
             }
         } );
 
-        nextSkip = new WebButton ( StyleId.calendarNextYearButton.at ( header ), nextSkipIcon );
+        nextSkip = new WebButton ( StyleId.calendarNextYearButton.at ( header ), Icons.doubleRightBig );
         nextSkip.addActionListener ( new ActionListener ()
         {
             @Override
@@ -429,16 +422,18 @@ public class WebCalendar extends WebPanel implements LanguageListener
      */
     protected double[] getContentColumns ()
     {
+        final double[] columns;
         final double f = TableLayout.FILL;
         final double p = TableLayout.PREFERRED;
         if ( displayWeekNumbers )
         {
-            return new double[]{ f, p, f, p, f, p, f, p, f, p, f, p, f, p, f };
+            columns = new double[]{ f, p, f, p, f, p, f, p, f, p, f, p, f, p, f };
         }
         else
         {
-            return new double[]{ f, p, f, p, f, p, f, p, f, p, f, p, f };
+            columns = new double[]{ f, p, f, p, f, p, f, p, f, p, f, p, f };
         }
+        return columns;
     }
 
     /**

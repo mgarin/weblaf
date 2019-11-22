@@ -119,7 +119,7 @@ import com.alee.painter.decoration.shape.ArrowShape;
 import com.alee.painter.decoration.shape.BoundsShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
-import com.alee.skin.web.WebSkin;
+import com.alee.skin.light.WebLightSkin;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
@@ -869,7 +869,7 @@ public final class StyleManager
     @NotNull
     public static LazyInstance<? extends Skin> getDefaultSkin ()
     {
-        return defaultSkin != null ? defaultSkin : new LazyInstance<WebSkin> ( WebSkin.class );
+        return defaultSkin != null ? defaultSkin : new LazyInstance<WebLightSkin> ( WebLightSkin.class );
     }
 
     /**
@@ -963,10 +963,7 @@ public final class StyleManager
         }
         catch ( final ClassNotFoundException e )
         {
-            throw new StyleException ( String.format (
-                    "Unable to load skin class for name: %s",
-                    skin
-            ), e );
+            throw new StyleException ( String.format ( "Unable to load skin class for name: %s", skin ), e );
         }
     }
 
@@ -1019,8 +1016,7 @@ public final class StyleManager
             // Checking skin support
             if ( !skin.isSupported () )
             {
-                final String msg = "Skin is not supported in this system: %s";
-                throw new StyleException ( String.format ( msg, skin ) );
+                throw new StyleException ( String.format ( "Skin is not supported in this system: %s", skin ) );
             }
 
             // Saving previously applied skin
@@ -1066,7 +1062,7 @@ public final class StyleManager
      *
      * @param extensions {@link SkinExtension}s to add
      */
-    public static void addExtensions ( final SkinExtension... extensions )
+    public static void addExtensions ( @NotNull final SkinExtension... extensions )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -1320,8 +1316,7 @@ public final class StyleManager
         // Checking component support
         if ( !isSupported ( component ) )
         {
-            final String msg = "Component styling is not supported: %s";
-            throw new StyleException ( String.format ( msg, component ) );
+            throw new StyleException ( String.format ( "Component styling is not supported: %s", component ) );
         }
 
         // Ensure that component has correct UI first, fix for #376
@@ -1337,8 +1332,7 @@ public final class StyleManager
             if ( !LafUtils.hasWebLafUI ( component ) )
             {
                 // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
-                final String msg = "Component '%s' doesn't use WebLaF UI";
-                throw new StyleException ( String.format ( msg, component.getClass () ) );
+                throw new StyleException ( String.format ( "Component '%s' doesn't use WebLaF UI", component.getClass () ) );
             }
         }
 
@@ -1346,7 +1340,7 @@ public final class StyleManager
         return styleData.get ( component, new Function<JComponent, StyleData> ()
         {
             @Override
-            public StyleData apply ( final JComponent component )
+            public StyleData apply ( @NotNull final JComponent component )
             {
                 return new StyleData ( component );
             }

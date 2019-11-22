@@ -17,6 +17,12 @@
 
 package com.alee.managers.icon;
 
+import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.ui.DisabledCopySupplier;
+import com.alee.api.ui.TransparentCopySupplier;
+import com.alee.utils.ImageUtils;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,50 +35,38 @@ import java.awt.*;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see IconManager
  */
-public final class LazyIcon implements Icon
+public final class LazyIcon implements Icon, Identifiable, DisabledCopySupplier<Icon>, TransparentCopySupplier<Icon>
 {
     /**
-     * Referenced icon ID.
+     * Identifier of {@link Icon} in {@link IconManager}.
      */
+    @NotNull
     private final String id;
 
     /**
      * Constructs new {@link LazyIcon}.
-     * It will retrieve icon from {@link IconManager} using the specified {@code id}.
      *
-     * @param id icon ID
-     * @see IconManager
+     * @param id identifier of {@link Icon} in {@link IconManager}
      */
-    public LazyIcon ( final String id )
+    public LazyIcon ( @NotNull final String id )
     {
-        super ();
         this.id = id;
     }
 
     /**
-     * Returns referenced {@link Icon} identifier.
+     * Returns identifier of {@link Icon} in {@link IconManager}.
      *
-     * @return referenced {@link Icon} identifier
+     * @return identifier of {@link Icon} in {@link IconManager}
      */
+    @NotNull
+    @Override
     public String getId ()
     {
         return id;
     }
 
-    /**
-     * Returns actual {@link Icon} used by this {@link LazyIcon}.
-     * Use this method wisely as it will load {@link Icon} into memory.
-     *
-     * @param <I> {@link Icon} type
-     * @return actual {@link Icon} used by this {@link LazyIcon}
-     */
-    public <I extends Icon> I getIcon ()
-    {
-        return IconManager.getIcon ( getId () );
-    }
-
     @Override
-    public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
+    public void paintIcon ( @NotNull final Component c, @NotNull final Graphics g, final int x, final int y )
     {
         getIcon ().paintIcon ( c, g, x, y );
     }
@@ -89,6 +83,44 @@ public final class LazyIcon implements Icon
         return getIcon ().getIconHeight ();
     }
 
+    /**
+     * Returns actual {@link Icon} used by this {@link LazyIcon}.
+     * Use this method wisely as it will load {@link Icon} into memory.
+     *
+     * @param <I> {@link Icon} type
+     * @return actual {@link Icon} used by this {@link LazyIcon}
+     */
+    @NotNull
+    public <I extends Icon> I getIcon ()
+    {
+        return IconManager.getIcon ( getId () );
+    }
+
+    /**
+     * Returns disabled copy of original {@link Icon}.
+     *
+     * @return disabled copy of original {@link Icon}
+     */
+    @NotNull
+    @Override
+    public Icon createDisabledCopy ()
+    {
+        return ImageUtils.getDisabledCopy ( getIcon () );
+    }
+
+    /**
+     * Returns semi-transparent copy of original {@link Icon}.
+     *
+     * @return semi-transparent copy of original {@link Icon}
+     */
+    @NotNull
+    @Override
+    public Icon createTransparentCopy ( final float opacity )
+    {
+        return ImageUtils.getTransparentCopy ( getIcon (), opacity );
+    }
+
+    @NotNull
     @Override
     public String toString ()
     {

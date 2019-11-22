@@ -109,7 +109,7 @@ public abstract class Plugin<P extends Plugin<P>>
      *
      * @return plugin logo
      */
-    public ImageIcon getPluginLogo ()
+    public Icon getPluginLogo ()
     {
         return !SystemUtils.isHeadlessEnvironment () && detectedPlugin != null ? detectedPlugin.getLogo () : null;
     }

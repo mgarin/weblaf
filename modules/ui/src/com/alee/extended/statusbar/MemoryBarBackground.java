@@ -73,7 +73,8 @@ public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )

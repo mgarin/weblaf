@@ -18,6 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 import com.alee.graphics.shapes.RelativeGeneralPath;
 import com.alee.painter.decoration.DecorationException;
@@ -339,6 +340,7 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
         }, bounds, sw, sides, corners, round, cornerWidth, overlap, ltr );
     }
 
+    @NotNull
     @Override
     public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
     {

@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Special exception class used to display various problems occuring in utility classes.
  *
@@ -37,7 +39,7 @@ public final class UtilityException extends RuntimeException
      *
      * @param message exception message
      */
-    public UtilityException ( final String message )
+    public UtilityException ( @NotNull final String message )
     {
         super ( message );
     }
@@ -48,7 +50,7 @@ public final class UtilityException extends RuntimeException
      * @param message exception message
      * @param cause   exception cause
      */
-    public UtilityException ( final String message, final Throwable cause )
+    public UtilityException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
     }
@@ -58,7 +60,7 @@ public final class UtilityException extends RuntimeException
      *
      * @param cause exception cause
      */
-    public UtilityException ( final Throwable cause )
+    public UtilityException ( @NotNull final Throwable cause )
     {
         super ( cause );
     }

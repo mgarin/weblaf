@@ -19,7 +19,6 @@ package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -95,7 +94,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      *
      * @return component identifier
      */
-    @Nullable
+    @NotNull
     @Override
     public String getId ();
 

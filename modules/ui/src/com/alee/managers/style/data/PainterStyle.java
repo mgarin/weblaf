@@ -17,6 +17,8 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Overwriting;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -65,7 +67,7 @@ public final class PainterStyle implements Overwriting, Cloneable, Serializable
      *
      * @param overwrite whether or not this {@link com.alee.painter.Painter} should overwrite another one when merged
      */
-    public void setOverwrite ( final Boolean overwrite )
+    public void setOverwrite ( @Nullable final Boolean overwrite )
     {
         this.overwrite = overwrite;
     }
@@ -75,6 +77,7 @@ public final class PainterStyle implements Overwriting, Cloneable, Serializable
      *
      * @return painter class canonical name
      */
+    @NotNull
     public String getPainterClass ()
     {
         return painterClass;
@@ -85,7 +88,7 @@ public final class PainterStyle implements Overwriting, Cloneable, Serializable
      *
      * @param painterClass new painter class canonical name
      */
-    public void setPainterClass ( final String painterClass )
+    public void setPainterClass ( @NotNull final String painterClass )
     {
         this.painterClass = painterClass;
     }
@@ -95,6 +98,7 @@ public final class PainterStyle implements Overwriting, Cloneable, Serializable
      *
      * @return painter properties
      */
+    @NotNull
     public LinkedHashMap<String, Object> getProperties ()
     {
         return properties;
@@ -105,7 +109,7 @@ public final class PainterStyle implements Overwriting, Cloneable, Serializable
      *
      * @param properties new painter properties
      */
-    public void setProperties ( final LinkedHashMap<String, Object> properties )
+    public void setProperties ( @NotNull final LinkedHashMap<String, Object> properties )
     {
         this.properties = properties;
     }

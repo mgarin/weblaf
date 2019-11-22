@@ -30,8 +30,8 @@ import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
-import com.alee.utils.swing.NoOpMouseListener;
 import com.alee.utils.swing.FadeStateType;
+import com.alee.utils.swing.NoOpMouseListener;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -333,7 +333,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
             {
                 // Determining component position inside window
                 final Rectangle cb = CoreSwingUtils.getBoundsInWindow ( component );
-                final Dimension rps = CoreSwingUtils.getRootPane ( component ).getSize ();
+                final Dimension rps = CoreSwingUtils.getNonNullRootPane ( component ).getSize ();
                 final Dimension ps = WebInnerPopup.this.getPreferredSize ();
                 //        Painter bp = getPainter ();
                 //        Insets bm = bp != null ? bp.getMargin ( this ) : new Insets ( 0, 0, 0, 0 );

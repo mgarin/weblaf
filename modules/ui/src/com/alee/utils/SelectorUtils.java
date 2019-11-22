@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.api.resource.ClassResource;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -236,7 +237,7 @@ public final class SelectorUtils
         }
         else
         {
-            icon = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/" + name + ".9.png" ) );
+            icon = new NinePatchIcon ( new ClassResource ( LafUtils.class, "icons/selection/" + name + ".9.png" ), true );
             selectionIconsCache.put ( name, icon );
         }
         return icon;
@@ -268,7 +269,7 @@ public final class SelectorUtils
         }
         else
         {
-            icon = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/selector" + key + ".9.png" ) );
+            icon = new NinePatchIcon ( new ClassResource ( LafUtils.class, "icons/selection/selector" + key + ".9.png" ), true );
             selectionIconsCache.put ( key, icon );
         }
         return icon;

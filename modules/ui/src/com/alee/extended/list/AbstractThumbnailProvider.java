@@ -17,6 +17,8 @@
 
 package com.alee.extended.list;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 
@@ -33,6 +35,7 @@ public abstract class AbstractThumbnailProvider implements FileThumbnailProvider
     /**
      * Extensions accepted by this provider.
      */
+    @Nullable
     private final List<String> extensions;
 
     /**
@@ -48,7 +51,7 @@ public abstract class AbstractThumbnailProvider implements FileThumbnailProvider
      *
      * @param extensions extensions to be accepted
      */
-    public AbstractThumbnailProvider ( final String... extensions )
+    public AbstractThumbnailProvider ( @NotNull final String... extensions )
     {
         this ( CollectionUtils.asList ( extensions ) );
     }
@@ -58,9 +61,8 @@ public abstract class AbstractThumbnailProvider implements FileThumbnailProvider
      *
      * @param extensions extensions to be accepted
      */
-    public AbstractThumbnailProvider ( final List<String> extensions )
+    public AbstractThumbnailProvider ( @Nullable final List<String> extensions )
     {
-        super ();
         this.extensions = extensions;
     }
 
@@ -69,13 +71,14 @@ public abstract class AbstractThumbnailProvider implements FileThumbnailProvider
      *
      * @return extensions accepted by this provider
      */
+    @Nullable
     public List<String> getExtensions ()
     {
         return extensions;
     }
 
     @Override
-    public boolean accept ( final File file )
+    public boolean accept ( @NotNull final File file )
     {
         return extensions == null || extensions.contains ( FileUtils.getFileExtPart ( file.getName (), false ) );
     }

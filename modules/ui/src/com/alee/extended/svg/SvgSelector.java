@@ -17,11 +17,13 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.collection.ImmutableSet;
 import com.kitfox.svg.SVGElement;
+import com.kitfox.svg.xml.StyleAttribute;
 
 import java.io.Serializable;
 import java.util.List;
@@ -50,43 +52,44 @@ import java.util.Set;
  *
  * @author Mikle Garin
  * @see SvgIcon
+ * @see SvgElements
  */
-public final class SvgSelector implements Serializable
+public class SvgSelector implements Serializable
 {
     /**
      * Opening brace for attribute conditions.
      */
-    private static final String OPEN_BRACE = "[";
+    protected static final String OPEN_BRACE = "[";
 
     /**
      * Closing brace for attribute conditions.
      */
-    private static final String CLOSE_BRACE = "]";
+    protected static final String CLOSE_BRACE = "]";
 
     /**
      * Attribute conditions separator.
      */
-    private static final String ATTRIBUTE_SEPARATOR = ",";
+    protected static final String ATTRIBUTE_SEPARATOR = ",";
 
     /**
      * Element selector.
      */
-    private final String element;
+    @NotNull
+    protected final String element;
 
     /**
      * Element attribute filter.
      */
-    private final Set<String> attributes;
+    @NotNull
+    protected final Set<String> attributes;
 
     /**
      * Constructs new {@link SvgSelector} based on its text representation.
      *
      * @param selector {@link String} representation of {@link SvgSelector}
      */
-    public SvgSelector ( final String selector )
+    public SvgSelector ( @NotNull final String selector )
     {
-        super ();
-
         // Checking raw selector
         if ( TextUtils.isEmpty ( selector ) )
         {
@@ -114,71 +117,76 @@ public final class SvgSelector implements Serializable
     }
 
     /**
-     * Returns whether or not specified {@link SVGElement} fits this {@link SvgSelector} conditions.
+     * Returns whether or not specified {@link SVGElement} matches this {@link SvgSelector} conditions.
      *
      * @param icon    {@link SvgIcon} icon to check element
      * @param element {@link SVGElement}
-     * @return {@code true} if specified {@link SVGElement} fits this {@link SvgSelector} conditions, {@code false} otherwise
+     * @return {@code true} if specified {@link SVGElement} matches this {@link SvgSelector} conditions, {@code false} otherwise
      */
-    public boolean isApplicable ( final SvgIcon icon, final SVGElement element )
+    public boolean isApplicable ( @NotNull final SvgIcon icon, @NotNull final SVGElement element )
     {
         return checkSelector ( icon, element ) && checkAttributes ( icon, element );
     }
 
     /**
-     * Returns whether or not specified {@link SVGElement} fits this {@link SvgSelector} selector conditions.
+     * Returns whether or not specified {@link SVGElement} matches this {@link SvgSelector} conditions.
      *
      * @param icon    {@link SvgIcon} icon to check element
      * @param element {@link SVGElement}
-     * @return {@code true} if specified {@link SVGElement} fits this {@link SvgSelector} selector conditions, {@code false} otherwise
+     * @return {@code true} if specified {@link SVGElement} matches this {@link SvgSelector} conditions, {@code false} otherwise
      */
-    private boolean checkSelector ( final SvgIcon icon, final SVGElement element )
+    protected boolean checkSelector ( @NotNull final SvgIcon icon, @NotNull final SVGElement element )
     {
+        final boolean match;
         if ( TextUtils.isEmpty ( this.element ) || this.element.equals ( "*" ) )
         {
-            return true;
+            match = true;
         }
         else if ( this.element.startsWith ( "#" ) )
         {
             final String id = this.element.substring ( 1 );
-            final boolean exist = icon.hasAttribute ( element, SvgElements.ID );
-            return exist && Objects.equals ( id, icon.getAttribute ( element, SvgElements.ID ).getStringValue () );
+            final StyleAttribute attribute = icon.getAttribute ( element, SvgElements.ID );
+            match = attribute != null && Objects.equals ( id, attribute.getStringValue () );
         }
         else if ( this.element.startsWith ( "." ) )
         {
             final String style = this.element.substring ( 1 );
-            final boolean exist = icon.hasAttribute ( element, SvgElements.CLAZZ );
-            return exist && Objects.equals ( style, icon.getAttribute ( element, SvgElements.CLAZZ ).getStringValue () );
+            final StyleAttribute attribute = icon.getAttribute ( element, SvgElements.CLASS );
+            match = attribute != null && Objects.equals ( style, attribute.getStringValue () );
         }
         else
         {
-            return element.getClass () == SvgElements.CLASSES.get ( this.element );
+            match = element.getClass () == SvgElements.CLASSES.get ( this.element );
         }
+        return match;
     }
 
     /**
-     * Returns whether or not specified {@link SVGElement} fits this {@link SvgSelector} attribute conditions.
+     * Returns whether or not specified {@link SVGElement} matches this {@link SvgSelector} attribute conditions.
      *
      * @param icon    {@link SvgIcon} icon to check element
      * @param element {@link SVGElement}
-     * @return {@code true} if specified {@link SVGElement} fits this {@link SvgSelector} attribute conditions, {@code false} otherwise
+     * @return {@code true} if specified {@link SVGElement} matches this {@link SvgSelector} attribute conditions, {@code false} otherwise
      */
-    private boolean checkAttributes ( final SvgIcon icon, final SVGElement element )
+    protected boolean checkAttributes ( @NotNull final SvgIcon icon, @NotNull final SVGElement element )
     {
-        if ( CollectionUtils.isEmpty ( attributes ) )
+        boolean hasAttributes;
+        if ( CollectionUtils.notEmpty ( attributes ) )
         {
-            return true;
-        }
-        else
-        {
+            hasAttributes = false;
             for ( final String attribute : attributes )
             {
                 if ( icon.hasAttribute ( element, attribute ) )
                 {
-                    return true;
+                    hasAttributes = true;
+                    break;
                 }
             }
-            return false;
         }
+        else
+        {
+            hasAttributes = true;
+        }
+        return hasAttributes;
     }
 }

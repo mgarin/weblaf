@@ -21,6 +21,7 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.api.jdk.Objects;
+import com.alee.api.resource.ClassResource;
 import com.alee.extended.collapsible.WebCollapsiblePaneLU;
 import com.alee.extended.dock.WebDockableFrameLU;
 import com.alee.extended.filechooser.WebFileDropLU;
@@ -271,7 +272,7 @@ public final class UILanguageManager
             } );
 
             // Default WebLaF dictionary
-            LanguageManager.addDictionary ( new Dictionary ( UILanguageManager.class, "resources/ui-language.xml" ) );
+            LanguageManager.addDictionary ( new Dictionary ( new ClassResource ( UILanguageManager.class, "resources/ui-language.xml" ) ) );
         }
     }
 

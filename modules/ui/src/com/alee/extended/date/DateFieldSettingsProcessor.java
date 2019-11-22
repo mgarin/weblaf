@@ -17,6 +17,8 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -50,12 +52,12 @@ public class DateFieldSettingsProcessor extends SettingsProcessor<WebDateField, 
     }
 
     @Override
-    protected void register ( final WebDateField dateField )
+    protected void register ( @NotNull final WebDateField dateField )
     {
         dateListener = new DateListener ()
         {
             @Override
-            public void dateChanged ( final Date date )
+            public void dateChanged ( @Nullable final Date date )
             {
                 save ();
             }
@@ -64,12 +66,13 @@ public class DateFieldSettingsProcessor extends SettingsProcessor<WebDateField, 
     }
 
     @Override
-    protected void unregister ( final WebDateField dateField )
+    protected void unregister ( @NotNull final WebDateField dateField )
     {
         dateField.removeDateListener ( dateListener );
         dateListener = null;
     }
 
+    @Nullable
     @Override
     protected DateFieldState createDefaultValue ()
     {
@@ -77,13 +80,13 @@ public class DateFieldSettingsProcessor extends SettingsProcessor<WebDateField, 
     }
 
     @Override
-    protected void loadSettings ( final WebDateField dateField )
+    protected void loadSettings ( @NotNull final WebDateField dateField )
     {
         loadSettings ().apply ( dateField );
     }
 
     @Override
-    protected void saveSettings ( final WebDateField dateField )
+    protected void saveSettings ( @NotNull final WebDateField dateField )
     {
         saveSettings ( new DateFieldState ( dateField ) );
     }

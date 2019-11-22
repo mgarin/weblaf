@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -58,7 +59,7 @@ public class TreeSettingsProcessor extends SettingsProcessor<WebTree<? extends U
     }
 
     @Override
-    protected void register ( final WebTree<? extends UniqueNode> tree )
+    protected void register ( @NotNull final WebTree<? extends UniqueNode> tree )
     {
         treeSelectionListener = new TreeSelectionListener ()
         {
@@ -88,7 +89,7 @@ public class TreeSettingsProcessor extends SettingsProcessor<WebTree<? extends U
     }
 
     @Override
-    protected void unregister ( final WebTree<? extends UniqueNode> tree )
+    protected void unregister ( @NotNull final WebTree<? extends UniqueNode> tree )
     {
         tree.removeTreeExpansionListener ( treeExpansionListener );
         treeExpansionListener = null;
@@ -98,13 +99,13 @@ public class TreeSettingsProcessor extends SettingsProcessor<WebTree<? extends U
     }
 
     @Override
-    protected void loadSettings ( final WebTree<? extends UniqueNode> tree )
+    protected void loadSettings ( @NotNull final WebTree<? extends UniqueNode> tree )
     {
         tree.setTreeState ( loadSettings () );
     }
 
     @Override
-    protected void saveSettings ( final WebTree<? extends UniqueNode> tree )
+    protected void saveSettings ( @NotNull final WebTree<? extends UniqueNode> tree )
     {
         saveSettings ( tree.getTreeState () );
     }

@@ -18,8 +18,9 @@
 package com.alee.extended.image;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.Resource;
 import com.alee.extended.WebComponent;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.ImageUtils;
@@ -64,29 +65,32 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     /**
      * Displayed image.
      */
-    private BufferedImage image;
+    @Nullable
+    @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
+    protected BufferedImage image;
 
     /**
      * Determines how exactly image should be displayed within component bounds.
      */
-    private DisplayType displayType;
+    @NotNull
+    protected DisplayType displayType;
 
     /**
      * Image horizontal alignment.
      * Doesn't affect anything in case fitComponent display type is used.
      */
-    private int horizontalAlignment;
+    protected int horizontalAlignment;
 
     /**
      * Image vertical alignment.
      * Doesn't affect anything in case fitComponent display type is used.
      */
-    private int verticalAlignment;
+    protected int verticalAlignment;
 
     /**
      * Image opacity.
      */
-    private float opacity;
+    protected float opacity;
 
     /**
      * Constructs an empty image component.
@@ -97,34 +101,13 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     }
 
     /**
-     * Constructs component with an image loaded from the specified path.
-     *
-     * @param src path to image
-     */
-    public WebImage ( final String src )
-    {
-        this ( StyleId.auto, src );
-    }
-
-    /**
-     * Constructs component with an image loaded from package near specified class.
-     *
-     * @param nearClass class near which image is located
-     * @param src       image file location
-     */
-    public WebImage ( final Class nearClass, final String src )
-    {
-        this ( StyleId.auto, nearClass, src );
-    }
-
-    /**
      * Constructs component with an image loaded from the specified {@link URL}.
      *
-     * @param url image {@link URL}
+     * @param resource image {@link Resource} to load
      */
-    public WebImage ( final URL url )
+    public WebImage ( @NotNull final Resource resource )
     {
-        this ( StyleId.auto, url );
+        this ( StyleId.auto, resource );
     }
 
     /**
@@ -132,17 +115,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      *
      * @param icon {@link Icon} to display
      */
-    public WebImage ( final Icon icon )
-    {
-        this ( StyleId.auto, icon );
-    }
-
-    /**
-     * Constructs component with an image retrieved from the specified {@link ImageIcon}.
-     *
-     * @param icon {@link ImageIcon} to display
-     */
-    public WebImage ( final ImageIcon icon )
+    public WebImage ( @Nullable final Icon icon )
     {
         this ( StyleId.auto, icon );
     }
@@ -152,7 +125,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      *
      * @param image {@link Image} to display
      */
-    public WebImage ( final Image image )
+    public WebImage ( @Nullable final Image image )
     {
         this ( StyleId.auto, image );
     }
@@ -162,7 +135,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      *
      * @param image {@link RenderedImage} to display
      */
-    public WebImage ( final RenderedImage image )
+    public WebImage ( @Nullable final RenderedImage image )
     {
         this ( StyleId.auto, image );
     }
@@ -172,7 +145,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      *
      * @param image {@link BufferedImage} to display
      */
-    public WebImage ( final BufferedImage image )
+    public WebImage ( @Nullable final BufferedImage image )
     {
         this ( StyleId.auto, image );
     }
@@ -182,43 +155,20 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      *
      * @param id style ID
      */
-    public WebImage ( final StyleId id )
+    public WebImage ( @NotNull final StyleId id )
     {
-        this ( id, ( Image ) null );
+        this ( id, ( BufferedImage ) null );
     }
 
     /**
      * Constructs component with an image loaded from the specified path.
      *
-     * @param id  style ID
-     * @param src path to image
+     * @param id       style ID
+     * @param resource image {@link Resource} to load
      */
-    public WebImage ( final StyleId id, final String src )
+    public WebImage ( @NotNull final StyleId id, @NotNull final Resource resource )
     {
-        this ( id, ImageUtils.loadImage ( src ) );
-    }
-
-    /**
-     * Constructs component with an image loaded from package near specified class.
-     *
-     * @param id        style ID
-     * @param nearClass class near which image is located
-     * @param src       image file location
-     */
-    public WebImage ( final StyleId id, final Class nearClass, final String src )
-    {
-        this ( id, ImageUtils.loadImage ( nearClass, src ) );
-    }
-
-    /**
-     * Constructs component with an image loaded from the specified {@link URL}.
-     *
-     * @param id  style ID
-     * @param url image {@link URL}
-     */
-    public WebImage ( final StyleId id, final URL url )
-    {
-        this ( id, ImageUtils.loadImage ( url ) );
+        this ( id, ImageUtils.loadBufferedImage ( resource ) );
     }
 
     /**
@@ -227,20 +177,9 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param id   style ID
      * @param icon {@link Icon} to display
      */
-    public WebImage ( final StyleId id, final Icon icon )
+    public WebImage ( @NotNull final StyleId id, @Nullable final Icon icon )
     {
-        this ( id, ImageUtils.getBufferedImage ( icon ) );
-    }
-
-    /**
-     * Constructs component with an image retrieved from the specified {@link ImageIcon}.
-     *
-     * @param id   style ID
-     * @param icon {@link ImageIcon} to display
-     */
-    public WebImage ( final StyleId id, final ImageIcon icon )
-    {
-        this ( id, icon.getImage () );
+        this ( id, ImageUtils.toBufferedImage ( icon ) );
     }
 
     /**
@@ -249,9 +188,9 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param id    style ID
      * @param image {@link Image} to display
      */
-    public WebImage ( final StyleId id, final Image image )
+    public WebImage ( @NotNull final StyleId id, @Nullable final Image image )
     {
-        this ( id, ImageUtils.getBufferedImage ( image ) );
+        this ( id, ImageUtils.toBufferedImage ( image ) );
     }
 
     /**
@@ -260,9 +199,9 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param id    style ID
      * @param image {@link RenderedImage} to display
      */
-    public WebImage ( final StyleId id, final RenderedImage image )
+    public WebImage ( @NotNull final StyleId id, @Nullable final RenderedImage image )
     {
-        this ( id, ImageUtils.getBufferedImage ( image ) );
+        this ( id, ImageUtils.toBufferedImage ( image ) );
     }
 
     /**
@@ -271,21 +210,13 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param id    style ID
      * @param image {@link BufferedImage} to display
      */
-    public WebImage ( final StyleId id, final BufferedImage image )
+    public WebImage ( @NotNull final StyleId id, @Nullable final BufferedImage image )
     {
         super ();
-        initialize ( id, image );
-    }
-
-    /**
-     * Initializes image component.
-     *
-     * @param id    style ID
-     * @param image initially displayed image
-     */
-    protected void initialize ( final StyleId id, final BufferedImage image )
-    {
-        setImage ( image );
+        this.displayType = DisplayType.preferred;
+        this.horizontalAlignment = CENTER;
+        this.verticalAlignment = CENTER;
+        this.image = image;
         updateUI ();
         setStyleId ( id );
     }
@@ -302,6 +233,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      *
      * @return currently displayed {@link BufferedImage}
      */
+    @Nullable
     public BufferedImage getImage ()
     {
         return image;
@@ -313,9 +245,10 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param icon {@link Icon} to display
      * @return this image component
      */
-    public WebImage setImage ( final Icon icon )
+    @Nullable
+    public WebImage setImage ( @Nullable final Icon icon )
     {
-        return setImage ( ImageUtils.getBufferedImage ( icon ) );
+        return setImage ( ImageUtils.toBufferedImage ( icon ) );
     }
 
     /**
@@ -324,9 +257,10 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param icon {@link ImageIcon} to display
      * @return this image component
      */
-    public WebImage setImage ( final ImageIcon icon )
+    @Nullable
+    public WebImage setImage ( @Nullable final ImageIcon icon )
     {
-        return setImage ( icon.getImage () );
+        return setImage ( ImageUtils.toBufferedImage ( icon ) );
     }
 
     /**
@@ -335,9 +269,10 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param image {@link Image} to display
      * @return this image component
      */
-    public WebImage setImage ( final Image image )
+    @Nullable
+    public WebImage setImage ( @Nullable final Image image )
     {
-        return setImage ( ImageUtils.getBufferedImage ( image ) );
+        return setImage ( ImageUtils.toBufferedImage ( image ) );
     }
 
     /**
@@ -346,9 +281,10 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param image {@link RenderedImage} to display
      * @return this image component
      */
-    public WebImage setImage ( final RenderedImage image )
+    @Nullable
+    public WebImage setImage ( @Nullable final RenderedImage image )
     {
-        return setImage ( ImageUtils.getBufferedImage ( image ) );
+        return setImage ( ImageUtils.toBufferedImage ( image ) );
     }
 
     /**
@@ -357,7 +293,8 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param image {@link BufferedImage} to display
      * @return this image component
      */
-    public WebImage setImage ( final BufferedImage image )
+    @Nullable
+    public WebImage setImage ( @Nullable final BufferedImage image )
     {
         final BufferedImage old = this.image;
         this.image = image;
@@ -370,6 +307,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      *
      * @return image display type
      */
+    @NotNull
     public DisplayType getDisplayType ()
     {
         return displayType;
@@ -381,7 +319,8 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param displayType new image display type
      * @return this image component
      */
-    public WebImage setDisplayType ( final DisplayType displayType )
+    @NotNull
+    public WebImage setDisplayType ( @NotNull final DisplayType displayType )
     {
         final DisplayType old = this.displayType;
         this.displayType = displayType;
@@ -405,6 +344,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param horizontalAlignment new image horizontal alignment
      * @return this image component
      */
+    @NotNull
     public WebImage setHorizontalAlignment ( final int horizontalAlignment )
     {
         final int old = this.horizontalAlignment;
@@ -429,6 +369,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param verticalAlignment new image vertical alignment
      * @return this image component
      */
+    @NotNull
     public WebImage setVerticalAlignment ( final int verticalAlignment )
     {
         final int old = this.verticalAlignment;
@@ -453,6 +394,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
      * @param opacity new image opacity
      * @return this image component
      */
+    @NotNull
     public WebImage setOpacity ( final float opacity )
     {
         final float old = this.opacity;

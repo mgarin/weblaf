@@ -17,91 +17,34 @@
 
 package com.alee.managers.icon.set;
 
-import com.alee.managers.icon.data.AbstractIconData;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.NetUtils;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.resource.Resource;
 import com.alee.utils.TextUtils;
 import com.alee.utils.XmlUtils;
-
-import java.io.File;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 /**
  * Simple icon set that could be created based on a custom XML data file.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
+ * @see IconSet
+ * @see AbstractIconSet
  * @see com.alee.managers.icon.IconManager
  */
+@XStreamAlias ( "IconSet" )
+@XStreamConverter ( XmlIconSetConverter.class )
 public class XmlIconSet extends AbstractIconSet
 {
     /**
-     * Constructs new xml-based icon set.
+     * Constructs new {@link XmlIconSet}.
      *
-     * @param location icon set data XML file location
+     * @param resource icon set {@link Resource}
      */
-    public XmlIconSet ( final String location )
+    public XmlIconSet ( @NotNull final Resource resource )
     {
-        this ( new File ( location ) );
-    }
-
-    /**
-     * Constructs new xml-based icon set.
-     *
-     * @param location icon set data XML file
-     */
-    public XmlIconSet ( final File location )
-    {
-        this ( ( IconSetData ) XmlUtils.fromXML ( location ) );
-    }
-
-    /**
-     * Constructs new xml-based icon set.
-     *
-     * @param nearClass class to find icon set data XML near
-     * @param location  icon set data XML location relative to the specified class
-     */
-    public XmlIconSet ( final Class nearClass, final String location )
-    {
-        this ( ( IconSetData ) XmlUtils.fromXML ( nearClass.getResource ( location ) ) );
-    }
-
-    /**
-     * Constructs new xml-based icon set.
-     *
-     * @param iconSetData icon set data
-     */
-    public XmlIconSet ( final IconSetData iconSetData )
-    {
-        super ( iconSetData.getId () );
-
-        // Updating and caching icons information
-        if ( CollectionUtils.notEmpty ( iconSetData.getIcons () ) )
-        {
-            for ( final AbstractIconData iconData : iconSetData.getIcons () )
-            {
-                // Changing relative class to IconSet relative class if one exists
-                // This will only be performed if IconData relative class is not specified and global one is specified
-                if ( iconData.getNearClass () == null && iconSetData.getNearClass () != null )
-                {
-                    iconData.setNearClass ( iconSetData.getNearClass () );
-                }
-
-                // Combining base path with icon path
-                if ( !TextUtils.isEmpty ( iconSetData.getBase () ) )
-                {
-                    if ( iconData.getNearClass () != null )
-                    {
-                        iconData.setPath ( NetUtils.joinUrlPaths ( iconSetData.getBase (), iconData.getPath () ) );
-                    }
-                    else
-                    {
-                        iconData.setPath ( new File ( iconSetData.getBase (), iconData.getPath () ).getAbsolutePath () );
-                    }
-                }
-
-                // Adding icon
-                addIcon ( iconData );
-            }
-        }
+        super ( TextUtils.generateId () );
+        XmlUtils.fromXML ( resource, this );
     }
 }

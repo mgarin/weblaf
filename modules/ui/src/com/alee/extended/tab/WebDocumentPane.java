@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.panel.WebPanel;
@@ -1295,6 +1296,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      * @see DocumentPaneState
      * @see #setDocumentPaneState(DocumentPaneState)
      */
+    @Nullable
     public DocumentPaneState getDocumentPaneState ()
     {
         return root != null ? root.getDocumentPaneState () : null;

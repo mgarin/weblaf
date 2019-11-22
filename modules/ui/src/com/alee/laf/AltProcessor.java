@@ -17,6 +17,7 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class AltProcessor implements KeyEventPostProcessor
     private static Window winAncestor = null;
 
     @Override
-    public boolean postProcessKeyEvent ( final KeyEvent ev )
+    public boolean postProcessKeyEvent ( @NotNull final KeyEvent ev )
     {
         if ( ev.isConsumed () )
         {
@@ -94,7 +95,7 @@ public class AltProcessor implements KeyEventPostProcessor
      *
      * @param ev key event
      */
-    private void altPressed ( final KeyEvent ev )
+    private void altPressed (  @NotNull final KeyEvent ev )
     {
         final MenuSelectionManager msm = MenuSelectionManager.defaultManager ();
         final MenuElement[] path = msm.getSelectedPath ();
@@ -139,42 +140,42 @@ public class AltProcessor implements KeyEventPostProcessor
         {
             WebLookAndFeel.setMnemonicHidden ( true );
             repaintMnemonicsInWindow ( winAncestor );
-            return;
-        }
-
-        final MenuSelectionManager msm = MenuSelectionManager.defaultManager ();
-        if ( msm.getSelectedPath ().length == 0 )
-        {
-            // Activating menu bar
-            JMenuBar mbar = root != null ? root.getJMenuBar () : null;
-            if ( mbar == null && winAncestor instanceof JFrame )
-            {
-                mbar = ( ( JFrame ) winAncestor ).getJMenuBar ();
-            }
-            final JMenu menu = mbar != null ? mbar.getMenu ( 0 ) : null;
-
-            if ( menu != null )
-            {
-                final MenuElement[] path = new MenuElement[ 2 ];
-                path[ 0 ] = mbar;
-                path[ 1 ] = menu;
-                msm.setSelectedPath ( path );
-            }
-            else if ( !WebLookAndFeel.isMnemonicHidden () )
-            {
-                WebLookAndFeel.setMnemonicHidden ( true );
-                repaintMnemonicsInWindow ( winAncestor );
-            }
         }
         else
         {
-            if ( ( msm.getSelectedPath () )[ 0 ] instanceof ComboPopup )
+            final MenuSelectionManager msm = MenuSelectionManager.defaultManager ();
+            if ( msm.getSelectedPath ().length == 0 )
             {
-                WebLookAndFeel.setMnemonicHidden ( true );
-                repaintMnemonicsInWindow ( winAncestor );
+                // Activating menu bar
+                JMenuBar mbar = root != null ? root.getJMenuBar () : null;
+                if ( mbar == null && winAncestor instanceof JFrame )
+                {
+                    mbar = ( ( JFrame ) winAncestor ).getJMenuBar ();
+                }
+                final JMenu menu = mbar != null ? mbar.getMenu ( 0 ) : null;
+
+                if ( menu != null )
+                {
+                    final MenuElement[] path = new MenuElement[ 2 ];
+                    path[ 0 ] = mbar;
+                    path[ 1 ] = menu;
+                    msm.setSelectedPath ( path );
+                }
+                else if ( !WebLookAndFeel.isMnemonicHidden () )
+                {
+                    WebLookAndFeel.setMnemonicHidden ( true );
+                    repaintMnemonicsInWindow ( winAncestor );
+                }
+            }
+            else
+            {
+                if ( ( msm.getSelectedPath () )[ 0 ] instanceof ComboPopup )
+                {
+                    WebLookAndFeel.setMnemonicHidden ( true );
+                    repaintMnemonicsInWindow ( winAncestor );
+                }
             }
         }
-
     }
 
     /**
@@ -184,18 +185,15 @@ public class AltProcessor implements KeyEventPostProcessor
      */
     private void repaintMnemonicsInWindow ( final Window w )
     {
-        if ( w == null || !w.isShowing () )
+        if ( w != null && w.isShowing () )
         {
-            return;
+            final Window[] ownedWindows = w.getOwnedWindows ();
+            for ( final Window ownedWindow : ownedWindows )
+            {
+                repaintMnemonicsInWindow ( ownedWindow );
+            }
+            repaintMnemonicsInContainer ( w );
         }
-
-        final Window[] ownedWindows = w.getOwnedWindows ();
-        for ( final Window ownedWindow : ownedWindows )
-        {
-            repaintMnemonicsInWindow ( ownedWindow );
-        }
-
-        repaintMnemonicsInContainer ( w );
     }
 
     /**

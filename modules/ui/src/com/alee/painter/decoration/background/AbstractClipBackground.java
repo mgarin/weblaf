@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CollectionUtils;
@@ -78,7 +79,8 @@ public abstract class AbstractClipBackground<C extends JComponent, D extends IDe
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )
@@ -103,5 +105,5 @@ public abstract class AbstractClipBackground<C extends JComponent, D extends IDe
      * @param shape  {@link Shape} of the painted element
      * @return {@link Shape} which is a result of clipping original {@link Shape}
      */
-    protected abstract Shape clip ( Graphics2D g2d, Rectangle bounds, C c, D d, Shape shape );
+    protected abstract Shape clip ( @NotNull Graphics2D g2d, @NotNull Rectangle bounds, @NotNull C c, @NotNull D d, @NotNull Shape shape );
 }

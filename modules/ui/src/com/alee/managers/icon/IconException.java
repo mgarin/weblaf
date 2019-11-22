@@ -17,6 +17,8 @@
 
 package com.alee.managers.icon;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Special exception class used to display various icon problems.
  *
@@ -39,7 +41,7 @@ public final class IconException extends RuntimeException
      *
      * @param message exception message
      */
-    public IconException ( final String message )
+    public IconException ( @NotNull final String message )
     {
         super ( message );
     }
@@ -50,7 +52,7 @@ public final class IconException extends RuntimeException
      * @param message exception message
      * @param cause   exception cause
      */
-    public IconException ( final String message, final Throwable cause )
+    public IconException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
     }
@@ -60,7 +62,7 @@ public final class IconException extends RuntimeException
      *
      * @param cause exception cause
      */
-    public IconException ( final Throwable cause )
+    public IconException ( @NotNull final Throwable cause )
     {
         super ( cause );
     }

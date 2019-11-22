@@ -17,6 +17,8 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicRootPaneUI;
 import java.awt.*;
@@ -176,6 +178,7 @@ public abstract class WRootPaneUI extends BasicRootPaneUI
      *
      * @return window for the root pane this UI is applied to
      */
+    @Nullable
     public abstract Window getWindow ();
 
     /**

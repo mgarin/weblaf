@@ -18,6 +18,7 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.ColorBackground;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -36,7 +37,7 @@ import java.awt.*;
 public class TabBackground<C extends Tab, D extends IDecoration<C, D>, I extends TabBackground<C, D, I>>
         extends ColorBackground<C, D, I>
 {
-    @NotNull
+    @Nullable
     @Override
     protected Color getColor ( @NotNull final C c, @NotNull final D d )
     {

@@ -17,6 +17,7 @@
 
 package com.alee.iconset;
 
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.icon.set.XmlIconSet;
 
 /**
@@ -31,6 +32,6 @@ public final class DarkIconSet extends XmlIconSet
      */
     public DarkIconSet ()
     {
-        super ( DarkIconSet.class, "resources/dark.xml" );
+        super ( new ClassResource (  DarkIconSet.class, "resources/dark-icon-set.xml" ) );
     }
 }

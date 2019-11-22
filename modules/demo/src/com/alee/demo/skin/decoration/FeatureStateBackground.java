@@ -17,7 +17,7 @@
 
 package com.alee.demo.skin.decoration;
 
-import com.alee.api.annotations.Nullable;
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.FeatureState;
 import com.alee.demo.api.example.PreviewPanel;
 import com.alee.painter.decoration.WebDecoration;
@@ -46,7 +46,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
     @XStreamAsAttribute
     protected Color color;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -54,8 +54,8 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final PreviewPanel previewPanel, final D decoration,
-                        final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final PreviewPanel previewPanel,
+                        @NotNull final D decoration, @NotNull final Shape shape )
     {
         final FeatureState featureState = previewPanel.getState ();
         if ( featureState != FeatureState.common )

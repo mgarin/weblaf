@@ -17,6 +17,7 @@
 
 package com.alee.managers.icon.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Mergeable;
 
 import javax.swing.*;
@@ -37,5 +38,5 @@ public interface IconAdjustment<T extends Icon> extends Mergeable, Cloneable, Se
      *
      * @param icon {@link Icon} to adjust
      */
-    public void apply ( T icon );
+    public void apply ( @NotNull T icon );
 }

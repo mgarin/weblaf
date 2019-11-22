@@ -51,7 +51,7 @@ public class DetectedPlugin<P extends Plugin>
     /**
      * Plugin logo.
      */
-    private final ImageIcon logo;
+    private final Icon logo;
 
     /**
      * Plugin load status.
@@ -86,10 +86,8 @@ public class DetectedPlugin<P extends Plugin>
      * @param information    plugin information
      * @param logo           plugin logo
      */
-    public DetectedPlugin ( final String pluginFolder, final String pluginFileName, final PluginInformation information,
-                            final ImageIcon logo )
+    public DetectedPlugin ( final String pluginFolder, final String pluginFileName, final PluginInformation information, final Icon logo )
     {
-        super ();
         this.pluginFolder = pluginFolder;
         this.pluginFileName = pluginFileName;
         this.information = information;
@@ -142,7 +140,7 @@ public class DetectedPlugin<P extends Plugin>
      *
      * @return plugin logo
      */
-    public ImageIcon getLogo ()
+    public Icon getLogo ()
     {
         return !SystemUtils.isHeadlessEnvironment () ? logo : null;
     }

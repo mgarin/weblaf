@@ -18,6 +18,7 @@
 package com.alee.extended.image;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.resource.Resource;
 import com.alee.graphics.filters.GaussianFilter;
 import com.alee.graphics.filters.GrayscaleFilter;
 import com.alee.graphics.filters.MotionBlurFilter;
@@ -37,7 +38,7 @@ import java.awt.image.BufferedImage;
 public class WebDecoratedImage extends JComponent implements SwingConstants, ShapeMethods
 {
     /**
-     * todo 1. Implement proper UI and styling
+     * todo 1. Implement proper UI and styling or merge functionality into existing {@link WebImage}
      */
 
     private ImageIcon icon;
@@ -70,33 +71,26 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         this ( ( ImageIcon ) null );
     }
 
-    public WebDecoratedImage ( final String src )
+    public WebDecoratedImage ( @NotNull final Resource resource )
     {
-        this ( ImageUtils.loadImage ( src ) );
+        this ( ImageUtils.loadImageIcon ( resource ) );
     }
 
-    public WebDecoratedImage ( final Class nearClass, final String src )
+    public WebDecoratedImage ( @NotNull final Image image )
     {
-        this ( ImageUtils.loadImage ( nearClass, src ) );
+        this ( ImageUtils.toNonNullImageIcon ( image ) );
     }
 
-    public WebDecoratedImage ( final Image image )
+    public WebDecoratedImage ( @NotNull final Icon icon )
     {
-        super ();
-        WebLookAndFeel.setOrientation ( this );
-        setImage ( image );
+        this ( ImageUtils.toNonNullImageIcon ( icon ) );
     }
 
-    public WebDecoratedImage ( final ImageIcon icon )
+    public WebDecoratedImage ( @NotNull final ImageIcon icon )
     {
         super ();
         WebLookAndFeel.setOrientation ( this );
         setIcon ( icon );
-    }
-
-    public ImageIcon getPreviewIcon ()
-    {
-        return previewIcon;
     }
 
     public ImageIcon getIcon ()
@@ -104,28 +98,20 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         return icon;
     }
 
-    public void setImage ( final Image image )
-    {
-        setImage ( image, true );
-    }
-
-    public void setImage ( final Image image, final boolean update )
-    {
-        setIcon ( new ImageIcon ( image ), update );
-    }
-
-    public void setIcon ( final ImageIcon icon )
-    {
-        setIcon ( icon, true );
-    }
-
-    public void setIcon ( final ImageIcon icon, final boolean update )
+    public void setIcon ( @NotNull final ImageIcon icon )
     {
         this.icon = icon;
-        if ( update )
-        {
-            updatePreview ();
-        }
+        updatePreview ();
+    }
+
+    public void setImage ( @NotNull final Image image )
+    {
+        setIcon ( ImageUtils.toNonNullImageIcon ( image ) );
+    }
+
+    public ImageIcon getPreviewIcon ()
+    {
+        return previewIcon;
     }
 
     public int getHorizontalAlignment ()
@@ -418,86 +404,83 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
 
     public void updatePreview ()
     {
-        if ( icon == null )
+        if ( icon != null )
+        {
+            // Source image
+            BufferedImage image = ImageUtils.copyToBufferedImage ( icon );
+
+            // Applying filters
+            if ( grayscale )
+            {
+                new GrayscaleFilter ().filter ( image, image );
+            }
+            if ( blur )
+            {
+                new GaussianFilter ( blurFactor ).filter ( image, image );
+            }
+            if ( zoomBlur && rotationBlur )
+            {
+                new MotionBlurFilter ( 0f, 0f, rotationBlurFactor, zoomBlurFactor, blurAlignX, blurAlignY ).filter ( image, image );
+            }
+            else if ( zoomBlur )
+            {
+                new MotionBlurFilter ( 0f, 0f, 0f, zoomBlurFactor, blurAlignX, blurAlignY ).filter ( image, image );
+            }
+            else if ( rotationBlur )
+            {
+                new MotionBlurFilter ( 0f, 0f, rotationBlurFactor, 0f, blurAlignX, blurAlignY ).filter ( image, image );
+            }
+
+            // Applying rounded corners
+            if ( round > 0 )
+            {
+                image = ImageUtils.cutImage (
+                        image, new RoundRectangle2D.Double ( 0, 0, icon.getIconWidth (), icon.getIconHeight (), round * 2, round * 2 )
+                );
+            }
+
+            // Creating additional effects
+            if ( shadeWidth > 0 || drawGlassLayer || drawBorder )
+            {
+                final Dimension ps = getPreferredSize ();
+                final BufferedImage img = ImageUtils.createCompatibleImage ( ps.width, ps.height, Transparency.TRANSLUCENT );
+                final Graphics2D g2d = img.createGraphics ();
+                GraphicsUtils.setupAntialias ( g2d );
+                final Shape bs = getBorderShape ();
+
+                // Shade
+                GraphicsUtils.drawShade ( g2d, bs, WebDecoratedImageStyle.shadeType, new Color ( 90, 90, 90 ), shadeWidth );
+
+                // Image itself
+                g2d.drawImage ( image, shadeWidth, shadeWidth, null );
+
+                // Glass-styled shade
+                if ( drawGlassLayer )
+                {
+                    g2d.setPaint ( new GradientPaint ( 0, shadeWidth, new Color ( 255, 255, 255, 160 ), 0,
+                            shadeWidth + ( ps.height - shadeWidth * 2 ) / 2, new Color ( 255, 255, 255, 32 ) ) );
+                    g2d.fill ( getGlanceShape () );
+                }
+
+                // Border
+                if ( drawBorder )
+                {
+                    g2d.setPaint ( borderColor );
+                    g2d.draw ( bs );
+                }
+
+                g2d.dispose ();
+                image = img;
+            }
+
+            // Updating preview
+            previewIcon = new ImageIcon ( image );
+        }
+        else
         {
             // No preview available
             previewIcon = null;
-
-            // Updating component view
-            repaint ();
-
-            return;
         }
-
-        // Source image
-        BufferedImage image = ImageUtils.copy ( icon.getImage () );
-
-        // Applying filters
-        if ( grayscale )
-        {
-            new GrayscaleFilter ().filter ( image, image );
-        }
-        if ( blur )
-        {
-            new GaussianFilter ( blurFactor ).filter ( image, image );
-        }
-        if ( zoomBlur && rotationBlur )
-        {
-            new MotionBlurFilter ( 0f, 0f, rotationBlurFactor, zoomBlurFactor, blurAlignX, blurAlignY ).filter ( image, image );
-        }
-        else if ( zoomBlur )
-        {
-            new MotionBlurFilter ( 0f, 0f, 0f, zoomBlurFactor, blurAlignX, blurAlignY ).filter ( image, image );
-        }
-        else if ( rotationBlur )
-        {
-            new MotionBlurFilter ( 0f, 0f, rotationBlurFactor, 0f, blurAlignX, blurAlignY ).filter ( image, image );
-        }
-
-        // Applying rounded corners
-        if ( round > 0 )
-        {
-            image = ImageUtils
-                    .cutImage ( new RoundRectangle2D.Double ( 0, 0, icon.getIconWidth (), icon.getIconHeight (), round * 2, round * 2 ),
-                            image );
-        }
-
-        // Creating additional effects
-        if ( shadeWidth > 0 || drawGlassLayer || drawBorder )
-        {
-            final Dimension ps = getPreferredSize ();
-            final BufferedImage img = ImageUtils.createCompatibleImage ( ps.width, ps.height, Transparency.TRANSLUCENT );
-            final Graphics2D g2d = img.createGraphics ();
-            GraphicsUtils.setupAntialias ( g2d );
-            final Shape bs = getBorderShape ();
-
-            // Shade
-            GraphicsUtils.drawShade ( g2d, bs, WebDecoratedImageStyle.shadeType, new Color ( 90, 90, 90 ), shadeWidth );
-
-            // Image itself
-            g2d.drawImage ( image, shadeWidth, shadeWidth, null );
-
-            // Glass-styled shade
-            if ( drawGlassLayer )
-            {
-                g2d.setPaint ( new GradientPaint ( 0, shadeWidth, new Color ( 255, 255, 255, 160 ), 0,
-                        shadeWidth + ( ps.height - shadeWidth * 2 ) / 2, new Color ( 255, 255, 255, 32 ) ) );
-                g2d.fill ( getGlanceShape () );
-            }
-
-            // Border
-            if ( drawBorder )
-            {
-                g2d.setPaint ( borderColor );
-                g2d.draw ( bs );
-            }
-
-            g2d.dispose ();
-            image = img;
-        }
-
-        // Updating preview
-        previewIcon = new ImageIcon ( image );
 
         // Updating component view
         repaint ();
@@ -505,16 +488,18 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
 
     private Shape getGlanceShape ()
     {
+        final Shape shape;
         final Dimension ps = getPreferredSize ();
         if ( round > 0 )
         {
-            return new RoundRectangle2D.Double ( shadeWidth, shadeWidth, ps.width - shadeWidth * 2, ( ps.height - shadeWidth * 2 ) / 2,
+            shape = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, ps.width - shadeWidth * 2, ( ps.height - shadeWidth * 2 ) / 2,
                     round * 2, round * 2 );
         }
         else
         {
-            return new Rectangle ( shadeWidth, shadeWidth, ps.width - shadeWidth * 2, ( ps.height - shadeWidth * 2 ) / 2 );
+            shape = new Rectangle ( shadeWidth, shadeWidth, ps.width - shadeWidth * 2, ( ps.height - shadeWidth * 2 ) / 2 );
         }
+        return shape;
     }
 
     private Shape getBorderShape ()
@@ -585,14 +570,16 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
     @Override
     public Dimension getPreferredSize ()
     {
+        final Dimension ps;
         if ( icon != null )
         {
-            return new Dimension ( shadeWidth * 2 + icon.getIconWidth (), shadeWidth * 2 + icon.getIconHeight () );
+            ps = new Dimension ( shadeWidth * 2 + icon.getIconWidth (), shadeWidth * 2 + icon.getIconHeight () );
         }
         else
         {
-            return new Dimension ( 0, 0 );
+            ps = new Dimension ( 0, 0 );
         }
+        return ps;
     }
 
     @NotNull

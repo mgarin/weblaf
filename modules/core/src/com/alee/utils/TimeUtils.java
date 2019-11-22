@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +32,10 @@ import java.util.Date;
  */
 public final class TimeUtils
 {
+    /**
+     * todo 1. Change to thread local statistics instead of utility class
+     */
+
     /**
      * Constants for time calculations.
      */
@@ -74,6 +80,7 @@ public final class TimeUtils
      *
      * @return pinned time
      */
+    @Nullable
     public static Long getPinnedTime ()
     {
         return pinnedTime;
@@ -84,6 +91,7 @@ public final class TimeUtils
      *
      * @return last time
      */
+    @Nullable
     public static Long getLastTime ()
     {
         return lastTime;
@@ -117,18 +125,19 @@ public final class TimeUtils
      */
     public static long getPassedTime ( final boolean total )
     {
+        final long passedTime;
         if ( pinnedTime == null )
         {
             pinTime ();
-            return 0;
+            passedTime = 0;
         }
         else
         {
             final long time = currentTime ();
-            final long passedTime = total ? time - pinnedTime : time - lastTime;
+            passedTime = total ? time - pinnedTime : time - lastTime;
             lastTime = time;
-            return passedTime;
         }
+        return passedTime;
     }
 
     /**
@@ -144,7 +153,7 @@ public final class TimeUtils
      *
      * @param prefix output string prefix
      */
-    public static void showPassedTime ( final String prefix )
+    public static void showPassedTime ( @NotNull final String prefix )
     {
         showPassedTime ( false, prefix );
     }
@@ -167,7 +176,7 @@ public final class TimeUtils
      * @param total  should always write time passed since last pin request or not
      * @param prefix output string prefix
      */
-    public static void showPassedTime ( final boolean total, final String prefix )
+    public static void showPassedTime ( final boolean total, @NotNull final String prefix )
     {
         if ( pinnedTime == null )
         {
@@ -196,6 +205,7 @@ public final class TimeUtils
      *
      * @return pinned nanotime
      */
+    @Nullable
     public static Long getPinnedNanoTime ()
     {
         return pinnedNanoTime;
@@ -206,6 +216,7 @@ public final class TimeUtils
      *
      * @return last nanotime
      */
+    @Nullable
     public static Long getLastNanoTime ()
     {
         return lastNanoTime;
@@ -239,18 +250,19 @@ public final class TimeUtils
      */
     public static long getPassedNanoTime ( final boolean total )
     {
+        final long passedNanoTime;
         if ( pinnedNanoTime == null )
         {
             pinNanoTime ();
-            return 0;
+            passedNanoTime = 0;
         }
         else
         {
             final long time = currentNanoTime ();
-            final long passedTime = total ? time - pinnedNanoTime : time - lastNanoTime;
+            passedNanoTime = total ? time - pinnedNanoTime : time - lastNanoTime;
             lastNanoTime = time;
-            return passedTime;
         }
+        return passedNanoTime;
     }
 
     /**
@@ -266,7 +278,7 @@ public final class TimeUtils
      *
      * @param prefix output string prefix
      */
-    public static void showPassedNanoTime ( final String prefix )
+    public static void showPassedNanoTime ( @NotNull final String prefix )
     {
         showPassedNanoTime ( false, prefix );
     }
@@ -289,7 +301,7 @@ public final class TimeUtils
      * @param total  should always write nanotime passed since last pin request or not
      * @param prefix output string prefix
      */
-    public static void showPassedNanoTime ( final boolean total, final String prefix )
+    public static void showPassedNanoTime ( final boolean total, @NotNull final String prefix )
     {
         if ( pinnedNanoTime == null )
         {
@@ -338,6 +350,7 @@ public final class TimeUtils
      *
      * @return system date
      */
+    @NotNull
     public static Date currentDate ()
     {
         return new Date ( currentTime () );
@@ -350,7 +363,7 @@ public final class TimeUtils
      * @param date2 second date
      * @return day comparison result
      */
-    public static boolean isSameDay ( final Date date1, final Date date2 )
+    public static boolean isSameDay ( @NotNull final Date date1, @NotNull final Date date2 )
     {
         return isSameDay ( date1.getTime (), date2.getTime () );
     }
@@ -362,7 +375,7 @@ public final class TimeUtils
      * @param time2 second time
      * @return day comparison result
      */
-    public static boolean isSameDay ( final Long time1, final Long time2 )
+    public static boolean isSameDay ( @NotNull final Long time1, @NotNull final Long time2 )
     {
         final Calendar calendar = Calendar.getInstance ();
 
@@ -385,7 +398,7 @@ public final class TimeUtils
      * @param date     date
      * @return day comparison result
      */
-    public static boolean isSameDay ( final Calendar calendar, final Date date )
+    public static boolean isSameDay ( @NotNull final Calendar calendar, @NotNull final Date date )
     {
         return isSameDay ( calendar, date.getTime () );
     }
@@ -397,7 +410,7 @@ public final class TimeUtils
      * @param date     date
      * @return day comparison result
      */
-    public static boolean isSameDay ( final Calendar calendar, final Long date )
+    public static boolean isSameDay ( @NotNull final Calendar calendar, @NotNull final Long date )
     {
         // Saving calendar time
         final long time = calendar.getTimeInMillis ();
@@ -423,7 +436,8 @@ public final class TimeUtils
      * @param date date to process
      * @return start-of-day date
      */
-    public static Date getStartOfDay ( final Date date )
+    @NotNull
+    public static Date getStartOfDay ( @NotNull final Date date )
     {
         final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( date );
@@ -440,7 +454,8 @@ public final class TimeUtils
      * @param date date to process
      * @return end-of-day date
      */
-    public static Date getEndOfDay ( final Date date )
+    @NotNull
+    public static Date getEndOfDay ( @NotNull final Date date )
     {
         final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( date );
@@ -456,7 +471,7 @@ public final class TimeUtils
      *
      * @param calendar calendar that should be changed
      */
-    public static void increaseByDay ( final Calendar calendar )
+    public static void increaseByDay ( @NotNull final Calendar calendar )
     {
         changeByDays ( calendar, 1 );
     }
@@ -466,7 +481,7 @@ public final class TimeUtils
      *
      * @param calendar calendar that should be changed
      */
-    public static void decreaseByDay ( final Calendar calendar )
+    public static void decreaseByDay ( @NotNull final Calendar calendar )
     {
         changeByDays ( calendar, -1 );
     }
@@ -477,7 +492,7 @@ public final class TimeUtils
      * @param calendar calendar that should be changed
      * @param days     days amount
      */
-    public static void changeByDays ( final Calendar calendar, final int days )
+    public static void changeByDays ( @NotNull final Calendar calendar, final int days )
     {
         calendar.set ( Calendar.DAY_OF_MONTH, calendar.get ( Calendar.DAY_OF_MONTH ) + days );
     }
@@ -488,7 +503,8 @@ public final class TimeUtils
      * @param format date format to use
      * @return formatted representation of current date
      */
-    public static String formatCurrentDate ( final String format )
+    @NotNull
+    public static String formatCurrentDate ( @NotNull final String format )
     {
         return formatDate ( format, new Date () );
     }
@@ -500,7 +516,8 @@ public final class TimeUtils
      * @param date   date to format
      * @return formatted representation of specified date
      */
-    public static String formatDate ( final String format, final Date date )
+    @NotNull
+    public static String formatDate ( @NotNull final String format, @NotNull final Date date )
     {
         return new SimpleDateFormat ( format ).format ( date );
     }

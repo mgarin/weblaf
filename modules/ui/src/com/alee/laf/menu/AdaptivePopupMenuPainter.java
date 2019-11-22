@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -51,7 +53,8 @@ public final class AdaptivePopupMenuPainter<C extends JPopupMenu, U extends WPop
     }
 
     @Override
-    public void configurePopup ( final C popupMenu, final Component invoker, final int x, final int y, final Popup popup )
+    public void configurePopup ( @NotNull final C popupMenu, @Nullable final Component invoker, final int x, final int y,
+                                 @NotNull final Popup popup )
     {
         /**
          * Do nothing by default.

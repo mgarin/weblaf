@@ -17,8 +17,12 @@
 
 package com.alee.utils.system;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Objects;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;
+import org.slf4j.LoggerFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,6 +62,7 @@ public final class JavaVersion
     /**
      * Java patch.
      */
+    @Nullable
     private final String patch;
 
     /**
@@ -91,7 +96,7 @@ public final class JavaVersion
      * @param update update number
      * @param patch  patch
      */
-    public JavaVersion ( final double major, final int minor, final int update, final String patch )
+    public JavaVersion ( final double major, final int minor, final int update, @Nullable final String patch )
     {
         this.major = major;
         this.minor = minor;
@@ -108,22 +113,43 @@ public final class JavaVersion
         int minor = 0;
         int update = 0;
         String patch = null;
-        final Object version = ReflectUtils.callStaticMethodSafely ( Runtime.class, "version" );
-        if ( version != null )
+        boolean read = false;
+
+        /**
+         * Using {@link Runtime} public API introduced in JDK 9.
+         */
+        try
         {
-            /**
-             * Using {@link Runtime} public API introduced in JDK 9.
-             */
-            major = ( Integer ) ReflectUtils.callMethodSafely ( version, "major" );
-            minor = ( Integer ) ReflectUtils.callMethodSafely ( version, "minor" );
-            update = ( Integer ) ReflectUtils.callMethodSafely ( version, "security" );
-            patch = null;
+            final Object version = ReflectUtils.callStaticMethod ( Runtime.class, "version" );
+            try
+            {
+                final Object majorNumber = ReflectUtils.callMethod ( version, "major" );
+                major = majorNumber instanceof Integer ? ( Integer ) majorNumber : 0.0;
+                final Object minorNumber = ReflectUtils.callMethod ( version, "minor" );
+                minor = minorNumber instanceof Integer ? ( Integer ) minorNumber : 0;
+                final Object updateNumber = ReflectUtils.callMethod ( version, "security" );
+                update = updateNumber instanceof Integer ? ( Integer ) updateNumber : 0;
+                final Object optional = ReflectUtils.callMethod ( version, "optional" );
+                patch = optional != null ? ( String ) ReflectUtils.callMethod ( optional, "orElse", ( Object ) null ) : null;
+                read = true;
+            }
+            catch ( final Exception e )
+            {
+                LoggerFactory.getLogger ( JavaVersion.class ).error ( "Unable to read Runtime version", e );
+            }
         }
-        else
+        catch ( final Exception ignored )
         {
             /**
-             * Manually parsing {@code "java.version"} system property string.
+             * Ignoring any exceptions here.
              */
+        }
+
+        /**
+         * Manually parsing {@code "java.version"} system property string.
+         */
+        if ( !read )
+        {
             final String versionString = SystemUtils.getJavaVersionString ();
             try
             {
@@ -155,6 +181,7 @@ public final class JavaVersion
                             patch = s;
                         }
                     }
+                    read = true;
                 }
             }
             catch ( final NumberFormatException e )
@@ -171,23 +198,32 @@ public final class JavaVersion
                             minor = Integer.parseInt ( matcher.group ( 3 ) );
                         }
                     }
+                    read = true;
                 }
                 catch ( final NumberFormatException e1 )
                 {
                     major = 1.4;
                     minor = 0;
                     update = 0;
+                    read = true;
                 }
             }
         }
-        if ( major == 0.0 )
+
+        /**
+         * Updating resulting values.
+         */
+        if ( read )
+        {
+            this.major = major;
+            this.minor = minor;
+            this.update = update;
+            this.patch = patch;
+        }
+        else
         {
             throw new RuntimeException ( "Unable to determine Java runtime version" );
         }
-        this.major = major;
-        this.minor = minor;
-        this.update = update;
-        this.patch = patch;
     }
 
     /**
@@ -225,6 +261,7 @@ public final class JavaVersion
      *
      * @return patch
      */
+    @Nullable
     public String patch ()
     {
         return patch;
@@ -251,22 +288,72 @@ public final class JavaVersion
      */
     public int compareTo ( final double major, final int minor, final int update )
     {
+        final int result;
         final double majorResult = this.major - major;
         if ( majorResult != 0 )
         {
-            return majorResult < 0 ? -1 : 1;
+            result = majorResult < 0 ? -1 : 1;
         }
-        final int result = this.minor - minor;
-        if ( result != 0 )
+        else
         {
-            return result;
+            final int minorResult = this.minor - minor;
+            if ( minorResult != 0 )
+            {
+                result = minorResult;
+            }
+            else
+            {
+                result = this.update - update;
+            }
         }
-        return this.update - update;
+        return result;
+    }
+
+    /**
+     * Returns version {@link String} only.
+     *
+     * @return version {@link String} only
+     */
+    @NotNull
+    public String versionString ()
+    {
+        final StringBuilder version = new StringBuilder ();
+        if ( major () < 9.0 )
+        {
+            version.append ( major () );
+            version.append ( "." );
+            version.append ( minor () );
+            version.append ( " u" ).append ( update () );
+        }
+        else
+        {
+            version.append ( Math.round ( major () ) );
+            version.append ( "." );
+            version.append ( minor () );
+            version.append ( "." );
+            version.append ( update () );
+        }
+        return version.toString ();
     }
 
     @Override
+    public int hashCode ()
+    {
+        return Objects.hash ( major (), minor (), update (), patch () );
+    }
+
+    @NotNull
+    @Override
     public String toString ()
     {
-        return "Java " + major () + "." + minor () + " u" + update ();
+        final StringBuilder version = new StringBuilder ( "Java " );
+        version.append ( versionString () );
+        if ( patch () != null )
+        {
+            version.append ( " (" );
+            version.append ( patch () );
+            version.append ( ")" );
+        }
+        return version.toString ();
     }
 }

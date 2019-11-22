@@ -53,7 +53,7 @@ public class WebImageGallery extends JComponent
 
     private int maxWidth = 0;
     private int maxHeight = 0;
-    private final List<ImageIcon> images = new ArrayList<ImageIcon> ();
+    private final List<BufferedImage> images = new ArrayList<BufferedImage> ();
     private final List<BufferedImage> reflections = new ArrayList<BufferedImage> ();
     private final List<String> descriptions = new ArrayList<String> ();
     //    private List<Integer> sizes = new ArrayList<Integer> (  );
@@ -159,7 +159,7 @@ public class WebImageGallery extends JComponent
         } );
     }
 
-    public List<ImageIcon> getImages ()
+    public List<BufferedImage> getImages ()
     {
         return images;
     }
@@ -362,8 +362,8 @@ public class WebImageGallery extends JComponent
 
     public Rectangle getImageRect ( final int index )
     {
-        final int iconWidth = images.get ( index ).getIconWidth ();
-        final int iconHeight = images.get ( index ).getIconHeight ();
+        final int iconWidth = images.get ( index ).getWidth ();
+        final int iconHeight = images.get ( index ).getHeight ();
         final Dimension ps = getPreferredSize ();
         final int x = ( getWidth () > ps.width ? ( getWidth () - ps.width ) / 2 : 0 ) + spacing +
                 ( maxWidth + spacing ) * index + maxWidth / 2;
@@ -371,48 +371,52 @@ public class WebImageGallery extends JComponent
         return new Rectangle ( x - iconWidth / 2, y - iconHeight / 2, iconWidth, iconHeight );
     }
 
-    public void addImage ( final ImageIcon image )
+    public void addImage ( @NotNull final Icon icon )
     {
-        addImage ( 0, image );
+        addImage ( images.size (), icon );
     }
 
-    public void addImage ( final int index, final ImageIcon image )
+    public void addImage ( final int index, @NotNull final Icon icon )
     {
-        try
-        {
-            final ImageIcon previewIcon = ImageUtils.createPreviewIcon ( image, imageLength );
-            final int rWidth = previewIcon.getIconWidth ();
-            final int rHeight = previewIcon.getIconHeight ();
+        addImage ( index, ImageUtils.toBufferedImage ( icon ) );
+    }
 
-            final BufferedImage reflection = ImageUtils.createCompatibleImage ( rWidth, rHeight, Transparency.TRANSLUCENT );
-            final Graphics2D g2d = reflection.createGraphics ();
-            GraphicsUtils.setupAntialias ( g2d );
-            g2d.drawImage ( previewIcon.getImage (), 0, 0, null );
-            g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.DST_IN ) );
-            g2d.setPaint ( new GradientPaint ( 0, rHeight * ( 1f - fadeHeight ), new Color ( 0, 0, 0, 0 ), 0, rHeight,
-                    new Color ( 0, 0, 0, opacity ) ) );
-            g2d.fillRect ( 0, 0, rWidth, rHeight );
-            g2d.dispose ();
+    public void addImage ( @NotNull final Image image )
+    {
+        addImage ( images.size (), image );
+    }
 
-            images.add ( index, previewIcon );
-            descriptions.add ( index, image.getIconWidth () + " x " + image.getIconHeight () + " px" );
-            reflections.add ( index, reflection );
-        }
-        catch ( final Exception e )
-        {
-            // todo Handle out of memory?
-        }
+    public void addImage ( final int index, @NotNull final Image image )
+    {
+        // Converting image to buffered image first
+        final BufferedImage bufferedImage = ImageUtils.toNonNullBufferedImage ( image );
 
+        // Creating preview image
+        final BufferedImage previewImage = ImageUtils.createImageThumbnail ( bufferedImage, imageLength );
+        final int rWidth = previewImage.getWidth ();
+        final int rHeight = previewImage.getHeight ();
+
+        // Creating reflection image
+        final BufferedImage reflection = ImageUtils.createCompatibleImage ( rWidth, rHeight, Transparency.TRANSLUCENT );
+        final Graphics2D g2d = reflection.createGraphics ();
+        GraphicsUtils.setupAntialias ( g2d );
+        g2d.drawImage ( previewImage, 0, 0, null );
+        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.DST_IN ) );
+        g2d.setPaint ( new GradientPaint (
+                0, rHeight * ( 1f - fadeHeight ), new Color ( 0, 0, 0, 0 ),
+                0, rHeight, new Color ( 0, 0, 0, opacity )
+        ) );
+        g2d.fillRect ( 0, 0, rWidth, rHeight );
+        g2d.dispose ();
+
+        // Saving image information
+        images.add ( index, previewImage );
+        descriptions.add ( index, bufferedImage.getWidth () + " x " + bufferedImage.getHeight () + " px" );
+        reflections.add ( index, reflection );
+
+        // Updating view
         recalculateMaxSizes ();
         updateContainer ();
-    }
-
-    public void removeImage ( final ImageIcon image )
-    {
-        if ( images.contains ( image ) )
-        {
-            removeImage ( images.indexOf ( image ) );
-        }
     }
 
     public void removeImage ( final int index )
@@ -445,10 +449,10 @@ public class WebImageGallery extends JComponent
 
     private void recalculateMaxSizes ()
     {
-        for ( final ImageIcon icon : images )
+        for ( final BufferedImage icon : images )
         {
-            maxWidth = Math.max ( maxWidth, icon.getIconWidth () );
-            maxHeight = Math.max ( maxHeight, icon.getIconHeight () );
+            maxWidth = Math.max ( maxWidth, icon.getWidth () );
+            maxHeight = Math.max ( maxHeight, icon.getHeight () );
         }
     }
 
@@ -476,10 +480,9 @@ public class WebImageGallery extends JComponent
                 continue;
             }
 
-            final ImageIcon icon = images.get ( i );
-            final BufferedImage bi = ImageUtils.getBufferedImage ( icon );
-            final int imageWidth = icon.getIconWidth ();
-            final int imageHeight = icon.getIconHeight ();
+            final BufferedImage image = images.get ( i );
+            final int imageWidth = image.getWidth ();
+            final int imageHeight = image.getHeight ();
 
             final int x = ( getWidth () > ps.width ? ( getWidth () - ps.width ) / 2 : 0 ) + spacing +
                     ( maxWidth + spacing ) * i + maxWidth / 2;
@@ -488,10 +491,12 @@ public class WebImageGallery extends JComponent
 
             // Initial image
 
-            final float add = selectedIndex == i ? progress * 0.4f : ( oldSelectedIndex == i ? 0.4f - progress * 0.4f : 0 );
+            final float add = selectedIndex == i
+                    ? progress * 0.4f
+                    : oldSelectedIndex == i ? 0.4f - progress * 0.4f : 0;
             g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, 0.6f + add ) );
 
-            g2d.drawImage ( bi, x - imageWidth / 2, y - imageHeight / 2, null );
+            g2d.drawImage ( image, x - imageWidth / 2, y - imageHeight / 2, null );
 
             g2d.setPaint ( selectedIndex == i ? Color.WHITE : Color.GRAY );
             Area gp = new Area ( new RoundRectangle2D.Double ( x - imageWidth / 2 - borderWidth, y - imageHeight / 2 - borderWidth,
@@ -520,8 +525,9 @@ public class WebImageGallery extends JComponent
             final int rWidth = imageWidth + borderWidth * 2;
             final int rHeight = imageHeight + borderWidth * 2;
 
-            final int addition = selectedIndex == i ? Math.round ( progress * spacing ) :
-                    ( oldSelectedIndex == i ? spacing - Math.round ( progress * spacing ) : 0 );
+            final int addition = selectedIndex == i
+                    ? Math.round ( progress * spacing )
+                    : oldSelectedIndex == i ? spacing - Math.round ( progress * spacing ) : 0;
             if ( reflections.get ( i ) != null )
             {
                 g2d.drawImage ( reflections.get ( i ), x - imageWidth / 2, y2 + imageHeight / 2 + addition, imageWidth, -imageHeight,

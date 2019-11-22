@@ -102,6 +102,7 @@ public class GroupedFileFilter extends AbstractFileFilter
         return defaultFilter != null ? defaultFilter.getIcon ( parameters ) : null;
     }
 
+    @NotNull
     @Override
     public String getDescription ()
     {
@@ -109,7 +110,7 @@ public class GroupedFileFilter extends AbstractFileFilter
     }
 
     @Override
-    public boolean accept ( final File file )
+    public boolean accept ( @NotNull final File file )
     {
         boolean accepted;
         if ( filterGroupType.equals ( FilterGroupType.AND ) )

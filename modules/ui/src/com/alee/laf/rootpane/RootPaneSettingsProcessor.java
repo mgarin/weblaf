@@ -18,6 +18,7 @@
 package com.alee.laf.rootpane;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
@@ -62,15 +63,15 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
      * @param rootPane      {@link JRootPane} which settings are being managed
      * @param configuration {@link Configuration}
      */
-    public RootPaneSettingsProcessor ( final JRootPane rootPane, final Configuration configuration )
+    public RootPaneSettingsProcessor ( @NotNull final JRootPane rootPane, @NotNull final Configuration configuration )
     {
         super ( rootPane, configuration );
     }
 
     @Override
-    protected void register ( final JRootPane rootPane )
+    protected void register ( @NotNull final JRootPane rootPane )
     {
-        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
+        final Window window = CoreSwingUtils.getNonNullWindowAncestor ( rootPane );
 
         /**
          * Tracking {@link Window} movement.
@@ -78,13 +79,13 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
         componentListener = new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( final ComponentEvent e )
+            public void componentResized ( @NotNull final ComponentEvent e )
             {
                 save ();
             }
 
             @Override
-            public void componentMoved ( final ComponentEvent e )
+            public void componentMoved ( @NotNull final ComponentEvent e )
             {
                 save ();
             }
@@ -96,7 +97,7 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
         windowStateListener = new WindowStateListener ()
         {
             @Override
-            public void windowStateChanged ( final WindowEvent e )
+            public void windowStateChanged ( @NotNull final WindowEvent e )
             {
                 save ();
             }
@@ -125,7 +126,7 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
     }
 
     @Override
-    protected void unregister ( final JRootPane rootPane )
+    protected void unregister ( @NotNull final JRootPane rootPane )
     {
         windowVisibilityBehavior.uninstall ();
         windowVisibilityBehavior = null;
@@ -133,6 +134,7 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
         componentListener = null;
     }
 
+    @Nullable
     @Override
     protected WindowState createDefaultValue ()
     {
@@ -140,13 +142,13 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
     }
 
     @Override
-    protected void loadSettings ( final JRootPane rootPane )
+    protected void loadSettings ( @NotNull final JRootPane rootPane )
     {
         loadSettings ().apply ( rootPane );
     }
 
     @Override
-    protected void saveSettings ( final JRootPane rootPane )
+    protected void saveSettings ( @NotNull final JRootPane rootPane )
     {
         saveSettings ( loadSettings ().retrieve ( rootPane ) );
     }

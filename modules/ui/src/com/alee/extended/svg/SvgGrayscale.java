@@ -17,16 +17,12 @@
 
 package com.alee.extended.svg;
 
-import com.alee.managers.icon.data.IconAdjustment;
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.ColorUtils;
-import com.alee.utils.TextUtils;
-import com.alee.utils.collection.ImmutableList;
 import com.kitfox.svg.SVGElement;
-import com.kitfox.svg.xml.StyleAttribute;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.awt.*;
-import java.util.List;
 
 /**
  * Simple adjustments for making {@link SvgIcon} colors grayscale.
@@ -34,56 +30,13 @@ import java.util.List;
  * @author Mikle Garin
  */
 @XStreamAlias ( "SvgGrayscale" )
-public class SvgGrayscale implements IconAdjustment<SvgIcon>
+public class SvgGrayscale extends AbstractSvgColorAdjustment
 {
-    /**
-     * todo 1. Adjust "style" attribute settings as well
-     */
-
-    /**
-     * Color attributes used for adjustment.
-     */
-    protected static final List<String> ATTRIBUTES = new ImmutableList<String> (
-            SvgElements.STROKE,
-            SvgElements.FILL,
-            SvgElements.STOP_COLOR
-    );
-
+    @NotNull
     @Override
-    public void apply ( final SvgIcon icon )
+    protected Color adjustColor ( @NotNull final SvgIcon icon, @NotNull final SVGElement element, @NotNull final String attribute,
+                                  @NotNull final Color color )
     {
-        // Searching for elements containig color attributes
-        final List<SVGElement> elements = icon.find ( "*[" + TextUtils.listToString ( ATTRIBUTES, "," ) + "]" );
-
-        // Iterating through all found elements and adjusting color attributes
-        for ( final SVGElement element : elements )
-        {
-            // Modifying attributes for elements
-            for ( final String attribute : ATTRIBUTES )
-            {
-                makeGrayscale ( icon, element, attribute );
-            }
-        }
-    }
-
-    /**
-     * Changes {@link SVGElement} attribute color value to grayscale.
-     *
-     * @param icon      {@link SvgIcon} to modify element for
-     * @param element   {@link SVGElement} to modify attribute for
-     * @param attribute {@link SVGElement} attribute
-     */
-    protected void makeGrayscale ( final SvgIcon icon, final SVGElement element, final String attribute )
-    {
-        if ( icon.hasAttribute ( element, attribute ) )
-        {
-            final StyleAttribute hexColor = icon.getAttribute ( element, attribute );
-            final Color normalColor = hexColor.getColorValue ();
-            if ( normalColor != null )
-            {
-                final Color grayscale = ColorUtils.grayscale ( normalColor );
-                icon.setAttribute ( element, attribute, ColorUtils.toHex ( grayscale ) );
-            }
-        }
+        return ColorUtils.grayscale ( color );
     }
 }

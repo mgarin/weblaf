@@ -17,6 +17,7 @@
 
 package com.alee.managers.glasspane;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Function;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.WeakComponentData;
@@ -47,9 +48,10 @@ public final class GlassPaneManager
      * @param component component to process
      * @return registered {@link WebGlassPane} for {@link JRootPane} under the specified component or null if it cannot be registered
      */
-    public static WebGlassPane getGlassPane ( final Component component )
+    @NotNull
+    public static WebGlassPane getGlassPane ( @NotNull final Component component )
     {
-        return getGlassPane ( CoreSwingUtils.getRootPane ( component ) );
+        return getGlassPane ( CoreSwingUtils.getNonNullRootPane ( component ) );
     }
 
     /**
@@ -60,26 +62,20 @@ public final class GlassPaneManager
      * @param rootPane {@link JRootPane} to process
      * @return registered {@link WebGlassPane} for {@link JRootPane} under the specified component or null if it cannot be registered
      */
-    public static WebGlassPane getGlassPane ( final JRootPane rootPane )
+    @NotNull
+    public static WebGlassPane getGlassPane ( @NotNull final JRootPane rootPane )
     {
-        if ( rootPane != null )
+        return glassPanes.get ( rootPane, new Function<JComponent, WebGlassPane> ()
         {
-            return glassPanes.get ( rootPane, new Function<JComponent, WebGlassPane> ()
+            @Override
+            public WebGlassPane apply ( final JComponent component )
             {
-                @Override
-                public WebGlassPane apply ( final JComponent component )
-                {
-                    final WebGlassPane glassPane = new WebGlassPane ();
-                    rootPane.setGlassPane ( glassPane );
-                    glassPane.setVisible ( true );
-                    rootPane.invalidate ();
-                    return glassPane;
-                }
-            } );
-        }
-        else
-        {
-            throw new GlassPaneException ( "JRootPane is not specified for WebGlassPane" );
-        }
+                final WebGlassPane glassPane = new WebGlassPane ();
+                rootPane.setGlassPane ( glassPane );
+                glassPane.setVisible ( true );
+                rootPane.invalidate ();
+                return glassPane;
+            }
+        } );
     }
 }

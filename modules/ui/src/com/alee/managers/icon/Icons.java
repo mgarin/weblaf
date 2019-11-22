@@ -67,6 +67,9 @@ public final class Icons
     public static final LazyIcon menu = new LazyIcon ( "menu" );
     public static final LazyIcon menuDimmed = new LazyIcon ( "menu-dimmed" );
     public static final LazyIcon menuHover = new LazyIcon ( "menu-hover" );
+    public static final LazyIcon calendar = new LazyIcon ( "calendar" );
+    public static final LazyIcon calendarDimmed = new LazyIcon ( "calendar-dimmed" );
+    public static final LazyIcon calendarHover = new LazyIcon ( "calendar-hover" );
 
     /**
      * Medium arrow icons.
@@ -91,6 +94,12 @@ public final class Icons
     public static final LazyIcon downBig = new LazyIcon ( "down-big" );
     public static final LazyIcon leftBig = new LazyIcon ( "left-big" );
     public static final LazyIcon rightBig = new LazyIcon ( "right-big" );
+
+    /**
+     * Special arrow icons.
+     */
+    public static final LazyIcon doubleLeftBig = new LazyIcon ( "double-left-big" );
+    public static final LazyIcon doubleRightBig = new LazyIcon ( "double-right-big" );
 
     /**
      * Tree icons.

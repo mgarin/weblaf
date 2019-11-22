@@ -17,6 +17,8 @@
 
 package com.alee.extended.date;
 
+import com.alee.api.annotations.Nullable;
+
 import java.util.Date;
 import java.util.EventListener;
 
@@ -32,5 +34,5 @@ public interface DateListener extends EventListener
      *
      * @param date newly selected {@link Date}
      */
-    public void dateChanged ( Date date );
+    public void dateChanged ( @Nullable Date date );
 }

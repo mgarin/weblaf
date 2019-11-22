@@ -17,7 +17,11 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.ColorUtils;
+import com.kitfox.svg.SVGElement;
+import com.kitfox.svg.xml.StyleAttribute;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -33,18 +37,61 @@ public class SvgStroke extends AbstractSvgAttributeAdjustment
 {
     /**
      * Stroke color.
+     * By default (if set to {@code null}) it will use {@code "none"} color value.
      */
     @XStreamAsAttribute
     protected Color color;
 
+    /**
+     * Constructs new {@link SvgStroke}.
+     */
+    public SvgStroke ()
+    {
+        this ( null, null );
+    }
+
+    /**
+     * Constructs new {@link SvgStroke}.
+     *
+     * @param color stroke {@link Color}
+     */
+    public SvgStroke ( @Nullable final Color color )
+    {
+        this ( null, color );
+    }
+
+    /**
+     * Constructs new {@link SvgStroke}.
+     *
+     * @param selector {@link com.kitfox.svg.SVGElement} selector
+     */
+    public SvgStroke ( @Nullable final String selector )
+    {
+        this ( selector, null );
+    }
+
+    /**
+     * Constructs new {@link SvgStroke}.
+     *
+     * @param selector {@link com.kitfox.svg.SVGElement} selector
+     * @param color    stroke {@link Color}
+     */
+    public SvgStroke ( @Nullable final String selector, @Nullable final Color color )
+    {
+        super ( selector );
+        this.color = color;
+    }
+
+    @NotNull
     @Override
-    protected String getAttribute ( final SvgIcon icon )
+    protected String getAttribute ( @NotNull final SvgIcon icon )
     {
         return SvgElements.STROKE;
     }
 
+    @Nullable
     @Override
-    protected String getValue ( final SvgIcon icon )
+    protected String getValue ( @NotNull final SvgIcon icon, @NotNull final SVGElement element, @Nullable final StyleAttribute attribute )
     {
         return color != null ? ColorUtils.toHex ( color ) : "none";
     }

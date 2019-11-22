@@ -17,6 +17,8 @@
 
 package com.alee.extended.colorchooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -52,7 +54,7 @@ public class GradientColorChooserSettingsProcessor extends SettingsProcessor<Web
     }
 
     @Override
-    protected void register ( final WebGradientColorChooser gradientColorChooser )
+    protected void register ( @NotNull final WebGradientColorChooser gradientColorChooser )
     {
         changeListener = new ChangeListener ()
         {
@@ -66,12 +68,13 @@ public class GradientColorChooserSettingsProcessor extends SettingsProcessor<Web
     }
 
     @Override
-    protected void unregister ( final WebGradientColorChooser gradientColorChooser )
+    protected void unregister ( @NotNull final WebGradientColorChooser gradientColorChooser )
     {
         gradientColorChooser.removeChangeListener ( changeListener );
         changeListener = null;
     }
 
+    @Nullable
     @Override
     protected GradientColorChooserState createDefaultValue ()
     {
@@ -79,13 +82,13 @@ public class GradientColorChooserSettingsProcessor extends SettingsProcessor<Web
     }
 
     @Override
-    protected void loadSettings ( final WebGradientColorChooser gradientColorChooser )
+    protected void loadSettings ( @NotNull final WebGradientColorChooser gradientColorChooser )
     {
         loadSettings ().apply ( gradientColorChooser );
     }
 
     @Override
-    protected void saveSettings ( final WebGradientColorChooser gradientColorChooser )
+    protected void saveSettings ( @NotNull final WebGradientColorChooser gradientColorChooser )
     {
         saveSettings ( new GradientColorChooserState ( gradientColorChooser ) );
     }

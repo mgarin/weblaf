@@ -22,6 +22,8 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.ComponentStyle;
+import com.alee.skin.dark.WebDarkSkin;
+import com.alee.skin.light.WebLightSkin;
 
 import javax.swing.*;
 import java.util.List;
@@ -32,8 +34,8 @@ import java.util.List;
  * If can also initialize WebLaF with your skin directly through one of {@link com.alee.laf.WebLookAndFeel} install methods.
  *
  * Here is a list of complete skin implementations:
- * - {@link com.alee.skin.web.WebSkin}
- * - {@link com.alee.skin.dark.DarkSkin}
+ * - {@link WebLightSkin}
+ * - {@link WebDarkSkin}
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -47,7 +49,7 @@ public interface Skin extends Identifiable
      *
      * @return unique skin ID
      */
-    @Nullable
+    @NotNull
     @Override
     public String getId ();
 
@@ -56,6 +58,7 @@ public interface Skin extends Identifiable
      *
      * @return skin {@link Icon}
      */
+    @Nullable
     public Icon getIcon ();
 
     /**
@@ -63,6 +66,7 @@ public interface Skin extends Identifiable
      *
      * @return skin title
      */
+    @Nullable
     public String getTitle ();
 
     /**
@@ -70,6 +74,7 @@ public interface Skin extends Identifiable
      *
      * @return skin description
      */
+    @Nullable
     public String getDescription ();
 
     /**
@@ -77,6 +82,7 @@ public interface Skin extends Identifiable
      *
      * @return skin author
      */
+    @Nullable
     public String getAuthor ();
 
     /**
@@ -93,6 +99,7 @@ public interface Skin extends Identifiable
      *
      * @return skin base class name
      */
+    @NotNull
     public String getSkinClass ();
 
     /**
@@ -114,13 +121,14 @@ public interface Skin extends Identifiable
      * @param extension skin extension to apply
      * @return true if extension was applied successfully, false otherwise
      */
-    public boolean applyExtension ( SkinExtension extension );
+    public boolean applyExtension ( @NotNull SkinExtension extension );
 
     /**
      * Returns skin icon sets.
      *
      * @return skin icon sets
      */
+    @NotNull
     public List<IconSet> getIconSets ();
 
     /**
@@ -131,16 +139,14 @@ public interface Skin extends Identifiable
      * @param component component instance
      * @return component style
      */
-    public ComponentStyle getStyle ( JComponent component );
+    public ComponentStyle getStyle ( @NotNull JComponent component );
 
     /**
      * Applies this skin to the specified component.
-     * Returns whether skin was successfully applied or not.
      *
      * @param component component to apply skin to
-     * @return true if skin was applied, false otherwise
      */
-    public boolean applySkin ( JComponent component );
+    public void applySkin ( @NotNull JComponent component );
 
     /**
      * Updates this skin on the specified component.
@@ -148,13 +154,12 @@ public interface Skin extends Identifiable
      *
      * @param component component to update skin for
      */
-    public void updateSkin ( JComponent component );
+    public void updateSkin ( @NotNull JComponent component );
 
     /**
      * Removes this skin from the specified component.
      *
      * @param component component to remove skin from
-     * @return true if skin was successfully removed, false otherwise
      */
-    public boolean removeSkin ( JComponent component );
+    public void removeSkin ( @NotNull JComponent component );
 }

@@ -96,7 +96,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * @param gc the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
      *           the system default {@code GraphicsConfiguration} is assumed
      */
-    public WebWindow ( final GraphicsConfiguration gc )
+    public WebWindow ( @Nullable final GraphicsConfiguration gc )
     {
         this ( StyleId.auto, gc );
     }
@@ -110,7 +110,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      *
      * @param owner the componnt from which parent window this window is displayed
      */
-    public WebWindow ( final Component owner )
+    public WebWindow ( @Nullable final Component owner )
     {
         this ( StyleId.auto, owner );
     }
@@ -123,7 +123,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      *
      * @param owner the window from which the window is displayed
      */
-    public WebWindow ( final Window owner )
+    public WebWindow ( @Nullable final Window owner )
     {
         this ( StyleId.auto, owner );
     }
@@ -139,7 +139,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      *              the system default {@code GraphicsConfiguration} is assumed, unless {@code owner} is also null, in which
      *              case the {@code GraphicsConfiguration} from the shared owner frame will be used
      */
-    public WebWindow ( final Window owner, final GraphicsConfiguration gc )
+    public WebWindow ( @Nullable final Window owner, @Nullable final GraphicsConfiguration gc )
     {
         this ( StyleId.auto, owner, gc );
     }
@@ -153,7 +153,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      *
      * @param owner the frame from which the window is displayed
      */
-    public WebWindow ( final Frame owner )
+    public WebWindow ( @Nullable final Frame owner )
     {
         this ( StyleId.auto, owner );
     }
@@ -165,7 +165,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      *
      * @param id style ID
      */
-    public WebWindow ( final StyleId id )
+    public WebWindow ( @NotNull final StyleId id )
     {
         this ( id, ( Frame ) null );
     }
@@ -179,7 +179,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * @param gc the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
      *           the system default {@code GraphicsConfiguration} is assumed
      */
-    public WebWindow ( final StyleId id, final GraphicsConfiguration gc )
+    public WebWindow ( @NotNull final StyleId id, @Nullable final GraphicsConfiguration gc )
     {
         this ( id, null, gc );
     }
@@ -194,7 +194,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * @param id    style ID
      * @param owner the componnt from which parent window this window is displayed
      */
-    public WebWindow ( final StyleId id, final Component owner )
+    public WebWindow ( @NotNull final StyleId id, @Nullable final Component owner )
     {
         this ( id, CoreSwingUtils.getWindowAncestor ( owner ) );
     }
@@ -208,7 +208,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * @param id    style ID
      * @param owner the window from which the window is displayed
      */
-    public WebWindow ( final StyleId id, final Window owner )
+    public WebWindow ( @NotNull final StyleId id, @Nullable final Window owner )
     {
         this ( id, owner, owner != null ? owner.getGraphicsConfiguration () : null );
     }
@@ -225,7 +225,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      *              the system default {@code GraphicsConfiguration} is assumed, unless {@code owner} is also null, in which
      *              case the {@code GraphicsConfiguration} from the shared owner frame will be used
      */
-    public WebWindow ( final StyleId id, final Window owner, final GraphicsConfiguration gc )
+    public WebWindow ( @NotNull final StyleId id, @Nullable final Window owner, @Nullable final GraphicsConfiguration gc )
     {
         super ( owner, gc );
         initialize ( id );
@@ -241,7 +241,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * @param id    style ID
      * @param owner the frame from which the window is displayed
      */
-    public WebWindow ( final StyleId id, final Frame owner )
+    public WebWindow ( @NotNull final StyleId id, @Nullable final Frame owner )
     {
         super ( owner );
         initialize ( id );
@@ -258,7 +258,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      *
      * @param id initial style ID
      */
-    protected void initialize ( final StyleId id )
+    protected void initialize ( @NotNull final StyleId id )
     {
         // Default window initialization
         setLocale ( JComponent.getDefaultLocale () );

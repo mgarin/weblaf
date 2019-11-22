@@ -17,11 +17,13 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
+import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.InsetsUIResource;
 import com.alee.utils.xml.ConverterContext;
@@ -82,19 +84,19 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param mapper             {@link Mapper} implementation
      * @param reflectionProvider {@link ReflectionProvider} implementation
      */
-    public ComponentStyleConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
+    public ComponentStyleConverter ( @NotNull final Mapper mapper, @NotNull final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return type.equals ( ComponentStyle.class );
     }
 
     @Override
-    public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
+    public void marshal ( @NotNull final Object source, final HierarchicalStreamWriter writer, @NotNull final MarshallingContext context )
     {
         final ComponentStyle componentStyle = ( ComponentStyle ) source;
 
@@ -104,7 +106,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
         // Writing component style identifier
         final String styleId = componentStyle.getId ();
         final ComponentDescriptor descriptor = StyleManager.getDescriptor ( componentStyle.getType () );
-        if ( styleId != null && !descriptor.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
+        if ( !descriptor.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
         {
             writer.addAttribute ( STYLE_ID_ATTRIBUTE, styleId );
         }
@@ -118,7 +120,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
 
         // Writing margin and padding
         final Map<String, Object> uiProperties = componentStyle.getUIProperties ();
-        if ( uiProperties != null )
+        if ( MapUtils.notEmpty ( uiProperties ) )
         {
             final Insets margin = ( Insets ) uiProperties.get ( MARGIN_ATTRIBUTE );
             if ( margin != null )
@@ -134,7 +136,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
 
         // Writing component properties
         final Map<String, Object> componentProperties = componentStyle.getComponentProperties ();
-        if ( componentProperties != null )
+        if ( MapUtils.notEmpty ( componentProperties ) )
         {
             writer.startNode ( COMPONENT_NODE );
             for ( final Map.Entry<String, Object> property : componentProperties.entrySet () )
@@ -147,7 +149,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
         }
 
         // Writing UI properties
-        if ( uiProperties != null )
+        if ( MapUtils.notEmpty ( uiProperties ) )
         {
             writer.startNode ( UI_NODE );
             for ( final Map.Entry<String, Object> property : uiProperties.entrySet () )
@@ -209,7 +211,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
     }
 
     @Override
-    public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
+    public Object unmarshal ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
     {
         // Creating new component style to read settings into
         final ComponentStyle style = new ComponentStyle ();
@@ -329,9 +331,9 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param context             {@link UnmarshallingContext}
      * @param descriptor          {@link ComponentDescriptor}
      */
-    private void readComponentProperties ( final ComponentStyle style, final Map<String, Object> componentProperties,
-                                           final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                           final ComponentDescriptor descriptor )
+    private void readComponentProperties ( @NotNull final ComponentStyle style, @NotNull final Map<String, Object> componentProperties,
+                                           @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context,
+                                           @NotNull final ComponentDescriptor descriptor )
     {
         Class<? extends JComponent> componentType = descriptor.getComponentClass ();
 
@@ -378,9 +380,9 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param context      {@link UnmarshallingContext}
      * @param descriptor   {@link ComponentDescriptor}
      */
-    private void readUIProperties ( final ComponentStyle style, final Map<String, Object> uiProperties,
-                                    final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                    final ComponentDescriptor descriptor )
+    private void readUIProperties ( @NotNull final ComponentStyle style, @NotNull final Map<String, Object> uiProperties,
+                                    @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context,
+                                    @NotNull final ComponentDescriptor descriptor )
     {
         Class<? extends ComponentUI> uiType = descriptor.getUIClass ();
 
@@ -425,12 +427,12 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param reader  {@link HierarchicalStreamReader}
      * @param context {@link UnmarshallingContext}
      */
-    private void readPainterStyle ( final ComponentStyle style, final HierarchicalStreamReader reader,
-                                    final UnmarshallingContext context )
+    private void readPainterStyle ( @NotNull final ComponentStyle style, @NotNull final HierarchicalStreamReader reader,
+                                    @NotNull final UnmarshallingContext context )
     {
         // Retrieving overwrite policy
         final String ow = reader.getAttribute ( OVERWRITE_ATTRIBUTE );
-        final boolean overwrite = Boolean.parseBoolean ( ow );
+        final Boolean overwrite = ow != null ? Boolean.parseBoolean ( ow ) : null;
 
         // Retrieving default painter class based on UI class and default painter field name
         // Basically we are reading this painter as a field of the UI class here
@@ -470,7 +472,8 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param styles  {@link List} to read nested {@link ComponentStyle}s into
      * @param context {@link UnmarshallingContext}
      */
-    private void readNestedStyles ( final ComponentStyle style, final List<ComponentStyle> styles, final UnmarshallingContext context )
+    private void readNestedStyles ( @NotNull final ComponentStyle style, @NotNull final List<ComponentStyle> styles,
+                                    @NotNull final UnmarshallingContext context )
     {
         // Reading nested component style
         final ComponentStyle childStyle = ( ComponentStyle ) context.convertAnother ( style, ComponentStyle.class );

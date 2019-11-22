@@ -53,7 +53,7 @@ public final class SvgElements
     /**
      * Element style class.
      */
-    public static final String CLAZZ = "class";
+    public static final String CLASS = "class";
 
     /**
      * Stroke color.
@@ -64,6 +64,11 @@ public final class SvgElements
      * Fill color.
      */
     public static final String FILL = "fill";
+
+    /**
+     * Element opacity.
+     */
+    public static final String OPACITY = "opacity";
 
     /**
      * Gradient stop color.

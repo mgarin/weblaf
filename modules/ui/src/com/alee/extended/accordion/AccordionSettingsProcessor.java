@@ -47,13 +47,13 @@ public class AccordionSettingsProcessor extends SettingsProcessor<WebAccordion, 
      * @param accordion     {@link WebAccordion} which settings are being managed
      * @param configuration {@link Configuration}
      */
-    public AccordionSettingsProcessor ( final WebAccordion accordion, final Configuration configuration )
+    public AccordionSettingsProcessor ( @NotNull final WebAccordion accordion, @NotNull final Configuration configuration )
     {
         super ( accordion, configuration );
     }
 
     @Override
-    protected void register ( final WebAccordion accordion )
+    protected void register ( @NotNull final WebAccordion accordion )
     {
         accordionListener = new AccordionAdapter ()
         {
@@ -73,14 +73,14 @@ public class AccordionSettingsProcessor extends SettingsProcessor<WebAccordion, 
     }
 
     @Override
-    protected void unregister ( final WebAccordion accordion )
+    protected void unregister ( @NotNull final WebAccordion accordion )
     {
         accordion.removeAccordionListener ( accordionListener );
         accordionListener = null;
     }
 
     @Override
-    protected void loadSettings ( final WebAccordion accordion )
+    protected void loadSettings ( @NotNull final WebAccordion accordion )
     {
         final AccordionState state = loadSettings ();
         if ( state != null )
@@ -90,7 +90,7 @@ public class AccordionSettingsProcessor extends SettingsProcessor<WebAccordion, 
     }
 
     @Override
-    protected void saveSettings ( final WebAccordion accordion )
+    protected void saveSettings ( @NotNull final WebAccordion accordion )
     {
         saveSettings ( accordion.getAccordionState () );
     }

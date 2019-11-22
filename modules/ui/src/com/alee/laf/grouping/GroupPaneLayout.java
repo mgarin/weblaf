@@ -46,7 +46,8 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     /**
      * Component constraints.
      */
-    protected transient final Map<Component, GroupPaneConstraints> constraints = new HashMap<Component, GroupPaneConstraints> ( 5 );
+    @NotNull
+    protected transient final Map<Component, GroupPaneConstraints> constraints;
 
     /**
      * Constructs default layout.
@@ -86,10 +87,10 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      */
     public GroupPaneLayout ( final int orientation, final int columns, final int rows )
     {
-        super ();
-        setOrientation ( orientation );
-        setColumns ( columns );
-        setRows ( rows );
+        this.constraints = new HashMap<Component, GroupPaneConstraints> ( 5 );
+        this.orientation = orientation;
+        this.columns = columns;
+        this.rows = rows;
     }
 
     /**
@@ -152,6 +153,17 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         this.rows = rows;
     }
 
+    /**
+     * Returns default component constraints in this layout.
+     *
+     * @return default component constraints in this layout
+     */
+    @NotNull
+    protected GroupPaneConstraints getDefaultConstraint ()
+    {
+        return orientation == HORIZONTAL ? GroupPaneConstraints.VERTICAL_FILL : GroupPaneConstraints.HORIZONTAL_FILL;
+    }
+
     @Override
     public void addComponent ( @NotNull final Component component, @Nullable final Object constraints )
     {
@@ -164,16 +176,6 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
 
         // Performing basic operations
         super.addComponent ( component, constraints );
-    }
-
-    /**
-     * Returns default component constraints in this layout.
-     *
-     * @return default component constraints in this layout
-     */
-    protected GroupPaneConstraints getDefaultConstraint ()
-    {
-        return orientation == HORIZONTAL ? GroupPaneConstraints.VERTICAL_FILL : GroupPaneConstraints.HORIZONTAL_FILL;
     }
 
     @Override
@@ -255,24 +257,27 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     /**
      * Returns actual grid size according to container components amount.
      * Actual grid size is very important for all calculations as it defines the final size of the grid.
-     *
+     * <p>
      * For example: Layout settings are set to have 5 columns and 5 rows which in total requires 25 components to fill-in the grid.
      * Though there might not be enough components provided to fill the grid, in that case the actual grid size might be less.
      *
      * @param container group pane
      * @return actual grid size according to container components amount
      */
-    protected GridSize getActualGridSize ( final Container container )
+    @NotNull
+    protected GridSize getActualGridSize ( @NotNull final Container container )
     {
+        final GridSize gridSize;
         final int count = container.getComponentCount ();
         if ( orientation == HORIZONTAL )
         {
-            return new GridSize ( Math.min ( count, columns ), ( count - 1 ) / columns + 1 );
+            gridSize = new GridSize ( Math.min ( count, columns ), ( count - 1 ) / columns + 1 );
         }
         else
         {
-            return new GridSize ( ( count - 1 ) / rows + 1, Math.min ( count, rows ) );
+            gridSize = new GridSize ( ( count - 1 ) / rows + 1, Math.min ( count, rows ) );
         }
+        return gridSize;
     }
 
     /**
@@ -283,7 +288,8 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param row       component row
      * @return component at the specified cell
      */
-    protected Component getComponentAt ( final Container container, final int column, final int row )
+    @Nullable
+    protected Component getComponentAt ( @NotNull final Container container, final int column, final int row )
     {
         final GridSize gridSize = getActualGridSize ( container );
         final int index = pointToIndex ( container, column, row, gridSize );
@@ -299,7 +305,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param gridSize  actual grid size
      * @return grid column in which component under the specified index is placed
      */
-    protected int indexToColumn ( final Container container, final int index, final GridSize gridSize )
+    protected int indexToColumn ( @NotNull final Container container, final int index, @NotNull final GridSize gridSize )
     {
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         final int column = orientation == HORIZONTAL ? index % columns : index / rows;
@@ -326,7 +332,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param gridSize  actual grid size
      * @return index of the component placed in the specified grid cell or {@code null} if cell is empty
      */
-    protected int pointToIndex ( final Container container, final int column, final int row, final GridSize gridSize )
+    protected int pointToIndex ( @NotNull final Container container, final int column, final int row, @NotNull final GridSize gridSize )
     {
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
         final int c = ltr ? column : gridSize.columns - 1 - column;
@@ -341,7 +347,9 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param type      requested sizes type
      * @return column and row sizes
      */
-    protected Pair<int[], int[]> calculateSizes ( final Container container, final GridSize gridSize, final SizeType type )
+    @NotNull
+    protected Pair<int[], int[]> calculateSizes ( @NotNull final Container container, @NotNull final GridSize gridSize,
+                                                  @NotNull final SizeType type )
     {
         final int count = container.getComponentCount ();
 
@@ -408,7 +416,9 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param percents part percentages
      * @return percents summ and free size pair
      */
-    protected Pair<Double, Integer> calculateSizes ( final int count, final int size, final int[] sizes, final double[] percents )
+    @NotNull
+    protected Pair<Double, Integer> calculateSizes ( final int count, final int size, @NotNull final int[] sizes,
+                                                     @NotNull final double[] percents )
     {
         final int[] initSizes = Arrays.copyOf ( sizes, count );
         boolean changed;
@@ -481,7 +491,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param sizes part sizes
      * @param size  total available size
      */
-    protected void appendDelta ( final int count, final int[] sizes, final int size )
+    protected void appendDelta ( final int count, @NotNull final int[] sizes, final int size )
     {
         int roughColSize = 0;
         for ( int i = 0; i < count; i++ )
@@ -596,8 +606,8 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param direction neighbour direction
      * @return {@code true} if neighbour painter for component at the specified column/row is decoratable, {@code false} otherwise
      */
-    protected boolean isNeighbourDecoratable ( final Container container, final GridSize gridSize, final int col, final int row,
-                                               final BoxOrientation direction )
+    protected boolean isNeighbourDecoratable ( @NotNull final Container container, @NotNull final GridSize gridSize, final int col,
+                                               final int row, @NotNull final BoxOrientation direction )
     {
         final Component neighbour = getNeighbour ( container, gridSize, col, row, direction );
         return PainterSupport.isDecoratable ( neighbour );
@@ -613,8 +623,9 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param direction neighbour direction
      * @return neighbour for component at the specified column/row
      */
-    protected Component getNeighbour ( final Container container, final GridSize gridSize, final int col, final int row,
-                                       final BoxOrientation direction )
+    @Nullable
+    protected Component getNeighbour ( @NotNull final Container container, @NotNull final GridSize gridSize, final int col, final int row,
+                                       @NotNull final BoxOrientation direction )
     {
         final Component neighbour;
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();
@@ -651,8 +662,8 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      * @param direction neighbour direction
      * @return {@code true} if component at the specified column/row is positioned right at container border, {@code false} otherwise
      */
-    protected boolean isAtBorder ( final Container container, final GridSize gridSize, final int col, final int row,
-                                   final BoxOrientation direction )
+    protected boolean isAtBorder ( @NotNull final Container container, @NotNull final GridSize gridSize, final int col, final int row,
+                                   @NotNull final BoxOrientation direction )
     {
         final boolean atBorder;
         final boolean ltr = container.getComponentOrientation ().isLeftToRight ();

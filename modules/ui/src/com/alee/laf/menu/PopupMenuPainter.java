@@ -460,8 +460,10 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
     }
 
     @Override
-    public void configurePopup ( final C popupMenu, final Component invoker, final int x, final int y, final Popup popup )
+    public void configurePopup ( @NotNull final C popupMenu, @Nullable final Component invoker, final int x, final int y,
+                                 @NotNull final Popup popup )
     {
+        // todo There need to be a better way
         // Retrieve component directly from the popup
         final Component window = ReflectUtils.callMethodSafely ( popup, "getComponent" );
         if ( window instanceof Window )
@@ -477,7 +479,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    protected void installPopupSettings ( final Window window, final C popupMenu )
+    protected void installPopupSettings ( @Nullable final Window window, @NotNull final C popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {

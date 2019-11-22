@@ -17,6 +17,8 @@
 
 package com.alee.utils.file;
 
+import com.alee.api.annotations.NotNull;
+
 import java.io.File;
 import java.util.EventListener;
 
@@ -47,14 +49,19 @@ public interface FileDownloadListener extends EventListener
      *
      * @param file downloaded local file
      */
-    public void fileDownloaded ( File file );
+    public void fileDownloaded ( @NotNull File file );
 
     /**
-     * Called when file download failed.
+     * Called when file download was aborted, usually due to {@link #shouldStopDownload()} returning {@code true}.
+     */
+    public void fileDownloadAborted ();
+
+    /**
+     * Called when file download has failed.
      *
      * @param e exception that caused download to fail
      */
-    public void fileDownloadFailed ( Throwable e );
+    public void fileDownloadFailed ( @NotNull Throwable e );
 
     /**
      * Returns whether download operation should stop or not.

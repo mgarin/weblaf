@@ -19,6 +19,7 @@ package com.alee.managers.settings;
 
 import com.alee.api.jdk.SerializableFunction;
 import com.alee.api.jdk.Supplier;
+import com.alee.api.resource.FileResource;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.XmlUtils;
@@ -486,7 +487,7 @@ public final class SettingsManager
                     try
                     {
                         // Read single SettingsGroup
-                        settingsGroup = XmlUtils.fromXML ( file );
+                        settingsGroup = XmlUtils.fromXML ( new FileResource ( file ) );
 
                         // Saving settings group read state
                         groupState.put ( group, new SettingsGroupState ( readFromBackup ? ReadState.restored : ReadState.ok ) );
@@ -774,7 +775,7 @@ public final class SettingsManager
                 final File settingsFile = getSettingsFile ( fileName );
                 if ( settingsFile.exists () )
                 {
-                    value = XmlUtils.fromXML ( settingsFile );
+                    value = XmlUtils.fromXML ( new FileResource ( settingsFile ) );
                 }
                 else
                 {
@@ -827,7 +828,7 @@ public final class SettingsManager
             else
             {
                 final String msg = "Cannot create settings directory: %s";
-                throw new SettingsException ( String.format ( msg, dir.getAbsolutePath () ) );
+                throw new SettingsException ( String.format ( msg, dir ) );
             }
         }
     }

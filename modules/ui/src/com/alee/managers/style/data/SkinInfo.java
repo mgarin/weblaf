@@ -17,8 +17,9 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
-import com.alee.api.merge.Merge;
 import com.alee.managers.icon.IconManager;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.*;
@@ -62,6 +63,7 @@ public final class SkinInfo implements Serializable
      * List of skins where extension can be applied.
      * This field should only be specified for {@link com.alee.managers.style.SkinExtension} usage cases.
      */
+    @Nullable
     private List<String> extendedSkins;
 
     /**
@@ -118,18 +120,11 @@ public final class SkinInfo implements Serializable
     private transient Map<String, Boolean> processedExtensions;
 
     /**
-     * Constructs new skin information.
-     */
-    public SkinInfo ()
-    {
-        super ();
-    }
-
-    /**
      * Returns skin ID.
      *
      * @return skin ID
      */
+    @NotNull
     public String getId ()
     {
         return id;
@@ -140,7 +135,7 @@ public final class SkinInfo implements Serializable
      *
      * @param id new skin ID
      */
-    public void setId ( final String id )
+    public void setId ( @NotNull final String id )
     {
         this.id = id;
     }
@@ -150,8 +145,13 @@ public final class SkinInfo implements Serializable
      *
      * @return skin class canonical name
      */
+    @NotNull
     public String getSkinClass ()
     {
+        if ( skinClass == null )
+        {
+            throw new StyleException ( "Skin class is not specified" );
+        }
         return skinClass;
     }
 
@@ -160,7 +160,7 @@ public final class SkinInfo implements Serializable
      *
      * @param skinClass new skin class canonical name
      */
-    public void setSkinClass ( final String skinClass )
+    public void setSkinClass ( @NotNull final String skinClass )
     {
         this.skinClass = skinClass;
     }
@@ -170,6 +170,7 @@ public final class SkinInfo implements Serializable
      *
      * @return list of skins where extension can be applied
      */
+    @Nullable
     public List<String> getExtendedSkins ()
     {
         return extendedSkins;
@@ -180,7 +181,7 @@ public final class SkinInfo implements Serializable
      *
      * @param extendedSkins list of skins where extension can be applied
      */
-    public void setExtendedSkins ( final List<String> extendedSkins )
+    public void setExtendedSkins ( @NotNull final List<String> extendedSkins )
     {
         this.extendedSkins = extendedSkins;
     }
@@ -191,7 +192,7 @@ public final class SkinInfo implements Serializable
      * @param skinId ID of the skin to process
      * @return true if skin with the specified ID is supported by this extension, false otherwise
      */
-    public boolean isSupported ( final String skinId )
+    public boolean isSupported ( @NotNull final String skinId )
     {
         final List<String> extendedSkins = getExtendedSkins ();
         if ( extendedSkins == null )
@@ -206,6 +207,7 @@ public final class SkinInfo implements Serializable
      *
      * @return supported systems
      */
+    @NotNull
     public String getSupportedSystems ()
     {
         return supportedSystems;
@@ -216,7 +218,7 @@ public final class SkinInfo implements Serializable
      *
      * @param supportedSystems supported systems
      */
-    public void setSupportedSystems ( final String supportedSystems )
+    public void setSupportedSystems ( @NotNull final String supportedSystems )
     {
         this.supportedSystems = supportedSystems;
     }
@@ -226,6 +228,7 @@ public final class SkinInfo implements Serializable
      *
      * @return supported systems list
      */
+    @NotNull
     public List<String> getSupportedSystemsList ()
     {
         return TextUtils.stringToList ( supportedSystems, "," );
@@ -236,7 +239,7 @@ public final class SkinInfo implements Serializable
      *
      * @param supportedSystems supported systems
      */
-    public void setSupportedSystemsList ( final List<String> supportedSystems )
+    public void setSupportedSystemsList ( @NotNull final List<String> supportedSystems )
     {
         this.supportedSystems = TextUtils.listToString ( supportedSystems, "," );
     }
@@ -246,6 +249,7 @@ public final class SkinInfo implements Serializable
      *
      * @return skin {@link Icon}
      */
+    @Nullable
     public Icon getIcon ()
     {
         return icon;
@@ -256,7 +260,7 @@ public final class SkinInfo implements Serializable
      *
      * @param icon new skin icon
      */
-    public void setIcon ( final Icon icon )
+    public void setIcon ( @Nullable final Icon icon )
     {
         this.icon = icon;
     }
@@ -266,26 +270,10 @@ public final class SkinInfo implements Serializable
      *
      * @return skin title
      */
+    @Nullable
     public String getTitle ()
     {
-        final String text;
-        if ( title != null )
-        {
-            text = title;
-        }
-        else
-        {
-            final String id = getId ();
-            if ( id != null )
-            {
-                text = id;
-            }
-            else
-            {
-                text = "Unnamed skin";
-            }
-        }
-        return text;
+        return title != null ? title : getId ();
     }
 
     /**
@@ -293,7 +281,7 @@ public final class SkinInfo implements Serializable
      *
      * @param title new skin title
      */
-    public void setTitle ( final String title )
+    public void setTitle ( @Nullable final String title )
     {
         this.title = title;
     }
@@ -303,6 +291,7 @@ public final class SkinInfo implements Serializable
      *
      * @return skin description
      */
+    @Nullable
     public String getDescription ()
     {
         return description;
@@ -313,7 +302,7 @@ public final class SkinInfo implements Serializable
      *
      * @param description new skin description
      */
-    public void setDescription ( final String description )
+    public void setDescription ( @Nullable final String description )
     {
         this.description = description;
     }
@@ -323,6 +312,7 @@ public final class SkinInfo implements Serializable
      *
      * @return skin author
      */
+    @Nullable
     public String getAuthor ()
     {
         return author;
@@ -333,7 +323,7 @@ public final class SkinInfo implements Serializable
      *
      * @param author new skin author
      */
-    public void setAuthor ( final String author )
+    public void setAuthor ( @Nullable final String author )
     {
         this.author = author;
     }
@@ -343,39 +333,15 @@ public final class SkinInfo implements Serializable
      */
     public void install ()
     {
-        // Installing skin extensions
-        installExtensions ();
-
-        // Installing skin icon sets
-        installIconSets ( getIconSets () );
-    }
-
-    /**
-     * Applies all existing extensions to this skin.
-     * All compliance checks are performed within this method.
-     */
-    protected void installExtensions ()
-    {
+        // Applies all existing extensions to this skin
+        // All compliance checks are performed within applyExtension(...) method
         for ( final SkinExtension extension : StyleManager.getExtensions () )
         {
             applyExtension ( extension );
         }
-    }
 
-    /**
-     * Adds specified icon sets from {@link com.alee.managers.icon.IconManager}.
-     *
-     * @param iconSets icon sets to add
-     */
-    private void installIconSets ( final List<IconSet> iconSets )
-    {
-        if ( CollectionUtils.notEmpty ( iconSets ) )
-        {
-            for ( final IconSet iconSet : iconSets )
-            {
-                IconManager.addIconSet ( iconSet );
-            }
-        }
+        // Clearing icons cache
+        clearIconsCache ( iconSets );
     }
 
     /**
@@ -383,24 +349,8 @@ public final class SkinInfo implements Serializable
      */
     public void uninstall ()
     {
-        // Uninstalling skin icon sets
-        uninstallIconSets ( getIconSets () );
-    }
-
-    /**
-     * Removes specified icon sets from {@link com.alee.managers.icon.IconManager}.
-     *
-     * @param iconSets icon sets to remove
-     */
-    private void uninstallIconSets ( final List<IconSet> iconSets )
-    {
-        if ( CollectionUtils.notEmpty ( iconSets ) )
-        {
-            for ( final IconSet iconSet : iconSets )
-            {
-                IconManager.removeIconSet ( iconSet.getId () );
-            }
-        }
+        // Clearing icons cache
+        clearIconsCache ( iconSets );
     }
 
     /**
@@ -408,6 +358,7 @@ public final class SkinInfo implements Serializable
      *
      * @return skin icon sets
      */
+    @NotNull
     public List<IconSet> getIconSets ()
     {
         return iconSets;
@@ -418,7 +369,7 @@ public final class SkinInfo implements Serializable
      *
      * @param iconSets skin icon sets
      */
-    public void setIconSets ( final List<IconSet> iconSets )
+    public void setIconSets ( @NotNull final List<IconSet> iconSets )
     {
         this.iconSets = iconSets;
     }
@@ -428,6 +379,7 @@ public final class SkinInfo implements Serializable
      *
      * @return skin styles
      */
+    @NotNull
     public List<ComponentStyle> getStyles ()
     {
         return styles;
@@ -438,7 +390,7 @@ public final class SkinInfo implements Serializable
      *
      * @param styles new skin styles
      */
-    public void setStyles ( final List<ComponentStyle> styles )
+    public void setStyles ( @NotNull final List<ComponentStyle> styles )
     {
         this.styles = styles;
     }
@@ -451,12 +403,14 @@ public final class SkinInfo implements Serializable
      * @param component component we are looking style for
      * @return component style
      */
-    public ComponentStyle getStyle ( final JComponent component )
+    @NotNull
+    public ComponentStyle getStyle ( @NotNull final JComponent component )
     {
         // Lazily initializing style cache
         ensureCacheInitialized ();
 
         // Searching for appropriate style
+        final ComponentStyle componentStyle;
         final ComponentDescriptor descriptor = StyleManager.getDescriptor ( component );
         final Map<String, ComponentStyle> componentStyles = stylesCache.get ( descriptor.getId () );
         if ( componentStyles != null )
@@ -466,7 +420,7 @@ public final class SkinInfo implements Serializable
             if ( style != null )
             {
                 // We have found required style
-                return style;
+                componentStyle = style;
             }
             else
             {
@@ -479,7 +433,7 @@ public final class SkinInfo implements Serializable
                 final ComponentStyle defaultStyle = componentStyles.get ( defaultStyleId );
                 if ( defaultStyle != null )
                 {
-                    return defaultStyle;
+                    componentStyle = defaultStyle;
                 }
                 else
                 {
@@ -493,8 +447,9 @@ public final class SkinInfo implements Serializable
         {
             // For some reason type cache doesn't exist
             final String error = "Skin '%s' doesn't have any styles for component type: %s";
-            throw new StyleException ( String.format ( error, getTitle (), descriptor ) );
+            throw new StyleException ( String.format ( error, getId (), descriptor ) );
         }
+        return componentStyle;
     }
 
     /**
@@ -523,12 +478,12 @@ public final class SkinInfo implements Serializable
     }
 
     /**
-     * Applies specified extension to the skin data.
+     * Applies specified {@link SkinExtension} to this {@link SkinInfo}.
      *
-     * @param extension extension to apply
-     * @return true if extension was applied successfully, false otherwise
+     * @param extension {@link SkinExtension} to apply
+     * @return {@code true} if extension was applied successfully, {@code false} otherwise
      */
-    public boolean applyExtension ( final SkinExtension extension )
+    public boolean applyExtension ( @NotNull final SkinExtension extension )
     {
         // Ensure processed extensions list exists
         if ( processedExtensions == null )
@@ -537,6 +492,7 @@ public final class SkinInfo implements Serializable
         }
 
         // Checking whether this extension was already checked before
+        final boolean applied;
         if ( !processedExtensions.containsKey ( extension.getId () ) )
         {
             // Checking extension support
@@ -554,31 +510,32 @@ public final class SkinInfo implements Serializable
                     final SkinInfo extensionData = xmlExtension.getData ( getSkinClass () );
 
                     // Updating skin with extension data
-                    updateCache ( extensionData );
+                    applyExtension ( extensionData );
 
                     // Saving extension application result
                     processedExtensions.put ( extension.getId (), true );
-                    return true;
+                    applied = true;
                 }
                 else
                 {
                     // Saving extension application result
                     processedExtensions.put ( extension.getId (), false );
-                    return false;
+                    applied = false;
                 }
             }
             else
             {
                 // Saving extension application result
                 processedExtensions.put ( extension.getId (), false );
-                return false;
+                applied = false;
             }
         }
         else
         {
             // Simply return previously achieved result
-            return processedExtensions.get ( extension.getId () );
+            applied = processedExtensions.get ( extension.getId () );
         }
+        return applied;
     }
 
     /**
@@ -588,13 +545,13 @@ public final class SkinInfo implements Serializable
      *
      * @param extension applied extension data
      */
-    private void updateCache ( final SkinInfo extension )
+    private void applyExtension ( @NotNull final SkinInfo extension )
     {
-        // Merging icon sets from extension
-        iconSets = Merge.basic ().merge ( iconSets, extension.getIconSets () );
+        // Addding all icon sets from extension
+        iconSets.addAll ( extension.getIconSets () );
 
-        // Installing extension icon sets
-        installIconSets ( extension.getIconSets () );
+        // Clearing icon set caches
+        clearIconsCache ( extension.getIconSets () );
 
         // Saving extension styles starting index
         final int startIndex = styles.size ();
@@ -616,12 +573,28 @@ public final class SkinInfo implements Serializable
     }
 
     /**
+     * Clears {@link IconManager} cache for the specified {@link IconSet}s.
+     *
+     * @param iconSets {@link List} of {@link IconSet}s to clear {@link IconManager} cache for
+     */
+    private void clearIconsCache ( @Nullable final List<IconSet> iconSets )
+    {
+        if ( CollectionUtils.notEmpty ( iconSets ) )
+        {
+            for ( final IconSet iconSet : iconSets )
+            {
+                IconManager.clearIconSetCache ( iconSet );
+            }
+        }
+    }
+
+    /**
      * Performs style override.
      *
      * @param styles     styles to override
      * @param startIndex start index
      */
-    private void performOverride ( final List<ComponentStyle> styles, final int startIndex )
+    private void performOverride ( @NotNull final List<ComponentStyle> styles, final int startIndex )
     {
         for ( int i = startIndex; i < styles.size (); i++ )
         {
@@ -653,8 +626,8 @@ public final class SkinInfo implements Serializable
      * @param index        index of style we are overriding on current level
      * @param globalIndex  global index
      */
-    private void performOverride ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index,
-                                   final int globalIndex )
+    private void performOverride ( @NotNull final List<ComponentStyle> globalStyles, @NotNull final List<ComponentStyle> levelStyles,
+                                   final int index, final int globalIndex )
     {
         final ComponentStyle style = levelStyles.get ( index );
 
@@ -736,7 +709,7 @@ public final class SkinInfo implements Serializable
      * @param style        style to look overridden one for
      * @return overridden style if one exists
      */
-    private ComponentStyle findOverrideStyle ( final List<ComponentStyle> globalStyles, final ComponentStyle style )
+    private ComponentStyle findOverrideStyle ( @NotNull final List<ComponentStyle> globalStyles, @NotNull final ComponentStyle style )
     {
         final List<ComponentStyle> componentStyles = new ArrayList<ComponentStyle> ();
         componentStyles.add ( style );
@@ -768,27 +741,25 @@ public final class SkinInfo implements Serializable
      * @param styles      styles available on this level
      * @param stylesCache styles cache map
      */
-    private void gatherStyles ( final List<ComponentStyle> styles, final Map<String, Map<String, ComponentStyle>> stylesCache )
+    private void gatherStyles ( @NotNull final List<ComponentStyle> styles,
+                                @NotNull final Map<String, Map<String, ComponentStyle>> stylesCache )
     {
-        if ( styles != null )
+        for ( final ComponentStyle style : styles )
         {
-            for ( final ComponentStyle style : styles )
+            // Retrieving styles map for this component type
+            final String type = style.getType ();
+            Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
+            if ( componentStyles == null )
             {
-                // Retrieving styles map for this component type
-                final String type = style.getType ();
-                Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
-                if ( componentStyles == null )
-                {
-                    componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
-                    stylesCache.put ( type, componentStyles );
-                }
-
-                // Adding this style into cache
-                componentStyles.put ( style.getCompleteId (), style );
-
-                // Adding child styles into cache
-                gatherStyles ( style.getNestedStyles (), stylesCache );
+                componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
+                stylesCache.put ( type, componentStyles );
             }
+
+            // Adding this style into cache
+            componentStyles.put ( style.getCompleteId (), style );
+
+            // Adding child styles into cache
+            gatherStyles ( style.getNestedStyles (), stylesCache );
         }
     }
 
@@ -799,7 +770,7 @@ public final class SkinInfo implements Serializable
      * @param styles     styles to build
      * @param startIndex start index
      */
-    private void buildStyles ( final List<ComponentStyle> styles, final int startIndex )
+    private void buildStyles ( @NotNull final List<ComponentStyle> styles, final int startIndex )
     {
         // Creating built style identifiers map
         final Map<String, List<String>> builtStyles = new HashMap<String, List<String>> ();
@@ -828,8 +799,9 @@ public final class SkinInfo implements Serializable
      * @param builtStyles IDs of styles which were already built
      * @return build style
      */
-    private ComponentStyle buildStyle ( final List<ComponentStyle> levelStyles, final int index, final List<String> building,
-                                        final Map<String, List<String>> builtStyles )
+    @NotNull
+    private ComponentStyle buildStyle ( @NotNull final List<ComponentStyle> levelStyles, final int index,
+                                        @NotNull final List<String> building, @NotNull final Map<String, List<String>> builtStyles )
     {
         final ComponentStyle style = levelStyles.get ( index );
 
@@ -845,29 +817,27 @@ public final class SkinInfo implements Serializable
             throw new StyleException ( String.format ( msg, completeId, descriptor ) );
         }
 
-        // Check whether this style was already built
-        if ( builtStyles.get ( type ).contains ( completeId ) )
+        // Checking if this style is not yet built
+        if ( !builtStyles.get ( type ).contains ( completeId ) )
         {
-            return style;
-        }
+            // Adding this style into list of styles we are building right now
+            building.add ( uniqueId );
 
-        // Adding this style into list of styles we are building right now
-        building.add ( uniqueId );
-
-        // Resolving nested styles first
-        if ( style.getStylesCount () > 0 )
-        {
-            for ( int i = 0; i < style.getStylesCount (); i++ )
+            // Resolving nested styles first
+            if ( style.getStylesCount () > 0 )
             {
-                buildStyle ( style.getNestedStyles (), i, building, builtStyles );
+                for ( int i = 0; i < style.getStylesCount (); i++ )
+                {
+                    buildStyle ( style.getNestedStyles (), i, building, builtStyles );
+                }
             }
+
+            // Adding this styles into built list
+            builtStyles.get ( type ).add ( completeId );
+
+            // Removing this style from building list upon completion
+            building.remove ( uniqueId );
         }
-
-        // Adding this styles into built list
-        builtStyles.get ( type ).add ( completeId );
-
-        // Removing this style from building list upon completion
-        building.remove ( uniqueId );
 
         // Return completed style
         return style;
@@ -885,20 +855,26 @@ public final class SkinInfo implements Serializable
      * @param globalIndex global index
      * @return component style found either on local or global level
      */
-    private ComponentStyle findStyle ( final String type, final String id, final String excludeId,
-                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int maxIndex,
-                                       final int globalIndex )
+    @Nullable
+    private ComponentStyle findStyle ( @NotNull final String type, @NotNull final String id, @NotNull final String excludeId,
+                                       @NotNull final List<ComponentStyle> levelStyles, @NotNull final List<ComponentStyle> styles,
+                                       final int maxIndex, final int globalIndex )
     {
         // todo Probably look on some other levels later on?
-        if ( levelStyles != null && levelStyles != styles )
+        ComponentStyle result = null;
+        if ( levelStyles != styles )
         {
             final ComponentStyle style = findStyle ( type, id, levelStyles, maxIndex );
             if ( style != null && Objects.notEquals ( style.getId (), excludeId ) )
             {
-                return style;
+                result = style;
             }
         }
-        return findStyle ( type, id, styles, globalIndex );
+        if ( result == null )
+        {
+            result = findStyle ( type, id, styles, globalIndex );
+        }
+        return result;
     }
 
     /**
@@ -911,23 +887,26 @@ public final class SkinInfo implements Serializable
      * @param maxIndex max style index
      * @return component style found in the specified styles list
      */
-    private ComponentStyle findStyle ( final String type, final String id, final List<ComponentStyle> styles, final int maxIndex )
+    @Nullable
+    private ComponentStyle findStyle ( @NotNull final String type, @Nullable final String id, @NotNull final List<ComponentStyle> styles,
+                                       final int maxIndex )
     {
-        ComponentStyle fstyle = null;
+        ComponentStyle result = null;
         for ( int i = 0; i < styles.size () && i < maxIndex; i++ )
         {
             final ComponentStyle style = styles.get ( i );
             if ( Objects.equals ( style.getType (), type ) && Objects.equals ( style.getId (), id ) )
             {
-                fstyle = style;
+                result = style;
             }
         }
-        return fstyle;
+        return result;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
-        return getTitle ();
+        return getTitle () != null ? getTitle () : getId ();
     }
 }

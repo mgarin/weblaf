@@ -17,6 +17,7 @@
 
 package com.alee.managers.glasspane;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
@@ -142,22 +143,11 @@ public class WebGlassPane extends WebPanel
     }
 
     /**
-     * Returns JRootPane to which this WebGlassPane is attached.
-     *
-     * @return JRootPane to which this WebGlassPane is attached
-     */
-    @Override
-    public JRootPane getRootPane ()
-    {
-        return CoreSwingUtils.getRootPane ( this );
-    }
-
-    /**
      * Displays single component on glass pane.
      *
      * @param component component to display
      */
-    public void showComponent ( final JComponent component )
+    public void showComponent ( @NotNull final JComponent component )
     {
         // Updating added component and its children orientation
         SwingUtils.copyOrientation ( WebGlassPane.this, component );
@@ -173,7 +163,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param component component to hide
      */
-    public void hideComponent ( final JComponent component )
+    public void hideComponent ( @NotNull final JComponent component )
     {
         final Rectangle bounds = component.getBounds ();
         WebGlassPane.this.remove ( component );

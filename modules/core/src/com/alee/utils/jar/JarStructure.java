@@ -26,9 +26,7 @@ import com.alee.utils.file.FileDownloadListener;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.List;
@@ -180,13 +178,9 @@ public class JarStructure
                 throw new UtilityException ( "Unable to retrieve JAR file location" );
             }
         }
-        catch ( final URISyntaxException e )
+        catch ( final Exception e )
         {
-            throw new UtilityException ( "Unable to retrieve JAR URI", e );
-        }
-        catch ( final IOException e )
-        {
-            throw new UtilityException ( "Unable to retrieve JAR file", e );
+            throw new UtilityException ( "Unable to read JAR file", e );
         }
     }
 

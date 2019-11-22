@@ -17,6 +17,7 @@
 
 package com.alee.extended.magnifier;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.glasspane.GlassPaneManager;
@@ -71,16 +72,19 @@ public class MagnifierGlass extends JComponent
     /**
      * Zoom area size.
      */
+    @NotNull
     protected Dimension size;
 
     /**
      * Zoom area shape type.
      */
+    @NotNull
     protected MagnifierType type;
 
     /**
      * {@link MagnifierGlass} position.
      */
+    @NotNull
     protected MagnifierPosition position;
 
     /**
@@ -174,7 +178,7 @@ public class MagnifierGlass extends JComponent
         forceUpdater = new WebTimer ( forceUpdateFrequency, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 updatePreview ();
             }
@@ -187,7 +191,7 @@ public class MagnifierGlass extends JComponent
         listener = new AWTEventListener ()
         {
             @Override
-            public void eventDispatched ( final AWTEvent event )
+            public void eventDispatched ( @NotNull final AWTEvent event )
             {
                 // Process events only if this magnifier is enabled
                 if ( isEnabled () )
@@ -217,6 +221,7 @@ public class MagnifierGlass extends JComponent
      *
      * @return zoom area size
      */
+    @NotNull
     public Dimension getZoomAreaSize ()
     {
         return size;
@@ -227,7 +232,7 @@ public class MagnifierGlass extends JComponent
      *
      * @param size zoom area size
      */
-    public void setZoomAreaSize ( final Dimension size )
+    public void setZoomAreaSize ( @NotNull final Dimension size )
     {
         if ( Objects.notEquals ( this.size, size ) )
         {
@@ -241,6 +246,7 @@ public class MagnifierGlass extends JComponent
      *
      * @return zoom area shape type
      */
+    @NotNull
     public MagnifierType getType ()
     {
         return type;
@@ -251,7 +257,7 @@ public class MagnifierGlass extends JComponent
      *
      * @param type zoom area shape type
      */
-    public void setType ( final MagnifierType type )
+    public void setType ( @NotNull final MagnifierType type )
     {
         if ( this.type != type )
         {
@@ -265,6 +271,7 @@ public class MagnifierGlass extends JComponent
      *
      * @return {@link MagnifierGlass} position
      */
+    @NotNull
     public MagnifierPosition getPosition ()
     {
         return position;
@@ -275,7 +282,7 @@ public class MagnifierGlass extends JComponent
      *
      * @param position {@link MagnifierGlass} position
      */
-    public void setPosition ( final MagnifierPosition position )
+    public void setPosition ( @NotNull final MagnifierPosition position )
     {
         if ( this.position != position )
         {
@@ -289,7 +296,6 @@ public class MagnifierGlass extends JComponent
             }
             this.position = position;
             updatePreview ();
-
         }
     }
 
@@ -482,6 +488,7 @@ public class MagnifierGlass extends JComponent
      *
      * @return UI buffer image size
      */
+    @NotNull
     protected Dimension getBufferSize ()
     {
         return new Dimension ( size.width / zoomFactor, size.height / zoomFactor );
@@ -592,7 +599,7 @@ public class MagnifierGlass extends JComponent
 
             // Updating cursor on the window
             final Cursor cursor = position == MagnifierPosition.atCursor ? SystemUtils.getTransparentCursor () : defaultCursor;
-            CoreSwingUtils.getWindowAncestor ( zoomProvider ).setCursor ( cursor );
+            CoreSwingUtils.getNonNullWindowAncestor ( zoomProvider ).setCursor ( cursor );
 
             // Repainting magnifier
             // This is required in addition to bounds change repaint
@@ -602,7 +609,7 @@ public class MagnifierGlass extends JComponent
         else if ( buffer != null )
         {
             // Restoring cursor
-            CoreSwingUtils.getWindowAncestor ( zoomProvider ).setCursor ( defaultCursor );
+            CoreSwingUtils.getNonNullWindowAncestor ( zoomProvider ).setCursor ( defaultCursor );
 
             // Resetting buffer if magnifier is hidden
             buffer.flush ();
@@ -611,7 +618,7 @@ public class MagnifierGlass extends JComponent
     }
 
     @Override
-    protected void paintComponent ( final Graphics g )
+    protected void paintComponent ( @NotNull final Graphics g )
     {
         if ( isEnabled () && rendered )
         {
@@ -677,6 +684,7 @@ public class MagnifierGlass extends JComponent
      *
      * @return custom shade icon
      */
+    @NotNull
     protected Icon getShadeIcon ()
     {
         if ( type == MagnifierType.rectangular )
@@ -705,7 +713,7 @@ public class MagnifierGlass extends JComponent
      *
      * @param window {@link Window} for {@link MagnifierGlass}
      */
-    public void displayOrDispose ( final Window window )
+    public void displayOrDispose ( @NotNull final Window window )
     {
         displayOrDispose ( getZoomProvider ( window ) );
     }
@@ -715,7 +723,7 @@ public class MagnifierGlass extends JComponent
      *
      * @param component {@link JComponent} for {@link MagnifierGlass}
      */
-    public void displayOrDispose ( final JComponent component )
+    public void displayOrDispose ( @NotNull final JComponent component )
     {
         if ( !isEnabled () )
         {
@@ -732,7 +740,7 @@ public class MagnifierGlass extends JComponent
      *
      * @param window {@link Window} for {@link MagnifierGlass}
      */
-    public void display ( final Window window )
+    public void display ( @NotNull final Window window )
     {
         display ( getZoomProvider ( window ) );
     }
@@ -742,26 +750,16 @@ public class MagnifierGlass extends JComponent
      *
      * @param component {@link JComponent} for {@link MagnifierGlass}
      */
-    public void display ( final JComponent component )
+    public void display ( @NotNull final JComponent component )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Performing various checks
-        if ( component == null )
-        {
-            // Component must be provided
-            throw new IllegalArgumentException ( "Provided component must not be null" );
-        }
         if ( !component.isShowing () )
         {
             // Checking that component is currently displayed
             throw new IllegalArgumentException ( "Provided component is not displayed on screen: " + component );
-        }
-        if ( CoreSwingUtils.getRootPane ( component ) == null )
-        {
-            // Checking rootpane existence
-            throw new IllegalArgumentException ( "Provided component is not placed within any window: " + component );
         }
 
         // Changing visibility flag
@@ -769,7 +767,7 @@ public class MagnifierGlass extends JComponent
 
         // Retrieving component that will be providing us the area to use magnifier within
         zoomProvider = component instanceof JRootPane ? ( ( JRootPane ) component ).getLayeredPane () : component;
-        defaultCursor = CoreSwingUtils.getWindowAncestor ( zoomProvider ).getCursor ();
+        defaultCursor = CoreSwingUtils.getNonNullWindowAncestor ( zoomProvider ).getCursor ();
 
         // Updating buffer image
         updatePreview ();
@@ -833,7 +831,8 @@ public class MagnifierGlass extends JComponent
      * @param window window to retrieve zoom provider for
      * @return zoom provider component for the specified window
      */
-    protected JComponent getZoomProvider ( final Window window )
+    @NotNull
+    protected JComponent getZoomProvider ( @NotNull final Window window )
     {
         final JComponent component;
         if ( window instanceof JWindow )
@@ -850,7 +849,6 @@ public class MagnifierGlass extends JComponent
         }
         else
         {
-            // Other types of window are not supported as they do not have layered pane
             throw new IllegalArgumentException ( "Provided window must contain JLayeredPane" );
         }
         return component;
@@ -878,6 +876,7 @@ public class MagnifierGlass extends JComponent
         }
     }
 
+    @NotNull
     @Override
     public Dimension getPreferredSize ()
     {

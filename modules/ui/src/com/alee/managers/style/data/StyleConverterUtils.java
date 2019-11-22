@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -54,8 +55,9 @@ public final class StyleConverterUtils
      * @param clazz      class to read properties for, it will be used to retrieve properties field types
      * @param styleId    component style ID, might be used to report problems
      */
-    public static void readProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final Mapper mapper,
-                                        final Map<String, Object> properties, final Class clazz, final String styleId )
+    public static void readProperties ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context,
+                                        @NotNull final Mapper mapper, @NotNull final Map<String, Object> properties,
+                                        @NotNull final Class clazz, final String styleId )
     {
         while ( reader.hasMoreChildren () )
         {
@@ -76,9 +78,10 @@ public final class StyleConverterUtils
      * @param propertyClass class to read property for, it will be used to retrieve property field type
      * @param propertyName  property name
      */
-    private static void readProperty ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final Mapper mapper,
-                                       final String styleId, final Map<String, Object> properties, final Class propertyClass,
-                                       final String propertyName )
+    private static void readProperty ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context,
+                                       @NotNull final Mapper mapper, @NotNull final String styleId,
+                                       @NotNull final Map<String, Object> properties, @NotNull final Class propertyClass,
+                                       @NotNull final String propertyName )
     {
         final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
         if ( Boolean.parseBoolean ( ignored ) )
@@ -162,31 +165,27 @@ public final class StyleConverterUtils
      * @param field   painter referencing field name
      * @return default painter class for the painter field in specified class
      */
-    public static Class<? extends Painter> getDefaultPainter ( final Class inClass, final String field )
+    @NotNull
+    public static Class<? extends Painter> getDefaultPainter ( @NotNull final Class<?> inClass, @NotNull final String field )
     {
-        // Checking class existence
-        if ( inClass != null )
+        try
         {
-            // Checking field existence
-            final Field painterField = ReflectUtils.getFieldSafely ( inClass, field );
-            painterField.setAccessible ( true );
-            if ( painterField != null )
+            final Field painterField = ReflectUtils.getField ( inClass, field );
+            final DefaultPainter defaultPainter = painterField.getAnnotation ( DefaultPainter.class );
+            if ( defaultPainter != null )
             {
-                // Trying to acquire default painter annotation
-                final DefaultPainter defaultPainter = painterField.getAnnotation ( DefaultPainter.class );
-                if ( defaultPainter != null )
-                {
-                    // Return defalt painter
-                    return defaultPainter.value ();
-                }
+                return defaultPainter.value ();
             }
             else
             {
-                // Since this is a major issue that we try a wrong field we will throw exception
-                final String msg = "Unable to find painter field '%s' in class '%s' for default painter class retrieval";
+                final String msg = "Painter field '%s' in class '%s' doesn't have DefaultPainter annotation";
                 throw new StyleException ( String.format ( msg, field, inClass ) );
             }
         }
-        return null;
+        catch ( final Exception e )
+        {
+            final String msg = "Unable to find Painter field '%s' in class '%s' for class retrieval from DefaultPainter annotation";
+            throw new StyleException ( String.format ( msg, field, inClass ) );
+        }
     }
 }

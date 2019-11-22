@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -38,7 +39,8 @@ public class ComponentBackground<C extends JComponent, D extends IDecoration<C, 
         extends AbstractBackground<C, D, I>
 {
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )

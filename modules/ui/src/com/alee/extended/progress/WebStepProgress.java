@@ -975,13 +975,15 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         // Outer shadow
         if ( isEnabled () )
         {
-            GraphicsUtils.drawShade ( g2d, shape, ColorUtils.color ( 210, 210, 210 ), shadeWidth );
+            GraphicsUtils.drawShade ( g2d, shape, new Color ( 210, 210, 210 ), shadeWidth );
         }
 
         // Background
         final Rectangle shapeBounds = shape.getBounds ();
-        g2d.setPaint ( new GradientPaint ( 0, shapeBounds.y, Color.WHITE, 0, shapeBounds.y + shapeBounds.height,
-                ColorUtils.color ( 223, 223, 223 ) ) );
+        g2d.setPaint ( new GradientPaint (
+                0, shapeBounds.y, Color.WHITE, 0, shapeBounds.y + shapeBounds.height,
+                new Color ( 223, 223, 223 )
+        ) );
         g2d.fill ( shape );
 
         // Border

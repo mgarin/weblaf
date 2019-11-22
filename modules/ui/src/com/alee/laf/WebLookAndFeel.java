@@ -20,8 +20,6 @@ package com.alee.laf;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
-import com.alee.extended.svg.SvgIcon;
-import com.alee.graphics.image.gif.GifIcon;
 import com.alee.laf.button.WButtonInputListener;
 import com.alee.laf.desktoppane.WDesktopPaneInputListener;
 import com.alee.laf.edt.ExceptionNonEventThreadHandler;
@@ -33,12 +31,11 @@ import com.alee.laf.splitpane.WSplitPaneInputListener;
 import com.alee.laf.tabbedpane.WTabbedPaneInputListener;
 import com.alee.managers.UIManagers;
 import com.alee.managers.icon.Icons;
-import com.alee.managers.icon.LazyIcon;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
-import com.alee.skin.web.WebSkin;
+import com.alee.skin.light.WebLightSkin;
 import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.reflection.LazyInstance;
@@ -52,9 +49,9 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Locale;
 
 /**
  * LaF class containing methods to conveniently install, configure and uninstall WebLaF.
@@ -146,12 +143,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     @Nullable
     protected static List<ImageIcon> icons = null;
-
-    /**
-     * Disabled icons cache.
-     */
-    @NotNull
-    protected static final Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
 
     /**
      * Alt hotkey processor for application windows with menu.
@@ -1066,7 +1057,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void install () throws LookAndFeelException
     {
-        install ( WebSkin.class );
+        install ( WebLightSkin.class );
     }
 
     /**
@@ -1299,14 +1290,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @NotNull
     public static List<Image> getImages ()
     {
-        loadIcons ();
         final List<Image> images = new ArrayList<Image> ();
-        if ( icons != null )
+        for ( final ImageIcon icon : getLookAndFeelIcons () )
         {
-            for ( final ImageIcon icon : icons )
-            {
-                images.add ( icon.getImage () );
-            }
+            images.add ( icon.getImage () );
         }
         return images;
     }
@@ -1319,12 +1306,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @NotNull
     public static List<ImageIcon> getIcons ()
     {
-        loadIcons ();
         final List<ImageIcon> imageIcons = new ArrayList<ImageIcon> ();
-        if ( icons != null )
-        {
-            imageIcons.addAll ( icons );
-        }
+        imageIcons.addAll ( getLookAndFeelIcons () );
         return imageIcons;
     }
 
@@ -1334,11 +1317,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param size square WebLookAndFeel image size
      * @return square WebLookAndFeel image
      */
-    @Nullable
+    @NotNull
     public static Image getImage ( final int size )
     {
-        final ImageIcon icon = getIcon ( size );
-        return icon != null ? icon.getImage () : null;
+        return getIcon ( size ).getImage ();
     }
 
     /**
@@ -1347,30 +1329,32 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param size square WebLookAndFeel icon size
      * @return square WebLookAndFeel icon
      */
-    @Nullable
+    @NotNull
     public static ImageIcon getIcon ( final int size )
     {
-        loadIcons ();
         ImageIcon imageIcon = null;
-        if ( icons != null )
+        for ( final ImageIcon icon : getLookAndFeelIcons () )
         {
-            for ( final ImageIcon icon : icons )
+            if ( icon.getIconWidth () == size )
             {
-                if ( icon.getIconWidth () == size )
-                {
-                    imageIcon = icon;
-                    break;
-                }
+                imageIcon = icon;
+                break;
             }
+        }
+        if ( imageIcon == null )
+        {
+            throw new LookAndFeelException ( "Unable to load LookAndFeel icon for size: " + size );
         }
         return imageIcon;
     }
 
     /**
-     * Loads square WebLookAndFeel icons listed in icons.xml file in resources folder.
-     * Loaded icons will have the same order they have in that xml file.
+     * Returns a list of square WebLookAndFeel icons that can be used as window icons on any OS.
+     *
+     * @return list of square WebLookAndFeel icons
      */
-    protected static void loadIcons ()
+    @NotNull
+    protected static List<ImageIcon> getLookAndFeelIcons ()
     {
         if ( icons == null )
         {
@@ -1381,15 +1365,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 icons.add ( new ImageIcon ( WebLookAndFeel.class.getResource ( "icons/icon" + size + ".png" ) ) );
             }
         }
+        return icons;
     }
 
     /**
-     * Returns a better disabled icon than BasicLookAndFeel offers.
+     * Returns better disabled icon than {@link BasicLookAndFeel} offers.
      * Generated disabled icons are cached within a weak hash map under icon key.
      *
      * @param component component that requests disabled icon
      * @param icon      normal icon
-     * @return disabled icon
+     * @return better disabled icon than {@link BasicLookAndFeel} offers
      */
     @Nullable
     @Override
@@ -1398,28 +1383,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         final Icon disabledIcon;
         if ( icon != null && icon.getIconWidth () > 0 && icon.getIconHeight () > 0 )
         {
-            if ( disabledIcons.containsKey ( icon ) )
-            {
-                disabledIcon = disabledIcons.get ( icon );
-            }
-            else
-            {
-                final ImageIcon imageIcon;
-                if ( icon instanceof ImageIcon || icon instanceof SvgIcon || icon instanceof GifIcon || icon instanceof LazyIcon )
-                {
-                    // todo Different disabled implementation for different icon types?
-                    // todo For example ImageIcon, SvgIcon, GifIcon etc.
-                    final BufferedImage image = ImageUtils.getBufferedImage ( icon );
-                    final BufferedImage disabled = ImageUtils.createDisabledCopy ( image );
-                    imageIcon = new ImageIcon ( disabled );
-                }
-                else
-                {
-                    imageIcon = null;
-                }
-                disabledIcons.put ( icon, imageIcon );
-                disabledIcon = imageIcon;
-            }
+            disabledIcon = ImageUtils.getDisabledCopy ( icon );
         }
         else
         {
@@ -1542,7 +1506,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setOrientation ( @NotNull final Component component )
     {
         final ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
-        if (  orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
+        if ( orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
         {
             component.setComponentOrientation ( orientation );
         }

@@ -142,7 +142,7 @@ public final class StyleData implements PropertyChangeListener
     }
 
     @Override
-    public void propertyChange ( @NotNull final PropertyChangeEvent evt )
+    public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();

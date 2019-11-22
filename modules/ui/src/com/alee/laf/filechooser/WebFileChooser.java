@@ -41,6 +41,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,7 +62,8 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     /**
      * Custom icons for file chooser dialog.
      */
-    protected List<? extends Image> customIcons = null;
+    @Nullable
+    protected List<Image> customIcons = null;
 
     /**
      * Constructs a WebFileChooser pointing to the user's default directory.
@@ -212,6 +214,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      *
      * @return custom dialog icon
      */
+    @Nullable
     public Image getDialogIcon ()
     {
         return customIcons != null && customIcons.size () > 0 ? customIcons.get ( 0 ) : null;
@@ -222,7 +225,8 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      *
      * @return custom dialog icons
      */
-    public List<? extends Image> getDialogIcons ()
+    @Nullable
+    public List<Image> getDialogIcons ()
     {
         return customIcons;
     }
@@ -232,9 +236,9 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      *
      * @param icon new custom dialog icon
      */
-    public void setDialogIcon ( final ImageIcon icon )
+    public void setDialogIcon ( @Nullable final Icon icon )
     {
-        setDialogImage ( icon.getImage () );
+        setDialogImage ( ImageUtils.toBufferedImage ( icon ) );
     }
 
     /**
@@ -242,7 +246,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      *
      * @param icon new custom dialog icon
      */
-    public void setDialogImage ( final Image icon )
+    public void setDialogImage ( @Nullable final Image icon )
     {
         setDialogImages ( CollectionUtils.asList ( icon ) );
     }
@@ -252,9 +256,15 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      *
      * @param customIcons new custom dialog icons
      */
-    public void setDialogIcons ( final List<? extends ImageIcon> customIcons )
+    public void setDialogIcons ( @NotNull final List<? extends Icon> customIcons )
     {
-        setDialogImages ( ImageUtils.toImagesList ( customIcons ) );
+        this.customIcons = new ArrayList<Image> ( customIcons.size () );
+        for ( final Icon icon : customIcons )
+        {
+            final Image image = ImageUtils.toBufferedImage ( icon );
+            this.customIcons.add ( image );
+        }
+        updateWindowIcons ();
     }
 
     /**
@@ -262,11 +272,17 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      *
      * @param customIcons new custom dialog icons
      */
-    public void setDialogImages ( final List<? extends Image> customIcons )
+    public void setDialogImages ( @NotNull final List<? extends Image> customIcons )
     {
-        this.customIcons = customIcons;
+        this.customIcons = new ArrayList<Image> ( customIcons );
+        updateWindowIcons ();
+    }
 
-        // Updating icon on displayed dialog
+    /**
+     * Updates icons on {@link JDialog}.
+     */
+    protected void updateWindowIcons ()
+    {
         final Window window = CoreSwingUtils.getWindowAncestor ( this );
         if ( window != null && window instanceof JDialog )
         {
@@ -933,14 +949,9 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         {
             customizer.customize ( fileChooser );
         }
-        if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
-        {
-            return fileChooser.getSelectedFile ();
-        }
-        else
-        {
-            return null;
-        }
+        return fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION
+                ? fileChooser.getSelectedFile ()
+                : null;
     }
 
     /**
@@ -1017,14 +1028,9 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         {
             customizer.customize ( fileChooser );
         }
-        if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
-        {
-            return CollectionUtils.toList ( fileChooser.getSelectedFiles () );
-        }
-        else
-        {
-            return null;
-        }
+        return fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION
+                ? CollectionUtils.toList ( fileChooser.getSelectedFiles () )
+                : null;
     }
 
     /**
@@ -1100,13 +1106,8 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         {
             customizer.customize ( fileChooser );
         }
-        if ( fileChooser.showSaveDialog ( parent ) == APPROVE_OPTION )
-        {
-            return fileChooser.getSelectedFile ();
-        }
-        else
-        {
-            return null;
-        }
+        return fileChooser.showSaveDialog ( parent ) == APPROVE_OPTION
+                ? fileChooser.getSelectedFile ()
+                : null;
     }
 }

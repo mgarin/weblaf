@@ -54,6 +54,7 @@ public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFil
      * @param parameters {@link RenderingParameters}
      * @return file filter title
      */
+    @Nullable
     @Override
     public String getText ( @NotNull final RenderingParameters parameters )
     {
@@ -65,6 +66,7 @@ public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFil
      *
      * @return short file filter description
      */
+    @NotNull
     @Override
     public abstract String getDescription ();
 
@@ -75,5 +77,5 @@ public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFil
      * @return true if the given file is accepted by this filter, false otherwise
      */
     @Override
-    public abstract boolean accept ( File file );
+    public abstract boolean accept ( @NotNull File file );
 }

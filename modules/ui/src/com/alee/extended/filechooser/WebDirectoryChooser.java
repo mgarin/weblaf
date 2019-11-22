@@ -65,7 +65,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
     public WebDirectoryChooser ( final Window parent, final String title )
     {
         super ( parent, title != null ? title : "weblaf.ex.dirchooser.title" );
-        setIconImage ( ImageUtils.getBufferedImage ( Icons.dir ) );
+        setIconImage ( ImageUtils.toBufferedImage ( Icons.dir ) );
 
         // Default container settings
         getContentPane ().setLayout ( new BorderLayout ( 0, 0 ) );

@@ -17,6 +17,7 @@
 
 package com.alee.utils.xml;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.XmlUtils;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
@@ -28,20 +29,22 @@ import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 public class ClassConverter extends AbstractSingleValueConverter
 {
     @Override
-    public boolean canConvert ( final Class aClass )
+    public boolean canConvert ( @NotNull final Class aClass )
     {
         return aClass == Class.class;
     }
 
+    @NotNull
     @Override
-    public String toString ( final Object o )
+    public String toString ( @NotNull final Object o )
     {
         final Class clazz = ( Class ) o;
         return XmlUtils.getXStream ().getMapper ().serializedClass ( clazz );
     }
 
+    @NotNull
     @Override
-    public Object fromString ( final String s )
+    public Object fromString ( @NotNull final String s )
     {
         return XmlUtils.getXStream ().getMapper ().realClass ( s );
     }

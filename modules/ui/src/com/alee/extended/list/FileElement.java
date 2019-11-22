@@ -17,6 +17,9 @@
 
 package com.alee.extended.list;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import java.io.File;
 
@@ -30,47 +33,44 @@ public class FileElement
     /**
      * Element operations lock.
      */
-    private final Object lock = new Object ();
+    @NotNull
+    protected final Object lock = new Object ();
 
     /**
      * Element file.
      */
-    private File file;
+    @NotNull
+    protected File file;
 
     /**
      * Whether thumbnail load is queued for this element or not.
      */
-    private boolean thumbnailQueued = false;
+    protected boolean thumbnailQueued = false;
 
     /**
      * Whether disabled thumbnail load is queued for this element or not.
      */
-    private boolean disabledThumbnailQueued = false;
+    protected boolean disabledThumbnailQueued = false;
 
     /**
      * Cached element thumbnail icon for enabled state.
      */
-    private ImageIcon enabledThumbnail = null;
+    @Nullable
+    protected Icon enabledThumbnail = null;
 
     /**
      * Cached element thumbnail icon for disabled state.
      */
-    private ImageIcon disabledThumbnail = null;
-
-    /**
-     * Constructs element without file.
-     */
-    public FileElement ()
-    {
-        super ();
-    }
+    @Nullable
+    protected Icon disabledThumbnail = null;
 
     /**
      * Constructs element with specified file.
+     *
+     * @param file {@link File}
      */
-    public FileElement ( final File file )
+    public FileElement ( @NotNull final File file )
     {
-        super ();
         this.file = file;
     }
 
@@ -79,6 +79,7 @@ public class FileElement
      *
      * @return element file
      */
+    @NotNull
     public File getFile ()
     {
         return file;
@@ -126,10 +127,7 @@ public class FileElement
     {
         synchronized ( lock )
         {
-            if ( file != null )
-            {
-                this.thumbnailQueued = thumbnailQueued;
-            }
+            this.thumbnailQueued = thumbnailQueued;
         }
     }
 
@@ -155,10 +153,7 @@ public class FileElement
     {
         synchronized ( lock )
         {
-            if ( file != null )
-            {
-                this.disabledThumbnailQueued = disabledThumbnailQueued;
-            }
+            this.disabledThumbnailQueued = disabledThumbnailQueued;
         }
     }
 
@@ -167,7 +162,8 @@ public class FileElement
      *
      * @return cached element thumbnail icon for enabled state
      */
-    public ImageIcon getEnabledThumbnail ()
+    @Nullable
+    public Icon getEnabledThumbnail ()
     {
         synchronized ( lock )
         {
@@ -180,7 +176,7 @@ public class FileElement
      *
      * @param enabledThumbnail new cached element thumbnail icon for enabled state
      */
-    public void setEnabledThumbnail ( final ImageIcon enabledThumbnail )
+    public void setEnabledThumbnail ( @Nullable final Icon enabledThumbnail )
     {
         synchronized ( lock )
         {
@@ -193,7 +189,8 @@ public class FileElement
      *
      * @return cached element thumbnail icon for disabled state
      */
-    public ImageIcon getDisabledThumbnail ()
+    @Nullable
+    public Icon getDisabledThumbnail ()
     {
         synchronized ( lock )
         {
@@ -206,7 +203,7 @@ public class FileElement
      *
      * @param disabledThumbnail new cached element thumbnail icon for disabled state
      */
-    public void setDisabledThumbnail ( final ImageIcon disabledThumbnail )
+    public void setDisabledThumbnail ( @Nullable final Icon disabledThumbnail )
     {
         synchronized ( lock )
         {
@@ -219,6 +216,7 @@ public class FileElement
      *
      * @return file element lock object
      */
+    @NotNull
     public Object getLock ()
     {
         return lock;

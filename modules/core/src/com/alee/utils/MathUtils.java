@@ -17,7 +17,8 @@
 
 package com.alee.utils;
 
-import java.awt.*;
+import com.alee.api.annotations.NotNull;
+
 import java.util.Random;
 
 /**
@@ -79,7 +80,7 @@ public final class MathUtils
      * @param numbers number to choose random one from
      * @return random integer number from one the specified integers
      */
-    public static int random ( final int... numbers )
+    public static int random ( @NotNull final int... numbers )
     {
         return numbers[ random ( 0, numbers.length - 1 ) ];
     }
@@ -112,7 +113,7 @@ public final class MathUtils
      * @param i integer number to process
      * @return rounded square root for the specified integer number
      */
-    public static int sqrt ( final double i )
+    public static int sqrtToInt ( final double i )
     {
         return ( int ) Math.round ( Math.sqrt ( i ) );
     }
@@ -191,7 +192,7 @@ public final class MathUtils
      * @param integers integer numbers to process
      * @return maximum of the specified integer numbers
      */
-    public static int max ( final int... integers )
+    public static int max ( @NotNull final int... integers )
     {
         int max = integers[ 0 ];
         for ( int i = 1; i < integers.length; i++ )
@@ -207,7 +208,7 @@ public final class MathUtils
      * @param integers integer numbers to process
      * @return minimum of the specified integer numbers
      */
-    public static int min ( final int... integers )
+    public static int min ( @NotNull final int... integers )
     {
         int min = integers[ 0 ];
         for ( int i = 1; i < integers.length; i++ )
@@ -249,16 +250,4 @@ public final class MathUtils
     //        }
     //        return max;
     //    }
-
-    /**
-     * Returns distance between two points.
-     *
-     * @param p1 first point
-     * @param p2 second point
-     * @return distance between two points
-     */
-    public static int distance ( final Point p1, final Point p2 )
-    {
-        return sqrt ( sqr ( p2.x - p1.x ) + sqr ( p2.y - p1.y ) );
-    }
 }

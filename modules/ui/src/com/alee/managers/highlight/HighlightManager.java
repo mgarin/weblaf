@@ -19,7 +19,6 @@ package com.alee.managers.highlight;
 
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
-import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
@@ -89,13 +88,10 @@ public final class HighlightManager
     {
         if ( highlight != null )
         {
-            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( highlight ) );
-            if ( wgp != null )
-            {
-                wgp.clearHighlights ();
-                wgp.setHighlightBase ( highlightBase != null ? highlightBase : wgp );
-                wgp.addHighlightedComponents ( highlight );
-            }
+            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( highlight );
+            wgp.clearHighlights ();
+            wgp.setHighlightBase ( highlightBase != null ? highlightBase : wgp );
+            wgp.addHighlightedComponents ( highlight );
         }
     }
 
@@ -115,17 +111,14 @@ public final class HighlightManager
             final List<String> clearedIds = new ArrayList<String> ();
             for ( final Component component : highlights )
             {
-                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( component ) );
-                if ( wgp != null )
+                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( component );
+                if ( !clearedIds.contains ( wgp.getId () ) )
                 {
-                    if ( !clearedIds.contains ( wgp.getId () ) )
-                    {
-                        wgp.setHighlightBase ( highlightBase != null ? highlightBase : wgp );
-                        wgp.clearHighlights ();
-                        clearedIds.add ( wgp.getId () );
-                    }
-                    wgp.addHighlightedComponents ( component );
+                    wgp.setHighlightBase ( highlightBase != null ? highlightBase : wgp );
+                    wgp.clearHighlights ();
+                    clearedIds.add ( wgp.getId () );
                 }
+                wgp.addHighlightedComponents ( component );
             }
         }
     }
@@ -138,11 +131,8 @@ public final class HighlightManager
     {
         if ( highlight != null )
         {
-            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( highlight ) );
-            if ( wgp != null )
-            {
-                wgp.removeHighlightedComponents ( highlight );
-            }
+            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( highlight );
+            wgp.removeHighlightedComponents ( highlight );
         }
     }
 
@@ -156,11 +146,8 @@ public final class HighlightManager
         {
             for ( final Component component : highlights )
             {
-                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( CoreSwingUtils.getWindowAncestor ( component ) );
-                if ( wgp != null )
-                {
-                    wgp.removeHighlightedComponents ( component );
-                }
+                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( component );
+                wgp.removeHighlightedComponents ( component );
             }
         }
     }
@@ -171,20 +158,8 @@ public final class HighlightManager
 
     public static void clearHighlightedComponents ( final Component component )
     {
-        clearHighlightedComponents ( CoreSwingUtils.getWindowAncestor ( component ) );
-    }
-
-    /**
-     * Removes all highlights from window
-     */
-
-    public static void clearHighlightedComponents ( final Window window )
-    {
-        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
-        if ( wgp != null )
-        {
-            wgp.clearHighlights ();
-        }
+        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( component );
+        wgp.clearHighlights ();
     }
 
     /**
@@ -193,20 +168,8 @@ public final class HighlightManager
 
     public static void setHighlightBase ( final Component highlightBase )
     {
-        setHighlightBase ( CoreSwingUtils.getWindowAncestor ( highlightBase ), highlightBase );
-    }
-
-    /**
-     * Sets highlight base for window
-     */
-
-    public static void setHighlightBase ( final Window window, final Component highlightBase )
-    {
-        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
-        if ( wgp != null )
-        {
-            wgp.setHighlightBase ( highlightBase );
-        }
+        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( highlightBase );
+        wgp.setHighlightBase ( highlightBase );
     }
 
     /**

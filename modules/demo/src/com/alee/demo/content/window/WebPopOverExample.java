@@ -108,7 +108,7 @@ public class WebPopOverExample extends AbstractStylePreviewExample
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final Window parent = CoreSwingUtils.getWindowAncestor ( button );
+                    final Window parent = CoreSwingUtils.getNonNullWindowAncestor ( button );
                     final WebPopOver popOver = new WebPopOver ( getStyleId (), parent );
                     popOver.setIconImages ( WebLookAndFeel.getImages () );
                     popOver.setCloseOnFocusLoss ( true );

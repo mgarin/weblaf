@@ -17,6 +17,8 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.utils.CoreSwingUtils;
@@ -49,44 +51,47 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     /**
      * {@link Component} that controls resize.
      */
+    @NotNull
     protected final Component gripper;
 
     /**
      * {@link Component} that is resized using this behavior.
      * If set to {@code null} - {@link #gripper}'s parent {@link Window} will be used instead.
      */
+    @Nullable
     protected final Component target;
 
     /**
      * Function providing resize direction.
      * This way we could provide multiple resize directions for single control {@link Component}.
      */
+    @NotNull
     protected Function<Point, CompassDirection> direction;
 
     /**
      * Whether or not {@link Component} is being resized right now.
      */
-    protected boolean resizing = false;
+    protected transient boolean resizing = false;
 
     /**
      * Resize starting point on the {@link Component}.
      */
-    protected Point initialPoint = null;
+    protected transient Point initialPoint = null;
 
     /**
      * Initial {@link Component} bounds.
      */
-    protected Rectangle initialBounds = null;
+    protected transient Rectangle initialBounds = null;
 
     /**
      * Current resize direction.
      */
-    protected CompassDirection currentDirection = null;
+    protected transient CompassDirection currentDirection = null;
 
     /**
      * Initially set cursor.
      */
-    protected Cursor initialCursor = null;
+    protected transient Cursor initialCursor = null;
 
     /**
      * Constructs new {@link ComponentResizeBehavior}.
@@ -94,7 +99,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param gripper   {@link Component} that controls resize
      * @param direction resize {@link CompassDirection}
      */
-    public ComponentResizeBehavior ( final Component gripper, final CompassDirection direction )
+    public ComponentResizeBehavior ( @NotNull final Component gripper, @NotNull final CompassDirection direction )
     {
         this ( gripper, null, new SingleResizeDirection ( direction ) );
     }
@@ -106,7 +111,8 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param target    {@link Component} that can be resized through this behavior
      * @param direction resize {@link CompassDirection}
      */
-    public ComponentResizeBehavior ( final Component gripper, final Component target, final CompassDirection direction )
+    public ComponentResizeBehavior ( @NotNull final Component gripper, @Nullable final Component target,
+                                     @NotNull final CompassDirection direction )
     {
         this ( gripper, target, new SingleResizeDirection ( direction ) );
     }
@@ -117,7 +123,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param gripper   {@link Component} that controls resize
      * @param direction {@link Function} providing resize direction
      */
-    public ComponentResizeBehavior ( final Component gripper, final Function<Point, CompassDirection> direction )
+    public ComponentResizeBehavior ( @NotNull final Component gripper, @NotNull final Function<Point, CompassDirection> direction )
     {
         this ( gripper, null, direction );
     }
@@ -129,9 +135,9 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param target    {@link Component} that can be resized through this behavior
      * @param direction {@link Function} providing resize direction
      */
-    public ComponentResizeBehavior ( final Component gripper, final Component target, final Function<Point, CompassDirection> direction )
+    public ComponentResizeBehavior ( @NotNull final Component gripper, @Nullable final Component target,
+                                     @NotNull final Function<Point, CompassDirection> direction )
     {
-        super ();
         this.gripper = gripper;
         this.target = target;
         this.direction = direction;
@@ -156,7 +162,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     }
 
     @Override
-    public void mouseMoved ( final MouseEvent e )
+    public void mouseMoved ( @NotNull final MouseEvent e )
     {
         final int cursor = getCursor ( e.getPoint () );
         if ( cursor != -1 )
@@ -175,7 +181,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     }
 
     @Override
-    public void mouseExited ( final MouseEvent e )
+    public void mouseExited ( @NotNull final MouseEvent e )
     {
         if ( !resizing && initialCursor != null )
         {
@@ -185,7 +191,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     }
 
     @Override
-    public void mousePressed ( final MouseEvent e )
+    public void mousePressed ( @NotNull final MouseEvent e )
     {
         if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) )
         {
@@ -205,7 +211,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     }
 
     @Override
-    public void mouseDragged ( final MouseEvent e )
+    public void mouseDragged ( @NotNull final MouseEvent e )
     {
         if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) && resizing )
         {
@@ -341,7 +347,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     }
 
     @Override
-    public void mouseReleased ( final MouseEvent e )
+    public void mouseReleased ( @NotNull final MouseEvent e )
     {
         if ( !e.isConsumed () && SwingUtilities.isLeftMouseButton ( e ) && resizing )
         {
@@ -372,9 +378,10 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param e {@link MouseEvent}
      * @return {@link Component} currently being resized
      */
-    protected Component getResized ( final MouseEvent e )
+    @NotNull
+    protected Component getResized ( @NotNull final MouseEvent e )
     {
-        return target != null ? target : CoreSwingUtils.getWindowAncestor ( e.getComponent () );
+        return target != null ? target : CoreSwingUtils.getNonNullWindowAncestor ( e.getComponent () );
     }
 
     /**
@@ -383,48 +390,52 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param position mouse position
      * @return resize cursor for the mouse position
      */
-    protected int getCursor ( final Point position )
+    protected int getCursor ( @NotNull final Point position )
     {
-        final CompassDirection d = direction.apply ( position );
-        if ( d != null )
+        int cursor = -1;
+        final CompassDirection direction = this.direction.apply ( position );
+        if ( direction != null )
         {
-            switch ( d )
+            switch ( direction )
             {
                 case northWest:
-                    return Cursor.NW_RESIZE_CURSOR;
+                    cursor = Cursor.NW_RESIZE_CURSOR;
+                    break;
 
                 case north:
-                    return Cursor.N_RESIZE_CURSOR;
+                    cursor = Cursor.N_RESIZE_CURSOR;
+                    break;
 
                 case northEast:
-                    return Cursor.NE_RESIZE_CURSOR;
+                    cursor = Cursor.NE_RESIZE_CURSOR;
+                    break;
 
                 case west:
-                    return Cursor.W_RESIZE_CURSOR;
+                    cursor = Cursor.W_RESIZE_CURSOR;
+                    break;
 
                 case east:
-                    return Cursor.E_RESIZE_CURSOR;
+                    cursor = Cursor.E_RESIZE_CURSOR;
+                    break;
 
                 case southWest:
-                    return Cursor.SW_RESIZE_CURSOR;
+                    cursor = Cursor.SW_RESIZE_CURSOR;
+                    break;
 
                 case south:
-                    return Cursor.S_RESIZE_CURSOR;
+                    cursor = Cursor.S_RESIZE_CURSOR;
+                    break;
 
                 case southEast:
-                    return Cursor.SE_RESIZE_CURSOR;
+                    cursor = Cursor.SE_RESIZE_CURSOR;
+                    break;
 
                 case center:
-                    return Cursor.MOVE_CURSOR;
-
-                default:
-                    return -1;
+                    cursor = Cursor.MOVE_CURSOR;
+                    break;
             }
         }
-        else
-        {
-            return -1;
-        }
+        return cursor;
     }
 
     /**
@@ -435,6 +446,7 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
         /**
          * Resize {@link CompassDirection}.
          */
+        @NotNull
         private final CompassDirection direction;
 
         /**
@@ -442,14 +454,14 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
          *
          * @param direction resize {@link CompassDirection}
          */
-        public SingleResizeDirection ( final CompassDirection direction )
+        public SingleResizeDirection ( @NotNull final CompassDirection direction )
         {
-            super ();
             this.direction = direction;
         }
 
+        @NotNull
         @Override
-        public CompassDirection apply ( final Point point )
+        public CompassDirection apply ( @NotNull final Point point )
         {
             return direction;
         }

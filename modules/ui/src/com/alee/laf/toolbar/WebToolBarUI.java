@@ -34,7 +34,6 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicToolBarUI;
 import java.awt.*;
-import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -252,7 +251,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    protected RootPaneContainer createFloatingWindow ( final JToolBar toolbar )
+    protected RootPaneContainer createFloatingWindow ( @NotNull final JToolBar toolbar )
     {
         final JDialog dialog;
         final Window window = CoreSwingUtils.getWindowAncestor ( toolbar );
@@ -272,8 +271,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
         dialog.getRootPane ().setName ( "ToolBar.FloatingWindow" );
         dialog.setTitle ( toolbar.getName () );
         dialog.setResizable ( false );
-        final WindowListener wl = createFrameListener ();
-        dialog.addWindowListener ( wl );
+        dialog.addWindowListener ( createFrameListener () );
         return dialog;
     }
 

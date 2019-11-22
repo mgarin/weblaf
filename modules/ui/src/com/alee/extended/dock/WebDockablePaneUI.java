@@ -478,7 +478,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
                     if ( frame.isFloating () )
                     {
                         final WebDialog dialog = ( WebDialog ) frame.getClientProperty ( FRAME_DIALOG );
-                        dialog.setIconImage ( ImageUtils.getBufferedImage ( frame.getIcon () ) );
+                        dialog.setIconImage ( ImageUtils.toBufferedImage ( frame.getIcon () ) );
                     }
                 }
             }
@@ -605,7 +605,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     {
         final StyleId dialogStyle = StyleId.dockablepaneFloating.at ( pane );
         final WebDialog dialog = new WebDialog ( dialogStyle, pane, frame.getTitle () );
-        dialog.setIconImage ( ImageUtils.getBufferedImage ( frame.getIcon () ) );
+        dialog.setIconImage ( ImageUtils.toBufferedImage ( frame.getIcon () ) );
         dialog.add ( frame, BorderLayout.CENTER );
         dialog.setMinimumSize ( SwingUtils.stretch ( frame.getUI ().getMinimumDialogSize (), dialog.getRootPane ().getInsets () ) );
         dialog.setBounds ( pane.getModel ().getFloatingBounds ( pane, frame, dialog ) );

@@ -1,5 +1,5 @@
 <Dictionary name="WebLaF ui module" prefix="weblaf" xmlns="http://weblookandfeel.com/Dictionary">
-    <Dictionary name="Information window" prefix="info">
+    <Dictionary name="Information window" prefix="about.dialog">
         <record key="title">
             <value lang="en">Library information</value>
             <value lang="ru">Информация о библиотеке</value>

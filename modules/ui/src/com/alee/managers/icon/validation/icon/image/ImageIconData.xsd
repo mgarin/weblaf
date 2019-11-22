@@ -4,7 +4,6 @@
 
     <xs:include schemaLocation="../AbstractIconData.xsd" />
 
-    <!-- javax.swing.ImageIcon -->
     <!-- com.alee.managers.icon.data.ImageIconData -->
     <xs:complexType name="ImageIconData">
         <xs:complexContent>

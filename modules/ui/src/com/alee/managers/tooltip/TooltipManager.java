@@ -405,7 +405,7 @@ public final class TooltipManager
         TooltipManager.hideAllTooltips ();
 
         // Displaying tooltips
-        showAllTooltips ( CoreSwingUtils.getWindowAncestor ( component ) );
+        showAllTooltips ( CoreSwingUtils.getNonNullWindowAncestor ( component ) );
     }
 
     private static void showAllTooltips ( final Window window )
@@ -592,12 +592,7 @@ public final class TooltipManager
         }
 
         // Checking if glass pane is available
-        final Window window = CoreSwingUtils.getWindowAncestor ( customTooltip.getComponent () );
-        final WebGlassPane webGlassPane = GlassPaneManager.getGlassPane ( window );
-        if ( webGlassPane == null )
-        {
-            return null;
-        }
+        final WebGlassPane webGlassPane = GlassPaneManager.getGlassPane ( customTooltip.getComponent () );
 
         // Adding relocate listener
         final ComponentAdapter componentAdapter = new ComponentAdapter ()

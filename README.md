@@ -1,6 +1,7 @@
 About
 ----------
 [![Latest Version](https://img.shields.io/github/release/mgarin/weblaf.svg)](https://github.com/mgarin/weblaf/releases)
+[![Latest Version](https://img.shields.io/maven-central/v/com.weblookandfeel/weblaf-parent)](https://search.maven.org/search?q=g:com.weblookandfeel)
 [![Languages](https://img.shields.io/github/languages/top/mgarin/weblaf)](https://github.com/mgarin/weblaf)
 [![License](https://img.shields.io/github/license/mgarin/weblaf)](https://github.com/mgarin/weblaf/blob/master/LICENSE.txt)
 [![Last Commit](https://img.shields.io/github/last-commit/mgarin/weblaf)](https://github.com/mgarin/weblaf/commits/master)
@@ -107,6 +108,10 @@ If you are new to WebLaF or Swing in general I recommend reading these wiki arti
 
 You can also check [other wiki articles](https://github.com/mgarin/weblaf/wiki) - there are quite a few available for different WebLaF components and features and they might save you a lot of time.
 
+Another thing I would higly recommend is having WebLaF sources attached to your IDE project. I'm doing my best to keep it clean and well-documented, so if you are wondering what some method does or how a feature works - it should help you a lot. 
+
+All of WebLaF source code is fully disclosed and available here on GitHub. Source code for releases is available in [releases](https://github.com/mgarin/weblaf/releases) section and on [Maven](https://search.maven.org/search?q=g:com.weblookandfeel). 
+
 
 Java 9+
 ----------
@@ -135,7 +140,9 @@ Here is a list of JVM options that can be used with Java 9 and higher to avoid t
 --add-opens java.desktop/javax.swing=ALL-UNNAMED
 --add-opens java.desktop/javax.swing.text=ALL-UNNAMED
 --add-opens java.desktop/java.awt.font=ALL-UNNAMED
+--add-opens java.desktop/java.awt.geom=ALL-UNNAMED
 --add-opens java.desktop/java.awt=ALL-UNNAMED
+--add-opens java.desktop/java.beans=ALL-UNNAMED
 --add-opens java.desktop/javax.swing.table=ALL-UNNAMED
 --add-opens java.desktop/com.sun.awt=ALL-UNNAMED
 --add-opens java.desktop/sun.awt=ALL-UNNAMED
@@ -169,6 +176,46 @@ Also note that some new warnings might appear at some point if you would be acce
 This will force JVM to throw an exception whenever Reflection API is used illegally anywhere with a full stack trace that can be used to track down the source and add aother JVM option for the module access.
 
 If you would find any JVM modules that I've missed in the list above - I would appreciate if you can post an issue here or contact me directly so I could update the information for other WebLaF users.
+
+
+Dependencies
+----------
+
+Even though I'm trying to keep the minimal amount of dependencies on 3rd-party libraries - WebLaF has quite a few at this point, so it is worth explaining which dependencies are used for what.
+
+First, here are direct library dependencies you may find across different WebLaF modules:
+
+- [**Slf4j**](http://www.slf4j.org/) is one of the most commonly used logging tools and also offers nice options for bridging logging over to other popular tools, so this was the obvious choice. Originally I used older [log4j](https://logging.apache.org/log4j/) verson, but moved on from it due to some restrictions and nuances.
+
+- [**XStream**](https://x-stream.github.io/) is used for serializing and deserializing objects to and from XML. `LanguageManager` uses it to read translation files. `SetingsManager` uses it to store and read various settings. `StyleManager` uses it to read skins and skin extensions. `IconManager` uses it to read icon sets. `PluginManager` uses it to read plugin descriptors found in plugin JAR file. It is also used for variety of smaller features across WebLaF library.
+
+- [**SVG Salamander**](https://svgsalamander.java.net/) is a standalone library providing loading, modification and rendering capabilities for SVG icons. Unlike [Apache Batik](https://xmlgraphics.apache.org/batik/) it is way more lightweight and often able to render SVG icons slightly faster. It does have a few issues and I plan to make an abstract API for SVG icons support to allow choice between SVG Salamander and Apache Batkin in the future as explained in [#337](https://github.com/mgarin/weblaf/issues/337). It is also important to note that currently I'm using my own release of [SVG Salamander fork](https://github.com/mgarin/svgSalamander) that contains latest changes from original project and some minor non-API-breaking improvements added on top of it.
+
+- [**Java Image Scaling**](https://github.com/mortennobel/java-image-scaling/) is a lightweight library used in `ImageUtils` exclusively for better downscaling of raster images in runtime.
+
+- [**Jericho HTML parser**](http://jericho.htmlparser.net/) is used in `HtmlUtils` for rendering HTML into plain text. It is also used for quick tag lookup in `StyleEditor`. Potentially I might move this dependency as well as `StyleEditor` into a separate module(s) as described in [#336](https://github.com/mgarin/weblaf/issues/336).
+
+- [**RSyntaxTextArea**](http://bobbylight.github.io/RSyntaxTextArea/) is used for providing a styleable text area supporting syntax highlighting for multple programming languages. It is also used in `DemoApplication` for styles and code preview and in `StyleEditor` for style preview and editing. 
+
+There are also a few code pieces borrowed from other open-source projects:
+
+- `TableLayout` implementation is based on [Clearthought](http://www.clearthought.info/) source code, but has some minor modifications and fixes added on top of it. 
+
+- Various image filters and utilities found in `com.alee.graphics.filters` as well as strokes found in `com.alee.graphics.strokes` packages are based on [JH Labs](http://www.jhlabs.com/) examples, but slightly cleaned up and with a few minor improvements added.
+
+- `Easing` interface implementations are based on [jQuery Easing Plugin](http://gsgd.co.uk/sandbox/jquery/easing/) source code, but ported to Java and adjusted to better fit into custom animation system implemeted in WebLaF.
+
+- `IOUtils` implementation is based on [Apache Commons IO](https://commons.apache.org/proper/commons-io/) source code, but since it only uses a fraction of it's functionality I didn't want to include it as dependency.
+
+- Classes backing `GifIcon` implementation were originally made available by Kevin Weiner at http://www.fmsware.com/stuff/gif.html, which states that the code "may be freely used for any purpose. Unisys patent restrictions may apply to the LZW portions". [Unisys and LZW patent enforcement](https://en.wikipedia.org/wiki/GIF#Unisys_and_LZW_patent_enforcement) for reference. Code logic was mostly untouched, but I did a refactoring pass and fixed a few possible minor issues.
+
+Other non-code mentions:
+
+- Raster icons are mostly coming from [Fugue](https://p.yusukekamiyamane.com/) icon set.
+
+- SVG icons are mostly coming from [IconMoon](https://icomoon.io/) icon set.
+
+It is also important to mention that all dependencies and borrowed code pieces are properly attributed within the library source code itself and within available binary distributions.
 
 
 Licensing

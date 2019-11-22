@@ -621,11 +621,13 @@ public final class ReflectUtils
      * @param fieldName field name
      * @return specified class field
      */
-    public static Field getFieldSafely ( final Class classType, final String fieldName )
+    @Nullable
+    public static Field getFieldSafely ( @NotNull final Class classType, @NotNull final String fieldName )
     {
+        Field field = null;
         try
         {
-            return getField ( classType, fieldName );
+            field = getField ( classType, fieldName );
         }
         catch ( final NoSuchFieldException e )
         {
@@ -634,8 +636,8 @@ public final class ReflectUtils
                 final String msg = "ReflectionUtils method failed: getFieldSafely ( %s, %s )";
                 LoggerFactory.getLogger ( ReflectUtils.class ).error ( String.format ( msg, classType, fieldName ), e );
             }
-            return null;
         }
+        return field;
     }
 
     /**
@@ -648,7 +650,8 @@ public final class ReflectUtils
      * @return specified class field
      * @throws NoSuchFieldException if field was not found
      */
-    public static Field getField ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    @NotNull
+    public static Field getField ( @NotNull final Class<?> classType, @NotNull final String fieldName ) throws NoSuchFieldException
     {
         // Field key
         final String canonicalName = classType.getCanonicalName ();

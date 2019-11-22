@@ -17,6 +17,8 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.EventListener;
 
 /**
@@ -36,7 +38,8 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param splittedPane splitted {@link PaneData}
      * @param newSplitData newly created {@link SplitData}
      */
-    public void splitted ( WebDocumentPane<T> documentPane, PaneData<T> splittedPane, SplitData<T> newSplitData );
+    public void splitted ( @NotNull WebDocumentPane<T> documentPane, @NotNull PaneData<T> splittedPane,
+                           @NotNull SplitData<T> newSplitData );
 
     /**
      * Informs that specified {@link SplitData} was merged.
@@ -45,7 +48,8 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param mergedSplit      merged {@link SplitData}
      * @param newStructureData newly created {@link StructureData}
      */
-    public void merged ( WebDocumentPane<T> documentPane, SplitData<T> mergedSplit, StructureData<T> newStructureData );
+    public void merged ( @NotNull WebDocumentPane<T> documentPane, @NotNull SplitData<T> mergedSplit,
+                         @NotNull StructureData<T> newStructureData );
 
     /**
      * Informs that specified {@link SplitData}'s orientation was changed.
@@ -53,7 +57,7 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param documentPane {@link WebDocumentPane}
      * @param splitData    {@link SplitData} which orientation has changed
      */
-    public void orientationChanged ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
+    public void orientationChanged ( @NotNull WebDocumentPane<T> documentPane, @NotNull SplitData<T> splitData );
 
     /**
      * Informs that specified {@link SplitData}'s sides were swapped.
@@ -61,7 +65,7 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param documentPane {@link WebDocumentPane}
      * @param splitData    {@link SplitData} which sides were swapped
      */
-    public void sidesSwapped ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
+    public void sidesSwapped ( @NotNull WebDocumentPane<T> documentPane, @NotNull SplitData<T> splitData );
 
     /**
      * Informs that specified {@link SplitData}'s divider location has changed.
@@ -69,5 +73,5 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param documentPane {@link WebDocumentPane}
      * @param splitData    {@link SplitData} which divider location has changed
      */
-    public void dividerLocationChanged ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
+    public void dividerLocationChanged ( @NotNull WebDocumentPane<T> documentPane, @NotNull SplitData<T> splitData );
 }

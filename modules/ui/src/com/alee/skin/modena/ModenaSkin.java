@@ -17,6 +17,7 @@
 
 package com.alee.skin.modena;
 
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.style.XmlSkin;
 
 /**
@@ -27,10 +28,10 @@ import com.alee.managers.style.XmlSkin;
 public class ModenaSkin extends XmlSkin
 {
     /**
-     * Constructs skin.
+     * Constructs new {@link ModenaSkin}.
      */
     public ModenaSkin ()
     {
-        super ( ModenaSkin.class, "resources/skin.xml" );
+        super ( new ClassResource ( ModenaSkin.class, "resources/modena-skin.xml" ) );
     }
 }

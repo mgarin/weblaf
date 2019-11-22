@@ -118,7 +118,7 @@ public class WebImageDrop extends JComponent
                 {
                     try
                     {
-                        setImage ( ImageUtils.getBufferedImage ( image ) );
+                        setImage ( ImageUtils.toBufferedImage ( image ) );
                         imported = true;
                         break;
                     }
@@ -237,10 +237,10 @@ public class WebImageDrop extends JComponent
         if ( image != null )
         {
             // Creating image preview
-            image = ImageUtils.createPreviewImage ( actualImage, width, height );
+            image = ImageUtils.createImageThumbnail ( actualImage, width, height );
 
             // Restore decoration
-            final BufferedImage f = ImageUtils.createCompatibleImage ( image, Transparency.TRANSLUCENT );
+            final BufferedImage f = ImageUtils.createCompatibleImage ( image.getWidth (), image.getHeight (), Transparency.TRANSLUCENT );
             final Graphics2D g2d = f.createGraphics ();
             GraphicsUtils.setupAntialias ( g2d );
             g2d.setPaint ( Color.WHITE );

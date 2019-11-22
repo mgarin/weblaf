@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration.shape;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -83,6 +82,7 @@ public abstract class AbstractShape<C extends JComponent, D extends IDecoration<
         return true;
     }
 
+    @Nullable
     @Override
     public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
     {

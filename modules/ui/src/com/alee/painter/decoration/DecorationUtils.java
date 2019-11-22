@@ -71,7 +71,7 @@ public final class DecorationUtils
                 }
                 else if ( color.getFraction () > 1f )
                 {
-                    final int length = MathUtils.sqrt ( MathUtils.sqr ( x2 - x1 ) + MathUtils.sqr ( y2 - y1 ) );
+                    final int length = MathUtils.sqrtToInt ( MathUtils.sqr ( x2 - x1 ) + MathUtils.sqr ( y2 - y1 ) );
                     f[ i ] = MathUtils.limit ( 0, color.getFraction (), length ) / length;
                 }
                 else

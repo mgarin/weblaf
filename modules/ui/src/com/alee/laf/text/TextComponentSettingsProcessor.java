@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -56,7 +58,7 @@ public class TextComponentSettingsProcessor<C extends JTextComponent, V extends 
     }
 
     @Override
-    protected void register ( final C textComponent )
+    protected void register ( @NotNull final C textComponent )
     {
         focusListener = new FocusAdapter ()
         {
@@ -70,12 +72,13 @@ public class TextComponentSettingsProcessor<C extends JTextComponent, V extends 
     }
 
     @Override
-    protected void unregister ( final C textComponent )
+    protected void unregister ( @NotNull final C textComponent )
     {
         textComponent.removeFocusListener ( focusListener );
         focusListener = null;
     }
 
+    @Nullable
     @Override
     protected V createDefaultValue ()
     {
@@ -83,13 +86,13 @@ public class TextComponentSettingsProcessor<C extends JTextComponent, V extends 
     }
 
     @Override
-    protected void loadSettings ( final C textComponent )
+    protected void loadSettings ( @NotNull final C textComponent )
     {
         loadSettings ().apply ( textComponent );
     }
 
     @Override
-    protected void saveSettings ( final C textComponent )
+    protected void saveSettings ( @NotNull final C textComponent )
     {
         saveSettings ( stateFor ( textComponent ) );
     }

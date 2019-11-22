@@ -17,6 +17,8 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -53,7 +55,7 @@ public class SplitPaneSettingsProcessor extends SettingsProcessor<JSplitPane, Sp
     }
 
     @Override
-    protected void register ( final JSplitPane splitPane )
+    protected void register ( @NotNull final JSplitPane splitPane )
     {
         propertyChangeListener = new PropertyChangeListener ()
         {
@@ -67,12 +69,13 @@ public class SplitPaneSettingsProcessor extends SettingsProcessor<JSplitPane, Sp
     }
 
     @Override
-    protected void unregister ( final JSplitPane splitPane )
+    protected void unregister ( @NotNull final JSplitPane splitPane )
     {
         splitPane.removePropertyChangeListener ( JSplitPane.DIVIDER_LOCATION_PROPERTY, propertyChangeListener );
         propertyChangeListener = null;
     }
 
+    @Nullable
     @Override
     protected SplitPaneState createDefaultValue ()
     {
@@ -80,13 +83,13 @@ public class SplitPaneSettingsProcessor extends SettingsProcessor<JSplitPane, Sp
     }
 
     @Override
-    protected void loadSettings ( final JSplitPane splitPane )
+    protected void loadSettings ( @NotNull final JSplitPane splitPane )
     {
         loadSettings ().apply ( splitPane );
     }
 
     @Override
-    protected void saveSettings ( final JSplitPane splitPane )
+    protected void saveSettings ( @NotNull final JSplitPane splitPane )
     {
         saveSettings ( new SplitPaneState ( splitPane ) );
     }

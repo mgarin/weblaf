@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -40,5 +42,5 @@ public interface IShapedElement<C extends JComponent, D extends IDecoration<C, D
      * @param d      {@link IDecoration} state
      * @param shape  {@link Shape} of the painted element
      */
-    public void paint ( Graphics2D g2d, Rectangle bounds, C c, D d, Shape shape );
+    public void paint ( @NotNull Graphics2D g2d, @NotNull Rectangle bounds, @NotNull C c, @NotNull D d, @NotNull Shape shape );
 }

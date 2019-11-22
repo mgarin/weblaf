@@ -68,10 +68,27 @@ public final class CoreSwingUtils
     }
 
     /**
-     * Returns window ancestor for specified component or {@code null} if it doesn't exist.
+     * Returns ancestor {@link Window} for specified {@link Component}.
      *
-     * @param component component to process
-     * @return window ancestor for specified component or {@code null} if it doesn't exist
+     * @param component {@link Component} to find ancestor {@link Window} for
+     * @return ancestor {@link Window} for specified {@link Component}.
+     */
+    @NotNull
+    public static Window getNonNullWindowAncestor ( @NotNull final Component component )
+    {
+        final Window window = getWindowAncestor ( component );
+        if ( window == null )
+        {
+            throw new UtilityException ( "Unable to retrieve Window ancestor for Component: " + component );
+        }
+        return window;
+    }
+
+    /**
+     * Returns ancestor {@link Window} for specified {@link Component} or {@code null} if it doesn't exist.
+     *
+     * @param component {@link Component} to find ancestor {@link Window} for
+     * @return ancestor {@link Window} for specified {@link Component} or {@code null} if it doesn't exist
      */
     @Nullable
     public static Window getWindowAncestor ( @Nullable final Component component )
@@ -109,37 +126,45 @@ public final class CoreSwingUtils
      * @param component component to look under
      * @return root pane for the specified component or {@code null} if it doesn't exist
      */
+    @NotNull
+    public static JRootPane getNonNullRootPane ( @NotNull final Component component )
+    {
+        final JRootPane rootPane = getRootPane ( component );
+        if ( rootPane == null )
+        {
+            throw new UtilityException ( "Unable to retrieve JRootPane for Component: " + component );
+        }
+        return rootPane;
+    }
+
+    /**
+     * Returns root pane for the specified component or {@code null} if it doesn't exist.
+     *
+     * @param component component to look under
+     * @return root pane for the specified component or {@code null} if it doesn't exist
+     */
     @Nullable
     public static JRootPane getRootPane ( @Nullable final Component component )
     {
-        final JRootPane rootPane;
-        if ( component == null )
-        {
-            rootPane = null;
-        }
-        else if ( component instanceof JFrame )
-        {
-            rootPane = ( ( JFrame ) component ).getRootPane ();
-        }
-        else if ( component instanceof JDialog )
-        {
-            rootPane = ( ( JDialog ) component ).getRootPane ();
-        }
-        else if ( component instanceof JWindow )
-        {
-            rootPane = ( ( JWindow ) component ).getRootPane ();
-        }
-        else if ( component instanceof JApplet )
-        {
-            rootPane = ( ( JApplet ) component ).getRootPane ();
-        }
-        else if ( component instanceof JRootPane )
+        JRootPane rootPane = null;
+        if ( component instanceof JRootPane )
         {
             rootPane = ( JRootPane ) component;
         }
-        else
+        else if ( component instanceof RootPaneContainer )
         {
-            rootPane = getRootPane ( component.getParent () );
+            rootPane = ( ( RootPaneContainer ) component ).getRootPane ();
+        }
+        else if ( component != null )
+        {
+            for ( Component other = component; other != null; other = other.getParent () )
+            {
+                if ( other instanceof JRootPane )
+                {
+                    rootPane = ( JRootPane ) other;
+                    break;
+                }
+            }
         }
         return rootPane;
     }

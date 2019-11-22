@@ -18,7 +18,6 @@
 package com.alee.managers.style;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
@@ -59,11 +58,13 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     /**
      * Component identifier.
      */
+    @NotNull
     protected final String id;
 
     /**
      * Component class.
      */
+    @NotNull
     protected final Class<C> componentClass;
 
     /**
@@ -75,16 +76,19 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     /**
      * Base UI class applicable to this component.
      */
+    @NotNull
     protected final Class<U> baseUIClass;
 
     /**
      * UI class applied to the component by default.
      */
+    @NotNull
     protected final Class<? extends U> uiClass;
 
     /**
      * Component default style ID.
      */
+    @NotNull
     protected final StyleId defaultStyleId;
 
     /**
@@ -97,10 +101,10 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
      * @param uiClass        UI class applied to the component by default
      * @param defaultStyleId component default style ID
      */
-    public AbstractComponentDescriptor ( final String id, final Class<C> componentClass, @NotNull final String uiClassId,
-                                         final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractComponentDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                         @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                         @NotNull final StyleId defaultStyleId )
     {
-        super ();
         this.id = id;
         this.componentClass = componentClass;
         this.uiClassId = uiClassId;
@@ -161,11 +165,16 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
         return styleId;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
-        return getDefaultStyleId ().getId ();
+        final String id = getDefaultStyleId ().getId ();
+        if ( id == null )
+        {
+            throw new StyleException ( "Default StyleId must have an identifier" );
+        }
+        return id;
     }
 
     @NotNull
@@ -201,10 +210,16 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
      *
      * @return {@link Icon} resource
      */
+    @NotNull
     protected URL getIconResource ()
     {
         final String path = "icons/styleable/" + getId () + ".png";
-        return AbstractComponentDescriptor.class.getResource ( path );
+        final URL resource = AbstractComponentDescriptor.class.getResource ( path );
+        if ( resource == null )
+        {
+            throw new StyleException ( "Unable to find component type icon: " + getId () );
+        }
+        return resource;
     }
 
     @NotNull
@@ -264,30 +279,24 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
      * @param uiClass   {@link ComponentUI} class
      * @return {@code ComponentUI} implementation instance for the specified component
      */
-    protected ComponentUI createUI ( final C component, final Class<? extends U> uiClass )
+    @NotNull
+    protected ComponentUI createUI ( @NotNull final C component, @NotNull final Class<? extends U> uiClass )
     {
         final ComponentUI ui;
-        if ( uiClass != null )
+        try
         {
-            try
-            {
-                // Creating UI through common static method
-                ui = ReflectUtils.callStaticMethod ( uiClass, "createUI", component );
-            }
-            catch ( final Exception e )
-            {
-                // We were unable to create new component UI
-                throw new StyleException ( "Unable to instantiate UI instance: " + uiClass, e );
-            }
+            // Creating UI through common static method
+            ui = ReflectUtils.callStaticMethod ( uiClass, "createUI", component );
         }
-        else
+        catch ( final Exception e )
         {
-            // Appropriate UI class was not provided
-            throw new StyleException ( "Unable to instantiate UI instance for empty class" );
+            // We were unable to create new component UI
+            throw new StyleException ( "Unable to instantiate UI instance: " + uiClass, e );
         }
         return ui;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

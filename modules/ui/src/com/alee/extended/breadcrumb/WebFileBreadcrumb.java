@@ -318,7 +318,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
 
     private void showFilesPopup ( final File[] files, final WebButton fileButton )
     {
-        final WebWindow window = new WebWindow ( CoreSwingUtils.getWindowAncestor ( fileButton ) );
+        final WebWindow window = new WebWindow ( CoreSwingUtils.getNonNullWindowAncestor ( fileButton ) );
         window.setCloseOnFocusLoss ( true );
         window.setAlwaysOnTop ( true );
 

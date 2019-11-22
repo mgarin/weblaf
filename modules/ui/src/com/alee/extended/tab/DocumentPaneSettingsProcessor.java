@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -53,7 +54,7 @@ public class DocumentPaneSettingsProcessor extends SettingsProcessor<WebDocument
     }
 
     @Override
-    protected void register ( final WebDocumentPane documentPane )
+    protected void register ( @NotNull final WebDocumentPane documentPane )
     {
         documentListener = new DocumentListener ()
         {
@@ -89,31 +90,33 @@ public class DocumentPaneSettingsProcessor extends SettingsProcessor<WebDocument
         documentPaneListener = new DocumentPaneListener ()
         {
             @Override
-            public void splitted ( final WebDocumentPane documentPane, final PaneData splittedPane, final SplitData newSplitData )
+            public void splitted ( @NotNull final WebDocumentPane documentPane, @NotNull final PaneData splittedPane,
+                                   @NotNull final SplitData newSplitData )
             {
                 save ();
             }
 
             @Override
-            public void merged ( final WebDocumentPane documentPane, final SplitData mergedSplit, final StructureData newStructureData )
+            public void merged ( @NotNull final WebDocumentPane documentPane, @NotNull final SplitData mergedSplit,
+                                 @NotNull final StructureData newStructureData )
             {
                 save ();
             }
 
             @Override
-            public void orientationChanged ( final WebDocumentPane documentPane, final SplitData splitData )
+            public void orientationChanged ( @NotNull final WebDocumentPane documentPane, @NotNull final SplitData splitData )
             {
                 save ();
             }
 
             @Override
-            public void sidesSwapped ( final WebDocumentPane documentPane, final SplitData splitData )
+            public void sidesSwapped ( @NotNull final WebDocumentPane documentPane, @NotNull final SplitData splitData )
             {
                 save ();
             }
 
             @Override
-            public void dividerLocationChanged ( final WebDocumentPane documentPane, final SplitData splitData )
+            public void dividerLocationChanged ( @NotNull final WebDocumentPane documentPane, @NotNull final SplitData splitData )
             {
                 save ();
             }
@@ -122,7 +125,7 @@ public class DocumentPaneSettingsProcessor extends SettingsProcessor<WebDocument
     }
 
     @Override
-    protected void unregister ( final WebDocumentPane documentPane )
+    protected void unregister ( @NotNull final WebDocumentPane documentPane )
     {
         documentPane.removeDocumentPaneListener ( documentPaneListener );
         documentPaneListener = null;
@@ -132,7 +135,7 @@ public class DocumentPaneSettingsProcessor extends SettingsProcessor<WebDocument
     }
 
     @Override
-    protected void loadSettings ( final WebDocumentPane documentPane )
+    protected void loadSettings ( @NotNull final WebDocumentPane documentPane )
     {
         final DocumentPaneState state = loadSettings ();
         if ( state != null )
@@ -142,7 +145,7 @@ public class DocumentPaneSettingsProcessor extends SettingsProcessor<WebDocument
     }
 
     @Override
-    protected void saveSettings ( final WebDocumentPane documentPane )
+    protected void saveSettings ( @NotNull final WebDocumentPane documentPane )
     {
         saveSettings ( documentPane.getDocumentPaneState () );
     }

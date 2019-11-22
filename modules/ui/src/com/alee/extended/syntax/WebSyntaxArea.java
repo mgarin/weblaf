@@ -26,7 +26,7 @@ import com.alee.managers.style.Skin;
 import com.alee.managers.style.SkinListener;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.skin.dark.DarkSkin;
+import com.alee.skin.dark.WebDarkSkin;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -136,7 +136,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
         if ( themePreset == null )
         {
             // todo A temporary solution for initial theme selected according to skin
-            applyPresets ( StyleManager.getSkin () instanceof DarkSkin ? SyntaxPreset.darkTheme : SyntaxPreset.ideaTheme );
+            applyPresets ( StyleManager.getSkin () instanceof WebDarkSkin ? SyntaxPreset.darkTheme : SyntaxPreset.ideaTheme );
 
             // todo A temporary solution for switching theme according to skin
             StyleManager.addSkinListener ( new SkinListener ()
@@ -144,7 +144,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
                 @Override
                 public void skinChanged ( @Nullable final Skin previous, @NotNull final Skin current )
                 {
-                    applyPresets ( StyleManager.getSkin () instanceof DarkSkin ? SyntaxPreset.darkTheme : SyntaxPreset.ideaTheme );
+                    applyPresets ( StyleManager.getSkin () instanceof WebDarkSkin ? SyntaxPreset.darkTheme : SyntaxPreset.ideaTheme );
                 }
             } );
         }

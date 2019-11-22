@@ -52,7 +52,7 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     }
 
     @Override
-    protected void register ( final WebDockablePane dockablePane )
+    protected void register ( @NotNull final WebDockablePane dockablePane )
     {
         dockablePaneListener = new DockablePaneAdapter ()
         {
@@ -73,14 +73,14 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     }
 
     @Override
-    protected void unregister ( final WebDockablePane dockablePane )
+    protected void unregister ( @NotNull final WebDockablePane dockablePane )
     {
         dockablePane.removeDockablePaneListener ( dockablePaneListener );
         dockablePaneListener = null;
     }
 
     @Override
-    protected void loadSettings ( final WebDockablePane dockablePane )
+    protected void loadSettings ( @NotNull final WebDockablePane dockablePane )
     {
         final DockablePaneState state = loadSettings ();
         if ( state != null )
@@ -90,7 +90,7 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     }
 
     @Override
-    protected void saveSettings ( final WebDockablePane dockablePane )
+    protected void saveSettings ( @NotNull final WebDockablePane dockablePane )
     {
         saveSettings ( new DockablePaneState ( dockablePane ) );
     }

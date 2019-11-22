@@ -17,9 +17,11 @@
 
 package com.alee.extended.ninepatch;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Supplier;
-import com.alee.extended.ninepatch.skin.DarkSkinExtension;
-import com.alee.extended.ninepatch.skin.LightSkinExtension;
+import com.alee.api.resource.ClassResource;
+import com.alee.extended.ninepatch.skin.NPEDarkSkinExtension;
+import com.alee.extended.ninepatch.skin.NPELightSkinExtension;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WindowState;
 import com.alee.laf.window.WebFrame;
@@ -37,7 +39,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URL;
 
 /**
  * Launchable {@link WebFrame} containing {@link NinePatchEditorPanel}.
@@ -131,10 +132,10 @@ public class NinePatchEditorFrame extends WebFrame
         registerSettings ( new Configuration<WindowState> ( SETTINGS_GROUP, WINDOW_STATE_KEY, new WindowState () ) );
     }
 
+    @NotNull
     protected BufferedImage getSampleImage ()
     {
-        final URL resource = NinePatchEditorFrame.class.getResource ( "icons/example.png" );
-        return ImageUtils.getBufferedImage ( resource );
+        return ImageUtils.loadBufferedImage ( new ClassResource ( NinePatchEditorFrame.class, "icons/example.png" ) );
     }
 
     public NinePatchEditorPanel getNinePatchEditorPanel ()
@@ -158,7 +159,7 @@ public class NinePatchEditorFrame extends WebFrame
                 WebLookAndFeel.install ();
 
                 // Adding skin extensions
-                StyleManager.addExtensions ( new LightSkinExtension (), new DarkSkinExtension () );
+                StyleManager.addExtensions ( new NPELightSkinExtension (), new NPEDarkSkinExtension () );
 
                 // Initializing editor dialog
                 final NinePatchEditorFrame npe;

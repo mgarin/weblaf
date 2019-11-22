@@ -17,6 +17,8 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -59,7 +61,7 @@ public class ScrollPaneSettingsProcessor extends SettingsProcessor<JScrollPane, 
     }
 
     @Override
-    protected void register ( final JScrollPane scrollPane )
+    protected void register ( @NotNull final JScrollPane scrollPane )
     {
         adjustmentListener = new AdjustmentListener ()
         {
@@ -94,7 +96,7 @@ public class ScrollPaneSettingsProcessor extends SettingsProcessor<JScrollPane, 
     }
 
     @Override
-    protected void unregister ( final JScrollPane scrollPane )
+    protected void unregister ( @NotNull final JScrollPane scrollPane )
     {
         scrollPane.removePropertyChangeListener ( WebScrollBar.VERTICAL_SCROLL_BAR_PROPERTY, propertyChangeListener );
         scrollPane.removePropertyChangeListener ( WebScrollBar.HORIZONTAL_SCROLL_BAR_PROPERTY, propertyChangeListener );
@@ -105,6 +107,7 @@ public class ScrollPaneSettingsProcessor extends SettingsProcessor<JScrollPane, 
         adjustmentListener = null;
     }
 
+    @Nullable
     @Override
     protected ScrollPaneState createDefaultValue ()
     {
@@ -112,13 +115,13 @@ public class ScrollPaneSettingsProcessor extends SettingsProcessor<JScrollPane, 
     }
 
     @Override
-    protected void loadSettings ( final JScrollPane scrollPane )
+    protected void loadSettings ( @NotNull final JScrollPane scrollPane )
     {
         loadSettings ().apply ( scrollPane );
     }
 
     @Override
-    protected void saveSettings ( final JScrollPane scrollPane )
+    protected void saveSettings ( @NotNull final JScrollPane scrollPane )
     {
         saveSettings ( new ScrollPaneState ( scrollPane ) );
     }

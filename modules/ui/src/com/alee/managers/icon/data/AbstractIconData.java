@@ -17,22 +17,21 @@
 
 package com.alee.managers.icon.data;
 
-import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Overwriting;
+import com.alee.api.resource.Resource;
 import com.alee.extended.svg.SvgIconData;
-import com.alee.utils.xml.ClassConverter;
+import com.alee.managers.icon.IconException;
+import com.alee.utils.CollectionUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
-import java.io.Serializable;
 import java.util.List;
 
 /**
- * Abstract {@link AbstractIconData} containing basic {@link Icon} information.
+ * Abstract {@link IconData} implementation containing basic {@link Icon} information.
  * Implements {@link Overwriting} instead of {@link com.alee.api.merge.Mergeable} to avoid merging any icon data ever.
  *
  * @param <T> icon type
@@ -42,71 +41,69 @@ import java.util.List;
  * @see com.alee.managers.icon.data.ImageIconData
  * @see SvgIconData
  */
-public abstract class AbstractIconData<T extends Icon> implements Identifiable, Overwriting, Cloneable, Serializable
+public abstract class AbstractIconData<T extends Icon> implements IconData<T>
 {
     /**
-     * Unique icon identifier.
+     * Unique {@link Icon} identifier.
      * Used to access icon through {@link com.alee.managers.icon.IconManager}.
      */
+    @NotNull
     @XStreamAsAttribute
-    protected String id;
+    protected final String id;
 
     /**
-     * Class which specified path is relative to.
+     * {@link Resource} containing {@link Icon} data.
      */
+    @NotNull
     @XStreamAsAttribute
-    @XStreamConverter ( ClassConverter.class )
-    protected Class nearClass;
+    protected final Resource resource;
 
     /**
-     * Icon file path.
+     * {@link IconAdjustment} to be applied on loaded {@link Icon} for the final result.
      */
-    @XStreamAsAttribute
-    protected String path;
-
-    /**
-     * Customizable icon adjustments.
-     */
+    @Nullable
     @XStreamImplicit
     protected List<IconAdjustment<T>> adjustments;
 
     /**
-     * Constructs new empty icon information.
+     * Constructs new {@link AbstractIconData}.
+     *
+     * @param id       unique {@link Icon} identifier
+     * @param resource {@link Resource} containing {@link Icon} data
      */
-    public AbstractIconData ()
+    public AbstractIconData ( @NotNull final String id, @NotNull final Resource resource )
     {
-        super ();
+        this ( id, resource, ( List<IconAdjustment<T>> ) null );
     }
 
     /**
-     * Constructs new icon information.
+     * Constructs new {@link AbstractIconData}.
      *
-     * @param id   unique icon identifier
-     * @param path icon path
+     * @param id          unique {@link Icon} identifier
+     * @param resource    {@link Resource} containing {@link Icon} data
+     * @param adjustments {@link IconAdjustment}s
      */
-    public AbstractIconData ( final String id, final String path )
+    public AbstractIconData ( @NotNull final String id, @NotNull final Resource resource, @NotNull final IconAdjustment<T>... adjustments )
     {
-        super ();
-        setId ( id );
-        setPath ( path );
+        this ( id, resource, CollectionUtils.asList ( adjustments ) );
     }
 
     /**
-     * Constructs new icon information.
+     * Constructs new {@link AbstractIconData}.
      *
-     * @param id        unique icon identifier
-     * @param nearClass class which specified path is relative to
-     * @param path      icon path
+     * @param id          unique {@link Icon} identifier
+     * @param resource    {@link Resource} containing {@link Icon} data
+     * @param adjustments {@link List} of {@link IconAdjustment}s
      */
-    public AbstractIconData ( final String id, final Class nearClass, final String path )
+    public AbstractIconData ( @NotNull final String id, @NotNull final Resource resource,
+                              @Nullable final List<IconAdjustment<T>> adjustments )
     {
-        super ();
-        setId ( id );
-        setNearClass ( nearClass );
-        setPath ( path );
+        this.id = id;
+        this.resource = resource;
+        this.adjustments = adjustments;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -119,78 +116,41 @@ public abstract class AbstractIconData<T extends Icon> implements Identifiable, 
         return true;
     }
 
-    /**
-     * Sets unique icon identifier.
-     *
-     * @param id unique icon identifier
-     */
-    public void setId ( final String id )
+    @NotNull
+    @Override
+    public Resource getResource ()
     {
-        this.id = id;
+        return resource;
     }
 
-    /**
-     * Returns class which specified path is relative to.
-     *
-     * @return class which specified path is relative to
-     */
-    public Class getNearClass ()
+    @NotNull
+    @Override
+    public T loadIcon ()
     {
-        return nearClass;
-    }
-
-    /**
-     * Sets class which specified path is relative to.
-     *
-     * @param nearClass class which specified path is relative to
-     */
-    public void setNearClass ( final Class nearClass )
-    {
-        this.nearClass = nearClass;
-    }
-
-    /**
-     * Returns icon file path.
-     *
-     * @return icon file path
-     */
-    public String getPath ()
-    {
-        return path;
-    }
-
-    /**
-     * Sets icon file path.
-     *
-     * @param path icon file path
-     */
-    public void setPath ( final String path )
-    {
-        this.path = path;
-    }
-
-    /**
-     * Returns icon described by this data class.
-     *
-     * @return icon described by this data class
-     */
-    public T getIcon ()
-    {
-        final T icon = loadIcon ();
-        if ( adjustments != null )
+        try
         {
-            for ( final IconAdjustment<T> adjustment : adjustments )
+            final T icon = loadIcon ( resource );
+            if ( adjustments != null )
             {
-                adjustment.apply ( icon );
+                for ( final IconAdjustment<T> adjustment : adjustments )
+                {
+                    adjustment.apply ( icon );
+                }
             }
+            return icon;
         }
-        return icon;
+        catch ( final Exception e )
+        {
+            throw new IconException ( "Unable to load Icon: " + getId (), e );
+        }
     }
 
     /**
-     * Returns loaded icon.
+     * Returns raw {@link Icon} loaded from {@link Resource}.
      *
-     * @return loaded icon
+     * @param resource {@link Resource} containing {@link Icon} data
+     * @return raw {@link Icon} loaded from {@link Resource}
      */
-    protected abstract T loadIcon ();
+    @NotNull
+    protected abstract T loadIcon ( @NotNull Resource resource );
 }

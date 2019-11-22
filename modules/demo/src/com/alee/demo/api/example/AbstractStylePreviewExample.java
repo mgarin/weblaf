@@ -18,14 +18,10 @@
 package com.alee.demo.api.example;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.resource.ClassResource;
+import com.alee.api.resource.Resource;
 import com.alee.managers.style.Skin;
 import com.alee.utils.FileUtils;
-import com.alee.utils.NetUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.xml.Resource;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
 
 /**
  * @author Mikle Garin
@@ -36,33 +32,7 @@ public abstract class AbstractStylePreviewExample extends AbstractPreviewExample
     @Override
     public String getStyleCode ( @NotNull final Skin skin )
     {
-        final String styleCode;
-        final Resource styleFile = getStyleFile ( skin );
-        switch ( styleFile.getLocation () )
-        {
-            case nearClass:
-            {
-                final Class<Object> nearClass = ReflectUtils.getClassSafely ( styleFile.getClassName () );
-                styleCode = FileUtils.readToString ( nearClass, styleFile.getPath () );
-                break;
-            }
-            case filePath:
-            {
-                styleCode = FileUtils.readToString ( new File ( styleFile.getPath () ) );
-                break;
-            }
-            case url:
-            {
-                styleCode = FileUtils.readToString ( NetUtils.getURL ( styleFile.getPath () ) );
-                break;
-            }
-            default:
-            {
-                styleCode = "";
-                break;
-            }
-        }
-        return styleCode;
+        return FileUtils.readToString ( getStyleResource ( skin ) );
     }
 
     /**
@@ -74,16 +44,9 @@ public abstract class AbstractStylePreviewExample extends AbstractPreviewExample
      * @return style file representing styles for this example
      */
     @NotNull
-    protected Resource getStyleFile ( @NotNull final Skin skin )
+    protected Resource getStyleResource ( @NotNull final Skin skin )
     {
-        final String path = "resources/" + getStyleFileName () + ".xml";
-        final Resource resource = new Resource ( skin.getClass (), path );
-        if ( skin.getClass ().getResource ( path ) == null )
-        {
-            final String msg = "Unable to find style resource '%s' for skin: %s";
-            LoggerFactory.getLogger ( AbstractStylePreviewExample.class ).warn ( String.format ( msg, path, skin ) );
-        }
-        return resource;
+        return new ClassResource ( skin.getClass (), "resources/" + getStyleFileName () + ".xml" );
     }
 
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.settings.Configuration;
 
 import javax.swing.*;
@@ -54,7 +55,7 @@ public class TextFieldSettingsProcessor<C extends JTextField, V extends TextComp
     }
 
     @Override
-    protected void register ( final C textField )
+    protected void register ( @NotNull final C textField )
     {
         super.register ( textField );
 
@@ -70,7 +71,7 @@ public class TextFieldSettingsProcessor<C extends JTextField, V extends TextComp
     }
 
     @Override
-    protected void unregister ( final C textField )
+    protected void unregister ( @NotNull final C textField )
     {
         textField.removeActionListener ( actionListener );
         actionListener = null;

@@ -189,7 +189,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
                         case fitComponent:
                         {
                             // Drawing sized to fit object image
-                            final BufferedImage preview = getPreviewImage ( i );
+                            final BufferedImage preview = getPreviewImage ( currentImage, i );
                             g2d.drawImage ( preview, getCenterX ( i ) - preview.getWidth () / 2,
                                     getCenterY ( i ) - preview.getHeight () / 2, null );
                             break;
@@ -243,12 +243,13 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
      * Returns preview image for specified insets.
      *
      * @param insets image component insets
+     * @param image  image to preview
      * @return preview image
      */
-    protected BufferedImage getPreviewImage ( @NotNull final Insets insets )
+    @NotNull
+    protected BufferedImage getPreviewImage ( @NotNull final BufferedImage image, @NotNull final Insets insets )
     {
         final BufferedImage preview;
-        final BufferedImage image = component.getImage ();
         final Dimension size = SwingUtils.shrink ( component.getSize (), insets );
         if ( image.getWidth () > size.width || image.getHeight () > size.height )
         {
@@ -259,7 +260,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
                     lastPreviewImage.flush ();
                     lastPreviewImage = null;
                 }
-                lastPreviewImage = ImageUtils.createPreviewImage ( getCurrentImage (), size );
+                lastPreviewImage = ImageUtils.createImageThumbnail ( image, size );
                 lastDimension = size;
             }
             preview = lastPreviewImage;
@@ -276,6 +277,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
      *
      * @return currently displayed image
      */
+    @Nullable
     protected BufferedImage getCurrentImage ()
     {
         return !isEnabled () && disabledImage != null ? disabledImage : component.getImage ();
@@ -286,7 +288,7 @@ public class ImagePainter<C extends WebImage, U extends WImageUI, D extends IDec
     public Dimension getPreferredSize ()
     {
         final Insets insets = component.getInsets ();
-        final BufferedImage image = component.getImage ();
+        final BufferedImage image = getCurrentImage ();
         return new Dimension ( insets.left + ( image != null ? image.getWidth () : 0 ) + insets.right,
                 insets.top + ( image != null ? image.getHeight () : 0 ) + insets.bottom );
     }

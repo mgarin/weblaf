@@ -17,6 +17,8 @@
 
 package com.alee.laf.table.editors;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
 import com.alee.managers.style.StyleId;
@@ -27,10 +29,15 @@ import java.awt.*;
 import java.util.Date;
 
 /**
+ * Custom {@link Date} editor for {@link JTable}.
+ *
  * @author Mikle Garin
  */
 public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
 {
+    /**
+     * Constructs new {@link WebDateEditor}.
+     */
     public WebDateEditor ()
     {
         super ();
@@ -39,7 +46,7 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
         editorComponent.addDateListener ( new DateListener ()
         {
             @Override
-            public void dateChanged ( final Date date )
+            public void dateChanged ( @Nullable final Date date )
             {
                 stopCellEditing ();
             }
@@ -48,11 +55,12 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
         delegate = new EditorDelegate ()
         {
             @Override
-            public void setValue ( final Object value )
+            public void setValue ( @Nullable final Object value )
             {
                 editorComponent.setDate ( ( Date ) value );
             }
 
+            @Nullable
             @Override
             public Object getCellEditorValue ()
             {
@@ -65,8 +73,8 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
 
 
     @Override
-    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
-                                                   final int column )
+    public Component getTableCellEditorComponent ( @NotNull final JTable table, @Nullable final Object value, final boolean isSelected,
+                                                   final int row, final int column )
     {
         editorComponent.setStyleId ( StyleId.tableCellEditorDate.at ( table ) );
 

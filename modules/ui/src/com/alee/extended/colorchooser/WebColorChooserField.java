@@ -18,13 +18,14 @@
 package com.alee.extended.colorchooser;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.extended.icon.ColorIcon;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.colorchooser.ColorChooserListener;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.text.WebTextField;
@@ -35,7 +36,6 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
-import com.alee.utils.swing.ChooserListener;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -106,20 +106,20 @@ public class WebColorChooserField extends WebTextField
 
     public WebColorChooserField ()
     {
-        this ( StyleId.colorchooserfield, Color.WHITE );
+        this ( StyleId.auto );
     }
 
-    public WebColorChooserField ( final Color color )
+    public WebColorChooserField ( @Nullable final Color color )
     {
-        this ( StyleId.colorchooserfield, color );
+        this ( StyleId.auto, color );
     }
 
-    public WebColorChooserField ( final StyleId id )
+    public WebColorChooserField ( @NotNull final StyleId id )
     {
-        this ( id, Color.WHITE );
+        this ( id, null );
     }
 
-    public WebColorChooserField ( final StyleId id, final Color color )
+    public WebColorChooserField ( @NotNull final StyleId id, @Nullable final Color color )
     {
         super ( id );
 
@@ -131,7 +131,7 @@ public class WebColorChooserField extends WebTextField
 
         // Trailing color choose button
         final StyleId colorButtonId = StyleId.colorchooserfieldColorButton.at ( this );
-        colorButton = new WebButton ( colorButtonId, ImageUtils.createColorChooserIcon ( color ) );
+        colorButton = new WebButton ( colorButtonId, new ColorIcon ( color ) );
         colorButton.setCursor ( Cursor.getDefaultCursor () );
         colorButton.addActionListener ( new ActionListener ()
         {
@@ -197,6 +197,13 @@ public class WebColorChooserField extends WebTextField
         setColorImpl ( color );
     }
 
+    @NotNull
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.colorchooserfield;
+    }
+
     public boolean isDisplayEyedropper ()
     {
         return displayEyedropper;
@@ -208,100 +215,102 @@ public class WebColorChooserField extends WebTextField
         updateEyedropper ();
     }
 
+    @Nullable
     public Color getColor ()
     {
         return color;
     }
 
-    public void setColor ( final Color color )
+    public void setColor ( @Nullable final Color color )
     {
         setColorImpl ( color );
     }
 
-    protected void setColorImpl ( final Color color )
+    protected void setColorImpl ( @Nullable final Color color )
     {
         final Color oldColor = this.color;
         this.color = color;
         updateViewFromColor ();
-        fireColorSelected ( oldColor, color );
+        fireColorChanged ( oldColor, color );
     }
 
+    @NotNull
     public ColorDisplayType getColorDisplayType ()
     {
         return colorDisplayType;
     }
 
-    public void setColorDisplayType ( final ColorDisplayType colorDisplayType )
+    public void setColorDisplayType ( @NotNull final ColorDisplayType colorDisplayType )
     {
         this.colorDisplayType = colorDisplayType;
         updateFieldType ();
     }
 
-    /**
-     * protected update methods
-     */
-
     protected void updateViewFromColor ()
     {
-        colorButton.setIcon ( ImageUtils.createColorChooserIcon ( color ) );
+        colorButton.setIcon ( new ColorIcon ( color ) );
         updateText ();
     }
 
     protected void updateColorFromField ()
     {
-        final String current = getText ();
-        if ( !current.equals ( lastCorrectColorText ) )
+        final String text = getText ();
+        if ( !text.equals ( lastCorrectColorText ) )
         {
-            try
+            if ( TextUtils.notEmpty ( text ) )
             {
-                final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
-                Color newColor = hex ? ColorUtils.fromHex ( current ) : ColorUtils.fromRGB ( current );
-                if ( newColor != null )
+                try
                 {
-                    // todo Ignoring alpha for now
-                    newColor = ColorUtils.opaque ( newColor );
-
-                    // Apply new value
-                    setColorImpl ( newColor );
+                    final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
+                    setColorImpl ( hex ? ColorUtils.fromHex ( text ) : ColorUtils.fromRGBA ( text ) );
                 }
-                else
+                catch ( final Exception e )
                 {
-                    // Restore old value
                     updateViewFromColor ();
                 }
             }
-            catch ( final Exception e )
+            else
             {
-                // Restore old value
-                updateViewFromColor ();
+                setColor ( null );
             }
         }
     }
 
     protected void updateFieldType ()
     {
-        if ( colorDisplayType != null )
-        {
-            final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
-            setColumns ( hex ? 6 : 9 );
-            updateText ();
-        }
+        final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
+        setColumns ( hex ? 6 : 9 );
+        updateText ();
     }
 
     protected void updateText ()
     {
-        if ( color != null )
-        {
-            final String text = getColorText ( color );
-            setText ( text );
-            lastCorrectColorText = text;
-        }
+        final String text = getColorText ( color );
+        setText ( text );
+        lastCorrectColorText = text;
     }
 
-    protected String getColorText ( final Color color )
+    protected String getColorText ( @Nullable final Color color )
     {
-        final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
-        return hex ? ColorUtils.toHex ( color ) : color.getRed () + "," + color.getGreen () + "," + color.getBlue ();
+        final String text;
+        if ( color != null )
+        {
+            final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
+            if ( hex )
+            {
+                text = ColorUtils.toHex ( color );
+            }
+            else
+            {
+                text = color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
+                        ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
+            }
+        }
+        else
+        {
+            text = "";
+        }
+        return text;
     }
 
     //    protected void updateMargin ()
@@ -628,7 +637,7 @@ public class WebColorChooserField extends WebTextField
         // Create popup if it doesn't exist
         if ( popup == null || colorChooserPanel == null )
         {
-            final Window ancestor = CoreSwingUtils.getWindowAncestor ( this );
+            final Window ancestor = CoreSwingUtils.getNonNullWindowAncestor ( this );
 
             // Popup window
             popup = new WebPopOver ( ancestor );
@@ -674,7 +683,7 @@ public class WebColorChooserField extends WebTextField
                 }
             } );
 
-            colorChooserPanel.addColorChooserListener ( new ColorChooserListener ()
+            colorChooserPanel.addColorChooserListener ( new com.alee.laf.colorchooser.ColorChooserListener ()
             {
                 @Override
                 public void okPressed ( final ActionEvent e )
@@ -761,34 +770,34 @@ public class WebColorChooserField extends WebTextField
     }
 
     /**
-     * Adds new color selection listener.
+     * Adds specified {@link ColorChooserListener}.
      *
-     * @param listener new color selection listener
+     * @param listener {@link ColorChooserListener} to add
      */
-    public void addColorListener ( final ChooserListener<Color> listener )
+    public void addColorChooserListener ( @NotNull final ColorChooserListener listener )
     {
-        listenerList.add ( ChooserListener.class, listener );
+        listenerList.add ( ColorChooserListener.class, listener );
     }
 
     /**
-     * Removes color selection listener.
+     * Removes specified {@link ColorChooserListener}.
      *
-     * @param listener color selection listener to remove
+     * @param listener {@link ColorChooserListener} to remove
      */
-    public void removeColorListener ( final ChooserListener<Color> listener )
+    public void removeColorChooserListener ( @NotNull final ColorChooserListener listener )
     {
-        listenerList.remove ( ChooserListener.class, listener );
+        listenerList.remove ( ColorChooserListener.class, listener );
     }
 
     /**
-     * Informs about color selection.
+     * Informs all added {@link ColorChooserListener}s about {@link Color} change.
      *
-     * @param oldColor previously selected Color
-     * @param newColor new selected Color
+     * @param oldColor previously selected {@link Color}
+     * @param newColor newly selected {@link Color}
      */
-    public void fireColorSelected ( final Color oldColor, final Color newColor )
+    public void fireColorChanged ( @Nullable final Color oldColor, @Nullable final Color newColor )
     {
-        for ( final ChooserListener listener : listenerList.getListeners ( ChooserListener.class ) )
+        for ( final ColorChooserListener listener : listenerList.getListeners ( ColorChooserListener.class ) )
         {
             listener.selected ( oldColor, newColor );
         }

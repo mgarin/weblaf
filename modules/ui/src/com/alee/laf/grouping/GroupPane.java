@@ -1,6 +1,7 @@
 package com.alee.laf.grouping;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.UnselectableButtonGroup;
@@ -28,9 +29,19 @@ public class GroupPane extends WebPanel implements SwingConstants
     /**
      * Constructs new group pane with specified components inside.
      *
+     * @param groupButtons whether or not should group toggle state elements
+     */
+    public GroupPane ( final boolean groupButtons )
+    {
+        this ( StyleId.auto, groupButtons );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
      * @param components components to group
      */
-    public GroupPane ( final Component... components )
+    public GroupPane ( @NotNull final Component... components )
     {
         this ( StyleId.auto, components );
     }
@@ -41,7 +52,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param orientation components flow orientation
      * @param components  components to group
      */
-    public GroupPane ( final int orientation, final Component... components )
+    public GroupPane ( final int orientation, @NotNull final Component... components )
     {
         this ( StyleId.auto, orientation, components );
     }
@@ -53,7 +64,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param rows       amount of rows used to place components
      * @param components components to group
      */
-    public GroupPane ( final int columns, final int rows, final Component... components )
+    public GroupPane ( final int columns, final int rows, @NotNull final Component... components )
     {
         this ( StyleId.auto, columns, rows, components );
     }
@@ -66,9 +77,20 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param rows        amount of rows used to place components
      * @param components  components to group
      */
-    public GroupPane ( final int orientation, final int columns, final int rows, final Component... components )
+    public GroupPane ( final int orientation, final int columns, final int rows, @NotNull final Component... components )
     {
         this ( StyleId.auto, orientation, columns, rows, components );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param id           style ID
+     * @param groupButtons whether or not should group toggle state elements
+     */
+    public GroupPane ( @NotNull final StyleId id, final boolean groupButtons )
+    {
+        this ( id, groupButtons, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1 );
     }
 
     /**
@@ -77,7 +99,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param id         style ID
      * @param components components to group
      */
-    public GroupPane ( final StyleId id, final Component... components )
+    public GroupPane ( @NotNull final StyleId id, @NotNull final Component... components )
     {
         this ( id, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1, components );
     }
@@ -89,7 +111,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param orientation components flow orientation
      * @param components  components to group
      */
-    public GroupPane ( final StyleId id, final int orientation, final Component... components )
+    public GroupPane ( @NotNull final StyleId id, final int orientation, @NotNull final Component... components )
     {
         this ( id, orientation, Integer.MAX_VALUE, 1, components );
     }
@@ -102,7 +124,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param rows       amount of rows used to place components
      * @param components components to group
      */
-    public GroupPane ( final StyleId id, final int columns, final int rows, final Component... components )
+    public GroupPane ( @NotNull final StyleId id, final int columns, final int rows, final Component... components )
     {
         this ( id, SwingConstants.HORIZONTAL, columns, rows, components );
     }
@@ -116,30 +138,9 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param rows        amount of rows used to place components
      * @param components  components to group
      */
-    public GroupPane ( final StyleId id, final int orientation, final int columns, final int rows, final Component... components )
+    public GroupPane ( @NotNull final StyleId id, final int orientation, final int columns, final int rows, final Component... components )
     {
         this ( id, true, orientation, columns, rows, components );
-    }
-
-    /**
-     * Constructs new group pane with specified components inside.
-     *
-     * @param groupButtons whether or not should group toggle state elements
-     */
-    public GroupPane ( final boolean groupButtons )
-    {
-        this ( StyleId.auto, groupButtons, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1 );
-    }
-
-    /**
-     * Constructs new group pane with specified components inside.
-     *
-     * @param id           style ID
-     * @param groupButtons whether or not should group toggle state elements
-     */
-    public GroupPane ( final StyleId id, final boolean groupButtons )
-    {
-        this ( id, groupButtons, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1 );
     }
 
     /**
@@ -152,7 +153,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param rows         amount of rows used to place components
      * @param components   components to group
      */
-    public GroupPane ( final StyleId id, final boolean groupButtons, final int orientation, final int columns, final int rows,
+    public GroupPane ( @NotNull final StyleId id, final boolean groupButtons, final int orientation, final int columns, final int rows,
                        final Component... components )
     {
         super ( id, new GroupPaneLayout ( orientation, columns, rows ) );
@@ -174,7 +175,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      * @param mgr layout manager
      */
     @Override
-    public void setLayout ( final LayoutManager mgr )
+    public void setLayout ( @NotNull final LayoutManager mgr )
     {
         if ( !( mgr instanceof GroupPaneLayout ) )
         {
@@ -188,6 +189,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      *
      * @return {@link com.alee.laf.grouping.GroupPaneLayout}
      */
+    @NotNull
     @Override
     public GroupPaneLayout getLayout ()
     {
@@ -260,6 +262,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      *
      * @return button group used to group toggle state elements placed within this group pane
      */
+    @Nullable
     public UnselectableButtonGroup getButtonGroup ()
     {
         return getLayout ().getButtonGroup ();

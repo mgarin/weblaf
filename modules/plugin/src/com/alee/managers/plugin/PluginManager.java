@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -511,7 +510,7 @@ public abstract class PluginManager<P extends Plugin>
      * @param information about this plugin
      * @param logo        plugin logo
      */
-    public void registerPlugin ( final P plugin, final PluginInformation information, final ImageIcon logo )
+    public void registerPlugin ( final P plugin, final PluginInformation information, final Icon logo )
     {
         synchronized ( checkLock )
         {
@@ -561,13 +560,9 @@ public abstract class PluginManager<P extends Plugin>
             final File downloadedPlugin = FileUtils.downloadFile ( url, tmpFile );
             scanPlugin ( downloadedPlugin );
         }
-        catch ( final URISyntaxException e )
+        catch ( final Exception e )
         {
-            LoggerFactory.getLogger ( PluginManager.class ).error ( "Unable to parse plugin URL", e );
-        }
-        catch ( final IOException e )
-        {
-            LoggerFactory.getLogger ( PluginManager.class ).error ( "Unable to create local file to download plugin", e );
+            LoggerFactory.getLogger ( PluginManager.class ).error ( "Unable to download plugin from URL: " + pluginFileURL, e );
         }
     }
 
@@ -1004,14 +999,15 @@ public abstract class PluginManager<P extends Plugin>
                     inputStream.close ();
 
                     // Reading plugin icon
-                    final ImageIcon logo;
+                    final Icon logo;
                     if ( !SystemUtils.isHeadlessEnvironment () )
                     {
-                        final ZipEntry logoEntry = new ZipEntry ( ZipUtils.getZipEntryFileLocation ( entry ) + pluginLogo );
+                        final ZipEntry logoEntry = new ZipEntry ( ZipUtils.getFileLocation ( entry ) + pluginLogo );
                         final InputStream logoInputStream = zipFile.getInputStream ( logoEntry );
                         if ( logoInputStream != null )
                         {
-                            logo = ImageUtils.loadImage ( logoInputStream );
+                            // todo This will force logo to always be static
+                            logo = ImageUtils.toImageIcon ( ImageUtils.loadBufferedImage ( logoInputStream ) );
                             logoInputStream.close ();
                         }
                         else

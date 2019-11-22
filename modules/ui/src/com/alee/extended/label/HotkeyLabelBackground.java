@@ -75,7 +75,8 @@ public class HotkeyLabelBackground<C extends WebHotkeyLabel, D extends IDecorati
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         // White spacer
         g2d.setPaint ( spacing );

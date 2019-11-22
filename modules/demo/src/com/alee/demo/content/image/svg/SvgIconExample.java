@@ -18,17 +18,16 @@
 package com.alee.demo.content.image.svg;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.ClassResource;
 import com.alee.demo.api.example.*;
 import com.alee.extended.layout.CompactFlowLayout;
-import com.alee.extended.svg.AbstractSvgAttributeAdjustment;
-import com.alee.extended.svg.SvgElements;
-import com.alee.extended.svg.SvgGrayscale;
-import com.alee.extended.svg.SvgIcon;
+import com.alee.extended.svg.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.icon.data.IconAdjustment;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.ColorUtils;
-import com.kitfox.svg.SVGUniverse;
+import com.kitfox.svg.SVGElement;
+import com.kitfox.svg.xml.StyleAttribute;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +59,8 @@ public class SvgIconExample extends AbstractPreviewExample
         return CollectionUtils.<Preview>asList (
                 new SvgIconPreview ( "basic" ),
                 new SvgIconPreview ( "grayscale", new SvgGrayscale () ),
-                new SvgIconPreview ( "modified", new SvgRedStroke () )
+                new SvgIconPreview ( "stroke", new SvgStroke ( Color.RED ) ),
+                new SvgIconPreview ( "opacity", new SampleSvgAdjustment () )
         );
     }
 
@@ -72,6 +72,7 @@ public class SvgIconExample extends AbstractPreviewExample
         /**
          * {@link IconAdjustment}s to apply to {@link SvgIcon}s.
          */
+        @NotNull
         protected List<? extends IconAdjustment<SvgIcon>> adjustments;
 
         /**
@@ -80,7 +81,7 @@ public class SvgIconExample extends AbstractPreviewExample
          * @param id          preview ID
          * @param adjustments {@link IconAdjustment}s to apply to {@link SvgIcon}s
          */
-        public SvgIconPreview ( final String id, final IconAdjustment<SvgIcon>... adjustments )
+        public SvgIconPreview ( @NotNull final String id, @NotNull final IconAdjustment<SvgIcon>... adjustments )
         {
             super ( SvgIconExample.this, id, FeatureState.release );
             this.adjustments = CollectionUtils.asList ( adjustments );
@@ -97,18 +98,13 @@ public class SvgIconExample extends AbstractPreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            /**
-             * Separate universe to avoid icon adjustments spreading across same icons within different previews.
-             */
-            final SVGUniverse universe = new SVGUniverse ();
-
-            final SvgIcon icon1 = new SvgIcon ( universe, WebLookAndFeel.class, "icons/icon.svg", 200, 200 );
+            final SvgIcon icon1 = new SvgIcon ( new ClassResource ( WebLookAndFeel.class, "icons/icon.svg" ), 200, 200 );
             icon1.apply ( adjustments );
 
-            final SvgIcon icon2 = new SvgIcon ( universe, SvgIconExample.class, "resources/firefox.svg", 200, 200 );
+            final SvgIcon icon2 = new SvgIcon ( new ClassResource ( SvgIconExample.class, "resources/firefox.svg" ), 200, 200 );
             icon2.apply ( adjustments );
 
-            final SvgIcon icon3 = new SvgIcon ( universe, SvgIconExample.class, "resources/mona.svg", 187, 279 );
+            final SvgIcon icon3 = new SvgIcon ( new ClassResource ( SvgIconExample.class, "resources/mona.svg" ), 187, 279 );
             icon3.apply ( adjustments );
 
             return CollectionUtils.asList ( new JLabel ( icon1 ), new JLabel ( icon2 ), new JLabel ( icon3 ) );
@@ -116,29 +112,31 @@ public class SvgIconExample extends AbstractPreviewExample
     }
 
     /**
-     * Custom {@link IconAdjustment} for {@link SvgIcon} that modifies stroke color to red.
+     * Custom {@link IconAdjustment} for {@link SvgIcon} that modifies root SVG element opacity.
      */
-    protected static class SvgRedStroke extends AbstractSvgAttributeAdjustment
+    protected static class SampleSvgAdjustment extends AbstractSvgAttributeAdjustment
     {
         /**
-         * Constructs new {@link SvgRedStroke}.
+         * Constructs new {@link SampleSvgAdjustment} applied to root SVG element.
          */
-        public SvgRedStroke ()
+        public SampleSvgAdjustment ()
         {
-            super ();
-            this.selector = "*";
+            super ( "svg" );
         }
 
+        @NotNull
         @Override
-        protected String getAttribute ( final SvgIcon icon )
+        protected String getAttribute ( @NotNull final SvgIcon icon )
         {
-            return SvgElements.STROKE;
+            return SvgElements.OPACITY;
         }
 
+        @Nullable
         @Override
-        protected String getValue ( final SvgIcon icon )
+        protected String getValue ( @NotNull final SvgIcon icon, @NotNull final SVGElement element,
+                                    @Nullable final StyleAttribute attribute )
         {
-            return ColorUtils.toHex ( Color.RED );
+            return "0.5";
         }
     }
 }

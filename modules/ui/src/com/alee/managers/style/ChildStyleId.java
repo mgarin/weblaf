@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
@@ -32,61 +33,65 @@ import java.awt.*;
 public final class ChildStyleId
 {
     /**
-     * Style ID.
+     * Style identifier.
      * Identifies some specific component style.
      */
+    @NotNull
     private final String id;
 
     /**
      * Constructs new child style ID container.
      *
-     * @param id style ID
+     * @param id style identifier
      */
-    private ChildStyleId ( final String id )
+    private ChildStyleId ( @NotNull final String id )
     {
-        super ();
         this.id = id;
     }
 
     /**
-     * Returns child style ID.
+     * Returns child style identifier.
      *
-     * @return child style ID
+     * @return child style identifier
      */
+    @NotNull
     public String getId ()
     {
         return id;
     }
 
     /**
-     * Returns completed style ID for the child style.
+     * Returns completed style identifier for the child style.
      *
      * @param parent parent component
-     * @return completed style ID for the child style
+     * @return completed style identifier for the child style
      */
-    public StyleId at ( final JComponent parent )
+    @NotNull
+    public StyleId at ( @NotNull final JComponent parent )
     {
         return StyleId.of ( getId (), parent );
     }
 
     /**
-     * Returns completed style ID for the child style.
+     * Returns completed style identifier for the child style.
      *
      * @param parent parent component
-     * @return completed style ID for the child style
+     * @return completed style identifier for the child style
      */
-    public StyleId at ( final Window parent )
+    @NotNull
+    public StyleId at ( @NotNull final Window parent )
     {
-        return at ( CoreSwingUtils.getRootPane ( parent ) );
+        return at ( CoreSwingUtils.getNonNullRootPane ( parent ) );
     }
 
     /**
-     * Returns new child style ID container.
+     * Returns new child style identifier container.
      *
-     * @param id style ID
-     * @return new child style ID container
+     * @param id style identifier
+     * @return new child style identifier container
      */
-    public static ChildStyleId of ( final String id )
+    @NotNull
+    public static ChildStyleId of ( @NotNull final String id )
     {
         return new ChildStyleId ( id );
     }

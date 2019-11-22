@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.IconManager;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ImageUtils;
@@ -52,10 +53,10 @@ public class ImageTextureBackground<C extends JComponent, D extends IDecoration<
         return iconId != null && IconManager.hasIcon ( iconId );
     }
 
+    @NotNull
     @Override
     protected BufferedImage getTextureImage ()
     {
-        final Icon icon = IconManager.getIcon ( iconId );
-        return ImageUtils.getBufferedImage ( icon );
+        return ImageUtils.toNonNullBufferedImage ( IconManager.getIcon ( iconId ) );
     }
 }

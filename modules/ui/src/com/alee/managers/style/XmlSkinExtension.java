@@ -19,15 +19,14 @@ package com.alee.managers.style;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.Resource;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.utils.XmlUtils;
-import com.alee.utils.xml.Resource;
 import com.alee.utils.xml.XStreamContext;
 
 import javax.swing.*;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -42,84 +41,58 @@ import java.util.List;
 public class XmlSkinExtension implements SkinExtension
 {
     /**
-     * Extension data XML location.
+     * {@link XmlSkinExtension} {@link Resource}.
      */
-    private final Resource location;
+    @NotNull
+    private final Resource resource;
 
     /**
-     * Extension meta data.
+     * {@link XmlSkinExtension} meta data.
      * It will never contain actual extension styles or includes.
      */
+    @NotNull
     private final SkinInfo extensionInfo;
 
     /**
-     * Constructs new skin extension.
+     * Constructs new {@link XmlSkinExtension}.
      *
-     * @param path extension XML file path
+     * @param resource extension {@link Resource}
      */
-    public XmlSkinExtension ( final String path )
+    public XmlSkinExtension ( @NotNull final Resource resource )
     {
-        this ( new Resource ( path ) );
-    }
-
-    /**
-     * Constructs new skin extension.
-     *
-     * @param file extension XML file
-     */
-    public XmlSkinExtension ( final File file )
-    {
-        this ( new Resource ( file ) );
-    }
-
-    /**
-     * Constructs new skin extension.
-     *
-     * @param nearClass class to find skin info XML near
-     * @param path      extension XML path relative to the specified class
-     */
-    public XmlSkinExtension ( final Class nearClass, final String path )
-    {
-        this ( new Resource ( nearClass, path ) );
-    }
-
-    /**
-     * Constructs new skin extension.
-     *
-     * @param location extension XML file location
-     */
-    public XmlSkinExtension ( final Resource location )
-    {
-        super ();
-        this.location = location;
+        this.resource = resource;
         this.extensionInfo = getMetaData ();
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
         return extensionInfo.getId ();
     }
 
+    @Nullable
     @Override
     public Icon getIcon ()
     {
         return extensionInfo.getIcon ();
     }
 
+    @Nullable
     @Override
     public String getTitle ()
     {
         return extensionInfo.getTitle ();
     }
 
+    @Nullable
     @Override
     public String getDescription ()
     {
         return extensionInfo.getDescription ();
     }
 
+    @Nullable
     @Override
     public String getAuthor ()
     {
@@ -127,11 +100,12 @@ public class XmlSkinExtension implements SkinExtension
     }
 
     @Override
-    public boolean isSupported ( final String skinId )
+    public boolean isSupported ( @NotNull final String skinId )
     {
         return extensionInfo.isSupported ( skinId );
     }
 
+    @NotNull
     @Override
     public List<IconSet> getIconSets ()
     {
@@ -144,9 +118,10 @@ public class XmlSkinExtension implements SkinExtension
      *
      * @return extension with only meta data read
      */
+    @NotNull
     public SkinInfo getMetaData ()
     {
-        return XmlUtils.fromXML ( location, new XStreamContext ( SkinInfoConverter.META_DATA_ONLY_KEY, true ) );
+        return XmlUtils.fromXML ( resource, new XStreamContext ( SkinInfoConverter.META_DATA_ONLY_KEY, true ) );
     }
 
     /**
@@ -156,8 +131,16 @@ public class XmlSkinExtension implements SkinExtension
      * @param skinClass skin canonical class name
      * @return full extension data for the specified skin
      */
-    public SkinInfo getData ( final String skinClass )
+    @NotNull
+    public SkinInfo getData ( @NotNull final String skinClass )
     {
-        return XmlUtils.fromXML ( location, new XStreamContext ( SkinInfoConverter.SKIN_CLASS, skinClass ) );
+        return XmlUtils.fromXML ( resource, new XStreamContext ( SkinInfoConverter.SKIN_CLASS, skinClass ) );
+    }
+
+    @NotNull
+    @Override
+    public String toString ()
+    {
+        return extensionInfo.toString ();
     }
 }

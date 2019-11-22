@@ -169,7 +169,7 @@ public class ColorConverter extends AbstractSingleValueConverter
             }
             else
             {
-                color = ColorUtils.fromRGB ( string );
+                color = ColorUtils.fromRGBA ( string );
             }
             return color;
         }

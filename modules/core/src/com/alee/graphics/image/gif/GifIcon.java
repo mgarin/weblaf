@@ -17,66 +17,214 @@
 
 package com.alee.graphics.image.gif;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.Resource;
+import com.alee.api.ui.DisabledCopySupplier;
+import com.alee.api.ui.TransparentCopySupplier;
+import com.alee.utils.CollectionUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * Simple GIF {@link Icon} implementation.
+ *
  * @author Mikle Garin
+ * @see GifDecoder
+ * @see GifEncoder
  */
-public class GifIcon implements Icon
+public class GifIcon implements Icon, DisabledCopySupplier<GifIcon>, TransparentCopySupplier<GifIcon>
 {
-    private RepaintListener repaintListener;
+    /**
+     * {@link List} of all {@link GifFrame}s in this {@link GifIcon}.
+     */
+    @NotNull
+    protected final List<GifFrame> frames;
 
-    private final Map<Integer, GifDecoder.GifFrame> frames;
-    private int status = GifDecoder.STATUS_OK;
+    /**
+     * {@link GifIcon} loading status.
+     *
+     * @see GifDecoder#STATUS_OK
+     * @see GifDecoder#STATUS_FORMAT_ERROR
+     * @see GifDecoder#STATUS_OPEN_ERROR
+     */
+    protected final int status;
 
-    private int frameCount = 0;
-    private int displayedFrame = -1;
-    private Thread gifAnimator;
+    /**
+     * {@link List} of {@link FrameChangeListener}s.
+     */
+    @NotNull
+    protected List<FrameChangeListener> listeners;
 
-    private boolean stopAnimation = false;
+    /**
+     * Currently displayed {@link GifFrame} index.
+     */
+    protected transient int displayedFrame;
 
-    public GifIcon ( final Class nearClass, final String imgSrc ) throws IOException
+    /**
+     * Daemon {@link Thread} that handles {@link GifIcon} animation.
+     */
+    @Nullable
+    protected transient Thread gifAnimator;
+
+    /**
+     * Constructs new {@link GifIcon}.
+     *
+     * @param resource GIF {@link Resource}
+     */
+    public GifIcon ( @NotNull final Resource resource )
     {
-        this ( new BufferedInputStream ( nearClass.getResource ( imgSrc ).openStream () ) );
+        this ( resource.getInputStream () );
     }
 
-    public GifIcon ( final String imgSrc ) throws FileNotFoundException
+    /**
+     * Constructs new {@link GifIcon}.
+     *
+     * @param inputStream GIF {@link InputStream}
+     */
+    public GifIcon ( @NotNull final InputStream inputStream )
     {
-        this ( new BufferedInputStream ( new FileInputStream ( imgSrc ) ) );
-    }
-
-    public GifIcon ( final BufferedInputStream stream )
-    {
-        super ();
-
-        frames = new HashMap<Integer, GifDecoder.GifFrame> ();
+        this.frames = new ArrayList<GifFrame> ();
 
         final GifDecoder gifDecoder = new GifDecoder ();
-        status = gifDecoder.read ( stream );
+        this.status = gifDecoder.read ( inputStream instanceof BufferedInputStream
+                ? ( BufferedInputStream ) inputStream
+                : new BufferedInputStream ( inputStream ) );
 
-        if ( status == GifDecoder.STATUS_OK )
+        this.listeners = new ArrayList<FrameChangeListener> ();
+
+        if ( this.status == GifDecoder.STATUS_OK )
         {
-            frameCount = gifDecoder.getFrameCount ();
-            displayedFrame = 0;
-            for ( int i = 0; i < frameCount; i++ )
+            if ( gifDecoder.getFrameCount () > 0 )
             {
-                frames.put ( i, new GifDecoder.GifFrame ( gifDecoder.getFrame ( i ), gifDecoder.getDelay ( i ) ) );
+                this.displayedFrame = 0;
+                for ( int i = 0; i < gifDecoder.getFrameCount (); i++ )
+                {
+                    frames.add ( new GifFrame ( gifDecoder.getFrame ( i ), gifDecoder.getDelay ( i ) ) );
+                }
+                startAnimation ();
             }
-            startAnimation ();
+            else
+            {
+                throw new RuntimeException ( "At least one GIF frame should be provided" );
+            }
+        }
+        else
+        {
+            throw new RuntimeException ( "Unable to load GIF image, status: " + this.status );
         }
     }
 
+    /**
+     * Constructs new {@link GifIcon}.
+     *
+     * @param frames {@link GifFrame}s
+     */
+    public GifIcon ( @NotNull final GifFrame... frames )
+    {
+        this ( CollectionUtils.asList ( frames ) );
+    }
+
+    /**
+     * Constructs new {@link GifIcon}.
+     *
+     * @param frames {@link List} of {@link GifFrame}s
+     */
+    public GifIcon ( @NotNull final List<GifFrame> frames )
+    {
+        if ( frames.size () > 0 )
+        {
+            this.frames = frames;
+            this.status = GifDecoder.STATUS_OK;
+            this.listeners = new ArrayList<FrameChangeListener> ();
+            this.displayedFrame = 0;
+            startAnimation ();
+        }
+        else
+        {
+            throw new RuntimeException ( "At least one GIF frame should be provided" );
+        }
+    }
+
+    /**
+     * Returns {@link GifIcon} loading status.
+     *
+     * @return {@link GifIcon} loading status
+     * @see GifDecoder#STATUS_OK
+     * @see GifDecoder#STATUS_FORMAT_ERROR
+     * @see GifDecoder#STATUS_OPEN_ERROR
+     */
+    public int getStatus ()
+    {
+        return status;
+    }
+
+    /**
+     * Returns {@link GifIcon} frame count.
+     *
+     * @return {@link GifIcon} frame count
+     */
+    public int getFrameCount ()
+    {
+        return frames.size ();
+    }
+
+    /**
+     * Returns copy of the {@link List} of all {@link GifFrame}s in this {@link GifIcon}.
+     *
+     * @return copy of the {@link List} of all {@link GifFrame}s in this {@link GifIcon}
+     */
+    @NotNull
+    public List<GifFrame> getFrames ()
+    {
+        return CollectionUtils.copy ( frames );
+    }
+
+    /**
+     * Returns {@link GifFrame} at the specified index.
+     *
+     * @param index {@link GifFrame} index
+     * @return {@link GifFrame} at the specified index
+     */
+    @NotNull
+    public GifFrame getFrame ( final int index )
+    {
+        return frames.get ( index );
+    }
+
+    /**
+     * Returns currently displayed {@link GifFrame} index.
+     *
+     * @return currently displayed {@link GifFrame} index
+     */
+    public int getDisplayedFrame ()
+    {
+        return displayedFrame;
+    }
+
+    /**
+     * Returns currently displayed {@link BufferedImage}.
+     *
+     * @return currently displayed {@link BufferedImage}
+     */
+    @NotNull
+    public BufferedImage getDisplayedImage ()
+    {
+        return frames.get ( displayedFrame ).bufferedImage;
+    }
+
+    /**
+     * Starts animation {@link Thread}.
+     */
     public void startAnimation ()
     {
-        if ( frameCount > 1 )
+        if ( getFrameCount () > 1 && gifAnimator == null )
         {
             displayedFrame = 0;
             gifAnimator = new Thread ( new Runnable ()
@@ -84,32 +232,29 @@ public class GifIcon implements Icon
                 @Override
                 public void run ()
                 {
-                    while ( !stopAnimation )
+                    try
                     {
-                        final int delay = frames.get ( displayedFrame ).delay;
-                        try
+                        while ( true )
                         {
+                            final int delay = frames.get ( displayedFrame ).delay;
                             Thread.sleep ( delay == 0 ? 100 : delay );
-                        }
-                        catch ( final InterruptedException e )
-                        {
-                            //
-                        }
 
-                        // Refresh displayed frame
-                        if ( displayedFrame == frameCount - 1 )
-                        {
-                            displayedFrame = 0;
-                        }
-                        else
-                        {
-                            displayedFrame++;
-                        }
+                            // Refresh displayed frame
+                            if ( displayedFrame == getFrameCount () - 1 )
+                            {
+                                displayedFrame = 0;
+                            }
+                            else
+                            {
+                                displayedFrame++;
+                            }
 
-                        if ( repaintListener != null )
-                        {
-                            repaintListener.imageRepaintOccurred ();
+                            fireFrameChanged ( displayedFrame );
                         }
+                    }
+                    catch ( final InterruptedException ignored )
+                    {
+                        // Animation interrupted
                     }
                 }
             } );
@@ -118,18 +263,30 @@ public class GifIcon implements Icon
         }
     }
 
+    /**
+     * Stops animation {@link Thread}.
+     */
     public void stopAnimation ()
     {
-        if ( gifAnimator.isAlive () )
+        if ( gifAnimator != null && gifAnimator.isAlive () )
         {
-            stopAnimation = true;
+            gifAnimator.interrupt ();
+            try
+            {
+                gifAnimator.join ();
+                gifAnimator = null;
+            }
+            catch ( final InterruptedException ignored )
+            {
+                //
+            }
         }
     }
 
     @Override
     public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
     {
-        if ( frameCount > 0 )
+        if ( getFrameCount () > 0 )
         {
             g.drawImage ( frames.get ( displayedFrame ).bufferedImage, x, y, c );
         }
@@ -147,38 +304,65 @@ public class GifIcon implements Icon
         return frames.get ( displayedFrame ).bufferedImage.getHeight ();
     }
 
-    public BufferedImage getImage ()
+    /**
+     * Adds specified {@link FrameChangeListener}.
+     *
+     * @param listener {@link FrameChangeListener} to add
+     */
+    public void addFrameChangeListener ( @NotNull final FrameChangeListener listener )
     {
-        return frames.get ( displayedFrame ).bufferedImage;
+        listeners.add ( listener );
     }
 
-    public int getStatus ()
+    /**
+     * Removes specified {@link FrameChangeListener}.
+     *
+     * @param listener {@link FrameChangeListener} to remove
+     */
+    public void removeFrameChangeListener ( @NotNull final FrameChangeListener listener )
     {
-        return status;
+        listeners.remove ( listener );
     }
 
-    public int getFrameCount ()
+    /**
+     * Fires displayed {@link GifFrame} change.
+     *
+     * @param index new displayed {@link GifFrame} index
+     */
+    public void fireFrameChanged ( final int index )
     {
-        return frameCount;
+        if ( CollectionUtils.notEmpty ( listeners ) )
+        {
+            final GifFrame frame = getFrame ( index );
+            for ( final FrameChangeListener listener : listeners )
+            {
+                listener.frameChanged ( this, index, frame );
+            }
+        }
     }
 
-    public int getDisplayedFrame ()
+    /**
+     * Returns copy of this {@link GifIcon} with only first frame made look disabled.
+     *
+     * @return copy of this {@link GifIcon} with only first frame made look disabled
+     */
+    @NotNull
+    @Override
+    public GifIcon createDisabledCopy ()
     {
-        return displayedFrame;
+        return new GifIcon ( CollectionUtils.asList ( frames.get ( 0 ).createDisabledCopy () ) );
     }
 
-    public Map<Integer, GifDecoder.GifFrame> getFrames ()
+    /**
+     * Returns copy of this {@link GifIcon} with only first frame made semi-transparent.
+     *
+     * @param opacity opacity value, must be between 0 and 1
+     * @return copy of this {@link GifIcon} with only first frame made semi-transparent
+     */
+    @NotNull
+    @Override
+    public GifIcon createTransparentCopy ( final float opacity )
     {
-        return frames;
-    }
-
-    public RepaintListener getRepaintListener ()
-    {
-        return repaintListener;
-    }
-
-    public void setRepaintListener ( final RepaintListener repaintListener )
-    {
-        this.repaintListener = repaintListener;
+        return new GifIcon ( CollectionUtils.asList ( frames.get ( 0 ).createTransparentCopy ( opacity ) ) );
     }
 }

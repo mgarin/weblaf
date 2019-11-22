@@ -17,6 +17,8 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -52,7 +54,7 @@ public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, Sc
     }
 
     @Override
-    protected void register ( final JScrollBar scrollBar )
+    protected void register ( @NotNull final JScrollBar scrollBar )
     {
         adjustmentListener = new AdjustmentListener ()
         {
@@ -66,12 +68,13 @@ public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, Sc
     }
 
     @Override
-    protected void unregister ( final JScrollBar scrollBar )
+    protected void unregister ( @NotNull final JScrollBar scrollBar )
     {
         scrollBar.removeAdjustmentListener ( adjustmentListener );
         adjustmentListener = null;
     }
 
+    @Nullable
     @Override
     protected ScrollBarState createDefaultValue ()
     {
@@ -79,13 +82,13 @@ public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, Sc
     }
 
     @Override
-    protected void loadSettings ( final JScrollBar scrollBar )
+    protected void loadSettings ( @NotNull final JScrollBar scrollBar )
     {
         loadSettings ().apply ( scrollBar );
     }
 
     @Override
-    protected void saveSettings ( final JScrollBar scrollBar )
+    protected void saveSettings ( @NotNull final JScrollBar scrollBar )
     {
         saveSettings ( new ScrollBarState ( scrollBar ) );
     }

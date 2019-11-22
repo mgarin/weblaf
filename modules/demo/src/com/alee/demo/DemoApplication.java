@@ -20,6 +20,7 @@ package com.alee.demo;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.SerializableSupplier;
+import com.alee.api.resource.ClassResource;
 import com.alee.api.version.Version;
 import com.alee.demo.api.example.Example;
 import com.alee.demo.api.example.ExampleData;
@@ -40,11 +41,13 @@ import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.AlignLayout;
 import com.alee.extended.link.UrlLinkAction;
 import com.alee.extended.link.WebLink;
-import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
-import com.alee.extended.tab.*;
+import com.alee.extended.tab.DocumentAdapter;
+import com.alee.extended.tab.DocumentData;
+import com.alee.extended.tab.PaneData;
+import com.alee.extended.tab.WebDocumentPane;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WindowState;
@@ -61,9 +64,10 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.skin.dark.DarkSkin;
+import com.alee.skin.dark.WebDarkSkin;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.SystemUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.swing.Customizer;
 
@@ -98,6 +102,11 @@ public final class DemoApplication extends WebFrame
     private static DemoApplication instance;
 
     /**
+     * Demo application {@link Version}.
+     */
+    private final Version version;
+
+    /**
      * Demo application base UI elements.
      */
     private WebDockablePane dockablePane;
@@ -112,6 +121,7 @@ public final class DemoApplication extends WebFrame
      *
      * @return demo application instance
      */
+    @NotNull
     public static DemoApplication getInstance ()
     {
         if ( instance == null )
@@ -127,8 +137,11 @@ public final class DemoApplication extends WebFrame
     private DemoApplication ()
     {
         super ();
+        version = new Version ( DemoApplication.class );
+
         setIconImages ( WebLookAndFeel.getImages () );
         updateTitle ();
+
         initializeDocks ();
         initializeToolBar ();
         initializeStatus ();
@@ -172,14 +185,6 @@ public final class DemoApplication extends WebFrame
                 tabbedPane.setTabLayoutPolicy ( JTabbedPane.SCROLL_TAB_LAYOUT );
             }
         } );
-        examplesPane.onDocumentSelection ( new DocumentDataRunnable<ExampleData> ()
-        {
-            @Override
-            public void run ( final ExampleData document, final PaneData<ExampleData> pane, final int index )
-            {
-                updateTitle ();
-            }
-        } );
 
         final WebOverlay overlay = new WebOverlay ( StyleId.panel, examplesPane );
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel, new AlignLayout () );
@@ -192,11 +197,30 @@ public final class DemoApplication extends WebFrame
         final WebStyledLabel issues = new WebStyledLabel ( issuesId, "demo.content.issues", DemoIcons.bug36 );
         issues.changeFontSize ( 5 ).setBoldFont ().setWrap ( TextWrap.none );
 
-        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ), "0,0" );
+        //        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ), "0,0" );
+
+        final WebStyledLabel information = new WebStyledLabel ( DemoStyles.emptycontentInfoLabel.at ( overlayContainer ) );
+        information.setHorizontalTextAlignment ( WebStyledLabel.CENTER );
+        information.setWrap ( TextWrap.none );
+        information.changeFontSize ( 3 );
+        information.setLanguage (
+                "demo.content.information.overlay.empty",
+                version.name (), version.toString (),
+                SystemUtils.getJavaName (),
+                SystemUtils.getJavaVersion ().versionString (), SystemUtils.getOsArch ()
+        );
+        overlayContainer.add ( information );
+
         overlay.addOverlay ( overlayContainer );
 
         examplesPane.addDocumentListener ( new DocumentAdapter<ExampleData> ()
         {
+            @Override
+            public void selected ( final ExampleData document, final PaneData<ExampleData> pane, final int index )
+            {
+                updateTitle ();
+            }
+
             @Override
             public void opened ( final ExampleData document, final PaneData<ExampleData> pane, final int index )
             {
@@ -206,7 +230,11 @@ public final class DemoApplication extends WebFrame
             @Override
             public void closed ( final ExampleData document, final PaneData<ExampleData> pane, final int index )
             {
-                overlayContainer.setVisible ( examplesPane.getDocumentsCount () == 0 );
+                if ( examplesPane.getDocumentsCount () == 0 )
+                {
+                    overlayContainer.setVisible ( true );
+                    updateTitle ();
+                }
             }
         } );
 
@@ -241,6 +269,7 @@ public final class DemoApplication extends WebFrame
      *
      * @return content pane
      */
+    @NotNull
     public WebDocumentPane<ExampleData> getExamplesPane ()
     {
         return examplesPane;
@@ -304,10 +333,10 @@ public final class DemoApplication extends WebFrame
     {
         final StringBuilder title = new StringBuilder ();
 
-        // Title & version
-        title.append ( "WebLaF " ).append ( new Version ( DemoApplication.class ).toString () );
+        // Library version
+        title.append ( "WebLaF " ).append ( version.toString () );
 
-        // Opened demo
+        // Opened example
         final DocumentData doc = examplesPane != null ? examplesPane.getSelectedDocument () : null;
         if ( doc != null )
         {
@@ -322,7 +351,7 @@ public final class DemoApplication extends WebFrame
      *
      * @param example example to open
      */
-    public void open ( final Example example )
+    public void open ( @NotNull final Example example )
     {
         examplesPane.openDocument ( ExampleData.forExample ( example ) );
     }
@@ -362,14 +391,18 @@ public final class DemoApplication extends WebFrame
                 WebLookAndFeel.install ();
 
                 // Saving skins for reference
-                skins = CollectionUtils.asList ( StyleManager.getSkin (), new DarkSkin () );
+                skins = CollectionUtils.asList ( StyleManager.getSkin (), new WebDarkSkin () );
 
                 // Adding demo application skin extensions
                 // They contain all custom styles demo application uses
-                StyleManager.addExtensions ( new AdaptiveExtension (), new LightSkinExtension (), new DarkSkinExtension () );
+                StyleManager.addExtensions ( new DemoAdaptiveExtension (), new DemoLightSkinExtension (), new DemoDarkSkinExtension () );
 
-                // Configurting languages
-                LanguageManager.addDictionary ( new Dictionary ( DemoApplication.class, "language/demo-language.xml" ) );
+                // Adding demo language dictionary
+                LanguageManager.addDictionary ( new Dictionary (
+                        new ClassResource ( DemoApplication.class, "language/demo-language.xml" )
+                ) );
+
+                // Registering listener to update current Locale according to language changes
                 LanguageManager.addLanguageListener ( new LanguageLocaleUpdater () );
 
                 // Initializing demo application managers

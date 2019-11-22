@@ -231,7 +231,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
             {
                 // Ensure component is still available
                 // This might happen if painter is replaced from another MouseListener
-                if ( component != null )
+                if ( component != null && component.isEnabled () )
                 {
                     // Only left mouse button events
                     if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -470,7 +470,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
             private void validateSelection ( @NotNull final MouseEvent e )
             {
                 // Selection rect
-                final Rectangle selection = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+                final Rectangle selection = GeometryUtils.getNonNullContainingRect ( selectionStart, selectionEnd );
 
                 // Compute new selection
                 final List<Integer> newSelection = new ArrayList<Integer> ();
@@ -794,21 +794,19 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
                         {
                             // We have to ensure we can retrieve bounds for it first
                             final Rectangle rowBounds = ui.getRowBounds ( row, true );
-                            if ( rowBounds != null )
-                            {
-                                // This is a workaround to make sure row painter takes the whole tree width
-                                final Insets padding = PainterSupport.getPadding ( component );
-                                if ( padding != null )
-                                {
-                                    // Increasing background by the padding sizes at left and right sides
-                                    rowBounds.x -= padding.left;
-                                    rowBounds.width += padding.left + padding.right;
-                                }
 
-                                // Painting row background
-                                rowPainter.prepareToPaint ( row );
-                                paintSection ( rowPainter, g2d, rowBounds );
+                            // This is a workaround to make sure row painter takes the whole tree width
+                            final Insets padding = PainterSupport.getPadding ( component );
+                            if ( padding != null )
+                            {
+                                // Increasing background by the padding sizes at left and right sides
+                                rowBounds.x -= padding.left;
+                                rowBounds.width += padding.left + padding.right;
                             }
+
+                            // Painting row background
+                            rowPainter.prepareToPaint ( row );
+                            paintSection ( rowPainter, g2d, rowBounds );
                         }
 
                         // Painting node background
@@ -816,12 +814,10 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
                         {
                             // We have to ensure we can retrieve bounds for it first
                             final Rectangle nodeBounds = ui.getRowBounds ( row );
-                            if ( nodeBounds != null )
-                            {
-                                // Painting hover node background
-                                nodePainter.prepareToPaint ( row );
-                                paintSection ( nodePainter, g2d, nodeBounds );
-                            }
+
+                            // Painting hover node background
+                            nodePainter.prepareToPaint ( row );
+                            paintSection ( nodePainter, g2d, nodeBounds );
                         }
 
                         if ( bounds.y + bounds.height >= endY )

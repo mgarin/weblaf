@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.border;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -39,12 +41,14 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
     /**
      * Border stroke.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Stroke stroke;
 
     /**
      * Border color.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
@@ -53,6 +57,7 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
      *
      * @return {@link Stroke} used for this border
      */
+    @Nullable
     public Stroke getStroke ()
     {
         return stroke;
@@ -63,9 +68,10 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
      *
      * @return {@link Color} used for this border
      */
+    @Nullable
     public Color getColor ()
     {
-        return color != null ? color : new Color ( 210, 210, 210 );
+        return color;
     }
 
     @Override
@@ -79,23 +85,27 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 && !getWidth ().isEmpty () )
         {
-            final Stroke stroke = getStroke ();
             final Color color = getColor ();
+            if ( color != null )
+            {
+                final Stroke stroke = getStroke ();
 
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
-            final Paint op = GraphicsUtils.setupPaint ( g2d, color, color != null );
+                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
+                final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
+                final Paint op = GraphicsUtils.setupPaint ( g2d, color );
 
-            g2d.draw ( shape );
+                g2d.draw ( shape );
 
-            GraphicsUtils.restorePaint ( g2d, op, color != null );
-            GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
-            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+                GraphicsUtils.restorePaint ( g2d, op );
+                GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
+                GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+            }
         }
     }
 }

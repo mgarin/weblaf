@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.resource.ClassResource;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
@@ -65,7 +67,9 @@ public final class ComponentInstantiationTest
                 {
                     WebLookAndFeel.setForceSingleEventsThread ( true );
                     WebLookAndFeel.install ();
-                    LanguageManager.addDictionary ( new Dictionary ( ComponentInstantiationTest.class, "resources/language.xml" ) );
+                    LanguageManager.addDictionary ( new Dictionary (
+                            new ClassResource ( ComponentInstantiationTest.class, "resources/language.xml" )
+                    ) );
                 }
             } );
         }
@@ -107,16 +111,14 @@ public final class ComponentInstantiationTest
                 public void run ()
                 {
                     new WebImage ();
-                    new WebImage ( ComponentInstantiationTest.class, "resources/image.png" );
-                    new WebImage ( ComponentInstantiationTest.class.getResource ( "resources/image.png" ) );
+                    new WebImage ( new ClassResource ( ComponentInstantiationTest.class, "resources/image.png" ) );
                     new WebImage ( icon16 () );
                     new WebImage ( imageIcon16 () );
                     new WebImage ( image16 () );
                     new WebImage ( renderedImage16 () );
                     new WebImage ( bufferedImage16 () );
                     new WebImage ( StyleId.imagePortrait );
-                    new WebImage ( StyleId.imagePortrait, ComponentInstantiationTest.class, "resources/image.png" );
-                    new WebImage ( StyleId.imagePortrait, ComponentInstantiationTest.class.getResource ( "resources/image.png" ) );
+                    new WebImage ( StyleId.imagePortrait, new ClassResource ( ComponentInstantiationTest.class, "resources/image.png" ) );
                     new WebImage ( StyleId.imagePortrait, icon16 () );
                     new WebImage ( StyleId.imagePortrait, imageIcon16 () );
                     new WebImage ( StyleId.imagePortrait, image16 () );
@@ -144,7 +146,7 @@ public final class ComponentInstantiationTest
                     new WebLabel ( WebLabel.CENTER );
                     new WebLabel ( icon16 () );
                     new WebLabel ( icon16 (), WebLabel.CENTER );
-                    new WebLabel ( "Sample text" );
+                    new WebLabel ( "English sample text" );
                     new WebLabel ( "weblaf.test.sample" );
                     new WebLabel ( "weblaf.test.sample", WebLabel.CENTER );
                     new WebLabel ( "weblaf.test.sample", icon16 () );
@@ -153,7 +155,7 @@ public final class ComponentInstantiationTest
                     new WebLabel ( StyleId.labelShadow, WebLabel.CENTER );
                     new WebLabel ( StyleId.labelShadow, icon16 () );
                     new WebLabel ( StyleId.labelShadow, icon16 (), WebLabel.CENTER );
-                    new WebLabel ( StyleId.labelShadow, "Sample text" );
+                    new WebLabel ( StyleId.labelShadow, "English sample text" );
                     new WebLabel ( StyleId.labelShadow, "weblaf.test.sample" );
                     new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", WebLabel.CENTER );
                     new WebLabel ( StyleId.labelShadow, "weblaf.test.sample", icon16 () );
@@ -168,6 +170,7 @@ public final class ComponentInstantiationTest
      *
      * @return {@link Icon} that can be used for tests
      */
+    @NotNull
     private static Icon icon16 ()
     {
         return WebLookAndFeel.getIcon ( 16 );
@@ -178,6 +181,7 @@ public final class ComponentInstantiationTest
      *
      * @return {@link ImageIcon} that can be used for tests
      */
+    @NotNull
     private static ImageIcon imageIcon16 ()
     {
         return WebLookAndFeel.getIcon ( 16 );
@@ -188,6 +192,7 @@ public final class ComponentInstantiationTest
      *
      * @return {@link Image} that can be used for tests
      */
+    @NotNull
     private static Image image16 ()
     {
         return WebLookAndFeel.getIcon ( 16 ).getImage ();
@@ -198,9 +203,10 @@ public final class ComponentInstantiationTest
      *
      * @return {@link RenderedImage} that can be used for tests
      */
+    @NotNull
     private static RenderedImage renderedImage16 ()
     {
-        return ImageUtils.getBufferedImage ( WebLookAndFeel.getIcon ( 16 ) );
+        return ImageUtils.toNonNullBufferedImage ( WebLookAndFeel.getIcon ( 16 ) );
     }
 
     /**
@@ -208,9 +214,10 @@ public final class ComponentInstantiationTest
      *
      * @return {@link BufferedImage} that can be used for tests
      */
+    @NotNull
     private static BufferedImage bufferedImage16 ()
     {
-        return ImageUtils.getBufferedImage ( WebLookAndFeel.getIcon ( 16 ) );
+        return ImageUtils.toNonNullBufferedImage ( WebLookAndFeel.getIcon ( 16 ) );
     }
 
     /**

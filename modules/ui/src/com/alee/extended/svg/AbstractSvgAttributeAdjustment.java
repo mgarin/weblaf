@@ -17,7 +17,10 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.kitfox.svg.SVGElement;
+import com.kitfox.svg.xml.StyleAttribute;
 
 import java.util.List;
 
@@ -28,19 +31,39 @@ import java.util.List;
  */
 public abstract class AbstractSvgAttributeAdjustment extends AbstractSvgAdjustment
 {
+    /**
+     * Constructs new {@link AbstractSvgAttributeAdjustment}.
+     */
+    public AbstractSvgAttributeAdjustment ()
+    {
+        this ( null );
+    }
+
+    /**
+     * Constructs new {@link AbstractSvgAttributeAdjustment}.
+     *
+     * @param selector {@link SVGElement} selector
+     */
+    public AbstractSvgAttributeAdjustment ( @Nullable final String selector )
+    {
+        super ( selector );
+    }
+
     @Override
-    protected void apply ( final SvgIcon icon, final List<SVGElement> elements )
+    protected void apply ( @NotNull final SvgIcon icon, @NotNull final List<SVGElement> elements )
     {
         final String attribute = getAttribute ( icon );
-        if ( attribute != null )
+        for ( final SVGElement element : elements )
         {
-            final String value = getValue ( icon );
+            final StyleAttribute styleAttribute = icon.getAttribute ( element, attribute );
+            final String value = getValue ( icon, element, styleAttribute );
             if ( value != null )
             {
-                for ( final SVGElement element : elements )
-                {
-                    icon.setAttribute ( element, attribute, value );
-                }
+                icon.setAttribute ( element, attribute, value );
+            }
+            else
+            {
+                icon.removeAttribute ( element, attribute );
             }
         }
     }
@@ -51,13 +74,17 @@ public abstract class AbstractSvgAttributeAdjustment extends AbstractSvgAdjustme
      * @param icon {@link SvgIcon} to adjust
      * @return {@link SVGElement} attribute to adjust
      */
-    protected abstract String getAttribute ( SvgIcon icon );
+    @NotNull
+    protected abstract String getAttribute ( @NotNull SvgIcon icon );
 
     /**
-     * Returns {@link SVGElement} value to apply.
+     * Returns {@link SVGElement} attribute value to apply.
      *
-     * @param icon {@link SvgIcon} to adjust
-     * @return {@link SVGElement} value to apply
+     * @param icon     {@link SvgIcon} to adjust
+     * @param element  {@link SVGElement} attribute will be adjusted for
+     * @param attribute old attribute value
+     * @return {@link SVGElement} attribute value to apply
      */
-    protected abstract String getValue ( SvgIcon icon );
+    @Nullable
+    protected abstract String getValue ( @NotNull SvgIcon icon, @NotNull SVGElement element, @Nullable StyleAttribute attribute );
 }

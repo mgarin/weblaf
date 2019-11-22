@@ -471,4 +471,16 @@ public final class GeometryUtils
     {
         return angle * 180 / Math.PI;
     }
+
+    /**
+     * Returns distance between two points.
+     *
+     * @param p1 first point
+     * @param p2 second point
+     * @return distance between two points
+     */
+    public static int distance ( @NotNull final Point p1, @NotNull final Point p2 )
+    {
+        return MathUtils.sqrtToInt ( MathUtils.sqr ( p2.x - p1.x ) + MathUtils.sqr ( p2.y - p1.y ) );
+    }
 }

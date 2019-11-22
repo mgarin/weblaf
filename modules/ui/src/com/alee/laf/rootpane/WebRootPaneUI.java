@@ -897,6 +897,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         return image;
     }
 
+    @Nullable
     @Override
     public Window getWindow ()
     {

@@ -17,6 +17,8 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.icon.data.IconAdjustment;
 import com.kitfox.svg.SVGElement;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -31,17 +33,48 @@ import java.util.List;
 public abstract class AbstractSvgAdjustment implements IconAdjustment<SvgIcon>
 {
     /**
-     * SVG element selector.
+     * {@link SVGElement} selector.
+     * By default (if set to {@code null}) it will use {@code "svg"} selector for picking root SVG element.
      *
      * @see SvgSelector
      */
+    @Nullable
     @XStreamAsAttribute
     protected String selector;
 
-    @Override
-    public void apply ( final SvgIcon icon )
+    /**
+     * Constructs new {@link AbstractSvgAdjustment}.
+     */
+    public AbstractSvgAdjustment ()
     {
-        apply ( icon, icon.find ( selector ) );
+        this ( null );
+    }
+
+    /**
+     * Constructs new {@link AbstractSvgAdjustment}.
+     *
+     * @param selector {@link SVGElement} selector
+     */
+    public AbstractSvgAdjustment ( @Nullable final String selector )
+    {
+        this.selector = selector;
+    }
+
+    /**
+     * Returns {@link SVGElement} selector value.
+     *
+     * @return {@link SVGElement} selector value
+     */
+    @NotNull
+    protected String getSelector ()
+    {
+        return selector != null ? selector : "svg";
+    }
+
+    @Override
+    public void apply ( @NotNull final SvgIcon icon )
+    {
+        apply ( icon, icon.find ( getSelector () ) );
     }
 
     /**
@@ -50,5 +83,5 @@ public abstract class AbstractSvgAdjustment implements IconAdjustment<SvgIcon>
      * @param icon     {@link SvgIcon} to adjust
      * @param elements list of {@link SVGElement}s to adjust
      */
-    protected abstract void apply ( SvgIcon icon, List<SVGElement> elements );
+    protected abstract void apply ( @NotNull SvgIcon icon, @NotNull List<SVGElement> elements );
 }

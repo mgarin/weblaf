@@ -17,6 +17,7 @@
 
 package com.alee.skin.flat;
 
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.style.XmlSkin;
 
 /**
@@ -27,10 +28,10 @@ import com.alee.managers.style.XmlSkin;
 public class FlatSkin extends XmlSkin
 {
     /**
-     * Constructs skin.
+     * Constructs new {@link FlatSkin}.
      */
     public FlatSkin ()
     {
-        super ( FlatSkin.class, "resources/skin.xml" );
+        super ( new ClassResource ( FlatSkin.class, "resources/flat-skin.xml" ) );
     }
 }

@@ -20,10 +20,10 @@ package com.alee.extended.tree;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.IconBridge;
+import com.alee.extended.icon.StackIcon;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeNodeParameters;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.swing.BroadcastImageObserver;
 import com.alee.utils.swing.LoadIconType;
@@ -329,7 +329,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
         Icon failedIcon = failedStateIcons.get ( icon );
         if ( failedIcon == null )
         {
-            failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
+            failedIcon = new StackIcon ( icon, failedStateIcon );
             failedStateIcons.put ( icon, failedIcon );
         }
         return failedIcon;

@@ -21,12 +21,10 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.RenderingParameters;
 import com.alee.managers.language.LM;
-import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Locale;
 
 /**
  * Custom file filter that accepts only image files.
@@ -47,6 +45,7 @@ public class ImageFilesFilter extends AbstractFileFilter
         return ICON;
     }
 
+    @NotNull
     @Override
     public String getDescription ()
     {
@@ -54,8 +53,8 @@ public class ImageFilesFilter extends AbstractFileFilter
     }
 
     @Override
-    public boolean accept ( final File file )
+    public boolean accept ( @NotNull final File file )
     {
-        return ImageUtils.VIEWABLE_IMAGES.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase ( Locale.ROOT ), false ) );
+        return ImageUtils.isImageSupported ( file.getName () );
     }
 }

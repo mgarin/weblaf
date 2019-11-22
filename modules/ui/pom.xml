@@ -22,9 +22,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.kitfox.svg</groupId>
+            <groupId>com.weblookandfeel</groupId>
             <artifactId>svg-salamander</artifactId>
-            <version>1.0</version>
+            <version>1.1.2.2</version>
         </dependency>
         <dependency>
             <groupId>com.fifesoft</groupId>
@@ -71,7 +71,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.alee.laf.information.LibraryInfoDialog</mainClass>
+                            <mainClass>com.alee.laf.information.AboutLibraryDialog</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

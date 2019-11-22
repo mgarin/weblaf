@@ -18,6 +18,7 @@
 package com.alee.extended.collapsible;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -52,7 +53,7 @@ public class CollapsiblePaneSettingsProcessor extends SettingsProcessor<WebColla
     }
 
     @Override
-    protected void register ( final WebCollapsiblePane collapsiblePane )
+    protected void register ( @NotNull final WebCollapsiblePane collapsiblePane )
     {
         collapsiblePaneListener = new CollapsiblePaneAdapter ()
         {
@@ -72,12 +73,13 @@ public class CollapsiblePaneSettingsProcessor extends SettingsProcessor<WebColla
     }
 
     @Override
-    protected void unregister ( final WebCollapsiblePane collapsiblePane )
+    protected void unregister ( @NotNull final WebCollapsiblePane collapsiblePane )
     {
         collapsiblePane.removeCollapsiblePaneListener ( collapsiblePaneListener );
         collapsiblePaneListener = null;
     }
 
+    @Nullable
     @Override
     protected CollapsiblePaneState createDefaultValue ()
     {
@@ -85,13 +87,13 @@ public class CollapsiblePaneSettingsProcessor extends SettingsProcessor<WebColla
     }
 
     @Override
-    protected void loadSettings ( final WebCollapsiblePane collapsiblePane )
+    protected void loadSettings ( @NotNull final WebCollapsiblePane collapsiblePane )
     {
         loadSettings ().apply ( collapsiblePane );
     }
 
     @Override
-    protected void saveSettings ( final WebCollapsiblePane collapsiblePane )
+    protected void saveSettings ( @NotNull final WebCollapsiblePane collapsiblePane )
     {
         saveSettings ( new CollapsiblePaneState ( collapsiblePane ) );
     }

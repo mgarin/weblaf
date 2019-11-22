@@ -56,12 +56,12 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
     private static final Color disabledBorderColor = Color.LIGHT_GRAY;
     private static final Color foreground = Color.BLACK;
     private static final Color disabledForeground = new Color ( 178, 178, 178 );
-    private static final Color innerBorderColor = ColorUtils.white ( 180 );
+    private static final Color innerBorderColor = whiteColor ( 180 );
     private static final float[] overlayFractions = new float[]{ 0f, 0.4f, 0.41f, 1f };
     private static final Color[] lineOverlayColors =
-            new Color[]{ ColorUtils.white ( 160 ), ColorUtils.white ( 120 ), ColorUtils.white ( 100 ), ColorUtils.white ( 40 ) };
+            new Color[]{ whiteColor ( 160 ), whiteColor ( 120 ), whiteColor ( 100 ), whiteColor ( 40 ) };
     private static final Color[] controlOverlayColors =
-            new Color[]{ ColorUtils.white ( 80 ), ColorUtils.white ( 50 ), ColorUtils.white ( 20 ), ColorUtils.transparent () };
+            new Color[]{ whiteColor ( 80 ), whiteColor ( 50 ), whiteColor ( 20 ), ColorUtils.transparent () };
     private static final float closestPoint = 0.001f;
 
     // Runtime data
@@ -524,7 +524,8 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
         // Additional control overlay
         if ( control )
         {
-            g2d.setPaint ( new GradientPaint ( bounds.x + 2, bounds.y + 2, ColorUtils.white ( 180 ), bounds.x + bounds.width * 2 / 3,
+            final int alpha = 180;
+            g2d.setPaint ( new GradientPaint ( bounds.x + 2, bounds.y + 2, whiteColor ( alpha ), bounds.x + bounds.width * 2 / 3,
                     bounds.y + bounds.height - 2, ColorUtils.transparent () ) );
             g2d.fillRect ( bounds.x + 2, bounds.y + 2, bounds.width - 4, bounds.height - 4 );
         }
@@ -768,5 +769,11 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
         final int width = i.left + gripperSize.width * 5 + Math.max ( gripperSize.width, shadeWidth * 2 ) - 4 + i.right;
         final int height = i.top + shadeWidth * 2 + lineWidth + gripperSize.height / 2 + ( gripperSize.height % 2 == 0 ? 0 : 1 ) + i.bottom;
         return new Dimension ( width, height );
+    }
+
+    @NotNull
+    private static Color whiteColor ( final int alpha )
+    {
+        return new Color ( 255, 255, 255, alpha );
     }
 }

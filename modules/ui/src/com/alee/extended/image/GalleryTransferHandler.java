@@ -46,7 +46,7 @@ public class GalleryTransferHandler extends FilesTransferHandler
         {
             for ( final File file : files )
             {
-                if ( ImageUtils.isImageLoadable ( file.getName () ) )
+                if ( ImageUtils.isImageSupported ( file.getName () ) )
                 {
                     gallery.addImage ( new ImageIcon ( file.getAbsolutePath () ) );
                     added = true;

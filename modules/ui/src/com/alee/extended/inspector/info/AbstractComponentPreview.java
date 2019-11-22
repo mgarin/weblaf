@@ -19,7 +19,7 @@ package com.alee.extended.inspector.info;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.utils.ImageUtils;
+import com.alee.extended.icon.StackIcon;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.xml.InsetsConverter;
@@ -54,7 +54,7 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
     /**
      * Merged icons cache.
      */
-    protected static final Map<String, Icon> mergedCache = new HashMap<String, Icon> ( 30 );
+    protected static final Map<String, Icon> stackIconCache = new HashMap<String, Icon> ( 30 );
 
     /**
      * Basic style guidelines.
@@ -77,14 +77,14 @@ public abstract class AbstractComponentPreview<C extends Component> implements C
         if ( SwingUtils.isOpaque ( component ) )
         {
             final String key = icon.hashCode () + "," + opaque.hashCode ();
-            if ( mergedCache.containsKey ( key ) )
+            if ( stackIconCache.containsKey ( key ) )
             {
-                icon = mergedCache.get ( key );
+                icon = stackIconCache.get ( key );
             }
             else
             {
-                icon = ImageUtils.mergeIcons ( icon, opaque );
-                mergedCache.put ( key, icon );
+                icon = new StackIcon ( icon, opaque );
+                stackIconCache.put ( key, icon );
             }
         }
 

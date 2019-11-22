@@ -17,6 +17,7 @@
 
 package com.alee.managers.language;
 
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.Record;
 import com.alee.managers.language.data.Text;
@@ -255,7 +256,7 @@ public final class LanguageManagerTest
         checkTranslationAbsense ( "en", "", complexKey2 );
 
         // Loading XML dictionary
-        final Dictionary dictionary = new Dictionary ( LanguageManagerTest.class, "Dictionary.xml" );
+        final Dictionary dictionary = new Dictionary ( new ClassResource ( LanguageManagerTest.class, "Dictionary.xml" ) );
 
         // Adding XML dictionary into LanguageManager
         LanguageManager.addDictionary ( dictionary );
@@ -339,7 +340,7 @@ public final class LanguageManagerTest
         checkTranslationAbsense ( "ru", "", multiKey );
 
         // Loading XML dictionary
-        final Dictionary dictionary = new Dictionary ( LanguageManagerTest.class, "Dictionary.xml" );
+        final Dictionary dictionary = new Dictionary ( new ClassResource ( LanguageManagerTest.class, "Dictionary.xml" ) );
 
         // Adding XML dictionary into LanguageManager
         LanguageManager.addDictionary ( dictionary );
@@ -452,8 +453,8 @@ public final class LanguageManagerTest
         if ( !languageFor ( code, country ).containsText ( key ) )
         {
             throw new LanguageException ( String.format (
-                "Translation for lang[%s] country[%s] key[%s] still exists",
-                code, country, key
+                    "Translation for lang[%s] country[%s] key[%s] still exists",
+                    code, country, key
             ) );
         }
     }
@@ -470,8 +471,8 @@ public final class LanguageManagerTest
         if ( !result.equals ( expected ) )
         {
             throw new LanguageException ( String.format (
-                "Unexpected translation for key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
-                key, expected, result
+                    "Unexpected translation for key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
+                    key, expected, result
             ) );
         }
     }
@@ -490,8 +491,8 @@ public final class LanguageManagerTest
         if ( !result.equals ( expected ) )
         {
             throw new LanguageException ( String.format (
-                "Unexpected translation for lang[%s] country[%s] key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
-                code, country, key, expected, result
+                    "Unexpected translation for lang[%s] country[%s] key[%s]" + "\n" + "Expected: %s" + "\n" + "Result: %s",
+                    code, country, key, expected, result
             ) );
         }
     }
@@ -508,8 +509,8 @@ public final class LanguageManagerTest
         if ( languageFor ( code, country ).containsText ( key ) )
         {
             throw new LanguageException ( String.format (
-                "Translation for lang[%s] country[%s] key[%s] still exists",
-                code, country, key
+                    "Translation for lang[%s] country[%s] key[%s] still exists",
+                    code, country, key
             ) );
         }
     }

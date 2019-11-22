@@ -30,4 +30,14 @@ public final class IgnoredValue
      * Constant ignored property value.
      */
     public static final IgnoredValue VALUE = new IgnoredValue ();
+
+    /**
+     * Private constructor to avoid any custom instances.
+     */
+    private IgnoredValue ()
+    {
+        /**
+         * Nothing needs to be initialized for this instance.
+         */
+    }
 }

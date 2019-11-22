@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.resource.ClassResource;
 import com.alee.utils.ImageUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -128,8 +130,9 @@ public enum TextureType
      *
      * @return texture {@link BufferedImage}
      */
+    @NotNull
     public BufferedImage getTexture ()
     {
-        return ImageUtils.getBufferedImage ( TextureType.class.getResource ( "icons/textures/" + this + ".png" ) );
+        return ImageUtils.loadBufferedImage ( new ClassResource ( TextureType.class, "icons/textures/" + this + ".png" ) );
     }
 }

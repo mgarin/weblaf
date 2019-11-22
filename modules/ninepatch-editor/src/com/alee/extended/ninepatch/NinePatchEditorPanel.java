@@ -19,6 +19,8 @@ package com.alee.extended.ninepatch;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.data.Orientation;
+import com.alee.api.resource.FileResource;
+import com.alee.extended.icon.ColorIcon;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.ninepatch.skin.NinePatchEditorStyles;
 import com.alee.extended.panel.ResizablePanel;
@@ -227,7 +229,7 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     wfc.setSelectedFile ( imageSrc );
                 }
-                if ( wfc.showOpenDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) ==
+                if ( wfc.showOpenDialog ( CoreSwingUtils.getNonNullWindowAncestor ( NinePatchEditorPanel.this ) ) ==
                         WebFileChooser.APPROVE_OPTION )
                 {
                     openImage ( wfc.getSelectedFile () );
@@ -284,7 +286,7 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     wfc.setSelectedFile ( imageSrc );
                 }
-                if ( wfc.showSaveDialog ( CoreSwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) ==
+                if ( wfc.showSaveDialog ( CoreSwingUtils.getNonNullWindowAncestor ( NinePatchEditorPanel.this ) ) ==
                         WebFileChooser.APPROVE_OPTION )
                 {
                     try
@@ -344,7 +346,7 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     for ( final File file : files )
                     {
-                        if ( ImageUtils.isImageLoadable ( file.getName () ) )
+                        if ( ImageUtils.isImageSupported ( file.getName () ) )
                         {
                             openImage ( file );
                             return true;
@@ -646,27 +648,20 @@ public class NinePatchEditorPanel extends WebPanel
                 return;
             }
 
-            // Ignore non-loadable images
-            if ( file.isDirectory () || !ImageUtils.isImageLoadable ( file.getName () ) )
-            {
-                return;
-            }
-
-            // Load image (avoiding Toolkit cache)
-            final Image image = Toolkit.getDefaultToolkit ().createImage ( file.getAbsolutePath () );
-            if ( image == null )
-            {
-                return;
-            }
-
             // Check if changes save needed
             if ( !continueAfterSave () )
             {
                 return;
             }
 
+            // Ignore non-loadable images
+            if ( file.isDirectory () || !ImageUtils.isImageSupported ( file.getName () ) )
+            {
+                return;
+            }
+
             // Loading image fully through ImageIcon MediaTracker
-            final BufferedImage bi = ImageUtils.getBufferedImage ( new ImageIcon ( image ) );
+            final BufferedImage bi = ImageUtils.loadCompatibleImage ( new FileResource ( file ) );
 
             // Open image file
             ninePatchEditor.setNinePatchImage ( bi );
@@ -682,7 +677,7 @@ public class NinePatchEditorPanel extends WebPanel
         }
         catch ( final Exception e )
         {
-            //
+            LoggerFactory.getLogger ( NinePatchEditorPanel.class ).error ( "Unable to load image from file: " + file, e );
         }
     }
 
@@ -807,7 +802,7 @@ public class NinePatchEditorPanel extends WebPanel
         drawAlphaBackground.setLanguage ( "weblaf.ex.npeditor.preview.transparentBackground" );
         drawAlphaBackground.setSelected ( da );
 
-        final WebToggleButton drawColoredBackground = new WebToggleButton ( ImageUtils.createColorIcon ( previewColor ) );
+        final WebToggleButton drawColoredBackground = new WebToggleButton ( new ColorIcon ( previewColor ) );
         drawColoredBackground.setLanguage ( "weblaf.ex.npeditor.preview.coloredBackground" );
         drawColoredBackground.setSelected ( !da );
 
@@ -851,7 +846,7 @@ public class NinePatchEditorPanel extends WebPanel
             {
                 if ( webColorChooser == null )
                 {
-                    webColorChooser = new WebColorChooserDialog ( CoreSwingUtils.getWindowAncestor ( previewPanel ) );
+                    webColorChooser = new WebColorChooserDialog ( CoreSwingUtils.getNonNullWindowAncestor ( previewPanel ) );
                 }
                 webColorChooser.setColor ( preview.getForeground () );
                 if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
@@ -881,14 +876,14 @@ public class NinePatchEditorPanel extends WebPanel
                 SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", false );
                 if ( webColorChooser == null )
                 {
-                    webColorChooser = new WebColorChooserDialog ( CoreSwingUtils.getWindowAncestor ( previewPanel ) );
+                    webColorChooser = new WebColorChooserDialog ( CoreSwingUtils.getNonNullWindowAncestor ( previewPanel ) );
                 }
                 webColorChooser.setColor ( previewColor );
                 if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
                 {
                     final Color color = webColorChooser.getColor ();
                     SettingsManager.set ( "NinePatchEditor", "preview.backgroundColor", color );
-                    drawColoredBackground.setIcon ( ImageUtils.createColorIcon ( color ) );
+                    drawColoredBackground.setIcon ( new ColorIcon ( color ) );
                     previewColor = color;
                 }
                 previewPanel.setCustomPainter ( new ColorPainter ( previewColor ) );
@@ -977,17 +972,17 @@ public class NinePatchEditorPanel extends WebPanel
         return imageSrc;
     }
 
-    public void setNinePatchImage ( final ImageIcon imageIcon )
+    public void setNinePatchImage ( @NotNull final Icon icon )
     {
-        setNinePatchImage ( imageIcon.getImage () );
+        setNinePatchImage ( ImageUtils.toNonNullBufferedImage ( icon ) );
     }
 
-    public void setNinePatchImage ( final Image image )
+    public void setNinePatchImage ( @NotNull final Image image )
     {
-        setNinePatchImage ( ImageUtils.getBufferedImage ( image ) );
+        setNinePatchImage ( ImageUtils.toNonNullBufferedImage ( image ) );
     }
 
-    public void setNinePatchImage ( final BufferedImage ninePatchImage )
+    public void setNinePatchImage ( @NotNull final BufferedImage ninePatchImage )
     {
         // Check if changes save needed
         if ( !continueAfterSave () )

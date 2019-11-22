@@ -17,6 +17,8 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -52,7 +54,7 @@ public class ButtonSettingsProcessor extends SettingsProcessor<AbstractButton, B
     }
 
     @Override
-    protected void register ( final AbstractButton button )
+    protected void register ( @NotNull final AbstractButton button )
     {
         itemListener = new ItemListener ()
         {
@@ -66,12 +68,13 @@ public class ButtonSettingsProcessor extends SettingsProcessor<AbstractButton, B
     }
 
     @Override
-    public void unregister ( final AbstractButton button )
+    public void unregister ( @NotNull final AbstractButton button )
     {
         button.removeItemListener ( itemListener );
         itemListener = null;
     }
 
+    @Nullable
     @Override
     protected ButtonState createDefaultValue ()
     {
@@ -79,13 +82,13 @@ public class ButtonSettingsProcessor extends SettingsProcessor<AbstractButton, B
     }
 
     @Override
-    public void loadSettings ( final AbstractButton button )
+    public void loadSettings ( @NotNull final AbstractButton button )
     {
         loadSettings ().apply ( button );
     }
 
     @Override
-    public void saveSettings ( final AbstractButton button )
+    public void saveSettings ( @NotNull final AbstractButton button )
     {
         saveSettings ( new ButtonState ( button ) );
     }

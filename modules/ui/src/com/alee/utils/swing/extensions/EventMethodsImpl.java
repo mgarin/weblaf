@@ -20,7 +20,7 @@ package com.alee.utils.swing.extensions;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.utils.MathUtils;
+import com.alee.utils.GeometryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 
@@ -461,7 +461,7 @@ public final class EventMethodsImpl
             @Override
             public void mouseDragged ( @NotNull final MouseEvent e )
             {
-                if ( start != null && MathUtils.distance ( start, e.getPoint () ) > shift )
+                if ( start != null && GeometryUtils.distance ( start, e.getPoint () ) > shift )
                 {
                     runnable.run ( e );
                     start = null;

@@ -19,8 +19,8 @@
  * This package contains various skin implementations.
  *
  * @author Mikle Garin
- * @see com.alee.skin.web.WebSkin
- * @see com.alee.skin.dark.DarkSkin
+ * @see com.alee.skin.light.WebLightSkin
+ * @see com.alee.skin.dark.WebDarkSkin
  * @see com.alee.skin.flat.FlatSkin
  * @see com.alee.skin.material.MaterialSkin
  * @see com.alee.skin.modena.ModenaSkin

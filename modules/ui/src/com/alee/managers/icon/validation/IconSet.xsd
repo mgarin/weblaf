@@ -11,16 +11,16 @@
     <!-- XML icon set root -->
     <xs:element name="IconSet" type="IconSet" />
 
-    <!-- com.alee.managers.icon.set.IconSetData -->
+    <!-- com.alee.managers.icon.set.XmlIconSet -->
     <xs:complexType name="IconSet">
 
         <!-- Icons list -->
         <xs:choice minOccurs="1" maxOccurs="unbounded">
 
-            <!-- Raster icon -->
+            <!-- com.alee.managers.icon.data.ImageIconData -->
             <xs:element name="ImageIcon" type="ImageIconData" />
 
-            <!-- SVG icon -->
+            <!-- com.alee.extended.svg.SvgIconData -->
             <xs:element name="SvgIcon" type="SvgIconData" />
 
         </xs:choice>

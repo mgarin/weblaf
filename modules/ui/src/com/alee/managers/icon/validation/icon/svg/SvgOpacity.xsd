@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractSvgAttributeAdjustment.xsd" />
+
+    <!-- com.alee.extended.svg.SvgOpacity -->
+    <xs:complexType name="SvgOpacity">
+        <xs:complexContent>
+            <xs:extension base="AbstractSvgAttributeAdjustment">
+
+                <!-- Opacity -->
+                <xs:attribute name="opacity" type="xs:double" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

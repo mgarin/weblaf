@@ -17,6 +17,8 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
 import com.alee.utils.CoreSwingUtils;
@@ -56,6 +58,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * In case of {@link Frame} it is only used for non-maximized state.
      * {@code null} value will position {@link Window} relative to its parent.
      */
+    @Nullable
     @XStreamAsAttribute
     @XStreamConverter ( PointConverter.class )
     protected Point location;
@@ -65,6 +68,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * In case of {@link Frame} it is only used for non-maximized state.
      * {@code null} value will pack {@link Window} to its preferred size.
      */
+    @Nullable
     @XStreamAsAttribute
     @XStreamConverter ( DimensionConverter.class )
     protected Dimension size;
@@ -73,6 +77,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * {@link Frame}-exclusive state.
      * {@code null} value will ensure that {@link Frame} state is not affected.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer state;
 
@@ -89,7 +94,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @param location {@link Window} location,
      */
-    public WindowState ( final Point location )
+    public WindowState ( @Nullable final Point location )
     {
         this ( location, null, null );
     }
@@ -99,7 +104,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @param size {@link Window} size
      */
-    public WindowState ( final Dimension size )
+    public WindowState ( @Nullable final Dimension size )
     {
         this ( null, size, null );
     }
@@ -110,7 +115,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * @param location {@link Window} location
      * @param size     {@link Window} size
      */
-    public WindowState ( final Point location, final Dimension size )
+    public WindowState ( @Nullable final Point location, @Nullable final Dimension size )
     {
         this ( location, size, null );
     }
@@ -120,7 +125,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @param state {@link Frame}-exclusive state
      */
-    public WindowState ( final Integer state )
+    public WindowState ( @Nullable final Integer state )
     {
         this ( null, null, state );
     }
@@ -131,7 +136,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * @param location {@link Window} location
      * @param state    {@link Frame}-exclusive state
      */
-    public WindowState ( final Point location, final Integer state )
+    public WindowState ( @Nullable final Point location, @Nullable final Integer state )
     {
         this ( location, null, state );
     }
@@ -142,7 +147,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * @param size  {@link Window} size
      * @param state {@link Frame}-exclusive state
      */
-    public WindowState ( final Dimension size, final Integer state )
+    public WindowState ( @Nullable final Dimension size, @Nullable final Integer state )
     {
         this ( null, size, state );
     }
@@ -154,7 +159,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * @param size     {@link Window} size
      * @param state    {@link Frame}-exclusive state
      */
-    public WindowState ( final Point location, final Dimension size, final Integer state )
+    public WindowState ( @Nullable final Point location, @Nullable final Dimension size, @Nullable final Integer state )
     {
         this.location = location;
         this.size = size;
@@ -166,9 +171,9 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @param window {@link Window} to retrieve settings from
      */
-    public WindowState ( final Window window )
+    public WindowState ( @NotNull final Window window )
     {
-        this ( CoreSwingUtils.getRootPane ( window ) );
+        this ( CoreSwingUtils.getNonNullRootPane ( window ) );
     }
 
     /**
@@ -176,7 +181,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @param rootPane {@link JRootPane} used to find {@link Window} to retrieve settings from
      */
-    public WindowState ( final JRootPane rootPane )
+    public WindowState ( @NotNull final JRootPane rootPane )
     {
         retrieve ( rootPane );
     }
@@ -186,6 +191,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @return {@link Window} location
      */
+    @Nullable
     public Point location ()
     {
         return location;
@@ -196,6 +202,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @return {@link Window} bounds
      */
+    @Nullable
     public Dimension size ()
     {
         return size;
@@ -206,6 +213,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @return {@link Frame}-exclusive state
      */
+    @Nullable
     public Integer state ()
     {
         return state;
@@ -219,9 +227,10 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      * @param rootPane {@link JRootPane} used to find {@link Window} to retrieve settings from
      * @return settings retrieved from the specified {@link JRootPane}'s {@link Window}
      */
-    public WindowState retrieve ( final JRootPane rootPane )
+    @NotNull
+    public WindowState retrieve ( @NotNull final JRootPane rootPane )
     {
-        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
+        final Window window = CoreSwingUtils.getNonNullWindowAncestor ( rootPane );
 
         // Saving frame-exclusive settings
         if ( window instanceof Frame )
@@ -245,10 +254,10 @@ public class WindowState implements Mergeable, Cloneable, Serializable
      *
      * @param rootPane {@link JRootPane} used to find {@link Window} to apply this {@link WindowState} to
      */
-    public void apply ( final JRootPane rootPane )
+    public void apply ( @NotNull final JRootPane rootPane )
     {
         // Searching for window
-        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
+        final Window window = CoreSwingUtils.getNonNullWindowAncestor ( rootPane );
         final Rectangle bounds = window.getBounds ();
 
         // Restoring window size
@@ -298,7 +307,7 @@ public class WindowState implements Mergeable, Cloneable, Serializable
                 if ( location.x > 0 && location.y > 0 )
                 {
                     // Ensure that window title stays on at least one of the screens
-                    final Rectangle b = new Rectangle ( location, size );
+                    final Rectangle b = new Rectangle ( location, window.getSize () );
                     final List<Rectangle> devicesBounds = SystemUtils.getDevicesBounds ( false );
                     boolean intersects = false;
                     for ( final Rectangle deviceBounds : devicesBounds )

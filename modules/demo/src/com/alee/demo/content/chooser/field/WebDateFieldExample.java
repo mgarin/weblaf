@@ -18,6 +18,7 @@
 package com.alee.demo.content.chooser.field;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.*;
 import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
@@ -76,7 +77,7 @@ public class WebDateFieldExample extends AbstractStylePreviewExample
          *
          * @param styleId preview style ID
          */
-        public DateField ( final StyleId styleId )
+        public DateField ( @NotNull final StyleId styleId )
         {
             super ( WebDateFieldExample.this, "basic", FeatureState.updated, styleId );
         }
@@ -89,7 +90,7 @@ public class WebDateFieldExample extends AbstractStylePreviewExample
             dateField.addDateListener ( new DateListener ()
             {
                 @Override
-                public void dateChanged ( final Date date )
+                public void dateChanged ( @Nullable final Date date )
                 {
                     final String d = date != null ? dateField.getDateFormat ().format ( date ) : "null";
                     final WebInnerNotification notification = new WebInnerNotification ();

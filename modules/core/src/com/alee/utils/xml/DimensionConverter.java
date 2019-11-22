@@ -17,6 +17,7 @@
 
 package com.alee.utils.xml;
 
+import com.alee.api.annotations.NotNull;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
@@ -35,19 +36,21 @@ public class DimensionConverter extends AbstractSingleValueConverter
     public static final String SEPARATOR = ",";
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return Dimension.class.isAssignableFrom ( type );
     }
 
+    @NotNull
     @Override
-    public String toString ( final Object object )
+    public String toString ( @NotNull final Object object )
     {
         return dimensionToString ( ( Dimension ) object );
     }
 
+    @NotNull
     @Override
-    public Object fromString ( final String dimension )
+    public Object fromString ( @NotNull final String dimension )
     {
         return dimensionFromString ( dimension );
     }
@@ -58,6 +61,7 @@ public class DimensionConverter extends AbstractSingleValueConverter
      * @param dimension dimension to convert
      * @return dimension converted into string
      */
+    @NotNull
     public static String dimensionToString ( final Dimension dimension )
     {
         return dimension.width + SEPARATOR + dimension.height;
@@ -66,29 +70,32 @@ public class DimensionConverter extends AbstractSingleValueConverter
     /**
      * Returns dimension read from string.
      *
-     * @param dimension dimension string
+     * @param string dimension string
      * @return dimension read from string
      */
-    public static Dimension dimensionFromString ( final String dimension )
+    @NotNull
+    public static Dimension dimensionFromString ( @NotNull final String string )
     {
+        final Dimension dimension;
         try
         {
-            if ( dimension.contains ( SEPARATOR ) )
+            if ( string.contains ( SEPARATOR ) )
             {
-                final StringTokenizer tokenizer = new StringTokenizer ( dimension, SEPARATOR, false );
+                final StringTokenizer tokenizer = new StringTokenizer ( string, SEPARATOR, false );
                 final int width = Integer.parseInt ( tokenizer.nextToken ().trim () );
                 final int height = Integer.parseInt ( tokenizer.nextToken ().trim () );
-                return new Dimension ( width, height );
+                dimension = new Dimension ( width, height );
             }
             else
             {
-                final int width = Integer.parseInt ( dimension );
-                return new Dimension ( width, width );
+                final int width = Integer.parseInt ( string );
+                dimension = new Dimension ( width, width );
             }
         }
         catch ( final Exception e )
         {
-            throw new XmlException ( "Unable to parse Dimension: " + dimension, e );
+            throw new XmlException ( "Unable to parse Dimension: " + string, e );
         }
+        return dimension;
     }
 }

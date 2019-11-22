@@ -1,6 +1,7 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.painter.decoration.WebDecoration;
@@ -65,20 +66,23 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
      * Returns grouping layout used to place specified component if it exists, {@code null} otherwise.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return grouping layout used to place specified component if it exists, {@code null} otherwise
      */
-    protected GroupingLayout getGroupingLayout ( final C c )
+    @Nullable
+    protected GroupingLayout getGroupingLayout ( final C c, final D d )
     {
+        GroupingLayout groupingLayout = null;
         final Container parent = c.getParent ();
         if ( parent != null )
         {
             final LayoutManager layout = parent.getLayout ();
             if ( layout instanceof GroupingLayout )
             {
-                return ( GroupingLayout ) layout;
+                groupingLayout = ( GroupingLayout ) layout;
             }
         }
-        return null;
+        return groupingLayout;
     }
 
     /**
@@ -88,17 +92,20 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
      * @param d painted decoration
      * @return descriptor for painted component sides
      */
+    @Nullable
     protected String getSides ( final C c, final D d )
     {
+        final String sides;
         if ( d.isSection () )
         {
-            return this.sides;
+            sides = this.sides;
         }
         else
         {
-            final GroupingLayout layout = getGroupingLayout ( c );
-            return layout != null ? layout.getSides ( c ) : this.sides;
+            final GroupingLayout layout = getGroupingLayout ( c, d );
+            sides = layout != null ? layout.getSides ( c ) : this.sides;
         }
+        return sides;
     }
 
     @Override
@@ -149,17 +156,20 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
      * @param d painted decoration
      * @return descriptor for painted component lines
      */
+    @Nullable
     protected String getLines ( final C c, final D d )
     {
+        final String lines;
         if ( d.isSection () )
         {
-            return this.lines;
+            lines = this.lines;
         }
         else
         {
-            final GroupingLayout layout = getGroupingLayout ( c );
-            return layout != null ? layout.getLines ( c ) : this.lines;
+            final GroupingLayout layout = getGroupingLayout ( c, d );
+            lines = layout != null ? layout.getLines ( c ) : this.lines;
         }
+        return lines;
     }
 
     @Override
@@ -367,6 +377,7 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
         }, bounds, sw, r, top, bottom, left, right );
     }
 
+    @NotNull
     @Override
     public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
     {

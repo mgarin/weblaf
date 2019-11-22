@@ -16,6 +16,8 @@
 
 package com.alee.graphics.filters;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * A filter which converts an image to grayscale using the NTSC brightness calculation.
  *
@@ -23,6 +25,9 @@ package com.alee.graphics.filters;
  */
 public class GrayscaleFilter extends PointFilter
 {
+    /**
+     * Constructs new {@link GrayscaleFilter}.
+     */
     public GrayscaleFilter ()
     {
         canFilterIndexColorModel = true;
@@ -32,14 +37,15 @@ public class GrayscaleFilter extends PointFilter
     public int filterRGB ( final int x, final int y, int rgb )
     {
         final int a = rgb & 0xff000000;
-        final int r = ( rgb >> 16 ) & 0xff;
-        final int g = ( rgb >> 8 ) & 0xff;
+        final int r = rgb >> 16 & 0xff;
+        final int g = rgb >> 8 & 0xff;
         final int b = rgb & 0xff;
         //		rgb = (r + g + b) / 3;	// simple average
-        rgb = ( r * 77 + g * 151 + b * 28 ) >> 8;    // NTSC luma
-        return a | ( rgb << 16 ) | ( rgb << 8 ) | rgb;
+        rgb = r * 77 + g * 151 + b * 28 >> 8;    // NTSC luma
+        return a | rgb << 16 | rgb << 8 | rgb;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

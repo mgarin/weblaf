@@ -17,14 +17,16 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Merge;
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleException;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
-import com.alee.utils.xml.Resource;
 import com.alee.utils.xml.XStreamContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -48,10 +50,6 @@ import java.util.Map;
  */
 public final class SkinInfoConverter extends ReflectionConverter
 {
-    /**
-     * todo 1. Create proper object->xml marshalling strategy
-     */
-
     /**
      * Context variables.
      */
@@ -77,6 +75,7 @@ public final class SkinInfoConverter extends ReflectionConverter
     /**
      * Custom resource map used by StyleEditor to link resources and modified XML files.
      * In other circumstances this map shouldn't be required and will be empty.
+     * todo This is a temporary hack for StyleEditor support, it will be removed once #540 is implemented
      */
     protected static final Map<String, Map<String, String>> resourceMap = new LinkedHashMap<String, Map<String, String>> ();
 
@@ -86,7 +85,7 @@ public final class SkinInfoConverter extends ReflectionConverter
      * @param mapper             mapper
      * @param reflectionProvider reflection provider
      */
-    public SkinInfoConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
+    public SkinInfoConverter ( @NotNull final Mapper mapper, @NotNull final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
@@ -100,7 +99,7 @@ public final class SkinInfoConverter extends ReflectionConverter
      * @param src       real XML location
      * @param xml       XML to use instead the real one
      */
-    public static void addCustomResource ( final String nearClass, final String src, final String xml )
+    public static void addCustomResource ( @NotNull final String nearClass, @NotNull final String src, @NotNull final String xml )
     {
         Map<String, String> nearClassMap = resourceMap.get ( nearClass );
         if ( nearClassMap == null )
@@ -112,13 +111,14 @@ public final class SkinInfoConverter extends ReflectionConverter
     }
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return type.equals ( SkinInfo.class );
     }
 
+    @NotNull
     @Override
-    public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
+    public Object unmarshal ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
     {
         // Skin class provided for include skin or extension skin
         final String superSkinClass = ( String ) context.get ( SKIN_CLASS );
@@ -174,17 +174,9 @@ public final class SkinInfoConverter extends ReflectionConverter
                 }
                 else if ( nodeName.equals ( ICON_NODE ) )
                 {
-                    // Reading skin icon
-                    // It is always located near skin class
-                    if ( skinInfo.getSkinClass () != null )
-                    {
-                        final Class<? extends Skin> skinClass = getSkinClass ( skinInfo.getSkinClass () );
-                        skinInfo.setIcon ( new ImageIcon ( skinClass.getResource ( reader.getValue () ) ) );
-                    }
-                    else
-                    {
-                        throw new StyleException ( "Skin class must be specified before icon" );
-                    }
+                    // Reading skin icon which should always be located near skin class
+                    final Class<? extends Skin> skinClass = getSkinClass ( skinInfo.getSkinClass () );
+                    skinInfo.setIcon ( new ImageIcon ( skinClass.getResource ( reader.getValue () ) ) );
                 }
                 else if ( nodeName.equals ( TITLE_NODE ) )
                 {
@@ -232,12 +224,12 @@ public final class SkinInfoConverter extends ReflectionConverter
                 }
                 else if ( nodeName.equals ( INCLUDE_NODE ) && !metaDataOnly )
                 {
-                    // Reading included skin
+                    // Reading include information
                     final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
-                    final String realClass = nearClass != null ? mapper.realClass ( nearClass ).getCanonicalName () : null;
-                    final String file = reader.getValue ();
-                    final Resource resource = new Resource ( realClass, file );
-                    final SkinInfo include = readInclude ( skinInfo, resource );
+                    final String path = reader.getValue ();
+
+                    // Reading included skin
+                    final SkinInfo include = readInclude ( skinInfo, nearClass, path );
 
                     // Merging icon sets to avoid duplicates
                     iconSets = Merge.basicRaw ().merge ( iconSets, include.getIconSets () );
@@ -272,7 +264,8 @@ public final class SkinInfoConverter extends ReflectionConverter
      * @param skinClass {@link Skin} class canonical name
      * @return {@link Skin} class for the specified canonical name
      */
-    private Class<? extends Skin> getSkinClass ( final String skinClass )
+    @NotNull
+    private Class<? extends Skin> getSkinClass ( @NotNull final String skinClass )
     {
         try
         {
@@ -285,28 +278,70 @@ public final class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
-     * Returns included skin information.
+     * Returns included {@link SkinInfo}.
      *
-     * @param skinInfo skin information
-     * @param resource included resourse file
-     * @return included skin information
+     * @param parent    parent {@link SkinInfo}
+     * @param nearClass canonical name of the class to look for included skin nearby
+     * @param path      path to included skin
+     * @return included {@link SkinInfo}
      */
-    private SkinInfo readInclude ( final SkinInfo skinInfo, final Resource resource )
+    @NotNull
+    private SkinInfo readInclude ( @NotNull final SkinInfo parent, @Nullable final String nearClass, @NotNull final String path )
     {
-        // Replacing null relative class with skin class
-        if ( resource.getClassName () == null )
+        // Constructing resource
+        final ClassResource resource;
+        if ( nearClass != null )
         {
-            final String skinClass = skinInfo.getSkinClass ();
-            if ( skinClass == null )
-            {
-                final String msg = "Included skin file '%s' specified but its '%s' is not set";
-                throw new StyleException ( String.format ( msg, resource.getPath (), CLASS_NODE ) );
-            }
-            resource.setClassName ( skinClass );
+            resource = new ClassResource ( mapper.realClass ( nearClass ), path );
+        }
+        else
+        {
+            resource = new ClassResource ( parent.getSkinClass (), path );
         }
 
         // Reading skin part from included file
-        return loadSkinInfo ( skinInfo, resource );
+        return loadSkinInfo ( parent, resource );
+    }
+
+    /**
+     * Loads SkinInfo from the specified resource file.
+     * It will use an XML from a predefined resources map if it exists there.
+     *
+     * @param parent   parent {@link SkinInfo}
+     * @param resource XML resource file
+     * @return loaded SkinInfo
+     */
+    @NotNull
+    private SkinInfo loadSkinInfo ( @NotNull final SkinInfo parent, @NotNull final ClassResource resource )
+    {
+        try
+        {
+            final SkinInfo skinInfo;
+            final XStreamContext context = new XStreamContext ( SKIN_CLASS, parent.getSkinClass () );
+            final Map<String, String> nearClassMap = resourceMap.get ( resource.getClassName () );
+            if ( nearClassMap != null )
+            {
+                final String xml = nearClassMap.get ( resource.getPath () );
+                if ( xml != null )
+                {
+                    skinInfo = XmlUtils.fromXML ( xml, context );
+                }
+                else
+                {
+                    skinInfo = XmlUtils.fromXML ( resource, context );
+                }
+            }
+            else
+            {
+                skinInfo = XmlUtils.fromXML ( resource, context );
+            }
+            return skinInfo;
+        }
+        catch ( final Exception e )
+        {
+            final String msg = "Included skin file '%s' cannot be read";
+            throw new StyleException ( String.format ( msg, resource.getPath () ), e );
+        }
     }
 
     /**
@@ -315,7 +350,8 @@ public final class SkinInfoConverter extends ReflectionConverter
      * @param className icon set class
      * @return icon set created using specified icon set class
      */
-    private IconSet readIconSet ( final Class<? extends IconSet> className )
+    @NotNull
+    private IconSet readIconSet ( @NotNull final Class<? extends IconSet> className )
     {
         try
         {
@@ -325,44 +361,6 @@ public final class SkinInfoConverter extends ReflectionConverter
         {
             final String msg = "Unable to load icon set '%s'";
             throw new StyleException ( String.format ( msg, className ), e );
-        }
-    }
-
-    /**
-     * Loads SkinInfo from the specified resource file.
-     * It will use an XML from a predefined resources map if it exists there.
-     *
-     * @param skinInfo skin information
-     * @param resource XML resource file
-     * @return loaded SkinInfo
-     */
-    private SkinInfo loadSkinInfo ( final SkinInfo skinInfo, final Resource resource )
-    {
-        try
-        {
-            final XStreamContext context = new XStreamContext ( SKIN_CLASS, skinInfo.getSkinClass () );
-            final Map<String, String> nearClassMap = resourceMap.get ( resource.getClassName () );
-            if ( nearClassMap != null )
-            {
-                final String xml = nearClassMap.get ( resource.getPath () );
-                if ( xml != null )
-                {
-                    return XmlUtils.fromXML ( xml, context );
-                }
-                else
-                {
-                    return XmlUtils.fromXML ( resource, context );
-                }
-            }
-            else
-            {
-                return XmlUtils.fromXML ( resource, context );
-            }
-        }
-        catch ( final Exception e )
-        {
-            final String msg = "Included skin file '%s' cannot be read";
-            throw new StyleException ( String.format ( msg, resource.getPath () ), e );
         }
     }
 }

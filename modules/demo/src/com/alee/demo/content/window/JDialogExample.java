@@ -106,7 +106,7 @@ public class JDialogExample extends AbstractStylePreviewExample
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final Window parent = CoreSwingUtils.getWindowAncestor ( button );
+                    final Window parent = CoreSwingUtils.getNonNullWindowAncestor ( button );
                     final String title = getExampleLanguagePrefix () + "content";
                     final JDialog dialog = new JDialog ( parent );
                     UILanguageManager.registerComponent ( dialog.getRootPane (), title );

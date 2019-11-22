@@ -22,6 +22,7 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Mergeable;
+import com.alee.api.resource.Resource;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
@@ -33,10 +34,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -139,7 +138,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
      */
     public Dictionary ()
     {
-        this ( ( String ) null, null );
+        this ( null, null );
     }
 
     /**
@@ -166,37 +165,13 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
     }
 
     /**
-     * Loads {@link Dictionary} from the specified resource.
+     * Loads {@link Dictionary} from the specified {@link Resource}.
      *
-     * @param nearClass {@link Class} used to locale resource
-     * @param resource  resource to load {@link Dictionary} from
+     * @param resource {@link Resource} to load {@link Dictionary} from
      */
-    public Dictionary ( @NotNull final Class nearClass, @NotNull final String resource )
+    public Dictionary ( @NotNull final Resource resource )
     {
-        this.id = TextUtils.generateId ( ID_PREFIX );
-        XmlUtils.getXStream ().fromXML ( nearClass.getResourceAsStream ( resource ), this );
-    }
-
-    /**
-     * Loads {@link Dictionary} from the specified {@link URL}.
-     *
-     * @param url {@link URL} to load {@link Dictionary} from
-     */
-    public Dictionary ( @NotNull final URL url )
-    {
-        this.id = TextUtils.generateId ( ID_PREFIX );
-        XmlUtils.getXStream ().fromXML ( url, this );
-    }
-
-    /**
-     * Loads {@link Dictionary} from the specified {@link File}.
-     *
-     * @param file {@link File} to load {@link Dictionary} from
-     */
-    public Dictionary ( @NotNull final File file )
-    {
-        this.id = TextUtils.generateId ( ID_PREFIX );
-        XmlUtils.getXStream ().fromXML ( file, this );
+        this ( resource.getInputStream () );
     }
 
     /**
@@ -207,7 +182,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
     public Dictionary ( @NotNull final InputStream inputStream )
     {
         this.id = TextUtils.generateId ( ID_PREFIX );
-        XmlUtils.getXStream ().fromXML ( inputStream, this );
+        XmlUtils.fromXML ( inputStream, this );
     }
 
     @NotNull
@@ -399,46 +374,6 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
             }
         }
         return result;
-    }
-
-    /**
-     * Returns {@link List} of {@link Record}s for the specified language key.
-     * Without specific {@link Locale} multiple {@link Record}s might be returned if translations for the same key are spreaded.
-     *
-     * @param key {@link Record} language key
-     * @return {@link List} of {@link Record}s for the specified language key
-     */
-    @NotNull
-    private synchronized List<Record> getRecords ( @NotNull final String key )
-    {
-        return getRecords ( key, new ArrayList<Record> () );
-    }
-
-    /**
-     * Returns {@link List} of {@link Record}s for the specified language key.
-     * This method doesn't ask for {@link Locale}, so multiple {@link Record}s can be returned as a result.
-     *
-     * @param key     {@link Record} language key
-     * @param results {@link List} to collect {@link Record}s into
-     * @return {@link List} of {@link Record}s for the specified language key
-     */
-    @NotNull
-    private synchronized List<Record> getRecords ( @NotNull final String key, @NotNull final List<Record> results )
-    {
-        final String dicPrefix = usablePrefix ();
-        final String subKey = key.startsWith ( dicPrefix ) ? key.substring ( dicPrefix.length () ) : null;
-        if ( subKey != null )
-        {
-            collectLocalRecords ( subKey, results );
-            if ( CollectionUtils.notEmpty ( dictionaries ) )
-            {
-                for ( final Dictionary dictionary : dictionaries )
-                {
-                    dictionary.getRecords ( subKey, results );
-                }
-            }
-        }
-        return results;
     }
 
     /**

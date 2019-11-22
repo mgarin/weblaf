@@ -55,34 +55,39 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
     /**
      * File list in which this list cell renderer is used.
      */
-    protected WebFileList fileList;
+    @NotNull
+    protected final WebFileList fileList;
 
     /**
      * Thumbnail icon label.
      */
-    protected WebLabel iconLabel;
+    @NotNull
+    protected final WebLabel iconLabel;
 
     /**
      * File name label.
      */
-    protected WebLabel nameLabel;
+    @NotNull
+    protected final WebLabel nameLabel;
 
     /**
      * File size label.
      */
-    protected WebLabel sizeLabel;
+    @NotNull
+    protected final WebLabel sizeLabel;
 
     /**
      * File description label.
      */
-    protected WebLabel descriptionLabel;
+    @NotNull
+    protected final WebLabel descriptionLabel;
 
     /**
      * Constructs cell renderer for the specified file list.
      *
      * @param fileList file list in which this cell renderer is used
      */
-    public WebFileListCellRenderer ( final WebFileList fileList )
+    public WebFileListCellRenderer ( @NotNull final WebFileList fileList )
     {
         super ( StyleId.filelistCellRenderer.at ( fileList ) );
 
@@ -138,6 +143,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      *
      * @return description bounds for list cell
      */
+    @NotNull
     public Rectangle getDescriptionBounds ()
     {
         return ( ( FileCellLayout ) getLayout () ).getDescriptionBounds ();
@@ -156,6 +162,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      *
      * @return thumbnail icon label
      */
+    @NotNull
     public JLabel getIconLabel ()
     {
         return iconLabel;
@@ -166,6 +173,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      *
      * @return file name label
      */
+    @NotNull
     public JLabel getNameLabel ()
     {
         return nameLabel;
@@ -176,6 +184,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      *
      * @return file size label
      */
+    @NotNull
     public JLabel getSizeLabel ()
     {
         return sizeLabel;
@@ -186,11 +195,13 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      *
      * @return file description label
      */
+    @NotNull
     public JLabel getDescriptionLabel ()
     {
         return descriptionLabel;
     }
 
+    @NotNull
     @Override
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                     final boolean cellHasFocus )
@@ -209,13 +220,17 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
             ThumbnailGenerator.queueThumbnailLoad ( fileList, element, BoundsType.padding.bounds ( iconLabel ).getSize (), false );
 
             // Image thumbnail
-            final ImageIcon thumbnail = element.getEnabledThumbnail ();
+            final Icon thumbnail = element.getEnabledThumbnail ();
             iconLabel.setIcon ( thumbnail );
 
-            // Image description
-            if ( thumbnail != null )
+            // Optional image description
+            if ( thumbnail != null && thumbnail instanceof ImageIcon )
             {
-                imageSize = thumbnail.getDescription ();
+                imageSize = ( ( ImageIcon ) thumbnail ).getDescription ();
+            }
+            else if ( thumbnail != null )
+            {
+                imageSize = thumbnail.getIconWidth () + "x" + thumbnail.getIconHeight ();
             }
         }
         else
@@ -276,6 +291,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      * @param cellHasFocus whether cell has focus or not
      * @return style ID for specific list cell
      */
+    @NotNull
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )
     {
@@ -289,7 +305,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
      */
     protected boolean isTilesView ()
     {
-        return fileList != null && fileList.getFileListViewType ().equals ( FileListViewType.tiles );
+        return fileList.getFileListViewType ().equals ( FileListViewType.tiles );
     }
 
     /**
@@ -361,6 +377,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
         @Override
         public Dimension preferredLayoutSize ( @NotNull final Container container )
         {
+            final Dimension ps;
             final Insets i = container.getInsets ();
             final Dimension is = iconLabel.getPreferredSize ();
             final Dimension ns = nameLabel.getPreferredSize ();
@@ -379,12 +396,19 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
                     bs.width = Math.max ( bs.width, ss.width );
                     bs.height += gap + ss.height;
                 }
-                return new Dimension ( i.left + is.width + gap + bs.width + i.right, i.top + Math.max ( is.height, bs.height ) + i.bottom );
+                ps = new Dimension (
+                        i.left + is.width + gap + bs.width + i.right,
+                        i.top + Math.max ( is.height, bs.height ) + i.bottom
+                );
             }
             else
             {
-                return new Dimension ( i.left + Math.max ( is.width, ns.width ) + i.right, i.top + is.height + gap + ns.height + i.bottom );
+                ps = new Dimension (
+                        i.left + Math.max ( is.width, ns.width ) + i.right,
+                        i.top + is.height + gap + ns.height + i.bottom
+                );
             }
+            return ps;
         }
 
         /**
@@ -392,38 +416,50 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
          *
          * @return description bounds for list cell
          */
+        @NotNull
         public Rectangle getDescriptionBounds ()
         {
-            // Constants for further size calculations
+            final Rectangle bounds;
             final Dimension cellSize = getSize ();
             final Dimension iconSize = iconLabel.getPreferredSize ();
             final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
             final Insets i = getInsets ();
             final boolean tilesView = isTilesView ();
-
-            // Determining
             if ( tilesView )
             {
-                // Tile view
                 if ( ltr )
                 {
                     // Icon at the left side, description at the right side
                     final int x = i.left + iconSize.width + gap;
-                    return new Rectangle ( x, i.top, cellSize.width - x - i.right, cellSize.height - i.top - i.bottom );
+                    bounds = new Rectangle (
+                            x,
+                            i.top,
+                            cellSize.width - x - i.right,
+                            cellSize.height - i.top - i.bottom
+                    );
                 }
                 else
                 {
                     // Icon at the right side, description at the left side
-                    return new Rectangle ( i.left, i.top, cellSize.width - gap - iconSize.width - i.right,
-                            cellSize.height - i.top - i.bottom );
+                    bounds = new Rectangle (
+                            i.left,
+                            i.top,
+                            cellSize.width - gap - iconSize.width - i.right,
+                            cellSize.height - i.top - i.bottom
+                    );
                 }
             }
             else
             {
-                // Icon view
                 final int ny = i.top + iconSize.height + gap;
-                return new Rectangle ( i.left, ny, cellSize.width - i.left - i.right, cellSize.height - ny - i.bottom );
+                bounds = new Rectangle (
+                        i.left,
+                        ny,
+                        cellSize.width - i.left - i.right,
+                        cellSize.height - ny - i.bottom
+                );
             }
+            return bounds;
         }
     }
 }

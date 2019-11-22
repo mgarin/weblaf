@@ -1,0 +1,44 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkinExtension">
+
+    <!-- Extension settings -->
+    <id>weblaf.ninepatch.editor.web.extension</id>
+    <class>com.alee.extended.ninepatch.skin.NPEDarkSkinExtension</class>
+    <extends>weblaf.dark.skin</extends>
+
+    <!-- com.alee.extended.ninepatch.NinePatchEditor -->
+
+    <!-- Editor panel -->
+    <style type="panel" id="ninepatcheditor">
+
+        <!-- Toolbar -->
+        <style type="toolbar" id="toolbar" extends="attached-north" />
+
+        <!-- Zoom slider -->
+        <style type="slider" id="zoom">
+            <component>
+                <paintTicks>false</paintTicks>
+                <paintLabels>false</paintLabels>
+            </component>
+            <painter>
+                <angledThumb>false</angledThumb>
+            </painter>
+        </style>
+
+        <!-- Preview field -->
+        <style type="textfield" id="preview" extends="nofocus" />
+
+        <!-- Apha background panel -->
+        <style type="panel" id="preview-background">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <AlphaLayerBackground />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

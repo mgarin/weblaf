@@ -5,10 +5,12 @@
 
     <xs:include schemaLocation="../AbstractIconData.xsd" />
     <xs:include schemaLocation="SvgFill.xsd" />
+    <xs:include schemaLocation="SvgOpacity.xsd" />
     <xs:include schemaLocation="SvgStroke.xsd" />
     <xs:include schemaLocation="SvgTransform.xsd" />
+    <xs:include schemaLocation="SvgGrayscale.xsd" />
+    <xs:include schemaLocation="SvgColorOpacity.xsd" />
 
-    <!-- com.alee.extended.svg.SvgIcon -->
     <!-- com.alee.extended.svg.SvgIconData -->
     <xs:complexType name="SvgIconData">
         <xs:complexContent>
@@ -17,18 +19,18 @@
                 <!-- Adjustments -->
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
 
-                    <!-- Basic supported shadows -->
+                    <!-- Basic supported adjustments -->
                     <xs:element name="SvgFill" type="SvgFill" />
+                    <xs:element name="SvgOpacity" type="SvgOpacity" />
                     <xs:element name="SvgStroke" type="SvgStroke" />
                     <xs:element name="SvgTransform" type="SvgTransform" />
+                    <xs:element name="SvgGrayscale" type="SvgGrayscale" />
+                    <xs:element name="SvgColorOpacity" type="SvgColorOpacity" />
 
                 </xs:choice>
 
                 <!-- Preferred icon size -->
                 <xs:attribute name="size" type="java.awt:Dimension" use="optional" />
-
-                <!-- Custom SVG universe key -->
-                <xs:attribute name="universe" type="xs:string" use="optional" />
 
             </xs:extension>
         </xs:complexContent>

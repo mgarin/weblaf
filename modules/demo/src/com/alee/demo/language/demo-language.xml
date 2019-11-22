@@ -128,14 +128,12 @@
         </record>
     </Dictionary>
     <Dictionary name="Content area" prefix="content">
-        <record key="empty">
-            <value lang="en">You can find all examples{br}in the examples frame on the left</value>
-            <value lang="ru">Вы можете найти все примеры{br}во фрейме с примерами слева</value>
-        </record>
-        <record key="issues">
-            <value lang="en">This is an early demo preview{br}it still contains some issues</value>
-            <value lang="ru">Это демо является ранним превью{br}в нём ещё присутствуют проблемы</value>
-        </record>
+        <Dictionary prefix="information.overlay">
+            <record key="empty">
+                <value lang="en">Library version{br}{%s %s:b}{br}{br}Running on{br}{%s:b}{br}{%s %s:b}</value>
+                <value lang="ru">Версия библиотеки{br}{%s %s:b}{br}{br}Запущена на{br}{%s:b}{br}{%s %s:b}</value>
+            </record>
+        </Dictionary>
         <Dictionary name="Example" prefix="example">
             <Dictionary name="Wiki" prefix="wiki">
                 <record key="oracle">
@@ -2991,10 +2989,16 @@
                             <value lang="ru">Оттенки серого</value>
                         </record>
                     </Dictionary>
-                    <Dictionary prefix="modified">
+                    <Dictionary prefix="stroke">
                         <record key="title">
-                            <value lang="en">Modified</value>
-                            <value lang="ru">Модифицированная</value>
+                            <value lang="en">Stroke color</value>
+                            <value lang="ru">Цвет бордера</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="opacity">
+                        <record key="title">
+                            <value lang="en">Opacity</value>
+                            <value lang="ru">Прозрачность</value>
                         </record>
                     </Dictionary>
                 </Dictionary>

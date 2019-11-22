@@ -17,6 +17,9 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +54,8 @@ public final class WebUtils
      * @param url the url to normalize
      * @return normalized url
      */
-    public static String normalizeUrl ( final String url )
+    @NotNull
+    public static String normalizeUrl ( @NotNull final String url )
     {
         try
         {
@@ -59,7 +63,7 @@ public final class WebUtils
         }
         catch ( final URISyntaxException e )
         {
-            return url;
+            throw new UtilityException ( "Unable to normalize URL: " + url, e );
         }
     }
 
@@ -69,7 +73,8 @@ public final class WebUtils
      * @param url the url to parse
      * @return parameters map
      */
-    public static Map<String, List<String>> getUrlParameters ( final String url )
+    @NotNull
+    public static Map<String, List<String>> getUrlParameters ( @NotNull final String url )
     {
         final Map<String, List<String>> params = new HashMap<String, List<String>> ();
         final String[] urlParts = url.split ( "\\?" );
@@ -103,7 +108,8 @@ public final class WebUtils
      * @param url the url to encode
      * @return encoded url
      */
-    public static String encodeUrl ( final String url )
+    @NotNull
+    public static String encodeUrl ( @NotNull final String url )
     {
         try
         {
@@ -113,7 +119,7 @@ public final class WebUtils
         }
         catch ( final Exception e )
         {
-            return url;
+            throw new UtilityException ( "Unable to encore URL: " + url, e );
         }
     }
 
@@ -123,7 +129,8 @@ public final class WebUtils
      * @param url the url to decode
      * @return decoded url
      */
-    public static String decodeUrl ( final String url )
+    @NotNull
+    public static String decodeUrl ( @NotNull final String url )
     {
         try
         {
@@ -131,7 +138,7 @@ public final class WebUtils
         }
         catch ( final UnsupportedEncodingException e )
         {
-            return url;
+            throw new UtilityException ( "Unable to decode URL: " + url, e );
         }
     }
 
@@ -142,7 +149,7 @@ public final class WebUtils
      * @throws URISyntaxException if URI cannot be created for the given address
      * @throws IOException        if browser application is not found or fails to launch
      */
-    public static void browseSite ( final String address ) throws URISyntaxException, IOException
+    public static void browseSite ( @NotNull final String address ) throws URISyntaxException, IOException
     {
         Desktop.getDesktop ().browse ( new URI ( address ) );
     }
@@ -152,13 +159,13 @@ public final class WebUtils
      *
      * @param address the address to open
      */
-    public static void browseSiteSafely ( final String address )
+    public static void browseSiteSafely ( @NotNull final String address )
     {
         try
         {
             browseSite ( address );
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }
@@ -169,7 +176,7 @@ public final class WebUtils
      *
      * @param address the address to share
      */
-    public static void shareOnTwitter ( final String address )
+    public static void shareOnTwitter ( @NotNull final String address )
     {
         new Thread ( new Runnable ()
         {
@@ -186,7 +193,7 @@ public final class WebUtils
      *
      * @param address the address to share
      */
-    public static void shareOnVk ( final String address )
+    public static void shareOnVk ( @NotNull final String address )
     {
         new Thread ( new Runnable ()
         {
@@ -203,7 +210,7 @@ public final class WebUtils
      *
      * @param address the address to share
      */
-    public static void shareOnFb ( final String address )
+    public static void shareOnFb ( @NotNull final String address )
     {
         new Thread ( new Runnable ()
         {
@@ -221,7 +228,7 @@ public final class WebUtils
      * @param file the file to open
      * @throws IOException if the specified file has no associated application or the associated application fails to be launched
      */
-    public static void openFile ( final File file ) throws IOException
+    public static void openFile ( @NotNull final File file ) throws IOException
     {
         Desktop.getDesktop ().open ( file );
     }
@@ -231,13 +238,13 @@ public final class WebUtils
      *
      * @param file the file to open
      */
-    public static void openFileSafely ( final File file )
+    public static void openFileSafely ( @NotNull final File file )
     {
         try
         {
             openFile ( file );
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }
@@ -250,7 +257,7 @@ public final class WebUtils
      * @throws URISyntaxException if mailing URI cannot be created
      * @throws IOException        if used mail client cannot be found
      */
-    public static void writeEmail ( final String email ) throws URISyntaxException, IOException
+    public static void writeEmail ( @NotNull final String email ) throws URISyntaxException, IOException
     {
         writeEmail ( email, null, null );
     }
@@ -264,7 +271,8 @@ public final class WebUtils
      * @throws URISyntaxException if mailing URI cannot be created
      * @throws IOException        if used mail client cannot be found
      */
-    public static void writeEmail ( String email, String subject, String body ) throws URISyntaxException, IOException
+    public static void writeEmail ( @NotNull String email, @Nullable String subject, @Nullable String body )
+            throws URISyntaxException, IOException
     {
         final URI uri;
         if ( !email.startsWith ( "mailto:" ) )
@@ -289,13 +297,13 @@ public final class WebUtils
      *
      * @param email the destination email address
      */
-    public static void writeEmailSafely ( final String email )
+    public static void writeEmailSafely ( @NotNull final String email )
     {
         try
         {
             writeEmail ( email );
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }
@@ -308,13 +316,13 @@ public final class WebUtils
      * @param subject letter subject
      * @param body    letter text
      */
-    public static void writeEmailSafely ( final String email, final String subject, final String body )
+    public static void writeEmailSafely ( @NotNull final String email, @Nullable final String subject, @Nullable final String body )
     {
         try
         {
             writeEmail ( email, subject, body );
         }
-        catch ( final Exception e )
+        catch ( final Exception ignored )
         {
             //
         }

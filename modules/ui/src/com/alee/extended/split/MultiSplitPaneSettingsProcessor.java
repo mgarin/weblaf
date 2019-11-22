@@ -57,7 +57,7 @@ public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiS
     }
 
     @Override
-    protected void register ( final WebMultiSplitPane multiSplitPane )
+    protected void register ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
         multiSplitResizeListener = new MultiSplitResizeAdapter ()
         {
@@ -93,7 +93,7 @@ public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiS
     }
 
     @Override
-    protected void unregister ( final WebMultiSplitPane multiSplitPane )
+    protected void unregister ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
         multiSplitPane.removeExpansionListener ( multiSplitExpansionListener );
         multiSplitExpansionListener = null;
@@ -103,7 +103,7 @@ public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiS
     }
 
     @Override
-    protected void loadSettings ( final WebMultiSplitPane multiSplitPane )
+    protected void loadSettings ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
         final MultiSplitState state = loadSettings ();
         if ( state != null )
@@ -113,7 +113,7 @@ public class MultiSplitPaneSettingsProcessor extends SettingsProcessor<WebMultiS
     }
 
     @Override
-    protected void saveSettings ( final WebMultiSplitPane multiSplitPane )
+    protected void saveSettings ( @NotNull final WebMultiSplitPane multiSplitPane )
     {
         final MultiSplitState state = multiSplitPane.getMultiSplitState ();
         if ( state != null )

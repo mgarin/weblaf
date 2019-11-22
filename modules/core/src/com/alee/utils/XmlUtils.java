@@ -17,21 +17,30 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.ClassResource;
+import com.alee.api.resource.FileResource;
+import com.alee.api.resource.Resource;
+import com.alee.api.resource.UrlResource;
 import com.alee.utils.general.Pair;
+import com.alee.utils.swing.Scale;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.core.util.CompositeClassLoader;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.mapper.Mapper;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.*;
-import java.net.URL;
 
 /**
  * This class provides a set of utilities to easily serialize and deserialize objects into and from XML.
@@ -47,6 +56,20 @@ public final class XmlUtils
      */
 
     /**
+     * {@link Resource} attributes.
+     */
+    public static final String NEAR_CLASS_ATTRIBUTE = "nearClass";
+    public static final String BASE_ATTRIBUTE = "base";
+    public static final String PATH_ATTRIBUTE = "path";
+    public static final String URL_ATTRIBUTE = "url";
+
+    /**
+     * {@link Resource}-related context values.
+     */
+    public static final String CONTEXT_NEAR_CLASS = "Resource.nearClass";
+    public static final String CONTEXT_BASE = "Resource.base";
+
+    /**
      * Whether or not should offer better aliases for standard JDK classes like {@link Point} and {@link Rectangle}.
      */
     private static boolean aliasJdkClasses = true;
@@ -59,6 +82,7 @@ public final class XmlUtils
     /**
      * XStream instance.
      */
+    @Nullable
     private static XStream xStream = null;
 
     /**
@@ -74,6 +98,7 @@ public final class XmlUtils
      *
      * @return XStream
      */
+    @NotNull
     public static XStream getXStream ()
     {
         if ( xStream == null )
@@ -158,12 +183,9 @@ public final class XmlUtils
                 xStream.registerConverter ( new StrokeConverter () );
             }
 
-            // XML resources aliases
-            xStream.processAnnotations ( ResourceLocation.class );
-            xStream.processAnnotations ( Resource.class );
-
             // Additional WebLaF data classes aliases
             xStream.processAnnotations ( Pair.class );
+            xStream.processAnnotations ( Scale.class );
         }
         catch ( final Exception e )
         {
@@ -198,7 +220,7 @@ public final class XmlUtils
      *
      * @param type the type with XStream annotations
      */
-    public static void processAnnotations ( final Class type )
+    public static void processAnnotations ( @NotNull final Class type )
     {
         getXStream ().processAnnotations ( type );
     }
@@ -208,7 +230,7 @@ public final class XmlUtils
      *
      * @param types the types with XStream annotations
      */
-    public static void processAnnotations ( final Class[] types )
+    public static void processAnnotations ( @NotNull final Class[] types )
     {
         getXStream ().processAnnotations ( types );
     }
@@ -219,7 +241,7 @@ public final class XmlUtils
      * @param name Short name
      * @param type Type to be aliased
      */
-    public static void alias ( final String name, final Class type )
+    public static void alias ( @NotNull final String name, @NotNull final Class type )
     {
         getXStream ().alias ( name, type );
     }
@@ -230,7 +252,7 @@ public final class XmlUtils
      * @param type  class owning the field
      * @param field name of the field
      */
-    public static void omitField ( final Class type, final String field )
+    public static void omitField ( @NotNull final Class type, @NotNull final String field )
     {
         getXStream ().omitField ( type, field );
     }
@@ -241,7 +263,7 @@ public final class XmlUtils
      * @param type  the name of the field
      * @param field the Class containing such field
      */
-    public static void useAttributeFor ( final Class type, final String field )
+    public static void useAttributeFor ( @NotNull final Class type, @NotNull final String field )
     {
         getXStream ().useAttributeFor ( type, field );
     }
@@ -252,7 +274,7 @@ public final class XmlUtils
      * @param type  class owning the implicit array
      * @param field name of the array field
      */
-    public static void addImplicitArray ( final Class type, final String field )
+    public static void addImplicitArray ( @NotNull final Class type, @NotNull final String field )
     {
         getXStream ().addImplicitArray ( type, field );
     }
@@ -264,7 +286,7 @@ public final class XmlUtils
      * @param field    name of the array field in the ownerType
      * @param itemName alias name of the items
      */
-    public static void addImplicitArray ( final Class type, final String field, final String itemName )
+    public static void addImplicitArray ( @NotNull final Class type, @NotNull final String field, @NotNull final String itemName )
     {
         getXStream ().addImplicitArray ( type, field, itemName );
     }
@@ -274,7 +296,7 @@ public final class XmlUtils
      *
      * @param converter the new converter
      */
-    public static void registerConverter ( final Converter converter )
+    public static void registerConverter ( @NotNull final Converter converter )
     {
         getXStream ().registerConverter ( converter );
     }
@@ -284,7 +306,7 @@ public final class XmlUtils
      *
      * @param converter the new converter
      */
-    public static void registerConverter ( final SingleValueConverter converter )
+    public static void registerConverter ( @NotNull final SingleValueConverter converter )
     {
         getXStream ().registerConverter ( converter );
     }
@@ -296,109 +318,9 @@ public final class XmlUtils
      * @param aliasProvider AliasProvider ancestor class
      * @param <T>           specific class type
      */
-    public static <T extends AliasProvider> void alias ( final Class<T> aliasProvider )
+    public static <T extends AliasProvider> void alias ( @NotNull final Class<T> aliasProvider )
     {
         ReflectUtils.callStaticMethodSafely ( aliasProvider, AliasProvider.methodName, getXStream () );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param reader XML text source
-     * @param <T>    read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final Reader reader )
-    {
-        return ( T ) getXStream ().fromXML ( reader );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param reader  XML text source
-     * @param context unmarshalling context data
-     * @param <T>     read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final Reader reader, final XStreamContext context )
-    {
-        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( reader ), null, context );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param input XML text source
-     * @param <T>   read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final InputStream input )
-    {
-        return ( T ) getXStream ().fromXML ( input );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param input   XML text source
-     * @param context unmarshalling context data
-     * @param <T>     read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final InputStream input, final XStreamContext context )
-    {
-        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( input ), null, context );
-    }
-
-    /**
-     * Returns Object deserialized from XML text.
-     *
-     * @param url XML text source
-     * @param <T> read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final URL url )
-    {
-        return ( T ) getXStream ().fromXML ( url );
-    }
-
-    /**
-     * Returns Object deserialized from XML text.
-     *
-     * @param url     XML text source
-     * @param context unmarshalling context data
-     * @param <T>     read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final URL url, final XStreamContext context )
-    {
-        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( url ), null, context );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param file file with XML content
-     * @param <T>  read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final File file )
-    {
-        return ( T ) getXStream ().fromXML ( file );
-    }
-
-    /**
-     * Returns Object deserialized from XML content.
-     *
-     * @param file    file with XML content
-     * @param context unmarshalling context data
-     * @param <T>     read object type
-     * @return deserialized object
-     */
-    public static <T> T fromXML ( final File file, final XStreamContext context )
-    {
-        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( file ), null, context );
     }
 
     /**
@@ -408,9 +330,22 @@ public final class XmlUtils
      * @param <T> read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( final String xml )
+    public static <T> T fromXML ( @NotNull final String xml )
     {
         return ( T ) getXStream ().fromXML ( xml );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param xml  XML content
+     * @param root root {@link Object}
+     * @param <T>  read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final String xml, @NotNull final Object root )
+    {
+        return ( T ) getXStream ().fromXML ( xml, root );
     }
 
     /**
@@ -421,7 +356,7 @@ public final class XmlUtils
      * @param <T>     read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( final String xml, final XStreamContext context )
+    public static <T> T fromXML ( @NotNull final String xml, @Nullable final XStreamContext context )
     {
         return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( new StringReader ( xml ) ), null, context );
     }
@@ -429,78 +364,115 @@ public final class XmlUtils
     /**
      * Returns Object deserialized from XML text.
      *
-     * @param resource XML text source description
+     * @param resource {@link Resource}
      * @param <T>      read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( final Resource resource )
+    public static <T> T fromXML ( @NotNull final Resource resource )
     {
-        return fromXML ( resource, null );
+        return fromXML ( resource.getInputStream () );
     }
 
     /**
      * Returns Object deserialized from XML text.
      *
-     * @param resource XML text source description
+     * @param resource {@link Resource}
+     * @param root     root {@link Object}
+     * @param <T>      read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final Resource resource, @NotNull final Object root )
+    {
+        return fromXML ( resource.getInputStream (), root );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param resource {@link Resource}
      * @param context  unmarshalling context data
      * @param <T>      read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( final Resource resource, final XStreamContext context )
+    public static <T> T fromXML ( @NotNull final Resource resource, @Nullable final XStreamContext context )
     {
-        try
-        {
-            switch ( resource.getLocation () )
-            {
-                case url:
-                {
-                    return fromXML ( new URL ( resource.getPath () ), context );
-                }
-                case filePath:
-                {
-                    return fromXML ( new File ( resource.getPath () ), context );
-                }
-                case nearClass:
-                {
-                    // todo Replace with try-with-resource when switched to JDK8+
-                    InputStream is = null;
-                    try
-                    {
-                        is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getPath () );
-                        if ( is == null )
-                        {
-                            final String src = resource.getPath ();
-                            final String cn = resource.getClassName ();
-                            final String msg = "Unable to read XML file '%s' near class: %s";
-                            throw new RuntimeException ( String.format ( msg, src, cn ) );
-                        }
-                        return fromXML ( is, context );
-                    }
-                    finally
-                    {
-                        try
-                        {
-                            if ( is != null )
-                            {
-                                is.close ();
-                            }
-                        }
-                        catch ( final Exception e )
-                        {
-                            // Ignore this exception
-                        }
-                    }
-                }
-                default:
-                {
-                    throw new RuntimeException ( "Unknown resource location type: " + resource.getLocation () );
-                }
-            }
-        }
-        catch ( final Exception e )
-        {
-            throw new RuntimeException ( "Unable to deserialize object from XML", e );
-        }
+        return fromXML ( resource.getInputStream (), context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param input XML text source
+     * @param <T>   read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final InputStream input )
+    {
+        return ( T ) getXStream ().fromXML ( input );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param input XML text source
+     * @param root  root {@link Object}
+     * @param <T>   read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final InputStream input, @NotNull final Object root )
+    {
+        return ( T ) getXStream ().fromXML ( input, root );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param input   XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final InputStream input, @Nullable final XStreamContext context )
+    {
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( input ), null, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param reader XML text source
+     * @param <T>    read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final Reader reader )
+    {
+        return ( T ) getXStream ().fromXML ( reader );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param reader XML text source
+     * @param root   root {@link Object}
+     * @param <T>    read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final Reader reader, @NotNull final Object root )
+    {
+        return ( T ) getXStream ().fromXML ( reader, root );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
+     * @param reader  XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( @NotNull final Reader reader, @Nullable final XStreamContext context )
+    {
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( reader ), null, context );
     }
 
     /**
@@ -509,7 +481,7 @@ public final class XmlUtils
      * @param obj  object to serialize
      * @param file output file
      */
-    public static void toXML ( final Object obj, final String file )
+    public static void toXML ( @NotNull final Object obj, @NotNull final String file )
     {
         toXML ( obj, new File ( file ) );
     }
@@ -520,7 +492,7 @@ public final class XmlUtils
      * @param obj  object to serialize
      * @param file output file
      */
-    public static void toXML ( final Object obj, final File file )
+    public static void toXML ( @NotNull final Object obj, @NotNull final File file )
     {
         try
         {
@@ -543,7 +515,8 @@ public final class XmlUtils
      * @param obj object to serialize
      * @return serialized into XML object representation
      */
-    public static String toXML ( final Object obj )
+    @NotNull
+    public static String toXML ( @NotNull final Object obj )
     {
         return getXStream ().toXML ( obj );
     }
@@ -554,7 +527,7 @@ public final class XmlUtils
      * @param obj object to serialize
      * @param out output writer
      */
-    public static void toXML ( final Object obj, final Writer out )
+    public static void toXML ( @NotNull final Object obj, @NotNull final Writer out )
     {
         getXStream ().toXML ( obj, out );
     }
@@ -565,7 +538,7 @@ public final class XmlUtils
      * @param obj object to serialize
      * @param out output stream
      */
-    public static void toXML ( final Object obj, final OutputStream out )
+    public static void toXML ( @NotNull final Object obj, @NotNull final OutputStream out )
     {
         getXStream ().toXML ( obj, out );
     }
@@ -576,8 +549,60 @@ public final class XmlUtils
      * @param obj    object to serialize
      * @param writer hierarchical stream writer
      */
-    public static void toXML ( final Object obj, final HierarchicalStreamWriter writer )
+    public static void toXML ( @NotNull final Object obj, @NotNull final HierarchicalStreamWriter writer )
     {
         getXStream ().marshal ( obj, writer );
+    }
+
+    /**
+     * Returns {@link Resource} based on the available attributes in the current node.
+     *
+     * @param reader  {@link HierarchicalStreamReader}
+     * @param context {@link UnmarshallingContext}
+     * @param mapper  {@link Mapper}
+     * @return {@link Resource} based on the available attributes in the current node
+     */
+    @NotNull
+    public static Resource readResource ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context,
+                                          @NotNull final Mapper mapper )
+    {
+        final Resource resource;
+        final String path = reader.getAttribute ( "path" );
+        final String contextBase = ( String ) context.get ( CONTEXT_BASE );
+        if ( path != null )
+        {
+            final String completePath = contextBase != null ? NetUtils.joinUrlPaths ( contextBase, path ) : path;
+            final String nearClass = reader.getAttribute ( "nearClass" );
+            if ( nearClass != null )
+            {
+                resource = new ClassResource ( mapper.realClass ( nearClass ), completePath );
+            }
+            else
+            {
+                final String contextNearClass = ( String ) context.get ( CONTEXT_NEAR_CLASS );
+                if ( contextNearClass != null )
+                {
+                    resource = new ClassResource ( mapper.realClass ( contextNearClass ), completePath );
+                }
+                else
+                {
+                    resource = new FileResource ( completePath );
+                }
+            }
+        }
+        else
+        {
+            final String url = reader.getAttribute ( "url" );
+            if ( url != null )
+            {
+                final String completeURL = contextBase != null ? NetUtils.joinUrlPaths ( contextBase, url ) : url;
+                resource = new UrlResource ( completeURL );
+            }
+            else
+            {
+                throw new UtilityException ( "Unable to find any Resource type in node attributes: " + reader.getNodeName () );
+            }
+        }
+        return resource;
     }
 }

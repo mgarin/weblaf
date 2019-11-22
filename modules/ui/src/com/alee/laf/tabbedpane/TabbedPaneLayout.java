@@ -292,7 +292,8 @@ public class TabbedPaneLayout extends AbstractLayoutManager implements Mergeable
                         }
 
                         // Firing tab disabled icon change if needed
-                        if ( tab.getDisabledIcon () != tabbedPane.getDisabledIconAt ( i ) )
+                        // This event is limited to disabled tabs only due to JTabbedPane generating disabled icon on request
+                        if ( !tabbedPane.isEnabledAt ( i ) && tab.getDisabledIcon () != tabbedPane.getDisabledIconAt ( i ) )
                         {
                             // Index is passed instead of the actual value due to how events are handled
                             SwingUtils.firePropertyChanged ( tabbedPane, WebTabbedPane.DISABLED_ICON_AT_PROPERTY, null, i );

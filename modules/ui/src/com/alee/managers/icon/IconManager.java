@@ -17,12 +17,15 @@
 
 package com.alee.managers.icon;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.svg.*;
-import com.alee.managers.icon.data.AbstractIconData;
 import com.alee.managers.icon.data.ImageIconData;
 import com.alee.managers.icon.data.SetIcon;
 import com.alee.managers.icon.set.IconSet;
-import com.alee.managers.icon.set.IconSetData;
+import com.alee.managers.icon.set.XmlIconSet;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
@@ -39,7 +42,7 @@ import java.util.*;
 public final class IconManager
 {
     /**
-     * Added icon sets.
+     * Added {@link IconSet}s.
      */
     private static List<IconSet> iconSets;
 
@@ -70,8 +73,7 @@ public final class IconManager
 
             // Base XStream aliases
             XmlUtils.processAnnotations ( SetIcon.class );
-            XmlUtils.processAnnotations ( IconSetData.class );
-            XmlUtils.processAnnotations ( AbstractIconData.class );
+            XmlUtils.processAnnotations ( XmlIconSet.class );
 
             // ImageIcon aliases
             XmlUtils.processAnnotations ( ImageIconData.class );
@@ -80,77 +82,134 @@ public final class IconManager
             XmlUtils.processAnnotations ( SvgIconData.class );
             XmlUtils.processAnnotations ( SvgStroke.class );
             XmlUtils.processAnnotations ( SvgFill.class );
+            XmlUtils.processAnnotations ( SvgOpacity.class );
             XmlUtils.processAnnotations ( SvgTransform.class );
             XmlUtils.processAnnotations ( SvgGrayscale.class );
+            XmlUtils.processAnnotations ( SvgColorOpacity.class );
         }
     }
 
     /**
-     * Returns icon set with the specified identifier.
+     * Returns whether or not {@link IconSet} with the specified identifier exists.
      *
-     * @param id icon set identifier
-     * @return icon set with the specified identifier
+     * @param id {@link IconSet} identifier
+     * @return {@code true} if {@link IconSet} with the specified identifier exists, {@code false} otherwise
      */
-    public static IconSet getIconSet ( final String id )
+    public static boolean hasIconSet ( @NotNull final String id )
     {
-        for ( final IconSet iconSet : iconSets )
+        return findIconSet ( id ) != null;
+    }
+
+    /**
+     * Returns {@link IconSet} with the specified identifier.
+     *
+     * @param id {@link IconSet} identifier
+     * @return {@link IconSet} with the specified identifier
+     */
+    @NotNull
+    public static IconSet getIconSet ( @NotNull final String id )
+    {
+        final IconSet iconSet = findIconSet ( id );
+        if ( iconSet == null )
         {
-            if ( iconSet.getId ().equals ( id ) )
+            throw new IconException ( "IconSet with identifier doesn't exist: " + id );
+        }
+        return iconSet;
+    }
+
+    /**
+     * Returns {@link IconSet} with the specified identifier or {@code null} if none found.
+     * Order of search is irrelevant in this method since {@link IconSet} identifiers are unique.
+     *
+     * @param id {@link IconSet} identifier
+     * @return {@link IconSet} with the specified identifier or {@code null} if none found
+     */
+    @Nullable
+    public static IconSet findIconSet ( @NotNull final String id )
+    {
+        IconSet iconSet = null;
+        for ( final IconSet set : iconSets )
+        {
+            if ( set.getId ().equals ( id ) )
             {
-                return iconSet;
+                iconSet = set;
+                break;
             }
         }
-        return null;
-    }
-
-    /**
-     * Adds new icon set.
-     *
-     * @param iconSet icon set to add
-     */
-    public static void addIconSet ( final IconSet iconSet )
-    {
-        // Removing existing set with the same identifier
-        removeIconSet ( iconSet.getId () );
-
-        // Adding new set
-        iconSets.add ( iconSet );
-    }
-
-    /**
-     * Removes icon set.
-     *
-     * @param id icon set identifier
-     */
-    public static void removeIconSet ( final String id )
-    {
-        final IconSet iconSet = getIconSet ( id );
         if ( iconSet != null )
         {
-            // Removing icon set
-            iconSets.remove ( iconSet );
+            for ( final IconSet set : StyleManager.getSkin ().getIconSets () )
+            {
+                if ( set.getId ().equals ( id ) )
+                {
+                    iconSet = set;
+                    break;
+                }
+            }
+        }
+        return iconSet;
+    }
 
-            // Clearing its cache
+    /**
+     * Adds new {@link IconSet}.
+     *
+     * @param iconSet {@link IconSet} to add
+     */
+    public static void addIconSet ( @NotNull final IconSet iconSet )
+    {
+        if ( !hasIconSet ( iconSet.getId () ) )
+        {
+            // Adding new icon set
+            iconSets.add ( iconSet );
+
+            // Clearing cache for any icons from that set
             clearIconSetCache ( iconSet );
+        }
+        else if ( iconSets.contains ( iconSet ) )
+        {
+            throw new IconException ( "Specified IconSet is already added: " + iconSet.getId () );
+        }
+        else
+        {
+            throw new IconException ( "Different IconSet with the same identifier is already added: " + iconSet.getId () );
         }
     }
 
     /**
-     * Removes icon set.
+     * Removes {@link IconSet}.
      *
-     * @param iconSet icon set to remove
+     * @param iconSet {@link IconSet} to remove
      */
-    public static void removeIconSet ( final IconSet iconSet )
+    public static void removeIconSet ( @NotNull final IconSet iconSet )
     {
-        removeIconSet ( iconSet.getId () );
+        final IconSet existingIconSet = getIconSet ( iconSet.getId () );
+        if ( existingIconSet == iconSet )
+        {
+            if ( iconSets.contains ( iconSet ) )
+            {
+                // Removing icon set
+                iconSets.remove ( iconSet );
+
+                // Clearing its cache
+                clearIconSetCache ( iconSet );
+            }
+            else
+            {
+                throw new IconException ( "Skin and SkinExtension IconSets cannot be removed from IconManager: " + iconSet.getId () );
+            }
+        }
+        else
+        {
+            throw new IconException ( "Specified IconSet is different from existing one with the same identifier: " + iconSet.getId () );
+        }
     }
 
     /**
-     * Clears global cache for the specified icon set.
+     * Clears global cache for the specified {@link IconSet}.
      *
-     * @param iconSet icon set to clear global cache for
+     * @param iconSet {@link IconSet} to clear global cache for
      */
-    private static void clearIconSetCache ( final IconSet iconSet )
+    public static void clearIconSetCache ( @NotNull final IconSet iconSet )
     {
         for ( final String id : iconSet.getIds () )
         {
@@ -159,14 +218,14 @@ public final class IconManager
     }
 
     /**
-     * Returns whether or not icon for the specified identifier exists.
+     * Returns whether or not {@link Icon} for the specified identifier exists.
      *
      * @param id icon identifier
-     * @return icon for the specified identifier
+     * @return {@code true} if {@link Icon} for the specified identifier exists, {@code false} otherwise
      */
-    public static boolean hasIcon ( final String id )
+    public static boolean hasIcon ( @NotNull final String id )
     {
-        return getIconImpl ( id ) != null;
+        return findIcon ( id ) != null;
     }
 
     /**
@@ -177,51 +236,62 @@ public final class IconManager
      * @return {@link Icon} for the specified identifier
      * @throws IconException if {@link Icon} cannot be found for the specified identifier
      */
-    public static <I extends Icon> I getIcon ( final String id )
+    @NotNull
+    public static <I extends Icon> I getIcon ( @NotNull final String id )
     {
-        if ( iconSets.size () > 0 )
+        final I icon = findIcon ( id );
+        if ( icon != null )
         {
-            // Looking for an icon
-            final I icon = getIconImpl ( id );
-            if ( icon != null )
-            {
-                // Returning icon we found
-                return icon;
-            }
-            else
-            {
-                // No icon found
-                final String msg = "Could not find Icon for identifier: %s";
-                throw new IconException ( String.format ( msg, id ) );
-            }
+            return icon;
         }
         else
         {
-            // No icon sets added at all
-            final String msg = "There are no icon sets added";
-            throw new IconException ( msg );
+            throw new IconException ( "Could not find Icon for identifier: " + id );
         }
     }
 
     /**
-     * Returns icon for the specified identifier.
+     * Returns {@link Icon} for the specified identifier or {@code null} if it cannot be found.
      *
-     * @param id icon identifier
-     * @return icon for the specified identifier
+     * @param id  {@link Icon} identifier
+     * @param <I> {@link Icon} type
+     * @return {@link Icon} for the specified identifier or {@code null} if it cannot be found
      */
-    private static <I extends Icon> I getIconImpl ( final String id )
+    @Nullable
+    private static <I extends Icon> I findIcon ( @NotNull final String id )
     {
-        // Checking cached icon
         final WeakReference<Icon> reference = cache.get ( id );
         I icon = reference != null ? ( I ) reference.get () : null;
         if ( icon == null )
         {
-            // Checking icon sets from the end
+            icon = findIcon ( id, iconSets );
+            if ( icon == null )
+            {
+                icon = findIcon ( id, StyleManager.getSkin ().getIconSets () );
+            }
+            cache.put ( id, new WeakReference<Icon> ( icon ) );
+        }
+        return icon;
+    }
+
+    /**
+     * Returns {@link Icon} for the specified identifier in the specified {@link IconSet}s or {@code null} if it cannot be found.
+     *
+     * @param id       {@link Icon} identifier
+     * @param iconSets {@link List} of {@link IconSet}s to look in
+     * @param <I>      {@link Icon} type
+     * @return {@link Icon} for the specified identifier in the specified {@link IconSet}s or {@code null} if it cannot be found
+     */
+    @Nullable
+    private static <I extends Icon> I findIcon ( @NotNull final String id, final List<IconSet> iconSets )
+    {
+        I icon = null;
+        if ( CollectionUtils.notEmpty ( iconSets ) )
+        {
             final ListIterator<IconSet> iter = iconSets.listIterator ( iconSets.size () );
             while ( iter.hasPrevious () )
             {
-                // Stop looking for an icon as soon as we found one with the specified identifier
-                icon = ( I ) iter.previous ().getIcon ( id );
+                icon = ( I ) iter.previous ().findIcon ( id );
                 if ( icon != null )
                 {
                     break;

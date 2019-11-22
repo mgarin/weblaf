@@ -18,6 +18,7 @@
 package com.alee.extended.window;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.VisibilityBehavior;
@@ -120,8 +121,9 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
         // Popover drag listener
         moveAdapter = new ComponentMoveBehavior ( component )
         {
+            @Nullable
             @Override
-            protected Rectangle getDragStartBounds ( final MouseEvent e )
+            protected Rectangle getDragStartBounds ( @NotNull final MouseEvent e )
             {
                 final Rectangle bounds;
                 if ( popOver.isMovable () )
@@ -526,7 +528,7 @@ public class PopOverPainter<C extends JRootPane, U extends WRootPaneUI> extends 
                                                    final Supplier<Rectangle> boundsProvider )
     {
         // Invoker component window
-        final Window invokerWindow = CoreSwingUtils.getWindowAncestor ( invoker );
+        final Window invokerWindow = CoreSwingUtils.getNonNullWindowAncestor ( invoker );
 
         // Invoker window follow adapter
         final WindowFollowBehavior windowFollowBehavior = new WindowFollowBehavior ( popOver, invokerWindow )

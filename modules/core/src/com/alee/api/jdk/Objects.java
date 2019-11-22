@@ -78,17 +78,19 @@ public final class Objects
      */
     public static boolean equals ( @Nullable final Object object, @Nullable final Object... compareWith )
     {
+        boolean equals = false;
         if ( compareWith != null && compareWith.length > 0 )
         {
             for ( final Object o : compareWith )
             {
                 if ( equalsImpl ( object, o ) )
                 {
-                    return true;
+                    equals = true;
+                    break;
                 }
             }
         }
-        return false;
+        return equals;
     }
 
     /**
@@ -116,17 +118,19 @@ public final class Objects
      */
     public static boolean notEquals ( @Nullable final Object object, @Nullable final Object... compareWith )
     {
+        boolean notEquals = true;
         if ( compareWith != null && compareWith.length > 0 )
         {
             for ( final Object o : compareWith )
             {
                 if ( equalsImpl ( object, o ) )
                 {
-                    return false;
+                    notEquals = false;
+                    break;
                 }
             }
         }
-        return true;
+        return notEquals;
     }
 
     /**

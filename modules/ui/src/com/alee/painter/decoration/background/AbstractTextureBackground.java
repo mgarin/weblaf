@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.behavior.OmitOnMerge;
@@ -42,6 +44,7 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
      * It is cached for performance reasons.
      * You can clean the cache at any time in implementation of this abstract class.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient TexturePaint paint = null;
@@ -49,6 +52,7 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
     /**
      * Cached texture bounds.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient Rectangle bounds = null;
@@ -63,7 +67,8 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )
@@ -78,18 +83,13 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
                     paint = getTexturePaint ( b );
                 }
 
-                // Do not paint anything if texture paint was not set
-                if ( paint != null )
-                {
-                    final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-                    final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
-
-                    g2d.setPaint ( paint );
-                    g2d.fill ( shape );
-
-                    GraphicsUtils.restorePaint ( g2d, op );
-                    GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
-                }
+                // Painting texture
+                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
+                final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+                g2d.setPaint ( paint );
+                g2d.fill ( shape );
+                GraphicsUtils.restorePaint ( g2d, op );
+                GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
             }
         }
     }
@@ -107,5 +107,6 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
      * @param bounds painting bounds
      * @return texture paint implementation
      */
-    protected abstract TexturePaint getTexturePaint ( Rectangle bounds );
+    @NotNull
+    protected abstract TexturePaint getTexturePaint ( @NotNull Rectangle bounds );
 }

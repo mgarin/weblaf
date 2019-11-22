@@ -209,7 +209,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
      *
      * @param c painted component
      */
-    protected void playAnimation ( final C c )
+    protected void playAnimation ( @NotNull final C c )
     {
         if ( transitionsQueue == null )
         {
@@ -265,7 +265,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
      *
      * @param c painted component
      */
-    protected void stopAnimation ( final C c )
+    protected void stopAnimation ( @NotNull final C c )
     {
         if ( transitionsQueue != null )
         {
@@ -281,7 +281,8 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         final float opacity = getOpacity ();
         if ( opacity > 0 )

@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -50,6 +51,7 @@ public class PresetTextureBackground<C extends JComponent, D extends IDecoration
         return preset != null && preset != TextureType.none;
     }
 
+    @NotNull
     @Override
     protected BufferedImage getTextureImage ()
     {

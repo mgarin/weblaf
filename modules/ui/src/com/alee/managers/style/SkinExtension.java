@@ -42,7 +42,7 @@ public interface SkinExtension extends Identifiable
      *
      * @return unique extension ID
      */
-    @Nullable
+    @NotNull
     @Override
     public String getId ();
 
@@ -51,6 +51,7 @@ public interface SkinExtension extends Identifiable
      *
      * @return extension {@link Icon}
      */
+    @Nullable
     public Icon getIcon ();
 
     /**
@@ -58,6 +59,7 @@ public interface SkinExtension extends Identifiable
      *
      * @return extension title
      */
+    @Nullable
     public String getTitle ();
 
     /**
@@ -65,6 +67,7 @@ public interface SkinExtension extends Identifiable
      *
      * @return extension description
      */
+    @Nullable
     public String getDescription ();
 
     /**
@@ -72,6 +75,7 @@ public interface SkinExtension extends Identifiable
      *
      * @return extension author
      */
+    @Nullable
     public String getAuthor ();
 
     /**
@@ -80,12 +84,13 @@ public interface SkinExtension extends Identifiable
      * @param skinId ID of the skin to process
      * @return true if skin with the specified ID is supported by this extension, false otherwise
      */
-    public boolean isSupported ( String skinId );
+    public boolean isSupported ( @NotNull String skinId );
 
     /**
      * Returns skin icon sets.
      *
      * @return skin icon sets
      */
+    @NotNull
     public List<IconSet> getIconSets ();
 }

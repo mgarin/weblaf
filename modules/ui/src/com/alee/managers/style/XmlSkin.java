@@ -19,13 +19,13 @@ package com.alee.managers.style;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.Resource;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -43,30 +43,19 @@ import java.util.List;
 public class XmlSkin extends AbstractSkin
 {
     /**
-     * Theme information.
-     * Contains complete information about this skin.
+     * Complete information about this skin.
      */
-    protected SkinInfo skinInfo;
+    @NotNull
+    protected final SkinInfo skinInfo;
 
     /**
-     * Constructs new xml-based skin.
+     * Constructs new {@link XmlSkin}.
      *
-     * @param location skin info XML file
+     * @param resource extension {@link Resource}
      */
-    public XmlSkin ( final File location )
+    public XmlSkin ( @NotNull final Resource resource )
     {
-        this ( ( SkinInfo ) XmlUtils.fromXML ( location ) );
-    }
-
-    /**
-     * Constructs new xml-based skin.
-     *
-     * @param nearClass class to find skin info XML near
-     * @param location  skin info XML location relative to the specified class
-     */
-    public XmlSkin ( final Class nearClass, final String location )
-    {
-        this ( ( SkinInfo ) XmlUtils.fromXML ( nearClass.getResource ( location ) ) );
+        this ( ( SkinInfo ) XmlUtils.fromXML ( resource ) );
     }
 
     /**
@@ -74,7 +63,7 @@ public class XmlSkin extends AbstractSkin
      *
      * @param skinInfo skin information
      */
-    public XmlSkin ( final SkinInfo skinInfo )
+    public XmlSkin ( @NotNull final SkinInfo skinInfo )
     {
         this.skinInfo = skinInfo;
     }
@@ -84,48 +73,55 @@ public class XmlSkin extends AbstractSkin
      *
      * @return skin information
      */
+    @NotNull
     public SkinInfo getSkinInfo ()
     {
         return skinInfo;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
         return skinInfo.getId ();
     }
 
+    @Nullable
     @Override
     public Icon getIcon ()
     {
         return skinInfo.getIcon ();
     }
 
+    @Nullable
     @Override
     public String getTitle ()
     {
         return skinInfo.getTitle ();
     }
 
+    @Nullable
     @Override
     public String getDescription ()
     {
         return skinInfo.getDescription ();
     }
 
+    @Nullable
     @Override
     public String getAuthor ()
     {
         return skinInfo.getAuthor ();
     }
 
+    @NotNull
     @Override
     public List<String> getSupportedSystems ()
     {
         return skinInfo.getSupportedSystemsList ();
     }
 
+    @NotNull
     @Override
     public String getSkinClass ()
     {
@@ -145,11 +141,12 @@ public class XmlSkin extends AbstractSkin
     }
 
     @Override
-    public boolean applyExtension ( final SkinExtension extension )
+    public boolean applyExtension ( @NotNull final SkinExtension extension )
     {
         return skinInfo.applyExtension ( extension );
     }
 
+    @NotNull
     @Override
     public List<IconSet> getIconSets ()
     {
@@ -157,14 +154,15 @@ public class XmlSkin extends AbstractSkin
     }
 
     @Override
-    public ComponentStyle getStyle ( final JComponent component )
+    public ComponentStyle getStyle ( @NotNull final JComponent component )
     {
         return skinInfo.getStyle ( component );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
-        return getTitle ();
+        return skinInfo.toString ();
     }
 }

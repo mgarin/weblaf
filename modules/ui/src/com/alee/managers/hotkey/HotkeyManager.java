@@ -231,7 +231,7 @@ public final class HotkeyManager
         {
             // Finding top component
             Component topComponent = hotkeyInfo.getTopComponent ();
-            topComponent = topComponent != null ? topComponent : CoreSwingUtils.getWindowAncestor ( forComponent );
+            topComponent = topComponent != null ? topComponent : CoreSwingUtils.getNonNullWindowAncestor ( forComponent );
 
             // Checking if componen or one of its children has focus
             if ( SwingUtils.hasFocusOwner ( topComponent ) )
@@ -512,7 +512,7 @@ public final class HotkeyManager
         TooltipManager.hideAllTooltips ();
 
         // Displaying one-time tips with hotkeys
-        showComponentHotkeys ( CoreSwingUtils.getWindowAncestor ( component ) );
+        showComponentHotkeys ( CoreSwingUtils.getNonNullWindowAncestor ( component ) );
     }
 
     private static void showComponentHotkeys ( final Window window )

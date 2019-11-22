@@ -129,6 +129,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @return supported component type
      */
+    @NotNull
     public String getType ()
     {
         return type;
@@ -138,12 +139,10 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * Sets supported component type.
      *
      * @param type new supported component type
-     * @return this style
      */
-    public ComponentStyle setType ( final String type )
+    public void setType ( @NotNull final String type )
     {
         this.type = type;
-        return this;
     }
 
     /**
@@ -151,9 +150,20 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @return component style identifier
      */
+    @NotNull
     public String getId ()
     {
         return id;
+    }
+
+    /**
+     * Sets component style ID.
+     *
+     * @param id new component style ID
+     */
+    public void setId ( @NotNull final String id )
+    {
+        this.id = id;
     }
 
     /**
@@ -163,6 +173,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @return complete style identifier
      * @see StyleId#getCompleteId()
      */
+    @NotNull
     public String getCompleteId ()
     {
         final ComponentStyle parentStyle = getParent ();
@@ -172,11 +183,11 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     /**
      * Returns path for complete style ID.
      * Not that it will also include types of each of the parents.
+     * Similar to {@code StyleId#getPathId(JComponent)} method.
      *
      * @return path for complete style ID
-     * @see StyleId#getPathId(JComponent)
      */
-    @SuppressWarnings ( "JavadocReference" )
+    @NotNull
     private String getPathId ()
     {
         // Full identifier for this part of the path
@@ -188,20 +199,11 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     }
 
     /**
-     * Sets component style ID.
-     *
-     * @param id new component style ID
-     */
-    public void setId ( final String id )
-    {
-        this.id = id;
-    }
-
-    /**
      * Returns extended component style ID or null if none extended.
      *
      * @return extended component style ID or null if none extended
      */
+    @Nullable
     public String getExtendsId ()
     {
         return extendsId;
@@ -213,7 +215,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @param id new extended component style ID
      */
-    public void setExtendsId ( final String id )
+    public void setExtendsId ( @Nullable final String id )
     {
         this.extendsId = id;
     }
@@ -223,6 +225,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @return component properties
      */
+    @NotNull
     public LinkedHashMap<String, Object> getComponentProperties ()
     {
         return componentProperties;
@@ -233,7 +236,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @param componentProperties new component properties
      */
-    public void setComponentProperties ( final LinkedHashMap<String, Object> componentProperties )
+    public void setComponentProperties ( @NotNull final LinkedHashMap<String, Object> componentProperties )
     {
         this.componentProperties = componentProperties;
     }
@@ -243,6 +246,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @return component UI properties
      */
+    @NotNull
     public LinkedHashMap<String, Object> getUIProperties ()
     {
         return uiProperties;
@@ -253,7 +257,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @param uiProperties new component UI properties
      */
-    public void setUIProperties ( final LinkedHashMap<String, Object> uiProperties )
+    public void setUIProperties ( @NotNull final LinkedHashMap<String, Object> uiProperties )
     {
         this.uiProperties = uiProperties;
     }
@@ -263,6 +267,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @return component's {@link PainterStyle}
      */
+    @Nullable
     public PainterStyle getPainterStyle ()
     {
         return painterStyle;
@@ -273,7 +278,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @param painterStyle new component's {@link PainterStyle}
      */
-    public void setPainterStyle ( final PainterStyle painterStyle )
+    public void setPainterStyle ( @Nullable final PainterStyle painterStyle )
     {
         this.painterStyle = painterStyle;
     }
@@ -283,6 +288,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @return {@link List} of nested {@link ComponentStyle}s
      */
+    @NotNull
     public List<ComponentStyle> getNestedStyles ()
     {
         return nestedStyles;
@@ -293,7 +299,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @param nestedStyles new {@link List} of nested {@link ComponentStyle}s
      */
-    public void setNestedStyles ( final List<ComponentStyle> nestedStyles )
+    public void setNestedStyles ( @NotNull final List<ComponentStyle> nestedStyles )
     {
         this.nestedStyles = nestedStyles;
     }
@@ -305,7 +311,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      */
     public int getStylesCount ()
     {
-        return getNestedStyles () != null ? getNestedStyles ().size () : 0;
+        return getNestedStyles ().size ();
     }
 
     /**
@@ -313,6 +319,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @return parent {@link ComponentStyle}
      */
+    @Nullable
     public ComponentStyle getParent ()
     {
         return parent;
@@ -323,19 +330,17 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      *
      * @param parent parent {@link ComponentStyle}
      */
-    public void setParent ( final ComponentStyle parent )
+    public void setParent ( @Nullable final ComponentStyle parent )
     {
         this.parent = parent;
     }
 
     /**
      * Applies this {@link ComponentStyle} to the specified {@link JComponent}.
-     * Returns whether style was successfully applied or not.
      *
      * @param component {@link JComponent} to apply this {@link ComponentStyle} to
-     * @return {@code true} if style was applied successfully, {@code false} otherwise
      */
-    public boolean apply ( final JComponent component )
+    public void apply ( @NotNull final JComponent component )
     {
         try
         {
@@ -349,13 +354,10 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
 
             // Installing painter
             installPainter ( ui, component, true, COMPONENT_PAINTER_ID, getPainterStyle () );
-
-            return true;
         }
         catch ( final Exception e )
         {
-            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-            return false;
+            throw new StyleException ( String.format ( "Unable to apply style '%s' to component: %s", getCompleteId (), component ), e );
         }
     }
 
@@ -372,8 +374,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @throws InvocationTargetException if painter setter method invocation failed
      * @throws IllegalAccessException    if painter setter method is not accessible
      */
-    protected void installPainter ( final Object object, final JComponent component, final boolean customizable,
-                                    final String painterId, final PainterStyle painterStyle )
+    protected void installPainter ( @NotNull final Object object, @Nullable final JComponent component, final boolean customizable,
+                                    @NotNull final String painterId, @NotNull final PainterStyle painterStyle )
             throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         // Retrieving painter to install into component
@@ -420,7 +422,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @throws InvocationTargetException if painter setter method invocation failed
      * @throws IllegalAccessException    if painter setter method is not accessible
      */
-    private void applyProperties ( final Object object, final Map<String, Object> skinProperties )
+    private void applyProperties ( @NotNull final Object object, @Nullable final Map<String, Object> skinProperties )
             throws NoSuchFieldException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         // Applying merged properties
@@ -492,7 +494,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param uiProperties properties
      * @return modified properties map
      */
-    protected Map<String, Object> appendEmptyUIProperties ( final ComponentUI ui, final Map<String, Object> uiProperties )
+    @NotNull
+    protected Map<String, Object> appendEmptyUIProperties ( @NotNull final ComponentUI ui, @NotNull final Map<String, Object> uiProperties )
     {
         if ( ui instanceof MarginSupport && !uiProperties.containsKey ( ComponentStyleConverter.MARGIN_ATTRIBUTE ) )
         {
@@ -509,9 +512,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * Removes this {@link ComponentStyle} from the specified {@link JComponent}.
      *
      * @param component {@link JComponent} to remove this {@link ComponentStyle} from
-     * @return {@code true} if style was successfully removed, {@code false} otherwise
      */
-    public boolean remove ( final JComponent component )
+    public void remove ( @NotNull final JComponent component )
     {
         try
         {
@@ -519,12 +521,10 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
             final ComponentUI ui = getComponentUI ( component );
             final String setterMethod = ReflectUtils.getSetterMethodName ( COMPONENT_PAINTER_ID );
             ReflectUtils.callMethod ( ui, setterMethod, ( Painter ) null );
-            return true;
         }
         catch ( final Exception e )
         {
-            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-            return false;
+            throw new StyleException ( String.format ( "Unable to remove style '%s' from component: %s", getCompleteId (), component ), e );
         }
     }
 
@@ -539,53 +539,51 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @throws java.lang.reflect.InvocationTargetException if method throws an exception
      * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
-    private void setFieldValue ( final Object object, final String field, final Object value )
+    private void setFieldValue ( @NotNull final Object object, @NotNull final String field, @Nullable final Object value )
             throws InvocationTargetException, IllegalAccessException
     {
         // Skipping value if it is marked as ignored
-        if ( value == IgnoredValue.VALUE )
+        if ( value != IgnoredValue.VALUE )
         {
-            return;
-        }
+            // Creating separate usable value to avoid source object modifications
+            // We have limited options here, so for now we simply clone objects which are defined as Cloneable
+            final Object usable;
+            if ( value instanceof Painter )
+            {
+                usable = value;
+            }
+            else
+            {
+                try
+                {
+                    usable = Clone.deep ().clone ( value );
+                }
+                catch ( final Exception e )
+                {
+                    final String msg = "Unable to clone value: %s";
+                    throw new StyleException ( String.format ( msg, value ), e );
+                }
+            }
 
-        // Creating separate usable value to avoid source object modifications
-        // We have limited options here, so for now we simply clone objects which are defined as Cloneable
-        final Object usable;
-        if ( value instanceof Painter )
-        {
-            usable = value;
-        }
-        else
-        {
             try
             {
-                usable = Clone.deep ().clone ( value );
+                // todo Add more options on the method names here?
+                // Trying to use setter method to apply the specified value
+                final String setterMethod = ReflectUtils.getSetterMethodName ( field );
+                ReflectUtils.callMethod ( object, setterMethod, usable );
             }
-            catch ( final Exception e )
+            catch ( final NoSuchMethodException e )
             {
-                final String msg = "Unable to clone value: %s";
-                throw new StyleException ( String.format ( msg, value ), e );
-            }
-        }
-
-        try
-        {
-            // todo Add more options on the method names here?
-            // Trying to use setter method to apply the specified value
-            final String setterMethod = ReflectUtils.getSetterMethodName ( field );
-            ReflectUtils.callMethod ( object, setterMethod, usable );
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            try
-            {
-                // Applying field value directly
-                ReflectUtils.setFieldValue ( object, field, usable );
-            }
-            catch ( final Exception fe )
-            {
-                final String msg = "Unable to set `%s` object `%s` field value to: %s";
-                throw new StyleException ( String.format ( msg, object, field, usable ), fe );
+                try
+                {
+                    // Applying field value directly
+                    ReflectUtils.setFieldValue ( object, field, usable );
+                }
+                catch ( final Exception fe )
+                {
+                    final String msg = "Unable to set `%s` object `%s` field value to: %s";
+                    throw new StyleException ( String.format ( msg, object, field, usable ), fe );
+                }
             }
         }
     }
@@ -596,7 +594,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param component component instance
      * @return component UI object
      */
-    private ComponentUI getComponentUI ( final JComponent component )
+    @NotNull
+    private ComponentUI getComponentUI ( @NotNull final JComponent component )
     {
         final ComponentUI ui = LafUtils.getUI ( component );
         if ( ui == null )
@@ -614,7 +613,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param <T>       painter type
      * @return actual painter used within specified component
      */
-    public <T extends Painter> T getPainter ( final JComponent component )
+    @Nullable
+    public <T extends Painter> T getPainter ( @NotNull final JComponent component )
     {
         final ComponentUI ui = getComponentUI ( component );
         return getFieldValue ( ui, COMPONENT_PAINTER_ID );
@@ -630,7 +630,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param <T>    value type
      * @return field value for the specified object or null
      */
-    private <T> T getFieldValue ( final Object object, final String field )
+    @Nullable
+    private <T> T getFieldValue ( @NotNull final Object object, @NotNull final String field )
     {
         final Class<?> objectClass = object.getClass ();
 
@@ -653,21 +654,23 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
 
         // Retrieving field value directly
         // This one is rarely used and in most of times will be called when inappropriate property is set
+        T value;
         try
         {
             final Field actualField = ReflectUtils.getField ( objectClass, field );
-            return ( T ) actualField.get ( object );
+            value = ( T ) actualField.get ( object );
         }
         catch ( final NoSuchFieldException e )
         {
             LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-            return null;
+            value = null;
         }
         catch ( final IllegalAccessException e )
         {
             LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-            return null;
+            value = null;
         }
+        return value;
     }
 
     /**
@@ -676,7 +679,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param style style to merge on top of this one
      * @return merge result
      */
-    public ComponentStyle merge ( final ComponentStyle style )
+    @NotNull
+    public ComponentStyle merge ( @NotNull final ComponentStyle style )
     {
         // Applying new parent
         setParent ( style.getParent () );
@@ -701,7 +705,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param style style to merge on top of this one
      * @return current style
      */
-    private ComponentStyle extend ( final ComponentStyle style )
+    @NotNull
+    private ComponentStyle extend ( @NotNull final ComponentStyle style )
     {
         // Copying settings from extended style
         mergeProperties ( getComponentProperties (), style.getComponentProperties () );
@@ -783,7 +788,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param style component style that is merged on top of this one
      * @param child this component style child
      */
-    private void extendChild ( final ComponentStyle style, final ComponentStyle child )
+    private void extendChild ( @NotNull final ComponentStyle style, @NotNull final ComponentStyle child )
     {
         // Skipping styles that are already provided in style merged on top of this
         for ( final ComponentStyle newParentChild : style.getNestedStyles () )
@@ -811,7 +816,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param style       extended {@link ComponentStyle}
      * @param mergedStyle merged {@link ComponentStyle}
      */
-    private void mergePainters ( final ComponentStyle style, final ComponentStyle mergedStyle )
+    private void mergePainters ( @NotNull final ComponentStyle style, @NotNull final ComponentStyle mergedStyle )
     {
         final PainterStyle resultPainterStyle;
 
@@ -874,7 +879,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
      * @param properties base properties
      * @param merged     merged properties
      */
-    private void mergeProperties ( final Map<String, Object> properties, final Map<String, Object> merged )
+    private void mergeProperties ( @NotNull final Map<String, Object> properties, @NotNull final Map<String, Object> merged )
     {
         for ( final Map.Entry<String, Object> property : merged.entrySet () )
         {
@@ -920,12 +925,14 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
         return styleCopy;
     }
 
+    @NotNull
     @Override
     public ComponentStyle clone ()
     {
         return Clone.deep ().clone ( this );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

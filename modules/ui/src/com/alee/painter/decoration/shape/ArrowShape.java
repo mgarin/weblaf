@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Supplier;
 import com.alee.painter.decoration.WebDecoration;
@@ -125,6 +126,7 @@ public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I e
         return shape;
     }
 
+    @NotNull
     @Override
     public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
     {

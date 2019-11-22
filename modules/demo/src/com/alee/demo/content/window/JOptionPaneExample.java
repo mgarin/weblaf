@@ -137,7 +137,7 @@ public class JOptionPaneExample extends AbstractStylePreviewExample
                     }
 
                     // Display option pane
-                    final Window parent = CoreSwingUtils.getWindowAncestor ( button );
+                    final Window parent = CoreSwingUtils.getNonNullWindowAncestor ( button );
                     final String title = LM.get ( getPreviewLanguagePrefix () + "title" );
                     final String message = LM.get ( getPreviewLanguagePrefix () + "message" );
                     final String notification = LM.get ( getPreviewLanguagePrefix () + "notification" );

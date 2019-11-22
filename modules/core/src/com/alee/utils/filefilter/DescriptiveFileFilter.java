@@ -69,6 +69,7 @@ public abstract class DescriptiveFileFilter extends AbstractFileFilter
         this.icon = icon;
     }
 
+    @NotNull
     @Override
     public String getDescription ()
     {

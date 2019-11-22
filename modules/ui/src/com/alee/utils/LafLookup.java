@@ -105,6 +105,7 @@ public final class LafLookup
      * @param propertyToInputMap {@link Function} for mapping retrieved property value to {@link InputMap}
      * @return complete {@link InputMap} for the specified {@link JComponent} and event condition
      */
+    @Nullable
     private static InputMap getCompleteInputMap ( @NotNull final JComponent component, @NotNull final ComponentUI ui,
                                                   @NotNull final WebUI webUI, final int condition,
                                                   @NotNull final Function<Object, InputMap> propertyToInputMap )
@@ -136,6 +137,7 @@ public final class LafLookup
      * @param condition event condition
      * @return {@link InputMap} property key for the specified {@link WebUI} and event condition
      */
+    @NotNull
     private static String getInputMapPropertyKey ( @NotNull final WebUI webUI, final int condition )
     {
         final String key;

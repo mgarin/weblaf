@@ -17,6 +17,7 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 
 import javax.swing.*;
@@ -48,6 +49,7 @@ public class PasswordFieldSettingsProcessor<C extends JPasswordField, V extends 
         super ( component, configuration );
     }
 
+    @Nullable
     @Override
     protected V createDefaultValue ()
     {

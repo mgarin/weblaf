@@ -18,6 +18,8 @@
 package com.alee.utils.general;
 
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -37,12 +39,14 @@ public class Pair<K, V> implements Cloneable, Serializable
      * Key of this {@code Pair}.
      */
     @XStreamAsAttribute
+    @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
     public K key;
 
     /**
      * Value of this this {@code Pair}.
      */
     @XStreamAsAttribute
+    @SuppressWarnings ( "NonSerializableFieldInSerializableClass" )
     public V value;
 
     /**
@@ -71,7 +75,6 @@ public class Pair<K, V> implements Cloneable, Serializable
      */
     public Pair ( final K key, final V value )
     {
-        super ();
         this.key = key;
         this.value = value;
     }
@@ -116,6 +119,7 @@ public class Pair<K, V> implements Cloneable, Serializable
         this.value = value;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
@@ -129,18 +133,23 @@ public class Pair<K, V> implements Cloneable, Serializable
     }
 
     @Override
-    public boolean equals ( final Object o )
+    public boolean equals ( @Nullable final Object o )
     {
+        final boolean equals;
         if ( this == o )
         {
-            return true;
+            equals = true;
         }
-        if ( o instanceof Pair )
+        else if ( o instanceof Pair )
         {
             final Pair pair = ( Pair ) o;
-            return !( key != null ? !key.equals ( pair.key ) : pair.key != null ) &&
+            equals = !( key != null ? !key.equals ( pair.key ) : pair.key != null ) &&
                     !( value != null ? !value.equals ( pair.value ) : pair.value != null );
         }
-        return false;
+        else
+        {
+            equals = false;
+        }
+        return equals;
     }
 }

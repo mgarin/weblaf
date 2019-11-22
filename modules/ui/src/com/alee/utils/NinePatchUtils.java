@@ -21,7 +21,6 @@ import com.alee.api.annotations.NotNull;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
-import com.alee.utils.xml.Resource;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
@@ -42,18 +41,6 @@ public final class NinePatchUtils
     private NinePatchUtils ()
     {
         throw new UtilityException ( "Utility classes are not meant to be instantiated" );
-    }
-
-    /**
-     * Returns NinePatchIcon which is read from specified ResourceFile.
-     *
-     * @param resource file description
-     * @return NinePatchIcon
-     */
-    @NotNull
-    public static NinePatchIcon getNinePatchIcon ( @NotNull final Resource resource )
-    {
-        return new NinePatchIcon ( ImageUtils.getImageIcon ( resource ) );
     }
 
     /**
@@ -181,7 +168,7 @@ public final class NinePatchUtils
     public static NinePatchIcon rotateIcon90CW ( @NotNull final NinePatchIcon icon )
     {
         final BufferedImage rawImage = ImageUtils.rotateImage90CW ( icon.getRawImage () );
-        final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
+        final NinePatchIcon rotated = new NinePatchIcon ( rawImage, false );
 
         // Rotating stretch information
         rotated.setHorizontalStretch ( CollectionUtils.copy ( icon.getVerticalStretch () ) );
@@ -205,7 +192,7 @@ public final class NinePatchUtils
     public static NinePatchIcon rotateIcon90CCW ( @NotNull final NinePatchIcon icon )
     {
         final BufferedImage rawImage = ImageUtils.rotateImage90CCW ( icon.getRawImage () );
-        final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
+        final NinePatchIcon rotated = new NinePatchIcon ( rawImage, false );
 
         // Rotating stretch information
         rotated.setHorizontalStretch ( CollectionUtils.copy ( icon.getVerticalStretch () ) );
@@ -229,7 +216,7 @@ public final class NinePatchUtils
     public static NinePatchIcon rotateIcon180 ( @NotNull final NinePatchIcon icon )
     {
         final BufferedImage rawImage = ImageUtils.rotateImage180 ( icon.getRawImage () );
-        final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
+        final NinePatchIcon rotated = new NinePatchIcon ( rawImage, false );
 
         // Rotating stretch information
         rotated.setHorizontalStretch ( CollectionUtils.copy ( icon.getHorizontalStretch () ) );
@@ -266,7 +253,7 @@ public final class NinePatchUtils
         final BufferedImage shade = ImageUtils.createShadowImage ( w, w, shape, shadeWidth, shadeOpacity, true );
 
         // Creating nine-patch icon based on shade image
-        final NinePatchIcon ninePatchIcon = NinePatchIcon.create ( shade );
+        final NinePatchIcon ninePatchIcon = new NinePatchIcon ( shade, false );
         ninePatchIcon.addHorizontalStretch ( 0, shadeWidth + inner, true );
         ninePatchIcon.addHorizontalStretch ( shadeWidth + inner + 1, w - shadeWidth - inner - 1, false );
         ninePatchIcon.addHorizontalStretch ( w - shadeWidth - inner, w, true );

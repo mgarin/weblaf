@@ -239,7 +239,7 @@ public class WTabbedPaneInputListener<C extends JTabbedPane, U extends WTabbedPa
     {
         final WebViewport tabViewport = componentUI.getTabViewport ();
         final TabContainer tabContainer = componentUI.getTabContainer ();
-        if ( tabViewport != null && tabContainer != null )
+        if ( tabViewport != null && tabContainer != null && tabViewport.isShowing () )
         {
             if ( CoreSwingUtils.getRelativeBounds ( tabContainer, component ).contains ( e.getPoint () ) )
             {

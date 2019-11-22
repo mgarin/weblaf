@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.AbstractClipBackground;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -38,7 +39,8 @@ public class BreadcrumbProgressBackground<C extends JComponent, D extends IDecor
         extends AbstractClipBackground<C, D, I>
 {
     @Override
-    protected Shape clip ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    protected Shape clip ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                           @NotNull final Shape shape )
     {
         final Shape clippedShape;
         final Container parent = c.getParent ();

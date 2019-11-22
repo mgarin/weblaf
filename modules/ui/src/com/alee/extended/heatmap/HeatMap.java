@@ -615,22 +615,15 @@ public class HeatMap extends JComponent
         // Performing various checks
         if ( component == null )
         {
-            // Component must be provided
             throw new IllegalArgumentException ( "Provided component must not be null" );
         }
         if ( !component.isShowing () )
         {
-            // Checking that component is currently displayed
             throw new IllegalArgumentException ( "Provided component is not displayed on screen: " + component );
-        }
-        if ( CoreSwingUtils.getRootPane ( component ) == null )
-        {
-            // Checking rootpane existence
-            throw new IllegalArgumentException ( "Provided component is not placed within any window: " + component );
         }
 
         // Retrieving JRootPane
-        rootPane = CoreSwingUtils.getRootPane ( component );
+        rootPane = CoreSwingUtils.getNonNullRootPane ( component );
         rootPane.addComponentListener ( resizeListener );
 
         // Displaying heat map

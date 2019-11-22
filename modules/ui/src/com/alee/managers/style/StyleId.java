@@ -66,7 +66,7 @@ public final class StyleId implements Identifiable
      *
      * @see com.alee.managers.style.StyleData#setStyleId(StyleId)
      */
-    public static final StyleId auto = StyleId.of ( null );
+    public static final StyleId auto = new StyleId ( null );
 
     /**
      * {@link com.alee.extended.canvas.WebCanvas} style identifiers.
@@ -983,6 +983,7 @@ public final class StyleId implements Identifiable
      * @see #getId()
      * @see #getCompleteId()
      */
+    @Nullable /* todo @NotNull */
     private final String id;
 
     /**
@@ -994,6 +995,7 @@ public final class StyleId implements Identifiable
      *
      * @see #getCompleteId()
      */
+    @Nullable
     private final WeakReference<JComponent> parent;
 
     /**
@@ -1001,9 +1003,10 @@ public final class StyleId implements Identifiable
      *
      * @param id style identifier
      */
-    private StyleId ( final String id )
+    private StyleId ( @Nullable final String id )
     {
-        this ( id, null );
+        this.id = id;
+        this.parent = null;
     }
 
     /**
@@ -1012,10 +1015,10 @@ public final class StyleId implements Identifiable
      * @param id     style identifier
      * @param parent parent styleable component
      */
-    private StyleId ( final String id, final JComponent parent )
+    private StyleId ( @NotNull final String id, @NotNull final JComponent parent )
     {
         this.id = id;
-        this.parent = parent != null ? new WeakReference<JComponent> ( parent ) : null;
+        this.parent = new WeakReference<JComponent> ( parent );
     }
 
     /**
@@ -1035,6 +1038,7 @@ public final class StyleId implements Identifiable
      *
      * @return parent styleable component
      */
+    @Nullable
     public JComponent getParent ()
     {
         return parent != null ? parent.get () : null;
@@ -1047,6 +1051,7 @@ public final class StyleId implements Identifiable
      * @return complete style identifier
      * @see com.alee.managers.style.data.ComponentStyle#getCompleteId()
      */
+    // todo @NotNull
     public String getCompleteId ()
     {
         final JComponent parent = getParent ();
@@ -1056,13 +1061,13 @@ public final class StyleId implements Identifiable
     /**
      * Returns path for complete style identifier.
      * Not that it will also include types of each of the parents.
+     * Similar to {@code ComponentStyle#getPathId()} method.
      *
      * @param component component for current part of the path
      * @return path for complete style identifier
-     * @see com.alee.managers.style.data.ComponentStyle#getPathId()
      */
-    @SuppressWarnings ( "JavadocReference" )
-    private String getPathId ( final JComponent component )
+    @NotNull
+    private String getPathId ( @NotNull final JComponent component )
     {
         // Full identifier for this part of the path
         final ComponentDescriptor<JComponent, ComponentUI> descriptor = StyleManager.getDescriptor ( component );
@@ -1079,7 +1084,8 @@ public final class StyleId implements Identifiable
      * @param component component to set this {@link StyleId} for
      * @return previously used {@link StyleId}
      */
-    public StyleId set ( final JComponent component )
+    @NotNull
+    public StyleId set ( @NotNull final JComponent component )
     {
         return StyleManager.setStyleId ( component, this );
     }
@@ -1091,13 +1097,14 @@ public final class StyleId implements Identifiable
      * @param window component to set this {@link StyleId} for
      * @return previously used {@link StyleId}
      */
-    public StyleId set ( final Window window )
+    @NotNull
+    public StyleId set ( @NotNull final Window window )
     {
-        return set ( getRootPane ( window ) );
+        return set ( CoreSwingUtils.getNonNullRootPane ( window ) );
     }
 
     @Override
-    public boolean equals ( final Object obj )
+    public boolean equals ( @Nullable final Object obj )
     {
         boolean equals = false;
         if ( obj instanceof StyleId )
@@ -1130,7 +1137,8 @@ public final class StyleId implements Identifiable
      * @param id style identifier
      * @return new {@link StyleId} instance
      */
-    public static StyleId of ( final String id )
+    @NotNull
+    public static StyleId of ( @NotNull final String id )
     {
         return new StyleId ( id );
     }
@@ -1142,7 +1150,8 @@ public final class StyleId implements Identifiable
      * @param parent parent component
      * @return new {@link StyleId} instance with the specified parent component
      */
-    public static StyleId of ( final String id, final JComponent parent )
+    @NotNull
+    public static StyleId of ( @NotNull final String id, @NotNull final JComponent parent )
     {
         return new StyleId ( id, parent );
     }
@@ -1154,9 +1163,10 @@ public final class StyleId implements Identifiable
      * @param parent parent window
      * @return new {@link StyleId} instance with the specified parent window
      */
-    public static StyleId of ( final String id, final Window parent )
+    @NotNull
+    public static StyleId of ( @NotNull final String id, @NotNull final Window parent )
     {
-        return of ( id, getRootPane ( parent ) );
+        return of ( id, CoreSwingUtils.getNonNullRootPane ( parent ) );
     }
 
     /**
@@ -1165,7 +1175,8 @@ public final class StyleId implements Identifiable
      * @param component component to retrieve {@link StyleId} from
      * @return {@link StyleId} set in the specified component
      */
-    public static StyleId get ( final JComponent component )
+    @NotNull
+    public static StyleId get ( @NotNull final JComponent component )
     {
         return StyleManager.getStyleId ( component );
     }
@@ -1176,9 +1187,10 @@ public final class StyleId implements Identifiable
      * @param window window to retrieve {@link StyleId} from
      * @return {@link StyleId} set in the specified window
      */
-    public static StyleId get ( final Window window )
+    @NotNull
+    public static StyleId get ( @NotNull final Window window )
     {
-        return get ( getRootPane ( window ) );
+        return get ( CoreSwingUtils.getNonNullRootPane ( window ) );
     }
 
     /**
@@ -1200,9 +1212,10 @@ public final class StyleId implements Identifiable
      * @param window window to retrieve default {@link StyleId} for
      * @return default {@link StyleId} for the specified window
      */
-    public static StyleId getDefault ( final Window window )
+    @NotNull
+    public static StyleId getDefault ( @NotNull final Window window )
     {
-        return getDefault ( getRootPane ( window ) );
+        return getDefault ( CoreSwingUtils.getNonNullRootPane ( window ) );
     }
 
     /**
@@ -1212,7 +1225,8 @@ public final class StyleId implements Identifiable
      * @param component component to retrieve complete style identifier for
      * @return identifier used within component style in skin descriptor
      */
-    public static String getCompleteId ( final JComponent component )
+    @NotNull
+    public static String getCompleteId ( @NotNull final JComponent component )
     {
         return get ( component ).getCompleteId ();
     }
@@ -1224,27 +1238,9 @@ public final class StyleId implements Identifiable
      * @param window window to retrieve complete style identifier for
      * @return identifier used within window style in skin descriptor
      */
-    public static String getCompleteId ( final Window window )
+    @NotNull
+    public static String getCompleteId ( @NotNull final Window window )
     {
-        return getCompleteId ( getRootPane ( window ) );
-    }
-
-    /**
-     * Returns window root pane.
-     * Used instead of {@link CoreSwingUtils#getRootPane(java.awt.Component)} method to throw style exception.
-     * {@link StyleId} can only be installed into windows which use {@link JRootPane} component.
-     *
-     * @param window window to get root pane from
-     * @return window root pane
-     */
-    private static JRootPane getRootPane ( final Window window )
-    {
-        final JRootPane rootPane = CoreSwingUtils.getRootPane ( window );
-        if ( rootPane == null )
-        {
-            final String msg = "Unable to retrieve root pane for Window: %s";
-            throw new StyleException ( String.format ( msg, window ) );
-        }
-        return rootPane;
+        return getCompleteId ( CoreSwingUtils.getNonNullRootPane ( window ) );
     }
 }

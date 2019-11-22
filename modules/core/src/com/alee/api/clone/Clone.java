@@ -31,7 +31,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Configurable algorithm for cloning object instances.
  * It can be customized through the settings provided in its constructor once on creation.
- * To clone any object using this class instance call {@link #clone(Object)} method.
+ * To clone any {@link Object} using this class instance call {@link #clone(Object)} method.
+ *
+ * There are some preconfigured options available:
+ * - {@link #basic()} - {@link Clone} instance for cloning basic types and objects that implement {@link CloneBehavior}
+ * - {@link #deep()} - {@link Clone} instance for cloning any {@link Cloneable} objects
+ * - {@link #reflective()} - {@link Clone} instance for cloning any objects, {@link Cloneable} or not
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-Clone">How to use Clone</a>
@@ -244,18 +249,16 @@ public final class Clone implements Serializable
     }
 
     /**
-     * Returns {@link Clone} algorithm similar to {@link #deep()} that also uses base {@link Object#clone()} API.
+     * Returns {@link Clone} algorithm similar to {@link #deep()} but also allows non-{@link Cloneable} objects to be cloned.
      * Be careful when using this clone algorithm as it will go through all object references and will clone any existing fields.
-     * Also anything that implements {@link Cloneable} (except for {@link Collection}s and {@link Map}s) will be cloned through
-     * {@link Object#clone()} API instead, so be careful when cloning anything using this particular {@link Clone} algorithm.
      * Just like {@link #deep()} clone algorithm this one is most useful for cloning complex multi-level structures of objects while also
      * honoring base {@link Object#clone()} API while going through the structure of objects.
      *
      * @return {@link Clone} algorithm similar to {@link #deep()} that also uses base {@link Object#clone()} API
      */
-    public static Clone adaptive ()
+    public static Clone reflective ()
     {
-        final String identifier = "adaptive";
+        final String identifier = "reflective";
         Clone clone = commonInstance ( identifier );
         if ( clone == null )
         {
@@ -267,8 +270,7 @@ public final class Clone implements Serializable
                     new MapCloneBehavior (),
                     new SetCloneBehavior (),
                     new CollectionCloneBehavior (),
-                    new CloneableCloneBehavior (),
-                    new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.cloneable, ModifierType.STATIC )
+                    new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.all, ModifierType.STATIC )
             );
             commons.put ( identifier, clone );
         }

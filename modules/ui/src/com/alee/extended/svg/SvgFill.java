@@ -17,7 +17,11 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.ColorUtils;
+import com.kitfox.svg.SVGElement;
+import com.kitfox.svg.xml.StyleAttribute;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -32,19 +36,63 @@ import java.awt.*;
 public class SvgFill extends AbstractSvgAttributeAdjustment
 {
     /**
-     * Fill color.
+     * Fill {@link Color}.
+     * By default (if set to {@code null}) it will use {@code "none"} color value.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
+    /**
+     * Constructs new {@link SvgFill}.
+     */
+    public SvgFill ()
+    {
+        this ( null, null );
+    }
+
+    /**
+     * Constructs new {@link SvgFill}.
+     *
+     * @param color fill {@link Color}
+     */
+    public SvgFill ( @Nullable final Color color )
+    {
+        this ( null, color );
+    }
+
+    /**
+     * Constructs new {@link SvgFill}.
+     *
+     * @param selector {@link com.kitfox.svg.SVGElement} selector
+     */
+    public SvgFill ( @Nullable final String selector )
+    {
+        this ( selector, null );
+    }
+
+    /**
+     * Constructs new {@link SvgFill}.
+     *
+     * @param selector {@link com.kitfox.svg.SVGElement} selector
+     * @param color    fill {@link Color}
+     */
+    public SvgFill ( @Nullable final String selector, @Nullable final Color color )
+    {
+        super ( selector );
+        this.color = color;
+    }
+
+    @NotNull
     @Override
-    protected String getAttribute ( final SvgIcon icon )
+    protected String getAttribute ( @NotNull final SvgIcon icon )
     {
         return SvgElements.FILL;
     }
 
+    @Nullable
     @Override
-    protected String getValue ( final SvgIcon icon )
+    protected String getValue ( @NotNull final SvgIcon icon, @NotNull final SVGElement element, @Nullable final StyleAttribute attribute )
     {
         return color != null ? ColorUtils.toHex ( color ) : "none";
     }

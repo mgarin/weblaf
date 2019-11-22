@@ -17,8 +17,15 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.clone.Clone;
+import com.alee.api.clone.behavior.OmitOnClone;
+import com.alee.api.merge.behavior.OmitOnMerge;
+import com.alee.api.resource.Resource;
+import com.alee.api.ui.DisabledCopySupplier;
+import com.alee.api.ui.TransparentCopySupplier;
 import com.alee.managers.icon.data.IconAdjustment;
-import com.alee.utils.NetUtils;
 import com.kitfox.svg.*;
 import com.kitfox.svg.animation.AnimationElement;
 import com.kitfox.svg.app.beans.SVGIcon;
@@ -26,18 +33,16 @@ import com.kitfox.svg.xml.StyleAttribute;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Slightly customized SvgSalamander library {@link SVGIcon} implementation.
- * This extension provides a set of predefined convenient constructors and offers some additional customization methods.
+ * This extension provides convenient constructors and methods for diagram modification.
  *
  * Note that distinct {@link SVGUniverse} should be provided in case you want to reconfigure the same icon differently.
- * Otherwise default universe is used and changes will be applied to all icons coming from the same source.
+ * Otherwise default {@link SVGUniverse} is used and changes will be applied to all icons coming from the same source.
  *
  * When you want to modify some SVG settings you will have to find specific SVG elements within {@link SVGDiagram}.
  * This is where css-like selectors will help you a lot, check out {@link SvgSelector} JavaDoc for more information on syntax.
@@ -45,223 +50,71 @@ import java.util.List;
  * @author Mikle Garin
  * @see SvgSelector
  */
-public class SvgIcon extends SVGIcon
+public class SvgIcon extends SVGIcon implements DisabledCopySupplier<SvgIcon>, TransparentCopySupplier<SvgIcon>, Cloneable
 {
     /**
      * Cached raster image.
      */
+    @OmitOnClone
+    @OmitOnMerge
+    @Nullable
     protected transient BufferedImage cache;
 
     /**
-     * Constructs new empty {@link SvgIcon}.
+     * Constructs new {@link SvgIcon} based on {@link Resource}.
+     *
+     * @param resource SVG icon {@link Resource}
      */
-    public SvgIcon ()
+    public SvgIcon ( @NotNull final Resource resource )
     {
-        this ( SVGCache.getSVGUniverse () );
+        this ( resource, 16, 16 );
     }
 
     /**
-     * Constructs new {@link SvgIcon} based on SVG file.
+     * Constructs new {@link SvgIcon} based on {@link Resource}.
      *
-     * @param file path to SVG file
-     */
-    public SvgIcon ( final String file )
-    {
-        this ( SVGCache.getSVGUniverse (), file );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file with the specified width and height.
-     *
-     * @param file   path to SVG file
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     */
-    public SvgIcon ( final String file, final int width, final int height )
-    {
-        this ( SVGCache.getSVGUniverse (), file, width, height );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class}.
-     *
-     * @param clazz {@link Class} near which SVG resource is located
-     * @param path  SVG resource path
-     */
-    public SvgIcon ( final Class clazz, final String path )
-    {
-        this ( SVGCache.getSVGUniverse (), clazz, path );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class} with the specified width and height.
-     *
-     * @param clazz  {@link Class} near which SVG resource is located
-     * @param path   SVG resource path
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     */
-    public SvgIcon ( final Class clazz, final String path, final int width, final int height )
-    {
-        this ( SVGCache.getSVGUniverse (), clazz, path, width, height );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
-     *
-     * @param url SVG file {@link URL}
-     */
-    public SvgIcon ( final URL url )
-    {
-        this ( SVGCache.getSVGUniverse (), url );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
-     *
-     * @param url    SVG file {@link URL}
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     */
-    public SvgIcon ( final URL url, final int width, final int height )
-    {
-        this ( SVGCache.getSVGUniverse (), url, width, height );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
-     *
-     * @param uri SVG file {@link URI}
-     */
-    public SvgIcon ( final URI uri )
-    {
-        this ( SVGCache.getSVGUniverse (), uri );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
-     *
-     * @param uri    SVG file {@link URI}
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     */
-    public SvgIcon ( final URI uri, final int width, final int height )
-    {
-        this ( SVGCache.getSVGUniverse (), uri, width, height );
-    }
-
-    /**
-     * Constructs new empty {@link SvgIcon}.
-     *
-     * @param universe {@link SVGUniverse}
-     */
-    public SvgIcon ( final SVGUniverse universe )
-    {
-        this ( universe, ( URI ) null );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file.
-     *
-     * @param universe {@link SVGUniverse}
-     * @param file     path to SVG file
-     */
-    public SvgIcon ( final SVGUniverse universe, final String file )
-    {
-        this ( universe, new File ( file ).toURI () );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file with the specified width and height.
-     *
-     * @param universe {@link SVGUniverse}
-     * @param file     path to SVG file
+     * @param resource SVG icon {@link Resource}
      * @param width    preferred icon width
      * @param height   preferred icon height
      */
-    public SvgIcon ( final SVGUniverse universe, final String file, final int width, final int height )
+    public SvgIcon ( @NotNull final Resource resource, final int width, final int height )
     {
-        this ( universe, new File ( file ).toURI (), width, height );
+        try
+        {
+            // Loading SVG icon
+            final SVGUniverse universe = new SVGUniverse ();
+            final URI uri = universe.loadSVG ( resource.getInputStream (), "SvgIcon", true );
+
+            // Checking diagram
+            checkDiagram ( universe, uri );
+
+            // Updating settings
+            setSvgUniverse ( universe );
+            setSvgURI ( uri );
+            setAntiAlias ( true );
+            setAutosize ( AUTOSIZE_STRETCH );
+            setPreferredSize ( width, height );
+        }
+        catch ( final Exception e )
+        {
+            final String msg = "Unable to load SVG from resource: %s";
+            throw new RuntimeException ( String.format ( msg, resource ), e );
+        }
     }
 
     /**
-     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class}.
+     * Checks {@link SVGDiagram} existence in {@link SVGUniverse} for the specified {@link URI}.
      *
      * @param universe {@link SVGUniverse}
-     * @param clazz    {@link Class} near which SVG resource is located
-     * @param path     SVG resource path
+     * @param uri      {@link URI}
      */
-    public SvgIcon ( final SVGUniverse universe, final Class clazz, final String path )
+    protected void checkDiagram ( @NotNull final SVGUniverse universe, @NotNull final URI uri )
     {
-        this ( universe, clazz.getResource ( path ) );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG resource near {@link Class} with the specified width and height.
-     *
-     * @param universe {@link SVGUniverse}
-     * @param clazz    {@link Class} near which SVG resource is located
-     * @param path     SVG resource path
-     * @param width    preferred icon width
-     * @param height   preferred icon height
-     */
-    public SvgIcon ( final SVGUniverse universe, final Class clazz, final String path, final int width, final int height )
-    {
-        this ( universe, clazz.getResource ( path ), width, height );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
-     *
-     * @param universe {@link SVGUniverse}
-     * @param url      SVG file {@link URL}
-     */
-    public SvgIcon ( final SVGUniverse universe, final URL url )
-    {
-        this ( universe, NetUtils.toURI ( url ) );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URL}.
-     *
-     * @param universe {@link SVGUniverse}
-     * @param url      SVG file {@link URL}
-     * @param width    preferred icon width
-     * @param height   preferred icon height
-     */
-    public SvgIcon ( final SVGUniverse universe, final URL url, final int width, final int height )
-    {
-        this ( universe, NetUtils.toURI ( url ), width, height );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
-     *
-     * @param universe {@link SVGUniverse}
-     * @param uri      SVG file {@link URI}
-     */
-    public SvgIcon ( final SVGUniverse universe, final URI uri )
-    {
-        this ( universe, uri, 16, 16 );
-    }
-
-    /**
-     * Constructs new {@link SvgIcon} based on SVG file {@link URI}.
-     *
-     * @param universe {@link SVGUniverse}
-     * @param uri      SVG file {@link URI}
-     * @param width    preferred icon width
-     * @param height   preferred icon height
-     */
-    public SvgIcon ( final SVGUniverse universe, final URI uri, final int width, final int height )
-    {
-        super ();
-        setSvgUniverse ( universe );
-        setSvgURI ( uri );
-        checkSVGDiagram ();
-        setAntiAlias ( true );
-        setScaleToFit ( true );
-        setPreferredSize ( width, height );
+        if ( universe.getDiagram ( uri ) == null )
+        {
+            final String msg = "Unable to load SVG file: %s";
+            throw new RuntimeException ( String.format ( msg, getSvgURI () ) );
+        }
     }
 
     /**
@@ -269,7 +122,7 @@ public class SvgIcon extends SVGIcon
      *
      * @param adjustments {@link IconAdjustment}s to apply
      */
-    public void apply ( final IconAdjustment<SvgIcon>... adjustments )
+    public void apply ( @NotNull final IconAdjustment<SvgIcon>... adjustments )
     {
         for ( final IconAdjustment<SvgIcon> adjustment : adjustments )
         {
@@ -282,7 +135,7 @@ public class SvgIcon extends SVGIcon
      *
      * @param adjustments {@link IconAdjustment}s to apply
      */
-    public void apply ( final List<? extends IconAdjustment<SvgIcon>> adjustments )
+    public void apply ( @NotNull final List<? extends IconAdjustment<SvgIcon>> adjustments )
     {
         for ( final IconAdjustment<SvgIcon> adjustment : adjustments )
         {
@@ -295,21 +148,10 @@ public class SvgIcon extends SVGIcon
      *
      * @return SVG diagram
      */
+    @NotNull
     protected SVGDiagram getDiagram ()
     {
         return getSvgUniverse ().getDiagram ( getSvgURI () );
-    }
-
-    /**
-     * Checks SVG diagram existence.
-     */
-    protected void checkSVGDiagram ()
-    {
-        if ( getDiagram () == null )
-        {
-            final String msg = "Unable to load SVG file: %s";
-            throw new RuntimeException ( String.format ( msg, getSvgURI () ) );
-        }
     }
 
     /**
@@ -317,6 +159,7 @@ public class SvgIcon extends SVGIcon
      *
      * @return SVG diagram root
      */
+    @NotNull
     public SVGRoot getRoot ()
     {
         return getDiagram ().getRoot ();
@@ -328,7 +171,8 @@ public class SvgIcon extends SVGIcon
      * @param selector css-like selector
      * @return list of {@link SVGElement} for the specified selector
      */
-    public List<SVGElement> find ( final String selector )
+    @NotNull
+    public List<SVGElement> find ( @NotNull final String selector )
     {
         return find ( selector, getRoot () );
     }
@@ -339,7 +183,8 @@ public class SvgIcon extends SVGIcon
      * @param selector {@link SvgSelector}
      * @return list of {@link SVGElement} for the specified {@link SvgSelector}
      */
-    public List<SVGElement> find ( final SvgSelector selector )
+    @NotNull
+    public List<SVGElement> find ( @NotNull final SvgSelector selector )
     {
         return find ( selector, getRoot () );
     }
@@ -351,7 +196,8 @@ public class SvgIcon extends SVGIcon
      * @param element  root {@link SVGElement} to start search from
      * @return list of {@link SVGElement} for the specified selector
      */
-    public List<SVGElement> find ( final String selector, final SVGElement element )
+    @NotNull
+    public List<SVGElement> find ( @NotNull final String selector, @NotNull final SVGElement element )
     {
         return find ( selector, element, new ArrayList<SVGElement> ( 1 ) );
     }
@@ -363,7 +209,8 @@ public class SvgIcon extends SVGIcon
      * @param element  root {@link SVGElement} to start search from
      * @return list of {@link SVGElement} for the specified {@link SvgSelector}
      */
-    public List<SVGElement> find ( final SvgSelector selector, final SVGElement element )
+    @NotNull
+    public List<SVGElement> find ( @NotNull final SvgSelector selector, @NotNull final SVGElement element )
     {
         return find ( selector, element, new ArrayList<SVGElement> ( 1 ) );
     }
@@ -376,7 +223,9 @@ public class SvgIcon extends SVGIcon
      * @param result   list to place results into
      * @return list of {@link SVGElement} for the specified selector
      */
-    public List<SVGElement> find ( final String selector, final SVGElement element, final List<SVGElement> result )
+    @NotNull
+    public List<SVGElement> find ( @NotNull final String selector, @NotNull final SVGElement element,
+                                   @NotNull final List<SVGElement> result )
     {
         return find ( new SvgSelector ( selector ), element, result );
     }
@@ -389,7 +238,9 @@ public class SvgIcon extends SVGIcon
      * @param result   list to place results into
      * @return list of {@link SVGElement} for the specified {@link SvgSelector}
      */
-    public List<SVGElement> find ( final SvgSelector selector, final SVGElement element, final List<SVGElement> result )
+    @NotNull
+    public List<SVGElement> find ( @NotNull final SvgSelector selector, @NotNull final SVGElement element,
+                                   @NotNull final List<SVGElement> result )
     {
         if ( selector.isApplicable ( this, element ) )
         {
@@ -409,7 +260,7 @@ public class SvgIcon extends SVGIcon
      * @param attribute attribute name
      * @return true if element has specified attribute, false otherwise
      */
-    public boolean hasAttribute ( final SVGElement element, final String attribute )
+    public boolean hasAttribute ( @NotNull final SVGElement element, @NotNull final String attribute )
     {
         try
         {
@@ -429,7 +280,8 @@ public class SvgIcon extends SVGIcon
      * @param attribute attribute name
      * @return element attribute for the specified attribute name
      */
-    public StyleAttribute getAttribute ( final SVGElement element, final String attribute )
+    @Nullable
+    public StyleAttribute getAttribute ( @NotNull final SVGElement element, @NotNull final String attribute )
     {
         return element.getPresAbsolute ( attribute );
     }
@@ -441,7 +293,7 @@ public class SvgIcon extends SVGIcon
      * @param attribute attribute name
      * @param value     new attribute value
      */
-    public void setAttribute ( final SVGElement element, final String attribute, final String value )
+    public void setAttribute ( @NotNull final SVGElement element, @NotNull final String attribute, @Nullable final String value )
     {
         try
         {
@@ -463,11 +315,34 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
+     * Removes element attribute.
+     *
+     * @param element   SVG element
+     * @param attribute attribute name
+     */
+    public void removeAttribute ( @NotNull final SVGElement element, @NotNull final String attribute )
+    {
+        if ( !attribute.equals ( SvgElements.ID ) )
+        {
+            if ( hasAttribute ( element, attribute ) )
+            {
+                element.getPresentationAttributes ().remove ( attribute );
+            }
+            update ( element );
+        }
+        else
+        {
+            final String msg = "SVG element identifier attribute cannot be removed: %s";
+            throw new RuntimeException ( String.format ( msg, element ) );
+        }
+    }
+
+    /**
      * Updates specified element data.
      *
      * @param element SVG element
      */
-    protected void update ( final SVGElement element )
+    protected void update ( @NotNull final SVGElement element )
     {
         try
         {
@@ -485,7 +360,7 @@ public class SvgIcon extends SVGIcon
     }
 
     @Override
-    public void paintIcon ( final Component component, final Graphics g, final int x, final int y )
+    public void paintIcon ( @NotNull final Component component, @NotNull final Graphics g, final int x, final int y )
     {
         // Validating cache
         final Dimension size = getPreferredSize ();
@@ -522,6 +397,7 @@ public class SvgIcon extends SVGIcon
      *
      * @return this {@link SvgIcon} painted on {@link BufferedImage}
      */
+    @NotNull
     public BufferedImage asBufferedImage ()
     {
         return asBufferedImage ( getPreferredSize () );
@@ -533,7 +409,8 @@ public class SvgIcon extends SVGIcon
      * @param size resulting {@link BufferedImage} size
      * @return this {@link SvgIcon} painted on {@link BufferedImage} of the specified size
      */
-    public BufferedImage asBufferedImage ( final Dimension size )
+    @NotNull
+    public BufferedImage asBufferedImage ( @NotNull final Dimension size )
     {
         return asBufferedImage ( size.width, size.height );
     }
@@ -545,6 +422,7 @@ public class SvgIcon extends SVGIcon
      * @param height resulting {@link BufferedImage} height
      * @return this {@link SvgIcon} painted on {@link BufferedImage} of the specified size
      */
+    @NotNull
     public BufferedImage asBufferedImage ( final int width, final int height )
     {
         // Save initial preferred size
@@ -563,5 +441,45 @@ public class SvgIcon extends SVGIcon
         setPreferredSize ( ps );
 
         return image;
+    }
+
+    /**
+     * Returns copy of this {@link SvgIcon} with adjustments making it look disabled.
+     * Note that disabled version will use separate {@link SVGUniverse} to avoid causing adjustments in other {@link SvgIcon}s.
+     *
+     * @return copy of this {@link SvgIcon} with adjustments making it look disabled
+     */
+    @NotNull
+    @Override
+    public SvgIcon createDisabledCopy ()
+    {
+        final SvgIcon svgIcon = clone ();
+        svgIcon.apply ( new SvgGrayscale () );
+        svgIcon.apply ( new SvgOpacity ( 0.7d ) );
+        return svgIcon;
+    }
+
+    /**
+     * Returns copy of this {@link SvgIcon} with adjustments making it semi-transparent.
+     * Note that semi-transparent version will use separate {@link SVGUniverse} to avoid causing adjustments in other {@link SvgIcon}s.
+     *
+     * @param opacity opacity value, must be between 0 and 1
+     * @return copy of this {@link SvgIcon} with adjustments making it semi-transparent
+     */
+    @NotNull
+    @Override
+    public SvgIcon createTransparentCopy ( final float opacity )
+    {
+        final SvgIcon svgIcon = clone ();
+        svgIcon.apply ( new SvgOpacity ( ( double ) opacity ) );
+        return svgIcon;
+    }
+
+    @NotNull
+    @Override
+    protected SvgIcon clone ()
+    {
+        // todo Preserve Resource & adjustments instead and simply create new icon
+        return Clone.reflective ().clone ( this );
     }
 }

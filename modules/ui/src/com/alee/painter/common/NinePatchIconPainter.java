@@ -26,11 +26,9 @@ import com.alee.utils.ninepatch.NinePatchIcon;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.net.URL;
 
 /**
- * Custom painter for 9-patch icon.
+ * {@link NinePatchIcon} painter.
  *
  * @param <C> component type
  * @param <U> component UI type
@@ -42,95 +40,46 @@ import java.net.URL;
 public class NinePatchIconPainter<C extends JComponent, U extends ComponentUI> extends AbstractPainter<C, U>
 {
     /**
-     * 9-patch icon to paint.
+     * {@link NinePatchIcon} to paint.
      */
+    @Nullable
     protected NinePatchIcon icon;
 
     /**
-     * Constructs new 9-patch icon painter.
+     * Constructs new {@link NinePatchIconPainter}.
      */
     public NinePatchIconPainter ()
     {
-        this ( ( NinePatchIcon ) null );
+        this ( null );
     }
 
     /**
-     * Constructs new 9-patch icon painter.
+     * Constructs new {@link NinePatchIconPainter}.
      *
-     * @param url 9-patch image URL
+     * @param icon {@link NinePatchIcon} to paint
      */
-    public NinePatchIconPainter ( final URL url )
+    public NinePatchIconPainter ( @Nullable final NinePatchIcon icon )
     {
-        this ( new NinePatchIcon ( url ) );
-    }
-
-    /**
-     * Constructs new 9-patch icon painter.
-     *
-     * @param path 9-patch image path
-     */
-    public NinePatchIconPainter ( final String path )
-    {
-        this ( new NinePatchIcon ( path ) );
-    }
-
-    /**
-     * Constructs new 9-patch icon painter.
-     *
-     * @param imageIcon 9-patch image icon
-     */
-    public NinePatchIconPainter ( final ImageIcon imageIcon )
-    {
-        this ( new NinePatchIcon ( imageIcon ) );
-    }
-
-    /**
-     * Constructs new 9-patch icon painter.
-     *
-     * @param image 9-patch image
-     */
-    public NinePatchIconPainter ( final Image image )
-    {
-        this ( new NinePatchIcon ( image ) );
-    }
-
-    /**
-     * Constructs new 9-patch icon painter.
-     *
-     * @param bufferedImage 9-patch image
-     */
-    public NinePatchIconPainter ( final BufferedImage bufferedImage )
-    {
-        this ( new NinePatchIcon ( bufferedImage ) );
-    }
-
-    /**
-     * Constructs new 9-patch icon painter.
-     *
-     * @param icon 9-patch icon
-     */
-    public NinePatchIconPainter ( final NinePatchIcon icon )
-    {
-        super ();
         setNinePatchIcon ( icon );
     }
 
     /**
-     * Returns painted 9-patch icon.
+     * Returns painted {@link NinePatchIcon}.
      *
-     * @return painted 9-patch icon
+     * @return painted {@link NinePatchIcon}
      */
+    @Nullable
     public NinePatchIcon getNinePatchIcon ()
     {
         return icon;
     }
 
     /**
-     * Sets painted 9-patch icon.
+     * Sets painted {@link NinePatchIcon}.
      *
-     * @param icon painted 9-patch icon
+     * @param icon painted {@link NinePatchIcon}
      */
-    public void setNinePatchIcon ( final NinePatchIcon icon )
+    public void setNinePatchIcon ( @Nullable final NinePatchIcon icon )
     {
         if ( this.icon != null && isInstalled () )
         {

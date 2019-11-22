@@ -17,6 +17,8 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Adapter for {@link DocumentPaneListener}.
  *
@@ -28,7 +30,8 @@ package com.alee.extended.tab;
 public abstract class DocumentPaneAdapter<T extends DocumentData> implements DocumentPaneListener<T>
 {
     @Override
-    public void splitted ( final WebDocumentPane<T> documentPane, final PaneData<T> splittedPane, final SplitData<T> newSplitData )
+    public void splitted ( @NotNull final WebDocumentPane<T> documentPane, @NotNull final PaneData<T> splittedPane,
+                           @NotNull final SplitData<T> newSplitData )
     {
         /**
          * Do nothing by default.
@@ -36,7 +39,8 @@ public abstract class DocumentPaneAdapter<T extends DocumentData> implements Doc
     }
 
     @Override
-    public void merged ( final WebDocumentPane<T> documentPane, final SplitData<T> mergedSplit, final StructureData<T> newStructureData )
+    public void merged ( @NotNull final WebDocumentPane<T> documentPane, @NotNull final SplitData<T> mergedSplit,
+                         @NotNull final StructureData<T> newStructureData )
     {
         /**
          * Do nothing by default.
@@ -44,7 +48,7 @@ public abstract class DocumentPaneAdapter<T extends DocumentData> implements Doc
     }
 
     @Override
-    public void orientationChanged ( final WebDocumentPane<T> documentPane, final SplitData<T> splitData )
+    public void orientationChanged ( @NotNull final WebDocumentPane<T> documentPane, @NotNull final SplitData<T> splitData )
     {
         /**
          * Do nothing by default.
@@ -52,7 +56,7 @@ public abstract class DocumentPaneAdapter<T extends DocumentData> implements Doc
     }
 
     @Override
-    public void sidesSwapped ( final WebDocumentPane<T> documentPane, final SplitData<T> splitData )
+    public void sidesSwapped ( @NotNull final WebDocumentPane<T> documentPane, @NotNull final SplitData<T> splitData )
     {
         /**
          * Do nothing by default.
@@ -60,7 +64,7 @@ public abstract class DocumentPaneAdapter<T extends DocumentData> implements Doc
     }
 
     @Override
-    public void dividerLocationChanged ( final WebDocumentPane<T> documentPane, final SplitData<T> splitData )
+    public void dividerLocationChanged ( @NotNull final WebDocumentPane<T> documentPane, @NotNull final SplitData<T> splitData )
     {
         /**
          * Do nothing by default.

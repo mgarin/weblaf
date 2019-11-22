@@ -17,8 +17,10 @@
 
 package com.alee.laf.grouping;
 
+import com.alee.api.annotations.NotNull;
+
 /**
- * Custom constraints data for {@link com.alee.laf.grouping.GroupPaneLayout}.
+ * Custom constraints data for {@link GroupPaneLayout}.
  *
  * @author Mikle Garin
  */
@@ -61,47 +63,49 @@ public final class GroupPaneConstraints
     public double height;
 
     /**
-     * Constructs new constraints for {@link com.alee.laf.grouping.GroupPaneLayout}.
+     * Constructs new constraints for {@link GroupPaneLayout}.
      *
      * @param width  component width
      * @param height component height
      */
     public GroupPaneConstraints ( final double width, final double height )
     {
-        super ();
         this.width = width;
         this.height = height;
     }
 
     /**
-     * Returns new constraints for {@link com.alee.laf.grouping.GroupPaneLayout}
+     * Returns new constraints for {@link GroupPaneLayout}
      *
      * @param width  component width
      * @param height component height
-     * @return new constraints for {@link com.alee.laf.grouping.GroupPaneLayout}
+     * @return new constraints for {@link GroupPaneLayout}
      */
+    @NotNull
     public static GroupPaneConstraints of ( final double width, final double height )
     {
         return new GroupPaneConstraints ( width, height );
     }
 
     /**
-     * Returns new constraints for {@link com.alee.laf.grouping.GroupPaneLayout}
+     * Returns new constraints for {@link GroupPaneLayout}
      *
      * @param width component width
-     * @return new constraints for {@link com.alee.laf.grouping.GroupPaneLayout}
+     * @return new constraints for {@link GroupPaneLayout}
      */
+    @NotNull
     public static GroupPaneConstraints width ( final double width )
     {
         return of ( width, -1 );
     }
 
     /**
-     * Returns new constraints for {@link com.alee.laf.grouping.GroupPaneLayout}
+     * Returns new constraints for {@link GroupPaneLayout}
      *
      * @param height component height
-     * @return new constraints for {@link com.alee.laf.grouping.GroupPaneLayout}
+     * @return new constraints for {@link GroupPaneLayout}
      */
+    @NotNull
     public static GroupPaneConstraints height ( final double height )
     {
         return of ( -1, height );

@@ -17,9 +17,9 @@
 
 package com.alee.painter.decoration.background;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.behavior.OmitOnMerge;
-import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -49,19 +49,14 @@ public abstract class AbstractImageTextureBackground<C extends JComponent, D ext
     @OmitOnMerge
     protected transient BufferedImage image;
 
+    @NotNull
     @Override
-    protected TexturePaint getTexturePaint ( final Rectangle bounds )
+    protected TexturePaint getTexturePaint ( @NotNull final Rectangle bounds )
     {
         // Updating image cache if needed
         if ( image == null )
         {
             image = getTextureImage ();
-        }
-
-        // Ensure we retrieved image
-        if ( image == null )
-        {
-            throw new StyleException ( "Unable to retrieve texture image" );
         }
 
         // Returning texture paint
@@ -74,5 +69,6 @@ public abstract class AbstractImageTextureBackground<C extends JComponent, D ext
      *
      * @return {@link BufferedImage} used for {@link TexturePaint}
      */
+    @NotNull
     protected abstract BufferedImage getTextureImage ();
 }

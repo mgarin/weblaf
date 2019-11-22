@@ -44,6 +44,7 @@ public class AllFilesFilter extends AbstractFileFilter
         return ICON;
     }
 
+    @NotNull
     @Override
     public String getDescription ()
     {
@@ -51,7 +52,7 @@ public class AllFilesFilter extends AbstractFileFilter
     }
 
     @Override
-    public boolean accept ( final File file )
+    public boolean accept ( @NotNull final File file )
     {
         return true;
     }

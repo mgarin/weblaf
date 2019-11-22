@@ -17,6 +17,8 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -52,7 +54,7 @@ public class ComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Comb
     }
 
     @Override
-    protected void register ( final JComboBox comboBox )
+    protected void register ( @NotNull final JComboBox comboBox )
     {
         actionListener = new ActionListener ()
         {
@@ -66,13 +68,14 @@ public class ComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Comb
     }
 
     @Override
-    protected void unregister ( final JComboBox comboBox )
+    protected void unregister ( @NotNull final JComboBox comboBox )
     {
         comboBox.removeActionListener ( actionListener );
         actionListener = null;
     }
 
 
+    @Nullable
     @Override
     protected ComboBoxState createDefaultValue ()
     {
@@ -80,13 +83,13 @@ public class ComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Comb
     }
 
     @Override
-    protected void loadSettings ( final JComboBox comboBox )
+    protected void loadSettings ( @NotNull final JComboBox comboBox )
     {
         loadSettings ().apply ( comboBox );
     }
 
     @Override
-    protected void saveSettings ( final JComboBox comboBox )
+    protected void saveSettings ( @NotNull final JComboBox comboBox )
     {
         saveSettings ( new ComboBoxState ( comboBox ) );
     }

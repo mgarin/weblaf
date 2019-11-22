@@ -17,6 +17,7 @@
 
 package com.alee.demo.util;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.FeatureState;
 import com.alee.utils.UtilityException;
 
@@ -40,12 +41,13 @@ public final class ExampleUtils
     }
 
     /**
-     * Returns resulting {@link com.alee.demo.api.example.FeatureState} for the specified list.
+     * Returns resulting {@link FeatureState} for the specified list.
      *
-     * @param states {@link com.alee.demo.api.example.FeatureState} list
-     * @return resulting {@link com.alee.demo.api.example.FeatureState} for the specified list
+     * @param states {@link FeatureState} list
+     * @return resulting {@link FeatureState} for the specified list
      */
-    public static FeatureState getResultingState ( final List<FeatureState> states )
+    @NotNull
+    public static FeatureState getResultingState ( @NotNull final List<FeatureState> states )
     {
         final int all = states.size ();
         final FeatureState[] featureStates = FeatureState.values ();
@@ -62,19 +64,30 @@ public final class ExampleUtils
         }
 
         // Checking if all features has some specific state
+        FeatureState state = null;
         if ( all > 0 )
         {
-            for ( final FeatureState state : featureStates )
+            for ( final FeatureState featureState : featureStates )
             {
-                if ( count.get ( state ) == all )
+                if ( count.get ( featureState ) == all )
                 {
-                    return state;
+                    state = featureState;
+                    break;
                 }
             }
         }
 
-        // Returning updated state if anything non-common exists
-        return count.get ( FeatureState.beta ) > 0 || count.get ( FeatureState.release ) > 0 || count.get ( FeatureState.updated ) > 0 ||
-                count.get ( FeatureState.deprecated ) > 0 ? FeatureState.updated : FeatureState.common;
+        // Checking general state
+        if ( state == null )
+        {
+            state = count.get ( FeatureState.beta ) > 0 ||
+                    count.get ( FeatureState.release ) > 0 ||
+                    count.get ( FeatureState.updated ) > 0 ||
+                    count.get ( FeatureState.deprecated ) > 0
+                    ? FeatureState.updated
+                    : FeatureState.common;
+        }
+
+        return state;
     }
 }

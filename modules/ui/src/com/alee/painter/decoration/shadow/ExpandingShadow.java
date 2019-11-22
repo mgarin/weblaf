@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.shadow;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.behavior.OmitOnMerge;
@@ -52,21 +54,24 @@ public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, 
             new HashMap<String, WeakReference<NinePatchIcon>> ( 4 );
 
     /**
-     * Last shadow image cache key.
+     * Last shadow {@link NinePatchIcon} cache key.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient String shadowKey;
 
     /**
-     * Currently used shadow image.
+     * {@link NinePatchIcon} currently used as shadow.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
-    protected transient NinePatchIcon shadowImage;
+    protected transient NinePatchIcon shadowIcon;
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d, final Shape shape )
+    public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
+                        @NotNull final Shape shape )
     {
         final int width = getWidth ();
         final float opacity = getOpacity ();
@@ -87,45 +92,46 @@ public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, 
     }
 
     /**
-     * Returns cached shadow image.
-     * Image is updated if some related settings have changed.
+     * Returns cached shadow {@link NinePatchIcon}.
+     * {@link NinePatchIcon} is updated if some related settings have changed.
      *
      * @param width   shadow width
      * @param opacity shadow opacity
-     * @return cached shadow image
+     * @return cached shadow {@link NinePatchIcon}
      */
+    @NotNull
     protected NinePatchIcon getShadow ( final int width, final float opacity )
     {
         final String key = getShadowKey ( width, opacity );
-        if ( shadowImage == null || Objects.notEquals ( shadowKey, key ) )
+        if ( shadowIcon == null || Objects.notEquals ( key, shadowKey ) )
         {
-            final WeakReference<NinePatchIcon> reference = shadowCache.get ( key );
-            if ( reference == null || reference.get () == null )
-            {
-                // Creating new shadow icon
-                final Rectangle sb = new Rectangle ( width * 6, width * 6 );
-                final NinePatchIcon ninePatchIcon = createShadowIcon ( sb, width, opacity );
-
-                // Caching shadow icon
-                shadowCache.put ( key, new WeakReference<NinePatchIcon> ( ninePatchIcon ) );
-            }
-
-            // Updating
+            // Updating key
             shadowKey = key;
-            shadowImage = shadowCache.get ( key ).get ();
+
+            // Retrieving icon for new key
+            final WeakReference<NinePatchIcon> reference = shadowCache.get ( key );
+            shadowIcon = reference != null ? reference.get () : null;
+
+            // Creating new shadow icon if needed
+            if ( shadowIcon == null )
+            {
+                shadowIcon = createShadowIcon ( new Rectangle ( width * 6, width * 6 ), width, opacity );
+                shadowCache.put ( key, new WeakReference<NinePatchIcon> ( shadowIcon ) );
+            }
         }
-        return shadowImage;
+        return shadowIcon;
     }
 
     /**
-     * Returns newly created {@link NinePatchIcon} containing stretchable shadow.
+     * Returns newly created shadow {@link NinePatchIcon}.
      *
-     * @param bounds  icon bounds
+     * @param bounds  {@link NinePatchIcon} bounds
      * @param width   shadow width
      * @param opacity shadow opacity
-     * @return newly created {@link NinePatchIcon} containing stretchable shadow
+     * @return newly created shadow {@link NinePatchIcon}
      */
-    protected NinePatchIcon createShadowIcon ( final Rectangle bounds, final int width, final float opacity )
+    @NotNull
+    protected NinePatchIcon createShadowIcon ( @NotNull final Rectangle bounds, final int width, final float opacity )
     {
         // Creating shadow pattern
         final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -142,7 +148,7 @@ public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, 
         // Creating nine-patch icon based on shadow image
         final int w = shadowImage.getWidth ();
         final int inner = width / 2;
-        final NinePatchIcon ninePatchIcon = NinePatchIcon.create ( shadowImage );
+        final NinePatchIcon ninePatchIcon = new NinePatchIcon ( shadowImage, false );
         ninePatchIcon.addHorizontalStretch ( 0, width + inner, true );
         ninePatchIcon.addHorizontalStretch ( width + inner + 1, w - width - inner - 1, false );
         ninePatchIcon.addHorizontalStretch ( w - width - inner, w, true );
@@ -160,6 +166,7 @@ public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, 
      * @param opacity shadow opacity
      * @return shadow image cache key
      */
+    @NotNull
     protected String getShadowKey ( final int width, final float opacity )
     {
         return width + "," + opacity;

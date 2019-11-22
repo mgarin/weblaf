@@ -237,7 +237,7 @@ public class NinePatchEditor extends WebPanel
         }
     }
 
-    public void setNinePatchImage ( final BufferedImage ninePatchImage )
+    public void setNinePatchImage ( @NotNull final BufferedImage ninePatchImage )
     {
         // Ignore action if something is being dragged
         if ( isSomeDragged () )
@@ -1430,13 +1430,13 @@ public class NinePatchEditor extends WebPanel
         }
     }
 
-    private void disassembleImage ( final BufferedImage ninePatchImage )
+    private void disassembleImage ( @NotNull final BufferedImage ninePatchImage )
     {
         // Disassembles image into editor data
         try
         {
             // If image was actually a nine-patch image
-            this.ninePatchIcon = new NinePatchIcon ( ninePatchImage );
+            this.ninePatchIcon = new NinePatchIcon ( ninePatchImage, true );
             this.ninePatchImage = ninePatchImage;
         }
         catch ( final IllegalArgumentException e )
@@ -1451,7 +1451,7 @@ public class NinePatchEditor extends WebPanel
             g2d.drawLine ( 0, 1, 0, fixedImage.getHeight () - 2 );
             g2d.dispose ();
 
-            this.ninePatchIcon = new NinePatchIcon ( fixedImage );
+            this.ninePatchIcon = new NinePatchIcon ( fixedImage, true );
             this.ninePatchImage = fixedImage;
         }
     }

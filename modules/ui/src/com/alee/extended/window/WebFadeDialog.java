@@ -156,12 +156,12 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
                     if ( mp.x < bounds.x )
                     {
                         distance = minimumOpacityDistance -
-                                MathUtils.sqrt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( bounds.x - mp.x ) );
+                                MathUtils.sqrtToInt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( bounds.x - mp.x ) );
                     }
                     else if ( mp.x > bounds.x + bounds.width )
                     {
                         distance = minimumOpacityDistance -
-                                MathUtils.sqrt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( mp.x - bounds.x - bounds.width ) );
+                                MathUtils.sqrtToInt ( MathUtils.sqr ( bounds.y - mp.y ) + MathUtils.sqr ( mp.x - bounds.x - bounds.width ) );
                     }
                     else
                     {
@@ -184,11 +184,11 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
                     if ( mp.x < bounds.x )
                     {
                         distance = minimumOpacityDistance -
-                                MathUtils.sqrt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) + MathUtils.sqr ( bounds.x - mp.x ) );
+                                MathUtils.sqrtToInt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) + MathUtils.sqr ( bounds.x - mp.x ) );
                     }
                     else if ( mp.x > bounds.x + bounds.width )
                     {
-                        distance = minimumOpacityDistance - MathUtils.sqrt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) +
+                        distance = minimumOpacityDistance - MathUtils.sqrtToInt ( MathUtils.sqr ( mp.y - bounds.y - bounds.height ) +
                                 MathUtils.sqr ( mp.x - bounds.x - bounds.width ) );
                     }
                     else

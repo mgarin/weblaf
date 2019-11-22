@@ -97,14 +97,6 @@ public class GifDecoder
     private int frameCount;
 
     /**
-     * Constructs new {@link GifDecoder}.
-     */
-    public GifDecoder ()
-    {
-        super ();
-    }
-
-    /**
      * Returns pixel aspect ratio.
      *
      * @return pixel aspect ratio
@@ -112,34 +104,6 @@ public class GifDecoder
     public int getPixelAspect ()
     {
         return pixelAspect;
-    }
-
-    /**
-     * Single GIF frame.
-     */
-    public static class GifFrame
-    {
-        /**
-         * Frame {@link BufferedImage}.
-         */
-        public BufferedImage bufferedImage;
-
-        /**
-         * Frame display delay.
-         */
-        public int delay;
-
-        /**
-         * Constructs new {@link GifFrame}.
-         *
-         * @param bufferedImage frame {@link BufferedImage}
-         * @param delay         frame display delay
-         */
-        public GifFrame ( final BufferedImage bufferedImage, final int delay )
-        {
-            this.bufferedImage = bufferedImage;
-            this.delay = delay;
-        }
     }
 
     /**
@@ -223,18 +187,18 @@ public class GifDecoder
                     status = STATUS_FORMAT_ERROR;
                 }
             }
+            try
+            {
+                is.close ();
+            }
+            catch ( final IOException ignored )
+            {
+                //
+            }
         }
         else
         {
             status = STATUS_OPEN_ERROR;
-        }
-        try
-        {
-            is.close ();
-        }
-        catch ( final IOException e )
-        {
-            //
         }
         return status;
     }
@@ -490,7 +454,7 @@ public class GifDecoder
                     n += count;
                 }
             }
-            catch ( final IOException e )
+            catch ( final IOException ignored )
             {
                 //
             }
@@ -519,7 +483,7 @@ public class GifDecoder
         {
             n = in.read ( c );
         }
-        catch ( final IOException e )
+        catch ( final IOException ignored )
         {
             //
         }
@@ -629,6 +593,7 @@ public class GifDecoder
     /**
      * Reads GIF file header information.
      */
+    @SuppressWarnings ( "MethodWithMultipleReturnPoints" )
     protected void readHeader ()
     {
         final StringBuilder id = new StringBuilder ();
@@ -653,6 +618,7 @@ public class GifDecoder
     /**
      * Reads next frame image
      */
+    @SuppressWarnings ( "MethodWithMultipleReturnPoints" )
     protected void readImage ()
     {
         ix = readShort ();    // (sub)image position & size

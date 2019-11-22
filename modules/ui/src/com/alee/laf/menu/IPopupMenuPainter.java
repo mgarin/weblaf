@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -54,5 +56,5 @@ public interface IPopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI>
      * @param y         screen y location actual popup is to be shown at
      * @param popup     popup to be configured
      */
-    public void configurePopup ( C popupMenu, Component invoker, int x, int y, Popup popup );
+    public void configurePopup ( @NotNull C popupMenu, @Nullable Component invoker, int x, int y, @NotNull Popup popup );
 }

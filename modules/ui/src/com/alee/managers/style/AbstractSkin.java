@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SystemUtils;
 
@@ -43,8 +44,9 @@ public abstract class AbstractSkin implements Skin
      * Returns list of supported OS short names.
      *
      * @return list of supported OS short names
-     * @see com.alee.utils.SystemUtils#getShortOsName()
+     * @see SystemUtils#getShortOsName()
      */
+    @NotNull
     public abstract List<String> getSupportedSystems ();
 
     @Override
@@ -59,18 +61,14 @@ public abstract class AbstractSkin implements Skin
     }
 
     @Override
-    public boolean applySkin ( final JComponent component )
+    public void applySkin ( @NotNull final JComponent component )
     {
-        if ( getStyle ( component ).apply ( component ) )
-        {
-            component.repaint ();
-            return true;
-        }
-        return false;
+        getStyle ( component ).apply ( component );
+        component.repaint ();
     }
 
     @Override
-    public void updateSkin ( final JComponent component )
+    public void updateSkin ( @NotNull final JComponent component )
     {
         // todo Provide optimized update sequence for cases when painter is not changed?
         removeSkin ( component );
@@ -78,14 +76,8 @@ public abstract class AbstractSkin implements Skin
     }
 
     @Override
-    public boolean removeSkin ( final JComponent component )
+    public void removeSkin ( @NotNull final JComponent component )
     {
-        return getStyle ( component ).remove ( component );
-    }
-
-    @Override
-    public String toString ()
-    {
-        return getTitle ();
+        getStyle ( component ).remove ( component );
     }
 }

@@ -275,11 +275,13 @@ public class WebPathField extends WebPanel
 
                 if ( autocompleteDialog == null )
                 {
-                    autocompleteDialog = new JWindow ( CoreSwingUtils.getWindowAncestor ( WebPathField.this ) );
+                    final Window ancestor = CoreSwingUtils.getNonNullWindowAncestor ( WebPathField.this );
+
+                    autocompleteDialog = new JWindow ( ancestor );
                     autocompleteDialog.getContentPane ().setLayout ( new BorderLayout () );
                     autocompleteDialog.setFocusable ( false );
 
-                    CoreSwingUtils.getWindowAncestor ( WebPathField.this ).addComponentListener ( new ComponentAdapter ()
+                    ancestor.addComponentListener ( new ComponentAdapter ()
                     {
                         @Override
                         public void componentMoved ( final ComponentEvent e )

@@ -17,6 +17,8 @@
 
 package com.alee.laf.slider;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.settings.Configuration;
 import com.alee.managers.settings.SettingsProcessor;
 
@@ -52,7 +54,7 @@ public class SliderSettingsProcessor extends SettingsProcessor<JSlider, SliderSt
     }
 
     @Override
-    protected void register ( final JSlider slider )
+    protected void register ( @NotNull final JSlider slider )
     {
         changeListener = new ChangeListener ()
         {
@@ -66,12 +68,13 @@ public class SliderSettingsProcessor extends SettingsProcessor<JSlider, SliderSt
     }
 
     @Override
-    protected void unregister ( final JSlider slider )
+    protected void unregister ( @NotNull final JSlider slider )
     {
         slider.removeChangeListener ( changeListener );
         changeListener = null;
     }
 
+    @Nullable
     @Override
     protected SliderState createDefaultValue ()
     {
@@ -79,13 +82,13 @@ public class SliderSettingsProcessor extends SettingsProcessor<JSlider, SliderSt
     }
 
     @Override
-    protected void loadSettings ( final JSlider slider )
+    protected void loadSettings ( @NotNull final JSlider slider )
     {
         loadSettings ().apply ( slider );
     }
 
     @Override
-    protected void saveSettings ( final JSlider slider )
+    protected void saveSettings ( @NotNull final JSlider slider )
     {
         saveSettings ( new SliderState ( slider ) );
     }

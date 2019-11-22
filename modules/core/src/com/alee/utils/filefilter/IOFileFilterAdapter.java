@@ -17,6 +17,8 @@
 
 package com.alee.utils.filefilter;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileFilter;
@@ -57,7 +59,7 @@ public class IOFileFilterAdapter extends DescriptiveFileFilter
     }
 
     @Override
-    public boolean accept ( final File file )
+    public boolean accept ( @NotNull final File file )
     {
         return fileFilter == null || fileFilter.accept ( file );
     }

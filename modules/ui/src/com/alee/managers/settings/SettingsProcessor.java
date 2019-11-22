@@ -17,6 +17,8 @@
 
 package com.alee.managers.settings;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import org.slf4j.LoggerFactory;
 
@@ -54,11 +56,13 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
     /**
      * {@link JComponent} which settings are being managed.
      */
+    @NotNull
     protected C component;
 
     /**
      * {@link Configuration} for this {@link SettingsProcessor}.
      */
+    @NotNull
     protected K configuration;
 
     /**
@@ -77,7 +81,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      * @param component     {@link JComponent} which settings are being managed
      * @param configuration {@link Configuration}
      */
-    public SettingsProcessor ( final C component, final K configuration )
+    public SettingsProcessor ( @NotNull final C component, @NotNull final K configuration )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
@@ -127,7 +131,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      *
      * @param component {@link JComponent} to register this {@link SettingsProcessor} for
      */
-    protected abstract void register ( C component );
+    protected abstract void register ( @NotNull C component );
 
     /**
      * Destroys this SettingsProcessor.
@@ -149,10 +153,6 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
             final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
             LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
         }
-
-        // Component and configuration
-        this.configuration = null;
-        this.component = null;
     }
 
     /**
@@ -160,13 +160,14 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      *
      * @param component {@link JComponent} to unregister this {@link SettingsProcessor} for
      */
-    protected abstract void unregister ( C component );
+    protected abstract void unregister ( @NotNull C component );
 
     /**
      * Returns {@link JComponent} which settings are being managed.
      *
      * @return {@link JComponent} which settings are being managed
      */
+    @NotNull
     public C component ()
     {
         return component;
@@ -177,6 +178,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      *
      * @return {@link Configuration} for this {@link SettingsProcessor}
      */
+    @NotNull
     public K configuration ()
     {
         return configuration;
@@ -188,6 +190,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      *
      * @return default value for {@link JComponent} which settings are being managed
      */
+    @Nullable
     public final V defaultValue ()
     {
         V defaultValue = configuration.defaultValue ();
@@ -203,6 +206,7 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      *
      * @return default value for {@link JComponent} provided by {@link SettingsProcessor} implementation
      */
+    @Nullable
     protected V createDefaultValue ()
     {
         return null;
@@ -218,26 +222,24 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Ignore load if its save or load already running
-        if ( loading || saving )
+        if ( !loading && !saving )
         {
-            return;
-        }
-
-        // Load settings
-        try
-        {
-            loading = true;
-            loadSettings ( component () );
-        }
-        catch ( final Exception e )
-        {
-            final String msg = "Unable to load component settings for group '%s' and key '%s' due to unexpected exception";
-            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
-            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
-        }
-        finally
-        {
-            loading = false;
+            // Load settings
+            try
+            {
+                loading = true;
+                loadSettings ( component () );
+            }
+            catch ( final Exception e )
+            {
+                final String msg = "Unable to load component settings for group '%s' and key '%s' due to unexpected exception";
+                final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
+                LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
+            }
+            finally
+            {
+                loading = false;
+            }
         }
     }
 
@@ -248,13 +250,14 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
      * @param component {@link JComponent} to load value for
      * @see #loadSettings()
      */
-    protected abstract void loadSettings ( C component );
+    protected abstract void loadSettings ( @NotNull C component );
 
     /**
      * Loads and returns saved {@link JComponent} settings.
      *
      * @return loaded {@link JComponent} settings
      */
+    @Nullable
     protected V loadSettings ()
     {
         final K configuration = configuration ();
@@ -282,50 +285,46 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Ignore this call if save-on-change is disabled
-        if ( onChange && !SettingsManager.isSaveOnChange () )
+        if ( !onChange || SettingsManager.isSaveOnChange () )
         {
-            return;
-        }
-
-        // Ignore save if its save or load already running
-        if ( loading || saving )
-        {
-            return;
-        }
-
-        // Save settings
-        try
-        {
-            saving = true;
-            saveSettings ( component () );
-        }
-        catch ( final Exception e )
-        {
-            final String msg = "Unable to save component settings for group '%s' and key '%s' due to unexpected exception";
-            final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
-            LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
-        }
-        finally
-        {
-            saving = false;
+            // Ignore save if its save or load already running
+            if ( !loading && !saving )
+            {
+                // Save settings
+                try
+                {
+                    saving = true;
+                    saveSettings ( component () );
+                }
+                catch ( final Exception e )
+                {
+                    final String msg = "Unable to save component settings for group '%s' and key '%s' due to unexpected exception";
+                    final String fmsg = String.format ( msg, configuration.group (), configuration.key () );
+                    LoggerFactory.getLogger ( SettingsProcessor.class ).error ( fmsg, e );
+                }
+                finally
+                {
+                    saving = false;
+                }
+            }
         }
     }
 
     /**
      * Saves current settings of the specified {@link JComponent}.
-     * To save actual retrieved settings call {@link #saveSettings(java.io.Serializable)} method.
+     * To save actual retrieved settings call {@link #saveSettings(Serializable)} method.
      *
      * @param component {@link JComponent} to save settings for
-     * @see #saveSettings(java.io.Serializable)
+     * @see #saveSettings(Serializable)
      */
-    protected abstract void saveSettings ( C component );
+    protected abstract void saveSettings ( @NotNull C component );
 
     /**
      * Saves {@link JComponent} settings.
      *
      * @param value new {@link JComponent} settings
      */
-    protected void saveSettings ( final V value )
+    protected void saveSettings ( @Nullable final V value )
     {
         final K configuration = configuration ();
         SettingsManager.set ( configuration.group (), configuration.key (), value );

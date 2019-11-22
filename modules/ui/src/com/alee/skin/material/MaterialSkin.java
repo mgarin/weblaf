@@ -17,6 +17,7 @@
 
 package com.alee.skin.material;
 
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.style.XmlSkin;
 
 /**
@@ -27,10 +28,10 @@ import com.alee.managers.style.XmlSkin;
 public class MaterialSkin extends XmlSkin
 {
     /**
-     * Constructs skin.
+     * Constructs new {@link MaterialSkin}.
      */
     public MaterialSkin ()
     {
-        super ( MaterialSkin.class, "resources/skin.xml" );
+        super ( new ClassResource ( MaterialSkin.class, "resources/material-skin.xml" ) );
     }
 }

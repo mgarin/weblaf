@@ -17,6 +17,7 @@
 
 package com.alee.extended.list;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.*;
@@ -38,7 +39,7 @@ public interface FileThumbnailProvider extends Filter<File>, FileFilter
      * @return true if this provider can generate thumbnail for the specified file, false otherwise
      */
     @Override
-    public boolean accept ( File file );
+    public boolean accept ( @NotNull File file );
 
     /**
      * Returns custom file thumbnail icon.
@@ -50,5 +51,5 @@ public interface FileThumbnailProvider extends Filter<File>, FileFilter
      * @param preview whether thumbnail should be a small preview of file content or not
      * @return custom file thumbnail
      */
-    public ImageIcon provide ( File file, Dimension size, boolean preview );
+    public Icon provide ( @NotNull File file, @NotNull Dimension size, boolean preview );
 }

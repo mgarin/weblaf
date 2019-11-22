@@ -18,10 +18,12 @@
 package com.alee.utils;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.Resource;
+import com.alee.api.ui.DisabledCopySupplier;
+import com.alee.api.ui.TransparentCopySupplier;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.utils.collection.ImmutableList;
-import com.alee.utils.xml.Resource;
-import com.alee.utils.xml.ResourceLocation;
 import com.mortennobel.imagescaling.ResampleOp;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +33,10 @@ import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Area;
 import java.awt.image.*;
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.*;
 
@@ -43,21 +46,26 @@ import java.util.*;
 public final class ImageUtils
 {
     /**
-     * todo 1. Rework the way image instances and data are handled within WebLaF
-     * todo 2. Provide an appropriate way to cache images (based on component/
-     */
-
-    /**
-     * Image cache keys separator.
-     */
-    private static final String IMAGE_CACHE_KEYS_SEPARATOR = "|";
-
-    /**
      * Viewable image formats.
      */
-    public static final List<String> VIEWABLE_IMAGES = new ImmutableList<String> (
+    public static final List<String> SUPPORTED_IMAGES = new ImmutableList<String> (
             "png", "apng", "gif", "agif", "jpg", "jpeg", "jpeg2000", "bmp"
     );
+
+    /**
+     * Grayscale image filter.
+     */
+    private static final ColorConvertOp GRAYSCALE_FILTER = new ColorConvertOp ( ColorSpace.getInstance ( ColorSpace.CS_GRAY ), null );
+
+    /**
+     * Disabled icons cache.
+     */
+    protected static final Map<Icon, Icon> DISABLED_ICONS_CACHE = new WeakHashMap<Icon, Icon> ( 50 );
+
+    /**
+     * Transparent icons cache.
+     */
+    protected static final Map<Icon, Map<Float, Icon>> TRANSPARENT_ICONS_CACHE = new WeakHashMap<Icon, Map<Float, Icon>> ( 10 );
 
     /**
      * Private constructor to avoid instantiation.
@@ -68,1029 +76,345 @@ public final class ImageUtils
     }
 
     /**
-     * Returns whether or not image pixel at the specified X and Y coordinates is fully transparent.
+     * Returns whether or not loading of the image with extension mentioned in the specified name is supported.
      *
-     * @param image image
-     * @param x     X coordinate
-     * @param y     Y coordinate
-     * @return true if image pixel at the specified x and y coordinates is fully transparent, false otherwise
+     * @param name image name with extension in it
+     * @return {@code true} if loading of the image with extension mentioned in the specified name is supported, {@code false} otherwise
      */
-    public static boolean isTransparent ( final BufferedImage image, final int x, final int y )
+    public static boolean isImageSupported ( @Nullable final String name )
     {
-        return ( image.getRGB ( x, y ) >> 24 & 0xFF ) > 0;
+        return SUPPORTED_IMAGES.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase ( Locale.ROOT ) );
     }
 
     /**
-     * Creates a compatible image using given data
+     * Returns whether or not specified {@link BufferedImage} pixel is fully transparent.
+     *
+     * @param bufferedImage {@link BufferedImage}
+     * @param x             {@link BufferedImage} pixel X index
+     * @param y             {@link BufferedImage} pixel Y index
+     * @return {@code true} if specified {@link BufferedImage} pixel is fully transparent, {@code false} otherwise
      */
+    public static boolean isTransparent ( @NotNull final BufferedImage bufferedImage, final int x, final int y )
+    {
+        return ( bufferedImage.getRGB ( x, y ) >> 24 & 0xFF ) > 0;
+    }
 
+    /**
+     * Returns new empty {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}.
+     *
+     * @param bufferedImage {@link BufferedImage} to use size and transparency settings from
+     * @return new empty {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}
+     */
+    @NotNull
+    public static BufferedImage createCompatibleImage ( @NotNull final BufferedImage bufferedImage )
+    {
+        return createCompatibleImage ( bufferedImage.getWidth (), bufferedImage.getHeight (), bufferedImage.getTransparency () );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}.
+     *
+     * @param width  {@link BufferedImage} width
+     * @param height {@link BufferedImage} height
+     * @return new {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}
+     */
+    @NotNull
     public static BufferedImage createCompatibleImage ( final int width, final int height )
     {
         return SystemUtils.getGraphicsConfiguration ().createCompatibleImage ( width, height );
     }
 
+    /**
+     * Returns new {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}.
+     *
+     * @param width        new {@link BufferedImage} width
+     * @param height       new {@link BufferedImage} height
+     * @param transparency new {@link BufferedImage} {@link Transparency} type
+     * @return new {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}
+     */
+    @NotNull
     public static BufferedImage createCompatibleImage ( final int width, final int height, final int transparency )
     {
         return SystemUtils.getGraphicsConfiguration ().createCompatibleImage ( width, height, transparency );
     }
 
-    public static BufferedImage createCompatibleImage ( final BufferedImage image )
+    /**
+     * Returns whether or not specified {@link BufferedImage} is compatible with default screen {@link GraphicsConfiguration}.
+     *
+     * @param bufferedImage {@link BufferedImage} to check
+     * @return {@code true} if specified {@link BufferedImage} is compatible with default screen {@link GraphicsConfiguration},
+     * {@code false} otherwise
+     */
+    public static boolean isCompatibleImage ( @NotNull final BufferedImage bufferedImage )
     {
-        return createCompatibleImage ( image, image.getWidth (), image.getHeight () );
-    }
-
-    public static BufferedImage createCompatibleImage ( final BufferedImage image, final int transparency )
-    {
-        return createCompatibleImage ( image.getWidth (), image.getHeight (), transparency );
-    }
-
-    public static BufferedImage createCompatibleImage ( final BufferedImage image, final int width, final int height )
-    {
-        return createCompatibleImage ( width, height, image.getTransparency () );
+        return bufferedImage.getColorModel ().equals ( SystemUtils.getGraphicsConfiguration ().getColorModel () );
     }
 
     /**
-     * Creates a compatible image from the content specified by the resource
+     * Returns {@link BufferedImage} loaded from the specified {@link Resource}.
+     * Resulting {@link BufferedImage} is also made compatible with default screen {@link GraphicsConfiguration}.
+     *
+     * @param resource {@link Resource} to load {@link BufferedImage} from
+     * @return {@link BufferedImage} loaded from the specified {@link Resource}
      */
-
-    public static BufferedImage loadCompatibleImage ( final URL resource ) throws IOException
+    @NotNull
+    public static BufferedImage loadCompatibleImage ( @NotNull final Resource resource )
     {
-        final BufferedImage image = ImageIO.read ( resource );
-        return toCompatibleImage ( image );
-    }
-
-    /**
-     * If the source image is already compatible, then the source image is returned. This version takes a BufferedImage, but it could be
-     * extended to take an Image instead
-     */
-
-    public static BufferedImage toCompatibleImage ( final BufferedImage image )
-    {
-        // Image is already compatible
-        if ( isCompatibleImage ( image ) )
+        try
         {
-            return image;
+            return toCompatibleImage ( loadBufferedImage ( resource ) );
         }
+        catch ( final Exception e )
+        {
+            throw new UtilityException ( "Unable to load compatible BufferedImage: " + resource, e );
+        }
+    }
 
-        // Create new compatible image
-        final BufferedImage compatibleImage = SystemUtils.getGraphicsConfiguration ()
-                .createCompatibleImage ( image.getWidth (), image.getHeight (), image.getTransparency () );
-        final Graphics2D g2d = compatibleImage.createGraphics ();
-        g2d.drawImage ( image, 0, 0, null );
-        g2d.dispose ();
-
+    /**
+     * Returns {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}.
+     * Specified {@link BufferedImage} might be copied or simply returned "as is" as a result of calling this method.
+     *
+     * @param bufferedImage {@link BufferedImage} to create copy of that will be compatible with default screen {@link
+     *                      GraphicsConfiguration}
+     * @return {@link BufferedImage} compatible with default screen {@link GraphicsConfiguration}.
+     */
+    @NotNull
+    public static BufferedImage toCompatibleImage ( @NotNull final BufferedImage bufferedImage )
+    {
+        final BufferedImage compatibleImage;
+        if ( isCompatibleImage ( bufferedImage ) )
+        {
+            compatibleImage = bufferedImage;
+        }
+        else
+        {
+            compatibleImage = createCompatibleImage ( bufferedImage );
+            final Graphics2D g2d = compatibleImage.createGraphics ();
+            g2d.drawImage ( bufferedImage, 0, 0, null );
+            g2d.dispose ();
+        }
         return compatibleImage;
     }
 
     /**
-     * Returns true if image is compatible
-     */
-
-    public static boolean isCompatibleImage ( final BufferedImage image )
-    {
-        return image.getColorModel ().equals ( SystemUtils.getGraphicsConfiguration ().getColorModel () );
-    }
-
-    /**
-     * Cuts image by the specified shape
-     */
-
-    public static ImageIcon cutImage ( final Shape shape, final ImageIcon image )
-    {
-        return new ImageIcon ( cutImage ( shape, image.getImage () ) );
-    }
-
-    public static BufferedImage cutImage ( final Shape shape, final Image image )
-    {
-        final int w = image.getWidth ( null );
-        final int h = image.getHeight ( null );
-
-        final BufferedImage cutImage = createCompatibleImage ( w, h, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = cutImage.createGraphics ();
-        GraphicsUtils.setupAntialias ( g2d );
-        g2d.setPaint ( Color.WHITE );
-        g2d.fill ( shape );
-        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-        g2d.drawImage ( image, 0, 0, null );
-        g2d.dispose ();
-
-        return cutImage;
-    }
-
-    /**
-     * Returns Images list instead of ImageIcons list
-     */
-
-    @NotNull
-    public static List<Image> toImagesList ( final List<? extends ImageIcon> icons )
-    {
-        final List<Image> images = new ArrayList<Image> ( icons.size () );
-        for ( final ImageIcon icon : icons )
-        {
-            images.add ( icon.getImage () );
-        }
-        return images;
-    }
-
-    /**
-     * Combines few images into single one
-     */
-
-    public static ImageIcon combineIcons ( final List<ImageIcon> icons )
-    {
-        return combineIcons ( 0, icons );
-    }
-
-    public static ImageIcon combineIcons ( final int spacing, final List<ImageIcon> icons )
-    {
-        // No icons given
-        if ( icons == null || icons.size () == 0 )
-        {
-            return null;
-        }
-
-        final Image[] images = new Image[ icons.size () ];
-        int i = 0;
-        for ( final ImageIcon icon : icons )
-        {
-            images[ i ] = icon != null ? icon.getImage () : null;
-            i++;
-        }
-        return new ImageIcon ( combineIcons ( spacing, images ) );
-    }
-
-    public static ImageIcon combineIcons ( final ImageIcon... icons )
-    {
-        return combineIcons ( 0, icons );
-    }
-
-    public static ImageIcon combineIcons ( final int spacing, final ImageIcon... icons )
-    {
-        // No icons given
-        if ( icons == null || icons.length == 0 )
-        {
-            return null;
-        }
-
-        final Image[] images = new Image[ icons.length ];
-        int i = 0;
-        for ( final ImageIcon icon : icons )
-        {
-            images[ i ] = icon != null ? icon.getImage () : null;
-            i++;
-        }
-        return new ImageIcon ( combineIcons ( spacing, images ) );
-    }
-
-    public static BufferedImage combineIcons ( final Image... images )
-    {
-        return combineIcons ( 0, images );
-    }
-
-    public static BufferedImage combineIcons ( final int spacing, final Image... images )
-    {
-        // No images given
-        if ( images == null || images.length == 0 )
-        {
-            return null;
-        }
-
-        // Finding the maximum image size first
-        final Dimension maxSize = new Dimension ( 0, 0 );
-        for ( final Image image : images )
-        {
-            if ( image != null )
-            {
-                maxSize.width = maxSize.width + image.getWidth ( null ) + spacing;
-                maxSize.height = Math.max ( maxSize.height, image.getHeight ( null ) );
-            }
-        }
-        maxSize.width -= spacing;
-
-        // Return null image if sizes are invalid
-        if ( maxSize.width <= 0 || maxSize.height <= 0 )
-        {
-            return null;
-        }
-
-        // Creating new merged image
-        final BufferedImage bi = createCompatibleImage ( maxSize.width, maxSize.height, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bi.createGraphics ();
-        int x = 0;
-        for ( final Image image : images )
-        {
-            if ( image != null )
-            {
-                g2d.drawImage ( image, x, 0, null );
-                x += image.getWidth ( null ) + spacing;
-            }
-        }
-        g2d.dispose ();
-
-        return bi;
-    }
-
-    /**
-     * Merges few images into single one
-     */
-
-    private static final Map<String, ImageIcon> mergedIconsCache = new HashMap<String, ImageIcon> ();
-
-    public static void clearMergedIconsCache ()
-    {
-        mergedIconsCache.clear ();
-    }
-
-    public static ImageIcon mergeIcons ( final List<? extends Icon> icons )
-    {
-        return mergeIcons ( null, icons );
-    }
-
-    public static ImageIcon mergeIcons ( final String key, final List<? extends Icon> icons )
-    {
-        // Icon is cached already
-        if ( key != null && mergedIconsCache.containsKey ( key ) )
-        {
-            return mergedIconsCache.get ( key );
-        }
-
-        // No icons given
-        if ( icons == null || icons.size () == 0 )
-        {
-            return null;
-        }
-
-        // Single icon given
-        if ( icons.size () == 1 )
-        {
-            final ImageIcon icon = getImageIcon ( icons.get ( 0 ) );
-            if ( key != null )
-            {
-                mergedIconsCache.put ( key, icon );
-            }
-            return icon;
-        }
-
-        final Image[] images = new Image[ icons.size () ];
-        int i = 0;
-        for ( final Icon icon : icons )
-        {
-            images[ i ] = icon != null ? getBufferedImage ( icon ) : null;
-            i++;
-        }
-        final ImageIcon icon = new ImageIcon ( mergeImages ( images ) );
-        if ( key != null )
-        {
-            mergedIconsCache.put ( key, icon );
-        }
-        return icon;
-    }
-
-    public static ImageIcon mergeIcons ( final Icon... icons )
-    {
-        return mergeIcons ( null, icons );
-    }
-
-    public static ImageIcon mergeIcons ( final String key, final Icon... icons )
-    {
-        // Icon is cached already
-        if ( key != null && mergedIconsCache.containsKey ( key ) )
-        {
-            return mergedIconsCache.get ( key );
-        }
-
-        // No icons given
-        if ( icons == null || icons.length == 0 )
-        {
-            return null;
-        }
-
-        // Single icon given
-        if ( icons.length == 1 )
-        {
-            final ImageIcon icon = getImageIcon ( icons[ 0 ] );
-            if ( key != null )
-            {
-                mergedIconsCache.put ( key, icon );
-            }
-            return icon;
-        }
-
-        final Image[] images = new Image[ icons.length ];
-        int i = 0;
-        for ( final Icon icon : icons )
-        {
-            images[ i ] = icon != null ? getBufferedImage ( icon ) : null;
-            i++;
-        }
-        final ImageIcon icon = new ImageIcon ( mergeImages ( images ) );
-        if ( key != null )
-        {
-            mergedIconsCache.put ( key, icon );
-        }
-        return icon;
-    }
-
-    private static final Map<String, BufferedImage> mergedImagesCache = new HashMap<String, BufferedImage> ();
-
-    public static void clearMergedImagesCache ()
-    {
-        mergedImagesCache.clear ();
-    }
-
-    public static BufferedImage mergeImages ( final Image... images )
-    {
-        return mergeImages ( null, images );
-    }
-
-    public static BufferedImage mergeImages ( final String key, final Image... images )
-    {
-        // Image is cached already
-        if ( key != null && mergedImagesCache.containsKey ( key ) )
-        {
-            return mergedImagesCache.get ( key );
-        }
-
-        // No images given
-        if ( images == null || images.length == 0 )
-        {
-            return null;
-        }
-
-        // Single image given
-        if ( images.length == 1 )
-        {
-            return ImageUtils.getBufferedImage ( images[ 0 ] );
-        }
-
-        // Finding the maximum image size first
-        final Dimension maxSize = new Dimension ( 0, 0 );
-        for ( final Image image : images )
-        {
-            if ( image != null )
-            {
-                maxSize.width = Math.max ( maxSize.width, image.getWidth ( null ) );
-                maxSize.height = Math.max ( maxSize.height, image.getHeight ( null ) );
-            }
-        }
-
-        // Return null image if sizes are invalid
-        if ( maxSize.width <= 0 || maxSize.height <= 0 )
-        {
-            return null;
-        }
-
-        // Creating new merged image
-        final BufferedImage bi = createCompatibleImage ( maxSize.width, maxSize.height, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bi.createGraphics ();
-        for ( final Image image : images )
-        {
-            if ( image != null )
-            {
-                g2d.drawImage ( image, 0, 0, null );
-            }
-        }
-        g2d.dispose ();
-
-        if ( key != null )
-        {
-            mergedImagesCache.put ( key, bi );
-        }
-        return bi;
-    }
-
-    /**
-     * Loads image from specified source file
-     */
-
-    public static BufferedImage loadImage ( final String src )
-    {
-        return loadImage ( new File ( src ) );
-    }
-
-    public static BufferedImage loadImage ( final File file )
-    {
-        try
-        {
-            return ImageIO.read ( file );
-        }
-        catch ( final Exception e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Loads image from URL
-     */
-
-    public static ImageIcon loadImage ( final URL url )
-    {
-        try
-        {
-            //            URLConnection uc = url.openConnection ();
-            //            ProxyManager.setProxySettings ( uc );
-            //            InputStream inputStream = uc.getInputStream ();
-            //            ImageIcon imageIcon = loadImage ( inputStream );
-            //            inputStream.close ();
-            //            return imageIcon;
-            return new ImageIcon ( url );
-        }
-        catch ( final Exception e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Loads image from specified resource near class
-     */
-
-    public static ImageIcon loadImage ( final Class nearClass, final String src )
-    {
-        try
-        {
-            return new ImageIcon ( nearClass.getResource ( src ) );
-        }
-        catch ( final Exception e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Loads image from InputStream
-     */
-
-    public static ImageIcon loadImage ( final InputStream inputStream )
-    {
-        try
-        {
-            return new ImageIcon ( ImageIO.read ( inputStream ) );
-        }
-        catch ( final Exception e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Adds background to icon
-     */
-
-    public static ImageIcon addBackground ( final ImageIcon imageIcon, final Color background )
-    {
-        return new ImageIcon ( addBackground ( getBufferedImage ( imageIcon ), background ) );
-    }
-
-    public static BufferedImage addBackground ( final BufferedImage image, final Color background )
-    {
-        final BufferedImage bi = createCompatibleImage ( image );
-        final Graphics2D g2d = bi.createGraphics ();
-        g2d.setPaint ( background );
-        g2d.fillRect ( 0, 0, image.getWidth (), image.getHeight () );
-        g2d.drawImage ( image, 0, 0, null );
-        g2d.dispose ();
-        return bi;
-    }
-
-    /**
-     * Resizes image canvas
-     */
-
-    public static ImageIcon resizeCanvas ( final ImageIcon imageIcon, final int width, final int height )
-    {
-        return new ImageIcon ( resizeCanvas ( getBufferedImage ( imageIcon ), width, height ) );
-    }
-
-    public static BufferedImage resizeCanvas ( final BufferedImage image, final int width, final int height )
-    {
-        final BufferedImage bi = createCompatibleImage ( image, width, height );
-        final Graphics2D g2d = bi.createGraphics ();
-        g2d.drawImage ( image, width / 2 - image.getWidth () / 2, height / 2 - image.getHeight () / 2, null );
-        g2d.dispose ();
-        return bi;
-    }
-
-    /**
-     * Rotate image
-     */
-
-    public static ImageIcon rotateImage90CW ( final ImageIcon imageIcon )
-    {
-        return new ImageIcon ( rotateImage90CW ( getBufferedImage ( imageIcon ) ) );
-    }
-
-    public static BufferedImage rotateImage90CW ( final BufferedImage image )
-    {
-        final BufferedImage bufferedImage = createCompatibleImage ( image.getHeight (), image.getWidth (), Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bufferedImage.createGraphics ();
-        g2d.translate ( image.getHeight (), 0 );
-        g2d.rotate ( Math.PI / 2 );
-        g2d.drawImage ( image, 0, 0, null );
-        g2d.dispose ();
-        return bufferedImage;
-    }
-
-    public static ImageIcon rotateImage90CCW ( final ImageIcon imageIcon )
-    {
-        return new ImageIcon ( rotateImage90CCW ( getBufferedImage ( imageIcon ) ) );
-    }
-
-    public static BufferedImage rotateImage90CCW ( final BufferedImage image )
-    {
-        final BufferedImage bufferedImage = createCompatibleImage ( image.getHeight (), image.getWidth (), Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bufferedImage.createGraphics ();
-        g2d.translate ( 0, image.getWidth () );
-        g2d.rotate ( -Math.PI / 2 );
-        g2d.drawImage ( image, 0, 0, null );
-        g2d.dispose ();
-        return bufferedImage;
-    }
-
-    public static ImageIcon rotateImage180 ( final ImageIcon imageIcon )
-    {
-        return new ImageIcon ( rotateImage180 ( getBufferedImage ( imageIcon ) ) );
-    }
-
-    public static BufferedImage rotateImage180 ( final BufferedImage image )
-    {
-        final BufferedImage bufferedImage = createCompatibleImage ( image.getWidth (), image.getHeight (), Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bufferedImage.createGraphics ();
-        g2d.translate ( image.getWidth (), image.getHeight () );
-        g2d.rotate ( Math.PI );
-        g2d.drawImage ( image, 0, 0, null );
-        g2d.dispose ();
-        return bufferedImage;
-    }
-
-    /**
-     * Creates empty icon
-     */
-
-    public static ImageIcon createEmptyIcon ( final int width, final int height )
-    {
-        return new ImageIcon ( createEmptyImage ( width, height ) );
-    }
-
-    public static BufferedImage createEmptyImage ( final int width, final int height )
-    {
-        return createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
-    }
-
-    /**
-     * Creates color icon
-     */
-
-    public static ImageIcon createColorIcon ( final Color color )
-    {
-        return createColorIcon ( color, 16, 16 );
-    }
-
-    public static ImageIcon createColorIcon ( final Color color, final int width, final int height )
-    {
-        return new ImageIcon ( createColorImage ( color, width, height ) );
-    }
-
-    public static BufferedImage createColorImage ( final Color color )
-    {
-        return createColorImage ( color, 16, 16 );
-    }
-
-    public static BufferedImage createColorImage ( final Color color, final int width, final int height )
-    {
-        final int largeRound = 6;
-        final int bigRound = 4;
-        final BufferedImage image = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = image.createGraphics ();
-        GraphicsUtils.setupAntialias ( g2d );
-        g2d.setPaint ( Color.GRAY );
-        g2d.drawRoundRect ( 0, 0, width - 1, height - 1, largeRound, bigRound );
-        g2d.setPaint ( Color.WHITE );
-        g2d.drawRoundRect ( 1, 1, width - 3, height - 3, bigRound, bigRound );
-        g2d.setPaint ( color );
-        g2d.fillRoundRect ( 2, 2, width - 4, height - 4, bigRound, bigRound );
-        g2d.dispose ();
-        return image;
-    }
-
-    /**
-     * Creates color chooser icon
-     */
-
-    public static ImageIcon createColorChooserIcon ( final Color color )
-    {
-        return new ImageIcon ( createColorChooserImage ( color ) );
-    }
-
-    public static BufferedImage createColorChooserImage ( final Color color )
-    {
-        final BufferedImage image = createCompatibleImage ( 16, 16, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = image.createGraphics ();
-
-        if ( color == null || color.getAlpha () < 255 )
-        {
-            final ImageIcon transparentIcon = getImageIcon ( ImageUtils.class.getResource ( "icons/color/transparent.png" ) );
-            g2d.drawImage ( transparentIcon.getImage (), 0, 0, null );
-        }
-        if ( color != null )
-        {
-            g2d.setPaint ( color );
-            g2d.fillRect ( 2, 2, 13, 12 );
-        }
-
-        final ImageIcon colorIcon = getImageIcon ( ImageUtils.class.getResource ( "icons/color/color.png" ) );
-        g2d.drawImage ( colorIcon.getImage (), 0, 0, null );
-
-        g2d.dispose ();
-        return image;
-    }
-
-    /**
-     * Darkens specified BufferedImage
-     */
-
-    public static void darkenImage ( final BufferedImage image, final float darken )
-    {
-        final Graphics2D g2d = image.createGraphics ();
-        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, darken ) );
-        g2d.setPaint ( Color.BLACK );
-        g2d.fillRect ( 0, 0, image.getWidth (), image.getHeight () );
-        g2d.dispose ();
-    }
-
-    /**
-     * Average image color
-     */
-
-    public static Color getImageAverageColor ( final ImageIcon icon )
-    {
-        int red = 0;
-        int green = 0;
-        int blue = 0;
-        final BufferedImage bi = getBufferedImage ( icon.getImage () );
-        for ( int i = 0; i < icon.getIconWidth (); i++ )
-        {
-            for ( int j = 0; j < icon.getIconHeight (); j++ )
-            {
-                final int rgb = bi.getRGB ( i, j );
-                red += ( rgb >> 16 ) & 0xFF;
-                green += ( rgb >> 8 ) & 0xFF;
-                blue += rgb & 0xFF;
-            }
-        }
-        final int count = icon.getIconWidth () * icon.getIconHeight ();
-        return new Color ( red / count, green / count, blue / count );
-    }
-
-    /**
-     * Is this image format can be loaded
-     */
-
-    public static boolean isImageLoadable ( final String name )
-    {
-        return VIEWABLE_IMAGES.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase ( Locale.ROOT ) );
-    }
-
-    /**
-     * Image preview generation
-     */
-
-    public static ImageIcon createThumbnailIcon ( final String src )
-    {
-        return createThumbnailIcon ( src, 50 );
-    }
-
-    public static ImageIcon createThumbnailIcon ( final String src, final int size )
-    {
-        // Retrieving image to create thumbnail from
-        final ImageIcon icon = getImageIcon ( src, false );
-        if ( icon != null )
-        {
-            // Creating and caching thumbnail
-            final ImageIcon imageIcon = createPreviewIcon ( icon.getImage (), size );
-
-            // Saving image size
-            if ( imageIcon != null )
-            {
-                imageIcon.setDescription ( icon.getIconWidth () + "x" + icon.getIconHeight () );
-            }
-
-            return imageIcon;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public static ImageIcon createPreviewIcon ( final ImageIcon image, final int size )
-    {
-        return createPreviewIcon ( image.getImage (), size );
-    }
-
-    public static ImageIcon createPreviewIcon ( final Image image, final int size )
-    {
-        return createPreviewIcon ( getBufferedImage ( image ), size );
-    }
-
-    public static ImageIcon createPreviewIcon ( final BufferedImage image, final int size )
-    {
-        final BufferedImage previewImage = createPreviewImage ( image, size );
-        if ( previewImage != null )
-        {
-            return new ImageIcon ( previewImage );
-        }
-        else
-        {
-            return new ImageIcon ();
-        }
-    }
-
-    public static BufferedImage createPreviewImage ( final BufferedImage image, final Dimension fitTo )
-    {
-        return createPreviewImage ( image, fitTo.width, fitTo.height );
-    }
-
-    public static BufferedImage createPreviewImage ( final BufferedImage image, final int width, final int height )
-    {
-        if ( image.getWidth () > width || image.getHeight () > height )
-        {
-            // Calculating maximum preview length
-            if ( height * ( ( float ) image.getWidth () / image.getHeight () ) <= width )
-            {
-                return createPreviewImage ( image,
-                        Math.max ( height, Math.round ( height * ( ( float ) image.getWidth () / image.getHeight () ) ) ) );
-            }
-            else
-            {
-                return createPreviewImage ( image,
-                        Math.max ( width, Math.round ( width * ( ( float ) image.getHeight () / image.getWidth () ) ) ) );
-            }
-        }
-        else
-        {
-            // Image is smaller than allowed size
-            return image;
-        }
-    }
-
-    public static BufferedImage createPreviewImage ( final BufferedImage image, final int length )
-    {
-        if ( image == null )
-        {
-            return null;
-        }
-
-        final int width;
-        final int height;
-        if ( image.getWidth () <= length && image.getHeight () <= length )
-        {
-            return image;
-        }
-        else if ( image.getWidth () > image.getHeight () )
-        {
-            width = length;
-            height = Math.round ( ( float ) length * image.getHeight () / image.getWidth () );
-        }
-        else if ( image.getWidth () < image.getHeight () )
-        {
-            height = length;
-            width = Math.round ( ( float ) length * image.getWidth () / image.getHeight () );
-        }
-        else
-        {
-            width = height = length;
-        }
-
-        // Creating scaled image (can only scale down)
-        // http://code.google.com/p/java-image-scaling/
-        if ( width >= 3 && height >= 3 )
-        {
-            return new ResampleOp ( width, height ).filter ( image, createCompatibleImage ( image ) );
-        }
-        else
-        {
-            final int w = Math.max ( 1, width );
-            final int h = Math.max ( 1, height );
-
-            final BufferedImage rescaledImage = createCompatibleImage ( w, h, Transparency.TRANSLUCENT );
-            final Graphics2D g2d = rescaledImage.createGraphics ();
-            GraphicsUtils.setupImageQuality ( g2d );
-            g2d.drawImage ( image, 0, 0, width, height, null );
-            g2d.dispose ();
-
-            return rescaledImage;
-        }
-    }
-
-    /**
-     * Image read methods
-     */
-
-    private static final Map<String, ImageIcon> iconsCache = new HashMap<String, ImageIcon> ();
-
-    public static boolean isImageCached ( final String src )
-    {
-        return iconsCache.containsKey ( src ) && iconsCache.get ( src ) != null;
-    }
-
-    public static void setImageCache ( final String src, final ImageIcon imageIcon )
-    {
-        iconsCache.put ( src, imageIcon );
-    }
-
-    public static void clearImagesCache ()
-    {
-        iconsCache.clear ();
-    }
-
-    public static void clearImageCache ( final String src )
-    {
-        if ( iconsCache.size () > 0 && iconsCache.containsKey ( src ) )
-        {
-            if ( iconsCache.get ( src ) != null && iconsCache.get ( src ).getImage () != null )
-            {
-                iconsCache.get ( src ).getImage ().flush ();
-            }
-            iconsCache.remove ( src );
-        }
-    }
-
-    public static ImageIcon getImageIcon ( final File file )
-    {
-        return getImageIcon ( file, true );
-    }
-
-    public static ImageIcon getImageIcon ( final File file, final boolean useCache )
-    {
-        return getImageIcon ( file.getAbsolutePath (), useCache );
-    }
-
-    public static ImageIcon getImageIcon ( final String src )
-    {
-        return getImageIcon ( src, true );
-    }
-
-    public static ImageIcon getImageIcon ( final String src, final boolean useCache )
-    {
-        if ( src != null && !src.trim ().equals ( "" ) )
-        {
-            final ImageIcon imageIcon;
-            if ( useCache && iconsCache.containsKey ( src ) )
-            {
-                imageIcon = iconsCache.get ( src );
-                if ( imageIcon != null )
-                {
-                    return imageIcon;
-                }
-                else
-                {
-                    // todo This might cause performance issues
-                    iconsCache.remove ( src );
-                    return getImageIcon ( src, useCache );
-                }
-            }
-            else
-            {
-                imageIcon = createImageIcon ( src );
-                if ( useCache )
-                {
-                    iconsCache.put ( src, imageIcon );
-                }
-                return imageIcon;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    private static ImageIcon createImageIcon ( final String src )
-    {
-        if ( !new File ( src ).exists () )
-        {
-            return new ImageIcon ();
-        }
-        else
-        {
-            try
-            {
-                return new ImageIcon ( ImageIO.read ( new File ( src ) ) );
-            }
-            catch ( final Exception e )
-            {
-                return new ImageIcon ();
-            }
-        }
-    }
-
-    public static ImageIcon getImageIcon ( final URL resource )
-    {
-        return getImageIcon ( resource, true );
-    }
-
-    public static ImageIcon getImageIcon ( final URL resource, final boolean useCache )
-    {
-        if ( resource != null )
-        {
-            final String key = resource.toString ();
-            final ImageIcon imageIcon;
-            if ( useCache && iconsCache.containsKey ( key ) )
-            {
-                imageIcon = iconsCache.get ( key );
-                if ( imageIcon != null )
-                {
-                    return imageIcon;
-                }
-                else
-                {
-                    // todo This might cause performance issues
-                    iconsCache.remove ( key );
-                    return getImageIcon ( key, useCache );
-                }
-            }
-            else
-            {
-                imageIcon = new ImageIcon ( resource );
-                if ( useCache )
-                {
-                    iconsCache.put ( key, imageIcon );
-                }
-                return imageIcon;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns {@link javax.swing.ImageIcon} read from specified {@link com.alee.utils.xml.Resource}.
+     * Returns {@link BufferedImage} loaded from the specified {@link Resource}.
      *
-     * @param location image file location
-     * @return {@link javax.swing.ImageIcon} read from specified {@link com.alee.utils.xml.Resource}
+     * @param resource {@link Resource} to load {@link BufferedImage} from
+     * @return {@link BufferedImage} loaded from the specified {@link Resource}
      */
-    public static ImageIcon getImageIcon ( final Resource location )
+    @NotNull
+    public static BufferedImage loadBufferedImage ( @NotNull final Resource resource )
     {
-        if ( location.getLocation ().equals ( ResourceLocation.url ) )
+        return loadBufferedImage ( resource.getInputStream () );
+    }
+
+    /**
+     * Returns {@link BufferedImage} loaded from the specified {@link InputStream}.
+     *
+     * @param inputStream {@link InputStream} to load {@link BufferedImage} from
+     * @return {@link BufferedImage} loaded from the specified {@link InputStream}
+     */
+    @NotNull
+    public static BufferedImage loadBufferedImage ( @NotNull final InputStream inputStream )
+    {
+        try
         {
-            try
-            {
-                return new ImageIcon ( new URL ( location.getPath () ) );
-            }
-            catch ( final MalformedURLException e )
-            {
-                final String msg = "Unable to load image from URL: %s";
-                LoggerFactory.getLogger ( ImageUtils.class ).error ( String.format ( msg, location.getPath () ), e );
-                return null;
-            }
+            return ImageIO.read ( inputStream );
         }
-        if ( location.getLocation ().equals ( ResourceLocation.filePath ) )
+        catch ( final Exception e )
         {
-            try
-            {
-                return new ImageIcon ( new File ( location.getPath () ).getCanonicalPath () );
-            }
-            catch ( final IOException e )
-            {
-                final String msg = "Unable to load image from file: %s";
-                LoggerFactory.getLogger ( ImageUtils.class ).error ( String.format ( msg, location.getPath () ), e );
-                return null;
-            }
-        }
-        else if ( location.getLocation ().equals ( ResourceLocation.nearClass ) )
-        {
-            try
-            {
-                return new ImageIcon ( Class.forName ( location.getClassName () ).getResource ( location.getPath () ) );
-            }
-            catch ( final ClassNotFoundException e )
-            {
-                final String msg = "Unable to load image from file '%s' near class: %s";
-                final String fmsg = TextUtils.format ( msg, location.getPath (), location.getClassName () );
-                LoggerFactory.getLogger ( ImageUtils.class ).error ( fmsg, e );
-                return null;
-            }
-        }
-        else
-        {
-            return null;
+            throw new UtilityException ( "Unable to load BufferedImage: " + inputStream, e );
         }
     }
 
     /**
-     * Makes a copy of BufferedImage
+     * Returns {@link BufferedImage} converted from the specified {@link Image}.
+     *
+     * @param image {@link Image} to convert
+     * @return {@link BufferedImage} converted from the specified {@link Image}
      */
-
-    public static BufferedImage copy ( final Image image )
+    @Nullable
+    public static BufferedImage toBufferedImage ( @Nullable final Image image )
     {
-        return copy ( getBufferedImage ( image ) );
+        final BufferedImage bufferedImage;
+        if ( image instanceof BufferedImage )
+        {
+            bufferedImage = ( BufferedImage ) image;
+        }
+        else if ( image != null && image.getWidth ( null ) > 0 && image.getHeight ( null ) > 0 )
+        {
+            final BufferedImage bi = createCompatibleImage ( image.getWidth ( null ), image.getHeight ( null ), Transparency.TRANSLUCENT );
+            final Graphics2D g2d = bi.createGraphics ();
+            g2d.drawImage ( image, 0, 0, null );
+            g2d.dispose ();
+            bufferedImage = bi;
+        }
+        else
+        {
+            bufferedImage = null;
+        }
+        return bufferedImage;
     }
 
-    public static BufferedImage copy ( final BufferedImage bufferedImage )
+    /**
+     * Returns {@link BufferedImage} converted from the specified {@link Image}.
+     *
+     * @param image {@link Image} to convert
+     * @return {@link BufferedImage} converted from the specified {@link Image}
+     */
+    @NotNull
+    public static BufferedImage toNonNullBufferedImage ( @NotNull final Image image )
+    {
+        final BufferedImage bufferedImage;
+        if ( image instanceof BufferedImage )
+        {
+            bufferedImage = ( BufferedImage ) image;
+        }
+        else if ( image.getWidth ( null ) > 0 && image.getHeight ( null ) > 0 )
+        {
+            final BufferedImage bi = createCompatibleImage ( image.getWidth ( null ), image.getHeight ( null ), Transparency.TRANSLUCENT );
+            final Graphics2D g2d = bi.createGraphics ();
+            g2d.drawImage ( image, 0, 0, null );
+            g2d.dispose ();
+            bufferedImage = bi;
+        }
+        else
+        {
+            throw new UtilityException ( "Unable to convert Image to BufferedImage: " + image );
+        }
+        return bufferedImage;
+    }
+
+    /**
+     * Returns {@link BufferedImage} converted from the specified {@link Icon}.
+     *
+     * @param icon {@link Icon} to convert
+     * @return {@link BufferedImage} converted from the specified {@link Icon}
+     */
+    @Nullable
+    public static BufferedImage toBufferedImage ( @Nullable final Icon icon )
+    {
+        return icon != null ? toNonNullBufferedImage ( icon ) : null;
+    }
+
+    /**
+     * Returns {@link BufferedImage} converted from the specified {@link Icon}.
+     *
+     * @param icon {@link Icon} to convert
+     * @return {@link BufferedImage} converted from the specified {@link Icon}
+     */
+    @NotNull
+    public static BufferedImage toNonNullBufferedImage ( @NotNull final Icon icon )
+    {
+        final BufferedImage bufferedImage;
+        if ( icon instanceof ImageIcon && ( ( ImageIcon ) icon ).getImage () != null )
+        {
+            bufferedImage = toNonNullBufferedImage ( ( ( ImageIcon ) icon ).getImage () );
+        }
+        else
+        {
+            bufferedImage = paintToBufferedImage ( icon );
+        }
+        return bufferedImage;
+    }
+
+    /**
+     * Returns {@link BufferedImage} with the specified {@link Icon} painted on it.
+     *
+     * @param icon {@link Icon} to paint
+     * @return {@link BufferedImage} with the specified {@link Icon} painted on it
+     */
+    @NotNull
+    private static BufferedImage paintToBufferedImage ( @NotNull final Icon icon )
+    {
+        final BufferedImage bufferedImage = createCompatibleImage ( icon.getIconWidth (), icon.getIconHeight (), Transparency.TRANSLUCENT );
+        final Graphics2D g2d = bufferedImage.createGraphics ();
+        icon.paintIcon ( null, g2d, 0, 0 );
+        g2d.dispose ();
+        return bufferedImage;
+    }
+
+    /**
+     * Returns {@link BufferedImage} converted from the specified {@link RenderedImage}.
+     *
+     * @param renderedImage {@link RenderedImage} to convert
+     * @return {@link BufferedImage} converted from the specified {@link RenderedImage}
+     */
+    @Nullable
+    public static BufferedImage toBufferedImage ( @Nullable final RenderedImage renderedImage )
+    {
+        return renderedImage != null ? toNonNullBufferedImage ( renderedImage ) : null;
+    }
+
+    /**
+     * Returns {@link BufferedImage} converted from the specified {@link RenderedImage}.
+     *
+     * @param renderedImage {@link RenderedImage} to convert
+     * @return {@link BufferedImage} converted from the specified {@link RenderedImage}
+     */
+    @NotNull
+    public static BufferedImage toNonNullBufferedImage ( @NotNull final RenderedImage renderedImage )
+    {
+        final BufferedImage bufferedImage;
+        if ( renderedImage instanceof BufferedImage )
+        {
+            bufferedImage = ( BufferedImage ) renderedImage;
+        }
+        else
+        {
+            final ColorModel cm = renderedImage.getColorModel ();
+            final int width = renderedImage.getWidth ();
+            final int height = renderedImage.getHeight ();
+            final WritableRaster raster = cm.createCompatibleWritableRaster ( width, height );
+            final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied ();
+            final Hashtable properties = new Hashtable ();
+            final String[] keys = renderedImage.getPropertyNames ();
+            if ( keys != null )
+            {
+                for ( final String key : keys )
+                {
+                    properties.put ( key, renderedImage.getProperty ( key ) );
+                }
+            }
+
+            bufferedImage = new BufferedImage ( cm, raster, isAlphaPremultiplied, properties );
+            renderedImage.copyData ( raster );
+        }
+        return bufferedImage;
+    }
+
+    /**
+     * Returns {@link BufferedImage} containing a copy of currently displayed {@link Icon} frame.
+     *
+     * @param icon {@link Icon} to create {@link BufferedImage} for
+     * @return {@link BufferedImage} containing a copy of currently displayed {@link Icon} frame
+     */
+    @NotNull
+    public static BufferedImage copyToBufferedImage ( @NotNull final Icon icon )
+    {
+        return copyToBufferedImage ( toNonNullBufferedImage ( icon ) );
+    }
+
+    /**
+     * Returns {@link BufferedImage} containing a copy of {@link Image}.
+     *
+     * @param image {@link Image} to create {@link BufferedImage} for
+     * @return {@link BufferedImage} containing a copy of {@link Image}
+     */
+    @NotNull
+    public static BufferedImage copyToBufferedImage ( @NotNull final Image image )
+    {
+        return copyToBufferedImage ( toNonNullBufferedImage ( image ) );
+    }
+
+    /**
+     * Returns {@link BufferedImage} containing a copy of {@link BufferedImage}.
+     *
+     * @param bufferedImage {@link BufferedImage} to create {@link BufferedImage} for
+     * @return {@link BufferedImage} containing a copy of {@link BufferedImage}
+     */
+    @NotNull
+    public static BufferedImage copyToBufferedImage ( @NotNull final BufferedImage bufferedImage )
     {
         final BufferedImage newImage = createCompatibleImage ( bufferedImage );
         final Graphics2D g2d = newImage.createGraphics ();
@@ -1100,306 +424,592 @@ public final class ImageUtils
     }
 
     /**
-     * Returns {@link BufferedImage} converted from the specified {@link RenderedImage}.
+     * Returns {@link ImageIcon} loaded from the specified {@link Resource}.
+     * This method doesn't use {@link ImageIO} because loaded image might not be represented by a single {@link BufferedImage}.
+     * For example GIF icons consist of many frames that are handled internally by {@link ImageIcon}.
      *
-     * @param image {@link RenderedImage} to convert
-     * @return {@link BufferedImage} converted from the specified {@link RenderedImage}
+     * @param resource {@link Resource} to load {@link ImageIcon} from
+     * @return {@link ImageIcon} loaded from the specified {@link Resource}
      */
-    public static BufferedImage getBufferedImage ( final RenderedImage image )
+    @NotNull
+    public static ImageIcon loadImageIcon ( @NotNull final Resource resource )
     {
-        if ( image instanceof BufferedImage )
-        {
-            return ( BufferedImage ) image;
-        }
-
-        final ColorModel cm = image.getColorModel ();
-        final int width = image.getWidth ();
-        final int height = image.getHeight ();
-        final WritableRaster raster = cm.createCompatibleWritableRaster ( width, height );
-        final boolean isAlphaPremultiplied = cm.isAlphaPremultiplied ();
-        final Hashtable properties = new Hashtable ();
-        final String[] keys = image.getPropertyNames ();
-        if ( keys != null )
-        {
-            for ( final String key : keys )
-            {
-                properties.put ( key, image.getProperty ( key ) );
-            }
-        }
-
-        final BufferedImage result = new BufferedImage ( cm, raster, isAlphaPremultiplied, properties );
-        image.copyData ( raster );
-
-        return result;
+        return loadImageIcon ( resource.getInputStream () );
     }
 
     /**
-     * Retrieves BufferedImage from Image
+     * Returns {@link ImageIcon} loaded from the specified {@link Resource}.
+     * This method doesn't use {@link ImageIO} because loaded image might not be represented by a single {@link BufferedImage}.
+     * For example GIF icons consist of many frames that are handled internally by {@link ImageIcon}.
+     *
+     * @param inputStream {@link InputStream} to load {@link ImageIcon} from
+     * @return {@link ImageIcon} loaded from the specified {@link Resource}
      */
-
-    public static BufferedImage getBufferedImage ( final URL url )
+    @NotNull
+    public static ImageIcon loadImageIcon ( @NotNull final InputStream inputStream )
     {
-        return getBufferedImage ( new ImageIcon ( url ) );
-    }
-
-    public static BufferedImage getBufferedImage ( final String iconSrc )
-    {
-        return getBufferedImage ( new ImageIcon ( iconSrc ) );
-    }
-
-    public static BufferedImage getBufferedImage ( final ImageIcon imageIcon )
-    {
-        return getBufferedImage ( imageIcon.getImage () );
-    }
-
-    public static BufferedImage getBufferedImage ( final Image image )
-    {
-        if ( image == null || image.getWidth ( null ) <= 0 || image.getHeight ( null ) <= 0 )
-        {
-            return null;
-        }
-        else if ( image instanceof BufferedImage )
-        {
-            return ( BufferedImage ) image;
-        }
-        //        else if ( image instanceof ToolkitImage && ( ( ToolkitImage ) image ).getBufferedImage () != null )
-        //        {
-        //            return ( ( ToolkitImage ) image ).getBufferedImage ();
-        //        }
-        else
-        {
-            final BufferedImage bi = createCompatibleImage ( image.getWidth ( null ), image.getHeight ( null ), Transparency.TRANSLUCENT );
-            final Graphics2D g2d = bi.createGraphics ();
-            g2d.drawImage ( image, 0, 0, null );
-            g2d.dispose ();
-            return bi;
-        }
+        return new ImageIcon ( IOUtils.toByteArray ( inputStream ) );
     }
 
     /**
-     * Retrieves BufferedImage from Icon
+     * Returns {@link ImageIcon} converted from the specified {@link Image}.
+     *
+     * @param image {@link Image} to convert
+     * @return {@link ImageIcon} converted from the specified {@link Image}
      */
-
-    public static BufferedImage getBufferedImage ( final Icon icon )
+    @Nullable
+    public static ImageIcon toImageIcon ( @Nullable final Image image )
     {
-        if ( icon == null )
-        {
-            return null;
-        }
-        else if ( icon instanceof ImageIcon )
-        {
-            final Image image = ( ( ImageIcon ) icon ).getImage ();
-            if ( image != null )
-            {
-                return getBufferedImage ( image );
-            }
-            else
-            {
-                return createBufferedImage ( icon );
-            }
-        }
-        else
-        {
-            return createBufferedImage ( icon );
-        }
+        return image != null ? toNonNullImageIcon ( image ) : null;
     }
 
-    public static BufferedImage createBufferedImage ( final Icon icon )
+    /**
+     * Returns {@link ImageIcon} converted from the specified {@link Image}.
+     *
+     * @param image {@link Image} to convert
+     * @return {@link ImageIcon} converted from the specified {@link Image}
+     */
+    @NotNull
+    public static ImageIcon toNonNullImageIcon ( @NotNull final Image image )
     {
-        final BufferedImage bi = createCompatibleImage ( icon.getIconWidth (), icon.getIconHeight (), Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bi.createGraphics ();
-        icon.paintIcon ( null, g2d, 0, 0 );
-        g2d.dispose ();
-        return bi;
+        return new ImageIcon ( image );
     }
 
-    public static ImageIcon getImageIcon ( final Icon icon )
+    /**
+     * Returns {@link ImageIcon} converted from the specified {@link Icon}.
+     *
+     * @param icon {@link Icon} to convert
+     * @return {@link ImageIcon} converted from the specified {@link Icon}
+     */
+    @Nullable
+    public static ImageIcon toImageIcon ( @Nullable final Icon icon )
     {
+        return icon != null ? toNonNullImageIcon ( icon ) : null;
+    }
+
+    /**
+     * Returns {@link ImageIcon} converted from the specified {@link Icon}.
+     *
+     * @param icon {@link Icon} to convert
+     * @return {@link ImageIcon} converted from the specified {@link Icon}
+     */
+    @NotNull
+    public static ImageIcon toNonNullImageIcon ( @NotNull final Icon icon )
+    {
+        final ImageIcon imageIcon;
         if ( icon instanceof ImageIcon )
         {
-            return ( ImageIcon ) icon;
+            imageIcon = ( ImageIcon ) icon;
         }
         else
         {
-            return new ImageIcon ( getBufferedImage ( icon ) );
+            imageIcon = new ImageIcon ( toNonNullBufferedImage ( icon ) );
         }
-    }
-
-    /**
-     * Scaled preview creation
-     */
-
-    private static final Map<String, ImageIcon> sizedPreviewCache = new HashMap<String, ImageIcon> ();
-
-    public static ImageIcon getSizedImagePreview ( final String src, final int length, final boolean drawBorder )
-    {
-        if ( sizedPreviewCache.containsKey ( length + IMAGE_CACHE_KEYS_SEPARATOR + src ) )
-        {
-            return sizedPreviewCache.get ( length + IMAGE_CACHE_KEYS_SEPARATOR + src );
-        }
-        else
-        {
-            final ImageIcon icon = createThumbnailIcon ( src, length );
-            final ImageIcon sized = createSizedImagePreview ( icon, length, drawBorder );
-            sizedPreviewCache.put ( length + IMAGE_CACHE_KEYS_SEPARATOR + src, sized );
-            return sized;
-        }
-    }
-
-    public static ImageIcon getSizedImagePreview ( final String id, final ImageIcon icon, final int length, final boolean drawBorder )
-    {
-        if ( sizedPreviewCache.containsKey ( id ) )
-        {
-            return sizedPreviewCache.get ( id );
-        }
-        else
-        {
-            final ImageIcon sized = createSizedImagePreview ( icon, length, drawBorder );
-            sizedPreviewCache.put ( id, sized );
-            return sized;
-        }
-    }
-
-    public static ImageIcon createSizedImagePreview ( final ImageIcon icon, int length, final boolean drawBorder )
-    {
-        // Addition border spacing
-        //        if ( drawBorder )
-        //        {
-        length += 4;
-        //        }
-
-        // Creating standard size image
-        final BufferedImage bi = createCompatibleImage ( length, length, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bi.createGraphics ();
-        if ( icon != null )
-        {
-            g2d.drawImage ( icon.getImage (), length / 2 - icon.getIconWidth () / 2, length / 2 - icon.getIconHeight () / 2, null );
-        }
-        if ( drawBorder )
-        {
-            g2d.setPaint ( Color.LIGHT_GRAY );
-            g2d.drawRect ( 0, 0, length - 1, length - 1 );
-        }
-        g2d.dispose ();
-
-        // Creating ImageIcon
-        final ImageIcon imageIcon = new ImageIcon ( bi );
-        imageIcon.setDescription ( icon != null ? icon.getDescription () : null );
         return imageIcon;
     }
 
     /**
-     * Creates disabled image copy
+     * Returns new or cached copy of specified {@link Icon} made look disabled.
+     *
+     * @param icon {@link Icon} to retrieve disabled copy for
+     * @return new or cached copy of specified {@link Icon} made look disabled
      */
-
-    private static final Map<String, ImageIcon> grayscaleCache = new HashMap<String, ImageIcon> ();
-
-    public static void clearDisabledCopyCache ()
+    @NotNull
+    public static Icon getDisabledCopy ( @NotNull final Icon icon )
     {
-        grayscaleCache.clear ();
-    }
-
-    public static void clearDisabledCopyCache ( final String id )
-    {
-        grayscaleCache.remove ( id );
-    }
-
-    public static ImageIcon getDisabledCopy ( final String key, final Icon icon )
-    {
-        return getDisabledCopy ( key, getImageIcon ( icon ) );
-    }
-
-    public static ImageIcon getDisabledCopy ( final String key, final ImageIcon imageIcon )
-    {
-        if ( grayscaleCache.containsKey ( key ) )
+        final Icon disabledIcon;
+        if ( DISABLED_ICONS_CACHE.containsKey ( icon ) )
         {
-            return grayscaleCache.get ( key );
+            disabledIcon = DISABLED_ICONS_CACHE.get ( icon );
         }
         else
         {
-            grayscaleCache.put ( key, createDisabledCopy ( imageIcon ) );
-            return grayscaleCache.get ( key );
+            synchronized ( DISABLED_ICONS_CACHE )
+            {
+                if ( DISABLED_ICONS_CACHE.containsKey ( icon ) )
+                {
+                    disabledIcon = DISABLED_ICONS_CACHE.get ( icon );
+                }
+                else
+                {
+                    disabledIcon = createDisabledCopy ( icon );
+                    DISABLED_ICONS_CACHE.put ( icon, disabledIcon );
+                }
+            }
         }
+        return disabledIcon;
     }
 
-    public static ImageIcon createDisabledCopy ( final ImageIcon imageIcon )
+    /**
+     * Returns {@link Icon} that is copy of the specified {@link Icon} made look disabled.
+     *
+     * @param icon {@link Icon} to create disabled copy for
+     * @return {@link Icon} that is copy of the specified {@link Icon} made look disabled
+     */
+    @NotNull
+    public static Icon createDisabledCopy ( @NotNull final Icon icon )
     {
-        return new ImageIcon ( createDisabledCopy ( imageIcon.getImage () ) );
+        final Icon disabledCopy;
+        if ( icon instanceof DisabledCopySupplier )
+        {
+            disabledCopy = ( ( DisabledCopySupplier<Icon> ) icon ).createDisabledCopy ();
+        }
+        else
+        {
+            disabledCopy = new ImageIcon ( createDisabledCopy ( toNonNullBufferedImage ( icon ) ) );
+        }
+        return disabledCopy;
     }
 
-    public static BufferedImage createDisabledCopy ( final Image img )
+    /**
+     * Returns {@link BufferedImage} that is copy of the specified {@link Image} made look disabled.
+     *
+     * @param image {@link Image} to create disabled copy for
+     * @return {@link BufferedImage} that is copy of the specified {@link Image} made look disabled
+     */
+    @NotNull
+    public static BufferedImage createDisabledCopy ( @NotNull final Image image )
     {
-        final BufferedImage bi = createGrayscaleCopy ( img );
+        return createDisabledCopy ( toNonNullBufferedImage ( image ) );
+    }
 
-        final BufferedImage bi2 = createCompatibleImage ( bi );
-        final Graphics2D g2d = bi2.createGraphics ();
+    /**
+     * Returns {@link BufferedImage} that is copy of the specified {@link BufferedImage} made look disabled.
+     *
+     * @param bufferedImage {@link BufferedImage} to create disabled copy for
+     * @return {@link BufferedImage} that is copy of the specified {@link BufferedImage} made look disabled
+     */
+    @NotNull
+    public static BufferedImage createDisabledCopy ( @NotNull final BufferedImage bufferedImage )
+    {
+        // Creating image copy
+        final BufferedImage disabledCopy = createCompatibleImage ( bufferedImage );
+
+        // Painting original image as semi-transparent
+        final Graphics2D g2d = disabledCopy.createGraphics ();
         GraphicsUtils.setupAlphaComposite ( g2d, 0.7f );
-        g2d.drawImage ( bi, 0, 0, null );
+        g2d.drawImage ( bufferedImage, 0, 0, null );
         g2d.dispose ();
 
-        return bi2;
+        // Applying grayscale filter
+        GRAYSCALE_FILTER.filter ( disabledCopy, disabledCopy );
+
+        return disabledCopy;
     }
 
     /**
-     * Creates grayscale image copy
+     * Returns new or cached copy of specified {@link Icon} made look disabled.
+     *
+     * @param icon    {@link Icon} to retrieve disabled copy for
+     * @param opacity opacity value, must be between 0 and 1
+     * @return new or cached copy of specified {@link Icon} made look disabled
      */
-
-    private static final ColorConvertOp grayscaleColorConvert = new ColorConvertOp ( ColorSpace.getInstance ( ColorSpace.CS_GRAY ), null );
-
-    public static ImageIcon createGrayscaleCopy ( final ImageIcon imageIcon )
+    @NotNull
+    public static Icon getTransparentCopy ( @NotNull final Icon icon, final float opacity )
     {
-        return new ImageIcon ( createGrayscaleCopy ( imageIcon.getImage () ) );
-    }
-
-    public static BufferedImage createGrayscaleCopy ( final Image img )
-    {
-        return createGrayscaleCopy ( getBufferedImage ( img ) );
-    }
-
-    public static BufferedImage createGrayscaleCopy ( final BufferedImage img )
-    {
-        return grayscaleColorConvert.filter ( img, null );
-    }
-
-    /**
-     * Creating partially transparent ImageIcon
-     */
-
-    private static final Map<String, ImageIcon> transparentCache = new HashMap<String, ImageIcon> ();
-
-    public static void clearTransparentCache ()
-    {
-        transparentCache.clear ();
-    }
-
-    public static void clearTransparentCache ( final String id )
-    {
-        transparentCache.remove ( id );
-    }
-
-    public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float opacity )
-    {
-        if ( transparentCache.containsKey ( id ) )
+        final Map<Float, Icon> transparentCopies;
+        if ( TRANSPARENT_ICONS_CACHE.containsKey ( icon ) )
         {
-            return transparentCache.get ( id );
+            transparentCopies = TRANSPARENT_ICONS_CACHE.get ( icon );
         }
         else
         {
-            transparentCache.put ( id, createTransparentCopy ( imageIcon, opacity ) );
-            return transparentCache.get ( id );
+            synchronized ( TRANSPARENT_ICONS_CACHE )
+            {
+                if ( TRANSPARENT_ICONS_CACHE.containsKey ( icon ) )
+                {
+                    transparentCopies = TRANSPARENT_ICONS_CACHE.get ( icon );
+                }
+                else
+                {
+                    transparentCopies = new HashMap<Float, Icon> ( 1 );
+                    TRANSPARENT_ICONS_CACHE.put ( icon, transparentCopies );
+                }
+            }
         }
+        final Icon transparentIcon;
+        if ( transparentCopies.containsKey ( opacity ) )
+        {
+            transparentIcon = transparentCopies.get ( opacity );
+        }
+        else
+        {
+            synchronized ( TRANSPARENT_ICONS_CACHE )
+            {
+                if ( transparentCopies.containsKey ( opacity ) )
+                {
+                    transparentIcon = transparentCopies.get ( opacity );
+                }
+                else
+                {
+                    transparentIcon = createTransparentCopy ( icon, opacity );
+                    transparentCopies.put ( opacity, transparentIcon );
+                }
+            }
+        }
+        return transparentIcon;
     }
 
-    public static ImageIcon createTransparentCopy ( final ImageIcon imageIcon, final float opacity )
+    /**
+     * Returns {@link Icon} that is copy of the specified {@link Icon} made look disabled.
+     *
+     * @param icon    {@link Icon} to create disabled copy for
+     * @param opacity opacity value, must be between 0 and 1
+     * @return {@link Icon} that is copy of the specified {@link Icon} made look disabled
+     */
+    @NotNull
+    public static Icon createTransparentCopy ( @NotNull final Icon icon, final float opacity )
     {
-        final BufferedImage bi = createCompatibleImage ( imageIcon.getIconWidth (), imageIcon.getIconHeight (), Transparency.TRANSLUCENT );
+        final Icon transparentCopy;
+        if ( icon instanceof TransparentCopySupplier )
+        {
+            transparentCopy = ( ( TransparentCopySupplier<Icon> ) icon ).createTransparentCopy ( opacity );
+        }
+        else
+        {
+            transparentCopy = new ImageIcon ( createTransparentCopy ( toNonNullBufferedImage ( icon ), opacity ) );
+        }
+        return transparentCopy;
+    }
 
-        final Graphics2D g2d = bi.createGraphics ();
+    /**
+     * Returns {@link BufferedImage} that is copy of the specified {@link Image} made semi-transparent.
+     *
+     * @param image   {@link Image} to create semi-transparent copy for
+     * @param opacity opacity value, must be between 0 and 1
+     * @return {@link BufferedImage} that is copy of the specified {@link Image} made semi-transparent
+     */
+    @NotNull
+    public static BufferedImage createTransparentCopy ( @NotNull final Image image, final float opacity )
+    {
+        return createTransparentCopy ( toNonNullBufferedImage ( image ), opacity );
+    }
+
+    /**
+     * Returns {@link BufferedImage} that is copy of the specified {@link BufferedImage} made semi-transparent.
+     *
+     * @param bufferedImage {@link BufferedImage} to create semi-transparent copy for
+     * @param opacity       opacity value, must be between 0 and 1
+     * @return {@link BufferedImage} that is copy of the specified {@link BufferedImage} made semi-transparent
+     */
+    @NotNull
+    public static BufferedImage createTransparentCopy ( @NotNull final BufferedImage bufferedImage, final float opacity )
+    {
+        final BufferedImage transparentCopy = createCompatibleImage (
+                bufferedImage.getWidth (),
+                bufferedImage.getHeight (),
+                Transparency.TRANSLUCENT
+        );
+
+        final Graphics2D g2d = transparentCopy.createGraphics ();
         GraphicsUtils.setupAlphaComposite ( g2d, opacity );
-        g2d.drawImage ( imageIcon.getImage (), 0, 0, null );
+        g2d.drawImage ( bufferedImage, 0, 0, null );
         g2d.dispose ();
 
-        return new ImageIcon ( bi );
+        return transparentCopy;
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with the specified {@link Icon} painted on it within the specified {@link Shape}.
+     *
+     * @param icon  {@link Icon} to cut
+     * @param shape {@link Shape} to cut
+     * @return new {@link BufferedImage} with the specified {@link Icon} painted on it within the specified {@link Shape}
+     */
+    public static BufferedImage cutImage ( @NotNull final Icon icon, @NotNull final Shape shape )
+    {
+        return cutImage ( toNonNullBufferedImage ( icon ), shape );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with the specified {@link Image} painted on it within the specified {@link Shape}.
+     *
+     * @param image {@link Image} to cut
+     * @param shape {@link Shape} to cut
+     * @return new {@link BufferedImage} with the specified {@link Image} painted on it within the specified {@link Shape}
+     */
+    public static BufferedImage cutImage ( @NotNull final Image image, @NotNull final Shape shape )
+    {
+        return cutImage ( toNonNullBufferedImage ( image ), shape );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with the specified {@link BufferedImage} painted on it within the specified {@link Shape}.
+     *
+     * @param bufferedImage {@link Image} to cut
+     * @param shape         {@link Shape} to cut
+     * @return new {@link BufferedImage} with the specified {@link BufferedImage} painted on it within the specified {@link Shape}
+     */
+    public static BufferedImage cutImage ( @NotNull final BufferedImage bufferedImage, @NotNull final Shape shape )
+    {
+        final BufferedImage cutImage = createCompatibleImage ( bufferedImage );
+        final Graphics2D g2d = cutImage.createGraphics ();
+        GraphicsUtils.setupAntialias ( g2d );
+        g2d.setPaint ( Color.WHITE );
+        g2d.fill ( shape );
+        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
+        g2d.drawImage ( bufferedImage, 0, 0, null );
+        g2d.dispose ();
+        return cutImage;
+    }
+
+    /**
+     * Returns thumbnail {@link BufferedImage} of the specified {@link BufferedImage}.
+     * Note that this method can only scale specified {@link BufferedImage} down, it will not scale it up.
+     * Also n that resulting {@link BufferedImage} will not have width and height larger than specified maximum ones, but might be less.
+     *
+     * @param bufferedImage {@link BufferedImage} to create thumbnail for
+     * @param maxSize       maximum thumbnail {@link BufferedImage} size
+     * @return thumbnail {@link BufferedImage} of the specified {@link BufferedImage}
+     */
+    @NotNull
+    public static BufferedImage createImageThumbnail ( @NotNull final BufferedImage bufferedImage, @NotNull final Dimension maxSize )
+    {
+        return createImageThumbnail ( bufferedImage, maxSize.width, maxSize.height );
+    }
+
+    /**
+     * Returns thumbnail {@link BufferedImage} of the specified {@link BufferedImage}.
+     * Note that this method can only scale specified {@link BufferedImage} down, it will not scale it up.
+     * Also n that resulting {@link BufferedImage} will not have width and height larger than specified maximum ones, but might be less.
+     *
+     * @param bufferedImage {@link BufferedImage} to create thumbnail for
+     * @param maxWidth      maximum thumbnail {@link BufferedImage} width
+     * @param maxHeight     maximum thumbnail {@link BufferedImage} height
+     * @return thumbnail {@link BufferedImage} of the specified {@link BufferedImage}
+     */
+    @NotNull
+    public static BufferedImage createImageThumbnail ( @NotNull final BufferedImage bufferedImage, final int maxWidth, final int maxHeight )
+    {
+        final BufferedImage preview;
+        if ( bufferedImage.getWidth () > maxWidth || bufferedImage.getHeight () > maxHeight )
+        {
+            if ( maxHeight * ( ( float ) bufferedImage.getWidth () / bufferedImage.getHeight () ) <= maxWidth )
+            {
+                preview = createImageThumbnail ( bufferedImage, Math.max ( maxHeight,
+                        Math.round ( maxHeight * ( ( float ) bufferedImage.getWidth () / bufferedImage.getHeight () ) ) ) );
+            }
+            else
+            {
+                preview = createImageThumbnail ( bufferedImage, Math.max ( maxWidth,
+                        Math.round ( maxWidth * ( ( float ) bufferedImage.getHeight () / bufferedImage.getWidth () ) ) ) );
+            }
+        }
+        else
+        {
+            preview = bufferedImage;
+        }
+        return preview;
+    }
+
+    /**
+     * Returns thumbnail {@link BufferedImage} of the specified {@link BufferedImage}.
+     * Note that this method can only scale specified {@link BufferedImage} down, it will not scale it up.
+     * Also note that resulting {@link BufferedImage} will not have width and height larger than specified maximum, but might be less.
+     *
+     * @param bufferedImage {@link BufferedImage} to create thumbnail for
+     * @param maxSize       maximum thumbnail {@link BufferedImage} width and height
+     * @return thumbnail {@link BufferedImage} of the specified {@link BufferedImage}
+     */
+    @NotNull
+    public static BufferedImage createImageThumbnail ( @NotNull final BufferedImage bufferedImage, final int maxSize )
+    {
+        final BufferedImage preview;
+        if ( bufferedImage.getWidth () <= maxSize && bufferedImage.getHeight () <= maxSize )
+        {
+            // Simply return source image, but make sure it has compatible type
+            preview = toCompatibleImage ( bufferedImage );
+        }
+        else
+        {
+            // Calculate resulting width and height
+            final int width;
+            final int height;
+            if ( bufferedImage.getWidth () > bufferedImage.getHeight () )
+            {
+                width = maxSize;
+                height = Math.round ( ( float ) maxSize * bufferedImage.getHeight () / bufferedImage.getWidth () );
+            }
+            else if ( bufferedImage.getWidth () < bufferedImage.getHeight () )
+            {
+                height = maxSize;
+                width = Math.round ( ( float ) maxSize * bufferedImage.getWidth () / bufferedImage.getHeight () );
+            }
+            else
+            {
+                width = height = maxSize;
+            }
+
+            // Creating scaled down image
+            if ( width >= 3 && height >= 3 )
+            {
+                // Using Java Image Scaling library approach
+                final ResampleOp scaleOp = new ResampleOp ( width, height );
+                preview = scaleOp.filter ( bufferedImage, createCompatibleImage ( bufferedImage ) );
+            }
+            else
+            {
+                // Scaling down a very small image
+                preview = createCompatibleImage ( Math.max ( 1, width ), Math.max ( 1, height ), Transparency.TRANSLUCENT );
+                final Graphics2D g2d = preview.createGraphics ();
+                GraphicsUtils.setupImageQuality ( g2d );
+                g2d.drawImage ( bufferedImage, 0, 0, width, height, null );
+                g2d.dispose ();
+            }
+        }
+        return preview;
+    }
+
+    /**
+     * Returns dominant {@link Color} for the specified {@link BufferedImage}.
+     *
+     * @param image {@link BufferedImage} to determine dominant {@link Color} for
+     * @return dominant {@link Color} for the specified {@link BufferedImage}
+     */
+    @NotNull
+    public static Color getDominantColor ( @NotNull final BufferedImage image )
+    {
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        for ( int i = 0; i < image.getWidth (); i++ )
+        {
+            for ( int j = 0; j < image.getHeight (); j++ )
+            {
+                final int rgb = image.getRGB ( i, j );
+                red += rgb >> 16 & 0xFF;
+                green += rgb >> 8 & 0xFF;
+                blue += rgb & 0xFF;
+            }
+        }
+        final int count = image.getWidth () * image.getHeight ();
+        return new Color ( red / count, green / count, blue / count );
+    }
+
+    /**
+     * Returns new {@link ImageIcon} with specified {@link Icon} painted on it and rotated 90 degrees clockwise.
+     *
+     * @param icon {@link Icon} to rotate
+     * @return new {@link ImageIcon} with specified {@link Icon} painted on it and rotated 90 degrees clockwise.
+     */
+    @NotNull
+    public static ImageIcon rotateIcon90CW ( @NotNull final Icon icon )
+    {
+        return new ImageIcon ( rotateImage90CW ( toNonNullBufferedImage ( icon ) ) );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with specified {@link Image} painted on it and rotated 90 degrees clockwise.
+     *
+     * @param image {@link Image} to rotate
+     * @return new {@link BufferedImage} with specified {@link Image} painted on it and rotated 90 degrees clockwise.
+     */
+    @NotNull
+    public static BufferedImage rotateImage90CW ( @NotNull final Image image )
+    {
+        return rotateImage90CW ( toNonNullBufferedImage ( image ) );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with specified {@link BufferedImage} painted on it and rotated 90 degrees clockwise.
+     *
+     * @param bufferedImage {@link BufferedImage} to rotate
+     * @return new {@link BufferedImage} with specified {@link BufferedImage} painted on it and rotated 90 degrees clockwise.
+     */
+    @NotNull
+    public static BufferedImage rotateImage90CW ( @NotNull final BufferedImage bufferedImage )
+    {
+        final BufferedImage rotatedImage = createCompatibleImage ( bufferedImage );
+        final Graphics2D g2d = rotatedImage.createGraphics ();
+        g2d.translate ( bufferedImage.getHeight (), 0 );
+        g2d.rotate ( Math.PI / 2 );
+        g2d.drawImage ( bufferedImage, 0, 0, null );
+        g2d.dispose ();
+        return rotatedImage;
+    }
+
+    /**
+     * Returns new {@link ImageIcon} with specified {@link Icon} painted on it and rotated 90 degrees counter-clockwise.
+     *
+     * @param icon {@link Icon} to rotate
+     * @return new {@link ImageIcon} with specified {@link Icon} painted on it and rotated 90 degrees counter-clockwise.
+     */
+    @NotNull
+    public static ImageIcon rotateIcon90CCW ( @NotNull final Icon icon )
+    {
+        return new ImageIcon ( rotateImage90CCW ( toBufferedImage ( icon ) ) );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with specified {@link Image} painted on it and rotated 90 degrees counter-clockwise.
+     *
+     * @param image {@link Image} to rotate
+     * @return new {@link BufferedImage} with specified {@link Image} painted on it and rotated 90 degrees counter-clockwise.
+     */
+    @NotNull
+    public static BufferedImage rotateImage90CCW ( @NotNull final Image image )
+    {
+        return rotateImage90CCW ( toNonNullBufferedImage ( image ) );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with specified {@link BufferedImage} painted on it and rotated 90 degrees counter-clockwise.
+     *
+     * @param bufferedImage {@link BufferedImage} to rotate
+     * @return new {@link BufferedImage} with specified {@link BufferedImage} painted on it and rotated 90 degrees counter-clockwise.
+     */
+    @NotNull
+    public static BufferedImage rotateImage90CCW ( @NotNull final BufferedImage bufferedImage )
+    {
+        final BufferedImage rotatedImage = createCompatibleImage ( bufferedImage );
+        final Graphics2D g2d = rotatedImage.createGraphics ();
+        g2d.translate ( 0, bufferedImage.getWidth () );
+        g2d.rotate ( -Math.PI / 2 );
+        g2d.drawImage ( bufferedImage, 0, 0, null );
+        g2d.dispose ();
+        return rotatedImage;
+    }
+
+    /**
+     * Returns new {@link ImageIcon} with specified {@link Icon} painted on it and rotated 180 degrees.
+     *
+     * @param icon {@link Icon} to rotate
+     * @return new {@link ImageIcon} with specified {@link Icon} painted on it and rotated 180 degrees.
+     */
+    @NotNull
+    public static ImageIcon rotateIcon180 ( @NotNull final Icon icon )
+    {
+        return new ImageIcon ( rotateImage180 ( toBufferedImage ( icon ) ) );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with specified {@link Image} painted on it and rotated 180 degrees.
+     *
+     * @param image {@link Image} to rotate
+     * @return new {@link BufferedImage} with specified {@link Image} painted on it and rotated 180 degrees.
+     */
+    @NotNull
+    public static BufferedImage rotateImage180 ( @NotNull final Image image )
+    {
+        return rotateImage180 ( toNonNullBufferedImage ( image ) );
+    }
+
+    /**
+     * Returns new {@link BufferedImage} with specified {@link BufferedImage} painted on it and rotated 180 degrees.
+     *
+     * @param bufferedImage {@link BufferedImage} to rotate
+     * @return new {@link BufferedImage} with specified {@link BufferedImage} painted on it and rotated 180 degrees.
+     */
+    @NotNull
+    public static BufferedImage rotateImage180 ( @NotNull final BufferedImage bufferedImage )
+    {
+        final BufferedImage rotatedImage = createCompatibleImage ( bufferedImage );
+        final Graphics2D g2d = rotatedImage.createGraphics ();
+        g2d.translate ( bufferedImage.getWidth (), bufferedImage.getHeight () );
+        g2d.rotate ( Math.PI );
+        g2d.drawImage ( bufferedImage, 0, 0, null );
+        g2d.dispose ();
+        return rotatedImage;
     }
 
     /**
@@ -1413,7 +1023,8 @@ public final class ImageUtils
      * @param clip        whether or not should clip shadow form
      * @return shadow image based on provided shape
      */
-    public static BufferedImage createShadowImage ( final int width, final int height, final Shape shape, final int shadowWidth,
+    @NotNull
+    public static BufferedImage createShadowImage ( final int width, final int height, @NotNull final Shape shape, final int shadowWidth,
                                                     final float opacity, final boolean clip )
     {
         // Creating template image
@@ -1451,10 +1062,12 @@ public final class ImageUtils
      * @param opacity     shadow opacity
      * @return shadow image based on provided shape
      */
-    public static BufferedImage createInnerShadowImage ( final int width, final Shape shape, final int shadowWidth, final float opacity )
+    @NotNull
+    public static BufferedImage createInnerShadowImage ( final int width, @NotNull final Shape shape, final int shadowWidth,
+                                                         final float opacity )
     {
         // Creating template image
-        final BufferedImage bi = ImageUtils.createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
+        final BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
         final Graphics2D ig = bi.createGraphics ();
         GraphicsUtils.setupAntialias ( ig );
         final Area area = new Area ( new Rectangle ( 0, 0, width, width ) );
@@ -1479,72 +1092,76 @@ public final class ImageUtils
     }
 
     /**
-     * Returns {@link java.awt.image.BufferedImage} decoded from Base64 string.
+     * Returns {@link BufferedImage} decoded from Base64 string.
      *
-     * @param imageString image encoded in Base64 string to decode
-     * @return {@link java.awt.image.BufferedImage} decoded from Base64 string
+     * @param imageData image data decode
+     * @return {@link BufferedImage} decoded from Base64 string
      */
-    public static BufferedImage decodeImage ( final String imageString )
+    @Nullable
+    public static BufferedImage decodeImage ( @Nullable final String imageData )
     {
         BufferedImage image = null;
-        if ( imageString == null || imageString.equals ( "" ) )
+        if ( TextUtils.notEmpty ( imageData ) )
         {
-            return image;
-        }
-        final byte[] bytes = EncryptionUtils.base64decode ( imageString ).getBytes ();
-        final ByteArrayInputStream bis = new ByteArrayInputStream ( bytes );
-        try
-        {
-            image = ImageIO.read ( bis );
-            bis.close ();
-        }
-        catch ( final Exception ex )
-        {
-            final String msg = "Unable to decode image icon";
-            LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
-            try
+            final String rawImageData = EncryptionUtils.base64decode ( imageData );
+            if ( rawImageData != null )
             {
-                bis.close ();
-            }
-            catch ( final IOException ignored )
-            {
-                //
+                final byte[] bytes = rawImageData.getBytes ();
+                final ByteArrayInputStream bis = new ByteArrayInputStream ( bytes );
+                try
+                {
+                    image = ImageIO.read ( bis );
+                    bis.close ();
+                }
+                catch ( final Exception ex )
+                {
+                    final String msg = "Unable to decode image icon";
+                    LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
+                    try
+                    {
+                        bis.close ();
+                    }
+                    catch ( final IOException ignored )
+                    {
+                        //
+                    }
+                }
             }
         }
         return image;
     }
 
     /**
-     * Returns image encoded in Base64 string.
+     * Returns image data encoded in Base64 string.
      *
-     * @param image image to encode into Base64 string
-     * @return image encoded in Base64 string
+     * @param image image to encode
+     * @return image data encoded in Base64 string
      */
-    public static String encodeImage ( final BufferedImage image )
+    @Nullable
+    public static String encodeImage ( @Nullable final BufferedImage image )
     {
         String imageString = null;
-        if ( image == null )
+        if ( image != null )
         {
-            return imageString;
-        }
-        final ByteArrayOutputStream bos = new ByteArrayOutputStream ();
-        try
-        {
-            ImageIO.write ( image, "png", bos );
-            imageString = EncryptionUtils.base64encode ( new String ( bos.toByteArray () ) );
-            bos.close ();
-        }
-        catch ( final IOException ex )
-        {
-            final String msg = "Unable to encode image icon";
-            LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream ();
             try
             {
+                ImageIO.write ( image, "png", bos );
+                imageString = EncryptionUtils.base64encode ( new String ( bos.toByteArray () ) );
                 bos.close ();
             }
-            catch ( final IOException ignored )
+            catch ( final IOException ex )
             {
-                //
+                final String msg = "Unable to encode image icon";
+                LoggerFactory.getLogger ( ImageUtils.class ).error ( msg, ex );
+                try
+                {
+                    bos.close ();
+                }
+                catch ( final IOException ignored )
+                {
+                    //
+                }
             }
         }
         return imageString;

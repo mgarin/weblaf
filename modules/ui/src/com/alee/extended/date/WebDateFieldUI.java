@@ -28,11 +28,11 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.FocusEventRunnable;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
@@ -91,7 +91,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      * @param c component that will use UI instance
      * @return instance of the {@link WebDateFieldUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebDateFieldUI ();
     }
@@ -136,8 +136,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         field = new WebFormattedTextField ( StyleId.datefieldField.at ( dateField ) );
         dateField.add ( field, BorderLayout.CENTER );
 
-        final ImageIcon icon = ImageUtils.getImageIcon ( WebDateFieldUI.class.getResource ( "icons/date.png" ) );
-        button = new WebButton ( StyleId.datefieldButton.at ( dateField ), icon );
+        button = new WebButton ( StyleId.datefieldButton.at ( dateField ), Icons.calendar, Icons.calendarHover );
         dateField.add ( button, BorderLayout.LINE_END );
     }
 
@@ -222,7 +221,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         focusListener = new FocusAdapter ()
         {
             @Override
-            public void focusGained ( final FocusEvent e )
+            public void focusGained ( @NotNull final FocusEvent e )
             {
                 field.requestFocusInWindow ();
             }
@@ -233,7 +232,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         field.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 setDate ( getDate ( field.getText () ), UpdateSource.field );
             }
@@ -276,7 +275,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         button.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 showDateChooserPopup ();
             }
@@ -337,7 +336,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
             calendar.addDateSelectionListener ( new DateListener ()
             {
                 @Override
-                public void dateChanged ( final Date date )
+                public void dateChanged ( @Nullable final Date date )
                 {
                     setDate ( date, UpdateSource.calendar );
                     popup.setVisible ( false );
@@ -376,7 +375,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      * @param date   new selected date
      * @param source date update source
      */
-    protected void setDate ( final Date date, final UpdateSource source )
+    protected void setDate ( @Nullable final Date date, final UpdateSource source )
     {
         if ( !updating )
         {
@@ -429,24 +428,26 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      * @param text text to retrieve date from
      * @return date specified in text field
      */
-    protected Date getDate ( final String text )
+    @Nullable
+    protected Date getDate ( @Nullable final String text )
     {
+        Date date;
         try
         {
-            final DateFormat format = dateField.getDateFormat ();
             if ( text != null && !text.trim ().equals ( "" ) )
             {
-                return format.parse ( text );
+                date = dateField.getDateFormat ().parse ( text );
             }
             else
             {
-                return null;
+                date = null;
             }
         }
         catch ( final Exception ex )
         {
-            return dateField.getDate ();
+            date = dateField.getDate ();
         }
+        return date;
     }
 
     /**
@@ -455,7 +456,8 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      * @param date date to retrieve text from
      * @return text date representation according to date format
      */
-    protected String getText ( final Date date )
+    @NotNull
+    protected String getText ( @Nullable final Date date )
     {
         return date != null ? dateField.getDateFormat ().format ( date ) : "";
     }

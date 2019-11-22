@@ -299,7 +299,7 @@ public final class SystemUtils
      * @return OS icon
      */
     @NotNull
-    public static ImageIcon getOsIcon ()
+    public static Icon getOsIcon ()
     {
         return getOsIcon ( true );
     }
@@ -311,7 +311,7 @@ public final class SystemUtils
      * @return OS icon
      */
     @NotNull
-    public static ImageIcon getOsIcon ( final boolean color )
+    public static Icon getOsIcon ( final boolean color )
     {
         return getOsIcon ( 16, color );
     }
@@ -323,7 +323,7 @@ public final class SystemUtils
      * @return OS icon
      */
     @NotNull
-    public static ImageIcon getOsIcon ( final int size )
+    public static Icon getOsIcon ( final int size )
     {
         return getOsIcon ( size, true );
     }
@@ -336,7 +336,7 @@ public final class SystemUtils
      * @return OS icon
      */
     @NotNull
-    public static ImageIcon getOsIcon ( final int size, final boolean color )
+    public static Icon getOsIcon ( final int size, final boolean color )
     {
         final String os = getShortOsName ();
         final int iconSize = Objects.equals ( size, 16, 32 ) ? size : 16;

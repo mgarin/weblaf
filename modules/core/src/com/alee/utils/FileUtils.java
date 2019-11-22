@@ -19,6 +19,7 @@ package com.alee.utils;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.resource.Resource;
 import com.alee.managers.language.LM;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.utils.compare.Filter;
@@ -191,12 +192,12 @@ public final class FileUtils
     /**
      * File extension icons cache.
      */
-    private static final Map<String, ImageIcon> extensionIconsCache = new ConcurrentHashMap<String, ImageIcon> ();
+    private static final Map<String, Icon> extensionIconsCache = new ConcurrentHashMap<String, Icon> ();
 
     /**
      * Resource icons cache.
      */
-    private static final Map<String, ImageIcon> resourceIconsCache = new ConcurrentHashMap<String, ImageIcon> ();
+    private static final Map<String, Icon> resourceIconsCache = new ConcurrentHashMap<String, Icon> ();
 
     /**
      * Default file tracking updates delay.
@@ -265,7 +266,7 @@ public final class FileUtils
      *
      * @param files files to process
      */
-    public static void clearFilesCaches ( final File... files )
+    public static void clearFilesCaches ( @Nullable final File... files )
     {
         if ( files != null && files.length > 0 )
         {
@@ -281,7 +282,7 @@ public final class FileUtils
      *
      * @param file file to process
      */
-    public static void clearFileCaches ( final File file )
+    public static void clearFileCaches ( @Nullable final File file )
     {
         if ( file != null )
         {
@@ -294,7 +295,7 @@ public final class FileUtils
      *
      * @param path file path
      */
-    public static void clearFileCaches ( final String path )
+    public static void clearFileCaches ( @NotNull final String path )
     {
         clearDisplayFileNameCache ( path );
         clearIsHiddenCache ( path );
@@ -339,7 +340,8 @@ public final class FileUtils
      * @param folder one of file's parent folders
      * @return file path relative to specified folder or canonical path if file is not inside that folder
      */
-    public static String getRelativePath ( final File file, final File folder )
+    @NotNull
+    public static String getRelativePath ( @NotNull final File file, @NotNull final File folder )
     {
         return folder.toURI ().relativize ( file.toURI () ).getPath ();
     }
@@ -350,7 +352,7 @@ public final class FileUtils
      * @param file file to edit
      * @return true if specified file's name can be edited, false otherwise
      */
-    public static boolean isNameEditable ( final File file )
+    public static boolean isNameEditable ( @NotNull final File file )
     {
         final File parent = getParent ( file );
         return parent != null && parent.canWrite () && file.canWrite ();
@@ -362,7 +364,7 @@ public final class FileUtils
      * @param editor text editor to process
      * @param file   file to process
      */
-    public static void displayFileName ( final JTextComponent editor, final File file )
+    public static void displayFileName ( @NotNull final JTextComponent editor, @NotNull final File file )
     {
         final String name = file.getName ();
         editor.setText ( name );
@@ -375,6 +377,7 @@ public final class FileUtils
      *
      * @return system directory for temporary files
      */
+    @NotNull
     public static File getSystemTemp ()
     {
         return new File ( getSystemTempPath () );
@@ -385,6 +388,7 @@ public final class FileUtils
      *
      * @return path to system directory for temporary files
      */
+    @NotNull
     public static String getSystemTempPath ()
     {
         return System.getProperty ( "java.io.tmpdir" );
@@ -396,17 +400,19 @@ public final class FileUtils
      * @param file file for permissions change
      * @return true if permissions change operation succeed, false otherwise
      */
-    public static boolean grantExecutePermissions ( final File file )
+    public static boolean grantExecutePermissions ( @NotNull final File file )
     {
+        boolean granted;
         try
         {
-            return file.setExecutable ( true, false );
+            granted = file.setExecutable ( true, false );
         }
         catch ( final Exception e )
         {
             LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
-            return false;
+            granted = false;
         }
+        return granted;
     }
 
     /**
@@ -415,16 +421,19 @@ public final class FileUtils
      * @param file file to normalize
      * @return normalized file
      */
-    public static File normalize ( final File file )
+    @Nullable
+    public static File normalize ( @Nullable final File file )
     {
+        File normalized;
         try
         {
-            return file != null ? file.getCanonicalFile () : file;
+            normalized = file != null ? file.getCanonicalFile () : null;
         }
         catch ( final IOException e )
         {
-            return file;
+            normalized = file;
         }
+        return normalized;
     }
 
     /**
@@ -501,16 +510,17 @@ public final class FileUtils
      * @param fileFilter file filter
      * @return directory files array or empty array (instead of null) if no files present
      */
-    public static File[] listFiles ( final File directory, final Filter<File> fileFilter )
+    @NotNull
+    public static File[] listFiles ( @NotNull final File directory, @Nullable final Filter<File> fileFilter )
     {
-        return listFiles ( directory, new FileFilter ()
+        return listFiles ( directory, fileFilter != null ? new FileFilter ()
         {
             @Override
             public boolean accept ( final File file )
             {
                 return fileFilter.accept ( file );
             }
-        } );
+        } : null );
     }
 
     /**
@@ -520,7 +530,8 @@ public final class FileUtils
      * @param fileFilter file filter
      * @return directory files array or empty array (instead of null) if no files present
      */
-    public static File[] listFiles ( final File directory, final FileFilter fileFilter )
+    @NotNull
+    public static File[] listFiles ( @NotNull final File directory, @Nullable final FileFilter fileFilter )
     {
         final File[] files = directory.listFiles ( fileFilter );
         return files != null ? files : new File[ 0 ];
@@ -532,7 +543,8 @@ public final class FileUtils
      * @param data file to process
      * @return MD5 for specified {@link String} data
      */
-    public static String computeMD5 ( final String data )
+    @NotNull
+    public static String computeMD5 ( @NotNull final String data )
     {
         return computeMD5 ( data, MD5_BUFFER_LENGTH );
     }
@@ -544,7 +556,8 @@ public final class FileUtils
      * @param bufferLength buffer length
      * @return MD5 for specified {@link String} data
      */
-    public static String computeMD5 ( final String data, final int bufferLength )
+    @NotNull
+    public static String computeMD5 ( @NotNull final String data, final int bufferLength )
     {
         return computeMD5 ( new ByteArrayInputStream ( data.getBytes () ), bufferLength );
     }
@@ -552,54 +565,51 @@ public final class FileUtils
     /**
      * Returns MD5 for specified {@link File} content.
      *
-     * @param file file to process
+     * @param resource {@link Resource} to process
      * @return MD5 for specified {@link File} content
      */
-    public static String computeMD5 ( final File file )
+    @NotNull
+    public static String computeMD5 ( @NotNull final Resource resource )
     {
-        return computeMD5 ( file, MD5_BUFFER_LENGTH );
+        return computeMD5 ( resource, MD5_BUFFER_LENGTH );
     }
 
     /**
      * Returns MD5 for specified {@link File} content and uses a buffer of the specified length.
      *
-     * @param file         file to process
+     * @param resource     {@link Resource} to process
      * @param bufferLength buffer length
      * @return MD5 for specified {@link File} content
      */
-    public static String computeMD5 ( final File file, final int bufferLength )
+    @NotNull
+    public static String computeMD5 ( @NotNull final Resource resource, final int bufferLength )
     {
-        try
-        {
-            return computeMD5 ( new FileInputStream ( file ), bufferLength );
-        }
-        catch ( final FileNotFoundException e )
-        {
-            return null;
-        }
+        return computeMD5 ( resource.getInputStream (), bufferLength );
     }
 
     /**
      * Returns MD5 for the data provided by {@link InputStream}.
      *
-     * @param is data stream to process
+     * @param inputStream data stream to process
      * @return MD5 for the data provided by {@link InputStream}
      */
-    public static String computeMD5 ( final InputStream is )
+    @NotNull
+    public static String computeMD5 ( @NotNull final InputStream inputStream )
     {
-        return computeMD5 ( is, MD5_BUFFER_LENGTH );
+        return computeMD5 ( inputStream, MD5_BUFFER_LENGTH );
     }
 
     /**
      * Returns MD5 for the data provided by {@link InputStream} and uses a buffer of the specified length.
      *
-     * @param is           data stream to process
+     * @param inputStream  data stream to process
      * @param bufferLength buffer length
      * @return MD5 for the data provided by {@link InputStream}
      */
-    public static String computeMD5 ( final InputStream is, final int bufferLength )
+    @NotNull
+    public static String computeMD5 ( @NotNull final InputStream inputStream, final int bufferLength )
     {
-        final BufferedInputStream bis = new BufferedInputStream ( is );
+        final BufferedInputStream bis = new BufferedInputStream ( inputStream );
         try
         {
             final MessageDigest digest = MessageDigest.getInstance ( "MD5" );
@@ -615,7 +625,7 @@ public final class FileUtils
         }
         catch ( final Exception e )
         {
-            return null;
+            throw new UtilityException ( "Unable to compute MD5 for InputStream: " + inputStream, e );
         }
         finally
         {
@@ -635,6 +645,7 @@ public final class FileUtils
      *
      * @return application working directory
      */
+    @NotNull
     public static File getWorkingDirectory ()
     {
         return new File ( getWorkingDirectoryPath () );
@@ -645,6 +656,7 @@ public final class FileUtils
      *
      * @return application working directory
      */
+    @NotNull
     public static String getWorkingDirectoryPath ()
     {
         return System.getProperty ( "user.dir" );
@@ -682,6 +694,7 @@ public final class FileUtils
      *
      * @return desktop directory if one can be found
      */
+    @Nullable
     public static File getDesktop ()
     {
         File desktop = null;
@@ -715,6 +728,7 @@ public final class FileUtils
      *
      * @return desktop directory path if one can be found
      */
+    @Nullable
     public static String getDesktopPath ()
     {
         final File desktop = getDesktop ();
@@ -728,7 +742,7 @@ public final class FileUtils
      * @param file2 second file to be compared
      * @return true if both files represent the same path in file system, false otherwise
      */
-    public static boolean equals ( final File file1, final File file2 )
+    public static boolean equals ( @Nullable final File file1, @Nullable final File file2 )
     {
         boolean equals;
         if ( file1 == null && file2 == null )
@@ -757,7 +771,7 @@ public final class FileUtils
      * @param files2 second files list to be compared
      * @return true if both list of files have equal files in the same positions, false otherwise
      */
-    public static boolean equals ( final List<File> files1, final List<File> files2 )
+    public static boolean equals ( @NotNull final List<File> files1, @NotNull final List<File> files2 )
     {
         boolean equals;
         if ( files1.size () == files2.size () )
@@ -789,26 +803,29 @@ public final class FileUtils
      * @param file  file to look for
      * @return true if list of files or file paths contains the specified file, false otherwise
      */
-    public static boolean containsFile ( final List files, final File file )
+    public static boolean containsFile ( @NotNull final List files, @NotNull final File file )
     {
+        boolean contains = false;
         for ( final Object f : files )
         {
             if ( f instanceof File )
             {
                 if ( ( ( File ) f ).getAbsolutePath ().equals ( file.getAbsolutePath () ) )
                 {
-                    return true;
+                    contains = true;
+                    break;
                 }
             }
             else if ( f instanceof String )
             {
                 if ( f.equals ( file.getAbsolutePath () ) )
                 {
-                    return true;
+                    contains = true;
+                    break;
                 }
             }
         }
-        return false;
+        return contains;
     }
 
     /**
@@ -818,23 +835,26 @@ public final class FileUtils
      * @param filters file filters list
      * @return true if any of the specified file filters accept the file, false otherwise
      */
-    public static boolean isFileAccepted ( final File file, final List<AbstractFileFilter> filters )
+    public static boolean isFileAccepted ( @NotNull final File file, @Nullable final List<AbstractFileFilter> filters )
     {
-        if ( filters == null || filters.size () == 0 )
+        boolean accepted;
+        if ( filters != null && filters.size () != 0 )
         {
-            return true;
-        }
-        else
-        {
+            accepted = false;
             for ( final FileFilter fileFilter : filters )
             {
                 if ( fileFilter.accept ( file ) )
                 {
-                    return true;
+                    accepted = true;
+                    break;
                 }
             }
-            return false;
         }
+        else
+        {
+            accepted = true;
+        }
+        return accepted;
     }
 
     /**
@@ -843,7 +863,8 @@ public final class FileUtils
      * @param name name to process
      * @return file name valid for any file system
      */
-    public static String getProperFileName ( final String name )
+    @NotNull
+    public static String getProperFileName ( @NotNull final String name )
     {
         final StringBuilder newName = new StringBuilder ();
         for ( int i = 0; i < name.length (); ++i )
@@ -881,6 +902,7 @@ public final class FileUtils
      * @param file file to process
      * @return file canonical path if its possible or absolute path otherwise
      */
+    @NotNull
     public static String canonicalPath ( final File file )
     {
         try
@@ -889,7 +911,7 @@ public final class FileUtils
         }
         catch ( final IOException e )
         {
-            return file.getAbsolutePath ();
+            throw new UtilityException ( "Unable to retrieve file canonical path: " + file, e );
         }
     }
 
@@ -901,7 +923,8 @@ public final class FileUtils
      * @param file {@link File} to return parent {@link File} for
      * @return parent {@link File}
      */
-    public static File getParent ( final File file )
+    @Nullable
+    public static File getParent ( @NotNull final File file )
     {
         final File parent;
         final File nativeParent = file.getParentFile ();
@@ -924,11 +947,11 @@ public final class FileUtils
      * @param file file to process
      * @return top not-null parent for the specified file or null if it has no parent files
      */
-    public static File getTopParent ( File file )
+    @Nullable
+    public static File getTopParent ( @NotNull final File file )
     {
         File result = null;
-        file = file.getAbsoluteFile ();
-        File parent = getParent ( file );
+        File parent = getParent ( file.getAbsoluteFile () );
         while ( parent != null )
         {
             result = parent;
@@ -944,35 +967,41 @@ public final class FileUtils
      * @param child  child file
      * @return true if the specified child file is one of parent file children, false otherwise
      */
-    public static boolean isParent ( final File parent, File child )
+    public static boolean isParent ( @Nullable final File parent, @Nullable File child )
     {
+        boolean isParent;
         if ( child == parent )
         {
-            return false;
+            isParent = false;
         }
-        if ( child == null )
+        else if ( child == null )
         {
-            return false;
+            isParent = false;
         }
-        if ( parent == null )
+        else if ( parent == null )
         {
-            return true;
+            isParent = true;
         }
-        if ( child.equals ( parent ) )
+        else if ( child.equals ( parent ) )
         {
-            return false;
+            isParent = false;
         }
-        child = child.getAbsoluteFile ();
-        File cp = getParent ( child );
-        while ( cp != null )
+        else
         {
-            if ( cp.equals ( parent ) )
+            isParent = false;
+            child = child.getAbsoluteFile ();
+            File cp = getParent ( child );
+            while ( cp != null )
             {
-                return true;
+                if ( cp.equals ( parent ) )
+                {
+                    isParent = true;
+                    break;
+                }
+                cp = getParent ( cp );
             }
-            cp = getParent ( cp );
         }
-        return false;
+        return isParent;
     }
 
     /**
@@ -1087,7 +1116,8 @@ public final class FileUtils
      * @param files list of files to sort
      * @return sorted list of files
      */
-    public static List sortFiles ( final List<File> files )
+    @Nullable
+    public static List<File> sortFiles ( @Nullable final List<File> files )
     {
         if ( files != null )
         {
@@ -1102,7 +1132,8 @@ public final class FileUtils
      * @param files array of files to sort
      * @return sorted array of files
      */
-    public static File[] sortFiles ( final File[] files )
+    @Nullable
+    public static File[] sortFiles ( @Nullable final File[] files )
     {
         if ( files != null )
         {
@@ -1118,7 +1149,8 @@ public final class FileUtils
      * @param name file name to check
      * @return available file name
      */
-    public static String getAvailableName ( final String dir, final String name )
+    @NotNull
+    public static String getAvailableName ( @NotNull final String dir, @NotNull final String name )
     {
         return getAvailableName ( new File ( dir ), name );
     }
@@ -1130,7 +1162,8 @@ public final class FileUtils
      * @param name file name to check
      * @return available file name
      */
-    public static String getAvailableName ( final File dir, final String name )
+    @NotNull
+    public static String getAvailableName ( @NotNull final File dir, @NotNull final String name )
     {
         final List<String> exist = new ArrayList<String> ();
         final File[] files = dir.listFiles ();
@@ -1147,57 +1180,55 @@ public final class FileUtils
     /**
      * Returns available file name that is not contained in the existing names list.
      *
-     * @param exist list of existing file names
-     * @param name  file name to check
-     * @return available file name
+     * @param existingNames list of existing file names
+     * @param name          file name to check
+     * @return available file name that is not contained in the existing names list
      */
-    public static String getAvailableName ( final List<String> exist, String name )
+    @NotNull
+    public static String getAvailableName ( @NotNull final List<String> existingNames, @NotNull final String name )
     {
-        // If specified name doesn't exist return it
-        if ( !exist.contains ( name ) )
+        String availableName = name;
+        if ( existingNames.contains ( availableName ) )
         {
-            return name;
-        }
+            // Gathering name parts
+            final int dot = availableName.lastIndexOf ( "." );
+            final String nameStart = dot != -1 ? availableName.substring ( 0, dot ).trim () : availableName;
+            final String nameExt = dot != -1 ? availableName.substring ( availableName.lastIndexOf ( "." ) ) : null;
+            final int ob = nameStart.lastIndexOf ( "(" );
+            final int cb = nameStart.lastIndexOf ( ")" );
+            String nameReal = null;
+            Integer index = null;
+            if ( ob < cb && cb == nameStart.length () - 1 )
+            {
+                try
+                {
+                    nameReal = nameStart.substring ( 0, ob );
+                    index = Integer.parseInt ( nameStart.substring ( ob + 1, cb ) );
+                    index++;
+                }
+                catch ( final Exception ignored )
+                {
+                    //
+                }
+            }
 
-        // Gathering name parts
-        final int dot = name.lastIndexOf ( "." );
-        final String nameStart = dot != -1 ? name.substring ( 0, dot ).trim () : name;
-        final String nameExt = dot != -1 ? name.substring ( name.lastIndexOf ( "." ) ) : null;
-        final int ob = nameStart.lastIndexOf ( "(" );
-        final int cb = nameStart.lastIndexOf ( ")" );
-        String nameReal = null;
-        Integer index = null;
-        if ( ob < cb && cb == nameStart.length () - 1 )
-        {
-            try
+            // Choosing new name
+            int i = 1;
+            while ( existingNames.contains ( availableName ) )
             {
-                nameReal = nameStart.substring ( 0, ob );
-                index = Integer.parseInt ( nameStart.substring ( ob + 1, cb ) );
-                index++;
-            }
-            catch ( final Exception ignored )
-            {
-                //
-            }
-        }
-
-        // Choosing new name
-        int i = 1;
-        while ( exist.contains ( name ) )
-        {
-            if ( nameReal != null && index != null )
-            {
-                name = nameReal + "(" + index + ")" + nameExt;
-                index++;
-            }
-            else
-            {
-                name = nameStart + " (" + i + ")" + ( nameExt != null ? nameExt : "" );
-                i++;
+                if ( nameReal != null && index != null )
+                {
+                    availableName = nameReal + "(" + index + ")" + nameExt;
+                    index++;
+                }
+                else
+                {
+                    availableName = nameStart + " (" + i + ")" + ( nameExt != null ? nameExt : "" );
+                    i++;
+                }
             }
         }
-
-        return name;
+        return availableName;
     }
 
     /**
@@ -1207,7 +1238,8 @@ public final class FileUtils
      * @param object file object
      * @return list of files
      */
-    public static List<File> toFilesList ( final Object... object )
+    @NotNull
+    public static List<File> toFilesList ( @Nullable final Object... object )
     {
         final List<File> files = new ArrayList<File> ( object != null ? object.length : 0 );
         for ( final Object file : files )
@@ -1225,7 +1257,7 @@ public final class FileUtils
      *
      * @param files files to delete
      */
-    public static void deleteFiles ( final Object... files )
+    public static void deleteFiles ( @NotNull final Object... files )
     {
         for ( final Object object : files )
         {
@@ -1241,7 +1273,7 @@ public final class FileUtils
      *
      * @param files files to delete
      */
-    public static void deleteFiles ( final List files )
+    public static void deleteFiles ( @NotNull final List files )
     {
         for ( final Object object : files )
         {
@@ -1258,7 +1290,7 @@ public final class FileUtils
      *
      * @param file file to delete
      */
-    public static void deleteFile ( final File file )
+    public static void deleteFile ( @NotNull final File file )
     {
         if ( file.exists () )
         {
@@ -1271,9 +1303,13 @@ public final class FileUtils
             }
             else if ( file.isDirectory () )
             {
-                for ( final File child : file.listFiles () )
+                final File[] files = file.listFiles ();
+                if ( files != null )
                 {
-                    deleteFile ( child );
+                    for ( final File child : files )
+                    {
+                        deleteFile ( child );
+                    }
                 }
                 if ( !file.delete () )
                 {
@@ -1289,15 +1325,19 @@ public final class FileUtils
      *
      * @param dir directory to clear
      */
-    public static void clearDirectory ( final File dir )
+    public static void clearDirectory ( @NotNull final File dir )
     {
         if ( dir.exists () )
         {
             if ( dir.isDirectory () )
             {
-                for ( final File child : dir.listFiles () )
+                final File[] files = dir.listFiles ();
+                if ( files != null )
                 {
-                    deleteFile ( child );
+                    for ( final File child : files )
+                    {
+                        deleteFile ( child );
+                    }
                 }
             }
         }
@@ -1309,16 +1349,19 @@ public final class FileUtils
      * @param fileFilter IO file filter
      * @return transformed file filter
      */
-    public static AbstractFileFilter transformFileFilter ( final FileFilter fileFilter )
+    @NotNull
+    public static AbstractFileFilter transformFileFilter ( @NotNull final FileFilter fileFilter )
     {
+        final AbstractFileFilter abstractFileFilter;
         if ( fileFilter instanceof AbstractFileFilter )
         {
-            return ( AbstractFileFilter ) fileFilter;
+            abstractFileFilter = ( AbstractFileFilter ) fileFilter;
         }
         else
         {
-            return new IOFileFilterAdapter ( fileFilter, AllFilesFilter.ICON, LM.get ( "weblaf.file.filter.custom" ) );
+            abstractFileFilter = new IOFileFilterAdapter ( fileFilter, AllFilesFilter.ICON, LM.get ( "weblaf.file.filter.custom" ) );
         }
+        return abstractFileFilter;
     }
 
     /**
@@ -1327,16 +1370,19 @@ public final class FileUtils
      * @param fileFilter Swing file filter
      * @return transformed file filter.
      */
-    public static AbstractFileFilter transformFileFilter ( final javax.swing.filechooser.FileFilter fileFilter )
+    @NotNull
+    public static AbstractFileFilter transformFileFilter ( @NotNull final javax.swing.filechooser.FileFilter fileFilter )
     {
+        final AbstractFileFilter abstractFileFilter;
         if ( fileFilter instanceof AbstractFileFilter )
         {
-            return ( AbstractFileFilter ) fileFilter;
+            abstractFileFilter = ( AbstractFileFilter ) fileFilter;
         }
         else
         {
-            return new SwingFileFilterAdapter ( fileFilter, AllFilesFilter.ICON );
+            abstractFileFilter = new SwingFileFilterAdapter ( fileFilter, AllFilesFilter.ICON );
         }
+        return abstractFileFilter;
     }
 
     /**
@@ -1345,7 +1391,8 @@ public final class FileUtils
      * @param fileFilter WebLaF file filter
      * @return actual Swing file filter from the specified filter
      */
-    public static javax.swing.filechooser.FileFilter getSwingFileFilter ( final AbstractFileFilter fileFilter )
+    @Nullable
+    public static javax.swing.filechooser.FileFilter getSwingFileFilter ( @Nullable final AbstractFileFilter fileFilter )
     {
         return fileFilter != null && fileFilter instanceof SwingFileFilterAdapter ?
                 ( ( SwingFileFilterAdapter ) fileFilter ).getFileFilter () : fileFilter;
@@ -1358,7 +1405,8 @@ public final class FileUtils
      * @param fileFilter file filter
      * @return filtered files list
      */
-    public static List<File> filterFiles ( final Collection<File> files, final AbstractFileFilter fileFilter )
+    @NotNull
+    public static List<File> filterFiles ( @NotNull final Collection<File> files, @NotNull final AbstractFileFilter fileFilter )
     {
         final List<File> filteredFiles = new ArrayList<File> ( files.size () );
         for ( final File file : files )
@@ -1378,7 +1426,8 @@ public final class FileUtils
      * @param fileFilter file filter
      * @return filtered files list
      */
-    public static List<File> filterFiles ( final Collection<File> files, final Filter<File> fileFilter )
+    @NotNull
+    public static List<File> filterFiles ( @NotNull final Collection<File> files, @NotNull final Filter<File> fileFilter )
     {
         final List<File> filteredFiles = new ArrayList<File> ( files.size () );
         for ( final File file : files )
@@ -1398,7 +1447,8 @@ public final class FileUtils
      * @param fileSize file size
      * @return complete file description
      */
-    public static FileDescription createFileDescription ( final File file, final String fileSize )
+    @NotNull
+    public static FileDescription createFileDescription ( @NotNull final File file, @Nullable final String fileSize )
     {
         // File name
         final String name = getDisplayFileName ( file );
@@ -1422,7 +1472,8 @@ public final class FileUtils
      * @param file file to process
      * @return file size to display
      */
-    public static String getDisplayFileSize ( final File file )
+    @NotNull
+    public static String getDisplayFileSize ( @NotNull final File file )
     {
         // todo Cache this value
         return getFileSizeString ( file.length () );
@@ -1435,7 +1486,8 @@ public final class FileUtils
      * @param digits number of digits after the dot
      * @return file size to display
      */
-    public static String getDisplayFileSize ( final File file, final int digits )
+    @NotNull
+    public static String getDisplayFileSize ( @NotNull final File file, final int digits )
     {
         // todo Cache file length value
         return getFileSizeString ( file.length (), digits );
@@ -1459,33 +1511,36 @@ public final class FileUtils
      * @param digits number of digits after the dot
      * @return file size to display
      */
+    @NotNull
     public static String getFileSizeString ( final long size, final int digits )
     {
+        final String fileSizeString;
         final DecimalFormat df = new DecimalFormat ( digits > 0 ? "#." + TextUtils.createString ( "#", digits ) : "#" );
         if ( size < KB )
         {
-            return df.format ( size ) + " " + LM.get ( "weblaf.file.size.b" );
+            fileSizeString = df.format ( size ) + " " + LM.get ( "weblaf.file.size.b" );
         }
-        else if ( size >= KB && size < MB )
+        else if ( size < MB )
         {
-            return df.format ( ( float ) size / KB ) + " " + LM.get ( "weblaf.file.size.kb" );
+            fileSizeString = df.format ( ( float ) size / KB ) + " " + LM.get ( "weblaf.file.size.kb" );
         }
-        else if ( size >= MB && size < GB )
+        else if ( size < GB )
         {
-            return df.format ( ( float ) size / MB ) + " " + LM.get ( "weblaf.file.size.mb" );
+            fileSizeString = df.format ( ( float ) size / MB ) + " " + LM.get ( "weblaf.file.size.mb" );
         }
-        else if ( size >= GB && size < TB )
+        else if ( size < TB )
         {
-            return df.format ( ( float ) size / GB ) + " " + LM.get ( "weblaf.file.size.gb" );
+            fileSizeString = df.format ( ( float ) size / GB ) + " " + LM.get ( "weblaf.file.size.gb" );
         }
-        else if ( size >= TB && size < PB )
+        else if ( size < PB )
         {
-            return df.format ( ( float ) size / TB ) + " " + LM.get ( "weblaf.file.size.tb" );
+            fileSizeString = df.format ( ( float ) size / TB ) + " " + LM.get ( "weblaf.file.size.tb" );
         }
         else
         {
-            return df.format ( ( float ) size / PB ) + " " + LM.get ( "weblaf.file.size.pb" );
+            fileSizeString = df.format ( ( float ) size / PB ) + " " + LM.get ( "weblaf.file.size.pb" );
         }
+        return fileSizeString;
     }
 
     /**
@@ -1496,7 +1551,7 @@ public final class FileUtils
      * @param dst destination directory path
      * @return true if copy operation succeed, false otherwise
      */
-    public static boolean copyDirectory ( final String src, final String dst )
+    public static boolean copyDirectory ( @NotNull final String src, @NotNull final String dst )
     {
         return copyDirectory ( src, dst, false );
     }
@@ -1510,7 +1565,7 @@ public final class FileUtils
      * @param stopOnFail whether to stop copy operation if any exception occurs or not
      * @return true if copy operation succeed, false otherwise
      */
-    public static boolean copyDirectory ( final String src, final String dst, final boolean stopOnFail )
+    public static boolean copyDirectory ( @NotNull final String src, @NotNull final String dst, final boolean stopOnFail )
     {
         return copyDirectory ( new File ( src ), new File ( dst ), stopOnFail );
     }
@@ -1523,7 +1578,7 @@ public final class FileUtils
      * @param dstDir destination directory
      * @return true if copy operation succeed, false otherwise
      */
-    public static boolean copyDirectory ( final File srcDir, final File dstDir )
+    public static boolean copyDirectory ( @NotNull final File srcDir, @NotNull final File dstDir )
     {
         return copyDirectory ( srcDir, dstDir, false );
     }
@@ -1537,47 +1592,52 @@ public final class FileUtils
      * @param stopOnFail whether to stop copy operation if any exception occurs or not
      * @return true if copy operation succeed, false otherwise
      */
-    public static boolean copyDirectory ( final File srcDir, final File dstDir, final boolean stopOnFail )
+    public static boolean copyDirectory ( @NotNull final File srcDir, @NotNull final File dstDir, final boolean stopOnFail )
     {
         // todo Actually ignore exceptions as well if stopOnFail = false
+        boolean success;
         if ( srcDir.exists () && srcDir.isDirectory () )
         {
             // Ensure destination directory exists and perform copy
             if ( ensureDirectoryExists ( dstDir ) )
             {
                 // Copying all subdirectories and sub-files
-                boolean success = true;
-                for ( final File file : srcDir.listFiles () )
+                success = true;
+                final File[] files = srcDir.listFiles ();
+                if ( files != null )
                 {
-                    final String copied = dstDir.getAbsolutePath () + File.separator + file.getName ();
-                    if ( file.isDirectory () )
+                    for ( final File file : files )
                     {
-                        success = copyDirectory ( file.getAbsolutePath (), copied ) && success;
-                        if ( !success && stopOnFail )
+                        final String copied = dstDir.getAbsolutePath () + File.separator + file.getName ();
+                        if ( file.isDirectory () )
                         {
-                            return false;
+                            success = copyDirectory ( file.getAbsolutePath (), copied ) && success;
+                            if ( !success && stopOnFail )
+                            {
+                                break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        success = copyFile ( file.getAbsolutePath (), copied ) && success;
-                        if ( !success && stopOnFail )
+                        else
                         {
-                            return false;
+                            success = copyFile ( file.getAbsolutePath (), copied ) && success;
+                            if ( !success && stopOnFail )
+                            {
+                                break;
+                            }
                         }
                     }
                 }
-                return success;
             }
             else
             {
-                return false;
+                success = false;
             }
         }
         else
         {
-            return false;
+            success = false;
         }
+        return success;
     }
 
     /**
@@ -1589,7 +1649,7 @@ public final class FileUtils
      * @param dst destination file path
      * @return true if copy operation succeed, false otherwise
      */
-    public static boolean copyFile ( final String src, final String dst )
+    public static boolean copyFile ( @Nullable final String src, @Nullable final String dst )
     {
         final File srcFile = src != null ? new File ( src ) : null;
         final File dstFile = dst != null ? new File ( dst ) : null;
@@ -1605,8 +1665,9 @@ public final class FileUtils
      * @param dstFile destination file
      * @return true if copy operation succeed, false otherwise
      */
-    public static boolean copyFile ( final File srcFile, final File dstFile )
+    public static boolean copyFile ( @Nullable final File srcFile, @Nullable final File dstFile )
     {
+        boolean success = false;
         if ( srcFile != null && srcFile.exists () && srcFile.isFile () && dstFile != null )
         {
             try
@@ -1616,22 +1677,14 @@ public final class FileUtils
                 {
                     final FileChannel srcFC = new FileInputStream ( srcFile ).getChannel ();
                     final FileChannel dstFC = new FileOutputStream ( dstFile ).getChannel ();
-                    return copyFile ( srcFC, dstFC );
-                }
-                else
-                {
-                    return false;
+                    success = copyFile ( srcFC, dstFC );
                 }
             }
-            catch ( final FileNotFoundException e )
+            catch ( final FileNotFoundException ignored )
             {
-                return false;
             }
         }
-        else
-        {
-            return false;
-        }
+        return success;
     }
 
     /**
@@ -1641,118 +1694,46 @@ public final class FileUtils
      * @param dstFC destination file channel
      * @return true if copy operation succeed, false otherwise
      */
-    public static boolean copyFile ( final FileChannel srcFC, final FileChannel dstFC )
+    public static boolean copyFile ( @NotNull final FileChannel srcFC, @NotNull final FileChannel dstFC )
     {
+        boolean success;
         try
         {
             dstFC.transferFrom ( srcFC, 0, srcFC.size () );
             srcFC.close ();
             dstFC.close ();
-            return true;
+            success = true;
         }
         catch ( final IOException e )
         {
-            return false;
+            success = false;
         }
+        return success;
     }
 
     /**
-     * Returns text content read from the file located near specified class.
+     * Returns {@link String} content read from the {@link Resource}.
      *
-     * @param nearClass class near which text file is located
-     * @param resource  text file location
-     * @return text file content
+     * @param resource {@link Resource}
+     * @return {@link String} content read from the {@link Resource}
      */
-    public static String readToString ( final Class nearClass, final String resource )
+    @NotNull
+    public static String readToString ( @NotNull final Resource resource )
     {
-        return readToString ( nearClass, resource, defaultEncoding );
+        return readToString ( resource, defaultEncoding );
     }
 
     /**
-     * Returns content read from the file located near specified class.
+     * Returns {@link String} content read from the {@link Resource}.
      *
-     * @param nearClass class near which file is located
-     * @param resource  file location
-     * @param encoding  file encoding
-     * @return file content
+     * @param resource {@link Resource}
+     * @param encoding content encoding
+     * @return {@link String} content read from the {@link Resource}
      */
-    public static String readToString ( final Class nearClass, final String resource, final String encoding )
+    @NotNull
+    public static String readToString ( @NotNull final Resource resource, @NotNull final String encoding )
     {
-        try
-        {
-            return readToString ( nearClass.getResourceAsStream ( resource ), encoding );
-        }
-        catch ( final Exception e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns content read from the file at the specified url.
-     *
-     * @param url file url
-     * @return file content
-     */
-    public static String readToString ( final URL url )
-    {
-        return readToString ( url, defaultEncoding );
-    }
-
-    /**
-     * Returns content read from the file at the specified url.
-     *
-     * @param url      file url
-     * @param encoding file encoding
-     * @return file content
-     */
-    public static String readToString ( final URL url, final String encoding )
-    {
-        try
-        {
-            return readToString ( url.openStream (), encoding );
-        }
-        catch ( final Exception e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns content read from the specified file.
-     *
-     * @param file file to read
-     * @return file content
-     */
-    public static String readToString ( final File file )
-    {
-        return readToString ( file, defaultEncoding );
-    }
-
-    /**
-     * Returns content read from the specified file.
-     *
-     * @param file     file to read
-     * @param encoding file encoding
-     * @return file content
-     */
-    public static String readToString ( final File file, final String encoding )
-    {
-        try
-        {
-            if ( file != null && file.exists () && file.isFile () )
-            {
-                return readToString ( new FileInputStream ( file ), encoding );
-            }
-            else
-            {
-                return null;
-            }
-        }
-        catch ( final Exception e )
-        {
-            return null;
-        }
+        return readToString ( resource.getInputStream (), encoding );
     }
 
     /**
@@ -1761,7 +1742,8 @@ public final class FileUtils
      * @param inputStream text content input stream
      * @return text content
      */
-    public static String readToString ( final InputStream inputStream )
+    @NotNull
+    public static String readToString ( @NotNull final InputStream inputStream )
     {
         return readToString ( inputStream, defaultEncoding );
     }
@@ -1773,22 +1755,16 @@ public final class FileUtils
      * @param encoding    stream data encoding
      * @return content
      */
-    public static String readToString ( final InputStream inputStream, final String encoding )
+    @NotNull
+    public static String readToString ( @NotNull final InputStream inputStream, @NotNull final String encoding )
     {
         try
         {
-            if ( inputStream != null )
-            {
-                return readToString ( new InputStreamReader ( inputStream, encoding ) );
-            }
-            else
-            {
-                return null;
-            }
+            return readToString ( new InputStreamReader ( inputStream, encoding ) );
         }
         catch ( final Exception e )
         {
-            return null;
+            throw new UtilityException ( "Unable to read InputStream to string: " + inputStream, e );
         }
         finally
         {
@@ -1809,14 +1785,11 @@ public final class FileUtils
      * @param reader text content reader
      * @return content
      */
-    public static String readToString ( final Reader reader )
+    @NotNull
+    public static String readToString ( @NotNull final Reader reader )
     {
         try
         {
-            if ( reader == null )
-            {
-                return "";
-            }
             int charsRead;
             final char[] buffer = new char[ TEXT_BUFFER_SIZE ];
             final StringBuilder sb = new StringBuilder ();
@@ -1828,7 +1801,7 @@ public final class FileUtils
         }
         catch ( final Exception e )
         {
-            return "";
+            throw new UtilityException ( "Unable to read Reader to string: " + reader, e );
         }
         finally
         {
@@ -1850,9 +1823,9 @@ public final class FileUtils
      * @param text text to write
      * @param file file to write text into
      */
-    public static void writeStringToFile ( final String text, final File file )
+    public static void writeStringToFile ( @NotNull final String text, @NotNull final File file )
     {
-        writeStringToFile ( text, file, "UTF-8" );
+        writeStringToFile ( text, file, defaultEncoding );
     }
 
     /**
@@ -1863,38 +1836,43 @@ public final class FileUtils
      * @param file     file to write text into
      * @param encoding file encoding
      */
-    public static void writeStringToFile ( final String text, final File file, final String encoding )
+    public static void writeStringToFile ( @NotNull final String text, @NotNull final File file, @NotNull final String encoding )
     {
-        // Throw exception if file is a directory
-        if ( file.exists () && file.isDirectory () )
+        if ( !file.exists () || !file.isDirectory () )
         {
-            throw new RuntimeException ( "Specified file points to existing folder!" );
-        }
-
-        // Creating directories if necessary
-        getParent ( file ).mkdirs ();
-
-        // Writing text to file
-        PrintWriter writer = null;
-        try
-        {
-            writer = new PrintWriter ( file, encoding );
-            writer.write ( text );
-        }
-        catch ( final FileNotFoundException e )
-        {
-            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
-        }
-        catch ( final UnsupportedEncodingException e )
-        {
-            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
-        }
-        finally
-        {
-            if ( writer != null )
+            final File parent = getParent ( file );
+            if ( parent != null )
             {
-                writer.close ();
+                // Creating directories if necessary
+                parent.mkdirs ();
+
+                // Writing text to file
+                PrintWriter writer = null;
+                try
+                {
+                    writer = new PrintWriter ( file, encoding );
+                    writer.write ( text );
+                }
+                catch ( final Exception e )
+                {
+                    throw new UtilityException ( "Unable to write string to file: " + file, e );
+                }
+                finally
+                {
+                    if ( writer != null )
+                    {
+                        writer.close ();
+                    }
+                }
             }
+            else
+            {
+                throw new UtilityException ( "Unable to determine file location: " + file );
+            }
+        }
+        else
+        {
+            throw new UtilityException ( "Specified file points to existing folder!" );
         }
     }
 
@@ -1904,7 +1882,8 @@ public final class FileUtils
      * @param dir path of directory to process
      * @return list of file paths
      */
-    public static List<String> getSubPaths ( final String dir )
+    @NotNull
+    public static List<String> getSubPaths ( @NotNull final String dir )
     {
         return getSubPaths ( new File ( dir ) );
     }
@@ -1915,7 +1894,8 @@ public final class FileUtils
      * @param dir directory to process
      * @return list of file paths
      */
-    public static List<String> getSubPaths ( final File dir )
+    @NotNull
+    public static List<String> getSubPaths ( @NotNull final File dir )
     {
         return getSubPaths ( dir, "" );
     }
@@ -1927,7 +1907,8 @@ public final class FileUtils
      * @param path path to current position
      * @return list of file paths
      */
-    public static List<String> getSubPaths ( final File dir, final String path )
+    @NotNull
+    public static List<String> getSubPaths ( @NotNull final File dir, @NotNull final String path )
     {
         return getSubPaths ( dir, path, new ArrayList<String> () );
     }
@@ -1940,52 +1921,60 @@ public final class FileUtils
      * @param paths list of collected paths
      * @return list of file paths
      */
-    public static List<String> getSubPaths ( final File dir, final String path, final List<String> paths )
+    @NotNull
+    public static List<String> getSubPaths ( @NotNull final File dir, @NotNull final String path, @NotNull final List<String> paths )
     {
-        for ( final File file : dir.listFiles () )
+        final File[] files = dir.listFiles ();
+        if ( files != null )
         {
-            if ( file.isFile () )
+            for ( final File file : files )
             {
-                paths.add ( path + file.getName () );
-            }
-            else if ( file.isDirectory () )
-            {
-                getSubPaths ( file, path + file.getName () + File.separator, paths );
+                if ( file.isFile () )
+                {
+                    paths.add ( path + file.getName () );
+                }
+                else if ( file.isDirectory () )
+                {
+                    getSubPaths ( file, path + file.getName () + File.separator, paths );
+                }
             }
         }
         return paths;
     }
 
     /**
-     * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * Downloads file from the specified url to destination file and returns it if download succeed.
      * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url     file source url
      * @param dstFile destination file
-     * @return downloaded file if download succeed, null otherwise
+     * @return downloaded file if download succeed
      */
-    public static File downloadFile ( final String url, final File dstFile )
+    @NotNull
+    public static File downloadFile ( @NotNull final String url, @NotNull final File dstFile )
     {
         return downloadFile ( url, dstFile, false, null, 3000, null );
     }
 
     /**
-     * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * Downloads file from the specified url to destination file and returns it if download succeed.
      * You can observe and manipulate the download process by providing a file download listener.
      * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url      file source url
      * @param dstFile  destination file
      * @param listener file download process listener
-     * @return downloaded file if download succeed, null otherwise
+     * @return downloaded file if download succeed
      */
-    public static File downloadFile ( final String url, final File dstFile, final FileDownloadListener listener )
+    @NotNull
+    public static File downloadFile ( @NotNull final String url, @NotNull final File dstFile,
+                                      @Nullable final FileDownloadListener listener )
     {
         return downloadFile ( url, dstFile, false, null, 3000, listener );
     }
 
     /**
-     * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * Downloads file from the specified url to destination file and returns it if download succeed.
      * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url         file source url
@@ -1993,16 +1982,17 @@ public final class FileUtils
      * @param encodeUrl   whether encode the source url or not
      * @param contentType content type limitation
      * @param timeout     connection and read timeout
-     * @return downloaded file if download succeed, null otherwise
+     * @return downloaded file if download succeed
      */
-    public static File downloadFile ( final String url, final String dst, final boolean encodeUrl, final String contentType,
-                                      final int timeout )
+    @NotNull
+    public static File downloadFile ( @NotNull final String url, @NotNull final String dst, final boolean encodeUrl,
+                                      @Nullable final String contentType, final int timeout )
     {
         return downloadFile ( url, new File ( dst ), encodeUrl, contentType, timeout, null );
     }
 
     /**
-     * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * Downloads file from the specified url to destination file and returns it if download succeed.
      * You can observe and manipulate the download process by providing a file download listener.
      * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
@@ -2012,16 +2002,17 @@ public final class FileUtils
      * @param contentType content type limitation
      * @param timeout     connection and read timeout
      * @param listener    file download process listener
-     * @return downloaded file if download succeed, null otherwise
+     * @return downloaded file if download succeed
      */
-    public static File downloadFile ( final String url, final String dst, final boolean encodeUrl, final String contentType,
-                                      final int timeout, final FileDownloadListener listener )
+    @NotNull
+    public static File downloadFile ( @NotNull final String url, @NotNull final String dst, final boolean encodeUrl,
+                                      @Nullable final String contentType, final int timeout, @Nullable final FileDownloadListener listener )
     {
         return downloadFile ( url, new File ( dst ), encodeUrl, contentType, timeout, listener );
     }
 
     /**
-     * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * Downloads file from the specified url to destination file and returns it if download succeed.
      * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
      * @param url         file source url
@@ -2029,16 +2020,17 @@ public final class FileUtils
      * @param encodeUrl   whether encode the source url or not
      * @param contentType content type limitation
      * @param timeout     connection and read timeout
-     * @return downloaded file if download succeed, null otherwise
+     * @return downloaded file if download succeed
      */
-    public static File downloadFile ( final String url, final File dstFile, final boolean encodeUrl, final String contentType,
-                                      final int timeout )
+    @NotNull
+    public static File downloadFile ( @NotNull final String url, @NotNull final File dstFile, final boolean encodeUrl,
+                                      @Nullable final String contentType, final int timeout )
     {
         return downloadFile ( url, dstFile, encodeUrl, contentType, timeout, null );
     }
 
     /**
-     * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     * Downloads file from the specified url to destination file and returns it if download succeed.
      * You can observe and manipulate the download process by providing a file download listener.
      * todo Instead of multiple methods create DownloadParameters class that would contain all of the settings
      *
@@ -2048,10 +2040,11 @@ public final class FileUtils
      * @param contentType content type limitation
      * @param timeout     connection and read timeout
      * @param listener    file download process listener
-     * @return downloaded file if download succeed, null otherwise
+     * @return downloaded file if download succeed
      */
-    public static File downloadFile ( final String url, final File dstFile, final boolean encodeUrl, final String contentType,
-                                      final int timeout, final FileDownloadListener listener )
+    @NotNull
+    public static File downloadFile ( @NotNull final String url, @NotNull final File dstFile, final boolean encodeUrl,
+                                      @Nullable final String contentType, final int timeout, @Nullable final FileDownloadListener listener )
     {
         try
         {
@@ -2070,7 +2063,8 @@ public final class FileUtils
             if ( listener != null && listener.shouldStopDownload () )
             {
                 deleteFile ( dstFile );
-                return null;
+                listener.fileDownloadAborted ();
+                throw new UtilityException ( "File download was aborted" );
             }
 
             // Content type limitation
@@ -2080,7 +2074,11 @@ public final class FileUtils
                 if ( !ct.contains ( contentType ) )
                 {
                     deleteFile ( dstFile );
-                    return null;
+                    if ( listener != null )
+                    {
+                        listener.fileDownloadAborted ();
+                    }
+                    throw new UtilityException ( "File download was aborted due to content type not matching requested content type" );
                 }
             }
 
@@ -2093,7 +2091,8 @@ public final class FileUtils
                 if ( listener.shouldStopDownload () )
                 {
                     deleteFile ( dstFile );
-                    return null;
+                    listener.fileDownloadAborted ();
+                    throw new UtilityException ( "File download was aborted" );
                 }
             }
 
@@ -2104,7 +2103,12 @@ public final class FileUtils
             // Checking stop flag
             if ( listener != null && listener.shouldStopDownload () )
             {
-                return haltDownload ( dstFile, in, out );
+                out.flush ();
+                out.close ();
+                in.close ();
+                deleteFile ( dstFile );
+                listener.fileDownloadAborted ();
+                throw new UtilityException ( "File download was aborted" );
             }
 
             // Downloading content part by part
@@ -2121,7 +2125,12 @@ public final class FileUtils
                     // Checking stop flag
                     if ( listener.shouldStopDownload () )
                     {
-                        return haltDownload ( dstFile, in, out );
+                        out.flush ();
+                        out.close ();
+                        in.close ();
+                        deleteFile ( dstFile );
+                        listener.fileDownloadAborted ();
+                        throw new UtilityException ( "File download was aborted" );
                     }
                 }
                 out.write ( buf, 0, bytesRead );
@@ -2144,26 +2153,8 @@ public final class FileUtils
             {
                 listener.fileDownloadFailed ( e );
             }
-            return null;
+            throw new UtilityException ( "Unable to download file from URL: " + url, e );
         }
-    }
-
-    /**
-     * Halts download by properly closing streams and removing destination file.
-     *
-     * @param dstFile destination file
-     * @param in      input stream
-     * @param out     output stream
-     * @return always {@code null}
-     * @throws IOException if some IO operation failed
-     */
-    private static File haltDownload ( final File dstFile, final InputStream in, final FileOutputStream out ) throws IOException
-    {
-        out.flush ();
-        out.close ();
-        in.close ();
-        deleteFile ( dstFile );
-        return null;
     }
 
     /**
@@ -2172,7 +2163,7 @@ public final class FileUtils
      * @param url file location url
      * @return file size
      */
-    public static int getFileSize ( final String url )
+    public static int getFileSize ( @NotNull final String url )
     {
         try
         {
@@ -2180,8 +2171,7 @@ public final class FileUtils
         }
         catch ( final Exception e )
         {
-            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
-            return -1;
+            throw new UtilityException ( "Unable to retrieve file size for URL: " + url, e );
         }
     }
 
@@ -2191,7 +2181,7 @@ public final class FileUtils
      * @param url file location url
      * @return file size
      */
-    public static int getFileSize ( final URL url )
+    public static int getFileSize ( @NotNull final URL url )
     {
         try
         {
@@ -2204,8 +2194,7 @@ public final class FileUtils
         }
         catch ( final Exception e )
         {
-            LoggerFactory.getLogger ( FileUtils.class ).error ( e.toString (), e );
-            return -1;
+            throw new UtilityException ( "Unable to retrieve file size for URL: " + url, e );
         }
     }
 
@@ -2216,7 +2205,8 @@ public final class FileUtils
      * @param extension file extensions list
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final String dir, final List<String> extension )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final String dir, @NotNull final List<String> extension )
     {
         return findFilesRecursively ( new File ( dir ), extension );
     }
@@ -2228,7 +2218,8 @@ public final class FileUtils
      * @param extension file extensions list
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final File dir, final List<String> extension )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final File dir, @NotNull final List<String> extension )
     {
         return findFilesRecursively ( dir, extension, true );
     }
@@ -2241,7 +2232,9 @@ public final class FileUtils
      * @param withDot   whether extensions contain dot or not
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final String dir, final List<String> extension, final boolean withDot )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final String dir, @NotNull final List<String> extension,
+                                                    final boolean withDot )
     {
         return findFilesRecursively ( new File ( dir ), extension, withDot );
     }
@@ -2254,9 +2247,10 @@ public final class FileUtils
      * @param withDot   whether extensions contain dot or not
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final File dir, final List<String> extension, final boolean withDot )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final File dir, @NotNull final List<String> extension, final boolean withDot )
     {
-        return findFilesRecursively ( dir, extension, withDot, null );
+        return findFilesRecursively ( dir, extension, withDot, new ArrayList<File> () );
     }
 
     /**
@@ -2268,8 +2262,9 @@ public final class FileUtils
      * @param found     list in which found files should be stored
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final String dir, final List<String> extension, final boolean withDot,
-                                                    final List<File> found )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final String dir, @NotNull final List<String> extension, final boolean withDot,
+                                                    @NotNull final List<File> found )
     {
         return findFilesRecursively ( new File ( dir ), extension, withDot, found );
     }
@@ -2283,8 +2278,9 @@ public final class FileUtils
      * @param found     list in which found files should be stored
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final File dir, final List<String> extension, final boolean withDot,
-                                                    final List<File> found )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final File dir, @NotNull final List<String> extension, final boolean withDot,
+                                                    @NotNull final List<File> found )
     {
         return findFilesRecursively ( dir, new FileFilter ()
         {
@@ -2303,7 +2299,8 @@ public final class FileUtils
      * @param filter file filter
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final String dir, final FileFilter filter )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final String dir, @NotNull final FileFilter filter )
     {
         return findFilesRecursively ( new File ( dir ), filter );
     }
@@ -2315,9 +2312,10 @@ public final class FileUtils
      * @param filter file filter
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final File dir, final FileFilter filter )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final File dir, @NotNull final FileFilter filter )
     {
-        return findFilesRecursively ( dir, filter, null );
+        return findFilesRecursively ( dir, filter, new ArrayList<File> () );
     }
 
     /**
@@ -2328,7 +2326,9 @@ public final class FileUtils
      * @param found  list in which found files should be stored
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final String dir, final FileFilter filter, final List<File> found )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final String dir, @NotNull final FileFilter filter,
+                                                    @NotNull final List<File> found )
     {
         return findFilesRecursively ( new File ( dir ), filter, found );
     }
@@ -2341,23 +2341,25 @@ public final class FileUtils
      * @param found  list in which found files should be stored
      * @return list of found files
      */
-    public static List<File> findFilesRecursively ( final File dir, final FileFilter filter, List<File> found )
+    @NotNull
+    public static List<File> findFilesRecursively ( @NotNull final File dir, @NotNull final FileFilter filter,
+                                                    @NotNull final List<File> found )
     {
-        if ( found == null )
-        {
-            found = new ArrayList<File> ();
-        }
         if ( dir.exists () && dir.isDirectory () )
         {
-            for ( final File file : dir.listFiles () )
+            final File[] files = dir.listFiles ();
+            if ( files != null )
             {
-                if ( filter.accept ( file ) )
+                for ( final File file : files )
                 {
-                    found.add ( file );
-                }
-                if ( file.isDirectory () )
-                {
-                    findFilesRecursively ( file, filter, found );
+                    if ( filter.accept ( file ) )
+                    {
+                        found.add ( file );
+                    }
+                    if ( file.isDirectory () )
+                    {
+                        findFilesRecursively ( file, filter, found );
+                    }
                 }
             }
         }
@@ -2370,9 +2372,9 @@ public final class FileUtils
      * @param dir path to directory to check
      * @return true if directory exists or was successfully created during this check, false otherwise
      */
-    public static boolean ensureDirectoryExists ( final String dir )
+    public static boolean ensureDirectoryExists ( @Nullable final String dir )
     {
-        return ensureDirectoryExists ( new File ( dir ) );
+        return dir != null && ensureDirectoryExists ( new File ( dir ) );
     }
 
     /**
@@ -2381,7 +2383,7 @@ public final class FileUtils
      * @param dir directory to check
      * @return true if directory exists or was successfully created during this check, false otherwise
      */
-    public static boolean ensureDirectoryExists ( final File dir )
+    public static boolean ensureDirectoryExists ( @Nullable final File dir )
     {
         return dir != null && ( dir.exists () || dir.mkdirs () );
     }
@@ -2399,7 +2401,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file isDrive mark cache for
      */
-    public static void clearIsDriveCache ( final String absolutePath )
+    public static void clearIsDriveCache ( @NotNull final String absolutePath )
     {
         isDriveCache.remove ( absolutePath );
     }
@@ -2410,31 +2412,27 @@ public final class FileUtils
      * @param file file to process
      * @return true if the specified file points to system hard drive, false otherwise
      */
-    public static boolean isDrive ( final File file )
+    public static boolean isDrive ( @NotNull final File file )
     {
+        final boolean isDrive;
         final String absolutePath = file.getAbsolutePath ();
-        if ( absolutePath == null )
+        if ( isDriveCache.containsKey ( absolutePath ) )
         {
-            return false;
-        }
-        else if ( isDriveCache.containsKey ( absolutePath ) )
-        {
-            return isDriveCache.get ( absolutePath );
+            isDrive = isDriveCache.get ( absolutePath );
         }
         else if ( file.exists () )
         {
-            final boolean isDrive;
             synchronized ( fsv )
             {
                 isDrive = fsv.isDrive ( file );
             }
             isDriveCache.put ( absolutePath, isDrive );
-            return isDrive;
         }
         else
         {
-            return false;
+            isDrive = false;
         }
+        return isDrive;
     }
 
     /**
@@ -2450,7 +2448,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file isComputer mark cache for
      */
-    public static void clearIsComputerCache ( final String absolutePath )
+    public static void clearIsComputerCache ( @NotNull final String absolutePath )
     {
         isComputerCache.remove ( absolutePath );
     }
@@ -2461,31 +2459,27 @@ public final class FileUtils
      * @param file file to process
      * @return true if the specified file points to system hard drive, false otherwise
      */
-    public static boolean isComputer ( final File file )
+    public static boolean isComputer ( @NotNull final File file )
     {
+        final boolean isComputer;
         final String absolutePath = file.getAbsolutePath ();
-        if ( absolutePath == null )
+        if ( isComputerCache.containsKey ( absolutePath ) )
         {
-            return false;
-        }
-        else if ( isComputerCache.containsKey ( absolutePath ) )
-        {
-            return isComputerCache.get ( absolutePath );
+            isComputer = isComputerCache.get ( absolutePath );
         }
         else if ( file.exists () )
         {
-            final boolean isComputer;
             synchronized ( fsv )
             {
                 isComputer = fsv.isComputerNode ( file );
             }
             isComputerCache.put ( absolutePath, isComputer );
-            return isComputer;
         }
         else
         {
-            return false;
+            isComputer = false;
         }
+        return isComputer;
     }
 
     /**
@@ -2501,7 +2495,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file isCdDrive mark cache for
      */
-    public static void clearIsCdDriveCache ( final String absolutePath )
+    public static void clearIsCdDriveCache ( @NotNull final String absolutePath )
     {
         isCdDriveCache.remove ( absolutePath );
     }
@@ -2514,25 +2508,21 @@ public final class FileUtils
      * @param file file to process
      * @return true if the specified file points to system CD, DVD or Bluray drive, false otherwise
      */
-    public static boolean isCdDrive ( final File file )
+    public static boolean isCdDrive ( @NotNull final File file )
     {
+        final boolean isCdDrive;
         final String absolutePath = file.getAbsolutePath ();
-        if ( absolutePath == null )
+        if ( isCdDriveCache.containsKey ( absolutePath ) )
         {
-            return false;
-        }
-        else if ( isCdDriveCache.containsKey ( absolutePath ) )
-        {
-            return isCdDriveCache.get ( absolutePath );
+            isCdDrive = isCdDriveCache.get ( absolutePath );
         }
         else if ( file.exists () )
         {
-            final boolean isCdDrive;
             if ( file.getParent () == null )
             {
                 final String sysDes = getFileTypeDescription ( file );
                 final String description;
-                if ( sysDes != null )
+                if ( TextUtils.notEmpty ( sysDes ) )
                 {
                     description = sysDes.toLowerCase ( Locale.ROOT );
                 }
@@ -2548,12 +2538,12 @@ public final class FileUtils
                 isCdDrive = false;
             }
             isCdDriveCache.put ( absolutePath, isCdDrive );
-            return isCdDrive;
         }
         else
         {
-            return false;
+            isCdDrive = false;
         }
+        return isCdDrive;
     }
 
     /**
@@ -2569,7 +2559,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file isFile mark cache for
      */
-    public static void clearIsFileCache ( final String absolutePath )
+    public static void clearIsFileCache ( @NotNull final String absolutePath )
     {
         isFileCache.remove ( absolutePath );
     }
@@ -2580,34 +2570,23 @@ public final class FileUtils
      * @param file file to process
      * @return true if the specified file is actually a file, false otherwise
      */
-    public static boolean isFile ( final File file )
+    public static boolean isFile ( @Nullable final File file )
     {
-        if ( file == null )
-        {
-            return false;
-        }
-        else
+        boolean isFile = false;
+        if ( file != null )
         {
             final String absolutePath = file.getAbsolutePath ();
-            if ( absolutePath == null )
+            if ( isFileCache.containsKey ( absolutePath ) )
             {
-                return false;
-            }
-            else if ( isFileCache.containsKey ( absolutePath ) )
-            {
-                return isFileCache.get ( absolutePath );
+                isFile = isFileCache.get ( absolutePath );
             }
             else if ( file.exists () )
             {
-                final boolean isFile = file.isFile ();
+                isFile = file.isFile ();
                 isFileCache.put ( absolutePath, isFile );
-                return isFile;
-            }
-            else
-            {
-                return false;
             }
         }
+        return isFile;
     }
 
     /**
@@ -2623,7 +2602,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file isDirectory mark cache for
      */
-    public static void clearIsDirectoryCache ( final String absolutePath )
+    public static void clearIsDirectoryCache ( @NotNull final String absolutePath )
     {
         isDirectoryCache.remove ( absolutePath );
     }
@@ -2634,34 +2613,23 @@ public final class FileUtils
      * @param file file to process
      * @return true if the specified file is directory, false otherwise
      */
-    public static boolean isDirectory ( final File file )
+    public static boolean isDirectory ( @Nullable final File file )
     {
-        if ( file == null )
-        {
-            return false;
-        }
-        else
+        boolean isDirectory = false;
+        if ( file != null )
         {
             final String absolutePath = file.getAbsolutePath ();
-            if ( absolutePath == null )
+            if ( isDirectoryCache.containsKey ( absolutePath ) )
             {
-                return false;
-            }
-            else if ( isDirectoryCache.containsKey ( absolutePath ) )
-            {
-                return isDirectoryCache.get ( absolutePath );
+                isDirectory = isDirectoryCache.get ( absolutePath );
             }
             else if ( file.exists () )
             {
-                final boolean isDirectory = file.isDirectory ();
+                isDirectory = file.isDirectory ();
                 isDirectoryCache.put ( absolutePath, isDirectory );
-                return isDirectory;
-            }
-            else
-            {
-                return false;
             }
         }
+        return isDirectory;
     }
 
     /**
@@ -2677,7 +2645,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file hidden mark cache for
      */
-    public static void clearIsHiddenCache ( final String absolutePath )
+    public static void clearIsHiddenCache ( @NotNull final String absolutePath )
     {
         isHiddenCache.remove ( absolutePath );
     }
@@ -2688,35 +2656,24 @@ public final class FileUtils
      * @param file file to process
      * @return true if the specified file is hidden, false otherwise
      */
-    public static boolean isHidden ( File file )
+    public static boolean isHidden ( @Nullable final File file )
     {
-        if ( file == null )
-        {
-            return false;
-        }
-        else
+        boolean isHidden = false;
+        if ( file != null )
         {
             final String absolutePath = file.getAbsolutePath ();
-            if ( absolutePath == null )
+            if ( isHiddenCache.containsKey ( absolutePath ) )
             {
-                return false;
-            }
-            else if ( isHiddenCache.containsKey ( absolutePath ) )
-            {
-                return isHiddenCache.get ( absolutePath );
+                isHidden = isHiddenCache.get ( absolutePath );
             }
             else if ( file.exists () )
             {
-                file = file.getAbsoluteFile ();
-                final boolean isHidden = getParent ( file ) != null && file.isHidden ();
+                final File absoluteFile = file.getAbsoluteFile ();
+                isHidden = getParent ( absoluteFile ) != null && absoluteFile.isHidden ();
                 isHiddenCache.put ( absolutePath, isHidden );
-                return isHidden;
-            }
-            else
-            {
-                return false;
             }
         }
+        return isHidden;
     }
 
     /**
@@ -2732,7 +2689,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file description cache
      */
-    public static void clearFileDescriptionCache ( final String absolutePath )
+    public static void clearFileDescriptionCache ( @NotNull final String absolutePath )
     {
         fileDescriptionCache.remove ( absolutePath );
     }
@@ -2744,27 +2701,24 @@ public final class FileUtils
      * @param fileSize file size on disk
      * @return complete file description
      */
-    public static FileDescription getFileDescription ( final File file, final String fileSize )
+    public static FileDescription getFileDescription ( @NotNull final File file, @Nullable final String fileSize )
     {
+        final FileDescription fileDescription;
         final String absolutePath = file.getAbsolutePath ();
-        if ( absolutePath == null )
+        if ( fileDescriptionCache.containsKey ( absolutePath ) )
         {
-            return new FileDescription ( "Unknown", "0", "", null );
-        }
-        else if ( fileDescriptionCache.containsKey ( absolutePath ) )
-        {
-            return fileDescriptionCache.get ( absolutePath );
+            fileDescription = fileDescriptionCache.get ( absolutePath );
         }
         else if ( file.exists () )
         {
-            final FileDescription fileDescription = createFileDescription ( file, fileSize );
+            fileDescription = createFileDescription ( file, fileSize );
             fileDescriptionCache.put ( absolutePath, fileDescription );
-            return fileDescription;
         }
         else
         {
-            return new FileDescription ( "Unknown", "0", "", null );
+            fileDescription = new FileDescription ( "Unknown", "0", "", null );
         }
+        return fileDescription;
     }
 
     /**
@@ -2773,7 +2727,8 @@ public final class FileUtils
      * @param text text to trim
      * @return appropriate file name based on provided text
      */
-    public static String appropriateFileName ( final String text )
+    @NotNull
+    public static String appropriateFileName ( @NotNull final String text )
     {
         return appropriateFileName ( text, "" );
     }
@@ -2785,7 +2740,8 @@ public final class FileUtils
      * @param replacement replacement for each invalid symbol
      * @return appropriate file name based on provided text
      */
-    public static String appropriateFileName ( final String text, final String replacement )
+    @NotNull
+    public static String appropriateFileName ( @NotNull final String text, @NotNull final String replacement )
     {
         return text.replaceAll ( "[^ a-zA-Zа-яА-Я0-9.-]", replacement );
     }
@@ -2803,7 +2759,7 @@ public final class FileUtils
      *
      * @param absolutePath path path path to clear file display name cache for
      */
-    public static void clearDisplayFileNameCache ( final String absolutePath )
+    public static void clearDisplayFileNameCache ( @NotNull final String absolutePath )
     {
         displayFileNameCache.remove ( absolutePath );
     }
@@ -2814,20 +2770,17 @@ public final class FileUtils
      * @param file file to process
      * @return file name to display
      */
-    public static String getDisplayFileName ( final File file )
+    @NotNull
+    public static String getDisplayFileName ( @NotNull final File file )
     {
+        String name;
         final String absolutePath = file.getAbsolutePath ();
-        if ( absolutePath == null )
+        if ( displayFileNameCache.containsKey ( absolutePath ) )
         {
-            return "";
-        }
-        else if ( displayFileNameCache.containsKey ( absolutePath ) )
-        {
-            return displayFileNameCache.get ( absolutePath );
+            name = displayFileNameCache.get ( absolutePath );
         }
         else if ( file.exists () )
         {
-            String name;
             synchronized ( fsv )
             {
                 name = fsv.getSystemDisplayName ( file );
@@ -2836,22 +2789,18 @@ public final class FileUtils
             {
                 name = getFileTypeDescription ( file );
             }
-            if ( name == null )
-            {
-                name = "";
-            }
             displayFileNameCache.put ( absolutePath, name );
-            return name;
         }
-        else if ( !file.exists () && file.getName () != null )
+        else if ( !file.exists () )
         {
             displayFileNameCache.put ( absolutePath, file.getName () );
-            return file.getName ();
+            name = file.getName ();
         }
         else
         {
-            return file.getName () != null ? file.getName () : "";
+            name = file.getName ();
         }
+        return name;
     }
 
     /**
@@ -2867,7 +2816,7 @@ public final class FileUtils
      *
      * @param absolutePath path path to clear file creation date cache for
      */
-    public static void clearDisplayFileCreationDateCache ( final String absolutePath )
+    public static void clearDisplayFileCreationDateCache ( @NotNull final String absolutePath )
     {
         displayFileCreationDateCache.remove ( absolutePath );
     }
@@ -2878,27 +2827,25 @@ public final class FileUtils
      * @param file file to process
      * @return file modification date to display
      */
-    public static String getDisplayFileCreationDate ( final File file )
+    @NotNull
+    public static String getDisplayFileCreationDate ( @NotNull final File file )
     {
+        final String date;
         final String absolutePath = file.getAbsolutePath ();
-        if ( absolutePath == null )
+        if ( displayFileCreationDateCache.containsKey ( absolutePath ) )
         {
-            return "";
-        }
-        else if ( displayFileCreationDateCache.containsKey ( absolutePath ) )
-        {
-            return displayFileCreationDateCache.get ( absolutePath );
+            date = displayFileCreationDateCache.get ( absolutePath );
         }
         else if ( file.exists () )
         {
-            final String date = sdf.format ( new Date ( file.lastModified () ) );
+            date = sdf.format ( new Date ( file.lastModified () ) );
             displayFileCreationDateCache.put ( absolutePath, date );
-            return date;
         }
         else
         {
-            return "";
+            date = "";
         }
+        return date;
     }
 
     /**
@@ -2914,7 +2861,7 @@ public final class FileUtils
      *
      * @param absolutePath path path to clear file modification date cache for
      */
-    public static void clearDisplayFileModificationDateCache ( final String absolutePath )
+    public static void clearDisplayFileModificationDateCache ( @NotNull final String absolutePath )
     {
         displayFileModificationDateCache.remove ( absolutePath );
     }
@@ -2925,27 +2872,25 @@ public final class FileUtils
      * @param file file to process
      * @return file modification date to display
      */
-    public static String getDisplayFileModificationDate ( final File file )
+    @NotNull
+    public static String getDisplayFileModificationDate ( @NotNull final File file )
     {
+        final String date;
         final String absolutePath = file.getAbsolutePath ();
-        if ( absolutePath == null )
+        if ( displayFileModificationDateCache.containsKey ( absolutePath ) )
         {
-            return "";
-        }
-        else if ( displayFileModificationDateCache.containsKey ( absolutePath ) )
-        {
-            return displayFileModificationDateCache.get ( absolutePath );
+            date = displayFileModificationDateCache.get ( absolutePath );
         }
         else if ( file.exists () )
         {
-            final String date = sdf.format ( new Date ( file.lastModified () ) );
+            date = sdf.format ( new Date ( file.lastModified () ) );
             displayFileModificationDateCache.put ( absolutePath, date );
-            return date;
         }
         else
         {
-            return "";
+            date = "";
         }
+        return date;
     }
 
     /**
@@ -2961,7 +2906,7 @@ public final class FileUtils
      *
      * @param absolutePath path to clear file type description cache for
      */
-    public static void clearFileTypeDescriptionCache ( final String absolutePath )
+    public static void clearFileTypeDescriptionCache ( @NotNull final String absolutePath )
     {
         fileTypeDescriptionCache.remove ( absolutePath );
     }
@@ -2972,26 +2917,19 @@ public final class FileUtils
      * @param file file to process
      * @return file type description
      */
-    public static String getFileTypeDescription ( final File file )
+    @NotNull
+    public static String getFileTypeDescription ( @Nullable final File file )
     {
-        if ( file == null )
-        {
-            return "";
-        }
-        else
+        String description = "";
+        if ( file != null )
         {
             final String absolutePath = file.getAbsolutePath ();
-            if ( absolutePath == null )
+            if ( fileTypeDescriptionCache.containsKey ( absolutePath ) )
             {
-                return "";
-            }
-            else if ( fileTypeDescriptionCache.containsKey ( absolutePath ) )
-            {
-                return fileTypeDescriptionCache.get ( absolutePath );
+                description = fileTypeDescriptionCache.get ( absolutePath );
             }
             else if ( file.exists () )
             {
-                String description;
                 synchronized ( fsv )
                 {
                     description = fsv.getSystemTypeDescription ( file );
@@ -3001,13 +2939,9 @@ public final class FileUtils
                     description = "";
                 }
                 fileTypeDescriptionCache.put ( absolutePath, absolutePath );
-                return description;
-            }
-            else
-            {
-                return "";
             }
         }
+        return description;
     }
 
     /**
@@ -3016,7 +2950,8 @@ public final class FileUtils
      * @param file file to process
      * @return system file icon
      */
-    public static ImageIcon getFileIcon ( final File file )
+    @Nullable
+    public static Icon getFileIcon ( @Nullable final File file )
     {
         return getFileIcon ( file, false );
     }
@@ -3028,7 +2963,8 @@ public final class FileUtils
      * @param large whether return large icon or not
      * @return either large or small system file icon
      */
-    public static ImageIcon getFileIcon ( final File file, final boolean large )
+    @Nullable
+    public static Icon getFileIcon ( @Nullable final File file, final boolean large )
     {
         // This way of icon retrieval is disabled due to inaccurate icon sizes on Win Vista/7/8
         //        if ( SystemUtils.isWindows () )
@@ -3071,7 +3007,8 @@ public final class FileUtils
      * @param large whether return large icon or not
      * @return either large or small file icon
      */
-    public static ImageIcon getStandardFileIcon ( final File file, final boolean large )
+    @Nullable
+    public static Icon getStandardFileIcon ( @Nullable final File file, final boolean large )
     {
         return getStandardFileIcon ( file, large, true );
     }
@@ -3084,106 +3021,105 @@ public final class FileUtils
      * @param enabled whether enabled icon or not
      * @return either large or small file icon
      */
-    public static ImageIcon getStandardFileIcon ( final File file, final boolean large, final boolean enabled )
+    @Nullable
+    public static Icon getStandardFileIcon ( @Nullable final File file, final boolean large, final boolean enabled )
     {
-        if ( file == null )
+        Icon icon = null;
+        if ( file != null )
         {
-            return null;
-        }
+            // todo Properly lock operations for all cached file methods
 
-        // todo Properly lock operations for all cached file methods
-
-        // Retrieving required icon extension or type
-        String extension;
-        if ( !isDirectory ( file ) )
-        {
-            extension = getFileExtPart ( file.getName (), false ).trim ().toLowerCase ( Locale.ROOT );
-            if ( extension.trim ().equals ( "" ) )
+            // Retrieving required icon extension or type
+            String extension;
+            if ( !isDirectory ( file ) )
             {
-                extension = file.getAbsolutePath ();
+                extension = getFileExtPart ( file.getName (), false ).trim ().toLowerCase ( Locale.ROOT );
+                if ( extension.trim ().equals ( "" ) )
+                {
+                    extension = file.getAbsolutePath ();
+                }
             }
-        }
-        else if ( isCdDrive ( file ) )
-        {
-            extension = "cd_drive";
-        }
-        else if ( isDrive ( file ) )
-        {
-            extension = "drive";
-        }
-        else if ( isComputer ( file ) )
-        {
-            extension = "computer";
-        }
-        else
-        {
-            extension = "folder";
-        }
+            else if ( isCdDrive ( file ) )
+            {
+                extension = "cd_drive";
+            }
+            else if ( isDrive ( file ) )
+            {
+                extension = "drive";
+            }
+            else if ( isComputer ( file ) )
+            {
+                extension = "computer";
+            }
+            else
+            {
+                extension = "folder";
+            }
 
-        // Constructing icon cache key
-        final float opacity = isHidden ( file ) ? 0.5f : 1f;
-        final String key = getStandardFileIconCacheKey ( extension, large, opacity, enabled );
+            // Constructing icon cache key
+            final float opacity = isHidden ( file ) ? 0.5f : 1f;
+            final String key = getStandardFileIconCacheKey ( extension, large, opacity, enabled );
 
-        // Retrieving icon
-        final boolean contains;
-        synchronized ( extensionIconsCacheLock )
-        {
-            contains = extensionIconsCache.containsKey ( key );
-        }
-        if ( contains )
-        {
+            // Retrieving icon
+            final boolean contains;
             synchronized ( extensionIconsCacheLock )
             {
-                return extensionIconsCache.get ( key );
+                contains = extensionIconsCache.containsKey ( key );
             }
-        }
-        else
-        {
-            // Retrieving file type icon
-            ImageIcon icon = getStandardFileIcon ( large, extension, opacity );
-            if ( icon == null )
+            if ( contains )
             {
-                // Simply use unknown file icon
-                icon = getStandardFileIcon ( large, "file", opacity );
-            }
-
-            // Caching the resulting icon
-            if ( enabled )
-            {
-                // Cache enabled icon
-                if ( key != null && icon != null )
+                synchronized ( extensionIconsCacheLock )
                 {
-                    synchronized ( extensionIconsCacheLock )
-                    {
-                        extensionIconsCache.put ( key, icon );
-                    }
+                    icon = extensionIconsCache.get ( key );
                 }
             }
             else
             {
-                // Cache enabled icon
-                final String keyEnebled = getStandardFileIconCacheKey ( extension, large, opacity, true );
-                if ( keyEnebled != null && icon != null )
+                // Retrieving file type icon
+                icon = getStandardFileIcon ( large, extension, opacity );
+                if ( icon == null )
                 {
-                    synchronized ( extensionIconsCacheLock )
-                    {
-                        extensionIconsCache.put ( keyEnebled, icon );
-                    }
+                    // Simply use unknown file icon
+                    icon = getStandardFileIcon ( large, "file", opacity );
                 }
 
-                // Cache disabled icon
-                icon = ImageUtils.createDisabledCopy ( icon );
-                if ( key != null && icon != null )
+                // Caching the resulting icon
+                if ( enabled )
                 {
-                    synchronized ( extensionIconsCacheLock )
+                    // Cache enabled icon
+                    if ( icon != null )
                     {
-                        extensionIconsCache.put ( key, icon );
+                        synchronized ( extensionIconsCacheLock )
+                        {
+                            extensionIconsCache.put ( key, icon );
+                        }
+                    }
+                }
+                else
+                {
+                    // Cache enabled icon
+                    final String keyEnabled = getStandardFileIconCacheKey ( extension, large, opacity, true );
+                    if ( icon != null )
+                    {
+                        synchronized ( extensionIconsCacheLock )
+                        {
+                            extensionIconsCache.put ( keyEnabled, icon );
+                        }
+                    }
+
+                    // Cache disabled icon
+                    if ( icon != null )
+                    {
+                        icon = ImageUtils.getDisabledCopy ( icon );
+                        synchronized ( extensionIconsCacheLock )
+                        {
+                            extensionIconsCache.put ( key, icon );
+                        }
                     }
                 }
             }
-
-            return icon;
         }
+        return icon;
     }
 
     /**
@@ -3195,7 +3131,8 @@ public final class FileUtils
      * @param enabled   whether enabled icon or not
      * @return standard file icon cache key
      */
-    private static String getStandardFileIconCacheKey ( final String extension, final boolean large, final float opacity,
+    @NotNull
+    private static String getStandardFileIconCacheKey ( @NotNull final String extension, final boolean large, final float opacity,
                                                         final boolean enabled )
     {
         return extension + CACHE_KEYS_SEPARATOR + large + CACHE_KEYS_SEPARATOR + opacity + CACHE_KEYS_SEPARATOR + enabled;
@@ -3209,7 +3146,8 @@ public final class FileUtils
      * @param opacity   icon opacity
      * @return either large or small icon for the specified extension
      */
-    public static ImageIcon getStandardFileIcon ( final boolean large, final String extension, final float opacity )
+    @Nullable
+    public static Icon getStandardFileIcon ( final boolean large, @NotNull final String extension, final float opacity )
     {
         final String path = "icons/extensions/" + ( large ? "32" : "16" ) + "/file_extension_" + extension + ".png";
         return getIconResource ( FileUtils.class, path, opacity );
@@ -3223,7 +3161,8 @@ public final class FileUtils
      * @param resource  icon location
      * @return resource icon
      */
-    public static ImageIcon getIconResource ( final Class nearClass, final String resource )
+    @Nullable
+    public static Icon getIconResource ( @NotNull final Class nearClass, @NotNull final String resource )
     {
         return getIconResource ( nearClass, resource, 1f );
     }
@@ -3237,17 +3176,18 @@ public final class FileUtils
      * @param opacity   custom icon opacity
      * @return resource icon
      */
-    public static ImageIcon getIconResource ( final Class nearClass, final String resource, final float opacity )
+    @Nullable
+    public static Icon getIconResource ( @NotNull final Class nearClass, @NotNull final String resource, final float opacity )
     {
+        Icon icon;
         final String key = nearClass.getCanonicalName () + CACHE_KEYS_SEPARATOR + resource + CACHE_KEYS_SEPARATOR + opacity;
         if ( resourceIconsCache.containsKey ( key ) )
         {
-            return resourceIconsCache.get ( key );
+            icon = resourceIconsCache.get ( key );
         }
         else
         {
             final URL url = nearClass.getResource ( resource );
-            ImageIcon icon;
             if ( url != null )
             {
                 icon = new ImageIcon ( url );
@@ -3260,12 +3200,12 @@ public final class FileUtils
             {
                 icon = null;
             }
-            if ( key != null && icon != null )
+            if ( icon != null )
             {
                 resourceIconsCache.put ( key, icon );
             }
-            return icon;
         }
+        return icon;
     }
 
     /**
@@ -3275,7 +3215,8 @@ public final class FileUtils
      * @param listener system file listener
      * @return tracking timer
      */
-    public static WebTimer trackFile ( final File file, final SystemFileListener listener )
+    @NotNull
+    public static WebTimer trackFile ( @NotNull final File file, @NotNull final SystemFileListener listener )
     {
         return trackFile ( file, listener, FILE_TRACKING_DELAY );
     }
@@ -3288,7 +3229,8 @@ public final class FileUtils
      * @param delay    delay between checks for changes
      * @return tracking timer
      */
-    public static WebTimer trackFile ( final File file, final SystemFileListener listener, final long delay )
+    @NotNull
+    public static WebTimer trackFile ( @NotNull final File file, @NotNull final SystemFileListener listener, final long delay )
     {
         final WebTimer tracker = new WebTimer ( "File tracker - " + file.getName (), delay, 0 );
         tracker.addActionListener ( new ActionListener ()
@@ -3296,7 +3238,7 @@ public final class FileUtils
             private Long lastModified = null;
 
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 if ( file.exists () )
                 {

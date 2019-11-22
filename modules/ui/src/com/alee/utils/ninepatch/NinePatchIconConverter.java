@@ -17,6 +17,7 @@
 
 package com.alee.utils.ninepatch;
 
+import com.alee.api.resource.ClassResource;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfoConverter;
@@ -101,7 +102,7 @@ public class NinePatchIconConverter extends ReflectionConverter
             try
             {
                 // Read and return new 9-patch icon
-                return new NinePatchIcon ( nearClass.getResource ( iconPath ) );
+                return new NinePatchIcon ( new ClassResource ( nearClass, iconPath ), true );
             }
             catch ( final Exception e )
             {

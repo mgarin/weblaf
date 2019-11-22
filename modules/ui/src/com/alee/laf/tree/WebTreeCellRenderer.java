@@ -30,7 +30,6 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
-import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
@@ -256,44 +255,29 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
     protected Icon iconForValue ( @NotNull final P parameters )
     {
         final Icon icon;
-        final String disabledCacheKey;
         final boolean enabled = enabledForValue ( parameters );
         if ( parameters.node () instanceof IconBridge )
         {
             final IconBridge iconBridge = ( IconBridge ) parameters.node ();
             icon = iconBridge.getIcon ( parameters );
-            if ( !enabled )
-            {
-                final String id = parameters.node () instanceof UniqueNode ? ( ( UniqueNode ) parameters.node () ).getId () :
-                        Integer.toString ( parameters.node ().hashCode () );
-                disabledCacheKey = "WebTreeCellRenderer." + this.id + "." + id;
-            }
-            else
-            {
-                disabledCacheKey = null;
-            }
         }
         else
         {
             final boolean root = parameters.tree ().getModel ().getRoot () == parameters.node ();
-            final String state = parameters.isExpanded () ? "open" : "closed";
             if ( root )
             {
                 icon = parameters.isExpanded () ? Icons.rootOpen : Icons.root;
-                disabledCacheKey = !enabled ? "root." + state : null;
             }
             else if ( !parameters.isLeaf () )
             {
                 icon = parameters.isExpanded () ? Icons.folderOpen : Icons.folder;
-                disabledCacheKey = !enabled ? "folder." + state : null;
             }
             else
             {
                 icon = Icons.leaf;
-                disabledCacheKey = !enabled ? "leaf." + state : null;
             }
         }
-        return icon == null || enabled ? icon : ImageUtils.getDisabledCopy ( disabledCacheKey, icon );
+        return icon == null || enabled ? icon : UIManager.getLookAndFeel ().getDisabledIcon ( this, icon );
     }
 
     /**

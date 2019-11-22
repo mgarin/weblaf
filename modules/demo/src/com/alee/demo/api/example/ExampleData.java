@@ -17,6 +17,7 @@
 
 package com.alee.demo.api.example;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.tab.DocumentData;
 
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public final class ExampleData extends DocumentData
     /**
      * Example this data represents.
      */
+    @NotNull
     private final Example example;
 
     /**
@@ -42,7 +44,7 @@ public final class ExampleData extends DocumentData
      *
      * @param example example to construct data for
      */
-    private ExampleData ( final Example example )
+    private ExampleData ( @NotNull final Example example )
     {
         super ( example.getId (), example.getIcon (), example.getTitle (), example.createContent () );
         // todo setForeground ( example.getFeatureState ().getForeground () );
@@ -54,6 +56,7 @@ public final class ExampleData extends DocumentData
      *
      * @return example this data represents
      */
+    @NotNull
     public Example getExample ()
     {
         return example;
@@ -65,7 +68,8 @@ public final class ExampleData extends DocumentData
      * @param example example to retrieve data for
      * @return new or cached example data
      */
-    public static ExampleData forExample ( final Example example )
+    @NotNull
+    public static ExampleData forExample ( @NotNull final Example example )
     {
         final String id = example.getId ();
         if ( !cache.containsKey ( id ) )

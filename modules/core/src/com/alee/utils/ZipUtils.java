@@ -17,10 +17,12 @@
 
 package com.alee.utils;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.zip.UnzipListener;
-import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -46,11 +48,10 @@ public final class ZipUtils
      *
      * @param archive ZIP file path
      * @param dst     destination directory path
-     * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( final String archive, final String dst )
+    public static void unzip ( @NotNull final String archive, @NotNull final String dst )
     {
-        return unzip ( archive, dst, null );
+        unzip ( archive, dst, null );
     }
 
     /**
@@ -60,11 +61,10 @@ public final class ZipUtils
      * @param archive  ZIP file path
      * @param dst      destination directory path
      * @param listener extraction process listener
-     * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( final String archive, final String dst, final UnzipListener listener )
+    public static void unzip ( @NotNull final String archive, @NotNull final String dst, @Nullable final UnzipListener listener )
     {
-        return unzip ( new File ( archive ), new File ( dst ), listener );
+        unzip ( new File ( archive ), new File ( dst ), listener );
     }
 
     /**
@@ -73,11 +73,10 @@ public final class ZipUtils
      *
      * @param archive ZIP file
      * @param dst     destination directory
-     * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( final File archive, final File dst )
+    public static void unzip ( @NotNull final File archive, @NotNull final File dst )
     {
-        return unzip ( archive, dst, null );
+        unzip ( archive, dst, null );
     }
 
     /**
@@ -87,9 +86,8 @@ public final class ZipUtils
      * @param archive  ZIP file
      * @param dst      destination directory
      * @param listener extraction process listener
-     * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( final File archive, final File dst, final UnzipListener listener )
+    public static void unzip ( @NotNull final File archive, @NotNull final File dst, @Nullable final UnzipListener listener )
     {
         try
         {
@@ -119,12 +117,18 @@ public final class ZipUtils
                 {
                     // Ensures that destination file and its folders exist
                     extractToFile = new File ( dst, entry.getName () );
-                    FileUtils.getParent ( extractToFile ).mkdirs ();
-                    extractToFile.createNewFile ();
+                    final File parent = FileUtils.getParent ( extractToFile );
+                    if ( parent != null && parent.mkdirs () )
+                    {
+                        // Creating destination file
+                        extractToFile.createNewFile ();
 
-                    // Copying file
-                    copyInputStream ( zipFile.getInputStream ( entry ),
-                            new BufferedOutputStream ( new FileOutputStream ( extractToFile ) ) );
+                        // Copying file content
+                        IOUtils.copy (
+                                zipFile.getInputStream ( entry ),
+                                new FileOutputStream ( extractToFile )
+                        );
+                    }
                 }
 
                 // Informing listener about single unzipped file
@@ -135,12 +139,10 @@ public final class ZipUtils
                 }
             }
             zipFile.close ();
-            return true;
         }
         catch ( final Exception e )
         {
-            LoggerFactory.getLogger ( ZipUtils.class ).error ( e.toString (), e );
-            return false;
+            throw new UtilityException ( "Unable to unzip ZIP archive: " + archive, e );
         }
     }
 
@@ -150,7 +152,8 @@ public final class ZipUtils
      * @param zipEntry zip entry to process
      * @return file name for the specified zip entry
      */
-    public static String getZipEntryFileName ( final ZipEntry zipEntry )
+    @NotNull
+    public static String getFileName ( @NotNull final ZipEntry zipEntry )
     {
         final String name = zipEntry.getName ();
         return name.substring ( name.lastIndexOf ( "/" ) + 1 );
@@ -162,28 +165,10 @@ public final class ZipUtils
      * @param zipEntry zip entry to process
      * @return file location for the specified zip entry
      */
-    public static String getZipEntryFileLocation ( final ZipEntry zipEntry )
+    @NotNull
+    public static String getFileLocation ( @NotNull final ZipEntry zipEntry )
     {
         final String name = zipEntry.getName ();
         return name.substring ( 0, name.lastIndexOf ( "/" ) + 1 );
-    }
-
-    /**
-     * Performs data copy from input to output stream.
-     *
-     * @param in  data input stream
-     * @param out data output stream
-     * @throws IOException when any IO exceptions occurs
-     */
-    private static void copyInputStream ( final InputStream in, final OutputStream out ) throws IOException
-    {
-        final byte[] buffer = new byte[ 1024 ];
-        int len;
-        while ( ( len = in.read ( buffer ) ) >= 0 )
-        {
-            out.write ( buffer, 0, len );
-        }
-        in.close ();
-        out.close ();
     }
 }

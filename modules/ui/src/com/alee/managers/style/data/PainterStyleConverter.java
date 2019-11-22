@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleException;
 import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
@@ -50,28 +51,32 @@ public final class PainterStyleConverter extends ReflectionConverter
      * @param mapper             mapper
      * @param reflectionProvider reflection provider
      */
-    public PainterStyleConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
+    public PainterStyleConverter ( @NotNull final Mapper mapper, @NotNull final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return Painter.class.isAssignableFrom ( type );
     }
 
+    @NotNull
     @Override
-    public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
+    public Object unmarshal ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
     {
-        // Trying to retrieve style ID from context
-        // It will be there only if this painter is read from style read sequence
-        // Either way it is not critical for painter unmarshal so we will simply ignore it if its not there
+        // Retrieving style identifier from context
+        // It must be there at all times, whether this painter is read from style or another painter
         final String styleId = ( String ) context.get ( ComponentStyleConverter.CONTEXT_STYLE_ID );
+        if ( styleId == null )
+        {
+            throw new StyleException ( "Context style identifier must be specified" );
+        }
 
         // Retrieving overwrite policy
         final String ow = reader.getAttribute ( ComponentStyleConverter.OVERWRITE_ATTRIBUTE );
-        final boolean overwrite = Boolean.valueOf ( ow );
+        final Boolean overwrite = ow != null ? Boolean.parseBoolean ( ow ) : null;
 
         // Retrieving default painter class based on parent painter and this node name
         // Basically we are reading this painter as a field of another painter here
@@ -79,7 +84,8 @@ public final class PainterStyleConverter extends ReflectionConverter
         final Class<? extends Painter> defaultPainter = StyleConverterUtils.getDefaultPainter ( parent, reader.getNodeName () );
 
         // Unmarshalling painter class
-        final Class painterClass = PainterStyleConverter.unmarshalPainterClass ( reader, context, mapper, defaultPainter, styleId );
+        final Class<? extends Painter> painterClass =
+                PainterStyleConverter.unmarshalPainterClass ( reader, context, mapper, defaultPainter, styleId );
 
         // Providing painter class to subsequent converters
         context.put ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS, painterClass );
@@ -112,13 +118,17 @@ public final class PainterStyleConverter extends ReflectionConverter
      * @return painter class according to the specified class attribute
      * @throws com.alee.managers.style.StyleException if painter class cannot be resolved
      */
-    public static Class unmarshalPainterClass ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                                final Mapper mapper, final Class<? extends Painter> defaultPainterClass,
-                                                final String styleId )
+    @NotNull
+    public static Class<? extends Painter> unmarshalPainterClass ( @NotNull final HierarchicalStreamReader reader,
+                                                                   @NotNull final UnmarshallingContext context,
+                                                                   @NotNull final Mapper mapper,
+                                                                   @NotNull final Class<? extends Painter> defaultPainterClass,
+                                                                   @NotNull final String styleId )
     {
         // Reading painter class name
         // It might have been shortened so we might have to check its name combined with skin package
         // That check is performed only when class cannot be found by its original path
+        Class<? extends Painter> painterClass;
         String painterClassName = reader.getAttribute ( ComponentStyleConverter.CLASS_ATTRIBUTE );
         if ( painterClassName != null )
         {
@@ -126,7 +136,7 @@ public final class PainterStyleConverter extends ReflectionConverter
             {
                 // Trying to read painter class directly by name
                 // This will also resolve XStream class name aliases
-                return mapper.realClass ( painterClassName );
+                painterClass = mapper.realClass ( painterClassName );
             }
             catch ( final CannotResolveClassException e )
             {
@@ -143,27 +153,19 @@ public final class PainterStyleConverter extends ReflectionConverter
                 // Trying to retrieve skin class from skin package
                 final String skinPackage = skinClass.getPackage ().getName ();
                 painterClassName = skinPackage + "." + painterClassName;
-                final Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
+                painterClass = ReflectUtils.getClassSafely ( painterClassName );
                 if ( painterClass == null )
                 {
                     final String msg = "Class '%s' for style '%s' cannot be found";
                     throw new StyleException ( String.format ( msg, painterClassName, styleId ), e );
                 }
-
-                // Return resolved painter class
-                return painterClass;
             }
-        }
-        else if ( defaultPainterClass != null )
-        {
-            // Return default painter class
-            return defaultPainterClass;
         }
         else
         {
-            // None found
-            final String msg = "Painter class for style '%s' was not specified";
-            throw new StyleException ( String.format ( msg, styleId ) );
+            // Return default painter class
+            painterClass = defaultPainterClass;
         }
+        return painterClass;
     }
 }

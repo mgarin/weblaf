@@ -17,7 +17,12 @@
 
 package com.alee.extended.svg;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.TextUtils;
+import com.alee.utils.swing.Scale;
+import com.kitfox.svg.SVGElement;
+import com.kitfox.svg.xml.StyleAttribute;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -33,33 +38,151 @@ import java.awt.geom.Point2D;
 public class SvgTransform extends AbstractSvgAttributeAdjustment
 {
     /**
-     * Icon translation.
+     * {@link SvgIcon} translation.
+     * By default (if all options set to {@code null}) it will use {@code "none"} transform value.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Point2D translate;
 
     /**
-     * Icon scaling.
+     * {@link SvgIcon} scaling relative to center point.
+     * By default (if all options set to {@code null}) it will use {@code "none"} transform value.
      */
+    @Nullable
     @XStreamAsAttribute
-    protected Point2D scale;
+    protected Scale scale;
 
     /**
-     * Icon rotation.
+     * {@link SvgIcon} rotation relative to center point.
+     * By default (if all options set to {@code null}) it will use {@code "none"} transform value.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Double rotate;
 
+    /**
+     * Constructs new {@link SvgTransform}.
+     */
+    public SvgTransform ()
+    {
+        this ( null, null, null, null );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param translate {@link SvgIcon} translation
+     */
+    public SvgTransform ( @Nullable final Point2D translate )
+    {
+        this ( null, translate, null, null );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param scale {@link SvgIcon} scaling relative to center point
+     */
+    public SvgTransform ( @Nullable final Scale scale )
+    {
+        this ( null, null, scale, null );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param rotate {@link SvgIcon} rotation relative to center point
+     */
+    public SvgTransform ( @Nullable final Double rotate )
+    {
+        this ( null, null, null, rotate );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param translate {@link SvgIcon} translation
+     * @param scale     {@link SvgIcon} scaling relative to center point
+     * @param rotate    {@link SvgIcon} rotation relative to center point
+     */
+    public SvgTransform ( @Nullable final Point2D translate, @Nullable final Scale scale, @Nullable final Double rotate )
+    {
+        this ( null, translate, scale, rotate );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param selector {@link com.kitfox.svg.SVGElement} selector
+     */
+    public SvgTransform ( @Nullable final String selector )
+    {
+        this ( selector, null, null, null );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param selector  {@link com.kitfox.svg.SVGElement} selector
+     * @param translate {@link SvgIcon} translation
+     */
+    public SvgTransform ( @Nullable final String selector, @Nullable final Point2D translate )
+    {
+        this ( selector, translate, null, null );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param selector {@link com.kitfox.svg.SVGElement} selector
+     * @param scale    {@link SvgIcon} scaling relative to center point
+     */
+    public SvgTransform ( @Nullable final String selector, @Nullable final Scale scale )
+    {
+        this ( selector, null, scale, null );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param selector {@link com.kitfox.svg.SVGElement} selector
+     * @param rotate   {@link SvgIcon} rotation relative to center point
+     */
+    public SvgTransform ( @Nullable final String selector, @Nullable final Double rotate )
+    {
+        this ( selector, null, null, rotate );
+    }
+
+    /**
+     * Constructs new {@link SvgTransform}.
+     *
+     * @param selector  {@link com.kitfox.svg.SVGElement} selector
+     * @param translate {@link SvgIcon} translation
+     * @param scale     {@link SvgIcon} scaling relative to center point
+     * @param rotate    {@link SvgIcon} rotation relative to center point
+     */
+    public SvgTransform ( @Nullable final String selector, @Nullable final Point2D translate, @Nullable final Scale scale,
+                          @Nullable final Double rotate )
+    {
+        super ( selector );
+        this.translate = translate;
+        this.scale = scale;
+        this.rotate = rotate;
+    }
+
+    @NotNull
     @Override
-    protected String getAttribute ( final SvgIcon icon )
+    protected String getAttribute ( @NotNull final SvgIcon icon )
     {
         return SvgElements.TRANSFORM;
     }
 
+    @Nullable
     @Override
-    protected String getValue ( final SvgIcon icon )
+    protected String getValue ( @NotNull final SvgIcon icon, @NotNull final SVGElement element, @Nullable final StyleAttribute attribute )
     {
-        String transform = null;
+        String transform;
         if ( translate != null || scale != null || rotate != null )
         {
             transform = "";
@@ -87,6 +210,10 @@ public class SvgTransform extends AbstractSvgAttributeAdjustment
                 final Dimension ps = icon.getPreferredSize ();
                 transform += "rotate(" + rotate + " " + ps.width / 2 + " " + ps.height / 2 + ")";
             }
+        }
+        else
+        {
+            transform = "none";
         }
         return transform;
     }

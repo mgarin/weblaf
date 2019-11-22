@@ -17,6 +17,8 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.BoundsType;
 import com.alee.utils.CoreSwingUtils;
 
@@ -257,7 +259,8 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      * @param e occured mouse event
      * @return actual dragged component
      */
-    protected Component getDraggedComponent ( final MouseEvent e )
+    @Nullable
+    protected Component getDraggedComponent ( @NotNull final MouseEvent e )
     {
         return target != null ? target : CoreSwingUtils.getWindowAncestor ( gripper );
     }
@@ -268,7 +271,8 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      * @param e occured mouse event
      * @return bounds within which component will act as a gripper
      */
-    protected Rectangle getDragStartBounds ( final MouseEvent e )
+    @Nullable
+    protected Rectangle getDragStartBounds ( @NotNull final MouseEvent e )
     {
         return BoundsType.margin.bounds ( gripper );
     }
