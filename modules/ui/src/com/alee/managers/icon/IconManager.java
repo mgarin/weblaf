@@ -20,6 +20,7 @@ package com.alee.managers.icon;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.extended.svg.*;
+import com.alee.managers.icon.data.IconData;
 import com.alee.managers.icon.data.ImageIconData;
 import com.alee.managers.icon.data.SetIcon;
 import com.alee.managers.icon.set.IconSet;
@@ -215,6 +216,16 @@ public final class IconManager
         {
             cache.remove ( id );
         }
+    }
+
+    /**
+     * Clears global cache for the specified {@link IconData}.
+     *
+     * @param icon {@link IconData} to clear global cache for
+     */
+    public static void clearIconCache ( @NotNull final IconData icon )
+    {
+        cache.remove ( icon.getId () );
     }
 
     /**

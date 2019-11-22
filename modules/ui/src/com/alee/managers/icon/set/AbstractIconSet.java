@@ -23,6 +23,7 @@ import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.Overwriting;
 import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.managers.icon.IconException;
+import com.alee.managers.icon.IconManager;
 import com.alee.managers.icon.data.IconData;
 
 import javax.swing.*;
@@ -102,6 +103,10 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
         if ( cache != null )
         {
             cache.remove ( icon.getId () );
+        }
+        if ( IconManager.hasIconSet ( getId () ) )
+        {
+            IconManager.clearIconCache ( icon );
         }
     }
 

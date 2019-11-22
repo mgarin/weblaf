@@ -24,7 +24,6 @@ import com.alee.api.resource.ClassResource;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleException;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.xml.XStreamContext;
@@ -210,9 +209,7 @@ public final class SkinInfoConverter extends ReflectionConverter
                     final String className = reader.getValue ();
                     final Class realClass = mapper.realClass ( className );
                     final IconSet iconSet = readIconSet ( realClass );
-
-                    // Merging icon sets to avoid duplicates
-                    iconSets = Merge.basicRaw ().merge ( iconSets, CollectionUtils.asList ( iconSet ) );
+                    iconSets.add ( iconSet );
                 }
                 else if ( nodeName.equals ( STYLE_NODE ) && !metaDataOnly )
                 {
