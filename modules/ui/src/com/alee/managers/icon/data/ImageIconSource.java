@@ -28,7 +28,7 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * {@link AbstractIconData} implementation for {@link ImageIcon} icon type.
+ * {@link AbstractIconSource} implementation for {@link ImageIcon} icon type.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
@@ -36,42 +36,42 @@ import java.util.List;
  * @see com.alee.managers.icon.IconManager
  */
 @XStreamAlias ( "ImageIcon" )
-@XStreamConverter ( ImageIconDataConverter.class )
-public class ImageIconData extends AbstractIconData<ImageIcon>
+@XStreamConverter ( ImageIconSourceConverter.class )
+public class ImageIconSource extends AbstractIconSource<ImageIcon>
 {
     /**
-     * Constructs new {@link ImageIconData}.
+     * Constructs new {@link ImageIconSource}.
      *
      * @param id       unique {@link ImageIcon} identifier
-     * @param resource {@link Resource} containing {@link ImageIcon} data
+     * @param resource {@link Resource} containing {@link ImageIcon}
      */
-    public ImageIconData ( @NotNull final String id, @NotNull final Resource resource )
+    public ImageIconSource ( @NotNull final String id, @NotNull final Resource resource )
     {
         super ( id, resource );
     }
 
     /**
-     * Constructs new {@link ImageIconData}.
+     * Constructs new {@link ImageIconSource}.
      *
      * @param id          unique {@link ImageIcon} identifier
-     * @param resource    {@link Resource} containing {@link ImageIcon} data
+     * @param resource    {@link Resource} containing {@link ImageIcon}
      * @param adjustments {@link IconAdjustment}s
      */
-    public ImageIconData ( @NotNull final String id, @NotNull final Resource resource,
-                           @NotNull final IconAdjustment<ImageIcon>... adjustments )
+    public ImageIconSource ( @NotNull final String id, @NotNull final Resource resource,
+                             @NotNull final IconAdjustment<ImageIcon>... adjustments )
     {
         super ( id, resource, adjustments );
     }
 
     /**
-     * Constructs new {@link ImageIconData}.
+     * Constructs new {@link ImageIconSource}.
      *
      * @param id          unique {@link ImageIcon} identifier
-     * @param resource    {@link Resource} containing {@link ImageIcon} data
+     * @param resource    {@link Resource} containing {@link ImageIcon}
      * @param adjustments {@link List} of {@link IconAdjustment}s
      */
-    public ImageIconData ( @NotNull final String id, @NotNull final Resource resource,
-                           @Nullable final List<IconAdjustment<ImageIcon>> adjustments )
+    public ImageIconSource ( @NotNull final String id, @NotNull final Resource resource,
+                             @Nullable final List<IconAdjustment<ImageIcon>> adjustments )
     {
         super ( id, resource, adjustments );
     }

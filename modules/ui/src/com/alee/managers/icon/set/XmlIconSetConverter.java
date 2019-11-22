@@ -19,7 +19,7 @@ package com.alee.managers.icon.set;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.IconException;
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.IconSource;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -78,10 +78,10 @@ public class XmlIconSetConverter extends ReflectionConverter
                 reader.moveDown ();
 
                 final String nodeName = reader.getNodeName ();
-                final Class<?> iconDataClass = mapper.realClass ( nodeName );
-                if ( IconData.class.isAssignableFrom ( iconDataClass ) )
+                final Class<?> iconSourceClass = mapper.realClass ( nodeName );
+                if ( IconSource.class.isAssignableFrom ( iconSourceClass ) )
                 {
-                    iconSetData.addIcon ( ( IconData ) context.convertAnother ( iconSetData, iconDataClass ) );
+                    iconSetData.addIcon ( ( IconSource ) context.convertAnother ( iconSetData, iconSourceClass ) );
                 }
 
                 reader.moveUp ();

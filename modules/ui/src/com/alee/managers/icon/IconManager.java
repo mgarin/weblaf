@@ -20,8 +20,8 @@ package com.alee.managers.icon;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.extended.svg.*;
-import com.alee.managers.icon.data.IconData;
-import com.alee.managers.icon.data.ImageIconData;
+import com.alee.managers.icon.data.IconSource;
+import com.alee.managers.icon.data.ImageIconSource;
 import com.alee.managers.icon.data.SetIcon;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.icon.set.XmlIconSet;
@@ -77,10 +77,10 @@ public final class IconManager
             XmlUtils.processAnnotations ( XmlIconSet.class );
 
             // ImageIcon aliases
-            XmlUtils.processAnnotations ( ImageIconData.class );
+            XmlUtils.processAnnotations ( ImageIconSource.class );
 
             // SvgIcon aliases
-            XmlUtils.processAnnotations ( SvgIconData.class );
+            XmlUtils.processAnnotations ( SvgIconSource.class );
             XmlUtils.processAnnotations ( SvgStroke.class );
             XmlUtils.processAnnotations ( SvgFill.class );
             XmlUtils.processAnnotations ( SvgOpacity.class );
@@ -219,11 +219,11 @@ public final class IconManager
     }
 
     /**
-     * Clears global cache for the specified {@link IconData}.
+     * Clears global cache for the specified {@link IconSource}.
      *
-     * @param icon {@link IconData} to clear global cache for
+     * @param icon {@link IconSource} to clear global cache for
      */
-    public static void clearIconCache ( @NotNull final IconData icon )
+    public static void clearIconCache ( @NotNull final IconSource icon )
     {
         cache.remove ( icon.getId () );
     }

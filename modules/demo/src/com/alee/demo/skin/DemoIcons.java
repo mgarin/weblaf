@@ -52,13 +52,6 @@ public final class DemoIcons
     public static final LazyIcon group16 = new LazyIcon ( "group16" );
 
     /**
-     * General purpose 36x36 icons.
-     */
-    public static final LazyIcon compass36 = new LazyIcon ( "compass36" );
-    public static final LazyIcon bug36 = new LazyIcon ( "bug36" );
-    public static final LazyIcon github36 = new LazyIcon ( "github36" );
-
-    /**
      * General purpose 19x19 icons.
      */
     public static final LazyIcon java19 = new LazyIcon ( "java19" );

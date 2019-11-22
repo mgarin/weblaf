@@ -18,6 +18,8 @@
 package com.alee.managers.icon.data;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.resource.Resource;
+import com.alee.utils.XmlUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
@@ -29,12 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Abstract {@link IconData} converter containing methods for reading basic information.
+ * Abstract {@link IconSource} converter containing methods for reading basic information.
  *
  * @param <I> {@link Icon} type
  * @author Mikle Garin
  */
-public class AbstractIconDataConverter<I extends Icon> extends ReflectionConverter
+public class AbstractIconSourceConverter<I extends Icon> extends ReflectionConverter
 {
     /**
      * Converter constants.
@@ -42,12 +44,12 @@ public class AbstractIconDataConverter<I extends Icon> extends ReflectionConvert
     public static final String ID_ATTRIBUTE = "id";
 
     /**
-     * Constructs new {@link AbstractIconDataConverter}.
+     * Constructs new {@link AbstractIconSourceConverter}.
      *
      * @param mapper             {@link Mapper} implementation
      * @param reflectionProvider {@link ReflectionProvider} implementation
      */
-    public AbstractIconDataConverter ( @NotNull final Mapper mapper, @NotNull final ReflectionProvider reflectionProvider )
+    public AbstractIconSourceConverter ( @NotNull final Mapper mapper, @NotNull final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
@@ -63,6 +65,19 @@ public class AbstractIconDataConverter<I extends Icon> extends ReflectionConvert
     protected String readId ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
     {
         return reader.getAttribute ( ID_ATTRIBUTE );
+    }
+
+    /**
+     * Returns {@link Resource} for the {@link Icon}.
+     *
+     * @param reader  {@link HierarchicalStreamReader}
+     * @param context {@link UnmarshallingContext}
+     * @return {@link Resource} for the {@link Icon}
+     */
+    @NotNull
+    protected Resource readResource ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
+    {
+        return XmlUtils.readResource ( reader, context, mapper );
     }
 
     /**
@@ -82,10 +97,10 @@ public class AbstractIconDataConverter<I extends Icon> extends ReflectionConvert
             reader.moveDown ();
 
             final String nodeName = reader.getNodeName ();
-            final Class<?> iconDataClass = mapper.realClass ( nodeName );
-            if ( IconAdjustment.class.isAssignableFrom ( iconDataClass ) )
+            final Class<?> iconSourceClass = mapper.realClass ( nodeName );
+            if ( IconAdjustment.class.isAssignableFrom ( iconSourceClass ) )
             {
-                adjustments.add ( ( IconAdjustment ) context.convertAnother ( adjustments, iconDataClass ) );
+                adjustments.add ( ( IconAdjustment ) context.convertAnother ( adjustments, iconSourceClass ) );
             }
 
             reader.moveUp ();

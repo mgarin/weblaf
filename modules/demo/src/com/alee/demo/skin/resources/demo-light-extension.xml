@@ -39,11 +39,6 @@
                 <foreground>50,50,50</foreground>
             </component>
         </style>
-        <style type="styledlabel" id="emptycontent-warn" extends="emptycontent">
-            <component>
-                <foreground>150,50,50</foreground>
-            </component>
-        </style>
 
     </style>
 

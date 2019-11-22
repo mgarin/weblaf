@@ -49,7 +49,6 @@ public final class DemoStyles
      */
     public static final StyleId emptycontentPanel = StyleId.of ( "emptycontent" );
     public static final ChildStyleId emptycontentInfoLabel = ChildStyleId.of ( "emptycontent-info" );
-    public static final ChildStyleId emptycontentWarnLabel = ChildStyleId.of ( "emptycontent-warn" );
     public static final StyleId expamplesPane = StyleId.of ( "examples" );
 
     /**

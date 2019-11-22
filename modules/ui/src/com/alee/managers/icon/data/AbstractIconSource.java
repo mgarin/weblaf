@@ -21,7 +21,7 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Overwriting;
 import com.alee.api.resource.Resource;
-import com.alee.extended.svg.SvgIconData;
+import com.alee.extended.svg.SvgIconSource;
 import com.alee.managers.icon.IconException;
 import com.alee.utils.CollectionUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -31,17 +31,17 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * Abstract {@link IconData} implementation containing basic {@link Icon} information.
- * Implements {@link Overwriting} instead of {@link com.alee.api.merge.Mergeable} to avoid merging any icon data ever.
+ * Abstract {@link IconSource} implementation containing basic {@link Icon} information.
+ * Implements {@link Overwriting} instead of {@link com.alee.api.merge.Mergeable} to avoid merging any {@link IconSource}s ever.
  *
- * @param <T> icon type
+ * @param <I> {@link Icon} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-IconManager">How to use IconManager</a>
  * @see com.alee.managers.icon.IconManager
- * @see com.alee.managers.icon.data.ImageIconData
- * @see SvgIconData
+ * @see ImageIconSource
+ * @see SvgIconSource
  */
-public abstract class AbstractIconData<T extends Icon> implements IconData<T>
+public abstract class AbstractIconSource<I extends Icon> implements IconSource<I>
 {
     /**
      * Unique {@link Icon} identifier.
@@ -52,7 +52,7 @@ public abstract class AbstractIconData<T extends Icon> implements IconData<T>
     protected final String id;
 
     /**
-     * {@link Resource} containing {@link Icon} data.
+     * {@link Resource} containing {@link Icon}.
      */
     @NotNull
     @XStreamAsAttribute
@@ -63,40 +63,41 @@ public abstract class AbstractIconData<T extends Icon> implements IconData<T>
      */
     @Nullable
     @XStreamImplicit
-    protected List<IconAdjustment<T>> adjustments;
+    protected List<IconAdjustment<I>> adjustments;
 
     /**
-     * Constructs new {@link AbstractIconData}.
+     * Constructs new {@link AbstractIconSource}.
      *
      * @param id       unique {@link Icon} identifier
-     * @param resource {@link Resource} containing {@link Icon} data
+     * @param resource {@link Resource} containing {@link Icon}
      */
-    public AbstractIconData ( @NotNull final String id, @NotNull final Resource resource )
+    public AbstractIconSource ( @NotNull final String id, @NotNull final Resource resource )
     {
-        this ( id, resource, ( List<IconAdjustment<T>> ) null );
+        this ( id, resource, ( List<IconAdjustment<I>> ) null );
     }
 
     /**
-     * Constructs new {@link AbstractIconData}.
+     * Constructs new {@link AbstractIconSource}.
      *
      * @param id          unique {@link Icon} identifier
-     * @param resource    {@link Resource} containing {@link Icon} data
+     * @param resource    {@link Resource} containing {@link Icon}
      * @param adjustments {@link IconAdjustment}s
      */
-    public AbstractIconData ( @NotNull final String id, @NotNull final Resource resource, @NotNull final IconAdjustment<T>... adjustments )
+    public AbstractIconSource ( @NotNull final String id, @NotNull final Resource resource,
+                                @NotNull final IconAdjustment<I>... adjustments )
     {
         this ( id, resource, CollectionUtils.asList ( adjustments ) );
     }
 
     /**
-     * Constructs new {@link AbstractIconData}.
+     * Constructs new {@link AbstractIconSource}.
      *
      * @param id          unique {@link Icon} identifier
-     * @param resource    {@link Resource} containing {@link Icon} data
+     * @param resource    {@link Resource} containing {@link Icon}
      * @param adjustments {@link List} of {@link IconAdjustment}s
      */
-    public AbstractIconData ( @NotNull final String id, @NotNull final Resource resource,
-                              @Nullable final List<IconAdjustment<T>> adjustments )
+    public AbstractIconSource ( @NotNull final String id, @NotNull final Resource resource,
+                                @Nullable final List<IconAdjustment<I>> adjustments )
     {
         this.id = id;
         this.resource = resource;
@@ -125,14 +126,14 @@ public abstract class AbstractIconData<T extends Icon> implements IconData<T>
 
     @NotNull
     @Override
-    public T loadIcon ()
+    public I loadIcon ()
     {
         try
         {
-            final T icon = loadIcon ( resource );
+            final I icon = loadIcon ( resource );
             if ( adjustments != null )
             {
-                for ( final IconAdjustment<T> adjustment : adjustments )
+                for ( final IconAdjustment<I> adjustment : adjustments )
                 {
                     adjustment.apply ( icon );
                 }
@@ -148,9 +149,9 @@ public abstract class AbstractIconData<T extends Icon> implements IconData<T>
     /**
      * Returns raw {@link Icon} loaded from {@link Resource}.
      *
-     * @param resource {@link Resource} containing {@link Icon} data
+     * @param resource {@link Resource} containing {@link Icon}
      * @return raw {@link Icon} loaded from {@link Resource}
      */
     @NotNull
-    protected abstract T loadIcon ( @NotNull Resource resource );
+    protected abstract I loadIcon ( @NotNull Resource resource );
 }

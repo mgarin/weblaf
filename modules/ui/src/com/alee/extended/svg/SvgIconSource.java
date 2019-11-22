@@ -20,7 +20,7 @@ package com.alee.extended.svg;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.resource.Resource;
-import com.alee.managers.icon.data.AbstractIconData;
+import com.alee.managers.icon.data.AbstractIconSource;
 import com.alee.managers.icon.data.IconAdjustment;
 import com.alee.utils.CollectionUtils;
 import com.kitfox.svg.SVGUniverse;
@@ -32,15 +32,15 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * {@link AbstractIconData} implementation for {@link SvgIcon} icon type.
+ * {@link AbstractIconSource} implementation for {@link SvgIcon} icon type.
  *
  * @author Mikle Garin
  * @see SvgIcon
  * @see SVGUniverse
  */
 @XStreamAlias ( "SvgIcon" )
-@XStreamConverter ( SvgIconDataConverter.class )
-public class SvgIconData extends AbstractIconData<SvgIcon>
+@XStreamConverter ( SvgIconSourceConverter.class )
+public class SvgIconSource extends AbstractIconSource<SvgIcon>
 {
     /**
      * Preferred {@link SvgIcon} size.
@@ -50,77 +50,78 @@ public class SvgIconData extends AbstractIconData<SvgIcon>
     protected final Dimension size;
 
     /**
-     * Constructs new {@link SvgIconData}.
+     * Constructs new {@link SvgIconSource}.
      *
      * @param id       unique {@link SvgIcon} identifier
      * @param resource {@link Resource} containing {@link SvgIcon} data
      */
-    public SvgIconData ( @NotNull final String id, @NotNull final Resource resource )
+    public SvgIconSource ( @NotNull final String id, @NotNull final Resource resource )
     {
         this ( id, resource, null, ( List<IconAdjustment<SvgIcon>> ) null );
     }
 
     /**
-     * Constructs new {@link SvgIconData}.
+     * Constructs new {@link SvgIconSource}.
      *
      * @param id       unique {@link SvgIcon} identifier
      * @param resource {@link Resource} containing {@link SvgIcon} data
      * @param size     preferred {@link SvgIcon} size
      */
-    public SvgIconData ( @NotNull final String id, @NotNull final Resource resource, @Nullable final Dimension size )
+    public SvgIconSource ( @NotNull final String id, @NotNull final Resource resource, @Nullable final Dimension size )
     {
         this ( id, resource, size, ( List<IconAdjustment<SvgIcon>> ) null );
     }
 
     /**
-     * Constructs new {@link SvgIconData}.
+     * Constructs new {@link SvgIconSource}.
      *
      * @param id          unique {@link SvgIcon} identifier
      * @param resource    {@link Resource} containing {@link SvgIcon} data
      * @param adjustments {@link IconAdjustment}s
      */
-    public SvgIconData ( @NotNull final String id, @NotNull final Resource resource, @NotNull final IconAdjustment<SvgIcon>... adjustments )
+    public SvgIconSource ( @NotNull final String id, @NotNull final Resource resource,
+                           @NotNull final IconAdjustment<SvgIcon>... adjustments )
     {
         this ( id, resource, null, CollectionUtils.asList ( adjustments ) );
     }
 
     /**
-     * Constructs new {@link SvgIconData}.
+     * Constructs new {@link SvgIconSource}.
      *
      * @param id          unique {@link SvgIcon} identifier
      * @param resource    {@link Resource} containing {@link SvgIcon} data
      * @param size        preferred {@link SvgIcon} size
      * @param adjustments {@link IconAdjustment}s
      */
-    public SvgIconData ( @NotNull final String id, @NotNull final Resource resource, @Nullable final Dimension size,
-                         @NotNull final IconAdjustment<SvgIcon>... adjustments )
+    public SvgIconSource ( @NotNull final String id, @NotNull final Resource resource, @Nullable final Dimension size,
+                           @NotNull final IconAdjustment<SvgIcon>... adjustments )
     {
         this ( id, resource, size, CollectionUtils.asList ( adjustments ) );
     }
 
     /**
-     * Constructs new {@link SvgIconData}.
+     * Constructs new {@link SvgIconSource}.
      *
      * @param id          unique {@link SvgIcon} identifier
      * @param resource    {@link Resource} containing {@link SvgIcon} data
      * @param adjustments {@link List} of {@link IconAdjustment}s
      */
-    public SvgIconData ( @NotNull final String id, @NotNull final Resource resource,
-                         @Nullable final List<IconAdjustment<SvgIcon>> adjustments )
+    public SvgIconSource ( @NotNull final String id, @NotNull final Resource resource,
+                           @Nullable final List<IconAdjustment<SvgIcon>> adjustments )
     {
         this ( id, resource, null, adjustments );
     }
 
     /**
-     * Constructs new {@link SvgIconData}.
+     * Constructs new {@link SvgIconSource}.
      *
      * @param id          unique {@link SvgIcon} identifier
      * @param resource    {@link Resource} containing {@link SvgIcon} data
      * @param size        preferred {@link SvgIcon} size
      * @param adjustments {@link List} of {@link IconAdjustment}s
      */
-    public SvgIconData ( @NotNull final String id, @NotNull final Resource resource, @Nullable final Dimension size,
-                         @Nullable final List<IconAdjustment<SvgIcon>> adjustments )
+    public SvgIconSource ( @NotNull final String id, @NotNull final Resource resource, @Nullable final Dimension size,
+                           @Nullable final List<IconAdjustment<SvgIcon>> adjustments )
     {
         super ( id, resource, adjustments );
         this.size = size;

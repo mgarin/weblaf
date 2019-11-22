@@ -3,7 +3,7 @@
            xmlns:java.awt="java.awt"
            elementFormDefault="qualified">
 
-    <xs:include schemaLocation="../AbstractIconData.xsd" />
+    <xs:include schemaLocation="../AbstractIconSource.xsd" />
     <xs:include schemaLocation="SvgFill.xsd" />
     <xs:include schemaLocation="SvgOpacity.xsd" />
     <xs:include schemaLocation="SvgStroke.xsd" />
@@ -11,10 +11,10 @@
     <xs:include schemaLocation="SvgGrayscale.xsd" />
     <xs:include schemaLocation="SvgColorOpacity.xsd" />
 
-    <!-- com.alee.extended.svg.SvgIconData -->
-    <xs:complexType name="SvgIconData">
+    <!-- com.alee.extended.svg.SvgIconSource -->
+    <xs:complexType name="SvgIconSource">
         <xs:complexContent>
-            <xs:extension base="AbstractIconData">
+            <xs:extension base="AbstractIconSource">
 
                 <!-- Adjustments -->
                 <xs:choice minOccurs="0" maxOccurs="unbounded">

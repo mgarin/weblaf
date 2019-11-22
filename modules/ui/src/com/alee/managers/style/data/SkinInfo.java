@@ -516,6 +516,15 @@ public final class SkinInfo implements Serializable
                     processedExtensions.put ( extension.getId (), true );
                     applied = true;
                 }
+                else if ( CollectionUtils.notEmpty ( extension.getIconSets () ) )
+                {
+                    // Updating skin with extension icon sets
+                    applyIconSets ( extension.getIconSets () );
+
+                    // Saving extension application result
+                    processedExtensions.put ( extension.getId (), true );
+                    applied = true;
+                }
                 else
                 {
                     // Saving extension application result
@@ -547,11 +556,8 @@ public final class SkinInfo implements Serializable
      */
     private void applyExtension ( @NotNull final SkinInfo extension )
     {
-        // Addding all icon sets from extension
-        iconSets.addAll ( extension.getIconSets () );
-
-        // Clearing icon set caches
-        clearIconsCache ( extension.getIconSets () );
+        // Applying icon sets
+        applyIconSets ( extension.getIconSets () );
 
         // Saving extension styles starting index
         final int startIndex = styles.size ();
@@ -570,6 +576,20 @@ public final class SkinInfo implements Serializable
         // Generating skin info cache
         // Also merging all styles with the same ID
         gatherStyles ( styles.subList ( startIndex, styles.size () ), stylesCache );
+    }
+
+    /**
+     * Applies specified {@link IconSet}s from extensions.
+     *
+     * @param iconSets {@link List} of {@link IconSet}s from extension
+     */
+    private void applyIconSets ( @NotNull final List<IconSet> iconSets )
+    {
+        // Addding all icon sets from extension
+        this.iconSets.addAll ( iconSets );
+
+        // Clearing icon set caches
+        clearIconsCache ( iconSets );
     }
 
     /**

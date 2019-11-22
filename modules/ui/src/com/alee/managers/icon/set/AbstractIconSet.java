@@ -24,7 +24,7 @@ import com.alee.api.merge.Overwriting;
 import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.managers.icon.IconException;
 import com.alee.managers.icon.IconManager;
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.IconSource;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -50,11 +50,11 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
     protected final String id;
 
     /**
-     * {@link IconData} cache used for loading icons lazily.
-     * It contains: {@link Icon} identifier -> {@link IconData}.
+     * {@link IconSource} cache used for loading icons lazily.
+     * It contains: {@link Icon} identifier -> {@link IconSource}.
      */
     @NotNull
-    protected final Map<String, IconData> iconsData;
+    protected final Map<String, IconSource> iconsData;
 
     /**
      * Loaded {@link Icon}s cache.
@@ -73,7 +73,7 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
     public AbstractIconSet ( @NotNull final String id )
     {
         this.id = id;
-        this.iconsData = new ConcurrentHashMap<String, IconData> ( 50 );
+        this.iconsData = new ConcurrentHashMap<String, IconSource> ( 50 );
     }
 
     @NotNull
@@ -97,7 +97,7 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
     }
 
     @Override
-    public void addIcon ( @NotNull final IconData icon )
+    public void addIcon ( @NotNull final IconSource icon )
     {
         iconsData.put ( icon.getId (), icon );
         if ( cache != null )
@@ -117,12 +117,12 @@ public abstract class AbstractIconSet implements IconSet, Overwriting, Cloneable
         Icon icon = cache != null ? cache.get ( id ) : null;
         if ( icon == null )
         {
-            final IconData iconData = iconsData.get ( id );
-            if ( iconData != null )
+            final IconSource iconSource = iconsData.get ( id );
+            if ( iconSource != null )
             {
                 try
                 {
-                    icon = iconData.loadIcon ();
+                    icon = iconSource.loadIcon ();
                     if ( cache == null )
                     {
                         synchronized ( this )

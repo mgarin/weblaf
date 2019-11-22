@@ -15,31 +15,38 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.icon.data;
+package com.alee.extended.svg;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.utils.XmlUtils;
+import com.alee.api.annotations.Nullable;
+import com.alee.managers.icon.data.AbstractIconSourceConverter;
+import com.alee.utils.xml.DimensionConverter;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.mapper.Mapper;
 
-import javax.swing.*;
+import java.awt.*;
 
 /**
- * {@link ImageIconData} converter.
+ * {@link SvgIconSource} converter.
  *
  * @author Mikle Garin
  */
-public class ImageIconDataConverter extends AbstractIconDataConverter<ImageIcon>
+public class SvgIconSourceConverter extends AbstractIconSourceConverter<SvgIcon>
 {
     /**
-     * Constructs new {@link ImageIconDataConverter}.
+     * Converter constants.
+     */
+    public static final String SIZE_ATTRIBUTE = "size";
+
+    /**
+     * Constructs new {@link SvgIconSourceConverter}.
      *
      * @param mapper             {@link Mapper} implementation
      * @param reflectionProvider {@link ReflectionProvider} implementation
      */
-    public ImageIconDataConverter ( @NotNull final Mapper mapper, @NotNull final ReflectionProvider reflectionProvider )
+    public SvgIconSourceConverter ( @NotNull final Mapper mapper, @NotNull final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
@@ -47,16 +54,31 @@ public class ImageIconDataConverter extends AbstractIconDataConverter<ImageIcon>
     @Override
     public boolean canConvert ( @NotNull final Class type )
     {
-        return type.equals ( ImageIconData.class );
+        return type.equals ( SvgIconSource.class );
     }
 
     @Override
     public Object unmarshal ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
     {
-        return new ImageIconData (
+        return new SvgIconSource (
                 readId ( reader, context ),
-                XmlUtils.readResource ( reader, context, mapper ),
+                readResource ( reader, context ),
+                readSize ( reader, context ),
                 readAdjustments ( reader, context )
         );
+    }
+
+    /**
+     * Returns preferred {@link SvgIcon} size or {@code null} if none specified in XML.
+     *
+     * @param reader  {@link HierarchicalStreamReader}
+     * @param context {@link UnmarshallingContext}
+     * @return preferred {@link SvgIcon} size or {@code null} if none specified in XML
+     */
+    @Nullable
+    protected Dimension readSize ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
+    {
+        final String size = reader.getAttribute ( SIZE_ATTRIBUTE );
+        return size != null ? DimensionConverter.dimensionFromString ( size ) : null;
     }
 }

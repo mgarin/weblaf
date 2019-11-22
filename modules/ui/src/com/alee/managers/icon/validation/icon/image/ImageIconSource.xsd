@@ -2,12 +2,12 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            elementFormDefault="qualified">
 
-    <xs:include schemaLocation="../AbstractIconData.xsd" />
+    <xs:include schemaLocation="../AbstractIconSource.xsd" />
 
-    <!-- com.alee.managers.icon.data.ImageIconData -->
-    <xs:complexType name="ImageIconData">
+    <!-- com.alee.managers.icon.data.ImageIconSource -->
+    <xs:complexType name="ImageIconSource">
         <xs:complexContent>
-            <xs:extension base="AbstractIconData">
+            <xs:extension base="AbstractIconSource">
 
                 <!-- No extra settings -->
 

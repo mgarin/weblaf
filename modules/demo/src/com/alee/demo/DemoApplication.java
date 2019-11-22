@@ -189,16 +189,6 @@ public final class DemoApplication extends WebFrame
         final WebOverlay overlay = new WebOverlay ( StyleId.panel, examplesPane );
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel, new AlignLayout () );
 
-        final StyleId guideId = DemoStyles.emptycontentInfoLabel.at ( overlayContainer );
-        final WebStyledLabel guide = new WebStyledLabel ( guideId, "demo.content.empty", DemoIcons.compass36 );
-        guide.changeFontSize ( 5 ).setBoldFont ().setWrap ( TextWrap.none );
-
-        final StyleId issuesId = DemoStyles.emptycontentWarnLabel.at ( overlayContainer );
-        final WebStyledLabel issues = new WebStyledLabel ( issuesId, "demo.content.issues", DemoIcons.bug36 );
-        issues.changeFontSize ( 5 ).setBoldFont ().setWrap ( TextWrap.none );
-
-        //        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ), "0,0" );
-
         final WebStyledLabel information = new WebStyledLabel ( DemoStyles.emptycontentInfoLabel.at ( overlayContainer ) );
         information.setHorizontalTextAlignment ( WebStyledLabel.CENTER );
         information.setWrap ( TextWrap.none );

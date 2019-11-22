@@ -3,8 +3,8 @@
            xmlns:java.lang="java.lang"
            elementFormDefault="qualified">
 
-    <!-- com.alee.managers.icon.data.AbstractIconData -->
-    <xs:complexType name="AbstractIconData">
+    <!-- com.alee.managers.icon.data.AbstractIconSource -->
+    <xs:complexType name="AbstractIconSource">
 
         <!-- Icon set identifier -->
         <xs:attribute name="id" type="xs:string" use="required" />

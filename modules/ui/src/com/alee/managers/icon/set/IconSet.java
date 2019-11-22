@@ -20,7 +20,7 @@ package com.alee.managers.icon.set;
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.icon.data.IconData;
+import com.alee.managers.icon.data.IconSource;
 
 import javax.swing.*;
 import java.util.List;
@@ -48,11 +48,11 @@ public interface IconSet extends Identifiable
     public List<String> getIds ();
 
     /**
-     * Adds new {@link Icon} referenced by specified {@link IconData} into the set.
+     * Adds new {@link Icon} referenced by specified {@link IconSource} into the set.
      *
-     * @param icon {@link IconData} of the {@link Icon} to add
+     * @param icon {@link IconSource} of the {@link Icon} to add
      */
-    public void addIcon ( @NotNull IconData icon );
+    public void addIcon ( @NotNull IconSource icon );
 
     /**
      * Returns {@link Icon} for the specified identifier.

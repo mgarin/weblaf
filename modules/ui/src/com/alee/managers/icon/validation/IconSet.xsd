@@ -5,8 +5,8 @@
            elementFormDefault="qualified">
 
     <!--<xs:include schemaLocation="lang/Class.xsd" />-->
-    <xs:include schemaLocation="icon/image/ImageIconData.xsd" />
-    <xs:include schemaLocation="icon/svg/SvgIconData.xsd" />
+    <xs:include schemaLocation="icon/image/ImageIconSource.xsd" />
+    <xs:include schemaLocation="icon/svg/SvgIconSource.xsd" />
 
     <!-- XML icon set root -->
     <xs:element name="IconSet" type="IconSet" />
@@ -17,11 +17,11 @@
         <!-- Icons list -->
         <xs:choice minOccurs="1" maxOccurs="unbounded">
 
-            <!-- com.alee.managers.icon.data.ImageIconData -->
-            <xs:element name="ImageIcon" type="ImageIconData" />
+            <!-- com.alee.managers.icon.data.ImageIconSource -->
+            <xs:element name="ImageIcon" type="ImageIconSource" />
 
-            <!-- com.alee.extended.svg.SvgIconData -->
-            <xs:element name="SvgIcon" type="SvgIconData" />
+            <!-- com.alee.extended.svg.SvgIconSource -->
+            <xs:element name="SvgIcon" type="SvgIconSource" />
 
         </xs:choice>
 

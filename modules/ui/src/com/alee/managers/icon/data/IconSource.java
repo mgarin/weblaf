@@ -26,31 +26,31 @@ import javax.swing.*;
 import java.io.Serializable;
 
 /**
- * Base interface
+ * Base interface for any {@link Icon} source.
  *
- * @param <T> icon type
+ * @param <I> {@link Icon} type
  * @author Mikle Garin
  */
-public interface IconData<T extends Icon> extends Identifiable, Overwriting, Cloneable, Serializable
+public interface IconSource<I extends Icon> extends Identifiable, Overwriting, Cloneable, Serializable
 {
     /**
-     * {@link IconData} identifier prefix.
+     * {@link IconSource} identifier prefix.
      */
-    public static final String ID_PREFIX = "IconData";
+    public static final String ID_PREFIX = "IconSource";
 
     /**
-     * Returns {@link Resource} containing {@link Icon} data.
+     * Returns {@link Resource} containing {@link Icon}.
      *
-     * @return {@link Resource} containing {@link Icon} data
+     * @return {@link Resource} containing {@link Icon}
      */
     @NotNull
     public Resource getResource ();
 
     /**
-     * Returns icon described by this data class.
+     * Returns {@link Icon} described by this {@link IconSource}.
      *
-     * @return icon described by this data class
+     * @return {@link Icon} described by this {@link IconSource}
      */
     @NotNull
-    public T loadIcon ();
+    public I loadIcon ();
 }
