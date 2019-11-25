@@ -277,7 +277,7 @@ public final class IconManager
      * @return {@link Icon} for the specified identifier or {@code null} if it cannot be found
      */
     @Nullable
-    private static <I extends Icon> I findIcon ( @NotNull final String id )
+    public static <I extends Icon> I findIcon ( @NotNull final String id )
     {
         final WeakReference<Icon> reference = cache.get ( id );
         I icon = reference != null ? ( I ) reference.get () : null;
