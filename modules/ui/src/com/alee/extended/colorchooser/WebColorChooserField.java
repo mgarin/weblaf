@@ -20,7 +20,6 @@ package com.alee.extended.colorchooser;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.extended.icon.ColorIcon;
-import com.alee.extended.image.WebImage;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
@@ -33,6 +32,7 @@ import com.alee.laf.window.WebWindow;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
@@ -56,11 +56,6 @@ public class WebColorChooserField extends WebTextField
     /**
      * todo 1. Make possible color's alpha channel selection
      */
-
-    /**
-     * Used icons.
-     */
-    public static final ImageIcon eyedropperIcon = new ImageIcon ( WebColorChooserField.class.getResource ( "icons/eyedropper.png" ) );
 
     /**
      * Color display type.
@@ -100,7 +95,7 @@ public class WebColorChooserField extends WebTextField
      */
     protected final WebButton colorButton;
     protected Robot robot;
-    protected WebImage eyedropperPicker;
+    protected WebButton eyedropperPicker;
     protected WebPopOver popup;
     protected WebColorChooserPanel colorChooserPanel;
 
@@ -340,8 +335,9 @@ public class WebColorChooserField extends WebTextField
         if ( eyedropperPicker == null )
         {
             // Eyedropper picker icon
-            eyedropperPicker = new WebImage ( eyedropperIcon );
-            //            eyedropperPicker.setMargin ( 0, 2, 0, 2 );
+            final StyleId eyedropperButtonId = StyleId.colorchooserfieldEyedropperButton.at ( this );
+            eyedropperPicker = new WebButton ( eyedropperButtonId, Icons.eyedropper, Icons.eyedropperHover );
+            eyedropperPicker.setPadding ( 0, 2, 0, 2 );
 
             // Eyedropper picker actions
             try
@@ -369,7 +365,7 @@ public class WebColorChooserField extends WebTextField
                     @Override
                     public void mousePressed ( final MouseEvent e )
                     {
-                        if ( displayEyedropper && SwingUtils.isLeftMouseButton ( e ) && isEnabled () )
+                        if ( displayEyedropper && SwingUtils.isLeftMouseButton ( e ) && isEnabled () && window == null )
                         {
                             // Resetting color update mark
                             shouldUpdateColor = true;

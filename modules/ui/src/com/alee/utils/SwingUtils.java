@@ -2596,10 +2596,11 @@ public final class SwingUtils
      * @param component component to process
      * @return true if component or any of its children has focus, false otherwise
      */
-    public static boolean hasFocusOwner ( @NotNull final Component component )
+    public static boolean hasFocusOwner ( @Nullable final Component component )
     {
         final Component focusOwner = FocusManager.getCurrentManager ().getFocusOwner ();
-        return component == focusOwner || component instanceof Container && ( ( Container ) component ).isAncestorOf ( focusOwner );
+        return component != null && component == focusOwner ||
+                component instanceof Container && ( ( Container ) component ).isAncestorOf ( focusOwner );
     }
 
     /**

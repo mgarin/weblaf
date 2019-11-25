@@ -8,6 +8,18 @@
             <horizontalAlignment>0</horizontalAlignment>
         </component>
 
+        <!-- Eyedropper button -->
+        <style type="button" id="eyedropper" extends="icon-hover">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape sides="0,0,0,1" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
         <!-- Color choose button -->
         <style type="button" id="choose" extends="icon-hover">
             <painter>

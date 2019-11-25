@@ -109,15 +109,6 @@
     <SvgIcon id="menu-hover" path="menu.svg" size="16,16">
         <SvgFill selector="svg" color="white" />
     </SvgIcon>
-    <SvgIcon id="calendar" path="calendar.svg" size="16,16">
-        <SvgFill selector="svg" color="240,240,240" />
-    </SvgIcon>
-    <SvgIcon id="calendar-dimmed" path="calendar.svg" size="16,16">
-        <SvgFill selector="svg" color="200,200,200" />
-    </SvgIcon>
-    <SvgIcon id="calendar-hover" path="calendar.svg" size="16,16">
-        <SvgFill selector="svg" color="white" />
-    </SvgIcon>
 
     <!-- Medium arrow icons -->
     <SvgIcon id="up" path="down.svg" size="16,16">
@@ -176,6 +167,14 @@
     </SvgIcon>
     <SvgIcon id="double-right-big" path="forward.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
+    <!-- Date field icons -->
+    <SvgIcon id="calendar" path="calendar.svg" size="14,14">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="calendar-hover" path="calendar.svg" size="14,14">
+        <SvgFill selector="svg" color="white" />
     </SvgIcon>
 
     <!-- Tree icons -->
@@ -268,6 +267,14 @@
     </SvgIcon>
     <SvgIcon id="edit" path="edit.svg" size="16,16">
         <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
+    <!-- Color chooser field icons -->
+    <SvgIcon id="eyedropper" path="pipette.svg" size="14,14">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="eyedropper-hover" path="pipette.svg" size="14,14">
+        <SvgFill selector="svg" color="white" />
     </SvgIcon>
 
 </IconSet>

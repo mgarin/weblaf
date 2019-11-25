@@ -439,6 +439,7 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.colorchooser.WebColorChooserField} style identifiers.
      */
     public static final StyleId colorchooserfield = StyleId.of ( "colorchooserfield" );
+    public static final ChildStyleId colorchooserfieldEyedropperButton = ChildStyleId.of ( "eyedropper" );
     public static final ChildStyleId colorchooserfieldColorButton = ChildStyleId.of ( "choose" );
 
     /**
