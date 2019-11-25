@@ -671,7 +671,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
                         if ( e.getID () == MouseEvent.MOUSE_PRESSED )
                         {
                             final Component component = e.getComponent ();
-                            if ( window != component && !window.isAncestorOf ( component ) )
+                            if ( window != null && window != component && !window.isAncestorOf ( component ) )
                             {
                                 hidePopup ();
                             }
