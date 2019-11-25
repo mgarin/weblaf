@@ -100,6 +100,7 @@ import com.alee.laf.tree.TreeDescriptor;
 import com.alee.laf.viewport.ViewportDescriptor;
 import com.alee.laf.viewport.ViewportLayout;
 import com.alee.managers.animation.easing.*;
+import com.alee.managers.icon.IconManager;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
@@ -1048,6 +1049,10 @@ public final class StyleManager
                     }
                 }
             } );
+
+            // Clearing icon caches
+            // todo Can be done more optimally maybe?
+            IconManager.clearIconCaches ();
 
             // Informing about skin change
             fireSkinChanged ( previousSkin, skin );

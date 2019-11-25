@@ -139,7 +139,7 @@ public class IconSetExtension implements SkinExtension
     @Override
     public boolean isSupported ( @NotNull final String skinId )
     {
-        return skinId.contains ( skinId );
+        return skinIds.contains ( skinId );
     }
 
     @Override

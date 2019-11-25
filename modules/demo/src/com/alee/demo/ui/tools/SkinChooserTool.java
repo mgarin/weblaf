@@ -17,6 +17,7 @@
 
 package com.alee.demo.ui.tools;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
@@ -55,7 +56,7 @@ public final class SkinChooserTool extends WebPanel
         chooser.setRenderer ( new WebComboBoxRenderer<Skin, JList, ComboBoxCellParameters<Skin, JList>> ()
         {
             @Override
-            protected Icon iconForValue ( final ComboBoxCellParameters<Skin, JList> parameters )
+            protected Icon iconForValue ( @NotNull final ComboBoxCellParameters<Skin, JList> parameters )
             {
                 return parameters.index () == -1 ? DemoIcons.brush16 : parameters.value ().getIcon ();
             }
@@ -63,15 +64,19 @@ public final class SkinChooserTool extends WebPanel
         chooser.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
-                // Executing later to avoid any possible interferences
+                // Executing later to allow combobox popup to close first
                 CoreSwingUtils.invokeLater ( new Runnable ()
                 {
                     @Override
                     public void run ()
                     {
-                        StyleManager.setSkin ( ( Skin ) chooser.getSelectedItem () );
+                        final Skin skin = ( Skin ) chooser.getSelectedItem ();
+                        if ( skin != null )
+                        {
+                            StyleManager.setSkin ( skin );
+                        }
                     }
                 } );
             }

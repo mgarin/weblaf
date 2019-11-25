@@ -229,6 +229,14 @@ public final class IconManager
     }
 
     /**
+     * Clears global cache for all icons.
+     */
+    public static void clearIconCaches ()
+    {
+        cache.clear ();
+    }
+
+    /**
      * Returns whether or not {@link Icon} for the specified identifier exists.
      *
      * @param id icon identifier
