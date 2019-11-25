@@ -18,6 +18,7 @@
 package com.alee.extended.behavior;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Supplier;
 import com.alee.api.jdk.UnsafeSupplier;
@@ -67,8 +68,9 @@ public class LazyLoadBehavior implements Behavior
      * @param dataHandler    data component provider, it is executed in EDT
      * @param <D>            loaded data type
      */
-    public static <D> void perform ( final Container container, final Object constraints, final Supplier<JComponent> loaderSupplier,
-                                     final UnsafeSupplier<D> dataSupplier, final Function<D, JComponent> dataHandler )
+    public static <D> void perform ( @NotNull final Container container, final Object constraints,
+                                     @NotNull final Supplier<JComponent> loaderSupplier, @NotNull final UnsafeSupplier<D> dataSupplier,
+                                     @NotNull final Function<D, JComponent> dataHandler )
     {
         perform ( container, constraints, loaderSupplier, dataSupplier, dataHandler, new Function<Throwable, JComponent> ()
         {
@@ -83,7 +85,7 @@ public class LazyLoadBehavior implements Behavior
                     {
                         final WebPopOver info = new WebPopOver ( error );
                         final WebSyntaxArea area = new WebSyntaxArea ( ExceptionUtils.getStackTrace ( throwable ), 12, 60 );
-                        area.applyPresets ( base, viewable, hideMenu, ideaTheme, transparent );
+                        area.applyPresets ( base, viewable, hideMenu, ideaTheme, nonOpaque );
                         info.add ( new WebSyntaxScrollPane ( StyleId.syntaxareaScrollUndecorated, area, false ) );
                         info.show ( error, PopOverDirection.down, PopOverAlignment.centered );
                     }
@@ -106,9 +108,10 @@ public class LazyLoadBehavior implements Behavior
      * @param errorHandler   error component provider, it is executed in EDT
      * @param <D>            loaded data type
      */
-    public static <D> void perform ( final Container container, final Object constraints, final Supplier<JComponent> loaderSupplier,
-                                     final UnsafeSupplier<D> dataSupplier, final Function<D, JComponent> dataHandler,
-                                     final Function<Throwable, JComponent> errorHandler )
+    public static <D> void perform ( @NotNull final Container container, @Nullable final Object constraints,
+                                     @NotNull final Supplier<JComponent> loaderSupplier, @NotNull final UnsafeSupplier<D> dataSupplier,
+                                     @NotNull final Function<D, JComponent> dataHandler,
+                                     @NotNull final Function<Throwable, JComponent> errorHandler )
     {
         CoreSwingUtils.invokeAndWait ( new Runnable ()
         {
@@ -169,7 +172,7 @@ public class LazyLoadBehavior implements Behavior
      *
      * @param service executor service for data loading threads
      */
-    public static void setExecutorService ( final ExecutorService service )
+    public static void setExecutorService ( @NotNull final ExecutorService service )
     {
         LazyLoadBehavior.executorService = service;
     }

@@ -221,7 +221,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
         // Applying syntax area theme
         if ( themePreset != null )
         {
-            themePreset.apply ( this );
+            applyPresetImpl ( themePreset );
         }
 
         return scrollPane;
@@ -271,10 +271,12 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      */
     protected void applyPresetImpl ( @NotNull final SyntaxPreset preset )
     {
+        final boolean opaque = isOpaque ();
         preset.apply ( this );
         if ( preset.getType () == PresetType.theme )
         {
             this.themePreset = preset;
+            setOpaque ( opaque );
         }
     }
 

@@ -898,6 +898,7 @@ public final class StyleId implements Identifiable
      */
     public static final StyleId syntaxareaScroll = StyleId.of ( "syntaxarea-scroll" );
     public static final StyleId syntaxareaScrollUndecorated = StyleId.of ( "syntaxarea-scroll-undecorated" );
+    public static final StyleId syntaxareaScrollTransparentHovering = StyleId.of ( "syntaxarea-scroll-transparent-hovering" );
     public static final ChildStyleId syntaxareaScrollGutter = ChildStyleId.of ( "gutter" );
 
     /**

@@ -63,7 +63,6 @@
                 <decoration visible="false" />
             </decorations>
         </painter>
-
     </style>
 
     <!-- Scroll pane with no focus display -->

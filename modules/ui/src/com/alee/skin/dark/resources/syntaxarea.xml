@@ -16,12 +16,27 @@
     </style>
 
     <!-- Undecorated syntax area scrollpane -->
-    <style type="scrollpane" id="syntaxarea-scroll-undecorated" extends="syntaxarea-scroll">
-        <painter>
-            <decorations>
-                <decoration visible="false" />
-            </decorations>
-        </painter>
+    <style type="scrollpane" id="syntaxarea-scroll-undecorated" extends="undecorated">
+
+        <!-- Gutter -->
+        <style type="panel" id="gutter">
+            <component>
+                <background>106,110,112</background>
+            </component>
+        </style>
+
+    </style>
+
+    <!-- Transparent hovering syntax area scrollpane -->
+    <style type="scrollpane" id="syntaxarea-scroll-transparent-hovering" extends="transparent-hovering">
+
+        <!-- Gutter -->
+        <style type="panel" id="gutter">
+            <component>
+                <background>106,110,112</background>
+            </component>
+        </style>
+
     </style>
 
 </skin>

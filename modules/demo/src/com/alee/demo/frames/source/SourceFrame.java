@@ -57,9 +57,11 @@ public final class SourceFrame extends WebDockableFrame
 
         // Source code area
         final String emptyText = "Select an example to see its source code...";
-        final WebSyntaxArea sourceViewer = new WebSyntaxArea ( emptyText, SyntaxPreset.java, SyntaxPreset.viewable );
-        sourceViewer.applyPresets ( SyntaxPreset.base, SyntaxPreset.margin, SyntaxPreset.size, SyntaxPreset.historyLimit );
-        add ( sourceViewer.createScroll ( StyleId.syntaxareaScrollUndecorated ), BorderLayout.CENTER );
+        final WebSyntaxArea sourceViewer = new WebSyntaxArea ( emptyText, SyntaxPreset.java );
+        sourceViewer.applyPresets ( SyntaxPreset.viewable, SyntaxPreset.base, SyntaxPreset.historyLimit );
+        sourceViewer.applyPresets ( SyntaxPreset.margin, SyntaxPreset.size, SyntaxPreset.nonOpaque );
+        add ( sourceViewer.createScroll ( StyleId.syntaxareaScrollTransparentHovering ), BorderLayout.CENTER );
+
 
         // Selected example listener
         application.getExamplesPane ().addDocumentListener ( new DocumentAdapter<ExampleData> ()

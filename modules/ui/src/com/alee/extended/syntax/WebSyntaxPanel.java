@@ -84,7 +84,7 @@ public class WebSyntaxPanel extends WebPanel
 
         // Syntax area
         syntaxArea = new WebSyntaxArea ( code );
-        syntaxArea.applyPresets ( base, viewable, hideMenu, ideaTheme, transparent );
+        syntaxArea.applyPresets ( base, viewable, hideMenu, ideaTheme, nonOpaque );
         syntaxArea.applyPresets ( presets );
         syntaxArea.setText ( code );
 

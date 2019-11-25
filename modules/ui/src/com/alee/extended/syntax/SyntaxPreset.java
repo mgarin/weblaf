@@ -18,7 +18,6 @@
 package com.alee.extended.syntax;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.utils.ColorUtils;
 import com.alee.utils.FileUtils;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
@@ -102,22 +101,20 @@ public enum SyntaxPreset
                 }
             },
 
-    transparent ( PresetType.style )
-            {
-                @Override
-                public void apply ( @NotNull final WebSyntaxArea syntaxArea )
-                {
-                    syntaxArea.setBackground ( ColorUtils.transparent () );
-                    syntaxArea.setOpaque ( false );
-                }
-            },
     opaque ( PresetType.style )
             {
                 @Override
                 public void apply ( @NotNull final WebSyntaxArea syntaxArea )
                 {
-                    syntaxArea.setBackground ( Color.WHITE );
                     syntaxArea.setOpaque ( true );
+                }
+            },
+    nonOpaque ( PresetType.style )
+            {
+                @Override
+                public void apply ( @NotNull final WebSyntaxArea syntaxArea )
+                {
+                    syntaxArea.setOpaque ( false );
                 }
             },
 

@@ -62,9 +62,11 @@ public final class StyleFrame extends WebDockableFrame
 
         // Source code area
         final String emptyText = "Select an example to see its style...";
-        final WebSyntaxArea styleViewer = new WebSyntaxArea ( emptyText, SyntaxPreset.xml, SyntaxPreset.viewable );
-        styleViewer.applyPresets ( SyntaxPreset.base, SyntaxPreset.margin, SyntaxPreset.size, SyntaxPreset.historyLimit );
-        add ( styleViewer.createScroll ( StyleId.syntaxareaScrollUndecorated ), BorderLayout.CENTER );
+        final WebSyntaxArea styleViewer = new WebSyntaxArea ( emptyText, SyntaxPreset.xml );
+        styleViewer.applyPresets ( SyntaxPreset.viewable, SyntaxPreset.base, SyntaxPreset.historyLimit );
+        styleViewer.applyPresets ( SyntaxPreset.margin, SyntaxPreset.size, SyntaxPreset.nonOpaque );
+        add ( styleViewer.createScroll ( StyleId.syntaxareaScrollTransparentHovering ), BorderLayout.CENTER );
+
 
         // Selected example change listener
         application.getExamplesPane ().addDocumentListener ( new DocumentAdapter<ExampleData> ()
