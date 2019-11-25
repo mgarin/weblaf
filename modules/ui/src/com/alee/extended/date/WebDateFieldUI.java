@@ -176,7 +176,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            public void propertyChange ( @NotNull final PropertyChangeEvent evt )
             {
                 final String property = evt.getPropertyName ();
                 if ( Objects.equals ( property, WebDateField.ALLOW_USER_INPUT_PROPERTY ) )
@@ -338,14 +338,17 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
                 @Override
                 public void dateChanged ( @Nullable final Date date )
                 {
-                    setDate ( date, UpdateSource.calendar );
-                    popup.setVisible ( false );
+                    if ( !updating )
+                    {
+                        setDate ( date, UpdateSource.calendar );
+                        popup.setVisible ( false );
+                    }
                 }
             } );
             calendar.registerKeyboardAction ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( final ActionEvent e )
+                public void actionPerformed ( @NotNull final ActionEvent e )
                 {
                     popup.setVisible ( false );
                 }
@@ -375,7 +378,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      * @param date   new selected date
      * @param source date update source
      */
-    protected void setDate ( @Nullable final Date date, final UpdateSource source )
+    protected void setDate ( @Nullable final Date date, @NotNull final UpdateSource source )
     {
         if ( !updating )
         {
