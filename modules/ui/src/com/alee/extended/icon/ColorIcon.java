@@ -64,7 +64,7 @@ public class ColorIcon implements Icon
      */
     public ColorIcon ( @Nullable final Color color )
     {
-        this ( color, 16, 16 );
+        this ( color, 14, 14 );
     }
 
     /**
@@ -85,9 +85,6 @@ public class ColorIcon implements Icon
     @Override
     public void paintIcon ( @NotNull final Component c, @NotNull final Graphics g, final int x, final int y )
     {
-        final int largeRound = 3;
-        final int bigRound = 2;
-
         final Graphics2D g2d = ( Graphics2D ) g;
         GraphicsUtils.setupAntialias ( g2d );
 
@@ -96,14 +93,14 @@ public class ColorIcon implements Icon
             if ( alphaTexture == null )
             {
                 alphaTexture = AlphaLayerBackground.createAlphaBackgroundTexture (
-                        new Dimension ( new Dimension ( 3, 3 ) )
+                        new Dimension ( new Dimension ( width / 2, width / 2 ) )
                 );
             }
             g2d.setPaint ( new TexturePaint (
                     alphaTexture,
-                    new Rectangle ( x + 1, y + 1, alphaTexture.getWidth (), alphaTexture.getHeight () )
+                    new Rectangle ( x, y, alphaTexture.getWidth (), alphaTexture.getHeight () )
             ) );
-            g2d.fillRoundRect ( x + 1, y + 1, width - 2, height - 2, bigRound, bigRound );
+            g2d.fillRect ( x, y, width, height );
         }
         else if ( alphaTexture != null )
         {
@@ -111,16 +108,15 @@ public class ColorIcon implements Icon
             alphaTexture = null;
         }
 
-        g2d.setPaint ( Color.GRAY );
-        g2d.drawRoundRect ( x, y, width - 1, height - 1, largeRound, bigRound );
-        g2d.setPaint ( Color.WHITE );
-        g2d.drawRoundRect ( x + 1, y + 1, width - 3, height - 3, bigRound, bigRound );
-
         if ( color != null )
         {
             g2d.setPaint ( color );
-            g2d.fillRoundRect ( x + 2, y + 2, width - 4, height - 4, bigRound, bigRound );
+            g2d.fillRect ( x, y, width, height );
         }
+
+        // todo Use color from skin once variables are implemented
+        g2d.setPaint ( new Color ( 87, 89, 91 ) );
+        g2d.drawRect ( x, y, width - 1, height - 1 );
     }
 
     @Override
