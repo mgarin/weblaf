@@ -132,27 +132,18 @@ public final class HotkeyManager
             Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
             {
                 @Override
-                public void eventDispatched ( final AWTEvent event )
+                public void eventDispatched ( @NotNull final AWTEvent event )
                 {
-                    // Only if hotkeys enabled and we received a KeyEvent
                     if ( hotkeysEnabled && event instanceof KeyEvent )
                     {
                         final KeyEvent e = ( KeyEvent ) event;
-
-                        // Ignore consumed and non-press events
-                        if ( e.isConsumed () || e.getID () != KeyEvent.KEY_PRESSED )
+                        if ( !e.isConsumed () && e.getID () == KeyEvent.KEY_PRESSED )
                         {
-                            return;
+                            if ( hotkeyForEventExists ( e ) )
+                            {
+                                processHotkeys ( e );
+                            }
                         }
-
-                        // Ignore nonexisting hotkeys
-                        if ( !hotkeyForEventExists ( e ) )
-                        {
-                            return;
-                        }
-
-                        // Processing all added hotkeys
-                        processHotkeys ( e );
                     }
                 }
             }, AWTEvent.KEY_EVENT_MASK );
@@ -166,23 +157,29 @@ public final class HotkeyManager
      * @param keyEvent key event to search hotkeys for
      * @return true if at least one hotkey for the specified key event exists, false otherwise
      */
-    private static boolean hotkeyForEventExists ( final KeyEvent keyEvent )
+    private static boolean hotkeyForEventExists ( @NotNull final KeyEvent keyEvent )
     {
+        boolean exists = false;
         for ( final HotkeyInfo hotkeyInfo : globalHotkeys )
         {
             if ( hotkeyInfo.getHotkeyData ().isTriggered ( keyEvent ) )
             {
-                return true;
+                exists = true;
+                break;
             }
         }
-        return hotkeys.anyDataMatch ( new BiPredicate<JComponent, HotkeyInfo> ()
+        if ( !exists )
         {
-            @Override
-            public boolean test ( final JComponent component, final HotkeyInfo hotkeyInfo )
+            exists = hotkeys.anyDataMatch ( new BiPredicate<JComponent, HotkeyInfo> ()
             {
-                return hotkeyInfo.getHotkeyData ().isTriggered ( keyEvent );
-            }
-        } );
+                @Override
+                public boolean test ( @NotNull final JComponent component, @NotNull final HotkeyInfo hotkeyInfo )
+                {
+                    return hotkeyInfo.getHotkeyData ().isTriggered ( keyEvent );
+                }
+            } );
+        }
+        return exists;
     }
 
     /**
@@ -190,7 +187,7 @@ public final class HotkeyManager
      *
      * @param e key event
      */
-    private static void processHotkeys ( final KeyEvent e )
+    private static void processHotkeys ( @NotNull final KeyEvent e )
     {
         for ( final HotkeyInfo hotkeyInfo : globalHotkeys )
         {
@@ -199,7 +196,7 @@ public final class HotkeyManager
         hotkeys.forEachData ( new BiConsumer<JComponent, HotkeyInfo> ()
         {
             @Override
-            public void accept ( final JComponent component, final HotkeyInfo hotkeyInfo )
+            public void accept ( @NotNull final JComponent component, @NotNull final HotkeyInfo hotkeyInfo )
             {
                 processHotkey ( e, hotkeyInfo );
             }
@@ -212,7 +209,7 @@ public final class HotkeyManager
      * @param e          key event
      * @param hotkeyInfo hotkey information
      */
-    private static void processHotkey ( final KeyEvent e, final HotkeyInfo hotkeyInfo )
+    private static void processHotkey ( @NotNull final KeyEvent e, @NotNull final HotkeyInfo hotkeyInfo )
     {
         // Specified components
         final Component forComponent = hotkeyInfo.getForComponent ();
@@ -231,7 +228,7 @@ public final class HotkeyManager
         {
             // Finding top component
             Component topComponent = hotkeyInfo.getTopComponent ();
-            topComponent = topComponent != null ? topComponent : CoreSwingUtils.getNonNullWindowAncestor ( forComponent );
+            topComponent = topComponent != null ? topComponent : CoreSwingUtils.getWindowAncestor ( forComponent );
 
             // Checking if componen or one of its children has focus
             if ( SwingUtils.hasFocusOwner ( topComponent ) )
