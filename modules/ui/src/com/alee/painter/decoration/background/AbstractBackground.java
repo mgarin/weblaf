@@ -85,9 +85,11 @@ public abstract class AbstractBackground<C extends JComponent, D extends IDecora
     /**
      * Returns background opacity.
      *
+     * @param c {@link JComponent}
+     * @param d {@link IDecoration}
      * @return background opacity
      */
-    public float getOpacity ()
+    public float getOpacity ( @NotNull final C c, @NotNull final D d )
     {
         return opacity != null ? opacity : 1f;
     }

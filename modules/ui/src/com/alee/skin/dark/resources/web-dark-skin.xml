@@ -28,7 +28,9 @@
     <include>resources/radiobutton.xml</include>
     <include>resources/tristatecheckbox.xml</include>
     <include>resources/panel.xml</include>
+    <include>resources/lazypanel.xml</include>
     <include>resources/grouppane.xml</include>
+    <include>resources/overlay.xml</include>
     <include>resources/innerpopup.xml</include>
     <include>resources/scrollbar.xml</include>
     <include>resources/viewport.xml</include>

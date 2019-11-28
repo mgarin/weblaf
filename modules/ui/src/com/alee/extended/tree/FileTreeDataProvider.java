@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.managers.task.TaskManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.compare.Filter;
@@ -40,57 +41,30 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     protected List<File> rootFiles;
 
     /**
-     * Constructs file tree data provider with the specified files as root.
+     * Constructs new {@link FileTreeDataProvider} with the specified root {@link File}s.
      *
-     * @param rootFiles tree root files
+     * @param rootFiles root {@link File}s
      */
-    public FileTreeDataProvider ( final File... rootFiles )
+    public FileTreeDataProvider ( @NotNull final File... rootFiles )
     {
-        super ();
-        this.rootFiles = CollectionUtils.asList ( rootFiles );
-        this.comparator = new FileTreeNodeComparator ();
-        this.filter = new FileTreeNodeFilter ();
+        this ( CollectionUtils.asList ( rootFiles ) );
     }
 
     /**
-     * Constructs file tree data provider with the specified files as root.
+     * Constructs new {@link FileTreeDataProvider} with the specified root {@link File}s.
      *
-     * @param rootFiles tree root files
+     * @param rootFiles {@link List} of root {@link File}s
      */
-    public FileTreeDataProvider ( final List<File> rootFiles )
+    public FileTreeDataProvider ( @NotNull final List<File> rootFiles )
     {
-        super ();
         this.rootFiles = rootFiles;
-        this.comparator = new FileTreeNodeComparator ();
-        this.filter = new FileTreeNodeFilter ();
     }
 
-    /**
-     * Constructs file tree data provider with the specified files as root.
-     *
-     * @param filter    tree nodes filter
-     * @param rootFiles tree root files
-     */
-    public FileTreeDataProvider ( final Filter<FileTreeNode> filter, final File... rootFiles )
+    @NotNull
+    @Override
+    public String getThreadGroupId ()
     {
-        super ();
-        this.rootFiles = CollectionUtils.asList ( rootFiles );
-        this.comparator = new FileTreeNodeComparator ();
-        this.filter = filter;
-    }
-
-    /**
-     * Constructs file tree data provider with the specified files as root.
-     *
-     * @param filter    tree nodes filter
-     * @param rootFiles tree root files
-     */
-    public FileTreeDataProvider ( final Filter<FileTreeNode> filter, final List<File> rootFiles )
-    {
-        super ();
-        this.rootFiles = rootFiles;
-        this.comparator = new FileTreeNodeComparator ();
-        this.filter = filter;
+        return TaskManager.FILE_SYSTEM;
     }
 
     @NotNull
@@ -118,6 +92,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
      *
      * @return root child nodes
      */
+    @NotNull
     protected List<FileTreeNode> getRootChildren ()
     {
         final List<FileTreeNode> children = new ArrayList<FileTreeNode> ( rootFiles.size () );
@@ -134,22 +109,25 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
      * @param node parent node
      * @return child nodes
      */
-    public List<FileTreeNode> getFileChildren ( final FileTreeNode node )
+    @NotNull
+    public List<FileTreeNode> getFileChildren ( @NotNull final FileTreeNode node )
     {
-        final File[] childrenArray = node.getFile ().listFiles ();
+        final List<FileTreeNode> children;
+        final File file = node.getFile ();
+        final File[] childrenArray = file != null ? file.listFiles () : null;
         if ( childrenArray == null || childrenArray.length == 0 )
         {
-            return new ArrayList<FileTreeNode> ( 0 );
+            children = new ArrayList<FileTreeNode> ( 0 );
         }
         else
         {
-            final List<FileTreeNode> children = new ArrayList<FileTreeNode> ( childrenArray.length );
+            children = new ArrayList<FileTreeNode> ( childrenArray.length );
             for ( final File f : childrenArray )
             {
                 children.add ( new FileTreeNode ( f ) );
             }
-            return children;
         }
+        return children;
     }
 
     @Nullable

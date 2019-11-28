@@ -64,7 +64,7 @@ public class ColorBackground<C extends JComponent, D extends IDecoration<C, D>, 
     public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
                         @NotNull final Shape shape )
     {
-        final float opacity = getOpacity ();
+        final float opacity = getOpacity ( c, d );
         if ( opacity > 0 )
         {
             final Color color = getColor ( c, d );

@@ -70,7 +70,7 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
     public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
                         @NotNull final Shape shape )
     {
-        final float opacity = getOpacity ();
+        final float opacity = getOpacity ( c, d );
         if ( opacity > 0 )
         {
             // Checking texture state

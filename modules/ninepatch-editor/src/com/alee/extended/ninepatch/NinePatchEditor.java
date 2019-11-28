@@ -73,7 +73,7 @@ public class NinePatchEditor extends WebPanel
     /**
      * Alpha background.
      */
-    private final AlphaLayerBackground ALPHA_LAYER_BACKGROUND = new AlphaLayerBackground ();
+    private final BufferedImage ALPHA_LAYER_BACKGROUND = AlphaLayerBackground.createAlphaBackgroundTexture ();
 
     private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
     private final List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ( 1 );
@@ -1529,7 +1529,8 @@ public class NinePatchEditor extends WebPanel
 
             // Alpha-background
             final Rectangle shape = new Rectangle ( imageStartX, imageStartY, iw, ih );
-            ALPHA_LAYER_BACKGROUND.paint ( g2d, shape, this, null, shape );
+            g2d.setPaint ( new TexturePaint ( ALPHA_LAYER_BACKGROUND, shape ) );
+            g2d.fill ( shape );
 
             // Border
             g2d.setPaint ( Color.DARK_GRAY );

@@ -24,6 +24,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.laf.tree.WebTreeNode;
+import com.alee.managers.task.TaskManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.compare.Filter;
@@ -366,7 +367,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
             {
                 // Executing children load in a separate thread to avoid locking EDT
                 // This queue will also take care of amount of threads to execute async trees requests
-                AsyncTreeQueue.getInstance ( tree ).execute ( new Runnable ()
+                TaskManager.execute ( dataProvider.getThreadGroupId (), new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -375,7 +376,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
                         getDataProvider ().loadChildren ( parent, new NodesLoadCallback<N> ()
                         {
                             @Override
-                            public void completed ( final List<N> children )
+                            public void completed ( @NotNull final List<N> children )
                             {
                                 CoreSwingUtils.invokeLater ( new Runnable ()
                                 {
@@ -388,7 +389,7 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
                             }
 
                             @Override
-                            public void failed ( final Throwable cause )
+                            public void failed ( @NotNull final Throwable cause )
                             {
                                 CoreSwingUtils.invokeLater ( new Runnable ()
                                 {
@@ -412,13 +413,13 @@ public class AsyncTreeModel<N extends AsyncUniqueNode> extends WebTreeModel<N> i
                 getDataProvider ().loadChildren ( parent, new NodesLoadCallback<N> ()
                 {
                     @Override
-                    public void completed ( final List<N> children )
+                    public void completed ( @NotNull final List<N> children )
                     {
                         loadChildrenCompleted ( parent, children );
                     }
 
                     @Override
-                    public void failed ( final Throwable cause )
+                    public void failed ( @NotNull final Throwable cause )
                     {
                         loadChildrenFailed ( parent, cause );
                     }

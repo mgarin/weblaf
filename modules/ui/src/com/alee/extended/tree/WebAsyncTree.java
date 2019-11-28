@@ -476,17 +476,6 @@ public class WebAsyncTree<N extends AsyncUniqueNode> extends WebTree<N>
     }
 
     /**
-     * Sets maximum threads amount for this asynchronous tree.
-     * Separate threads are used for children loading, data updates and other actions which should be performed asynchronously.
-     *
-     * @param amount new maximum threads amount
-     */
-    public void setMaximumThreadsAmount ( final int amount )
-    {
-        AsyncTreeQueue.getInstance ( this ).setMaximumThreadsAmount ( amount );
-    }
-
-    /**
      * Sets child nodes for the specified node.
      * This method might be used to manually change tree node children without causing any structure corruptions.
      * It will also cause node to change its state to loaded and it will not retrieve children from data provider unless reload is called.

@@ -67,7 +67,7 @@ public class WebMemoryBar extends WebButton
     protected long allocatedMemory = 0;
     protected long maxMemory = 0;
     protected int refreshRate = 1000;
-    protected ComponentUpdater updater = null;
+    protected ComponentUpdater updater;
     private WebCustomTooltip tooltip;
     private final WebLabel tooltipLabel;
 

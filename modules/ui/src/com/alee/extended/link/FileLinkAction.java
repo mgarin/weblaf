@@ -17,6 +17,8 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.FileUtils;
 import com.alee.utils.WebUtils;
 
@@ -36,6 +38,7 @@ public class FileLinkAction extends AsyncLinkAction
     /**
      * File or folder to be opened.
      */
+    @NotNull
     private final File file;
 
     /**
@@ -43,7 +46,7 @@ public class FileLinkAction extends AsyncLinkAction
      *
      * @param path path of the file or folder to be opened
      */
-    public FileLinkAction ( final String path )
+    public FileLinkAction ( @NotNull final String path )
     {
         this ( new File ( path ) );
     }
@@ -53,18 +56,19 @@ public class FileLinkAction extends AsyncLinkAction
      *
      * @param file file or folder to be opened
      */
-    public FileLinkAction ( final File file )
+    public FileLinkAction ( @NotNull final File file )
     {
-        super ();
         this.file = file;
     }
 
+    @Nullable
     @Override
     public Icon getIcon ()
     {
         return FileUtils.getFileIcon ( file );
     }
 
+    @Nullable
     @Override
     public String getText ()
     {
@@ -72,7 +76,7 @@ public class FileLinkAction extends AsyncLinkAction
     }
 
     @Override
-    protected void asyncLinkExecuted ( final ActionEvent event )
+    protected void asyncLinkExecuted ( @NotNull final ActionEvent event )
     {
         WebUtils.openFileSafely ( file );
     }

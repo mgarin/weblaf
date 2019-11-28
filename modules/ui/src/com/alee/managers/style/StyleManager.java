@@ -45,6 +45,10 @@ import com.alee.extended.label.HotkeyLabelBackground;
 import com.alee.extended.label.StyledLabelDescriptor;
 import com.alee.extended.label.StyledLabelText;
 import com.alee.extended.link.LinkDescriptor;
+import com.alee.extended.overlay.OverlayDescriptor;
+import com.alee.extended.overlay.OverlayLayout;
+import com.alee.extended.overlay.ProgressOverlayBackground;
+import com.alee.extended.overlay.ProgressOverlayShape;
 import com.alee.extended.panel.SelectablePanelPainter;
 import com.alee.extended.split.MultiSplitPaneDescriptor;
 import com.alee.extended.split.MultiSplitPaneDividerDescriptor;
@@ -285,6 +289,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( EllipseShape.class );
         XmlUtils.processAnnotations ( ArrowShape.class );
         XmlUtils.processAnnotations ( BreadcrumbElementShape.class );
+        XmlUtils.processAnnotations ( ProgressOverlayShape.class );
         XmlUtils.processAnnotations ( WebShadow.class );
         XmlUtils.processAnnotations ( ExpandingShadow.class );
         XmlUtils.processAnnotations ( AbstractBorder.class );
@@ -299,6 +304,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( AlphaLayerBackground.class );
         XmlUtils.processAnnotations ( MovingHighlightBackground.class );
         XmlUtils.processAnnotations ( BreadcrumbProgressBackground.class );
+        XmlUtils.processAnnotations ( ProgressOverlayBackground.class );
         XmlUtils.processAnnotations ( TextureType.class );
         XmlUtils.processAnnotations ( GradientType.class );
         XmlUtils.processAnnotations ( GradientColor.class );
@@ -390,6 +396,8 @@ public final class StyleManager
         XmlUtils.processAnnotations ( AccordionLayout.UIResource.class );
         XmlUtils.processAnnotations ( AccordionPaneLayout.class );
         XmlUtils.processAnnotations ( AccordionPaneLayout.UIResource.class );
+        XmlUtils.processAnnotations ( OverlayLayout.class );
+        XmlUtils.processAnnotations ( OverlayLayout.UIResource.class );
 
         // Easing annotations
         XmlUtils.processAnnotations ( Linear.class );
@@ -488,6 +496,7 @@ public final class StyleManager
          * Container-related components.
          */
         registerComponentDescriptor ( new PanelDescriptor () );
+        registerComponentDescriptor ( new OverlayDescriptor () );
         registerComponentDescriptor ( new BreadcrumbDescriptor () );
         registerComponentDescriptor ( new TabbedPaneDescriptor () );
         registerComponentDescriptor ( new SplitPaneDividerDescriptor () );

@@ -50,7 +50,10 @@ public class ContainersGroup extends AbstractExampleGroup
                 GroupPaneExample.class,
                 WebBreadcrumbExample.class,
                 WebCollapsiblePaneExample.class,
-                WebAccordionExample.class
+                WebAccordionExample.class,
+                LazyPanelExample.class,
+                WebOverlayExample.class,
+                WebProgressOverlayExample.class
         );
     }
 }

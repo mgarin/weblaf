@@ -234,6 +234,31 @@ public final class StyleId implements Identifiable
     public static final StyleId panelFocusable = StyleId.of ( "focusable" );
 
     /**
+     * {@link com.alee.extended.lazy.LazyPanel} style identifiers.
+     */
+    public static final StyleId lazypanel = StyleId.of ( "lazypanel" );
+    public static final StyleId lazypanelNonOpaque = StyleId.of ( "lazypanel-non-opaque" );
+    public static final StyleId lazypanelTransparent = StyleId.of ( "lazypanel-transparent" );
+    public static final StyleId lazypanelDecorated = StyleId.of ( "lazypanel-decorated" );
+    public static final StyleId lazypanelFocusable = StyleId.of ( "lazypanel-focusable" );
+
+    /**
+     * {@link com.alee.laf.grouping.GroupPane} style identifiers.
+     */
+    public static final StyleId grouppane = StyleId.of ( "grouppane" );
+
+    /**
+     * {@link com.alee.extended.overlay.WebOverlay} style identifiers.
+     */
+    public static final StyleId overlay = StyleId.of ( "overlay" );
+
+    /**
+     * {@link com.alee.extended.overlay.WebProgressOverlay} style identifiers.
+     */
+    public static final StyleId progressoverlay = StyleId.of ( "progressoverlay" );
+    public static final ChildStyleId progressoverlayLayer = ChildStyleId.of ( "layer" );
+
+    /**
      * {@link com.alee.laf.rootpane.WebRootPane} style identifiers.
      */
     public static final StyleId rootpane = StyleId.of ( "rootpane" );
@@ -717,11 +742,6 @@ public final class StyleId implements Identifiable
      */
     public static final StyleId notification = StyleId.of ( "notification" );
     public static final ChildStyleId notificationOption = ChildStyleId.of ( "option" );
-
-    /**
-     * {@link com.alee.laf.grouping.GroupPane} style identifiers.
-     */
-    public static final StyleId grouppane = StyleId.of ( "grouppane" );
 
     /**
      * {@link com.alee.extended.label.WebHotkeyLabel} style identifiers.

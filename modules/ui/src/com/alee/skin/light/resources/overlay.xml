@@ -1,0 +1,33 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.overlay.WebOverlay -->
+    <!-- com.alee.extended.overlay.WebProgressOverlay -->
+
+    <!-- Overlay -->
+    <style type="overlay">
+        <component>
+            <opaque>false</opaque>
+            <foreground>black</foreground>
+            <layout class="OverlayLayout$UIResource" />
+        </component>
+        <painter />
+    </style>
+
+    <!-- Progress overlay -->
+    <style type="overlay" id="progressoverlay">
+
+        <!-- Progress layer -->
+        <style type="canvas" id="layer">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <ProgressOverlayShape />
+                        <ProgressOverlayBackground opacity="0.6" width="15" color="50,50,50" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

@@ -42,7 +42,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * This utility class provides various sample data for {@link com.alee.demo.DemoApplication}.
+ * Utility class providing various sample data for {@link com.alee.demo.DemoApplication} examples.
  *
  * @author Mikle Garin
  */
@@ -54,6 +54,7 @@ public final class SampleData
      * @param editable whether or not model data should be editable
      * @return sample short table model
      */
+    @NotNull
     public static TableModel createShortTableModel ( final boolean editable )
     {
         return new SampleTableModel ( editable, 5 );
@@ -65,6 +66,7 @@ public final class SampleData
      * @param editable whether or not model data should be editable
      * @return sample long table model
      */
+    @NotNull
     public static TableModel createLongTableModel ( final boolean editable )
     {
         return new SampleTableModel ( editable, 12 );
@@ -88,6 +90,7 @@ public final class SampleData
         /**
          * Table data.
          */
+        @NotNull
         private final Serializable[][] data;
 
         /**
@@ -98,7 +101,6 @@ public final class SampleData
          */
         public SampleTableModel ( final boolean editable, final int rows )
         {
-            super ();
             this.editable = editable;
             if ( rows > 12 )
             {
@@ -108,14 +110,15 @@ public final class SampleData
             this.data = new Serializable[ rows ][ 5 ];
             for ( int row = 0; row < rows; row++ )
             {
-                this.data[ row ][ 0 ] = LM.getState ( "demo.example.data.grids.data.row." + row, "first.name" );
-                this.data[ row ][ 1 ] = LM.getState ( "demo.example.data.grids.data.row." + row, "last.name" );
-                this.data[ row ][ 2 ] = LM.getState ( "demo.example.data.grids.data.row." + row, "hobby" );
-                this.data[ row ][ 3 ] = Integer.parseInt ( LM.getState ( "demo.example.data.grids.data.row." + row, "age" ) );
-                this.data[ row ][ 4 ] = Boolean.parseBoolean ( LM.getState ( "demo.example.data.grids.data.row." + row, "vegeterian" ) );
+                this.data[ row ][ 0 ] = LM.getState ( "demo.sample.data.grid.row." + row, "first.name" );
+                this.data[ row ][ 1 ] = LM.getState ( "demo.sample.data.grid.row." + row, "last.name" );
+                this.data[ row ][ 2 ] = LM.getState ( "demo.sample.data.grid.row." + row, "hobby" );
+                this.data[ row ][ 3 ] = Integer.parseInt ( LM.getState ( "demo.sample.data.grid.row." + row, "age" ) );
+                this.data[ row ][ 4 ] = Boolean.parseBoolean ( LM.getState ( "demo.sample.data.grid.row." + row, "vegeterian" ) );
             }
         }
 
+        @NotNull
         @Override
         public Class<?> getColumnClass ( final int column )
         {
@@ -143,6 +146,7 @@ public final class SampleData
             return 5;
         }
 
+        @NotNull
         @Override
         public String getColumnName ( final int column )
         {
@@ -150,23 +154,23 @@ public final class SampleData
             switch ( column )
             {
                 case 0:
-                    columnName = LM.get ( "demo.example.data.grids.data.column.first.name" );
+                    columnName = LM.get ( "demo.sample.data.grid.column.first.name" );
                     break;
 
                 case 1:
-                    columnName = LM.get ( "demo.example.data.grids.data.column.last.name" );
+                    columnName = LM.get ( "demo.sample.data.grid.column.last.name" );
                     break;
 
                 case 2:
-                    columnName = LM.get ( "demo.example.data.grids.data.column.hobby" );
+                    columnName = LM.get ( "demo.sample.data.grid.column.hobby" );
                     break;
 
                 case 3:
-                    columnName = LM.get ( "demo.example.data.grids.data.column.age" );
+                    columnName = LM.get ( "demo.sample.data.grid.column.age" );
                     break;
 
                 case 4:
-                    columnName = LM.get ( "demo.example.data.grids.data.column.vegeterian" );
+                    columnName = LM.get ( "demo.sample.data.grid.column.vegeterian" );
                     break;
 
                 default:
@@ -181,6 +185,7 @@ public final class SampleData
             return rows;
         }
 
+        @NotNull
         @Override
         public Object getValueAt ( final int rowIndex, final int columnIndex )
         {
@@ -205,7 +210,7 @@ public final class SampleData
         }
 
         @Override
-        public void setValueAt ( final Object aValue, final int rowIndex, final int columnIndex )
+        public void setValueAt ( @NotNull final Object aValue, final int rowIndex, final int columnIndex )
         {
             data[ rowIndex ][ columnIndex ] = ( Serializable ) aValue;
         }
@@ -216,6 +221,7 @@ public final class SampleData
      *
      * @return sample {@link WebListModel}
      */
+    @NotNull
     public static WebListModel<ListItem> createListModel ()
     {
         return new WebListModel<ListItem> ( createListData () );
@@ -226,6 +232,7 @@ public final class SampleData
      *
      * @return sample {@link WebComboBoxModel}
      */
+    @NotNull
     public static WebComboBoxModel<ListItem> createComboBoxModel ()
     {
         return new WebComboBoxModel<ListItem> ( createListData () );
@@ -236,6 +243,7 @@ public final class SampleData
      *
      * @return {@link List} of sample data
      */
+    @NotNull
     private static List<ListItem> createListData ()
     {
         return CollectionUtils.asList (
@@ -254,6 +262,7 @@ public final class SampleData
         /**
          * Item language key.
          */
+        @NotNull
         private final String key;
 
         /**
@@ -261,9 +270,8 @@ public final class SampleData
          *
          * @param key item language key
          */
-        public ListItem ( final String key )
+        public ListItem ( @NotNull final String key )
         {
-            super ();
             this.key = key;
         }
 
@@ -271,7 +279,7 @@ public final class SampleData
         @Override
         public String getText ( @NotNull final ListCellParameters<ListItem, JList> parameters )
         {
-            return LM.get ( "demo.sample.list." + key );
+            return LM.get ( "demo.sample.data.list." + key );
         }
     }
 
@@ -280,6 +288,7 @@ public final class SampleData
      *
      * @return sample {@link AsyncTreeDataProvider} that delays child nodes loading by random (but reasonable) amount of time
      */
+    @NotNull
     public static AsyncTreeDataProvider<SampleNode> createDelayingAsyncDataProvider ()
     {
         return new SampleAsyncDataProvider ();
@@ -290,6 +299,7 @@ public final class SampleData
      *
      * @return sample {@link WebTreeModel} for checkbox tree
      */
+    @NotNull
     public static WebTreeModel<SampleNode> createCheckBoxTreeModel ()
     {
         return createExTreeDataProvider ().createPlainModel ();
@@ -300,6 +310,7 @@ public final class SampleData
      *
      * @return sample {@link ExTreeDataProvider}
      */
+    @NotNull
     public static AbstractExTreeDataProvider<SampleNode> createExTreeDataProvider ()
     {
         return new SampleExDataProvider ();
@@ -310,6 +321,7 @@ public final class SampleData
      *
      * @return sample {@link WebTreeModel} for checkbox tree
      */
+    @NotNull
     public static WebTreeModel<SampleNode> createCustomizedCheckBoxTreeModel ()
     {
         return createCustomizedExCheckBoxTreeDataProvider ().createPlainModel ();
@@ -320,6 +332,7 @@ public final class SampleData
      *
      * @return sample {@link ExTreeDataProvider} for checkbox tree
      */
+    @NotNull
     public static AbstractExTreeDataProvider<SampleNode> createCustomizedExCheckBoxTreeDataProvider ()
     {
         return new SampleCustomizedExDataProvider ();

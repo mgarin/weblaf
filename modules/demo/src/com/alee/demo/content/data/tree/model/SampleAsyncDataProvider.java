@@ -18,6 +18,7 @@
 package com.alee.demo.content.data.tree.model;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.demo.DemoTaskGroup;
 import com.alee.extended.tree.AbstractAsyncTreeDataProvider;
 import com.alee.extended.tree.NodesLoadCallback;
 import com.alee.utils.CollectionUtils;
@@ -32,6 +33,13 @@ import com.alee.utils.ThreadUtils;
  */
 public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<SampleNode>
 {
+    @NotNull
+    @Override
+    public String getThreadGroupId ()
+    {
+        return DemoTaskGroup.ID;
+    }
+
     @NotNull
     @Override
     public SampleNode getRoot ()

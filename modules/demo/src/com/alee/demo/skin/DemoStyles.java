@@ -68,6 +68,13 @@ public final class DemoStyles
     public static final ChildStyleId previewContent = ChildStyleId.of ( "content" );
 
     /**
+     * Example styles.
+     */
+    public static final StyleId leadingImage = StyleId.of ( "leading" );
+    public static final StyleId trailingImage = StyleId.of ( "trailing" );
+    public static final StyleId blockingLayerLabel = StyleId.of ( "blocking-layer" );
+
+    /**
      * Custom example styles.
      */
     public static final StyleId easingEastBar = StyleId.of ( "easing-east-bar" );
@@ -81,10 +88,4 @@ public final class DemoStyles
     public static final StyleId shapedetectionButton = StyleId.of ( "shape-detection-button" );
     public static final StyleId shapedetectionTextArea = StyleId.of ( "shape-detection-textarea" );
     public static final StyleId shapedetectionDecoratedPanel = StyleId.of ( "shape-detection-decorated-panel" );
-
-    /**
-     * Example styles.
-     */
-    public static final StyleId leadingImage = StyleId.of ( "leading" );
-    public static final StyleId trailingImage = StyleId.of ( "trailing" );
 }

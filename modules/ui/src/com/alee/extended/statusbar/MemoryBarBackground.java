@@ -76,7 +76,7 @@ public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C
     public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
                         @NotNull final Shape shape )
     {
-        final float opacity = getOpacity ();
+        final float opacity = getOpacity ( c, d );
         if ( opacity > 0 )
         {
             final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
@@ -114,10 +114,17 @@ public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C
      * @param fill     whether or not fill shape is required
      * @return progress shape
      */
-    protected Shape getProgressShape ( final Rectangle bounds, final long progress, final long max, final boolean fill )
+    @NotNull
+    protected Shape getProgressShape ( @NotNull final Rectangle bounds, final long progress, final long max, final boolean fill )
     {
-        return new RoundRectangle2D.Double ( bounds.x, bounds.y, getProgressWidth ( bounds, progress, max, fill ),
-                bounds.height - ( fill ? 0 : 1 ), round, round );
+        return new RoundRectangle2D.Double (
+                bounds.x,
+                bounds.y,
+                getProgressWidth ( bounds, progress, max, fill ),
+                bounds.height - ( fill ? 0 : 1 ),
+                round,
+                round
+        );
     }
 
     /**
@@ -129,7 +136,7 @@ public class MemoryBarBackground<C extends WebMemoryBar, D extends IDecoration<C
      * @param fill     whether or not fill shape is required
      * @return progress width
      */
-    protected int getProgressWidth ( final Rectangle bounds, final long progress, final long max, final boolean fill )
+    protected int getProgressWidth ( @NotNull final Rectangle bounds, final long progress, final long max, final boolean fill )
     {
         return Math.round ( ( float ) ( bounds.width - ( fill ? 0 : 1 ) ) * progress / max );
     }

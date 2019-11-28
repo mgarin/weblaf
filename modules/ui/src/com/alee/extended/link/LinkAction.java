@@ -17,6 +17,8 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.IconBridge;
 import com.alee.api.ui.TextBridge;
 
@@ -46,6 +48,7 @@ public interface LinkAction extends EventListener
      *
      * @return {@link Icon} for this {@link LinkAction}
      */
+    @Nullable
     public Icon getIcon ();
 
     /**
@@ -54,6 +57,7 @@ public interface LinkAction extends EventListener
      *
      * @return text for this {@link LinkAction}
      */
+    @Nullable
     public String getText ();
 
     /**
@@ -61,5 +65,5 @@ public interface LinkAction extends EventListener
      *
      * @param event link execution event
      */
-    public void linkExecuted ( ActionEvent event );
+    public void linkExecuted ( @NotNull ActionEvent event );
 }

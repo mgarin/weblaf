@@ -17,6 +17,8 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 
 /**
@@ -36,11 +38,13 @@ public abstract class AbstractLinkAction implements LinkAction
     /**
      * {@link LinkAction} icon.
      */
+    @Nullable
     protected final Icon icon;
 
     /**
      * {@link LinkAction} text.
      */
+    @Nullable
     protected final String text;
 
     /**
@@ -56,7 +60,7 @@ public abstract class AbstractLinkAction implements LinkAction
      *
      * @param icon {@link LinkAction} icon
      */
-    public AbstractLinkAction ( final Icon icon )
+    public AbstractLinkAction ( @Nullable final Icon icon )
     {
         this ( icon, null );
     }
@@ -66,7 +70,7 @@ public abstract class AbstractLinkAction implements LinkAction
      *
      * @param text {@link LinkAction} text
      */
-    public AbstractLinkAction ( final String text )
+    public AbstractLinkAction ( @Nullable final String text )
     {
         this ( null, text );
     }
@@ -77,19 +81,20 @@ public abstract class AbstractLinkAction implements LinkAction
      * @param icon {@link LinkAction} icon
      * @param text {@link LinkAction} text
      */
-    public AbstractLinkAction ( final Icon icon, final String text )
+    public AbstractLinkAction ( @Nullable final Icon icon, @Nullable final String text )
     {
-        super ();
         this.icon = icon;
         this.text = text;
     }
 
+    @Nullable
     @Override
     public Icon getIcon ()
     {
         return icon;
     }
 
+    @Nullable
     @Override
     public String getText ()
     {

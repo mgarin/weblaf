@@ -60,7 +60,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
         final FeatureState featureState = previewPanel.getState ();
         if ( featureState != FeatureState.common )
         {
-            final float opacity = getOpacity ();
+            final float opacity = getOpacity ( previewPanel, decoration );
             if ( opacity > 0 )
             {
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );

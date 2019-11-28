@@ -919,6 +919,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         initializeFont ( table, "Link.font", linkFont, globalControlFont );
         initializeFont ( table, "List.font", listFont, globalControlFont );
         initializeFont ( table, "Panel.font", panelFont, globalControlFont );
+        initializeFont ( table, "Overlay.font", canvasFont, globalControlFont );
         initializeFont ( table, "Popup.font", popupFont, globalControlFont );
         initializeFont ( table, "ProgressBar.font", progressBarFont, globalControlFont );
         initializeFont ( table, "ScrollPane.font", scrollPaneFont, globalControlFont );

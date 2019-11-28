@@ -107,6 +107,18 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
     }
 
     /**
+     * Returns whether or not {@link WebCanvas} has specified custom state.
+     * Note that this doesn't include any states provided by underlying UI or painter implementations.
+     *
+     * @param state state to check
+     * @return {@code true} if {@link WebCanvas} has specified custom state, {@code false} otherwise
+     */
+    public boolean hasState ( @NotNull final String state )
+    {
+        return states.contains ( state );
+    }
+
+    /**
      * Sets custom {@link WebCanvas} states.
      *
      * @param states custom {@link WebCanvas} states

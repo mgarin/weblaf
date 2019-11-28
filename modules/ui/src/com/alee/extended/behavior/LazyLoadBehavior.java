@@ -29,19 +29,18 @@ import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.task.TaskGroup;
+import com.alee.managers.task.TaskManager;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ExceptionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
-import com.alee.utils.concurrent.DaemonThreadFactory;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static com.alee.extended.syntax.SyntaxPreset.*;
 
@@ -49,28 +48,27 @@ import static com.alee.extended.syntax.SyntaxPreset.*;
  * Lazy component load behavior which provides a quick way to load pre-load component with heavy data into UI.
  *
  * @author Mikle Garin
+ * @deprecated Practically replaced with better implemented {@link com.alee.extended.lazy.LazyContent} feature
  */
+@Deprecated
 public class LazyLoadBehavior implements Behavior
 {
     /**
-     * ExecutorService to limit simultaneously running threads.
-     */
-    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4, new DaemonThreadFactory ( "LazyLoadBehavior" ) );
-
-    /**
-     * Performs lazy UI component load.
+     * Performs lazy loading of data and UI element for it.
      * Also uses error fallback for the case when data load has failed.
+     * It will also provide temporary loader component in place of final component until its data is fully loaded.
      *
-     * @param container      container for component
-     * @param constraints    component constraints
-     * @param loaderSupplier loader component supplier, it is executed in EDT
-     * @param dataSupplier   data supplier, it is executed in a separate thread
-     * @param dataHandler    data component provider, it is executed in EDT
+     * @param container      {@link Container} for resulting {@link JComponent}
+     * @param constraints    constraints for resulting {@link JComponent} in {@link Container}
+     * @param loaderSupplier {@link Supplier} for loader {@link JComponent}, it is executed in EDT
+     * @param dataSupplier   {@link UnsafeSupplier} for data, it is executed in a separate thread
+     * @param dataHandler    data {@link JComponent} provider, it is executed in EDT
+     * @param groupId        identifier of {@link TaskGroup} to execute {@link Runnable} on
      * @param <D>            loaded data type
      */
-    public static <D> void perform ( @NotNull final Container container, final Object constraints,
+    public static <D> void perform ( @NotNull final Container container, @NotNull final Object constraints,
                                      @NotNull final Supplier<JComponent> loaderSupplier, @NotNull final UnsafeSupplier<D> dataSupplier,
-                                     @NotNull final Function<D, JComponent> dataHandler )
+                                     @NotNull final Function<D, JComponent> dataHandler, @NotNull final String groupId )
     {
         perform ( container, constraints, loaderSupplier, dataSupplier, dataHandler, new Function<Throwable, JComponent> ()
         {
@@ -92,26 +90,27 @@ public class LazyLoadBehavior implements Behavior
                 } );
                 return error;
             }
-        } );
+        }, groupId );
     }
 
     /**
-     * Performs lazy UI component load.
+     * Performs lazy loading of data and UI element for it.
      * Also uses error fallback for the case when data load has failed.
-     * It will provide temporary loader component in place of final component until its data is fully loaded.
+     * It will also provide temporary loader component in place of final component until its data is fully loaded.
      *
-     * @param container      container for component
-     * @param constraints    component constraints
-     * @param loaderSupplier loader component supplier, it is executed in EDT
-     * @param dataSupplier   data supplier, it is executed in a separate thread
-     * @param dataHandler    data component provider, it is executed in EDT
-     * @param errorHandler   error component provider, it is executed in EDT
+     * @param container      {@link Container} for resulting {@link JComponent}
+     * @param constraints    constraints for resulting {@link JComponent} in {@link Container}
+     * @param loaderSupplier {@link Supplier} for loader {@link JComponent}, it is executed in EDT
+     * @param dataSupplier   {@link UnsafeSupplier} for data, it is executed in a separate thread
+     * @param dataHandler    data {@link JComponent} provider, it is executed in EDT
+     * @param errorHandler   error {@link JComponent} provider, it is executed in EDT
+     * @param groupId        identifier of {@link TaskGroup} to execute {@link Runnable} on
      * @param <D>            loaded data type
      */
     public static <D> void perform ( @NotNull final Container container, @Nullable final Object constraints,
                                      @NotNull final Supplier<JComponent> loaderSupplier, @NotNull final UnsafeSupplier<D> dataSupplier,
                                      @NotNull final Function<D, JComponent> dataHandler,
-                                     @NotNull final Function<Throwable, JComponent> errorHandler )
+                                     @NotNull final Function<Throwable, JComponent> errorHandler, @NotNull final String groupId )
     {
         CoreSwingUtils.invokeAndWait ( new Runnable ()
         {
@@ -127,7 +126,7 @@ public class LazyLoadBehavior implements Behavior
                 final int index = container.getComponentZOrder ( loader );
 
                 // Loading data
-                executorService.submit ( new Runnable ()
+                TaskManager.execute ( groupId, new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -140,10 +139,7 @@ public class LazyLoadBehavior implements Behavior
                                 @Override
                                 public void run ()
                                 {
-                                    final JComponent component = dataHandler.apply ( data );
-                                    container.remove ( loader );
-                                    container.add ( component, constraints, index );
-                                    SwingUtils.update ( container );
+                                    show ( dataHandler.apply ( data ) );
                                 }
                             } );
                         }
@@ -154,26 +150,25 @@ public class LazyLoadBehavior implements Behavior
                                 @Override
                                 public void run ()
                                 {
-                                    final JComponent error = errorHandler.apply ( e );
-                                    container.remove ( loader );
-                                    container.add ( error, constraints, index );
-                                    SwingUtils.update ( container );
+                                    show ( errorHandler.apply ( e ) );
                                 }
                             } );
                         }
                     }
+
+                    /**
+                     * Displays resulting {@link JComponent}.
+                     *
+                     * @param component resulting {@link JComponent}
+                     */
+                    private void show ( final JComponent component )
+                    {
+                        container.remove ( loader );
+                        container.add ( component, constraints, index );
+                        SwingUtils.update ( container );
+                    }
                 } );
             }
         } );
-    }
-
-    /**
-     * Sets executor service for data loading threads.
-     *
-     * @param service executor service for data loading threads
-     */
-    public static void setExecutorService ( @NotNull final ExecutorService service )
-    {
-        LazyLoadBehavior.executorService = service;
     }
 }

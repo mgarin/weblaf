@@ -19,6 +19,7 @@ package com.alee.managers;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.animation.AnimationManager;
+import com.alee.managers.task.TaskManager;
 import com.alee.managers.drag.DragManager;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
@@ -73,5 +74,6 @@ public final class UIManagers
         AnimationManager.initialize ();
         UIProxyManager.initialize ();
         DragManager.initialize ();
+        TaskManager.initialize();
     }
 }

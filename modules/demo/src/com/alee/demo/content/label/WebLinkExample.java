@@ -179,7 +179,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
             final WebLink link = new WebLink ( getStyleId (), new AbstractLinkAction ( icon, text )
             {
                 @Override
-                public void linkExecuted ( final ActionEvent event )
+                public void linkExecuted ( @NotNull final ActionEvent event )
                 {
                     NotificationManager.showNotification ( ( Component ) event.getSource (), getPreviewLanguagePrefix () + "notification" );
                 }

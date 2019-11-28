@@ -39,9 +39,10 @@ import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.label.TextWrap;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.AlignLayout;
+import com.alee.extended.overlay.FillOverlay;
 import com.alee.extended.link.UrlLinkAction;
 import com.alee.extended.link.WebLink;
-import com.alee.extended.panel.WebOverlay;
+import com.alee.extended.overlay.WebOverlay;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.DocumentAdapter;
@@ -64,6 +65,7 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.task.TaskManager;
 import com.alee.skin.dark.WebDarkSkin;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
@@ -186,7 +188,8 @@ public final class DemoApplication extends WebFrame
             }
         } );
 
-        final WebOverlay overlay = new WebOverlay ( StyleId.panel, examplesPane );
+        final WebOverlay overlay = new WebOverlay ( examplesPane );
+
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel, new AlignLayout () );
 
         final WebStyledLabel information = new WebStyledLabel ( DemoStyles.emptycontentInfoLabel.at ( overlayContainer ) );
@@ -201,7 +204,7 @@ public final class DemoApplication extends WebFrame
         );
         overlayContainer.add ( information );
 
-        overlay.addOverlay ( overlayContainer );
+        overlay.addOverlay ( new FillOverlay ( overlayContainer ) );
 
         examplesPane.addDocumentListener ( new DocumentAdapter<ExampleData> ()
         {
@@ -382,6 +385,9 @@ public final class DemoApplication extends WebFrame
 
                 // Saving skins for reference
                 skins = CollectionUtils.asList ( StyleManager.getSkin (), new WebDarkSkin () );
+
+                // Custom ThreadGroup for demo application
+                TaskManager.registerGroup ( new DemoTaskGroup () );
 
                 // Adding demo application skin extensions
                 // They contain all custom styles demo application uses

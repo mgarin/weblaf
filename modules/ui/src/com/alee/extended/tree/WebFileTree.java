@@ -446,7 +446,8 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                                 boolean found = false;
                                 for ( final FileTreeNode child : children )
                                 {
-                                    if ( child.getFile ().equals ( path.get ( 0 ) ) )
+                                    final File childFile = child.getFile ();
+                                    if ( childFile != null && childFile.equals ( path.get ( 0 ) ) )
                                     {
                                         found = true;
                                         if ( path.size () == 1 )
@@ -889,7 +890,8 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
             for ( int i = 0; i < pathNode.getChildCount (); i++ )
             {
                 final FileTreeNode child = pathNode.getChildAt ( i );
-                if ( child.getFile ().equals ( path.get ( 0 ) ) )
+                final File childFile = child.getFile ();
+                if ( childFile != null && childFile.equals ( path.get ( 0 ) ) )
                 {
                     path.remove ( 0 );
                     deepestPathNode = getDeepestPathNode ( child, path );

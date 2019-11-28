@@ -377,6 +377,8 @@ public interface DecorationState
      *
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
      * @see BreadcrumbElementUtils#addBreadcrumbElementStates(JComponent, List)
+     * @see com.alee.extended.overlay.WebProgressOverlay#displayProgress()
+     * @see com.alee.extended.overlay.WebProgressOverlay#hideProgress()
      */
     public static final String progress = "progress";
 

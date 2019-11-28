@@ -17,6 +17,7 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.Icons;
 import com.alee.utils.WebUtils;
 
@@ -37,18 +38,23 @@ public class UrlLinkAction extends AsyncLinkAction
      */
 
     /**
-     * Constructs new {@link com.alee.extended.link.UrlLinkAction}.
+     * Constructs new {@link UrlLinkAction}.
      *
      * @param url URL to be opened
      */
-    public UrlLinkAction ( final String url )
+    public UrlLinkAction ( @NotNull final String url )
     {
         super ( Icons.globe, url );
     }
 
     @Override
-    protected void asyncLinkExecuted ( final ActionEvent event )
+    protected void asyncLinkExecuted ( @NotNull final ActionEvent event )
     {
-        WebUtils.browseSiteSafely ( getText () );
+        final String url = getText ();
+        if ( url == null )
+        {
+            throw new RuntimeException ( "URL cannot be null" );
+        }
+        WebUtils.browseSiteSafely ( url );
     }
 }

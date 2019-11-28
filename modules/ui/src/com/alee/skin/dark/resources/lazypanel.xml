@@ -1,0 +1,55 @@
+<skin xmlns="http://weblookandfeel.com/XmlSkin">
+
+    <!-- com.alee.extended.lazy.LazyPanel -->
+
+    <!-- Panel -->
+    <style type="panel" id="lazypanel" />
+
+    <!-- Non-opaque panel -->
+    <style type="panel" id="lazypanel-non-opaque" extends="lazypanel">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <BoundsShape />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent panel -->
+    <style type="panel" id="lazypanel-transparent" extends="lazypanel-non-opaque">
+        <painter>
+            <decorations overwrite="true" />
+        </painter>
+    </style>
+
+    <!-- Decorated panel -->
+    <style type="panel" id="lazypanel-decorated" extends="lazypanel-non-opaque">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="68,68,68" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Decorated panel -->
+    <style type="panel" id="lazypanel-focusable" extends="lazypanel-decorated">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

@@ -17,6 +17,9 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 
@@ -26,16 +29,45 @@ import java.awt.event.MouseAdapter;
  *
  * @author Mikle Garin
  */
-public class NoOpMouseListener extends MouseAdapter
+public final class NoOpMouseListener extends MouseAdapter
 {
+    /**
+     * Single {@link NoOpMouseListener} instance.
+     */
+    @Nullable
+    private static NoOpMouseListener instance;
+
+    /**
+     * Returns {@link NoOpMouseListener} instance.
+     *
+     * @return {@link NoOpMouseListener} instance
+     */
+    @NotNull
+    public static NoOpMouseListener get ()
+    {
+        if ( instance == null )
+        {
+            instance = new NoOpMouseListener ();
+        }
+        return instance;
+    }
+
+    /**
+     * Made private to avoid unnecessary instance creation.
+     */
+    private NoOpMouseListener ()
+    {
+        super ();
+    }
+
     /**
      * Installs {@link NoOpMouseListener} into the specified {@link Component}.
      *
      * @param component {@link Component} to install {@link NoOpMouseListener} into
      */
-    public static void install ( final Component component )
+    public static void install ( @NotNull final Component component )
     {
-        final NoOpMouseListener adapter = new NoOpMouseListener ();
+        final NoOpMouseListener adapter = get ();
         component.addMouseListener ( adapter );
         component.addMouseMotionListener ( adapter );
         component.addMouseWheelListener ( adapter );

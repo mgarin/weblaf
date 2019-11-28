@@ -392,6 +392,13 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
         return StyleId.collapsiblepane;
     }
 
+    @Nullable
+    @Override
+    public CollapsiblePaneLayout getLayout ()
+    {
+        return ( CollapsiblePaneLayout ) super.getLayout ();
+    }
+
     @Override
     public void setLayout ( @Nullable final LayoutManager layout )
     {
@@ -413,12 +420,6 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
         {
             throw new IllegalArgumentException ( "Only CollapsiblePaneLayout instances are supported" );
         }
-    }
-
-    @Override
-    public CollapsiblePaneLayout getLayout ()
-    {
-        return ( CollapsiblePaneLayout ) super.getLayout ();
     }
 
     /**

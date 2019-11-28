@@ -92,7 +92,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
      */
     public AsyncUniqueNode ()
     {
-        this ( null );
+        this ( TextUtils.generateId ( ID_PREFIX ), null );
     }
 
     /**

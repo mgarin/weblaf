@@ -17,37 +17,37 @@
 
 package com.alee.managers.animation.event;
 
-import com.alee.utils.concurrent.DaemonThreadFactory;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.alee.api.annotations.NotNull;
+import com.alee.managers.task.TaskManager;
 
 /**
- * {@link EventHandler} that sends tasks into separate daemon thread.
+ * {@link EventHandler} that sends tasks into separate {@link com.alee.managers.task.TaskGroup}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-AnimationManager">How to use AnimationManager</a>
  * @see com.alee.managers.animation.AnimationManager
  */
-public final class DaemonThreadHandler implements EventHandler
+public final class ThreadGroupHandler implements EventHandler
 {
     /**
-     * Executor service that handles events.
+     * Identifier of {@link com.alee.managers.task.TaskGroup} to execute {@link Runnable} on
      */
-    private final ExecutorService executor;
+    @NotNull
+    private final String groupId;
 
     /**
-     * Constructs new {@link DaemonThreadHandler}.
+     * Constructs new {@link ThreadGroupHandler}.
+     *
+     * @param groupId identifier of {@link com.alee.managers.task.TaskGroup} to execute {@link Runnable} on
      */
-    public DaemonThreadHandler ()
+    public ThreadGroupHandler ( @NotNull final String groupId )
     {
-        super ();
-        executor = Executors.newSingleThreadExecutor ( new DaemonThreadFactory ( "DaemonThreadHandler" ) );
+        this.groupId = groupId;
     }
 
     @Override
-    public void handle ( final Runnable event )
+    public void handle ( @NotNull final Runnable event )
     {
-        executor.submit ( event );
+        TaskManager.execute ( groupId, event );
     }
 }

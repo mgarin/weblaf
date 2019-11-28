@@ -134,4 +134,9 @@
         <SvgFill selector="svg" color="240,240,240" />
     </SvgIcon>
 
+    <!-- Small icons -->
+    <SvgIcon id="info14" path="small/info.svg" size="14,14">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+
 </IconSet>

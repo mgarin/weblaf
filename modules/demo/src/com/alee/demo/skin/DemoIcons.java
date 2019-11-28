@@ -100,4 +100,9 @@ public final class DemoIcons
     public static final LazyIcon mac16 = new LazyIcon ( "mac16" );
     public static final LazyIcon unix16 = new LazyIcon ( "unix16" );
     public static final LazyIcon solaris16 = new LazyIcon ( "solaris16" );
+
+    /**
+     * Small 14x14 icons.
+     */
+    public static final LazyIcon info14 = new LazyIcon ( "info14" );
 }

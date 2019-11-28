@@ -901,6 +901,24 @@ public final class SwingUtils
     }
 
     /**
+     * Returns maximum insets combined from the specified ones.
+     *
+     * @param insets1 first insets
+     * @param insets2 second insets
+     * @return maximum insets
+     */
+    @NotNull
+    public static Insets maxNonNull ( @NotNull final Insets insets1, @NotNull final Insets insets2 )
+    {
+        return new Insets (
+                Math.max ( insets1.top, insets2.top ),
+                Math.max ( insets1.left, insets2.left ),
+                Math.max ( insets1.bottom, insets2.bottom ),
+                Math.max ( insets1.right, insets2.right )
+        );
+    }
+
+    /**
      * Returns minimum insets combined from the specified ones.
      *
      * @param insets1 first insets
@@ -929,6 +947,24 @@ public final class SwingUtils
             min = insets2;
         }
         return min;
+    }
+
+    /**
+     * Returns minimum insets combined from the specified ones.
+     *
+     * @param insets1 first insets
+     * @param insets2 second insets
+     * @return minimum insets
+     */
+    @NotNull
+    public static Insets minNonNull ( @NotNull final Insets insets1, @NotNull final Insets insets2 )
+    {
+        return new Insets (
+                Math.min ( insets1.top, insets2.top ),
+                Math.min ( insets1.left, insets2.left ),
+                Math.min ( insets1.bottom, insets2.bottom ),
+                Math.min ( insets1.right, insets2.right )
+        );
     }
 
     /**

@@ -20,10 +20,10 @@ package com.alee.extended.list;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.resource.FileResource;
+import com.alee.managers.task.TaskManager;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.concurrent.DaemonThreadFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,8 +31,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
 import java.util.WeakHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Utility class that allows asynchronous image thumbnails generation.
@@ -45,13 +43,6 @@ public class ThumbnailGenerator implements Runnable
      * todo 1. Make use of TaskManager for concurrency once it is ready
      * todo 2. Remove disabled thumbnail generation, instead it should be handled in renderer/on place
      */
-
-    /**
-     * Executor service for thumbnails generation.
-     * It was made static to be shared by different file lists and avoid overload.
-     */
-    protected static final ExecutorService executorService =
-            Executors.newSingleThreadExecutor ( new DaemonThreadFactory ( "ThumbnailGenerator" ) );
 
     /**
      * Map containing references to running thumbnail generators.
@@ -408,7 +399,7 @@ public class ThumbnailGenerator implements Runnable
                     // Queueing thumbnail generation
                     final ThumbnailGenerator generator = new ThumbnailGenerator ( list, element, size, disabled );
                     generators.put ( element, generator );
-                    executorService.submit ( generator );
+                    TaskManager.execute ( TaskManager.COMPUTATION, generator );
                 }
             }
         }

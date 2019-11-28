@@ -17,6 +17,7 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.icon.Icons;
 import com.alee.utils.WebUtils;
 
@@ -36,14 +37,19 @@ public class EmailLinkAction extends AsyncLinkAction
      *
      * @param email recipient email
      */
-    public EmailLinkAction ( final String email )
+    public EmailLinkAction ( @NotNull final String email )
     {
         super ( Icons.email, email );
     }
 
     @Override
-    protected void asyncLinkExecuted ( final ActionEvent event )
+    protected void asyncLinkExecuted ( @NotNull final ActionEvent event )
     {
-        WebUtils.writeEmailSafely ( getText () );
+        final String email = getText ();
+        if ( email == null )
+        {
+            throw new RuntimeException ( "E-mail cannot be null" );
+        }
+        WebUtils.writeEmailSafely ( email );
     }
 }

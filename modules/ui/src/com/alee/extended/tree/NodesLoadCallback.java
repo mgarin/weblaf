@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -36,12 +38,12 @@ public interface NodesLoadCallback<N extends AsyncUniqueNode>
      *
      * @param children list of loaded children
      */
-    public void completed ( List<N> children );
+    public void completed ( @NotNull List<N> children );
 
     /**
      * Informs model that children load failed due to the specified exception.
      *
      * @param cause exception
      */
-    public void failed ( Throwable cause );
+    public void failed ( @NotNull Throwable cause );
 }

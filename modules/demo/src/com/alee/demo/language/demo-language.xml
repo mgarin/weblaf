@@ -151,6 +151,268 @@
             </Dictionary>
         </Dictionary>
     </Dictionary>
+    <Dictionary prefix="sample">
+        <Dictionary prefix="data">
+            <Dictionary prefix="grid">
+                <Dictionary prefix="column">
+                    <record key="first.name">
+                        <value lang="en">First name</value>
+                        <value lang="ru">Имя</value>
+                    </record>
+                    <record key="last.name">
+                        <value lang="en">Last name</value>
+                        <value lang="ru">Фамилия</value>
+                    </record>
+                    <record key="hobby">
+                        <value lang="en">Hobby</value>
+                        <value lang="ru">Хобби</value>
+                    </record>
+                    <record key="age">
+                        <value lang="en">Age</value>
+                        <value lang="ru">Возраст</value>
+                    </record>
+                    <record key="vegeterian">
+                        <value lang="en">Vegeterian</value>
+                        <value lang="ru">Вегетерианец</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="row">
+                    <record key="0">
+                        <value lang="en">
+                            <text state="first.name">Kathy</text>
+                            <text state="last.name">Smith</text>
+                            <text state="hobby">Snowboarding</text>
+                            <text state="age">19</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Кэти</text>
+                            <text state="last.name">Смитт</text>
+                            <text state="hobby">Сноубординг</text>
+                            <text state="age">19</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="1">
+                        <value lang="en">
+                            <text state="first.name">John</text>
+                            <text state="last.name">Doe</text>
+                            <text state="hobby">Rowing</text>
+                            <text state="age">32</text>
+                            <text state="vegeterian">true</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Джон</text>
+                            <text state="last.name">Доэ</text>
+                            <text state="hobby">Гребля</text>
+                            <text state="age">32</text>
+                            <text state="vegeterian">true</text>
+                        </value>
+                    </record>
+                    <record key="2">
+                        <value lang="en">
+                            <text state="first.name">Sue</text>
+                            <text state="last.name">Black</text>
+                            <text state="hobby">Knitting</text>
+                            <text state="age">56</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Сью</text>
+                            <text state="last.name">Блэк</text>
+                            <text state="hobby">Вязание</text>
+                            <text state="age">56</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="3">
+                        <value lang="en">
+                            <text state="first.name">Jane</text>
+                            <text state="last.name">White</text>
+                            <text state="hobby">Skydiving</text>
+                            <text state="age">20</text>
+                            <text state="vegeterian">true</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Джейн</text>
+                            <text state="last.name">Вайт</text>
+                            <text state="hobby">Прыжки с парашютом</text>
+                            <text state="age">20</text>
+                            <text state="vegeterian">true</text>
+                        </value>
+                    </record>
+                    <record key="4">
+                        <value lang="en">
+                            <text state="first.name">Joe</text>
+                            <text state="last.name">Brown</text>
+                            <text state="hobby">Swimming</text>
+                            <text state="age">14</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Джо</text>
+                            <text state="last.name">Браун</text>
+                            <text state="hobby">Плавание</text>
+                            <text state="age">14</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="5">
+                        <value lang="en">
+                            <text state="first.name">Sven</text>
+                            <text state="last.name">Alister</text>
+                            <text state="hobby">Boxing</text>
+                            <text state="age">36</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Свэн</text>
+                            <text state="last.name">Алистер</text>
+                            <text state="hobby">Бокс</text>
+                            <text state="age">36</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="6">
+                        <value lang="en">
+                            <text state="first.name">Allen</text>
+                            <text state="last.name">Snow</text>
+                            <text state="hobby">Diving</text>
+                            <text state="age">18</text>
+                            <text state="vegeterian">true</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Аллен</text>
+                            <text state="last.name">Сноу</text>
+                            <text state="hobby">Дайвинг</text>
+                            <text state="age">18</text>
+                            <text state="vegeterian">true</text>
+                        </value>
+                    </record>
+                    <record key="7">
+                        <value lang="en">
+                            <text state="first.name">Mikle</text>
+                            <text state="last.name">Garin</text>
+                            <text state="hobby">Judo</text>
+                            <text state="age">28</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Михаил</text>
+                            <text state="last.name">Гарин</text>
+                            <text state="hobby">Дзюдо</text>
+                            <text state="age">28</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="8">
+                        <value lang="en">
+                            <text state="first.name">Jake</text>
+                            <text state="last.name">Alduin</text>
+                            <text state="hobby">Fencing</text>
+                            <text state="age">35</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Джейк</text>
+                            <text state="last.name">Алдуин</text>
+                            <text state="hobby">Фехтование</text>
+                            <text state="age">35</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="9">
+                        <value lang="en">
+                            <text state="first.name">Andrew</text>
+                            <text state="last.name">Garfild</text>
+                            <text state="hobby">Programming</text>
+                            <text state="age">26</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Эндрю</text>
+                            <text state="last.name">Гарфилд</text>
+                            <text state="hobby">Программирование</text>
+                            <text state="age">26</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="10">
+                        <value lang="en">
+                            <text state="first.name">Kate</text>
+                            <text state="last.name">Matthew</text>
+                            <text state="hobby">Bowling</text>
+                            <text state="age">22</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Кэйт</text>
+                            <text state="last.name">Мэтью</text>
+                            <text state="hobby">Боулинг</text>
+                            <text state="age">22</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                    <record key="11">
+                        <value lang="en">
+                            <text state="first.name">Paul</text>
+                            <text state="last.name">Johnson</text>
+                            <text state="hobby">Modelling</text>
+                            <text state="age">38</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                        <value lang="ru">
+                            <text state="first.name">Пол</text>
+                            <text state="last.name">Джонсон</text>
+                            <text state="hobby">Моделирование</text>
+                            <text state="age">38</text>
+                            <text state="vegeterian">false</text>
+                        </value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="list">
+                <record key="item1">
+                    <value lang="en">Today</value>
+                    <value lang="ru">Сегодня</value>
+                </record>
+                <record key="item2">
+                    <value lang="en">Tomorrow</value>
+                    <value lang="ru">Завтра</value>
+                </record>
+                <record key="item3">
+                    <value lang="en">Never</value>
+                    <value lang="ru">Никогда</value>
+                </record>
+            </Dictionary>
+        </Dictionary>
+        <Dictionary prefix="interface">
+            <Dictionary prefix="auth">
+                <record key="title">
+                    <value lang="en">{Authorization form:b}</value>
+                    <value lang="ru">{Форма авторизации:b}</value>
+                </record>
+                <record key="login">
+                    <value lang="en">Login:</value>
+                    <value lang="ru">Логин:</value>
+                </record>
+                <record key="password">
+                    <value lang="en">Password:</value>
+                    <value lang="ru">Пароль:</value>
+                </record>
+                <Dictionary prefix="buttons">
+                    <record key="login">
+                        <value lang="en">Log in</value>
+                        <value lang="ru">Войти</value>
+                    </record>
+                    <record key="cancel">
+                        <value lang="en">Cancel</value>
+                        <value lang="ru">Отмена</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
+    </Dictionary>
     <Dictionary prefix="example">
         <Dictionary prefix="labels">
             <record key="title">
@@ -1827,6 +2089,148 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="lazypanel">
+                <record key="title">
+                    <value lang="en">LazyPanel</value>
+                    <value lang="ru">LazyPanel</value>
+                </record>
+                <record key="info">
+                    <value lang="en">Data: {%s:b}, UI: {%s:b}</value>
+                    <value lang="ru">Данные: {%s:b}, UI: {%s:b}</value>
+                </record>
+                <record key="initial">
+                    <value lang="en">Starting content</value>
+                    <value lang="ru">Начальное содержимое</value>
+                </record>
+                <record key="data">
+                    <value lang="en">Loaded text</value>
+                    <value lang="ru">Загруженный текст</value>
+                </record>
+                <record key="status">
+                    <value lang="en">Data status: {%s:b}{br}UI status: {%s:b}</value>
+                    <value lang="ru">Статус данных: {%s:b}{br}Статус UI: {%s:b}</value>
+                </record>
+                <record key="status.awaiting">
+                    <value lang="en">Awaiting</value>
+                    <value lang="ru">Ожидает</value>
+                </record>
+                <record key="status.queued">
+                    <value lang="en">Queued</value>
+                    <value lang="ru">В очереди</value>
+                </record>
+                <record key="status.loading">
+                    <value lang="en">Loading</value>
+                    <value lang="ru">Загружается</value>
+                </record>
+                <record key="status.loaded">
+                    <value lang="en">Loaded</value>
+                    <value lang="ru">Загружен</value>
+                </record>
+                <record key="status.failed">
+                    <value lang="en">Load failed</value>
+                    <value lang="ru">Загрузка не удалась</value>
+                </record>
+                <record key="throw.data.error">
+                    <value lang="en">Throw data loading error</value>
+                    <value lang="ru">Бросить ошибку при загрузке данных</value>
+                </record>
+                <record key="throw.ui.error">
+                    <value lang="en">Throw UI loading error</value>
+                    <value lang="ru">Бросить ошибку при загрузке интерфейса</value>
+                </record>
+                <Dictionary prefix="init">
+                    <record key="title">
+                        <value lang="en">Loading on initialize</value>
+                        <value lang="ru">Загрузка при инициализации</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="mixed">
+                    <record key="title">
+                        <value lang="en">Mixed loading mode</value>
+                        <value lang="ru">Смешанный режим загрузки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="display">
+                    <record key="title">
+                        <value lang="en">Loading on display</value>
+                        <value lang="ru">Загрузка при показе</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="manual">
+                    <record key="title">
+                        <value lang="en">Manual loading</value>
+                        <value lang="ru">Ручная загрузка</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="overlay">
+                <record key="title">
+                    <value lang="en">WebOverlay</value>
+                    <value lang="ru">WebOverlay</value>
+                </record>
+                <Dictionary prefix="textfield">
+                    <record key="title">
+                        <value lang="en">Over text field</value>
+                        <value lang="ru">Над текстовым полем</value>
+                    </record>
+                    <record key="field">
+                        <value lang="en" state="input-prompt">Enter something</value>
+                        <value lang="ru" state="input-prompt">Введите что-либо</value>
+                    </record>
+                    <record key="tooltip">
+                        <value lang="en">Sample tooltip text</value>
+                        <value lang="ru">Пример тултип текста</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="blocking">
+                    <record key="title">
+                        <value lang="en">Blocking</value>
+                        <value lang="ru">Блокирующий</value>
+                    </record>
+                    <record key="overlay.show">
+                        <value lang="en">Show overlay</value>
+                        <value lang="ru">Показать оверлей</value>
+                    </record>
+                    <record key="overlay.hide">
+                        <value lang="en">Hide overlay</value>
+                        <value lang="ru">Спрятать оверлей</value>
+                    </record>
+                    <record key="overlay.text">
+                        <value lang="en">{Simple overlay:b}{br}{blocking events:b}</value>
+                        <value lang="ru">{Простой оверлей:b}{br}{блокирующий события:b}</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="progressoverlay">
+                <record key="title">
+                    <value lang="en">WebProgressOverlay</value>
+                    <value lang="ru">WebProgressOverlay</value>
+                </record>
+                <Dictionary prefix="temporary">
+                    <record key="title">
+                        <value lang="en">Temporary</value>
+                        <value lang="ru">Временный</value>
+                    </record>
+                    <record key="button">
+                        <value lang="en">Show progress for 5 seconds</value>
+                        <value lang="ru">Показать прогресс на 5 секунд</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="toggled">
+                    <record key="title">
+                        <value lang="en">Toggled</value>
+                        <value lang="ru">Включаемый</value>
+                    </record>
+                    <record key="show">
+                        <value lang="en">Show progress</value>
+                        <value lang="ru">Показать прогресс</value>
+                    </record>
+                    <record key="hide">
+                        <value lang="en">Hide progress</value>
+                        <value lang="ru">Спрятать прогресс</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
         <Dictionary prefix="progress">
             <record key="title">
@@ -2064,224 +2468,6 @@
                     <value lang="en">Grids</value>
                     <value lang="ru">Таблицы</value>
                 </record>
-                <Dictionary prefix="data">
-                    <Dictionary prefix="column">
-                        <record key="first.name">
-                            <value lang="en">First name</value>
-                            <value lang="ru">Имя</value>
-                        </record>
-                        <record key="last.name">
-                            <value lang="en">Last name</value>
-                            <value lang="ru">Фамилия</value>
-                        </record>
-                        <record key="hobby">
-                            <value lang="en">Hobby</value>
-                            <value lang="ru">Хобби</value>
-                        </record>
-                        <record key="age">
-                            <value lang="en">Age</value>
-                            <value lang="ru">Возраст</value>
-                        </record>
-                        <record key="vegeterian">
-                            <value lang="en">Vegeterian</value>
-                            <value lang="ru">Вегетерианец</value>
-                        </record>
-                    </Dictionary>
-                    <Dictionary prefix="row">
-                        <record key="0">
-                            <value lang="en">
-                                <text state="first.name">Kathy</text>
-                                <text state="last.name">Smith</text>
-                                <text state="hobby">Snowboarding</text>
-                                <text state="age">19</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Кэти</text>
-                                <text state="last.name">Смитт</text>
-                                <text state="hobby">Сноубординг</text>
-                                <text state="age">19</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="1">
-                            <value lang="en">
-                                <text state="first.name">John</text>
-                                <text state="last.name">Doe</text>
-                                <text state="hobby">Rowing</text>
-                                <text state="age">32</text>
-                                <text state="vegeterian">true</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Джон</text>
-                                <text state="last.name">Доэ</text>
-                                <text state="hobby">Гребля</text>
-                                <text state="age">32</text>
-                                <text state="vegeterian">true</text>
-                            </value>
-                        </record>
-                        <record key="2">
-                            <value lang="en">
-                                <text state="first.name">Sue</text>
-                                <text state="last.name">Black</text>
-                                <text state="hobby">Knitting</text>
-                                <text state="age">56</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Сью</text>
-                                <text state="last.name">Блэк</text>
-                                <text state="hobby">Вязание</text>
-                                <text state="age">56</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="3">
-                            <value lang="en">
-                                <text state="first.name">Jane</text>
-                                <text state="last.name">White</text>
-                                <text state="hobby">Skydiving</text>
-                                <text state="age">20</text>
-                                <text state="vegeterian">true</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Джейн</text>
-                                <text state="last.name">Вайт</text>
-                                <text state="hobby">Прыжки с парашютом</text>
-                                <text state="age">20</text>
-                                <text state="vegeterian">true</text>
-                            </value>
-                        </record>
-                        <record key="4">
-                            <value lang="en">
-                                <text state="first.name">Joe</text>
-                                <text state="last.name">Brown</text>
-                                <text state="hobby">Swimming</text>
-                                <text state="age">14</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Джо</text>
-                                <text state="last.name">Браун</text>
-                                <text state="hobby">Плавание</text>
-                                <text state="age">14</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="5">
-                            <value lang="en">
-                                <text state="first.name">Sven</text>
-                                <text state="last.name">Alister</text>
-                                <text state="hobby">Boxing</text>
-                                <text state="age">36</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Свэн</text>
-                                <text state="last.name">Алистер</text>
-                                <text state="hobby">Бокс</text>
-                                <text state="age">36</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="6">
-                            <value lang="en">
-                                <text state="first.name">Allen</text>
-                                <text state="last.name">Snow</text>
-                                <text state="hobby">Diving</text>
-                                <text state="age">18</text>
-                                <text state="vegeterian">true</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Аллен</text>
-                                <text state="last.name">Сноу</text>
-                                <text state="hobby">Дайвинг</text>
-                                <text state="age">18</text>
-                                <text state="vegeterian">true</text>
-                            </value>
-                        </record>
-                        <record key="7">
-                            <value lang="en">
-                                <text state="first.name">Mikle</text>
-                                <text state="last.name">Garin</text>
-                                <text state="hobby">Judo</text>
-                                <text state="age">28</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Михаил</text>
-                                <text state="last.name">Гарин</text>
-                                <text state="hobby">Дзюдо</text>
-                                <text state="age">28</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="8">
-                            <value lang="en">
-                                <text state="first.name">Jake</text>
-                                <text state="last.name">Alduin</text>
-                                <text state="hobby">Fencing</text>
-                                <text state="age">35</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Джейк</text>
-                                <text state="last.name">Алдуин</text>
-                                <text state="hobby">Фехтование</text>
-                                <text state="age">35</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="9">
-                            <value lang="en">
-                                <text state="first.name">Andrew</text>
-                                <text state="last.name">Garfild</text>
-                                <text state="hobby">Programming</text>
-                                <text state="age">26</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Эндрю</text>
-                                <text state="last.name">Гарфилд</text>
-                                <text state="hobby">Программирование</text>
-                                <text state="age">26</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="10">
-                            <value lang="en">
-                                <text state="first.name">Kate</text>
-                                <text state="last.name">Matthew</text>
-                                <text state="hobby">Bowling</text>
-                                <text state="age">22</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Кэйт</text>
-                                <text state="last.name">Мэтью</text>
-                                <text state="hobby">Боулинг</text>
-                                <text state="age">22</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                        <record key="11">
-                            <value lang="en">
-                                <text state="first.name">Paul</text>
-                                <text state="last.name">Johnson</text>
-                                <text state="hobby">Modelling</text>
-                                <text state="age">38</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                            <value lang="ru">
-                                <text state="first.name">Пол</text>
-                                <text state="last.name">Джонсон</text>
-                                <text state="hobby">Моделирование</text>
-                                <text state="age">38</text>
-                                <text state="vegeterian">false</text>
-                            </value>
-                        </record>
-                    </Dictionary>
-                </Dictionary>
                 <Dictionary prefix="jtable">
                     <record key="title">
                         <value lang="en">JTable</value>
@@ -3075,22 +3261,6 @@
                     <value lang="ru">WebLaF опреление форм фильтрует события происходящие вне декораций компонента.{br}По умолчанию определение форм включено глобально для всех компонентов, поддерживающих WebLaF стилизацию.{br}Оно может быть насильно включено или отключено глобально или отдельно для каждого инстанса компонента.</value>
                 </record>
             </Dictionary>
-        </Dictionary>
-    </Dictionary>
-    <Dictionary prefix="sample">
-        <Dictionary prefix="list">
-            <record key="item1">
-                <value lang="en">Today</value>
-                <value lang="ru">Сегодня</value>
-            </record>
-            <record key="item2">
-                <value lang="en">Tomorrow</value>
-                <value lang="ru">Завтра</value>
-            </record>
-            <record key="item3">
-                <value lang="en">Never</value>
-                <value lang="ru">Никогда</value>
-            </record>
         </Dictionary>
     </Dictionary>
     <Translations>

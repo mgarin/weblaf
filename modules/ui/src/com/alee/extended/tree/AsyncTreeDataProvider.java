@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.managers.task.TaskManager;
 import com.alee.utils.compare.Filter;
 
 import java.io.Serializable;
@@ -37,6 +38,15 @@ import java.util.List;
  */
 public interface AsyncTreeDataProvider<N extends AsyncUniqueNode> extends Serializable
 {
+    /**
+     * Returns identifier of a {@link ThreadGroup} registered within {@link TaskManager}.
+     * It will be used by {@link AsyncTreeModel} to perform asynchronous nodes loading.
+     *
+     * @return identifier of a {@link ThreadGroup} registered within {@link TaskManager}
+     */
+    @NotNull
+    public String getThreadGroupId ();
+
     /**
      * Returns root {@link AsyncUniqueNode}.
      * This operation is always performed on EDT and should not take excessive amounts of time.

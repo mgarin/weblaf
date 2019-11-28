@@ -17,12 +17,12 @@
 
 package com.alee.extended.link;
 
-import com.alee.utils.concurrent.DaemonThreadFactory;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.managers.task.TaskManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Base class for asynchronous {@link WebLink} actions.
@@ -33,11 +33,6 @@ import java.util.concurrent.Executors;
  */
 public abstract class AsyncLinkAction extends AbstractLinkAction
 {
-    /**
-     * ExecutorService to limit simultaneously running threads.
-     */
-    protected static ExecutorService executorService = Executors.newFixedThreadPool ( 4, new DaemonThreadFactory ( "AsyncLinkAction" ) );
-
     /**
      * Constructs new {@link AsyncLinkAction}.
      */
@@ -51,7 +46,7 @@ public abstract class AsyncLinkAction extends AbstractLinkAction
      *
      * @param icon {@link LinkAction} icon
      */
-    public AsyncLinkAction ( final Icon icon )
+    public AsyncLinkAction ( @Nullable final Icon icon )
     {
         super ( icon, null );
     }
@@ -61,7 +56,7 @@ public abstract class AsyncLinkAction extends AbstractLinkAction
      *
      * @param text {@link LinkAction} text
      */
-    public AsyncLinkAction ( final String text )
+    public AsyncLinkAction ( @Nullable final String text )
     {
         super ( null, text );
     }
@@ -72,15 +67,15 @@ public abstract class AsyncLinkAction extends AbstractLinkAction
      * @param icon {@link LinkAction} icon
      * @param text {@link LinkAction} text
      */
-    public AsyncLinkAction ( final Icon icon, final String text )
+    public AsyncLinkAction ( @Nullable final Icon icon, @Nullable final String text )
     {
         super ( icon, text );
     }
 
     @Override
-    public void linkExecuted ( final ActionEvent event )
+    public void linkExecuted ( @NotNull final ActionEvent event )
     {
-        executorService.execute ( new Runnable ()
+        TaskManager.execute ( TaskManager.REMOTE_REQUEST, new Runnable ()
         {
             @Override
             public void run ()
@@ -95,5 +90,5 @@ public abstract class AsyncLinkAction extends AbstractLinkAction
      *
      * @param event link execution event
      */
-    protected abstract void asyncLinkExecuted ( ActionEvent event );
+    protected abstract void asyncLinkExecuted ( @NotNull ActionEvent event );
 }

@@ -56,8 +56,6 @@ public final class TimedAnimationPipeline extends AbstractAnimationPipeline impl
      */
     public TimedAnimationPipeline ()
     {
-        super ();
-
         // Concurrent transitions set
         transitions = new ConcurrentSkipListSet<Transition> ();
 

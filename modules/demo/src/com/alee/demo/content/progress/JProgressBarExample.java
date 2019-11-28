@@ -74,9 +74,9 @@ public class JProgressBarExample extends AbstractStylePreviewExample
     {
         // Transition for progress animation
         progressAnimator = new QueueTransition<Integer> ( true );
-        progressAnimator.add ( new TimedTransition<Integer> ( 0, 1000, new Quadratic.Out (), 2000L ) );
+        progressAnimator.add ( new TimedTransition<Integer> ( 0, 1000, new Quadratic.Out (), 8000L ) );
         progressAnimator.add ( new IdleTransition<Integer> ( 1000, 1000L ) );
-        progressAnimator.add ( new TimedTransition<Integer> ( 1000, 0, new Quadratic.Out (), 2000L ) );
+        progressAnimator.add ( new TimedTransition<Integer> ( 1000, 0, new Quadratic.Out (), 8000L ) );
         progressAnimator.add ( new IdleTransition<Integer> ( 0, 1000L ) );
 
         // Progress bar examples

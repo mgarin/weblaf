@@ -27,6 +27,7 @@
             <xs:enumeration value="radiobuttonmenuitem" />
             <xs:enumeration value="popupmenuseparator" />
             <xs:enumeration value="panel" />
+            <xs:enumeration value="overlay" />
             <xs:enumeration value="tabbedpane" />
             <xs:enumeration value="splitpanedivider" />
             <xs:enumeration value="splitpane" />

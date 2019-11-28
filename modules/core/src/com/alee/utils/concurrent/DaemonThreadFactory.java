@@ -1,5 +1,6 @@
 package com.alee.utils.concurrent;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.jdk.Supplier;
 
 import java.util.concurrent.ThreadFactory;
@@ -15,6 +16,7 @@ public class DaemonThreadFactory implements ThreadFactory
     /**
      * {@link Thread} name supplier.
      */
+    @NotNull
     private final Supplier<String> nameSupplier;
 
     /**
@@ -30,7 +32,7 @@ public class DaemonThreadFactory implements ThreadFactory
      *
      * @param name {@link Thread} name
      */
-    public DaemonThreadFactory ( final String name )
+    public DaemonThreadFactory ( @NotNull final String name )
     {
         this ( new Supplier<String> ()
         {
@@ -52,9 +54,8 @@ public class DaemonThreadFactory implements ThreadFactory
      *
      * @param nameSupplier {@link Thread} name supplier
      */
-    public DaemonThreadFactory ( final Supplier<String> nameSupplier )
+    public DaemonThreadFactory ( @NotNull final Supplier<String> nameSupplier )
     {
-        super ();
         this.nameSupplier = nameSupplier;
     }
 
@@ -64,8 +65,9 @@ public class DaemonThreadFactory implements ThreadFactory
      * @param runnable a runnable to be executed by new thread instance
      * @return constructed thread.
      */
+    @NotNull
     @Override
-    public Thread newThread ( final Runnable runnable )
+    public Thread newThread ( @NotNull final Runnable runnable )
     {
         final Thread thread = new Thread ( runnable );
         thread.setName ( nameSupplier.get () );

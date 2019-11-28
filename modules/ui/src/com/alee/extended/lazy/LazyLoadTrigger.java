@@ -15,14 +15,27 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.layout;
+package com.alee.extended.lazy;
 
 /**
+ * {@link LazyContent} trigger types.
+ *
  * @author Mikle Garin
  */
-public enum OverlayLocation
+public enum LazyLoadTrigger
 {
-    fill,
-    align,
-    custom
+    /**
+     * Loading will start right upon initialization.
+     */
+    onInit,
+
+    /**
+     * Loading will start upon {@link java.awt.Container} becoming visible.
+     */
+    onDisplay,
+
+    /**
+     * Loading won't start until manually triggered.
+     */
+    manual
 }

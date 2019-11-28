@@ -606,6 +606,24 @@ public final class CoreSwingUtils
     }
 
     /**
+     * Executes specified {@link Runnable} on the current {@link Thread} if it is Event Dispatch Thread.
+     * Otherwise specified {@link Runnable} will be executed later on Event Dispatch Thread.
+     *
+     * @param runnable {@link Runnable} to execute
+     */
+    public static void invokeOnEventDispatchThread ( @NotNull final Runnable runnable )
+    {
+        if ( CoreSwingUtils.isEventDispatchThread () )
+        {
+            runnable.run ();
+        }
+        else
+        {
+            invokeLater ( runnable );
+        }
+    }
+
+    /**
      * Will invoke the specified {@link Runnable} in EDT in case it is called from non-EDT thread.
      * It will catch any exceptions thrown by {@link SwingUtilities#invokeAndWait(Runnable)} and wrap them in {@link UtilityException}.
      * It is generally recommended to use {@link #invokeLater(Runnable)} instead whenever it is possible to avoid stalling EDT.

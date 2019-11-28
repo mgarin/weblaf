@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.managers.task.TaskManager;
 
 import java.util.List;
 
@@ -81,67 +82,76 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
         {
             // Acting differently in case parent node children are not yet loaded
             // We don't want to modify model (insert children) before existing children are actually loaded
-            if ( destination.isLoaded () )
+            final AsyncTreeDataProvider<N> dataProvider = tree.getDataProvider ();
+            if ( dataProvider != null )
             {
-                // Expanding parent first
-                if ( !tree.isExpanded ( destination ) )
+                if ( destination.isLoaded () )
                 {
-                    tree.expandNode ( destination );
-                }
-
-                // Adjust drop index after we ensure parent is loaded and expanded
-                final int adjustedDropIndex = getAdjustedDropIndex ( support, tree, model, destination, dropIndex );
-
-                // Adding data to model
-                // Performing it in a separate non-EDT thread
-                AsyncTreeQueue.getInstance ( tree ).execute ( new Runnable ()
-                {
-                    @Override
-                    public void run ()
+                    // Expanding parent first
+                    if ( !tree.isExpanded ( destination ) )
                     {
-                        performDropOperation ( support, tree, model, destination, adjustedDropIndex );
+                        tree.expandNode ( destination );
                     }
-                } );
+
+                    // Adjust drop index after we ensure parent is loaded and expanded
+                    final int adjustedDropIndex = getAdjustedDropIndex ( support, tree, model, destination, dropIndex );
+
+                    // Adding data to model
+                    // Performing it in a separate non-EDT thread
+                    TaskManager.execute ( dataProvider.getThreadGroupId (), new Runnable ()
+                    {
+                        @Override
+                        public void run ()
+                        {
+                            performDropOperation ( support, tree, model, destination, adjustedDropIndex );
+                        }
+                    } );
+                }
+                else
+                {
+                    // Loading children first
+                    tree.addAsyncTreeListener ( new AsyncTreeAdapter<N> ()
+                    {
+                        @Override
+                        public void loadCompleted ( @NotNull final N parent, @NotNull final List<N> children )
+                        {
+                            if ( parent == destination )
+                            {
+                                // Adding data to model
+                                // Performing it in a separate non-EDT thread
+                                TaskManager.execute ( dataProvider.getThreadGroupId (), new Runnable ()
+                                {
+                                    @Override
+                                    public void run ()
+                                    {
+                                        performDropOperation ( support, tree, model, destination, destination.getChildCount () );
+                                    }
+                                } );
+
+                                // Removing listener
+                                tree.removeAsyncTreeListener ( this );
+                            }
+                        }
+
+                        @Override
+                        public void loadFailed ( @NotNull final N parent, @NotNull final Throwable cause )
+                        {
+                            if ( parent == destination )
+                            {
+                                // Removing listener
+                                tree.removeAsyncTreeListener ( this );
+                            }
+                        }
+                    } );
+                    tree.reloadNode ( destination );
+                }
+                prepared = true;
             }
             else
             {
-                // Loading children first
-                tree.addAsyncTreeListener ( new AsyncTreeAdapter<N> ()
-                {
-                    @Override
-                    public void loadCompleted ( @NotNull final N parent, @NotNull final List<N> children )
-                    {
-                        if ( parent == destination )
-                        {
-                            // Adding data to model
-                            // Performing it in a separate non-EDT thread
-                            AsyncTreeQueue.getInstance ( tree ).execute ( new Runnable ()
-                            {
-                                @Override
-                                public void run ()
-                                {
-                                    performDropOperation ( support, tree, model, destination, destination.getChildCount () );
-                                }
-                            } );
-
-                            // Removing listener
-                            tree.removeAsyncTreeListener ( this );
-                        }
-                    }
-
-                    @Override
-                    public void loadFailed ( @NotNull final N parent, @NotNull final Throwable cause )
-                    {
-                        if ( parent == destination )
-                        {
-                            // Removing listener
-                            tree.removeAsyncTreeListener ( this );
-                        }
-                    }
-                } );
-                tree.reloadNode ( destination );
+                // Cannot proceed when target tree doesn't have data provider installed
+                prepared = false;
             }
-            prepared = true;
         }
         else
         {

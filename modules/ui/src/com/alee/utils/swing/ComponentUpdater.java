@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
  *
  * @author Mikle Garin
  */
+@Deprecated
 public class ComponentUpdater extends WebTimer implements AncestorListener
 {
     private JComponent component;

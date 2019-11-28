@@ -39,21 +39,21 @@ public class UnitsParsingException extends IllegalArgumentException
     /**
      * Constructs new {@link UnitsParsingException}.
      *
-     * @param cause {@link Throwable} cause
-     */
-    public UnitsParsingException ( @NotNull final Throwable cause )
-    {
-        super ( cause );
-    }
-
-    /**
-     * Constructs new {@link UnitsParsingException}.
-     *
      * @param message exception message
      * @param cause   {@link Throwable} cause
      */
     public UnitsParsingException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
+    }
+
+    /**
+     * Constructs new {@link UnitsParsingException}.
+     *
+     * @param cause {@link Throwable} cause
+     */
+    public UnitsParsingException ( @NotNull final Throwable cause )
+    {
+        super ( cause );
     }
 }

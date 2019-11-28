@@ -53,7 +53,7 @@ public class UniqueNode<N extends UniqueNode<N, T>, T> extends WebTreeNode<N, T>
      */
     public UniqueNode ()
     {
-        this ( null );
+        this ( TextUtils.generateId ( ID_PREFIX ), null );
     }
 
     /**
