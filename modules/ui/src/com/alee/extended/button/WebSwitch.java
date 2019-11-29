@@ -18,6 +18,7 @@
 package com.alee.extended.button;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
@@ -29,17 +30,15 @@ import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  * This component that allows switching between two states.
  *
  * @author Mikle Garin
  */
-public class WebSwitch extends WebPanel
+public class WebSwitch extends WebPanel implements ItemSelectable
 {
     /**
      * todo 1. Refactor component structure, probably perform all elements painting inside a single painter
@@ -124,6 +123,7 @@ public class WebSwitch extends WebPanel
                 {
                     requestFocusInWindow ();
                     setSelected ( !isSelected () );
+                    fireActionPerformed ();
                 }
             }
         };
@@ -380,7 +380,7 @@ public class WebSwitch extends WebPanel
             gripperLocation = selected ? 1f : 0f;
             revalidate ();
         }
-        fireActionPerformed ();
+        fireItemStateChanged ();
     }
 
     /**
@@ -404,34 +404,76 @@ public class WebSwitch extends WebPanel
     }
 
     /**
-     * Adds new switch action listener.
+     * Adds specified {@link ActionListener}.
      *
-     * @param actionListener switch action listener
+     * @param listener {@link ActionListener} to add
      */
-    public void addActionListener ( final ActionListener actionListener )
+    public void addActionListener ( @NotNull final ActionListener listener )
     {
-        listenerList.add ( ActionListener.class, actionListener );
+        listenerList.add ( ActionListener.class, listener );
     }
 
     /**
-     * Removes switch action listener.
+     * Removes specified {@link ActionListener}.
      *
-     * @param actionListener switch action listener
+     * @param listener {@link ActionListener} to remove
      */
-    public void removeActionListener ( final ActionListener actionListener )
+    public void removeActionListener ( @NotNull final ActionListener listener )
     {
-        listenerList.remove ( ActionListener.class, actionListener );
+        listenerList.remove ( ActionListener.class, listener );
     }
 
     /**
-     * Fires that switch action is performed.
+     * Informs all {@link ActionListener}s about occurred event.
      */
     public void fireActionPerformed ()
     {
         final ActionEvent actionEvent = new ActionEvent ( WebSwitch.this, 0, "Selection changed" );
-        for ( final ActionListener actionListener : listenerList.getListeners ( ActionListener.class ) )
+        for ( final ActionListener listener : listenerList.getListeners ( ActionListener.class ) )
         {
-            actionListener.actionPerformed ( actionEvent );
+            listener.actionPerformed ( actionEvent );
+        }
+    }
+
+    @Nullable
+    @Override
+    public Object[] getSelectedObjects ()
+    {
+        return isSelected () ? new Object[]{ WebSwitch.this } : null;
+    }
+
+    /**
+     * Adds specified {@link ItemListener}.
+     *
+     * @param listener {@link ItemListener} to add
+     */
+    @Override
+    public void addItemListener ( @NotNull final ItemListener listener )
+    {
+        listenerList.add ( ItemListener.class, listener );
+    }
+
+    /**
+     * Removes specified {@link ItemListener}.
+     *
+     * @param listener {@link ItemListener} to remove
+     */
+    @Override
+    public void removeItemListener ( @NotNull final ItemListener listener )
+    {
+        listenerList.remove ( ItemListener.class, listener );
+    }
+
+    /**
+     * Informs all {@link ItemListener}s about occurred event.
+     */
+    public void fireItemStateChanged ()
+    {
+        final ItemEvent itemEvent = new ItemEvent ( WebSwitch.this, 0, getSelectedObjects (),
+                isSelected () ? ItemEvent.SELECTED : ItemEvent.DESELECTED );
+        for ( final ItemListener listener : listenerList.getListeners ( ItemListener.class ) )
+        {
+            listener.itemStateChanged ( itemEvent );
         }
     }
 }

@@ -17,6 +17,7 @@
 
 package com.alee.laf.edt;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 
@@ -36,31 +37,32 @@ public abstract class PackageFilteringNonEventThreadHandler implements NonEventT
     /**
      * Packages that should not be filtered out.
      */
+    @NotNull
     protected final List<String> packages;
 
     /**
-     * List of unique stack trace keys which have already occured.
+     * List of unique stack trace keys which have already occurred.
      */
-    protected final Map<String, Long> occured;
+    @NotNull
+    protected final Map<String, Long> occurred;
 
     /**
      * Constructs new {@link PackageFilteringNonEventThreadHandler}.
      *
      * @param packages packages of the classes for which stack trace elements should not be filtered out
      */
-    public PackageFilteringNonEventThreadHandler ( final String... packages )
+    public PackageFilteringNonEventThreadHandler ( @NotNull final String... packages )
     {
-        super ();
         this.packages = CollectionUtils.asList ( packages );
-        this.occured = new HashMap<String, Long> ( 1 );
+        this.occurred = new HashMap<String, Long> ( 1 );
     }
 
     @Override
-    public void handle ( final RuntimeException e )
+    public void handle ( @NotNull final RuntimeException e )
     {
         final String key = getKey ( e );
-        final Long count = !occured.containsKey ( key ) ? 1L : occured.get ( key ) + 1L;
-        occured.put ( key, count );
+        final long count = !occurred.containsKey ( key ) ? 1L : occurred.get ( key ) + 1L;
+        occurred.put ( key, count );
         handle ( e, count );
     }
 
@@ -70,8 +72,10 @@ public abstract class PackageFilteringNonEventThreadHandler implements NonEventT
      * @param e exception to handle
      * @return unique stack trace key
      */
-    protected String getKey ( final RuntimeException e )
+    @NotNull
+    protected String getKey ( @NotNull final RuntimeException e )
     {
+        final String result;
         if ( packages.size () > 0 )
         {
             // Filtering out elements
@@ -96,24 +100,28 @@ public abstract class PackageFilteringNonEventThreadHandler implements NonEventT
             }
 
             // Calculating resulting key
-            final StringBuilder key = new StringBuilder ( "" );
+            final StringBuilder key = new StringBuilder ();
             for ( final StackTraceElement element : stackTrace )
             {
                 key.append ( element.toString () );
             }
 
             // Returning MD5 as actual key
-            return FileUtils.computeMD5 ( key.toString () );
+            result = FileUtils.computeMD5 ( key.toString () );
         }
-        return "none";
+        else
+        {
+            result = "none";
+        }
+        return result;
     }
 
     /**
      * Handles exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
-     * This method also receives exception occurences count in addition to the exception itself.
+     * This method also receives exception occurrences count in addition to the exception itself.
      *
      * @param e     exception to handle
-     * @param count exception occurences count
+     * @param count exception occurrences count
      */
-    protected abstract void handle ( RuntimeException e, Long count );
+    protected abstract void handle ( @NotNull RuntimeException e, long count );
 }

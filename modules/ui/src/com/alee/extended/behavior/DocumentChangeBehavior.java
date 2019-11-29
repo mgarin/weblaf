@@ -124,7 +124,7 @@ public abstract class DocumentChangeBehavior<C extends JTextComponent> implement
     /**
      * Fires {@link Document} change event if {@link JTextComponent} is still available.
      *
-     * @param event occured document event, {@code null} if the whole {@link Document} was replaced
+     * @param event occurred document event, {@code null} if the whole {@link Document} was replaced
      */
     protected void fireDocumentChanged ( @Nullable final DocumentEvent event )
     {
@@ -139,7 +139,7 @@ public abstract class DocumentChangeBehavior<C extends JTextComponent> implement
      * Informs that {@link Document} has changed in some way.
      *
      * @param component {@link JTextComponent} containing changed document
-     * @param event     occured document event, {@code null} if the whole {@link Document} was replaced
+     * @param event     occurred document event, {@code null} if the whole {@link Document} was replaced
      */
     public abstract void documentChanged ( @NotNull C component, @Nullable DocumentEvent event );
 }

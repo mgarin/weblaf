@@ -33,10 +33,10 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler
     }
 
     /**
-     * Handles {@link Throwable} that occured on the {@link Thread} with the specified name.
+     * Handles {@link Throwable} that occurred on the {@link Thread} with the specified name.
      *
      * @param tname  {@link Thread} name
-     * @param thrown {@link Throwable} that occured on the {@link Thread}
+     * @param thrown {@link Throwable} that occurred on the {@link Thread}
      */
     protected void handleException ( final String tname, final Throwable thrown )
     {

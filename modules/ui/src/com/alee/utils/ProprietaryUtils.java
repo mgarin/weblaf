@@ -610,7 +610,7 @@ public final class ProprietaryUtils
         }
         catch ( final InvocationTargetException e )
         {
-            final String msg = "Exception occured while retrieving SharedOwnerFrame";
+            final String msg = "Exception occurred while retrieving SharedOwnerFrame";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
         }
         catch ( final IllegalAccessException e )
@@ -641,7 +641,7 @@ public final class ProprietaryUtils
         }
         catch ( final InvocationTargetException e )
         {
-            final String msg = "Exception occured while retrieving SharedOwnerFrame shutdown listener";
+            final String msg = "Exception occurred while retrieving SharedOwnerFrame shutdown listener";
             LoggerFactory.getLogger ( ProprietaryUtils.class ).error ( msg, e );
         }
         catch ( final IllegalAccessException e )

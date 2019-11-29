@@ -260,7 +260,7 @@ public class TimedTransition<V> extends AbstractTransition<V>
                         }
                         else if ( nextFrame < currentFrame )
                         {
-                            // Multiple frames occured between pipeline frames
+                            // Multiple frames occurred between pipeline frames
                             // We have already fired the frame closest to the previousFrame time, proceeding to next
                             return proceed ( frame, currentFrame );
                         }

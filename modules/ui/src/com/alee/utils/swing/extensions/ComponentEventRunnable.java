@@ -31,7 +31,7 @@ public interface ComponentEventRunnable
     /**
      * Performs action according to component event.
      *
-     * @param event occured component event
+     * @param event occurred component event
      */
     public void run ( @NotNull ComponentEvent event );
 }

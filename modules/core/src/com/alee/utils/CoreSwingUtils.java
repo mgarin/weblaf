@@ -45,7 +45,7 @@ public final class CoreSwingUtils
     }
 
     /**
-     * Enables logging of all uncaught exceptions occured within EDT.
+     * Enables logging of all uncaught exceptions occurred within EDT.
      */
     public static void enableEventQueueLogging ()
     {

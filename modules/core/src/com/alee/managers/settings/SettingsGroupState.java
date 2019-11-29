@@ -66,7 +66,7 @@ public class SettingsGroupState implements Serializable
      * Constructs new {@link SettingsGroupState}.
      *
      * @param readState {@link ReadState}
-     * @param error     occured exception
+     * @param error     occurred exception
      */
     public SettingsGroupState ( final ReadState readState, final Throwable error )
     {

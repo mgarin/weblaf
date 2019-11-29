@@ -31,7 +31,7 @@ public interface MouseEventRunnable
     /**
      * Performs action according to mouse event.
      *
-     * @param e occured mouse event
+     * @param e occurred mouse event
      */
     public void run ( @NotNull MouseEvent e );
 }

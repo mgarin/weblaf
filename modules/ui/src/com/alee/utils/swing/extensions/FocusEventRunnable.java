@@ -31,7 +31,7 @@ public interface FocusEventRunnable
     /**
      * Performs action according to focus event.
      *
-     * @param e occured focus event
+     * @param e occurred focus event
      */
     public void run ( @NotNull FocusEvent e );
 }

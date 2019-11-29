@@ -31,7 +31,7 @@ public interface KeyEventRunnable
     /**
      * Performs action according to key event.
      *
-     * @param e occured key event
+     * @param e occurred key event
      */
     public void run ( @NotNull KeyEvent e );
 }

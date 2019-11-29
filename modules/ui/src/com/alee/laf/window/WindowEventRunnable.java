@@ -29,7 +29,7 @@ public interface WindowEventRunnable
     /**
      * Performs action according to window event.
      *
-     * @param e occured window event
+     * @param e occurred window event
      */
     public void run ( WindowEvent e );
 }

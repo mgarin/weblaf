@@ -18,6 +18,7 @@
 package com.alee.extended.canvas;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.extended.WebComponent;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -53,6 +54,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
     /**
      * Custom {@link WebCanvas} states.
      */
+    @NotNull
     protected List<String> states;
 
     /**
@@ -68,7 +70,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      *
      * @param states custom {@link WebCanvas} states
      */
-    public WebCanvas ( final String... states )
+    public WebCanvas ( @Nullable final String... states )
     {
         this ( StyleId.auto, states );
     }
@@ -79,7 +81,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      * @param id     style ID
      * @param states custom {@link WebCanvas} states
      */
-    public WebCanvas ( final StyleId id, final String... states )
+    public WebCanvas ( @NotNull final StyleId id, @Nullable final String... states )
     {
         this.states = new ArrayList<String> ( 1 );
         addStates ( states );
@@ -138,7 +140,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      *
      * @param states custom {@link WebCanvas} states to add
      */
-    public void addStates ( final String... states )
+    public void addStates ( @Nullable final String... states )
     {
         if ( ArrayUtils.notEmpty ( states ) )
         {
@@ -153,9 +155,9 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      *
      * @param states custom {@link WebCanvas} states to add
      */
-    public void addStates ( final Collection<String> states )
+    public void addStates ( @Nullable final Collection<String> states )
     {
-        if ( ArrayUtils.notEmpty ( states ) )
+        if ( states != null && ArrayUtils.notEmpty ( states ) )
         {
             final List<String> old = CollectionUtils.copy ( this.states );
             CollectionUtils.addUniqueNonNull ( this.states, states );
@@ -168,7 +170,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      *
      * @param states custom {@link WebCanvas} states to remove
      */
-    public void removeStates ( final String... states )
+    public void removeStates ( @Nullable final String... states )
     {
         if ( ArrayUtils.notEmpty ( states ) )
         {
@@ -183,9 +185,9 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      *
      * @param states custom {@link WebCanvas} states to remove
      */
-    public void removeStates ( final Collection<String> states )
+    public void removeStates ( @Nullable final Collection<String> states )
     {
-        if ( ArrayUtils.notEmpty ( states ) )
+        if ( states != null && ArrayUtils.notEmpty ( states ) )
         {
             final List<String> old = CollectionUtils.copy ( this.states );
             CollectionUtils.removeAll ( this.states, states );
@@ -199,7 +201,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
      * @param oldStates previous custom {@link WebCanvas} states
      * @param newStates current custom {@link WebCanvas} states
      */
-    public void fireStatesChanged ( final List<String> oldStates, final List<String> newStates )
+    public void fireStatesChanged ( @NotNull final List<String> oldStates, @NotNull final List<String> newStates )
     {
         firePropertyChange ( AbstractDecorationPainter.DECORATION_STATES_PROPERTY, oldStates, newStates );
     }

@@ -36,7 +36,7 @@ public interface DocumentEventRunnable<C extends JTextComponent>
      * Performs action according to document event.
      *
      * @param component {@link JTextComponent} containing changed document
-     * @param event     occured document event, {@code null} if the whole {@link Document} was replaced
+     * @param event     occurred document event, {@code null} if the whole {@link Document} was replaced
      */
     public void run ( @NotNull C component, @Nullable DocumentEvent event );
 }

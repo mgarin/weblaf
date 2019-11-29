@@ -49,7 +49,7 @@ public interface HotkeyRunnable extends KeyEventRunnable
     /**
      * Performs hotkey action.
      *
-     * @param e occured key event
+     * @param e occurred key event
      */
     @Override
     public void run ( @NotNull KeyEvent e );

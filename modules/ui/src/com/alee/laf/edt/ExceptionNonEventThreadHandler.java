@@ -19,7 +19,7 @@ package com.alee.laf.edt;
 
 /**
  * Default handler for exceptions thrown when any UI operation is executed outside of the Event Dispatch Thread.
- * It simply throws occured {@link RuntimeException} on the exact thread where it has occured.
+ * It simply throws occurred {@link RuntimeException} on the exact thread where it has occurred.
  *
  * @author Mikle Garin
  */

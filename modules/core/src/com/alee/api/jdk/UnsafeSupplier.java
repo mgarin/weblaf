@@ -32,7 +32,7 @@ public interface UnsafeSupplier<T>
      * Returns a result.
      *
      * @return a result
-     * @throws java.lang.Exception in case exception occured while retrieving result
+     * @throws java.lang.Exception in case exception occurred while retrieving result
      */
     public T get () throws Exception;
 }

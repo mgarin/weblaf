@@ -256,7 +256,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     /**
      * Returns actual dragged component.
      *
-     * @param e occured mouse event
+     * @param e occurred mouse event
      * @return actual dragged component
      */
     @Nullable
@@ -268,7 +268,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
     /**
      * Returns bounds within which component will act as a gripper.
      *
-     * @param e occured mouse event
+     * @param e occurred mouse event
      * @return bounds within which component will act as a gripper
      */
     @Nullable
