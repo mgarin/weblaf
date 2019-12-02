@@ -19,6 +19,7 @@ package com.alee.utils.swing;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.utils.UtilityException;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -44,18 +45,19 @@ public final class ClientProperty<V extends Serializable> implements Serializabl
     private final String key;
 
     /**
-     * Default value.
+     * {@link ClientProperty} default value.
+     * It can be {@code null}, but that adds additional checks and possible exceptions in use.
      */
-    @NotNull
+    @Nullable
     private final V defaultValue;
 
     /**
      * Constructs new {@link ClientProperty}.
      *
      * @param key          {@link ClientProperty} key
-     * @param defaultValue default value
+     * @param defaultValue {@link ClientProperty} default value
      */
-    public ClientProperty ( @NotNull final String key, @NotNull final V defaultValue )
+    public ClientProperty ( @NotNull final String key, @Nullable final V defaultValue )
     {
         this.key = key;
         this.defaultValue = defaultValue;
@@ -73,6 +75,17 @@ public final class ClientProperty<V extends Serializable> implements Serializabl
     }
 
     /**
+     * Returns {@link ClientProperty} default value.
+     *
+     * @return {@link ClientProperty} default value
+     */
+    @Nullable
+    public V defaultValue ()
+    {
+        return defaultValue;
+    }
+
+    /**
      * Returns {@link ClientProperty} value for the specified {@link JComponent}.
      *
      * @param component {@link JComponent} to retrieve value for
@@ -82,7 +95,14 @@ public final class ClientProperty<V extends Serializable> implements Serializabl
     public V get ( @NotNull final JComponent component )
     {
         final Object value = component.getClientProperty ( key );
-        return value != null ? ( V ) value : defaultValue;
+        if ( value != null || defaultValue != null )
+        {
+            return value != null ? ( V ) value : defaultValue;
+        }
+        else
+        {
+            throw new UtilityException ( "Value and default value are both null for client property: " + key );
+        }
     }
 
     /**
@@ -92,12 +112,19 @@ public final class ClientProperty<V extends Serializable> implements Serializabl
      * @param value     new value
      * @return old {@link ClientProperty} value for the specified {@link JComponent}
      */
-    @NotNull
+    @Nullable
     public V set ( @NotNull final JComponent component, @Nullable final V value )
     {
         final Object old = component.getClientProperty ( key );
-        component.putClientProperty ( key, value );
-        return old != null ? ( V ) old : defaultValue;
+        if ( value != null || defaultValue != null )
+        {
+            component.putClientProperty ( key, value );
+            return old != null ? ( V ) old : defaultValue;
+        }
+        else
+        {
+            throw new UtilityException ( "Provided value and default value are both null for client property: " + key );
+        }
     }
 
     /**
@@ -106,8 +133,16 @@ public final class ClientProperty<V extends Serializable> implements Serializabl
      * @param component {@link JComponent} to reset value for
      * @return old {@link ClientProperty} value for the specified {@link JComponent}
      */
+    @Nullable
     public V reset ( @NotNull final JComponent component )
     {
-        return set ( component, null );
+        if ( defaultValue != null )
+        {
+            return set ( component, null );
+        }
+        else
+        {
+            throw new UtilityException ( "Value cannot be reset because default value is null for client property: " + key );
+        }
     }
 }

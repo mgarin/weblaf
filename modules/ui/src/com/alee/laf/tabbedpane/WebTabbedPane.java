@@ -19,7 +19,6 @@ package com.alee.laf.tabbedpane;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.laf.table.TableToolTipProvider;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.*;
 import com.alee.managers.settings.Configuration;
@@ -88,16 +87,32 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     public static final String REMOVED_TAB_INDEX = "__index_to_remove__";
 
     /**
-     * Client properties used for backward compatibility with Swing {@link JTabbedPane}.
-     *
-     * @see TabbedPaneToolTipProvider
+     * Whether or not tab area should be hidden when only one tab is opened.
+     * This is a custom client property object used for backward compatibility with Swing {@link JTabbedPane}.
      */
     public static final ClientProperty<Boolean> HIDE_SINGLE_TAB_PROPERTY =
             new ClientProperty<Boolean> ( "hideSingleTab", false );
+
+    /**
+     * {@link TabbedPaneToolTipProvider} used by this {@link WebTabbedPane}.
+     * This is a custom client property object used for backward compatibility with Swing {@link JTabbedPane}.
+     *
+     * @see TabbedPaneToolTipProvider
+     */
     public static final NullableClientProperty<TabbedPaneToolTipProvider> TOOLTIP_PROVIDER_PROPERTY =
             new NullableClientProperty<TabbedPaneToolTipProvider> ( "tooltipProvider", null );
+
+    /**
+     * Leading {@link JComponent} for {@link TabArea}.
+     * This is a custom client property object used for backward compatibility with Swing {@link JTabbedPane}.
+     */
     public static final NullableClientProperty<JComponent> LEADING_TAB_AREA_COMPONENT_PROPERTY =
             new NullableClientProperty<JComponent> ( "leadingTabAreaComponent", null );
+
+    /**
+     * Trailing {@link JComponent} for {@link TabArea}.
+     * This is a custom client property object used for backward compatibility with Swing {@link JTabbedPane}.
+     */
     public static final NullableClientProperty<JComponent> TRAILING_TAB_AREA_COMPONENT_PROPERTY =
             new NullableClientProperty<JComponent> ( "trailingTabAreaComponent", null );
 
@@ -358,9 +373,9 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     }
 
     /**
-     * Returns {@link TableToolTipProvider}.
+     * Returns {@link TabbedPaneToolTipProvider} used by this {@link WebTabbedPane}.
      *
-     * @return {@link TableToolTipProvider}
+     * @return {@link TabbedPaneToolTipProvider} used by this {@link WebTabbedPane}
      */
     @Nullable
     public TabbedPaneToolTipProvider getToolTipProvider ()
@@ -369,9 +384,9 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     }
 
     /**
-     * Sets {@link TableToolTipProvider}.
+     * Sets {@link TabbedPaneToolTipProvider} for this {@link WebTabbedPane}.
      *
-     * @param provider {@link TableToolTipProvider}
+     * @param provider {@link TabbedPaneToolTipProvider}
      */
     public void setToolTipProvider ( @Nullable final TabbedPaneToolTipProvider provider )
     {

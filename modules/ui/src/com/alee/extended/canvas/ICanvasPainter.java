@@ -26,7 +26,7 @@ import com.alee.painter.SpecificPainter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-public interface ICanvasPainter<C extends WebCanvas, U extends WCanvasUI> extends SpecificPainter<C, U>
+public interface ICanvasPainter<C extends WebCanvas, U extends WCanvasUI<C>> extends SpecificPainter<C, U>
 {
     /**
      * This interface doesn't offer any additional methods to implement.

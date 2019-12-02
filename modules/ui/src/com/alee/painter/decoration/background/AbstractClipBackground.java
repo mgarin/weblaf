@@ -51,6 +51,7 @@ public abstract class AbstractClipBackground<C extends JComponent, D extends IDe
      *
      * @return {@link List} of actual {@link IBackground} implementations which are used to paint background
      */
+    @NotNull
     protected List<IBackground> backgrounds ()
     {
         if ( CollectionUtils.isEmpty ( backgrounds ) )
@@ -105,5 +106,6 @@ public abstract class AbstractClipBackground<C extends JComponent, D extends IDe
      * @param shape  {@link Shape} of the painted element
      * @return {@link Shape} which is a result of clipping original {@link Shape}
      */
+    @NotNull
     protected abstract Shape clip ( @NotNull Graphics2D g2d, @NotNull Rectangle bounds, @NotNull C c, @NotNull D d, @NotNull Shape shape );
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBackground.xsd" />
+    <xs:include schemaLocation="Backgrounds.xsd" />
+
+    <!-- com.alee.extended.overlay.ProgressOverlayBackground -->
+    <xs:complexType name="ProgressOverlayBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractBackground">
+
+                <!-- List of background implementations used to paint background under the progress -->
+                <xs:group ref="Backgrounds" minOccurs="0" maxOccurs="unbounded" />
+
+                <!-- Highlight width -->
+                <xs:attribute name="width" type="xs:integer" use="optional" />
+
+                <!-- Movement orientation -->
+                <xs:attribute name="color" type="java.awt:Color" use="optional" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

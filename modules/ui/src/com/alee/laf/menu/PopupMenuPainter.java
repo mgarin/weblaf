@@ -373,18 +373,12 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
                     cornerSide = los.y <= y ? TOP : BOTTOM;
                     if ( fixLocation )
                     {
+                        // Popup needs to be shifted left to account for shadow
                         x += shaped ? -sideWidth : 0;
-                        if ( cornerSide == TOP )
-                        {
-                            y -= shaped ? sideWidth - ( dropdown ? cornerWidth : 0 ) : 0;
-                        }
-                        else
-                        {
-                            // Invoker preferred size is required instead of actual height
-                            // This is because the original position takes it into account instead of height
-                            final int ih = invoker.getPreferredSize ().height;
-                            y -= ih + ( shaped ? sideWidth - ( dropdown ? cornerWidth : 0 ) : 0 );
-                        }
+
+                        // Popup width needs to be widened to account for left and right shadow
+                        final Dimension ps = popupMenu.getPreferredSize ();
+                        popupMenu.setPreferredSize ( new Dimension ( ps.width + sideWidth * 2, ps.height ) );
                     }
                     relativeCorner = los.x + invoker.getWidth () / 2 - x;
                 }

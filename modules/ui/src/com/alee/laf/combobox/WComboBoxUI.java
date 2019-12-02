@@ -33,20 +33,6 @@ import java.awt.*;
 public abstract class WComboBoxUI extends BasicComboBoxUI
 {
     /**
-     * Returns whether or not wide popup is allowed.
-     *
-     * @return {@code true} if wide popup is allowed, {@code false} otherwise
-     */
-    public abstract boolean isWidePopup ();
-
-    /**
-     * Sets whether or not wide popup is allowed.
-     *
-     * @param wide whether or not wide popup is allowed
-     */
-    public abstract void setWidePopup ( boolean wide );
-
-    /**
      * Returns combobox popup list.
      *
      * @return combobox popup list

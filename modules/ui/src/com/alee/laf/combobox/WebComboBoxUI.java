@@ -35,8 +35,11 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.swing.ClientProperty;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
+import com.alee.utils.swing.extensions.SizeMethods;
+import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -60,20 +63,14 @@ import java.util.List;
 public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Client property key for referencing {@link JComboBox} within its popup {@link JList}.
+     * {@link JComboBox} instance placed as popup {@link JList} client property.
      */
-    protected static final Object COMBOBOX_INSTANCE = "JComboBox.instance";
+    public static final ClientProperty<JComboBox> COMBOBOX_INSTANCE = new ClientProperty<JComboBox> ( "JComboBox.instance", null );
 
     /**
      * Default combobox renderer.
      */
     protected static ListCellRenderer DEFAULT_RENDERER;
-
-    /**
-     * Whether or not wide popup is allowed.
-     * Setting this to {@code true} will allow combobox popup to stretch to larger than combobox widths.
-     */
-    protected Boolean widePopup;
 
     /**
      * Component painter.
@@ -100,7 +97,8 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      * @param c component that will use UI instance
      * @return instance of the {@link WebComboBoxUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebComboBoxUI ();
     }
@@ -335,12 +333,14 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         }, this.painter, painter, IComboBoxPainter.class, AdaptiveComboBoxPainter.class );
     }
 
+    @NotNull
     @Override
     protected ListCellRenderer createRenderer ()
     {
         return new WebComboBoxRenderer.UIResource<Object, JList, ComboBoxCellParameters<Object, JList>> ();
     }
 
+    @NotNull
     @Override
     protected ComboBoxEditor createEditor ()
     {
@@ -355,7 +355,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      *
      * @param editor editor {@link Component}
      */
-    private void updateEditor ( final ComboBoxEditor editor )
+    private void updateEditor ( @Nullable final ComboBoxEditor editor )
     {
         if ( editor != null )
         {
@@ -386,22 +386,26 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      *
      * @return separator to be placed between renderer/editor and button
      */
+    @NotNull
     protected JSeparator createSeparator ()
     {
         return new ComboBoxSeparator ();
     }
 
+    @NotNull
     @Override
     protected JButton createArrowButton ()
     {
         return new ComboBoxButton ();
     }
 
+    @NotNull
     @Override
     protected ComboPopup createPopup ()
     {
         return new BasicComboPopup ( comboBox )
         {
+            @NotNull
             @Override
             protected JList createList ()
             {
@@ -430,7 +434,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
                 };
 
                 // Adding combobox reference for internal usage
-                list.putClientProperty ( COMBOBOX_INSTANCE, comboBox );
+                COMBOBOX_INSTANCE.set ( list, comboBox );
 
                 // todo Handle inside of the popup painter
                 // Custom listener to update popup menu dropdown corner
@@ -479,6 +483,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
                 installListListeners ();
             }
 
+            @NotNull
             @Override
             protected JScrollPane createScroller ()
             {
@@ -507,7 +512,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
                 setOpaque ( false );
                 setDoubleBuffered ( true );
                 setFocusable ( false );
-                setLayout ( new BoxLayout ( this, BoxLayout.Y_AXIS ) );
+                setLayout ( new BorderLayout () );
                 add ( scroller );
             }
 
@@ -545,41 +550,36 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
              *
              * @return combobox popup location
              */
+            @NotNull
             private Point getPopupLocation ()
             {
-                final Dimension comboSize = comboBox.getSize ();
-                if ( isWidePopup () )
-                {
-                    final Dimension prefSize = comboBox.getPreferredSize ();
-                    if ( prefSize.width > comboSize.width )
-                    {
-                        comboSize.width = prefSize.width;
-                    }
-                }
-                comboSize.setSize ( comboSize.width - 2, getPopupHeightForRowCount ( comboBox.getMaximumRowCount () ) );
-                final Rectangle popupBounds = computePopupBounds ( 0, comboBox.getBounds ().height, comboSize.width, comboSize.height );
+                // Resetting popup and list sizes
+                // This is necessary for proper recalculation of sizes
+                setPreferredSize ( null );
+                SizeMethodsImpl.setPreferredWidth ( list, SizeMethods.UNDEFINED );
 
-                final Dimension scrollSize = popupBounds.getSize ();
-                scroller.setMaximumSize ( scrollSize );
-                scroller.setPreferredSize ( scrollSize );
-                scroller.setMinimumSize ( scrollSize );
-                list.revalidate ();
+                // Updating list visible row count
+                // This is a better way to approach height calculation
+                list.setVisibleRowCount ( comboBox.getMaximumRowCount () );
+
+                // Calculating popup size
+                final Dimension ps = this.getPreferredSize ();
+                final Boolean widePopup = WebComboBox.WIDE_POPUP.get ( comboBox );
+                final int width = widePopup ? Math.max ( comboBox.getWidth (), ps.width ) : comboBox.getWidth ();
+                final int height = ps.height;
+
+                // Calculating popup bounds
+                final Rectangle popupBounds = computePopupBounds ( 0, comboBox.getHeight (), width, height );
+
+                // List size must be zero to allow elements to be horizontally shrinked
+                SizeMethodsImpl.setPreferredWidth ( list, 0 );
+
+                // Popup preferred size
+                setPreferredSize ( new Dimension ( width, height ) );
 
                 return popupBounds.getLocation ();
             }
         };
-    }
-
-    @Override
-    public boolean isWidePopup ()
-    {
-        return widePopup != null && widePopup;
-    }
-
-    @Override
-    public void setWidePopup ( final boolean wide )
-    {
-        this.widePopup = wide;
     }
 
     @Override
@@ -613,37 +613,43 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     @Override
     public Dimension getMinimumSize ( final JComponent c )
     {
-        if ( !isMinimumSizeDirty )
+        final Dimension minimumSize;
+        if ( isMinimumSizeDirty )
         {
-            return new Dimension ( cachedMinimumSize );
-        }
+            final Dimension size = getDisplaySize ();
+            final Insets insets = getInsets ();
 
-        final Dimension size = getDisplaySize ();
-        final Insets insets = getInsets ();
+            // Insets sizes
+            size.height += insets.top + insets.bottom;
+            size.width += insets.left + insets.right;
 
-        // Insets sizes
-        size.height += insets.top + insets.bottom;
-        size.width += insets.left + insets.right;
-
-        // Arrow button width
-        if ( arrowButton != null && arrowButton.isVisible () )
-        {
-            size.width += arrowButton.getPreferredSize ().width;
-
-            // Separator width
-            if ( separator != null && separator.isVisible () )
+            // Arrow button width
+            if ( arrowButton != null && arrowButton.isVisible () )
             {
-                size.width += separator.getPreferredSize ().width;
+                size.width += arrowButton.getPreferredSize ().width;
+
+                // Separator width
+                if ( separator != null && separator.isVisible () )
+                {
+                    size.width += separator.getPreferredSize ().width;
+                }
             }
+
+            // Saving resulting size
+            cachedMinimumSize.setSize ( size.width, size.height );
+            isMinimumSizeDirty = false;
+
+            minimumSize = new Dimension ( size );
+        }
+        else
+        {
+            minimumSize = new Dimension ( cachedMinimumSize );
         }
 
-        // Saving resulting size
-        cachedMinimumSize.setSize ( size.width, size.height );
-        isMinimumSizeDirty = false;
-
-        return new Dimension ( size );
+        return minimumSize;
     }
 
+    @NotNull
     @Override
     protected Dimension getDefaultSize ()
     {
@@ -658,7 +664,8 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      * @param c renderer component
      * @return renderer component preferred size
      */
-    protected Dimension getSizeForComponent ( final Component c )
+    @NotNull
+    protected Dimension getSizeForComponent ( @NotNull final Component c )
     {
         currentValuePane.add ( c );
         c.setFont ( comboBox.getFont () );
@@ -667,18 +674,21 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
         return d;
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter, true );
     }
 
+    @NotNull
     @Override
     protected Rectangle rectangleForCurrentValue ()
     {
         return getValueBounds ();
     }
 
+    @NotNull
     @Override
     public Rectangle getValueBounds ()
     {
@@ -705,6 +715,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      *
      * @return area that is reserved for drawing between currently selected item and arrow button
      */
+    @NotNull
     public Rectangle getSeparatorBounds ()
     {
         final int width = comboBox.getWidth ();
@@ -727,6 +738,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      *
      * @return area that is reserved for drawing arrow button
      */
+    @NotNull
     public Rectangle getArrowButtonBounds ()
     {
         final int width = comboBox.getWidth ();
@@ -767,13 +779,13 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void addEditabilityListener ( final EditabilityListener listener )
+    public void addEditabilityListener ( @NotNull final EditabilityListener listener )
     {
         listenerList.add ( EditabilityListener.class, listener );
     }
 
     @Override
-    public void removeEditabilityListener ( final EditabilityListener listener )
+    public void removeEditabilityListener ( @NotNull final EditabilityListener listener )
     {
         listenerList.remove ( EditabilityListener.class, listener );
     }
@@ -792,13 +804,13 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void addPopupVisibilityListener ( final VisibilityListener listener )
+    public void addPopupVisibilityListener ( @NotNull final VisibilityListener listener )
     {
         listenerList.add ( VisibilityListener.class, listener );
     }
 
     @Override
-    public void removePopupVisibilityListener ( final VisibilityListener listener )
+    public void removePopupVisibilityListener ( @NotNull final VisibilityListener listener )
     {
         listenerList.remove ( VisibilityListener.class, listener );
     }
@@ -966,7 +978,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             DecorationUtils.fireStatesChanged ( this );
         }
 
-        @Nullable
+        @NotNull
         @Override
         public List<String> getStates ()
         {
@@ -985,6 +997,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      *
      * @return default list cell renderer instance
      */
+    @NotNull
     protected static ListCellRenderer getDefaultListCellRenderer ()
     {
         if ( DEFAULT_RENDERER == null )

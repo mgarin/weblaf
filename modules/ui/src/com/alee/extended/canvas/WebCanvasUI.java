@@ -19,11 +19,11 @@ package com.alee.extended.canvas;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -40,6 +40,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     /**
      * Component painter.
      */
+    @Nullable
     @DefaultPainter ( CanvasPainter.class )
     protected ICanvasPainter painter;
 
@@ -50,7 +51,8 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
      * @param c component that will use UI instance
      * @return instance of the {@link WebCanvasUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebCanvasUI ();
     }
@@ -149,25 +151,25 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
         return PainterSupport.contains ( c, this, painter, x, y );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
         return PainterSupport.getBaseline ( c, this, painter, width, height );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
     {
         return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
         if ( painter != null )
         {
@@ -176,7 +178,7 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, painter );
     }

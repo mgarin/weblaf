@@ -34,6 +34,7 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.swing.ClientProperty;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -59,12 +60,19 @@ import java.util.Vector;
  * @see ComboBoxPainter
  */
 public class WebComboBox extends JComboBox implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods, EventMethods,
-        ToolTipMethods, LanguageMethods,LanguageEventMethods,  SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
+        ToolTipMethods, LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
     /**
      * Component properties.
      */
     public static final String EDITOR_PROPERTY = "editor";
+
+    /**
+     * Whether or not combobox popup uses preferred width to ensure that all elements can be fully displayed.
+     * By default this is set to {@code false} which makes popup have exactly the same width as {@link WebComboBox}.
+     * Setting this to {@code true} will allow combobox popup to stretch to larger than combobox widths.
+     */
+    public static final ClientProperty<Boolean> WIDE_POPUP = new ClientProperty<Boolean> ( "widePopup", false );
 
     /**
      * Constructs new combobox.
@@ -356,47 +364,48 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     }
 
     /**
-     * Returns selected value index.
+     * Returns index of the selected value or {@code -1} if nothing is selected.
      * This method is overridden by WebComboBox to fix issue with "null" value from the model being ignored if selected.
      * By default (in JComboBox) this method will not return index of "null" value in the model if it is selected.
      *
-     * @return index of the selected value
+     * @return index of the selected value or {@code -1} if nothing is selected
      */
     @Override
     public int getSelectedIndex ()
     {
-        final Object sObject = dataModel.getSelectedItem ();
-        int i;
-        Object obj;
-        for ( i = 0; i < dataModel.getSize (); i++ )
+        int selectedIndex = -1;
+        final Object selected = dataModel.getSelectedItem ();
+        for ( int i = 0; i < dataModel.getSize (); i++ )
         {
-            obj = dataModel.getElementAt ( i );
-            if ( Objects.equals ( obj, sObject ) )
+            if ( Objects.equals ( dataModel.getElementAt ( i ), selected ) )
             {
-                return i;
+                selectedIndex = i;
+                break;
             }
         }
-        return -1;
+        return selectedIndex;
     }
 
     /**
-     * Returns whether or not wide popup is allowed.
+     * Returns whether or not combobox popup uses preferred width to ensure that all elements can be fully displayed.
+     * By default this is set to {@code false} which makes popup have exactly the same width as {@link WebComboBox}.
      *
-     * @return {@code true} if wide popup is allowed, {@code false} otherwise
+     * @return {@code true} if combobox popup uses preferred width, {@code false} otherwise
      */
     public boolean isWidePopup ()
     {
-        return getUI ().isWidePopup ();
+        return WIDE_POPUP.get ( this );
     }
 
     /**
-     * Sets whether or not wide popup is allowed.
+     * Sets whether or not combobox popup should use preferred width to ensure that all elements can be fully displayed.
+     * By default this is set to {@code false} which makes popup have exactly the same width as {@link WebComboBox}.
      *
-     * @param wide whether or not wide popup is allowed
+     * @param wide whether or not combobox popup should use preferred width
      */
     public void setWidePopup ( final boolean wide )
     {
-        getUI ().setWidePopup ( wide );
+        WIDE_POPUP.set ( this, wide );
     }
 
     /**

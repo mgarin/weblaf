@@ -33,14 +33,18 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.AbstractBackground;
+import com.alee.painter.decoration.background.IBackground;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 /**
  * Background displaying indeterminate progress.
@@ -62,18 +66,17 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
     protected Integer width;
 
     /**
-     * Background color.
-     */
-    @Nullable
-    @XStreamAsAttribute
-    protected Color background;
-
-    /**
      * Progress color.
      */
     @Nullable
     @XStreamAsAttribute
     protected Color color;
+
+    /**
+     * {@link List} of {@link IBackground} implementations used to paint background under the progress.
+     */
+    @XStreamImplicit
+    private List<IBackground> backgrounds;
 
     /**
      * Current progress opacity.
@@ -196,19 +199,6 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
     }
 
     /**
-     * Returns background {@link Color} or {@code null} if it was not specified.
-     *
-     * @param c {@link WebCanvas}
-     * @param d {@link IDecoration}
-     * @return background {@link Color} or {@code null} if it was not specified
-     */
-    @Nullable
-    public Color getBackground ( @NotNull final C c, @NotNull final D d )
-    {
-        return background;
-    }
-
-    /**
      * Returns progress color.
      *
      * @param c {@link WebCanvas}
@@ -223,6 +213,19 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
             throw new StyleException ( "Progress color must be specified" );
         }
         return color;
+    }
+
+    /**
+     * Returns {@link List} of {@link IBackground} implementations used to paint background under the progress.
+     *
+     * @param c {@link WebCanvas}
+     * @param d {@link IDecoration}
+     * @return {@link List} of {@link IBackground} implementations used to paint background under the progress
+     */
+    @Nullable
+    protected List<IBackground> getBackgrounds ( @NotNull final C c, @NotNull final D d )
+    {
+        return backgrounds;
     }
 
     /**
@@ -369,13 +372,14 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
                 final Shape oldClip = GraphicsUtils.intersectClip ( g2d, shape );
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, currentOpacity, currentOpacity < 1f );
 
-                // Background fill
-                final Color background = getBackground ( c, d );
-                if ( background != null )
+                // Backgrounds
+                final List<IBackground> backgrounds = getBackgrounds ( c, d );
+                if ( CollectionUtils.notEmpty ( backgrounds ) )
                 {
-                    final Paint oldPaint = GraphicsUtils.setupPaint ( g2d, background );
-                    g2d.fill ( shape );
-                    GraphicsUtils.restorePaint ( g2d, oldPaint );
+                    for ( final IBackground background : backgrounds )
+                    {
+                        background.paint ( g2d, bounds, c, d, shape );
+                    }
                 }
 
                 // Progress lines

@@ -7,6 +7,7 @@
     <xs:include schemaLocation="EllipseShape.xsd" />
     <xs:include schemaLocation="ArrowShape.xsd" />
     <xs:include schemaLocation="BreadcrumbElementShape.xsd" />
+    <xs:include schemaLocation="ProgressOverlayShape.xsd" />
 
     <!-- IShape implementations -->
     <xs:group name="Shapes">
@@ -18,6 +19,7 @@
             <xs:element name="EllipseShape" type="EllipseShape" />
             <xs:element name="ArrowShape" type="ArrowShape" />
             <xs:element name="BreadcrumbElementShape" type="BreadcrumbElementShape" />
+            <xs:element name="ProgressOverlayShape" type="ProgressOverlayShape" />
 
             <!-- Any custom shape -->
             <xs:any processContents="skip" />

@@ -17,6 +17,8 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.list.ListCellParameters;
 
 import javax.swing.*;
@@ -33,6 +35,7 @@ public class ComboBoxCellParameters<V, C extends JList> extends ListCellParamete
     /**
      * {@link JComboBox} that owns {@link JList}.
      */
+    @NotNull
     protected final JComboBox comboBox;
 
     /**
@@ -42,10 +45,10 @@ public class ComboBoxCellParameters<V, C extends JList> extends ListCellParamete
      * @param list  {@link JList}
      * @param index cell index
      */
-    public ComboBoxCellParameters ( final C list, final int index )
+    public ComboBoxCellParameters ( @NotNull final C list, final int index )
     {
         super ( list, index );
-        this.comboBox = ( JComboBox ) list.getClientProperty ( WebComboBoxUI.COMBOBOX_INSTANCE );
+        this.comboBox = WebComboBoxUI.COMBOBOX_INSTANCE.get ( list );
     }
 
     /**
@@ -58,10 +61,11 @@ public class ComboBoxCellParameters<V, C extends JList> extends ListCellParamete
      * @param selected whether or not cell is selected
      * @param focused  whether or not cell has focus
      */
-    public ComboBoxCellParameters ( final C list, final V value, final int index, final boolean selected, final boolean focused )
+    public ComboBoxCellParameters ( @NotNull final C list, @Nullable final V value, final int index, final boolean selected,
+                                    final boolean focused )
     {
         super ( list, value, index, selected, focused );
-        this.comboBox = ( JComboBox ) list.getClientProperty ( WebComboBoxUI.COMBOBOX_INSTANCE );
+        this.comboBox = WebComboBoxUI.COMBOBOX_INSTANCE.get ( list );
     }
 
     /**
@@ -69,6 +73,7 @@ public class ComboBoxCellParameters<V, C extends JList> extends ListCellParamete
      *
      * @return {@link JComboBox} that owns {@link JList}
      */
+    @NotNull
     public JComboBox comboBox ()
     {
         return comboBox;

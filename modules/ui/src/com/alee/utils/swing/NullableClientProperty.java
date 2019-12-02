@@ -44,7 +44,7 @@ public final class NullableClientProperty<V extends Serializable> implements Ser
     private final String key;
 
     /**
-     * Default value.
+     * {@link NullableClientProperty} default value.
      */
     @Nullable
     private final V defaultValue;
@@ -53,7 +53,7 @@ public final class NullableClientProperty<V extends Serializable> implements Ser
      * Constructs new {@link NullableClientProperty}.
      *
      * @param key          {@link NullableClientProperty} key
-     * @param defaultValue default value
+     * @param defaultValue {@link NullableClientProperty} default value
      */
     public NullableClientProperty ( @NotNull final String key, @Nullable final V defaultValue )
     {
@@ -70,6 +70,17 @@ public final class NullableClientProperty<V extends Serializable> implements Ser
     public String key ()
     {
         return key;
+    }
+
+    /**
+     * Returns {@link NullableClientProperty} default value.
+     *
+     * @return {@link NullableClientProperty} default value
+     */
+    @Nullable
+    public V defaultValue ()
+    {
+        return defaultValue;
     }
 
     /**
@@ -106,6 +117,7 @@ public final class NullableClientProperty<V extends Serializable> implements Ser
      * @param component {@link JComponent} to reset value for
      * @return old {@link NullableClientProperty} value for the specified {@link JComponent}
      */
+    @Nullable
     public V reset ( @NotNull final JComponent component )
     {
         return set ( component, null );

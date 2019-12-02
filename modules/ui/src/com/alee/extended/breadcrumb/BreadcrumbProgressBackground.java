@@ -38,6 +38,7 @@ import java.awt.geom.Area;
 public class BreadcrumbProgressBackground<C extends JComponent, D extends IDecoration<C, D>, I extends BreadcrumbProgressBackground<C, D, I>>
         extends AbstractClipBackground<C, D, I>
 {
+    @NotNull
     @Override
     protected Shape clip ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
                            @NotNull final Shape shape )

@@ -94,12 +94,6 @@
 
                 <!-- Popup list -->
                 <style type="list" id="list" extends="transparent">
-                    <component class="com.alee.laf.list.WebList">
-
-                        <!-- Solves problems with long list elements -->
-                        <preferredWidth>0</preferredWidth>
-
-                    </component>
                     <painter>
 
                         <!-- Hide item background painter -->

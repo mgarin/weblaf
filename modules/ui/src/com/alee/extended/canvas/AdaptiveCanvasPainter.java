@@ -17,6 +17,7 @@
 
 package com.alee.extended.canvas;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -28,7 +29,7 @@ import com.alee.painter.Painter;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-public final class AdaptiveCanvasPainter<C extends WebCanvas, U extends WCanvasUI> extends AdaptivePainter<C, U>
+public final class AdaptiveCanvasPainter<C extends WebCanvas, U extends WCanvasUI<C>> extends AdaptivePainter<C, U>
         implements ICanvasPainter<C, U>
 {
     /**
@@ -36,7 +37,7 @@ public final class AdaptiveCanvasPainter<C extends WebCanvas, U extends WCanvasU
      *
      * @param painter {@link Painter} to adapt
      */
-    public AdaptiveCanvasPainter ( final Painter painter )
+    public AdaptiveCanvasPainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }
