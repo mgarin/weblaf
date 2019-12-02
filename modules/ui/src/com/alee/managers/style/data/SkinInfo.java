@@ -333,6 +333,9 @@ public final class SkinInfo implements Serializable
      */
     public void install ()
     {
+        // Lazily initializing style cache
+        ensureCacheInitialized ();
+
         // Applies all existing extensions to this skin
         // All compliance checks are performed within applyExtension(...) method
         for ( final SkinExtension extension : StyleManager.getExtensions () )

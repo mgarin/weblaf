@@ -1007,6 +1007,7 @@ public final class StyleManager
     /**
      * Applies specified {@link Skin} to all {@link Styleable} components.
      * That {@link Skin} will also be applied to all {@link Styleable} components created afterwards.
+     * In case specified {@link Skin} cannot be applied due to an exception {@link StyleManager} will attempt to rollback to previous one.
      *
      * @param skin {@link Skin} to apply
      * @return previously applied {@link Skin}
@@ -1038,36 +1039,62 @@ public final class StyleManager
                 previousSkin.uninstall ();
             }
 
-            // Updating currently applied skin
-            currentSkin = skin;
-
-            // Installing new skin
-            skin.install ();
-
-            // Applying new skin to all existing skinnable components
-            styleData.forEach ( new BiConsumer<JComponent, StyleData> ()
+            try
             {
-                @Override
-                public void accept ( final JComponent component, final StyleData styleData )
+                // Trying to apply new skin
+                setSkinImpl ( skin );
+
+                // Informing about skin change
+                fireSkinChanged ( previousSkin, skin );
+            }
+            catch ( final Exception e )
+            {
+                // Rolling back to previous skin
+                if ( previousSkin != null )
                 {
-                    if ( !styleData.isPinnedSkin () && styleData.getSkin () == previousSkin )
-                    {
-                        // There is no need to update child style components here as we will reach them anyway
-                        // So we simply update each single component skin separately
-                        styleData.applySkin ( skin, false );
-                    }
+                    setSkinImpl ( previousSkin );
                 }
-            } );
 
-            // Clearing icon caches
-            // todo Can be done more optimally maybe?
-            IconManager.clearIconCaches ();
-
-            // Informing about skin change
-            fireSkinChanged ( previousSkin, skin );
+                // Rethrow cause exception
+                throw new StyleException ( "Unable to install skin: " + skin, e );
+            }
 
             return previousSkin;
         }
+    }
+
+    /**
+     * Applies specified {@link Skin} to all {@link Styleable} components.
+     * That {@link Skin} will also be applied to all {@link Styleable} components created afterwards.
+     *
+     * @param skin {@link Skin} to apply
+     */
+    private static void setSkinImpl ( @NotNull final Skin skin )
+    {
+        // Updating currently applied skin
+        currentSkin = skin;
+
+        // Installing new skin
+        skin.install ();
+
+        // Applying new skin to all existing skinnable components
+        styleData.forEach ( new BiConsumer<JComponent, StyleData> ()
+        {
+            @Override
+            public void accept ( final JComponent component, final StyleData styleData )
+            {
+                if ( !styleData.isPinnedSkin () && styleData.getSkin () != currentSkin )
+                {
+                    // There is no need to update child style components here as we will reach them anyway
+                    // So we simply update each single component skin separately
+                    styleData.applySkin ( skin, false );
+                }
+            }
+        } );
+
+        // Clearing icon caches
+        // todo Can be done more optimally maybe?
+        IconManager.clearIconCaches ();
     }
 
     /**
