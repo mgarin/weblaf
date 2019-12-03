@@ -35,6 +35,7 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.MathUtils;
 import com.alee.utils.swing.ClientProperty;
 import com.alee.utils.swing.EditabilityListener;
 import com.alee.utils.swing.VisibilityListener;
@@ -560,7 +561,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
 
                 // Updating list visible row count
                 // This is a better way to approach height calculation
-                list.setVisibleRowCount ( comboBox.getMaximumRowCount () );
+                list.setVisibleRowCount ( MathUtils.limit ( 1, list.getModel ().getSize (), comboBox.getMaximumRowCount () ) );
 
                 // Calculating popup size
                 final Dimension ps = this.getPreferredSize ();
