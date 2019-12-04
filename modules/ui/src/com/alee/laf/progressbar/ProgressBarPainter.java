@@ -182,44 +182,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
     {
         if ( progressPainter != null )
         {
-            if ( component.isIndeterminate () )
-            {
-                // Painting indeterminate progress
-                paintSection ( progressPainter, g2d, bounds );
-            }
-            else
-            {
-                // Calculating actual progress size
-                final boolean hor = isHorizontal ();
-                final int min = component.getMinimum ();
-                final float progress = ( float ) ( component.getValue () - min ) / ( component.getMaximum () - min );
-                final int p = Math.round ( ( hor ? bounds.width : bounds.height ) * progress );
-                final Dimension ps = progressPainter.getPreferredSize ();
-
-                // Painting progress only when it fits into provided bounds
-                // todo Must use minimum size in future when it will be available in painters
-                // todo Also probably must do this inside of the decoration painter itself?
-                if ( p > ( hor ? ps.width : ps.height ) )
-                {
-                    if ( hor )
-                    {
-                        if ( !ltr )
-                        {
-                            bounds.x = bounds.x + bounds.width - p;
-                        }
-                        bounds.width = p;
-                    }
-                    else
-                    {
-                        if ( ltr )
-                        {
-                            bounds.y = bounds.y + bounds.height - p;
-                        }
-                        bounds.height = p;
-                    }
-                    paintSection ( progressPainter, g2d, bounds );
-                }
-            }
+            paintSection ( progressPainter, g2d, bounds );
         }
     }
 
@@ -231,7 +194,7 @@ public class ProgressBarPainter<C extends JProgressBar, U extends WProgressBarUI
      */
     protected void paintText ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds )
     {
-        if ( component.isStringPainted () )
+        if ( progressTextPainter != null && component.isStringPainted () )
         {
             // Painting progress text
             paintSection ( progressTextPainter, g2d, bounds );

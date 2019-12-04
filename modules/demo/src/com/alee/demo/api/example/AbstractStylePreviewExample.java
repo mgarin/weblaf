@@ -57,6 +57,6 @@ public abstract class AbstractStylePreviewExample extends AbstractPreviewExample
     @NotNull
     protected String getStyleFileName ()
     {
-        return "" + getId ();
+        return getId ();
     }
 }

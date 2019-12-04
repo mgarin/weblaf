@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.applet.Applet;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -65,6 +66,37 @@ public final class CoreSwingUtils
                 }
             }
         } );
+    }
+
+    /**
+     * Returns current {@link EventQueue} {@link AWTEvent}.
+     *
+     * @return current {@link EventQueue} {@link AWTEvent}
+     */
+    @Nullable
+    public static AWTEvent getCurrentEvent ()
+    {
+        return EventQueue.getCurrentEvent ();
+    }
+
+    /**
+     * Returns current {@link EventQueue} {@link AWTEvent} modifiers.
+     *
+     * @return current {@link EventQueue} {@link AWTEvent} modifiers
+     */
+    public static int getCurrentEventModifiers ()
+    {
+        int modifiers = 0;
+        final AWTEvent currentEvent = getCurrentEvent ();
+        if ( currentEvent instanceof InputEvent )
+        {
+            modifiers = ( ( InputEvent ) currentEvent ).getModifiers ();
+        }
+        else if ( currentEvent instanceof ActionEvent )
+        {
+            modifiers = ( ( ActionEvent ) currentEvent ).getModifiers ();
+        }
+        return modifiers;
     }
 
     /**

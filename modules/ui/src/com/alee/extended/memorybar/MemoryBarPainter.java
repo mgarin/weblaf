@@ -15,28 +15,29 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.split;
+package com.alee.extended.memorybar;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.painter.decoration.AbstractContainerPainter;
+import com.alee.api.annotations.Nullable;
+import com.alee.api.jdk.Objects;
+import com.alee.laf.button.AbstractButtonModelPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
- * Basic painter for {@link WebMultiSplitPane} component.
- * It is used as {@link WMultiSplitPaneUI} default painter.
+ * Basic painter for {@link WebMemoryBar} component.
+ * It is used as {@link WMemoryBarUI} default painter.
  *
  * @param <C> component type
  * @param <U> component UI type
  * @param <D> decoration type
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
- * @see WebMultiSplitPane
  */
-public class MultiSplitPanePainter<C extends WebMultiSplitPane, U extends WMultiSplitPaneUI, D extends IDecoration<C, D>>
-        extends AbstractContainerPainter<C, U, D> implements IMultiSplitPanePainter<C, U>
+public class MemoryBarPainter<C extends WebMemoryBar, U extends WMemoryBarUI<C>, D extends IDecoration<C, D>>
+        extends AbstractButtonModelPainter<C, U, D> implements IMemoryBarPainter<C, U>
 {
     @NotNull
     @Override
@@ -45,5 +46,25 @@ public class MultiSplitPanePainter<C extends WebMultiSplitPane, U extends WMulti
         final List<String> states = super.getDecorationStates ();
         states.add ( component.getOrientation ().isHorizontal () ? DecorationState.horizontal : DecorationState.vertical );
         return states;
+    }
+
+    @Override
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChanged ( property, oldValue, newValue );
+
+        // Updating states
+        if ( Objects.equals ( property, WebMemoryBar.ORIENTATION_PROPERTY ) )
+        {
+            updateDecorationState ();
+        }
+    }
+
+    @NotNull
+    @Override
+    protected ButtonModel getButtonModel ()
+    {
+        return component.getModel ();
     }
 }

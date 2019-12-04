@@ -15,31 +15,30 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.desktoppane;
+package com.alee.extended.memorybar;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.demo.api.example.AbstractExampleGroup;
-import com.alee.utils.CollectionUtils;
-
-import java.util.List;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 /**
+ * Simple {@link IMemoryBarPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link WMemoryBarUI}.
+ *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
-public class DesktopPaneGroup extends AbstractExampleGroup
+public final class AdaptiveMemoryBarPainter<C extends WebMemoryBar, U extends WMemoryBarUI<C>> extends AdaptivePainter<C, U>
+        implements IMemoryBarPainter<C, U>
 {
-    @NotNull
-    @Override
-    public String getId ()
+    /**
+     * Constructs new {@link AdaptiveMemoryBarPainter} for the specified {@link Painter}.
+     *
+     * @param painter {@link Painter} to adapt
+     */
+    public AdaptiveMemoryBarPainter ( @NotNull final Painter painter )
     {
-        return "desktoppane";
-    }
-
-    @Override
-    protected List<Class> getExampleClasses ()
-    {
-        return CollectionUtils.<Class>asList (
-                JInternalFrameExample.class
-        );
+        super ( painter );
     }
 }

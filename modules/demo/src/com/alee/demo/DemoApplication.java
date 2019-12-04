@@ -18,6 +18,7 @@
 package com.alee.demo;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.SerializableSupplier;
 import com.alee.api.resource.ClassResource;
@@ -41,9 +42,10 @@ import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.AlignLayout;
 import com.alee.extended.link.UrlLinkAction;
 import com.alee.extended.link.WebLink;
+import com.alee.extended.memorybar.WebMemoryBar;
+import com.alee.extended.overlay.AlignedOverlay;
 import com.alee.extended.overlay.FillOverlay;
 import com.alee.extended.overlay.WebOverlay;
-import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.DocumentAdapter;
 import com.alee.extended.tab.DocumentData;
@@ -305,18 +307,26 @@ public final class DemoApplication extends WebFrame
         statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.gitter19, "demo.statusbar.resources.gitter",
                 new UrlLinkAction ( WEBLAF_GITTER ) ) );
 
-        final WebMemoryBar memoryBar = new WebMemoryBar ();
-        memoryBar.setPreferredWidth ( 150 );
-        statusBar.addToEnd ( memoryBar );
+        final WebOverlay memoryBarOverlay = new WebOverlay ();
+
+        memoryBarOverlay.setContent ( new WebMemoryBar ().setPreferredWidth ( 150 ) );
 
         final WebCanvas resizeCorner = new WebCanvas ( StyleId.canvasGripperSE );
         new ComponentResizeBehavior ( resizeCorner, CompassDirection.southEast ).install ();
-        statusBar.addToEnd ( resizeCorner );
+
+        memoryBarOverlay.addOverlay ( new AlignedOverlay (
+                resizeCorner,
+                BoxOrientation.right,
+                BoxOrientation.bottom,
+                new Insets ( 0, 0, -1, -1 )
+        ) );
+
+        statusBar.addToEnd ( memoryBarOverlay );
 
         add ( statusBar, BorderLayout.SOUTH );
 
         // Custom status bar margin for notification manager
-        NotificationManager.setMargin ( 0, 0, memoryBar.getPreferredSize ().height, 0 );
+        NotificationManager.setMargin ( 0, 0, statusBar.getPreferredSize ().height, 0 );
     }
 
     /**

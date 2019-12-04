@@ -1417,61 +1417,33 @@
             </record>
         </Dictionary>
         <Dictionary name="WebMemoryBar" prefix="memorybar">
-            <record key="of">
-                <value lang="en">of</value>
-                <value lang="ru">из</value>
-                <value lang="pl">z</value>
-                <value lang="ar">من</value>
-                <value lang="es">de</value>
-                <value lang="fr">de</value>
-                <value lang="pt">de</value>
-                <value lang="de">von</value>
-                <value lang="it">di</value>
-                <value lang="tr">/</value>
-                <value lang="vi">/</value>
-                <value lang="hu">/</value>
+            <record key="text">
+                <value lang="en">%s of %s</value>
+                <value lang="ru">%s из %s</value>
+                <value lang="pl">%s z %s</value>
+                <value lang="ar">%s من %s</value>
+                <value lang="es">%s de %s</value>
+                <value lang="fr">%s de %s</value>
+                <value lang="pt">%s de %s</value>
+                <value lang="de">%s von %s</value>
+                <value lang="it">%s di %s</value>
+                <value lang="tr">%s / %s</value>
+                <value lang="vi">%s / %s</value>
+                <value lang="hu">%s / %s</value>
             </record>
-            <record key="alloc">
-                <value lang="en">Allocated memory:</value>
-                <value lang="ru">Выделенная память:</value>
-                <value lang="pl">Przydzielonej pamięci:</value>
-                <value lang="ar">الذاكرة المحجوزة:</value>
-                <value lang="es">Memoria asignada:</value>
-                <value lang="fr">Mémoire allouée:</value>
-                <value lang="pt">Memória alocada:</value>
-                <value lang="de">Zugewiesenen Speicher:</value>
-                <value lang="it">Memoria assegnata:</value>
-                <value lang="tr">Ayrılmış bellek:</value>
-                <value lang="vi">Bộ nhớ được cấp phát:</value>
-                <value lang="hu">Lefoglalt memória:</value>
-            </record>
-            <record key="used">
-                <value lang="en">Used:</value>
-                <value lang="ru">Занятая:</value>
-                <value lang="pl">Użyty:</value>
-                <value lang="ar">مستخدم:</value>
-                <value lang="es">Usado:</value>
-                <value lang="fr">Utilisé:</value>
-                <value lang="pt">Utilizado:</value>
-                <value lang="de">Benutzt:</value>
-                <value lang="it">Usata:</value>
-                <value lang="tr">Kullanılan:</value>
-                <value lang="vi">Đã sử dụng:</value>
-                <value lang="hu">Használt:</value>
-            </record>
-            <record key="max">
-                <value lang="en">Available:</value>
-                <value lang="ru">Доступная:</value>
-                <value lang="pl">Dostępny:</value>
-                <value lang="ar">متوفر:</value>
-                <value lang="es">Disponible:</value>
-                <value lang="fr">Disponible:</value>
-                <value lang="pt">Disponível:</value>
-                <value lang="de">Verfügbar:</value>
-                <value lang="it">Disponibile:</value>
-                <value lang="tr">Kullanılabilir:</value>
-                <value lang="vi">Còn trống:</value>
-                <value lang="hu">Rendelkezésre áll:</value>
+            <record key="tooltip">
+                <value lang="en">Allocated memory: {%s:b} Used: {%s:b} Available: {%s:b}</value>
+                <value lang="ru">Выделенная память: {%s:b} Занятая: {%s:b} Доступная: {%s:b}</value>
+                <value lang="pl">Przydzielonej pamięci: {%s:b} Użyty: {%s:b} Dostępny: {%s:b}</value>
+                <value lang="ar">الذاكرة المحجوزة: {%s:b} مستخدم: {%s:b} متوفر: {%s:b}</value>
+                <value lang="es">Memoria asignada: {%s:b} Usado: {%s:b} Disponible: {%s:b}</value>
+                <value lang="fr">Mémoire allouée: {%s:b} Utilisé: {%s:b} Disponible: {%s:b}</value>
+                <value lang="pt">Memória alocada: {%s:b} Utilizado: {%s:b} Disponível: {%s:b}</value>
+                <value lang="de">Zugewiesenen Speicher: {%s:b} Benutzt: {%s:b} Verfügbar: {%s:b}</value>
+                <value lang="it">Memoria assegnata: {%s:b} Usata: {%s:b} Disponibile: {%s:b}</value>
+                <value lang="tr">Ayrılmış bellek: {%s:b} Kullanılan: {%s:b} Kullanılabilir: {%s:b}</value>
+                <value lang="vi">Bộ nhớ được cấp phát: {%s:b} Đã sử dụng: {%s:b} Còn trống: {%s:b}</value>
+                <value lang="hu">Lefoglalt memória: {%s:b} Használt: {%s:b} Rendelkezésre áll: {%s:b}</value>
             </record>
         </Dictionary>
         <Dictionary name="WebFileDrop" prefix="filedrop">

@@ -133,19 +133,19 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     }
 
     @Override
-    public void propertyChange ( @NotNull final PropertyChangeEvent e )
+    public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
-        final String prop = e.getPropertyName ();
+        final String prop = event.getPropertyName ();
         if ( Objects.equals ( prop, AbstractButton.MNEMONIC_CHANGED_PROPERTY ) )
         {
-            updateMnemonicBinding ( ( AbstractButton ) e.getSource () );
+            updateMnemonicBinding ( ( AbstractButton ) event.getSource () );
         }
     }
 
     @Override
-    public void focusGained ( @NotNull final FocusEvent e )
+    public void focusGained ( @NotNull final FocusEvent event )
     {
-        final AbstractButton button = ( AbstractButton ) e.getSource ();
+        final AbstractButton button = ( AbstractButton ) event.getSource ();
         if ( button instanceof JButton && ( ( JButton ) button ).isDefaultCapable () )
         {
             final JRootPane root = button.getRootPane ();
@@ -163,9 +163,9 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     }
 
     @Override
-    public void focusLost ( @NotNull final FocusEvent e )
+    public void focusLost ( @NotNull final FocusEvent event )
     {
-        final AbstractButton button = ( AbstractButton ) e.getSource ();
+        final AbstractButton button = ( AbstractButton ) event.getSource ();
         final JRootPane root = button.getRootPane ();
         if ( root != null )
         {
@@ -186,34 +186,34 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     }
 
     @Override
-    public void mouseMoved ( @NotNull final MouseEvent e )
+    public void mouseMoved ( @NotNull final MouseEvent event )
     {
     }
 
     @Override
-    public void mouseDragged ( @NotNull final MouseEvent e )
+    public void mouseDragged ( @NotNull final MouseEvent event )
     {
     }
 
     @Override
-    public void mouseClicked ( @NotNull final MouseEvent e )
+    public void mouseClicked ( @NotNull final MouseEvent event )
     {
     }
 
     @Override
-    public void mousePressed ( @NotNull final MouseEvent e )
+    public void mousePressed ( @NotNull final MouseEvent event )
     {
-        if ( SwingUtilities.isLeftMouseButton ( e ) )
+        if ( SwingUtilities.isLeftMouseButton ( event ) )
         {
-            final AbstractButton b = ( AbstractButton ) e.getSource ();
-            if ( b.contains ( e.getX (), e.getY () ) )
+            final AbstractButton button = ( AbstractButton ) event.getSource ();
+            if ( button.contains ( event.getX (), event.getY () ) )
             {
-                final long multiClickThreshhold = b.getMultiClickThreshhold ();
+                final long multiClickThreshhold = button.getMultiClickThreshhold ();
                 final long lastTime = lastPressedTimestamp;
-                final long currentTime = lastPressedTimestamp = e.getWhen ();
+                final long currentTime = lastPressedTimestamp = event.getWhen ();
                 if ( lastTime == -1 || currentTime - lastTime >= multiClickThreshhold )
                 {
-                    final ButtonModel model = b.getModel ();
+                    final ButtonModel model = button.getModel ();
                     if ( model.isEnabled () )
                     {
                         if ( !model.isArmed () )
@@ -222,10 +222,10 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
                             model.setArmed ( true );
                         }
                         model.setPressed ( true );
-                        if ( !b.hasFocus () && b.isRequestFocusEnabled () )
-                        {
-                            b.requestFocus ();
-                        }
+                    }
+                    if ( button.isEnabled () && !button.hasFocus () && button.isRequestFocusEnabled () )
+                    {
+                        button.requestFocus ();
                     }
                 }
                 else
@@ -237,14 +237,14 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     }
 
     @Override
-    public void mouseReleased ( @NotNull final MouseEvent e )
+    public void mouseReleased ( @NotNull final MouseEvent event )
     {
-        if ( SwingUtilities.isLeftMouseButton ( e ) )
+        if ( SwingUtilities.isLeftMouseButton ( event ) )
         {
             if ( !shouldDiscardRelease )
             {
-                final AbstractButton b = ( AbstractButton ) e.getSource ();
-                final ButtonModel model = b.getModel ();
+                final AbstractButton button = ( AbstractButton ) event.getSource ();
+                final ButtonModel model = button.getModel ();
                 model.setPressed ( false );
                 model.setArmed ( false );
             }
@@ -257,11 +257,11 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     }
 
     @Override
-    public void mouseEntered ( @NotNull final MouseEvent e )
+    public void mouseEntered ( @NotNull final MouseEvent event )
     {
-        final AbstractButton b = ( AbstractButton ) e.getSource ();
-        final ButtonModel model = b.getModel ();
-        if ( b.isRolloverEnabled () && !SwingUtilities.isLeftMouseButton ( e ) )
+        final AbstractButton button = ( AbstractButton ) event.getSource ();
+        final ButtonModel model = button.getModel ();
+        if ( button.isRolloverEnabled () && !SwingUtilities.isLeftMouseButton ( event ) )
         {
             model.setRollover ( true );
         }
@@ -272,11 +272,11 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     }
 
     @Override
-    public void mouseExited ( @NotNull final MouseEvent e )
+    public void mouseExited ( @NotNull final MouseEvent event )
     {
-        final AbstractButton b = ( AbstractButton ) e.getSource ();
-        final ButtonModel model = b.getModel ();
-        if ( b.isRolloverEnabled () )
+        final AbstractButton button = ( AbstractButton ) event.getSource ();
+        final ButtonModel model = button.getModel ();
+        if ( button.isRolloverEnabled () )
         {
             model.setRollover ( false );
         }
@@ -286,19 +286,22 @@ public class WButtonInputListener<C extends AbstractButton, U extends WButtonUI<
     @Override
     public void ancestorAdded ( @NotNull final AncestorEvent event )
     {
-        component.getModel ().setRollover ( false );
+        final AbstractButton button = ( AbstractButton ) event.getSource ();
+        button.getModel ().setRollover ( false );
     }
 
     @Override
     public void ancestorRemoved ( @NotNull final AncestorEvent event )
     {
-        component.getModel ().setRollover ( false );
+        final AbstractButton button = ( AbstractButton ) event.getSource ();
+        button.getModel ().setRollover ( false );
     }
 
     @Override
     public void ancestorMoved ( @NotNull final AncestorEvent event )
     {
-        component.getModel ().setRollover ( false );
+        final AbstractButton button = ( AbstractButton ) event.getSource ();
+        button.getModel ().setRollover ( false );
     }
 
     /**

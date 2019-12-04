@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.desktoppane;
+package com.alee.demo.content.container;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.demo.api.example.*;
@@ -36,13 +36,13 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-public class JInternalFrameExample extends AbstractPreviewExample
+public class JDesktopPaneExample extends AbstractPreviewExample
 {
     @NotNull
     @Override
     public String getId ()
     {
-        return "jinternalframe";
+        return "jdesktoppane";
     }
 
     @NotNull
@@ -85,7 +85,7 @@ public class JInternalFrameExample extends AbstractPreviewExample
          */
         public InternalFramePreview ()
         {
-            super ( JInternalFrameExample.this, "desktop", FeatureState.updated );
+            super ( JDesktopPaneExample.this, "desktop", FeatureState.updated );
         }
 
         @NotNull

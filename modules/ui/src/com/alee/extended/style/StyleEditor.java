@@ -28,11 +28,11 @@ import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.magnifier.MagnifierGlass;
+import com.alee.extended.memorybar.WebMemoryBar;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.split.MultiSplitConstraints;
 import com.alee.extended.split.WebMultiSplitPane;
-import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.syntax.SyntaxPreset;
 import com.alee.extended.syntax.WebSyntaxArea;
@@ -779,7 +779,7 @@ public class StyleEditor extends WebFrame
         } );
         statusBar.addToEnd ( completeStackTraceButton );
 
-        statusBar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 200 ) );
+        statusBar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 150 ) );
     }
 
     /**

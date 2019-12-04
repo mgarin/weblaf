@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.canvas;
+package com.alee.extended.memorybar;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
@@ -30,31 +30,31 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for {@link WebCanvas} component.
+ * Custom UI for {@link WebMemoryBar} component.
  *
- * @param <C> {@link WebCanvas} type
+ * @param <C> {@link WebMemoryBar} type
  * @author Mikle Garin
  */
-public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebMemoryBarUI<C extends WebMemoryBar> extends WMemoryBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
     @Nullable
-    @DefaultPainter ( CanvasPainter.class )
-    protected ICanvasPainter painter;
+    @DefaultPainter ( MemoryBarPainter.class )
+    protected IMemoryBarPainter painter;
 
     /**
-     * Returns an instance of the {@link WebCanvasUI} for the specified component.
+     * Returns an instance of the {@link WebMemoryBarUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the {@link WebCanvasUI}
+     * @return instance of the {@link WebMemoryBarUI}
      */
     @NotNull
     public static ComponentUI createUI ( @NotNull final JComponent c )
     {
-        return new WebCanvasUI ();
+        return new WebMemoryBarUI ();
     }
 
     @Override
@@ -64,14 +64,14 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.installSkin ( canvas );
+        StyleManager.installSkin ( memoryBar );
     }
 
     @Override
     public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( canvas );
+        StyleManager.uninstallSkin ( memoryBar );
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -81,51 +81,51 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( canvas, painter );
+        return PainterSupport.getShape ( memoryBar, painter );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( canvas, painter );
+        return PainterSupport.isShapeDetectionEnabled ( memoryBar, painter );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( canvas, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( memoryBar, painter, enabled );
     }
 
     @Nullable
     @Override
     public Insets getMargin ()
     {
-        return PainterSupport.getMargin ( canvas );
+        return PainterSupport.getMargin ( memoryBar );
     }
 
     @Override
     public void setMargin ( @Nullable final Insets margin )
     {
-        PainterSupport.setMargin ( canvas, margin );
+        PainterSupport.setMargin ( memoryBar, margin );
     }
 
     @Nullable
     @Override
     public Insets getPadding ()
     {
-        return PainterSupport.getPadding ( canvas );
+        return PainterSupport.getPadding ( memoryBar );
     }
 
     @Override
     public void setPadding ( @Nullable final Insets padding )
     {
-        PainterSupport.setPadding ( canvas, padding );
+        PainterSupport.setPadding ( memoryBar, padding );
     }
 
     /**
-     * Returns canvas painter.
+     * Returns memory bar painter.
      *
-     * @return canvas painter
+     * @return memory bar painter
      */
     public Painter getPainter ()
     {
@@ -133,21 +133,21 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     }
 
     /**
-     * Sets canvas painter.
-     * Pass null to remove canvas painter.
+     * Sets memory bar painter.
+     * Pass null to remove memory bar painter.
      *
-     * @param painter new canvas painter
+     * @param painter new memory bar painter
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( canvas, this, new Consumer<ICanvasPainter> ()
+        PainterSupport.setPainter ( memoryBar, this, new Consumer<IMemoryBarPainter> ()
         {
             @Override
-            public void accept ( final ICanvasPainter newPainter )
+            public void accept ( final IMemoryBarPainter newPainter )
             {
-                WebCanvasUI.this.painter = newPainter;
+                WebMemoryBarUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ICanvasPainter.class, AdaptiveCanvasPainter.class );
+        }, this.painter, painter, IMemoryBarPainter.class, AdaptiveMemoryBarPainter.class );
     }
 
     @Override

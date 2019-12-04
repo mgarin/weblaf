@@ -45,6 +45,9 @@ import com.alee.extended.label.HotkeyLabelBackground;
 import com.alee.extended.label.StyledLabelDescriptor;
 import com.alee.extended.label.StyledLabelText;
 import com.alee.extended.link.LinkDescriptor;
+import com.alee.extended.memorybar.MemoryBarBackground;
+import com.alee.extended.memorybar.MemoryBarDescriptor;
+import com.alee.extended.memorybar.MemoryBarText;
 import com.alee.extended.overlay.OverlayDescriptor;
 import com.alee.extended.overlay.OverlayLayout;
 import com.alee.extended.overlay.ProgressOverlayBackground;
@@ -52,7 +55,6 @@ import com.alee.extended.overlay.ProgressOverlayShape;
 import com.alee.extended.panel.SelectablePanelPainter;
 import com.alee.extended.split.MultiSplitPaneDescriptor;
 import com.alee.extended.split.MultiSplitPaneDividerDescriptor;
-import com.alee.extended.statusbar.MemoryBarBackground;
 import com.alee.extended.statusbar.StatusBarDescriptor;
 import com.alee.extended.statusbar.StatusBarLayout;
 import com.alee.extended.syntax.SyntaxPanelPainter;
@@ -78,6 +80,7 @@ import com.alee.laf.optionpane.OptionPaneDescriptor;
 import com.alee.laf.panel.PanelDescriptor;
 import com.alee.laf.progressbar.ProgressBarDescriptor;
 import com.alee.laf.progressbar.ProgressBarText;
+import com.alee.laf.progressbar.ProgressShape;
 import com.alee.laf.radiobutton.RadioButtonDescriptor;
 import com.alee.laf.radiobutton.RadioIcon;
 import com.alee.laf.rootpane.RootPaneDescriptor;
@@ -288,6 +291,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( WebShape.class );
         XmlUtils.processAnnotations ( EllipseShape.class );
         XmlUtils.processAnnotations ( ArrowShape.class );
+        XmlUtils.processAnnotations ( ProgressShape.class );
         XmlUtils.processAnnotations ( BreadcrumbElementShape.class );
         XmlUtils.processAnnotations ( ProgressOverlayShape.class );
         XmlUtils.processAnnotations ( WebShadow.class );
@@ -348,6 +352,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( ProgressBarText.class );
         XmlUtils.processAnnotations ( HotkeyLabelBackground.class );
         XmlUtils.processAnnotations ( MemoryBarBackground.class );
+        XmlUtils.processAnnotations ( MemoryBarText.class );
 
         // Painter aliases
         XmlUtils.processAnnotations ( PopOverPainter.class );
@@ -522,6 +527,11 @@ public final class StyleManager
          * Statusbar-related components.
          */
         registerComponentDescriptor ( new StatusBarDescriptor () );
+
+        /**
+         * Memorybar-related components.
+         */
+        registerComponentDescriptor ( new MemoryBarDescriptor () );
 
         /**
          * Scroll-related components.

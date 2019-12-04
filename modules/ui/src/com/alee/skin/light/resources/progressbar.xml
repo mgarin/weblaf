@@ -27,7 +27,7 @@
             <progressPainter>
                 <decorations>
                     <decoration>
-                        <WebShape round="0" />
+                        <ProgressShape round="0" />
                         <WebShadow type="outer" width="1" />
                     </decoration>
                     <decoration states="progress">

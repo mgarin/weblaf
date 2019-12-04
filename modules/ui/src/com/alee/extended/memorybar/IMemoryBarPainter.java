@@ -15,32 +15,20 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.progress;
+package com.alee.extended.memorybar;
 
-import com.alee.api.annotations.NotNull;
-import com.alee.demo.api.example.AbstractExampleGroup;
-import com.alee.utils.CollectionUtils;
-
-import java.util.List;
+import com.alee.painter.SpecificPainter;
 
 /**
+ * Base interface for {@link WebMemoryBar} component painters.
+ *
+ * @param <C> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
-public class ProgressGroup extends AbstractExampleGroup
+public interface IMemoryBarPainter<C extends WebMemoryBar, U extends WMemoryBarUI<C>> extends SpecificPainter<C, U>
 {
-    @NotNull
-    @Override
-    public String getId ()
-    {
-        return "progress";
-    }
-
-    @Override
-    protected List<Class> getExampleClasses ()
-    {
-        return CollectionUtils.<Class>asList (
-                JProgressBarExample.class,
-                WebMemoryBarExample.class
-        );
-    }
+    /**
+     * This interface doesn't offer any additional methods to implement.
+     */
 }

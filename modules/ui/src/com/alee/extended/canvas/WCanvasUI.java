@@ -27,7 +27,7 @@ import javax.swing.plaf.ComponentUI;
 /**
  * Pluggable look and feel interface for {@link WebCanvas} component.
  *
- * @param <C> component type
+ * @param <C> {@link WebCanvas} type
  * @author Mikle Garin
  */
 public abstract class WCanvasUI<C extends WebCanvas> extends ComponentUI implements WebUI<C>

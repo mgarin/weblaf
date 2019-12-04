@@ -40,6 +40,7 @@
             <xs:enumeration value="toolbar" />
             <xs:enumeration value="toolbarseparator" />
             <xs:enumeration value="statusbar" />
+            <xs:enumeration value="memorybar" />
             <xs:enumeration value="scrollbar" />
             <xs:enumeration value="scrollpane" />
             <xs:enumeration value="viewport" />

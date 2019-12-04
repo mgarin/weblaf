@@ -15,32 +15,21 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.progress;
+package com.alee.extended.memorybar;
 
-import com.alee.api.annotations.NotNull;
-import com.alee.demo.api.example.AbstractExampleGroup;
-import com.alee.utils.CollectionUtils;
+import com.alee.laf.UIInputListener;
 
-import java.util.List;
+import javax.swing.*;
 
 /**
+ * Base interface for {@link WebMemoryBar} UI input listeners.
+ *
+ * @param <C> {@link JComponent} type
  * @author Mikle Garin
  */
-public class ProgressGroup extends AbstractExampleGroup
+public interface MemoryBarInputListener<C extends WebMemoryBar> extends UIInputListener<C>
 {
-    @NotNull
-    @Override
-    public String getId ()
-    {
-        return "progress";
-    }
-
-    @Override
-    protected List<Class> getExampleClasses ()
-    {
-        return CollectionUtils.<Class>asList (
-                JProgressBarExample.class,
-                WebMemoryBarExample.class
-        );
-    }
+    /**
+     * Doesn't add anything to {@link UIInputListener}.
+     */
 }

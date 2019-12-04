@@ -1,33 +1,90 @@
 <skin xmlns="http://weblookandfeel.com/XmlSkin">
 
-    <!-- com.alee.extended.statusbar.WebMemoryBar -->
+    <!-- com.alee.extended.memorybar.WebMemoryBar -->
 
     <!-- Memory bar -->
-    <style type="button" id="memorybar" padding="2,10,2,10">
+    <style type="memorybar" padding="2">
+        <component>
+            <foreground>245,245,245</foreground>
+        </component>
         <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <GradientBackground>
+                        <color>111,115,117</color>
+                        <color>77,81,83</color>
+                    </GradientBackground>
                     <MemoryBarBackground round="2">
-                        <usedBorderColor>black</usedBorderColor>
+                        <usedBorderColor>30,30,30</usedBorderColor>
                         <usedFillColor>0,0,0,50</usedFillColor>
                         <allocatedMarkColor>gray</allocatedMarkColor>
                     </MemoryBarBackground>
+                    <MemoryBarText halign="0" />
+                </decoration>
+                <decoration states="vertical">
+                    <MemoryBarText rotation="counterClockwise" />
+                </decoration>
+                <decoration states="ltr,vertical">
+                    <GradientBackground from="0,0" to="1,0" />
+                </decoration>
+                <decoration states="rtl,vertical">
+                    <GradientBackground from="1,0" to="0,0" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+                <decoration states="pressed">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="57,61,63" />
                 </decoration>
                 <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
                     <MemoryBarBackground opacity="0.5" />
+                    <MemoryBarText color="180,180,180" ignoreCustomColor="true" />
                 </decoration>
             </decorations>
         </painter>
 
         <!-- Tooltip label styling -->
         <!-- todo Replace with custom tooltip style -->
-        <style type="label" id="tooltip">
+        <style type="styledlabel" id="tooltip">
             <component>
                 <foreground>white</foreground>
             </component>
         </style>
 
+    </style>
+
+    <!-- Undecorated memory bar -->
+    <style type="memorybar" id="undecorated">
+        <painter>
+            <decorations overwrite="true">
+                <decoration>
+                    <BoundsShape />
+                    <MemoryBarBackground round="2">
+                        <usedBorderColor>30,30,30</usedBorderColor>
+                        <usedFillColor>0,0,0,50</usedFillColor>
+                        <allocatedMarkColor>gray</allocatedMarkColor>
+                    </MemoryBarBackground>
+                    <MemoryBarText halign="0" />
+                </decoration>
+                <decoration states="vertical">
+                    <MemoryBarText rotation="counterClockwise" />
+                </decoration>
+                <decoration states="pressed">
+                    <WebShadow type="inner" width="6" />
+                </decoration>
+                <decoration states="disabled">
+                    <MemoryBarBackground opacity="0.5" />
+                    <MemoryBarText color="180,180,180" ignoreCustomColor="true" />
+                </decoration>
+            </decorations>
+        </painter>
     </style>
 
 </skin>

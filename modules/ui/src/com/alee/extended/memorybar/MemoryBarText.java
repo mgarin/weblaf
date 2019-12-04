@@ -15,32 +15,33 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.progress;
+package com.alee.extended.memorybar;
 
-import com.alee.api.annotations.NotNull;
-import com.alee.demo.api.example.AbstractExampleGroup;
-import com.alee.utils.CollectionUtils;
-
-import java.util.List;
+import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.AbstractTextContent;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
+ * {@link WebMemoryBar} text content implementation.
+ *
+ * @param <C> component type
+ * @param <D> decoration type
+ * @param <I> content type
  * @author Mikle Garin
  */
-public class ProgressGroup extends AbstractExampleGroup
+@XStreamAlias ( "MemoryBarText" )
+public class MemoryBarText<C extends WebMemoryBar, D extends IDecoration<C, D>, I extends MemoryBarText<C, D, I>>
+        extends AbstractTextContent<C, D, I>
 {
-    @NotNull
     @Override
-    public String getId ()
+    protected String getText ( final C c, final D d )
     {
-        return "progress";
+        return c.getText ();
     }
 
     @Override
-    protected List<Class> getExampleClasses ()
+    protected int getMnemonicIndex ( final C c, final D d )
     {
-        return CollectionUtils.<Class>asList (
-                JProgressBarExample.class,
-                WebMemoryBarExample.class
-        );
+        return -1;
     }
 }

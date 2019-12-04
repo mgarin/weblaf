@@ -4,8 +4,8 @@
 
     <xs:include schemaLocation="AbstractTextContent.xsd" />
 
-    <!-- com.alee.laf.button.ButtonText -->
-    <xs:complexType name="ButtonText">
+    <!-- com.alee.extended.memorybar.MemoryBarText -->
+    <xs:complexType name="MemoryBarText">
         <xs:complexContent>
             <xs:extension base="AbstractTextContent" />
         </xs:complexContent>

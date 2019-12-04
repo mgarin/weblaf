@@ -26,7 +26,6 @@ import com.alee.demo.content.button.ButtonsGroup;
 import com.alee.demo.content.chooser.ChoosersGroup;
 import com.alee.demo.content.container.ContainersGroup;
 import com.alee.demo.content.data.DataGroup;
-import com.alee.demo.content.desktoppane.DesktopPaneGroup;
 import com.alee.demo.content.features.FeaturesGroup;
 import com.alee.demo.content.image.ImageGroup;
 import com.alee.demo.content.label.LabelsGroup;
@@ -95,7 +94,6 @@ public final class ExamplesManager
             groups.add ( new DataGroup () );
             groups.add ( new ChoosersGroup () );
             groups.add ( new WindowsGroup () );
-            groups.add ( new DesktopPaneGroup () );
             groups.add ( new ImageGroup () );
             groups.add ( new AnimationGroup () );
             groups.add ( new FeaturesGroup () );
@@ -128,7 +126,7 @@ public final class ExamplesManager
             jarStructure.setPackageIcon ( DemoApplication.class.getPackage (), new ImageIcon ( WebLookAndFeel.getImages ().get ( 0 ) ) );
             for ( final ExampleGroup exampleGroup : getGroups () )
             {
-                jarStructure.setClassIcon ( exampleGroup.getClass (), ( ImageIcon ) exampleGroup.getIcon () );
+                jarStructure.setClassIcon ( exampleGroup.getClass (), exampleGroup.getIcon () );
             }
         }
         catch ( final Exception e )

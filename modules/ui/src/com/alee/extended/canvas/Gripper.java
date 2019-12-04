@@ -17,7 +17,6 @@
 
 package com.alee.extended.canvas;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.painter.decoration.IDecoration;

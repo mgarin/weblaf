@@ -73,12 +73,14 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
 
     /**
      * Horizontal text alignment.
+     * todo Replace with BoxOrientation or new HorizontalAlignment
      */
     @XStreamAsAttribute
     protected Integer halign;
 
     /**
      * Vertical text alignment.
+     * todo Replace with BoxOrientation or new VerticalAlignment
      */
     @XStreamAsAttribute
     protected Integer valign;

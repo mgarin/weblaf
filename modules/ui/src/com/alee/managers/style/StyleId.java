@@ -359,14 +359,21 @@ public final class StyleId implements Identifiable
     public static final StyleId toolbarUndecorated = StyleId.of ( "undecorated" );
 
     /**
+     * {@link com.alee.laf.toolbar.WebToolBarSeparator} style identifiers.
+     */
+    public static final StyleId toolbarseparator = StyleId.of ( "toolbarseparator" );
+
+    /**
      * {@link com.alee.extended.statusbar.WebStatusBar} style identifiers.
      */
     public static final StyleId statusbar = StyleId.of ( "statusbar" );
 
     /**
-     * {@link com.alee.laf.toolbar.WebToolBarSeparator} style identifiers.
+     * {@link com.alee.extended.memorybar.WebMemoryBar} style identifiers.
      */
-    public static final StyleId toolbarseparator = StyleId.of ( "toolbarseparator" );
+    public static final StyleId memorybar = StyleId.of ( "memorybar" );
+    public static final StyleId memorybarUndecorated = StyleId.of ( "undecorated" );
+    public static final ChildStyleId memorybarToolTip = ChildStyleId.of ( "tooltip" );
 
     /**
      * {@link com.alee.laf.scroll.WebScrollBar} style identifiers.
@@ -849,12 +856,6 @@ public final class StyleId implements Identifiable
      * {@link com.alee.extended.window.WebPopOver}
      */
     public static final StyleId popover = StyleId.of ( "popover" );
-
-    /**
-     * {@link com.alee.extended.statusbar.WebMemoryBar} style identifiers.
-     */
-    public static final StyleId memorybar = StyleId.of ( "memorybar" );
-    public static final ChildStyleId memorybarTooltip = ChildStyleId.of ( "tooltip" );
 
     /**
      * {@link com.alee.extended.date.WebCalendar} style identifiers.

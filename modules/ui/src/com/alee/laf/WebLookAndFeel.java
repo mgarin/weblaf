@@ -20,6 +20,7 @@ package com.alee.laf;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
+import com.alee.extended.memorybar.WMemoryBarInputListener;
 import com.alee.laf.button.WButtonInputListener;
 import com.alee.laf.desktoppane.WDesktopPaneInputListener;
 import com.alee.laf.edt.ExceptionNonEventThreadHandler;
@@ -263,6 +264,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static Font tableHeaderFont;
     public static Font titledBorderFont;
     public static Font treeFont;
+    public static Font memoryBarFont;
 
     /**
      * @see ControlType#TEXT
@@ -473,6 +475,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         } );
 
         // Button
+        table.put ( "Button.border", null );
         table.put ( "Button.showMnemonics", Boolean.TRUE );
         table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
         table.put ( "Button.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
@@ -515,6 +518,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 "SPACE", WButtonInputListener.Action.PRESSED,
                 "released SPACE", WButtonInputListener.Action.RELEASED
         } ) );
+
+        // Progress bar
+        table.put ( "ProgressBar.border", null );
 
         // Split pane
         table.put ( "SplitPane.dividerSize", 2 );
@@ -601,9 +607,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // ComboBox empty padding
         table.put ( "ComboBox.padding", null );
 
-        // Default components borders
-        table.put ( "ProgressBar.border", null );
-        table.put ( "Button.border", null );
+        // Memory bar
+        table.put ( "MemoryBar.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
+                "SPACE", WMemoryBarInputListener.Action.PRESSED,
+                "released SPACE", WMemoryBarInputListener.Action.RELEASED,
+                "ENTER", WMemoryBarInputListener.Action.PRESSED,
+                "released ENTER", WMemoryBarInputListener.Action.RELEASED
+        } ) );
 
         // TextField actions
         table.put ( "TextField.focusInputMap", new UIDefaults.LazyInputMap ( new Object[]{
@@ -931,6 +941,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         initializeFont ( table, "TableHeader.font", tableHeaderFont, globalControlFont );
         initializeFont ( table, "TitledBorder.font", titledBorderFont, globalControlFont );
         initializeFont ( table, "Tree.font", treeFont, globalControlFont );
+        initializeFont ( table, "MemoryBar.font", memoryBarFont, globalControlFont );
 
         /**
          * @see ControlType#TEXT

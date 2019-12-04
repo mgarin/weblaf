@@ -7,11 +7,7 @@
     <!-- com.alee.laf.progressbar.ProgressBarText -->
     <xs:complexType name="ProgressBarText">
         <xs:complexContent>
-            <xs:extension base="AbstractTextContent">
-
-                <!-- No extra settings -->
-
-            </xs:extension>
+            <xs:extension base="AbstractTextContent" />
         </xs:complexContent>
     </xs:complexType>
 

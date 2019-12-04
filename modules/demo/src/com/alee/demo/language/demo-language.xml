@@ -2037,6 +2037,22 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="jdesktoppane">
+                <record key="title">
+                    <value lang="en">JDesktopPane</value>
+                    <value lang="ru">JDesktopPane</value>
+                </record>
+                <Dictionary prefix="frame">
+                    <record key="button">
+                        <value lang="en">Frame %s</value>
+                        <value lang="ru">Фрейм %s</value>
+                    </record>
+                    <record key="title">
+                        <value lang="en">Simple frame %s</value>
+                        <value lang="ru">Простой фрейм %s</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
             <Dictionary prefix="breadcrumb">
                 <record key="title">
                     <value lang="en">WebBreadcrumb</value>
@@ -2258,6 +2274,36 @@
                     <record key="title">
                         <value lang="en">Vertical progress bar</value>
                         <value lang="ru">Вертикальный прогресс бар</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="memorybar">
+                <record key="title">
+                    <value lang="en">WebMemoryBar</value>
+                    <value lang="ru">WebMemoryBar</value>
+                </record>
+                <Dictionary prefix="horizontal">
+                    <record key="title">
+                        <value lang="en">Horizontal</value>
+                        <value lang="ru">Горизонтальный</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="vertical">
+                    <record key="title">
+                        <value lang="en">Vertical</value>
+                        <value lang="ru">Вертикальный</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="horizontal.undecorated">
+                    <record key="title">
+                        <value lang="en">Horizontal undecorated</value>
+                        <value lang="ru">Горизонтальный без декораций</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="vertical.undecorated">
+                    <record key="title">
+                        <value lang="en">Vertical undecorated</value>
+                        <value lang="ru">Вертикальный без декораций</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -2737,28 +2783,6 @@
                             <value lang="ru">WebExCheckBoxTree</value>
                         </record>
                     </Dictionary>
-                </Dictionary>
-            </Dictionary>
-        </Dictionary>
-        <Dictionary prefix="desktoppane">
-            <record key="title">
-                <value lang="en">JDesktopPane</value>
-                <value lang="ru">JDesktopPane</value>
-            </record>
-            <Dictionary prefix="jinternalframe">
-                <record key="title">
-                    <value lang="en">JInternalFrame</value>
-                    <value lang="ru">JInternalFrame</value>
-                </record>
-                <Dictionary prefix="frame">
-                    <record key="button">
-                        <value lang="en">Frame %s</value>
-                        <value lang="ru">Фрейм %s</value>
-                    </record>
-                    <record key="title">
-                        <value lang="en">Simple frame %s</value>
-                        <value lang="ru">Простой фрейм %s</value>
-                    </record>
                 </Dictionary>
             </Dictionary>
         </Dictionary>

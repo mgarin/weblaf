@@ -110,12 +110,23 @@ public final class MathUtils
     /**
      * Returns rounded square root for the specified integer number.
      *
-     * @param i integer number to process
+     * @param d integer number to process
      * @return rounded square root for the specified integer number
      */
-    public static int sqrtToInt ( final double i )
+    public static int sqrtToInt ( final double d )
     {
-        return ( int ) Math.round ( Math.sqrt ( i ) );
+        return roundToInt ( Math.sqrt ( d ) );
+    }
+
+    /**
+     * Returns double value rounded to int value.
+     *
+     * @param d double value to round
+     * @return double value rounded to int value
+     */
+    public static int roundToInt ( final double d )
+    {
+        return ( int ) Math.round ( d );
     }
 
     /**

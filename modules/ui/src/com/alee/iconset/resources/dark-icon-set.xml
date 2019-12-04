@@ -277,4 +277,9 @@
         <SvgFill selector="svg" color="white" />
     </SvgIcon>
 
+    <!-- Memory bar icons -->
+    <SvgIcon id="memory" path="memory.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+    </SvgIcon>
+
 </IconSet>

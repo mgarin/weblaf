@@ -114,6 +114,7 @@ public abstract class WButtonUI<C extends AbstractButton> extends ButtonUI imple
      *
      * @return {@link ButtonInputListener} for the {@link AbstractButton}
      */
+    @NotNull
     protected ButtonInputListener<C> createButtonInputListener ()
     {
         return new WButtonInputListener<C, WButtonUI<C>> ();

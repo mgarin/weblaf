@@ -145,4 +145,9 @@ public final class Icons
      */
     public static final LazyIcon eyedropper = new LazyIcon ( "eyedropper" );
     public static final LazyIcon eyedropperHover = new LazyIcon ( "eyedropper-hover" );
+
+    /**
+     * Memory bar icons.
+     */
+    public static final LazyIcon memory = new LazyIcon ( "memory" );
 }

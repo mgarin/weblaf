@@ -2,12 +2,12 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            elementFormDefault="qualified">
 
-    <xs:include schemaLocation="AbstractTextContent.xsd" />
+    <xs:include schemaLocation="AbstractProgressShape.xsd" />
 
-    <!-- com.alee.laf.button.ButtonText -->
-    <xs:complexType name="ButtonText">
+    <!-- com.alee.laf.progressbar.ProgressShape -->
+    <xs:complexType name="ProgressShape">
         <xs:complexContent>
-            <xs:extension base="AbstractTextContent" />
+            <xs:extension base="AbstractProgressShape" />
         </xs:complexContent>
     </xs:complexType>
 

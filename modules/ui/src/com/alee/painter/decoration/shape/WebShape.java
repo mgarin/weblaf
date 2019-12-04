@@ -215,27 +215,28 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
     @Override
     public boolean isVisible ( final ShapeType type, final Rectangle bounds, final C c, final D d )
     {
-        // Ensure that shape bounds are enough
+        boolean visible = false;
         final int ow = d.getShadowWidth ( ShadowType.outer ) * 2;
         if ( bounds.width - ow > 0 && bounds.height - ow > 0 )
         {
-            // Ensure that some sides are painted
-            // It is important for outer shadow and border
             switch ( type )
             {
                 case outerShadow:
-                    return isAnySide ( c, d );
+                    visible = isAnySide ( c, d );
+                    break;
 
                 case border:
-                    return isAnySide ( c, d ) || isAnyLine ( c, d );
+                    visible = isAnySide ( c, d ) || isAnyLine ( c, d );
+                    break;
 
                 case background:
                 case innerShadow:
                 default:
-                    return true;
+                    visible = true;
+                    break;
             }
         }
-        return false;
+        return visible;
     }
 
     @NotNull
@@ -257,6 +258,7 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
             @Override
             public Shape get ()
             {
+                final Shape result;
                 final int x = bounds.x;
                 final int y = bounds.y;
                 final int w = bounds.width;
@@ -288,7 +290,7 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
                     {
                         if ( !connect )
                         {
-                            shape.moveTo ( x + w - sw - 1, y + ( top ? sw + r.topRight : 0 ) );
+                            shape.moveTo ( x + w - sw - 1, y );
                             moved = true;
                         }
                         if ( bottom )
@@ -310,7 +312,7 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
                     {
                         if ( !connect )
                         {
-                            shape.moveTo ( x + w + ( right ? -sw - r.bottomRight - 1 : -1 ), y + h - sw - 1 );
+                            shape.moveTo ( x + w - 1, y + h - sw - 1 );
                             moved = true;
                         }
                         if ( left )
@@ -332,7 +334,7 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
                     {
                         if ( !connect )
                         {
-                            shape.moveTo ( x + sw, y + h + ( bottom ? -sw - r.bottomLeft - 1 : -1 ) );
+                            shape.moveTo ( x + sw, y + h - 1 );
                             moved = true;
                         }
                         if ( top )
@@ -349,12 +351,11 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
                             shape.lineTo ( x + sw, y );
                         }
                     }
-                    return shape;
+                    result = shape;
                 }
                 else
                 {
                     final int shShear = type.isOuterShadow () ? sw : 0;
-                    final int bgShear = type.isBorder () ? -1 : 0;
 
                     final Point[] corners = new Point[ 4 ];
                     final int[] rounded = new int[ 4 ];
@@ -362,17 +363,18 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
                     corners[ 0 ] = p ( x + ( left ? sw : -shShear ), y + ( top ? sw : -shShear ) );
                     rounded[ 0 ] = left && top && r.topLeft > 0 ? r.topLeft + 1 : 0;
 
-                    corners[ 1 ] = p ( x + ( right ? w - sw : w + shShear ) + bgShear, y + ( top ? sw : -shShear ) );
+                    corners[ 1 ] = p ( x + ( right ? w - sw : w + shShear ), y + ( top ? sw : -shShear ) );
                     rounded[ 1 ] = right && top && r.topRight > 0 ? r.topRight + 1 : 0;
 
-                    corners[ 2 ] = p ( x + ( right ? w - sw : w + shShear ) + bgShear, y + ( bottom ? h - sw : h + shShear ) + bgShear );
+                    corners[ 2 ] = p ( x + ( right ? w - sw : w + shShear ), y + ( bottom ? h - sw : h + shShear ) );
                     rounded[ 2 ] = right && bottom && r.bottomRight > 0 ? r.bottomRight + 1 : 0;
 
-                    corners[ 3 ] = p ( x + ( left ? sw : -shShear ), y + ( bottom ? h - sw : h + shShear ) + bgShear );
+                    corners[ 3 ] = p ( x + ( left ? sw : -shShear ), y + ( bottom ? h - sw : h + shShear ) );
                     rounded[ 3 ] = left && bottom && r.bottomLeft > 0 ? r.bottomLeft + 1 : 0;
 
-                    return ShapeUtils.createRoundedShape ( corners, rounded );
+                    result = ShapeUtils.createRoundedShape ( corners, rounded );
                 }
+                return result;
             }
         }, bounds, sw, r, top, bottom, left, right );
     }

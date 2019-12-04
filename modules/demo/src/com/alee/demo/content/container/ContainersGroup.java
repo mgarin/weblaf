@@ -51,6 +51,7 @@ public class ContainersGroup extends AbstractExampleGroup
                 WebBreadcrumbExample.class,
                 WebCollapsiblePaneExample.class,
                 WebAccordionExample.class,
+                JDesktopPaneExample.class,
                 LazyPanelExample.class,
                 WebOverlayExample.class,
                 WebProgressOverlayExample.class
