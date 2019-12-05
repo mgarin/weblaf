@@ -10,6 +10,7 @@
     <xs:include schemaLocation="ProgressOverlayBackground.xsd" />
     <xs:include schemaLocation="BreadcrumbProgressBackground.xsd" />
     <xs:include schemaLocation="TabBackground.xsd" />
+    <xs:include schemaLocation="HotkeyLabelBackground.xsd" />
 
     <!-- IBackground implementations -->
     <xs:group name="Backgrounds">
@@ -25,6 +26,7 @@
                 <xs:element name="ProgressOverlayBackground" type="ProgressOverlayBackground" />
                 <xs:element name="BreadcrumbProgressBackground" type="BreadcrumbProgressBackground" />
                 <xs:element name="TabBackground" type="TabBackground" />
+                <xs:element name="HotkeyLabelBackground" type="HotkeyLabelBackground" />
 
                 <!-- Any custom backgrounds -->
                 <xs:any processContents="skip" />

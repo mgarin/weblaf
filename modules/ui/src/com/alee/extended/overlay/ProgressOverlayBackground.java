@@ -28,8 +28,8 @@ import com.alee.managers.animation.transition.QueueTransition;
 import com.alee.managers.animation.transition.TimedTransition;
 import com.alee.managers.animation.transition.Transition;
 import com.alee.managers.animation.transition.TransitionAdapter;
-import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.AbstractBackground;
@@ -189,11 +189,11 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
     {
         if ( width == null )
         {
-            throw new StyleException ( "Progress line width must be specified" );
+            throw new DecorationException ( "Progress line width must be specified" );
         }
         if ( width <= 0 )
         {
-            throw new StyleException ( "Progress line width must be greater than zero" );
+            throw new DecorationException ( "Progress line width must be greater than zero" );
         }
         return width;
     }
@@ -210,7 +210,7 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
     {
         if ( color == null )
         {
-            throw new StyleException ( "Progress color must be specified" );
+            throw new DecorationException ( "Progress color must be specified" );
         }
         return color;
     }

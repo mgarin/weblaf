@@ -36,20 +36,23 @@ public abstract class AbstractBackground<C extends JComponent, D extends IDecora
         implements IBackground<C, D, I>
 {
     /**
-     * Background ID.
+     * Background identifier.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String id;
 
     /**
      * Whether or not this background should overwrite previous one when merged.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean overwrite;
 
     /**
      * Background opacity.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Float opacity;
 

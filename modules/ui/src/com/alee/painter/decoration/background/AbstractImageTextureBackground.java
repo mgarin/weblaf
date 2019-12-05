@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.IDecoration;
@@ -45,18 +46,19 @@ public abstract class AbstractImageTextureBackground<C extends JComponent, D ext
      * It is only cleared upon object destruction to optimize its usage performance.
      * If we would clean it up every time this background is deactivated it would not work well in some cases.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient BufferedImage image;
 
     @NotNull
     @Override
-    protected TexturePaint getTexturePaint ( @NotNull final Rectangle bounds )
+    protected TexturePaint createTexturePaint ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         // Updating image cache if needed
         if ( image == null )
         {
-            image = getTextureImage ();
+            image = createTextureImage ( c, d );
         }
 
         // Returning texture paint
@@ -67,8 +69,10 @@ public abstract class AbstractImageTextureBackground<C extends JComponent, D ext
      * Returns {@link BufferedImage} used for {@link TexturePaint}.
      * Note that returned {@link BufferedImage} will be cached in {@link #image} field to optimize performance.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return {@link BufferedImage} used for {@link TexturePaint}
      */
     @NotNull
-    protected abstract BufferedImage getTextureImage ();
+    protected abstract BufferedImage createTextureImage ( @NotNull C c, @NotNull D d );
 }

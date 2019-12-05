@@ -81,10 +81,12 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
     /**
      * Returns gradient type.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return gradient type
      */
     @NotNull
-    protected GradientType getType ()
+    protected GradientType getType ( @NotNull final C c, @NotNull final D d )
     {
         return type != null ? type : GradientType.linear;
     }
@@ -92,10 +94,12 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
     /**
      * Returns bounds width/height percentage representing gradient start point.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return bounds width/height percentage representing gradient start point
      */
     @NotNull
-    protected Point2D.Float getFrom ()
+    protected Point2D.Float getFrom ( @NotNull final C c, @NotNull final D d )
     {
         return from != null ? from : new Point2D.Float ( 0, 0 );
     }
@@ -103,10 +107,12 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
     /**
      * Returns bounds width/height percentage representing gradient end point.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return bounds width/height percentage representing gradient end point
      */
     @NotNull
-    protected Point2D.Float getTo ()
+    protected Point2D.Float getTo ( @NotNull final C c, @NotNull final D d )
     {
         return to != null ? to : new Point2D.Float ( 0, 1 );
     }
@@ -114,10 +120,12 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
     /**
      * Returns {@link List} of {@link GradientColor}s.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return {@link List} of {@link GradientColor}s
      */
     @Nullable
-    public List<GradientColor> getColors ()
+    public List<GradientColor> getColors ( @NotNull final C c, @NotNull final D d )
     {
         return colors;
     }
@@ -129,18 +137,18 @@ public class GradientBackground<C extends JComponent, D extends IDecoration<C, D
         final float opacity = getOpacity ( c, d );
         if ( opacity > 0 )
         {
-            final List<GradientColor> colors = getColors ();
+            final List<GradientColor> colors = getColors ( c, d );
             if ( colors != null )
             {
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
                 final Rectangle b = shape.getBounds ();
-                final Point2D.Float from = getFrom ();
-                final Point2D.Float to = getTo ();
+                final Point2D.Float from = getFrom ( c, d );
+                final Point2D.Float to = getTo ( c, d );
                 final int x1 = ( int ) Math.round ( b.x + b.width * from.getX () );
                 final int y1 = ( int ) Math.round ( b.y + b.height * from.getY () );
                 final int x2 = ( int ) Math.round ( b.x + b.width * to.getX () );
                 final int y2 = ( int ) Math.round ( b.y + b.height * to.getY () );
-                final Paint paint = DecorationUtils.getPaint ( getType (), colors, x1, y1, x2, y2 );
+                final Paint paint = DecorationUtils.getPaint ( getType ( c, d ), colors, x1, y1, x2, y2 );
                 final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
                 g2d.fill ( shape );
                 GraphicsUtils.restorePaint ( g2d, op );

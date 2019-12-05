@@ -19,6 +19,7 @@ package com.alee.extended.label;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.AbstractBackground;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -46,48 +47,121 @@ public class HotkeyLabelBackground<C extends WebHotkeyLabel, D extends IDecorati
     /**
      * Shape round.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer round;
 
     /**
-     * Border color.
+     * Border {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color border;
 
     /**
-     * Spacing color.
+     * Spacing {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color spacing;
 
     /**
-     * Background color.
+     * Background {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
         return id != null ? id : "hotkey-background";
     }
 
+    /**
+     * Returns shape round.
+     *
+     * @param c {@link WebHotkeyLabel} that is being painted
+     * @param d {@link IDecoration} state
+     * @return shape round
+     */
+    protected int getRound (  @NotNull final C c, @NotNull final D d  )
+    {
+        if ( round == null )
+        {
+            throw new DecorationException ( "Shape round must be specified" );
+        }
+        return round;
+    }
+
+    /**
+     * Returns border {@link Color}.
+     *
+     * @param c {@link WebHotkeyLabel} that is being painted
+     * @param d {@link IDecoration} state
+     * @return border {@link Color}
+     */
+    @NotNull
+    protected Color getBorderColor ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( border == null )
+        {
+            throw new DecorationException ( "Border color must be specified" );
+        }
+        return border;
+    }
+
+    /**
+     * Returns spacing {@link Color}.
+     *
+     * @param c {@link WebHotkeyLabel} that is being painted
+     * @param d {@link IDecoration} state
+     * @return spacing {@link Color}
+     */
+    @NotNull
+    protected Color getSpacingColor ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( spacing == null )
+        {
+            throw new DecorationException ( "Spacing color must be specified" );
+        }
+        return spacing;
+    }
+
+    /**
+     * Returns background {@link Color}.
+     *
+     * @param c {@link WebHotkeyLabel} that is being painted
+     * @param d {@link IDecoration} state
+     * @return background {@link Color}
+     */
+    @NotNull
+    protected Color getBackgroundColor ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( color == null )
+        {
+            throw new DecorationException ( "Background color must be specified" );
+        }
+        return color;
+    }
+
     @Override
     public void paint ( @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d,
                         @NotNull final Shape shape )
     {
+        final int round = getRound (c,d);
+
         // White spacer
-        g2d.setPaint ( spacing );
+        g2d.setPaint ( getSpacingColor ( c, d ) );
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height - 1, round, round );
 
         // Background
-        g2d.setPaint ( color );
+        g2d.setPaint ( getBackgroundColor ( c, d ) );
         g2d.fillRect ( bounds.x + 3, bounds.y + 3, bounds.width - 6, bounds.height - 7 );
 
         // Border
-        g2d.setPaint ( border );
+        g2d.setPaint ( getBorderColor ( c, d ) );
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 2, round, round );
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, round, round );
     }

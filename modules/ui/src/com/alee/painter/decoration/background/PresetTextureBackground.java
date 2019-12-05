@@ -18,6 +18,8 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -40,21 +42,33 @@ public class PresetTextureBackground<C extends JComponent, D extends IDecoration
         extends AbstractImageTextureBackground<C, D, I>
 {
     /**
-     * Texture preset type.
+     * Preset {@link TextureType}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected TextureType preset;
 
-    @Override
-    protected boolean isPaintable ()
+    /**
+     * Returns preset {@link TextureType}.
+     *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
+     * @return preset {@link TextureType}
+     */
+    @NotNull
+    protected TextureType getPreset ( @NotNull final C c, @NotNull final D d )
     {
-        return preset != null && preset != TextureType.none;
+        if ( preset == null || preset == TextureType.none )
+        {
+            throw new DecorationException ( "Texture preset must be specified" );
+        }
+        return preset;
     }
 
     @NotNull
     @Override
-    protected BufferedImage getTextureImage ()
+    protected BufferedImage createTextureImage ( @NotNull final C c, @NotNull final D d )
     {
-        return preset.getTexture ();
+        return getPreset ( c, d ).getTexture ();
     }
 }

@@ -22,6 +22,7 @@ import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.behavior.OmitOnMerge;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -86,7 +87,7 @@ public class ExpandingShadow<C extends JComponent, D extends IDecoration<C, D>, 
             }
             else
             {
-                throw new RuntimeException ( "Inner shadow type is not supported by this shadow" );
+                throw new DecorationException ( "Inner shadow type is not supported by this shadow" );
             }
         }
     }

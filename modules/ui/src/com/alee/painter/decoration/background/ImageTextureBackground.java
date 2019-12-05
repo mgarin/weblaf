@@ -18,7 +18,9 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.icon.IconManager;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ImageUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -44,19 +46,35 @@ public class ImageTextureBackground<C extends JComponent, D extends IDecoration<
     /**
      * Identifier of an {@link Icon} from {@link IconManager}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String iconId;
 
-    @Override
-    protected boolean isPaintable ()
+    /**
+     * Returns identifier of an {@link Icon} from {@link IconManager}.
+     *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
+     * @return identifier of an {@link Icon} from {@link IconManager}
+     */
+    @NotNull
+    protected String getIconId ( @NotNull final C c, @NotNull final D d )
     {
-        return iconId != null && IconManager.hasIcon ( iconId );
+        if ( iconId == null )
+        {
+            throw new DecorationException ( "Texture icon identifier must be specified" );
+        }
+        else if ( !IconManager.hasIcon ( iconId ) )
+        {
+            throw new DecorationException ( "Texture icon doesn't exist" );
+        }
+        return iconId;
     }
 
     @NotNull
     @Override
-    protected BufferedImage getTextureImage ()
+    protected BufferedImage createTextureImage ( @NotNull final C c, @NotNull final D d )
     {
-        return ImageUtils.toNonNullBufferedImage ( IconManager.getIcon ( iconId ) );
+        return ImageUtils.toNonNullBufferedImage ( IconManager.getIcon ( getIconId ( c, d ) ) );
     }
 }

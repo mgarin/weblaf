@@ -18,8 +18,10 @@
 package com.alee.demo.skin.decoration;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.demo.api.example.FeatureState;
 import com.alee.demo.api.example.PreviewPanel;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.AbstractBackground;
 import com.alee.painter.decoration.shape.WebShape;
@@ -41,8 +43,9 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
         extends AbstractBackground<PreviewPanel, D, FeatureStateBackground<D>>
 {
     /**
-     * State mark color.
+     * State mark {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
@@ -51,6 +54,23 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
     public String getId ()
     {
         return id != null ? id : "feature-state";
+    }
+
+    /**
+     * Returns state mark {@link Color}.
+     *
+     * @param previewPanel {@link PreviewPanel} that is being painted
+     * @param decoration   {@link WebDecoration} state
+     * @return state mark {@link Color}
+     */
+    @NotNull
+    protected Color getColor ( @NotNull final PreviewPanel previewPanel, @NotNull final D decoration )
+    {
+        if ( color == null )
+        {
+            throw new DecorationException ( "State mark color must be specified" );
+        }
+        return color;
     }
 
     @Override
@@ -86,7 +106,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
                 }
                 gp.closePath ();
 
-                g2d.setPaint ( color );
+                g2d.setPaint ( getColor ( previewPanel, decoration ) );
                 g2d.fill ( gp );
 
                 GraphicsUtils.restoreAntialias ( g2d, aa );

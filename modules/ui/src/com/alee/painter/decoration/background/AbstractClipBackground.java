@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.background;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CollectionUtils;
@@ -43,6 +44,7 @@ public abstract class AbstractClipBackground<C extends JComponent, D extends IDe
     /**
      * {@link List} of actual {@link IBackground} implementations which are used to paint background.
      */
+    @Nullable
     @XStreamImplicit
     private List<IBackground> backgrounds;
 

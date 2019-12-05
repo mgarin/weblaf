@@ -19,6 +19,7 @@ package com.alee.painter.decoration.background;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ImageUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -80,21 +81,30 @@ public class AlphaLayerBackground<C extends JComponent, D extends IDecoration<C,
     /**
      * Returns cells size.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return cells size
      */
     @NotNull
-    public Dimension getSize ()
+    protected Dimension getSize ( @NotNull final C c, @NotNull final D d )
     {
-        return size != null ? size : DEFAULT_CELL_SIZE;
+        final Dimension size = this.size != null ? this.size : DEFAULT_CELL_SIZE;
+        if ( size.width <= 0 || size.height <= 0 )
+        {
+            throw new DecorationException ( "Cell size must be greater than zero" );
+        }
+        return size;
     }
 
     /**
      * Returns dark cell color.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return dark cell color
      */
     @NotNull
-    public Color getDarkColor ()
+    protected Color getDarkColor ( @NotNull final C c, @NotNull final D d )
     {
         return darkColor != null ? darkColor : DEFAULT_DARK_COLOR;
     }
@@ -102,26 +112,21 @@ public class AlphaLayerBackground<C extends JComponent, D extends IDecoration<C,
     /**
      * Returns light cell color.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return light cell color
      */
     @NotNull
-    public Color getLightColor ()
+    protected Color getLightColor ( @NotNull final C c, @NotNull final D d )
     {
         return lightColor != null ? lightColor : DEFAULT_LIGHT_COLOR;
     }
 
-    @Override
-    protected boolean isPaintable ()
-    {
-        final Dimension size = getSize ();
-        return size.width > 0 && size.height > 0;
-    }
-
     @NotNull
     @Override
-    protected TexturePaint getTexturePaint ( @NotNull final Rectangle bounds )
+    protected TexturePaint createTexturePaint ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
-        final BufferedImage image = createTextureImage ();
+        final BufferedImage image = createTextureImage ( c, d );
         final Rectangle anchor = new Rectangle ( bounds.x, bounds.y, image.getWidth (), image.getHeight () );
         return new TexturePaint ( image, anchor );
     }
@@ -129,12 +134,14 @@ public class AlphaLayerBackground<C extends JComponent, D extends IDecoration<C,
     /**
      * Returns texture image.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return texture image
      */
     @NotNull
-    protected BufferedImage createTextureImage ()
+    protected BufferedImage createTextureImage ( @NotNull final C c, @NotNull final D d )
     {
-        return createAlphaBackgroundTexture ( getSize (), getDarkColor (), getLightColor () );
+        return createAlphaBackgroundTexture ( getSize ( c, d ), getDarkColor ( c, d ), getLightColor ( c, d ) );
     }
 
     /**

@@ -106,12 +106,12 @@ public final class DecorationUtils
             }
             else
             {
-                throw new RuntimeException ( "Unknown GradientType provided" );
+                throw new DecorationException ( "Unknown GradientType provided" );
             }
         }
         else
         {
-            throw new RuntimeException ( "At least one GradientColor must be provided" );
+            throw new DecorationException ( "At least one GradientColor must be provided" );
         }
         return result;
     }

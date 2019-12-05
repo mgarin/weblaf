@@ -22,7 +22,6 @@ import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.behavior.OmitOnMerge;
-import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ColorUtils;
@@ -330,7 +329,7 @@ public abstract class AbstractTextContent<C extends JComponent, D extends IDecor
         {
             return shadowColor;
         }
-        throw new StyleException ( "Shadow color must be specified" );
+        throw new DecorationException ( "Shadow color must be specified" );
     }
 
     /**

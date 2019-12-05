@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:java.awt="java.awt"
+           elementFormDefault="qualified">
+
+    <xs:include schemaLocation="AbstractBackground.xsd" />
+
+    <!-- com.alee.extended.label.HotkeyLabelBackground -->
+    <xs:complexType name="HotkeyLabelBackground">
+        <xs:complexContent>
+            <xs:extension base="AbstractBackground">
+
+                <!-- Shape round -->
+                <xs:attribute name="round" type="xs:integer" use="required" />
+
+                <!-- Border color -->
+                <xs:attribute name="border" type="java.awt:Color" use="required" />
+
+                <!-- Spacing color -->
+                <xs:attribute name="spacing" type="java.awt:Color" use="required" />
+
+                <!-- Background color -->
+                <xs:attribute name="color" type="java.awt:Color" use="required" />
+
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

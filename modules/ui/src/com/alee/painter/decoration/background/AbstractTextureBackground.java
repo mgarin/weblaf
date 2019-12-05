@@ -73,40 +73,32 @@ public abstract class AbstractTextureBackground<C extends JComponent, D extends 
         final float opacity = getOpacity ( c, d );
         if ( opacity > 0 )
         {
-            // Checking texture state
-            if ( isPaintable () )
+            // Updating cached texture paint
+            final Rectangle shapeBounds = shape.getBounds ();
+            if ( paint == null || Objects.notEquals ( this.bounds, shapeBounds ) )
             {
-                // Updating cached texture paint
-                final Rectangle b = shape.getBounds ();
-                if ( paint == null || Objects.notEquals ( this.bounds, b ) )
-                {
-                    paint = getTexturePaint ( b );
-                }
-
-                // Painting texture
-                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-                final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
-                g2d.setPaint ( paint );
-                g2d.fill ( shape );
-                GraphicsUtils.restorePaint ( g2d, op );
-                GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+                paint = createTexturePaint ( shapeBounds, c, d );
+                this.bounds = shapeBounds;
             }
+
+            // Painting texture
+            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
+            final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+            g2d.setPaint ( paint );
+            g2d.fill ( shape );
+            GraphicsUtils.restorePaint ( g2d, op );
+            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
     }
-
-    /**
-     * Returns whether or not texture background is paintable right now.
-     *
-     * @return true if texture background is paintable right now, false otherwise
-     */
-    protected abstract boolean isPaintable ();
 
     /**
      * Returns texture paint implementation.
      *
      * @param bounds painting bounds
+     * @param c      {@link JComponent} that is being painted
+     * @param d      {@link IDecoration} state
      * @return texture paint implementation
      */
     @NotNull
-    protected abstract TexturePaint getTexturePaint ( @NotNull Rectangle bounds );
+    protected abstract TexturePaint createTexturePaint ( @NotNull Rectangle bounds, @NotNull C c, @NotNull D d );
 }
