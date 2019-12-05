@@ -11,9 +11,11 @@ About
 
 You can check out brand new demo application -
 
-[![DemoApplication](./screenshots/demo.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.10/weblaf-demo-1.2.10-jar-with-dependencies.jar)
+[![DemoApplication](./screenshots/demo.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.11/weblaf-demo-1.2.11-jar-with-dependencies.jar)
 
-It is an [executable JAR](https://github.com/mgarin/weblaf/releases/download/v1.2.10/weblaf-demo-1.2.10-jar-with-dependencies.jar) which you can run if you have JRE 6 or higher installed.
+[![DemoApplication](./screenshots/demo-dark.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.11/weblaf-demo-1.2.11-jar-with-dependencies.jar)
+
+It is an [executable JAR](https://github.com/mgarin/weblaf/releases/download/v1.2.11/weblaf-demo-1.2.11-jar-with-dependencies.jar) which you can run if you have JRE 6 or higher installed.
 
 **Features**
 
@@ -47,12 +49,12 @@ If you are working with a Maven project you can add WebLaF dependency like this:
 <dependency>
   <groupId>com.weblookandfeel</groupId>
   <artifactId>weblaf-ui</artifactId>
-  <version>1.2.10</version>
+  <version>1.2.11</version>
 </dependency>
 ```
 You can also use `RELEASE` or `LATEST` version instead of specific one.
 
-Full list of modules/artifacts available in v1.2.10:
+Full list of modules/artifacts available in v1.2.11:
 
 - `weblaf-core` - Module containing all basic managers, interfaces and classes
 - `weblaf-ui` - Module containing all components, UIs, painters, skins, managers and anything related to them
