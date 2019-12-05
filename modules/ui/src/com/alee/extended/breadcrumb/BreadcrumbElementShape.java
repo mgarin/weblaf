@@ -51,24 +51,28 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
     /**
      * Displayed decoration sides.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Sides sides;
 
     /**
      * Displayed decoration corners.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Sides corners;
 
     /**
      * Decoration corners width.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer cornerWidth;
 
     /**
      * Decoration corners rounding.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Round round;
 
@@ -77,6 +81,7 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
      *
      * @return displayed element sides
      */
+    @NotNull
     public Sides sides ()
     {
         if ( sides == null )
@@ -91,6 +96,7 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
      *
      * @return displayed element corners
      */
+    @NotNull
     public Sides corners ()
     {
         if ( corners == null )
@@ -119,61 +125,62 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
      *
      * @return decoration corners rounding
      */
+    @NotNull
     public Round round ()
     {
         return round != null ? round : new Round ();
     }
 
     @Override
-    public boolean isPaintTop ( final C c, final D d )
+    public boolean isPaintTop ( @NotNull final C c, @NotNull final D d )
     {
         return sides ().top;
     }
 
     @Override
-    public boolean isPaintLeft ( final C c, final D d )
+    public boolean isPaintLeft ( @NotNull final C c, @NotNull final D d )
     {
         return sides ().left;
     }
 
     @Override
-    public boolean isPaintBottom ( final C c, final D d )
+    public boolean isPaintBottom ( @NotNull final C c, @NotNull final D d )
     {
         return sides ().bottom;
     }
 
     @Override
-    public boolean isPaintRight ( final C c, final D d )
+    public boolean isPaintRight ( @NotNull final C c, @NotNull final D d )
     {
         return sides ().right;
     }
 
     @Override
-    public boolean isPaintTopLine ( final C c, final D d )
+    public boolean isPaintTopLine ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
     @Override
-    public boolean isPaintLeftLine ( final C c, final D d )
+    public boolean isPaintLeftLine ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
     @Override
-    public boolean isPaintBottomLine ( final C c, final D d )
+    public boolean isPaintBottomLine ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
     @Override
-    public boolean isPaintRightLine ( final C c, final D d )
+    public boolean isPaintRightLine ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
     @Override
-    public boolean isVisible ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    public boolean isVisible ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         final boolean visible;
         final Container parent = c.getParent ();
@@ -212,7 +219,7 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
 
     @NotNull
     @Override
-    public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    public Shape getShape ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         // Provided settings
         final WebBreadcrumb breadcrumb = ( WebBreadcrumb ) c.getParent ();
@@ -342,7 +349,7 @@ public class BreadcrumbElementShape<C extends JComponent, D extends WebDecoratio
 
     @NotNull
     @Override
-    public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
+    public Object[] getShapeSettings ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         final WebBreadcrumb breadcrumb = ( WebBreadcrumb ) c.getParent ();
         final Sides sides = sides ();

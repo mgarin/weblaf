@@ -37,27 +37,28 @@ public abstract class AbstractProgressShape<C extends JComponent, D extends WebD
         extends WebShape<C, D, I>
 {
     @Override
-    public boolean isVisible ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    public boolean isVisible ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         return super.isVisible ( type, adjustBounds ( bounds, c, d ), c, d );
     }
 
-    @Override
     @NotNull
-    public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    @Override
+    public Shape getShape ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         return super.getShape ( type, adjustBounds ( bounds, c, d ), c, d );
     }
 
-    @Override
     @NotNull
-    public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
+    @Override
+    public Object[] getShapeSettings ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         return super.getShapeSettings ( adjustBounds ( bounds, c, d ), c, d );
     }
 
+    @NotNull
     @Override
-    public StretchInfo getStretchInfo ( final Rectangle bounds, final C c, final D d )
+    public StretchInfo getStretchInfo ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         return super.getStretchInfo ( adjustBounds ( bounds, c, d ), c, d );
     }

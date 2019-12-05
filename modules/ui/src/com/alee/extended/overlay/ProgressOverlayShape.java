@@ -42,7 +42,7 @@ public class ProgressOverlayShape<C extends WebCanvas, D extends WebDecoration<C
 {
     @NotNull
     @Override
-    public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    public Shape getShape ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         Shape shape = bounds;
         if ( c.getParent () instanceof WebProgressOverlay )

@@ -39,7 +39,7 @@ public class BoundsShape<C extends JComponent, D extends WebDecoration<C, D>, I 
 {
     @NotNull
     @Override
-    public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    public Shape getShape ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         final int bgShear = type.isBorder () ? -1 : 0;
         final int sw = d.getShadowWidth ( ShadowType.outer );

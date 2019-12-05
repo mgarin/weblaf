@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -38,12 +39,14 @@ public abstract class AbstractShape<C extends JComponent, D extends IDecoration<
     /**
      * Shape ID.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String id;
 
     /**
      * Whether or not this shape should overwrite previous one when merged.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean overwrite;
 
@@ -77,33 +80,22 @@ public abstract class AbstractShape<C extends JComponent, D extends IDecoration<
     }
 
     @Override
-    public boolean isVisible ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    public boolean isVisible ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         return true;
     }
 
     @Nullable
     @Override
-    public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
+    public Object[] getShapeSettings ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         return null;
     }
 
+    @Nullable
     @Override
-    public StretchInfo getStretchInfo ( final Rectangle bounds, final C c, final D d )
+    public StretchInfo getStretchInfo ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         return null;
-    }
-
-    /**
-     * Returns point for the specified coordinates.
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return point for the specified coordinates
-     */
-    protected Point p ( final int x, final int y )
-    {
-        return new Point ( x, y );
     }
 }

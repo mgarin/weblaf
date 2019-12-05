@@ -45,6 +45,7 @@ public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I e
      * Arrow corner direction.
      * Only north, east, south and west directions are supported.
      */
+    @Nullable
     @XStreamAsAttribute
     protected CompassDirection direction;
 
@@ -52,18 +53,20 @@ public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I e
      * Returns corner direction.
      *
      * @param c component
+     * @param d painted decoration state
      * @return corner direction
      */
-    public CompassDirection getDirection ( final C c )
+    @NotNull
+    public CompassDirection getDirection ( @NotNull final C c, @NotNull final D d )
     {
         return direction != null ? direction.adjust ( c.getComponentOrientation () ) : CompassDirection.north;
     }
 
     @NotNull
     @Override
-    public Shape getShape ( final ShapeType type, final Rectangle bounds, final C c, final D d )
+    public Shape getShape ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
-        final CompassDirection direction = getDirection ( c );
+        final CompassDirection direction = getDirection ( c, d );
         return ShapeUtils.getShape ( c, "ArrowShape." + type, new Supplier<Shape> ()
         {
             @Override
@@ -82,7 +85,9 @@ public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I e
      * @param direction arrow direction
      * @return arrow shape
      */
-    protected Shape createArrowButtonShape ( final ShapeType type, final Rectangle bounds, final CompassDirection direction )
+    @NotNull
+    protected Shape createArrowButtonShape ( @NotNull final ShapeType type, @NotNull final Rectangle bounds,
+                                             @NotNull final CompassDirection direction )
     {
         final int x = bounds.x;
         final int y = bounds.y;
@@ -128,8 +133,8 @@ public class ArrowShape<C extends JComponent, D extends WebDecoration<C, D>, I e
 
     @NotNull
     @Override
-    public Object[] getShapeSettings ( final Rectangle bounds, final C c, final D d )
+    public Object[] getShapeSettings ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
-        return new Object[]{ getDirection ( c ) };
+        return new Object[]{ getDirection ( c, d ) };
     }
 }
