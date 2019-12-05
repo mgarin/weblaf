@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.shadow;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Overwriting;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.IShapedElement;
@@ -42,6 +43,7 @@ public interface IShadow<C extends JComponent, D extends IDecoration<C, D>, I ex
      * @return shadow type
      * @see ShadowType
      */
+    @NotNull
     public ShadowType getType ();
 
     /**

@@ -78,6 +78,7 @@ public class WebShadow<C extends JComponent, D extends WebDecoration<C, D>, I ex
     /**
      * Reference keeping shadow icon in memory.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient NinePatchIcon shadowIcon;
@@ -85,6 +86,7 @@ public class WebShadow<C extends JComponent, D extends WebDecoration<C, D>, I ex
     /**
      * Reference keeping shadow image in memory.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient BufferedImage shadowImage;

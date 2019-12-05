@@ -39,34 +39,39 @@ public abstract class AbstractShadow<C extends JComponent, D extends IDecoration
     /**
      * Whether or not this shadow should overwrite previous one when merged.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean overwrite;
 
     /**
      * Shadow type.
      */
+    @Nullable
     @XStreamAsAttribute
     protected ShadowType type;
 
     /**
      * Shadow opacity.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Float opacity;
 
     /**
      * Shadow width.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer width;
 
     /**
      * Shadow color.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -95,6 +100,7 @@ public abstract class AbstractShadow<C extends JComponent, D extends IDecoration
          */
     }
 
+    @NotNull
     @Override
     public ShadowType getType ()
     {
@@ -122,6 +128,7 @@ public abstract class AbstractShadow<C extends JComponent, D extends IDecoration
      *
      * @return shadow color
      */
+    @NotNull
     public Color getColor ()
     {
         return color != null ? color : Color.BLACK;
