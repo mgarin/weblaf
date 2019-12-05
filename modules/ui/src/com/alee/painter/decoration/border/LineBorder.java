@@ -74,6 +74,7 @@ public class LineBorder<C extends JComponent, D extends IDecoration<C, D>, I ext
         return color;
     }
 
+    @NotNull
     @Override
     public BorderWidth getWidth ()
     {

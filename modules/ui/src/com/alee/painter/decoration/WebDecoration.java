@@ -300,6 +300,7 @@ public class WebDecoration<C extends JComponent, I extends WebDecoration<C, I>> 
      *
      * @return border width
      */
+    @NotNull
     public BorderWidth getBorderWidth ()
     {
         final IBorder border = getBorder ();

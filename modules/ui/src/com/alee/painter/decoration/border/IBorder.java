@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.border;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Overwriting;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.IShapedElement;
@@ -48,5 +49,6 @@ public interface IBorder<C extends JComponent, D extends IDecoration<C, D>, I ex
      *
      * @return border width
      */
+    @NotNull
     public BorderWidth getWidth ();
 }

@@ -38,22 +38,25 @@ public abstract class AbstractBorder<C extends JComponent, D extends IDecoration
     /**
      * Border identifier.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String id;
 
     /**
      * Whether or not this border should overwrite previous one when merged.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean overwrite;
 
     /**
      * Border opacity.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Float opacity;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
