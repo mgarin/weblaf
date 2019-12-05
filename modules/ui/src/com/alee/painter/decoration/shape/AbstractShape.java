@@ -64,7 +64,7 @@ public abstract class AbstractShape<C extends JComponent, D extends IDecoration<
     }
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         /**
          * Do nothing by default.
@@ -72,7 +72,7 @@ public abstract class AbstractShape<C extends JComponent, D extends IDecoration<
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         /**
          * Do nothing by default.

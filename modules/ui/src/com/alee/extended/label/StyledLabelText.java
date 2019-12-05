@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.IDecoration;
@@ -46,7 +47,7 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
     protected transient ContentPropertyListener<C, D> listener;
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         // Performing default actions
         super.activate ( c, d );
@@ -65,7 +66,7 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         // Removing style ranges change listener
         c.removePropertyChangeListener ( WebStyledLabel.STYLE_RANGES_PROPERTY, listener );

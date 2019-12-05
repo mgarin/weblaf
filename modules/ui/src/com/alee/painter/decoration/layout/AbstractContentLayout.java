@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
@@ -66,7 +67,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     }
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         // Performing default actions
         super.activate ( c, d );
@@ -79,7 +80,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         // Performing default actions
         super.deactivate ( c, d );

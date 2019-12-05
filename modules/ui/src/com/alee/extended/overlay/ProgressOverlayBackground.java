@@ -124,7 +124,7 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
     protected transient QueueTransition positionTransition;
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         // Initial values
         currentOpacity = 0f;
@@ -162,7 +162,7 @@ public class ProgressOverlayBackground<C extends WebCanvas, D extends IDecoratio
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         // State change listener
         c.removePropertyChangeListener ( AbstractDecorationPainter.DECORATION_STATES_PROPERTY, statesListener );

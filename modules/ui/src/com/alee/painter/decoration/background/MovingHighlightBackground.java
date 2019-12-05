@@ -111,7 +111,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     protected transient QueueTransition transitionsQueue;
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         visibilityBehavior = new VisibilityBehavior<C> ( c, true )
         {
@@ -131,7 +131,7 @@ public class MovingHighlightBackground<C extends JComponent, D extends IDecorati
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         visibilityBehavior.uninstall ();
         visibilityBehavior = null;

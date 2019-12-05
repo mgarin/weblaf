@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.DecorationException;
@@ -103,7 +104,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     protected transient List<TextRange> textRanges;
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         // Performing default actions
         super.activate ( c, d );
@@ -113,7 +114,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         // Clearing text ranges
         textRanges = null;

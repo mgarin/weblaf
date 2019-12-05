@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.ContentPropertyListener;
@@ -69,7 +70,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
     protected transient ContentPropertyListener<C, D> contentListener;
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         // Initializing caches
         initializeContentCache ( c, d );
@@ -82,7 +83,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         // Uninstalling content property listener
         uninstallContentPropertyListener ( c, d );

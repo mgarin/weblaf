@@ -62,7 +62,7 @@ public abstract class AbstractClipBackground<C extends JComponent, D extends IDe
     }
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         for ( final IBackground background : backgrounds () )
         {
@@ -71,7 +71,7 @@ public abstract class AbstractClipBackground<C extends JComponent, D extends IDe
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         for ( final IBackground background : backgrounds () )
         {

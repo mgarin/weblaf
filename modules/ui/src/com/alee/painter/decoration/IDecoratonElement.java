@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 
 /**
@@ -40,7 +42,7 @@ public interface IDecoratonElement<C extends JComponent, D extends IDecoration<C
      * @param c {@link JComponent}
      * @param d {@link IDecoration}
      */
-    public void activate ( C c, D d );
+    public void activate ( @NotNull C c, @NotNull D d );
 
     /**
      * Called upon {@link IDecoration} deactivation.
@@ -49,5 +51,5 @@ public interface IDecoratonElement<C extends JComponent, D extends IDecoration<C
      * @param c {@link JComponent}
      * @param d {@link IDecoration}
      */
-    public void deactivate ( C c, D d );
+    public void deactivate ( @NotNull C c, @NotNull D d );
 }

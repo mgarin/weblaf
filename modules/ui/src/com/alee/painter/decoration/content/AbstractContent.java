@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Rotation;
 import com.alee.managers.style.BoundsType;
@@ -109,7 +110,7 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     }
 
     @Override
-    public void activate ( final C c, final D d )
+    public void activate ( @NotNull final C c, @NotNull final D d )
     {
         /**
          * Do nothing by default.
@@ -117,7 +118,7 @@ public abstract class AbstractContent<C extends JComponent, D extends IDecoratio
     }
 
     @Override
-    public void deactivate ( final C c, final D d )
+    public void deactivate ( @NotNull final C c, @NotNull final D d )
     {
         /**
          * Do nothing by default.
