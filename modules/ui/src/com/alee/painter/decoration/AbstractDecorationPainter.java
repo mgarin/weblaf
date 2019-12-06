@@ -1090,7 +1090,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                         }
 
                         // Merging multiple decorations together
-                        decoration = Merge.deep ().merge ( decorations );
+                        decoration = Merge.deep ().nonNullMerge ( decorations );
                     }
 
                     // Updating built decoration settings

@@ -17,6 +17,8 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -41,7 +43,7 @@ public interface GlobalMergeBehavior<O, M, R> extends Serializable
      * @param merged object to merge, should never be {@code null}
      * @return {@code true} if this behavior supports specified objects merge, {@code false} otherwise
      */
-    public boolean supports ( RecursiveMerge merge, Class<R> type, Object base, Object merged );
+    public boolean supports ( @NotNull RecursiveMerge merge, @NotNull Class<R> type, @NotNull Object base, @NotNull Object merged );
 
     /**
      * Performs merge of the two provided objects and returns resulting object.
@@ -54,5 +56,6 @@ public interface GlobalMergeBehavior<O, M, R> extends Serializable
      * @param depth  merge calls stack depth
      * @return merge result
      */
-    public R merge ( RecursiveMerge merge, Class type, O base, M merged, int depth );
+    @NotNull
+    public R merge ( @NotNull RecursiveMerge merge, @NotNull Class type, @NotNull O base, @NotNull M merged, int depth );
 }

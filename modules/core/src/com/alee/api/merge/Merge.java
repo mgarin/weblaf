@@ -17,6 +17,8 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneException;
 import com.alee.api.matcher.IdentifiableMatcher;
@@ -25,6 +27,8 @@ import com.alee.api.merge.clonepolicy.PerformClonePolicy;
 import com.alee.api.merge.clonepolicy.SkipClonePolicy;
 import com.alee.api.merge.nullresolver.SkippingNullResolver;
 import com.alee.api.merge.unknownresolver.ExceptionUnknownResolver;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.reflection.ModifierType;
 
@@ -56,22 +60,19 @@ public final class Merge implements Serializable
     /**
      * Common lazy {@link Merge} instances cache.
      */
+    @Nullable
     private static Map<String, Merge> commons;
-
-    /**
-     * {@link Clone} algorithm used to copy merged objects.
-     * Whether or not it will actually be used depends on {@link ClonePolicy} implementations used.
-     */
-    private final Clone clone;
 
     /**
      * {@link ClonePolicy} for base object.
      */
+    @NotNull
     private final ClonePolicy baseClonePolicy;
 
     /**
      * {@link ClonePolicy} for merged objects.
      */
+    @NotNull
     private final ClonePolicy mergedClonePolicy;
 
     /**
@@ -80,12 +81,14 @@ public final class Merge implements Serializable
      *
      * @see NullResolver
      */
+    @NotNull
     private final NullResolver nullResolver;
 
     /**
      * Unknown object types case resolver.
      * It is used to resolve merge outcome when either of {@code source} and {@code merged} objects are not supported by behaviors.
      */
+    @NotNull
     private final UnknownResolver unknownResolver;
 
     /**
@@ -94,6 +97,7 @@ public final class Merge implements Serializable
      *
      * @see GlobalMergeBehavior
      */
+    @NotNull
     private final List<GlobalMergeBehavior> behaviors;
 
     /**
@@ -103,29 +107,27 @@ public final class Merge implements Serializable
      * @param unknownResolver unknown object types case resolver
      * @param behaviors       behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final NullResolver nullResolver, final UnknownResolver unknownResolver,
-                   final GlobalMergeBehavior... behaviors )
+    public Merge ( @NotNull final NullResolver nullResolver, @NotNull final UnknownResolver unknownResolver,
+                   @NotNull final GlobalMergeBehavior... behaviors )
     {
-        this ( null, new SkipClonePolicy (), new SkipClonePolicy (),
-                nullResolver, unknownResolver, new ImmutableList<GlobalMergeBehavior> ( behaviors ) );
+        this ( new SkipClonePolicy (), new SkipClonePolicy (), nullResolver, unknownResolver,
+                new ImmutableList<GlobalMergeBehavior> ( behaviors ) );
     }
 
     /**
      * Constructs new {@link Merge} algorithm.
      *
-     * @param clone             {@link Clone} algorithm used to copy merged objects
      * @param baseClonePolicy   {@link ClonePolicy} for base object
      * @param mergedClonePolicy {@link ClonePolicy} for merged objects
      * @param nullResolver      object merge {@code null} case resolver
      * @param unknownResolver   unknown object types case resolver
      * @param behaviors         behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final Clone clone, final ClonePolicy baseClonePolicy, final ClonePolicy mergedClonePolicy,
-                   final NullResolver nullResolver, final UnknownResolver unknownResolver,
-                   final GlobalMergeBehavior... behaviors )
+    public Merge ( @NotNull final ClonePolicy baseClonePolicy, @NotNull final ClonePolicy mergedClonePolicy,
+                   @NotNull final NullResolver nullResolver, @NotNull final UnknownResolver unknownResolver,
+                   @NotNull final GlobalMergeBehavior... behaviors )
     {
-        this ( clone, baseClonePolicy, mergedClonePolicy,
-                nullResolver, unknownResolver, new ImmutableList<GlobalMergeBehavior> ( behaviors ) );
+        this ( baseClonePolicy, mergedClonePolicy, nullResolver, unknownResolver, new ImmutableList<GlobalMergeBehavior> ( behaviors ) );
     }
 
     /**
@@ -135,28 +137,25 @@ public final class Merge implements Serializable
      * @param unknownResolver unknown object types case resolver
      * @param behaviors       behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final NullResolver nullResolver, final UnknownResolver unknownResolver,
-                   final List<GlobalMergeBehavior> behaviors )
+    public Merge ( @NotNull final NullResolver nullResolver, @NotNull final UnknownResolver unknownResolver,
+                   @NotNull final List<GlobalMergeBehavior> behaviors )
     {
-        this ( null, new SkipClonePolicy (), new SkipClonePolicy (),
-                nullResolver, unknownResolver, behaviors );
+        this ( new SkipClonePolicy (), new SkipClonePolicy (), nullResolver, unknownResolver, behaviors );
     }
 
     /**
      * Constructs new {@link Merge} algorithm.
      *
-     * @param clone             {@link Clone} algorithm used to copy merged objects
      * @param baseClonePolicy   {@link ClonePolicy} for base object
      * @param mergedClonePolicy {@link ClonePolicy} for merged objects
      * @param nullResolver      object merge {@code null} case resolver
      * @param unknownResolver   unknown object types case resolver
      * @param behaviors         behaviors taking part in this merge algorithm instance
      */
-    public Merge ( final Clone clone, final ClonePolicy baseClonePolicy, final ClonePolicy mergedClonePolicy,
-                   final NullResolver nullResolver, final UnknownResolver unknownResolver,
-                   final List<GlobalMergeBehavior> behaviors )
+    public Merge ( @NotNull final ClonePolicy baseClonePolicy, @NotNull final ClonePolicy mergedClonePolicy,
+                   @NotNull final NullResolver nullResolver, @NotNull final UnknownResolver unknownResolver,
+                   @NotNull final List<GlobalMergeBehavior> behaviors )
     {
-        this.clone = clone;
         this.baseClonePolicy = baseClonePolicy;
         this.mergedClonePolicy = mergedClonePolicy;
         this.nullResolver = nullResolver;
@@ -174,12 +173,34 @@ public final class Merge implements Serializable
      * @param <T>    resulting object type
      * @return merge result
      */
-    public <T> T merge ( final Object base, final Object merged )
+    @Nullable
+    public <T> T merge ( @Nullable final Object base, @Nullable final Object merged )
     {
         final Object baseCopy = cloneBase ( base );
         final Object mergedCopy = cloneMerged ( merged );
         final InternalMerge internalMerge = new InternalMerge ();
         return internalMerge.merge ( Object.class, baseCopy, mergedCopy, 0 );
+    }
+
+    /**
+     * Performs merge of the two provided objects and returns resulting non-{@code null} object.
+     * Depending on the case it might be one of the two provided objects, their copy or their merge result.
+     * Whether or not {@code base} and/or {@code merged} will be copied depends on {@link #baseClonePolicy} and {@link #mergedClonePolicy}.
+     *
+     * @param base   base object
+     * @param merged object to merge
+     * @param <T>    resulting object type
+     * @return non-{@code null} merge result
+     */
+    @NotNull
+    public <T> T nonNullMerge ( @NotNull final Object base, @NotNull final Object merged )
+    {
+        final T result = merge ( base, merged );
+        if ( result == null )
+        {
+            throw new MergeException ( "Objects merge result is null:" + base + "\n <- " + merged );
+        }
+        return result;
     }
 
     /**
@@ -193,7 +214,8 @@ public final class Merge implements Serializable
      * @param <T>    resulting object type
      * @return merge result
      */
-    public <T> T merge ( final Object base, final Object merged, final Object... more )
+    @Nullable
+    public <T> T merge ( @Nullable final Object base, @Nullable final Object merged, @NotNull final Object... more )
     {
         final Object baseCopy = cloneBase ( base );
         final Object mergedCopy = cloneMerged ( merged );
@@ -208,6 +230,29 @@ public final class Merge implements Serializable
     }
 
     /**
+     * Performs merge of all provided objects and returns resulting non-{@code null} object.
+     * Depending on the case it might be one of the two provided objects, their copy or their merge result.
+     * Whether or not {@code base} and/or {@code merged} will be copied depends on {@link #baseClonePolicy} and {@link #mergedClonePolicy}.
+     *
+     * @param base   base object
+     * @param merged object to merge
+     * @param more   more objects to merge
+     * @param <T>    resulting object type
+     * @return non-{@code null} merge result
+     */
+    @NotNull
+    public <T> T nonNullMerge ( @NotNull final Object base, @NotNull final Object merged, @NotNull final Object... more )
+    {
+        final T result = merge ( base, merged, more );
+        if ( result == null )
+        {
+            throw new MergeException ( "Objects merge result is null:" + base + "\n <- " + merged +
+                    "\n <- " + TextUtils.arrayToString ( "\n <- ", more ) );
+        }
+        return result;
+    }
+
+    /**
      * Performs merge of all provided objects and returns resulting object.
      * Depending on the case it might be one of the provided objects, their copy or their merge result.
      * Whether or not {@code base} and/or {@code merged} will be copied depends on {@link #baseClonePolicy} and {@link #mergedClonePolicy}.
@@ -216,9 +261,10 @@ public final class Merge implements Serializable
      * @param <T>     resulting object type
      * @return merge result
      */
-    public <T> T merge ( final Collection<?> objects )
+    @Nullable
+    public <T> T merge ( @NotNull final Collection<?> objects )
     {
-        if ( objects.size () > 0 )
+        if ( CollectionUtils.notEmpty ( objects ) )
         {
             final Iterator<?> iterator = objects.iterator ();
             final InternalMerge internalMerge = new InternalMerge ();
@@ -237,15 +283,36 @@ public final class Merge implements Serializable
     }
 
     /**
+     * Performs merge of all provided objects and returns resulting non-{@code null} object.
+     * Depending on the case it might be one of the provided objects, their copy or their merge result.
+     * Whether or not {@code base} and/or {@code merged} will be copied depends on {@link #baseClonePolicy} and {@link #mergedClonePolicy}.
+     *
+     * @param objects objects to merge
+     * @param <T>     resulting object type
+     * @return non-{@code null} merge result
+     */
+    @NotNull
+    public <T> T nonNullMerge ( @NotNull final Collection<?> objects )
+    {
+        final T result = merge ( objects );
+        if ( result == null )
+        {
+            throw new MergeException ( "Objects merge result is null:" + TextUtils.collectionToString ( objects, "\n <- " ) );
+        }
+        return result;
+    }
+
+    /**
      * Returns either object or its clone based on {@link #baseClonePolicy}.
      * This is an utility method mostly for {@link GlobalMergeBehavior} implementations.
      *
      * @param base object to clone
      * @return either object or its clone based on {@link #baseClonePolicy}
      */
-    private Object cloneBase ( final Object base )
+    @Nullable
+    private Object cloneBase ( @Nullable final Object base )
     {
-        return baseClonePolicy.clone ( clone, base );
+        return baseClonePolicy.clone ( base );
     }
 
     /**
@@ -255,9 +322,10 @@ public final class Merge implements Serializable
      * @param merged object to clone
      * @return either object or its clone based on {@link #mergedClonePolicy}
      */
-    private Object cloneMerged ( final Object merged )
+    @Nullable
+    private Object cloneMerged ( @Nullable final Object merged )
     {
-        return mergedClonePolicy.clone ( clone, merged );
+        return mergedClonePolicy.clone ( merged );
     }
 
     /**
@@ -266,21 +334,9 @@ public final class Merge implements Serializable
      */
     private class InternalMerge implements RecursiveMerge
     {
+        @Nullable
         @Override
-        public Object overwrite ( final Object base, final Object merged )
-        {
-            if ( base != null && merged != null )
-            {
-                return merged;
-            }
-            else
-            {
-                return nullResolver.resolve ( this, base, merged );
-            }
-        }
-
-        @Override
-        public <T> T merge ( final Class type, final Object base, final Object merged, final int depth )
+        public <T> T merge ( @NotNull final Class type, @Nullable final Object base, @Nullable final Object merged, final int depth )
         {
             final T result;
             if ( base != null && merged != null )
@@ -318,8 +374,9 @@ public final class Merge implements Serializable
             return result;
         }
 
+        @NotNull
         @Override
-        public <T> T mergeFields ( final Class type, final Object base, final Object merged, final int depth )
+        public <T> T mergeFields ( @NotNull final Class type, @NotNull final Object base, @NotNull final Object merged, final int depth )
         {
             for ( final GlobalMergeBehavior behavior : behaviors )
             {
@@ -330,6 +387,22 @@ public final class Merge implements Serializable
             }
             throw new CloneException ( "There is no ReflectionMergeBehavior in Merge algorithm" );
         }
+
+        @Nullable
+        @Override
+        public Object overwrite ( @Nullable final Object base, @Nullable final Object merged )
+        {
+            final Object result;
+            if ( base != null && merged != null )
+            {
+                result = merged;
+            }
+            else
+            {
+                result = nullResolver.resolve ( this, base, merged );
+            }
+            return result;
+        }
     }
 
     /**
@@ -338,6 +411,7 @@ public final class Merge implements Serializable
      *
      * @return {@link Merge} algorithm that is able to merge basic object types
      */
+    @NotNull
     public static Merge basic ()
     {
         final String identifier = "basic";
@@ -345,9 +419,8 @@ public final class Merge implements Serializable
         if ( merge == null )
         {
             merge = new Merge (
-                    Clone.deep (),
-                    new PerformClonePolicy (),
-                    new PerformClonePolicy (),
+                    new PerformClonePolicy ( Clone.deep () ),
+                    new PerformClonePolicy ( Clone.deep () ),
                     new SkippingNullResolver (),
                     new ExceptionUnknownResolver (),
                     new BasicMergeBehavior (),
@@ -356,7 +429,7 @@ public final class Merge implements Serializable
                     new MapMergeBehavior (),
                     new ListMergeBehavior ( new IdentifiableMatcher () )
             );
-            commons.put ( identifier, merge );
+            getCommons ().put ( identifier, merge );
         }
         return merge;
     }
@@ -366,6 +439,7 @@ public final class Merge implements Serializable
      *
      * @return {@link Merge} algorithm that is able to merge basic object types
      */
+    @NotNull
     public static Merge basicRaw ()
     {
         final String identifier = "basicRaw";
@@ -381,7 +455,7 @@ public final class Merge implements Serializable
                     new MapMergeBehavior (),
                     new ListMergeBehavior ( new IdentifiableMatcher () )
             );
-            commons.put ( identifier, merge );
+            getCommons ().put ( identifier, merge );
         }
         return merge;
     }
@@ -393,6 +467,7 @@ public final class Merge implements Serializable
      *
      * @return {@link Merge} algorithm that can also merge custom objects through {@link ReflectionMergeBehavior}
      */
+    @NotNull
     public static Merge deep ()
     {
         final String identifier = "deep";
@@ -400,9 +475,8 @@ public final class Merge implements Serializable
         if ( merge == null )
         {
             merge = new Merge (
-                    Clone.deep (),
-                    new PerformClonePolicy (),
-                    new PerformClonePolicy (),
+                    new PerformClonePolicy ( Clone.deep () ),
+                    new PerformClonePolicy ( Clone.deep () ),
                     new SkippingNullResolver (),
                     new ExceptionUnknownResolver (),
                     new BasicMergeBehavior (),
@@ -412,7 +486,7 @@ public final class Merge implements Serializable
                     new ListMergeBehavior ( new IdentifiableMatcher () ),
                     new ReflectionMergeBehavior ( ReflectionMergeBehavior.Policy.mergeable, ModifierType.STATIC )
             );
-            commons.put ( identifier, merge );
+            getCommons ().put ( identifier, merge );
         }
         return merge;
     }
@@ -423,6 +497,7 @@ public final class Merge implements Serializable
      *
      * @return {@link Merge} algorithm that can also merge custom objects through {@link ReflectionMergeBehavior}
      */
+    @NotNull
     public static Merge deepRaw ()
     {
         final String identifier = "deepRaw";
@@ -439,7 +514,7 @@ public final class Merge implements Serializable
                     new ListMergeBehavior ( new IdentifiableMatcher () ),
                     new ReflectionMergeBehavior ( ReflectionMergeBehavior.Policy.mergeable, ModifierType.STATIC )
             );
-            commons.put ( identifier, merge );
+            getCommons ().put ( identifier, merge );
         }
         return merge;
     }
@@ -450,7 +525,19 @@ public final class Merge implements Serializable
      * @param identifier {@link Merge} instance indentifier
      * @return common {@link Merge} instance by its indentifier
      */
+    @Nullable
     private static Merge commonInstance ( final String identifier )
+    {
+        return getCommons ().get ( identifier );
+    }
+
+    /**
+     * Returns common instances {@link Map}.
+     *
+     * @return common instances {@link Map}
+     */
+    @NotNull
+    private static Map<String, Merge> getCommons ()
     {
         if ( commons == null )
         {
@@ -462,6 +549,6 @@ public final class Merge implements Serializable
                 }
             }
         }
-        return commons.get ( identifier );
+        return commons;
     }
 }

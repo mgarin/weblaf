@@ -17,6 +17,8 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Special unchecked exception used to display various merge problems.
  *
@@ -39,7 +41,7 @@ public final class MergeException extends RuntimeException
      *
      * @param message exception message
      */
-    public MergeException ( final String message )
+    public MergeException ( @NotNull final String message )
     {
         super ( message );
     }
@@ -50,7 +52,7 @@ public final class MergeException extends RuntimeException
      * @param message exception message
      * @param cause   exception cause
      */
-    public MergeException ( final String message, final Throwable cause )
+    public MergeException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
     }
@@ -60,7 +62,7 @@ public final class MergeException extends RuntimeException
      *
      * @param cause exception cause
      */
-    public MergeException ( final Throwable cause )
+    public MergeException ( @NotNull final Throwable cause )
     {
         super ( cause );
     }

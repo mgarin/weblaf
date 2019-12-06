@@ -17,6 +17,7 @@
 
 package com.alee.api.merge.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.RecursiveMerge;
@@ -40,13 +41,14 @@ public class MapMergeBehavior<T extends Map> implements GlobalMergeBehavior<T, T
      */
 
     @Override
-    public boolean supports ( final RecursiveMerge merge, final Class<T> type, final Object base, final Object merged )
+    public boolean supports ( @NotNull final RecursiveMerge merge, @NotNull final Class<T> type, @NotNull final Object base, @NotNull final Object merged )
     {
         return base instanceof Map && merged instanceof Map;
     }
 
+    @NotNull
     @Override
-    public T merge ( final RecursiveMerge merge, final Class type, final T base, final T merged, final int depth )
+    public T merge ( @NotNull final RecursiveMerge merge, @NotNull final Class type, @NotNull final T base, @NotNull final T merged, final int depth )
     {
         for ( final Object e : merged.entrySet () )
         {

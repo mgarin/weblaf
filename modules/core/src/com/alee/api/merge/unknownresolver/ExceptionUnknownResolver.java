@@ -17,6 +17,7 @@
 
 package com.alee.api.merge.unknownresolver;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.MergeException;
 import com.alee.api.merge.RecursiveMerge;
@@ -31,8 +32,9 @@ import com.alee.api.merge.UnknownResolver;
  */
 public final class ExceptionUnknownResolver implements UnknownResolver
 {
+    @NotNull
     @Override
-    public Object resolve ( final RecursiveMerge merge, final Object object, final Object merged )
+    public Object resolve ( @NotNull final RecursiveMerge merge, @NotNull final Object object, @NotNull final Object merged )
     {
         throw new MergeException ( "Unsupported object types merge: " + object + " and " + merged );
     }

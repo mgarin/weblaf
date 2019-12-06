@@ -17,6 +17,7 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 
 import java.io.Serializable;
@@ -35,9 +36,9 @@ public interface ClonePolicy extends Serializable
     /**
      * Returns source object or cloned object, depending on implementation.
      *
-     * @param clone  {@link Clone} algorithm
      * @param source source object to be cloned
      * @return source object or cloned object, depending on implementation
      */
-    public Object clone ( Clone clone, Object source );
+    @Nullable
+    public Object clone ( @Nullable Object source );
 }

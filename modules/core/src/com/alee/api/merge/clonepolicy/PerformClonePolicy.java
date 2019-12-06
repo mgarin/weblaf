@@ -17,6 +17,8 @@
 
 package com.alee.api.merge.clonepolicy;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.merge.ClonePolicy;
 
@@ -31,8 +33,25 @@ import com.alee.api.merge.ClonePolicy;
  */
 public final class PerformClonePolicy implements ClonePolicy
 {
+    /**
+     * {@link Clone} used for cloning objects.
+     */
+    @NotNull
+    private final Clone clone;
+
+    /**
+     * Constucts new {@link PerformClonePolicy}.
+     *
+     * @param clone {@link Clone} used for cloning objects
+     */
+    public PerformClonePolicy ( @NotNull final Clone clone )
+    {
+        this.clone = clone;
+    }
+
+    @Nullable
     @Override
-    public Object clone ( final Clone clone, final Object source )
+    public Object clone ( @Nullable final Object source )
     {
         return clone.clone ( source );
     }

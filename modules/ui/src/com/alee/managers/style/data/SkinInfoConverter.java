@@ -229,7 +229,7 @@ public final class SkinInfoConverter extends ReflectionConverter
                     final SkinInfo include = readInclude ( skinInfo, nearClass, path );
 
                     // Merging icon sets to avoid duplicates
-                    iconSets = Merge.basicRaw ().merge ( iconSets, include.getIconSets () );
+                    iconSets = Merge.basicRaw ().nonNullMerge ( iconSets, include.getIconSets () );
 
                     // Simply adding additional styles to the end
                     styles.addAll ( include.getStyles () );

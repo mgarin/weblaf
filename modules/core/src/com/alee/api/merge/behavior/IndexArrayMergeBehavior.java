@@ -17,6 +17,7 @@
 
 package com.alee.api.merge.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.GlobalMergeBehavior;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.RecursiveMerge;
@@ -41,13 +42,16 @@ public class IndexArrayMergeBehavior implements GlobalMergeBehavior<Object, Obje
      */
 
     @Override
-    public boolean supports ( final RecursiveMerge merge, final Class<Object> type, final Object base, final Object merged )
+    public boolean supports ( @NotNull final RecursiveMerge merge, @NotNull final Class<Object> type, @NotNull final Object base,
+                              @NotNull final Object merged )
     {
         return base.getClass ().isArray () && merged.getClass ().isArray ();
     }
 
+    @NotNull
     @Override
-    public Object merge ( final RecursiveMerge merge, final Class type, final Object base, final Object merged, final int depth )
+    public Object merge ( @NotNull final RecursiveMerge merge, @NotNull final Class type, @NotNull final Object base,
+                          @NotNull final Object merged, final int depth )
     {
         // Calculating resulting array size
         final int el = Array.getLength ( base );

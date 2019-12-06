@@ -17,6 +17,9 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -29,16 +32,6 @@ import java.io.Serializable;
 public interface RecursiveMerge extends Serializable
 {
     /**
-     * Returns overwrite operation resulting object.
-     * This is an utility method mostly for {@link GlobalMergeBehavior} implementations.
-     *
-     * @param base   object to overwrite
-     * @param merged overwriting object
-     * @return overwrite operation resulting object
-     */
-    public Object overwrite ( Object base, Object merged );
-
-    /**
      * Performs merge result of the two provided objects and returns resulting object.
      *
      * @param type   expected resulting object {@link Class} type
@@ -48,7 +41,8 @@ public interface RecursiveMerge extends Serializable
      * @param <T>    resulting object type
      * @return merge result of the two provided objects and returns resulting object
      */
-    public <T> T merge ( Class type, Object base, Object merged, int depth );
+    @Nullable
+    public <T> T merge ( @NotNull Class type, @Nullable Object base, @Nullable Object merged, int depth );
 
     /**
      * Performs merge result of the two provided objects with all field values merged according to {@link Merge} settings.
@@ -60,5 +54,17 @@ public interface RecursiveMerge extends Serializable
      * @param <T>    resulting object type
      * @return merge result of the two provided objects with all field values merged according to {@link Merge} settings
      */
-    public <T> T mergeFields ( Class type, Object base, Object merged, int depth );
+    @NotNull
+    public <T> T mergeFields ( @NotNull Class type, @NotNull Object base, @NotNull Object merged, int depth );
+
+    /**
+     * Returns overwrite operation resulting object.
+     * This is an utility method mostly for {@link GlobalMergeBehavior} implementations.
+     *
+     * @param base   object to overwrite
+     * @param merged overwriting object
+     * @return overwrite operation resulting object
+     */
+    @Nullable
+    public Object overwrite ( @Nullable Object base, @Nullable Object merged );
 }

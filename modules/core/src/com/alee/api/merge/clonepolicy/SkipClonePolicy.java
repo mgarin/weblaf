@@ -17,6 +17,7 @@
 
 package com.alee.api.merge.clonepolicy;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.merge.ClonePolicy;
 
@@ -31,8 +32,9 @@ import com.alee.api.merge.ClonePolicy;
  */
 public final class SkipClonePolicy implements ClonePolicy
 {
+    @Nullable
     @Override
-    public Object clone ( final Clone clone, final Object source )
+    public Object clone ( @Nullable final Object source )
     {
         return source;
     }

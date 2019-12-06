@@ -17,6 +17,8 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.matcher.EqualMatcher;
 import com.alee.api.merge.behavior.*;
@@ -504,7 +506,7 @@ public final class MergeTest
      * @param result   merge result
      * @param expected expected result
      */
-    private void checkMergeResult ( final Object result, final Object expected )
+    private void checkMergeResult ( @Nullable final Object result, @Nullable final Object expected )
     {
         if ( Objects.notEquals ( result, expected ) )
         {
@@ -523,8 +525,8 @@ public final class MergeTest
      * @param merged    merged object
      * @param exception expected {@link Exception} class
      */
-    private void checkMergeException ( final Merge merge, final Object base, final Object merged,
-                                       final Class<? extends Exception> exception )
+    private void checkMergeException ( @NotNull final Merge merge, @Nullable final Object base, @Nullable final Object merged,
+                                       @NotNull final Class<? extends Exception> exception )
     {
         try
         {
@@ -589,7 +591,7 @@ public final class MergeTest
          * Overridden to properly compare all data within {@link MergeTest#checkMergeResult(Object, Object)}.
          */
         @Override
-        public boolean equals ( final Object object )
+        public boolean equals ( @Nullable final Object object )
         {
             return object instanceof TestObject &&
                     bool == ( ( TestObject ) object ).bool &&
@@ -598,11 +600,16 @@ public final class MergeTest
                     CollectionUtils.equals ( list, ( ( TestObject ) object ).list, true );
         }
 
+        @NotNull
         @Override
         public String toString ()
         {
-            return getClass ().getSimpleName () + "{" + "bool=" + bool + ", " + "text='" + text + "', " +
-                    "number=" + number + ", " + "list=" + list + "}";
+            return getClass ().getSimpleName () + "[" +
+                    "bool=" + bool + ", " +
+                    "text='" + text + "', " +
+                    "number=" + number + ", " +
+                    "list=" + list +
+                    "]";
         }
     }
 
@@ -635,7 +642,7 @@ public final class MergeTest
          * Overridden to properly compare all data within {@link MergeTest#checkMergeResult(Object, Object)}.
          */
         @Override
-        public boolean equals ( final Object object )
+        public boolean equals ( @Nullable final Object object )
         {
             return object instanceof ParentTestObject &&
                     super.equals ( object ) &&
@@ -737,27 +744,35 @@ public final class MergeTest
         }
 
         @Override
-        public boolean equals ( final Object o )
+        public boolean equals ( @Nullable final Object o )
         {
-            if ( this == o )
+            final boolean equals;
+            if ( this != o )
             {
-                return true;
+                if ( o != null && getClass () == o.getClass () )
+                {
+                    final OmitTestObject omitTestObject = ( OmitTestObject ) o;
+                    equals = v1 == omitTestObject.v1 &&
+                            v2 == omitTestObject.v2 &&
+                            v3 == omitTestObject.v3 &&
+                            v4 == omitTestObject.v4 &&
+                            v5 == omitTestObject.v5 &&
+                            v6 == omitTestObject.v6 &&
+                            Float.compare ( omitTestObject.v7, v7 ) == 0 &&
+                            Double.compare ( omitTestObject.v8, v8 ) == 0 &&
+                            Objects.equals ( object, omitTestObject.object ) &&
+                            Objects.equals ( object2, omitTestObject.object2 );
+                }
+                else
+                {
+                    equals = false;
+                }
             }
-            if ( o == null || getClass () != o.getClass () )
+            else
             {
-                return false;
+                equals = true;
             }
-            final OmitTestObject omitTestObject = ( OmitTestObject ) o;
-            return v1 == omitTestObject.v1 &&
-                    v2 == omitTestObject.v2 &&
-                    v3 == omitTestObject.v3 &&
-                    v4 == omitTestObject.v4 &&
-                    v5 == omitTestObject.v5 &&
-                    v6 == omitTestObject.v6 &&
-                    Float.compare ( omitTestObject.v7, v7 ) == 0 &&
-                    Double.compare ( omitTestObject.v8, v8 ) == 0 &&
-                    Objects.equals ( object, omitTestObject.object ) &&
-                    Objects.equals ( object2, omitTestObject.object2 );
+            return equals;
         }
     }
 }

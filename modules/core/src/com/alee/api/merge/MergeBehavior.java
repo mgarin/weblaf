@@ -17,6 +17,8 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Single object type merge behavior.
  * If you want to simply indicate that your object instances can be merged implement {@link Mergeable} interface instead.
@@ -38,5 +40,6 @@ public interface MergeBehavior<T extends MergeBehavior<T>> extends Mergeable
      * @param depth  merge calls stack depth
      * @return object as a result of merging another {@code object} on top of this one
      */
-    public T merge ( RecursiveMerge merge, Class type, T object, int depth );
+    @NotNull
+    public T merge ( @NotNull RecursiveMerge merge, @NotNull Class type, @NotNull T object, int depth );
 }

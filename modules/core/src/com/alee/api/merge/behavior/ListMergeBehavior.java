@@ -17,6 +17,7 @@
 
 package com.alee.api.merge.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.duplicate.DuplicateResolver;
 import com.alee.api.duplicate.RejectDuplicates;
 import com.alee.api.matcher.Matcher;
@@ -49,16 +50,19 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
      * {@link Matcher} for {@link List} elements.
      * It is used to detect duplicates and match list elements that can be merged.
      */
+    @NotNull
     private final Matcher matcher;
 
     /**
      * {@link DuplicateResolver} used for solving cases with duplicates in base {@link List}.
      */
+    @NotNull
     private final DuplicateResolver baseDuplicateResolver;
 
     /**
      * {@link DuplicateResolver} used for solving cases with duplicates in merged {@link List}.
      */
+    @NotNull
     private final DuplicateResolver mergedDuplicateResolver;
 
     /**
@@ -66,7 +70,7 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
      *
      * @param matcher {@link Matcher} for list elements
      */
-    public ListMergeBehavior ( final Matcher matcher )
+    public ListMergeBehavior ( @NotNull final Matcher matcher )
     {
         this ( matcher, new RejectDuplicates ( matcher ), new RejectDuplicates ( matcher ) );
     }
@@ -78,8 +82,8 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
      * @param baseDuplicateResolver   {@link DuplicateResolver} used for solving cases with duplicates in base {@link List}
      * @param mergedDuplicateResolver {@link DuplicateResolver} used for solving cases with duplicates in merged {@link List}
      */
-    public ListMergeBehavior ( final Matcher matcher, final DuplicateResolver baseDuplicateResolver,
-                               final DuplicateResolver mergedDuplicateResolver )
+    public ListMergeBehavior ( @NotNull final Matcher matcher, @NotNull final DuplicateResolver baseDuplicateResolver,
+                               @NotNull final DuplicateResolver mergedDuplicateResolver )
     {
         this.matcher = matcher;
         this.baseDuplicateResolver = baseDuplicateResolver;
@@ -87,13 +91,16 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
     }
 
     @Override
-    public boolean supports ( final RecursiveMerge merge, final Class<T> type, final Object base, final Object merged )
+    public boolean supports ( @NotNull final RecursiveMerge merge, @NotNull final Class<T> type, @NotNull final Object base,
+                              @NotNull final Object merged )
     {
         return base instanceof List && merged instanceof List;
     }
 
+    @NotNull
     @Override
-    public T merge ( final RecursiveMerge merge, final Class type, final T base, final T merged, final int depth )
+    public T merge ( @NotNull final RecursiveMerge merge, @NotNull final Class type, @NotNull final T base, @NotNull final T merged,
+                     final int depth )
     {
         // Checking for duplicates in base list according to specified matcher
         // This might do nothing, modify base list or even throw an exception depending on implementation
@@ -141,7 +148,7 @@ public class ListMergeBehavior<T extends List> implements GlobalMergeBehavior<T,
                         base.add ( mergedObject );
                     }
                 }
-                else if ( mergedObject != null )
+                else
                 {
                     // Simply adding non-identifiable object to the end of the list
                     base.add ( mergedObject );

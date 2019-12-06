@@ -17,6 +17,7 @@
 
 package com.alee.api.merge.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
@@ -43,11 +44,13 @@ public class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Obje
     /**
      * Behavior {@link Policy}.
      */
+    @NotNull
     private final Policy policy;
 
     /**
      * Modifiers of fields to ignore.
      */
+    @NotNull
     private final List<ModifierType> ignoredModifiers;
 
     /**
@@ -56,21 +59,24 @@ public class ReflectionMergeBehavior implements GlobalMergeBehavior<Object, Obje
      * @param policy           behavior {@link Policy}
      * @param ignoredModifiers modifiers of fields to ignore
      */
-    public ReflectionMergeBehavior ( final Policy policy, final ModifierType... ignoredModifiers )
+    public ReflectionMergeBehavior ( @NotNull final Policy policy, @NotNull final ModifierType... ignoredModifiers )
     {
         this.policy = policy;
         this.ignoredModifiers = CollectionUtils.asList ( ignoredModifiers );
     }
 
     @Override
-    public boolean supports ( final RecursiveMerge merge, final Class<Object> type, final Object base, final Object merged )
+    public boolean supports ( @NotNull final RecursiveMerge merge, @NotNull final Class<Object> type, @NotNull final Object base,
+                              @NotNull final Object merged )
     {
         return ( policy == Policy.all || base instanceof Mergeable && merged instanceof Mergeable ) &&
                 type.isAssignableFrom ( base.getClass () ) && type.isAssignableFrom ( merged.getClass () );
     }
 
+    @NotNull
     @Override
-    public Object merge ( final RecursiveMerge merge, final Class type, final Object base, final Object merged, final int depth )
+    public Object merge ( @NotNull final RecursiveMerge merge, @NotNull final Class type, @NotNull final Object base,
+                          @NotNull final Object merged, final int depth )
     {
         // Resolving object classes relation
         final ClassRelationType relation = ClassRelationType.of ( base, merged );

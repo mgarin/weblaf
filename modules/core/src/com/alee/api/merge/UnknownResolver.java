@@ -17,6 +17,8 @@
 
 package com.alee.api.merge;
 
+import com.alee.api.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -37,5 +39,6 @@ public interface UnknownResolver extends Serializable
      * @param merged object to merge
      * @return merge result of two objects of unknown type
      */
-    public Object resolve ( RecursiveMerge merge, Object object, Object merged );
+    @NotNull
+    public Object resolve ( @NotNull RecursiveMerge merge, @NotNull Object object,@NotNull  Object merged );
 }

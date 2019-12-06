@@ -775,6 +775,89 @@ public final class TextUtils
     }
 
     /**
+     * Returns single text combined from {@link Collection} of elements using default separator.
+     *
+     * @param collection {@link Collection} to combine into single text
+     * @param <T>        elements type
+     * @return single text combined from {@link Collection} of elements using default separator
+     */
+    @Nullable
+    public static <T> String collectionToString ( @Nullable final Collection<T> collection )
+    {
+        return collectionToString ( collection, defaultSeparator, ( Function<T, String> ) simpleTextProvider, null );
+    }
+
+    /**
+     * Returns single text combined from {@link Collection} of elements using specified separator.
+     *
+     * @param collection {@link Collection} to combine into single text
+     * @param separator  elements separator
+     * @param <T>        elements type
+     * @return single text combined from {@link Collection} of elements using specified separator
+     */
+    @Nullable
+    public static <T> String collectionToString ( @Nullable final Collection<T> collection, @NotNull final String separator )
+    {
+        return collectionToString ( collection, separator, ( Function<T, String> ) simpleTextProvider, null );
+    }
+
+    /**
+     * Returns single text combined from {@link Collection} of elements using specified separator.
+     *
+     * @param collection   {@link Collection} to combine into single text
+     * @param separator    elements separator
+     * @param textProvider {@link Function} providing text
+     * @param <T>          elements type
+     * @return single text combined from {@link Collection} of elements using specified separator
+     */
+    @Nullable
+    public static <T> String collectionToString ( @Nullable final Collection<T> collection, @NotNull final String separator,
+                                                  @NotNull final Function<T, String> textProvider )
+    {
+        return collectionToString ( collection, separator, textProvider, null );
+    }
+
+    /**
+     * Returns single text combined from {@link Collection} of elements using specified separator.
+     *
+     * @param collection   {@link Collection} to combine into single text
+     * @param separator    elements separator
+     * @param textProvider {@link Function} providing text
+     * @param filter       {@link Filter} for elements
+     * @param <T>          elements type
+     * @return single text combined from {@link Collection} of elements using specified separator
+     */
+    @Nullable
+    public static <T> String collectionToString ( @Nullable final Collection<T> collection, @NotNull final String separator,
+                                                  @NotNull final Function<T, String> textProvider, @Nullable final Filter<T> filter )
+    {
+        final String result;
+        if ( CollectionUtils.notEmpty ( collection ) )
+        {
+            final StringBuilder stringBuilder = new StringBuilder ();
+            boolean hasPreviouslyAccepted = false;
+            for ( final T object : collection )
+            {
+                if ( filter == null || filter.accept ( object ) )
+                {
+                    if ( hasPreviouslyAccepted )
+                    {
+                        stringBuilder.append ( separator );
+                    }
+                    stringBuilder.append ( textProvider.apply ( object ) );
+                    hasPreviouslyAccepted = true;
+                }
+            }
+            result = stringBuilder.toString ();
+        }
+        else
+        {
+            result = null;
+        }
+        return result;
+    }
+
+    /**
      * Returns single text combined from array of elements using default separator.
      *
      * @param array array to combine into single text

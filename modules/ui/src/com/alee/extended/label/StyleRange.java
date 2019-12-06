@@ -342,7 +342,8 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
 
     @NotNull
     @Override
-    public StyleRange merge ( final RecursiveMerge merge, final Class type, final StyleRange object, final int depth )
+    public StyleRange merge ( @NotNull final RecursiveMerge merge, @NotNull final Class type, @NotNull final StyleRange object,
+                              final int depth )
     {
         final StyleRange result = merge.mergeFields ( type, this, object, depth );
 

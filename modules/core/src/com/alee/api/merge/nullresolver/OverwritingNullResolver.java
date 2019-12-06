@@ -17,6 +17,8 @@
 
 package com.alee.api.merge.nullresolver;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.NullResolver;
 import com.alee.api.merge.RecursiveMerge;
@@ -30,8 +32,9 @@ import com.alee.api.merge.RecursiveMerge;
  */
 public final class OverwritingNullResolver implements NullResolver
 {
+    @Nullable
     @Override
-    public Object resolve ( final RecursiveMerge merge, final Object object, final Object merged )
+    public Object resolve ( @NotNull final RecursiveMerge merge, @Nullable final Object object, @Nullable final Object merged )
     {
         return merged;
     }
