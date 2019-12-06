@@ -17,6 +17,8 @@
 
 package com.alee.api.duplicate;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.Collection;
 
 /**
@@ -27,16 +29,8 @@ import java.util.Collection;
  */
 public final class IgnoreDuplicates implements DuplicateResolver
 {
-    /**
-     * Constructs new {@link IgnoreDuplicates}.
-     */
-    public IgnoreDuplicates ()
-    {
-        super ();
-    }
-
     @Override
-    public void resolve ( final Collection collection )
+    public void resolve ( @NotNull final Collection collection )
     {
         /**
          * Simply ignore this call.

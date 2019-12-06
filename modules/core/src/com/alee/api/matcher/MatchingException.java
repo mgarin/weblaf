@@ -17,6 +17,8 @@
 
 package com.alee.api.matcher;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Special unchecked exception used to display various {@link Matcher} implementations problems.
  *
@@ -37,7 +39,7 @@ public final class MatchingException extends RuntimeException
      *
      * @param message exception message
      */
-    public MatchingException ( final String message )
+    public MatchingException ( @NotNull final String message )
     {
         super ( message );
     }
@@ -48,7 +50,7 @@ public final class MatchingException extends RuntimeException
      * @param message exception message
      * @param cause   exception cause
      */
-    public MatchingException ( final String message, final Throwable cause )
+    public MatchingException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
     }
@@ -58,7 +60,7 @@ public final class MatchingException extends RuntimeException
      *
      * @param cause exception cause
      */
-    public MatchingException ( final Throwable cause )
+    public MatchingException ( @NotNull final Throwable cause )
     {
         super ( cause );
     }

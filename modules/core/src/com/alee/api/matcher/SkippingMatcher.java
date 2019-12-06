@@ -17,6 +17,8 @@
 
 package com.alee.api.matcher;
 
+import com.alee.api.annotations.Nullable;
+
 /**
  * Custom {@link Matcher} that always returns {@code false}.
  *
@@ -25,13 +27,13 @@ package com.alee.api.matcher;
 public final class SkippingMatcher extends AbstractMatcher<Object, Object>
 {
     @Override
-    public boolean supports ( final Object object )
+    public boolean supports ( @Nullable final Object object )
     {
         return true;
     }
 
     @Override
-    protected boolean matchImpl ( final Object first, final Object second )
+    protected boolean matchImpl ( @Nullable final Object first, @Nullable final Object second )
     {
         return false;
     }

@@ -17,6 +17,8 @@
 
 package com.alee.api.matcher;
 
+import com.alee.api.annotations.Nullable;
+
 /**
  * Abstract {@link Matcher} providing.
  *
@@ -27,7 +29,7 @@ package com.alee.api.matcher;
 public abstract class AbstractMatcher<T, V> implements Matcher
 {
     @Override
-    public final boolean match ( final Object first, final Object second )
+    public final boolean match ( @Nullable final Object first, @Nullable final Object second )
     {
         return first == null && second == null || matchImpl ( ( T ) first, ( V ) second );
     }
@@ -39,5 +41,5 @@ public abstract class AbstractMatcher<T, V> implements Matcher
      * @param second second matched object
      * @return {@code true} if provided objects match, otherwise {@code false}
      */
-    protected abstract boolean matchImpl ( T first, V second );
+    protected abstract boolean matchImpl ( @Nullable T first, @Nullable V second );
 }

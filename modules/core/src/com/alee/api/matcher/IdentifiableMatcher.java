@@ -18,6 +18,7 @@
 package com.alee.api.matcher;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 
 /**
@@ -34,28 +35,30 @@ public final class IdentifiableMatcher extends AbstractMatcher<Object, Object>
      */
 
     @Override
-    public boolean supports ( final Object object )
+    public boolean supports ( @Nullable final Object object )
     {
         return object instanceof Identifiable || object instanceof Enum;
     }
 
     @Override
-    protected boolean matchImpl ( final Object first, final Object second )
+    protected boolean matchImpl ( @Nullable final Object first, @Nullable final Object second )
     {
+        final boolean match;
         if ( first instanceof Identifiable && second instanceof Identifiable )
         {
             final String id1 = ( ( Identifiable ) first ).getId ();
             final String id2 = ( ( Identifiable ) second ).getId ();
-            return Objects.equals ( id1, id2 );
+            match = Objects.equals ( id1, id2 );
         }
         else if ( first instanceof Enum && second instanceof Enum )
         {
-            return first == second;
+            match = first == second;
         }
         else
         {
             final String message = "Cannot match objects: %s and %s";
             throw new MatchingException ( String.format ( message, first, second ) );
         }
+        return match;
     }
 }

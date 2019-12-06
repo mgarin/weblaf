@@ -17,6 +17,8 @@
 
 package com.alee.api.matcher;
 
+import com.alee.api.annotations.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -32,7 +34,7 @@ public interface Matcher extends Serializable
      * @param object object to check {@link Matcher} support for
      * @return {@code true} if this {@link Matcher} supports provided object, {@code false} otherwise
      */
-    public boolean supports ( Object object );
+    public boolean supports ( @Nullable Object object );
 
     /**
      * Compares two objects and returns whether they match or not.
@@ -41,5 +43,5 @@ public interface Matcher extends Serializable
      * @param second second matched object
      * @return {@code true} if provided objects match, otherwise {@code false}
      */
-    public boolean match ( Object first, Object second );
+    public boolean match ( @Nullable Object first, @Nullable Object second );
 }

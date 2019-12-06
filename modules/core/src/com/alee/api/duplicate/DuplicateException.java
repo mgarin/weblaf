@@ -17,6 +17,8 @@
 
 package com.alee.api.duplicate;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Special unchecked exception used to display collection duplicate problems.
  *
@@ -37,7 +39,7 @@ public final class DuplicateException extends RuntimeException
      *
      * @param message exception message
      */
-    public DuplicateException ( final String message )
+    public DuplicateException ( @NotNull final String message )
     {
         super ( message );
     }
@@ -48,7 +50,7 @@ public final class DuplicateException extends RuntimeException
      * @param message exception message
      * @param cause   exception cause
      */
-    public DuplicateException ( final String message, final Throwable cause )
+    public DuplicateException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
     }
@@ -58,7 +60,7 @@ public final class DuplicateException extends RuntimeException
      *
      * @param cause exception cause
      */
-    public DuplicateException ( final Throwable cause )
+    public DuplicateException ( @NotNull final Throwable cause )
     {
         super ( cause );
     }

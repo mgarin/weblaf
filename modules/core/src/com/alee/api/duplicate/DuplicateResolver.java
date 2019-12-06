@@ -17,6 +17,8 @@
 
 package com.alee.api.duplicate;
 
+import com.alee.api.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -33,5 +35,5 @@ public interface DuplicateResolver extends Serializable
      *
      * @param collection {@link Collection} to resolve duplicates for
      */
-    public void resolve ( Collection collection );
+    public void resolve ( @NotNull Collection collection );
 }

@@ -17,6 +17,7 @@
 
 package com.alee.api.duplicate;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.matcher.Matcher;
 
 import java.util.Collection;
@@ -33,13 +34,13 @@ public final class RemoveDuplicates extends AbstractDuplicateResolver
      *
      * @param matcher {@link Matcher} for duplicates detection
      */
-    public RemoveDuplicates ( final Matcher matcher )
+    public RemoveDuplicates ( @NotNull final Matcher matcher )
     {
         super ( matcher );
     }
 
     @Override
-    public void resolve ( final Collection collection )
+    public void resolve ( @NotNull final Collection collection )
     {
         removeDuplicates ( collection );
     }

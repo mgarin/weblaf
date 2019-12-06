@@ -17,6 +17,8 @@
 
 package com.alee.api.duplicate;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.matcher.Matcher;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public abstract class AbstractDuplicateResolver implements DuplicateResolver
     /**
      * {@link Matcher} for duplicates detection.
      */
+    @NotNull
     private final Matcher matcher;
 
     /**
@@ -41,9 +44,8 @@ public abstract class AbstractDuplicateResolver implements DuplicateResolver
      *
      * @param matcher {@link Matcher} for duplicates detection
      */
-    public AbstractDuplicateResolver ( final Matcher matcher )
+    public AbstractDuplicateResolver ( @NotNull final Matcher matcher )
     {
-        super ();
         this.matcher = matcher;
     }
 
@@ -53,8 +55,9 @@ public abstract class AbstractDuplicateResolver implements DuplicateResolver
      * @param collection {@link Collection} to check for duplicates
      * @return {@code true} if specified {@link Collection} has one or more duplicates, {@code false} otherwise
      */
-    protected boolean hasDuplicates ( final Collection collection )
+    protected boolean hasDuplicates ( @NotNull final Collection collection )
     {
+        boolean hasDuplicates = false;
         final List checked = new ArrayList ( collection.size () );
         for ( final Object next : collection )
         {
@@ -64,13 +67,18 @@ public abstract class AbstractDuplicateResolver implements DuplicateResolver
                 {
                     if ( matcher.supports ( previous ) && matcher.match ( previous, next ) )
                     {
-                        return true;
+                        hasDuplicates = true;
+                        break;
                     }
+                }
+                if ( hasDuplicates )
+                {
+                    break;
                 }
             }
             checked.add ( next );
         }
-        return false;
+        return hasDuplicates;
     }
 
     /**
@@ -79,8 +87,11 @@ public abstract class AbstractDuplicateResolver implements DuplicateResolver
      * @param collection {@link Collection} to check for duplicates
      * @return first {@link Collection} duplicates if it has any, {@code null} if it has none
      */
-    protected Object firstDuplicate ( final Collection collection )
+    @Nullable
+    protected Object firstDuplicate ( @NotNull final Collection collection )
     {
+        Object duplicate = null;
+        boolean found = false;
         final List checked = new ArrayList ( collection.size () );
         for ( final Object next : collection )
         {
@@ -90,13 +101,19 @@ public abstract class AbstractDuplicateResolver implements DuplicateResolver
                 {
                     if ( matcher.supports ( previous ) && matcher.match ( previous, next ) )
                     {
-                        return next;
+                        duplicate = next;
+                        found = true;
+                        break;
                     }
+                }
+                if ( found )
+                {
+                    break;
                 }
             }
             checked.add ( next );
         }
-        return null;
+        return duplicate;
     }
 
     /**
@@ -106,7 +123,8 @@ public abstract class AbstractDuplicateResolver implements DuplicateResolver
      * @param collection {@link Collection} to remove duplicates from
      * @return {@link Collection} with all duplicates removed from it
      */
-    protected Collection removeDuplicates ( final Collection collection )
+    @NotNull
+    protected Collection removeDuplicates ( @NotNull final Collection collection )
     {
         final List checked = new ArrayList ( collection.size () );
         final Iterator iterator = collection.iterator ();
