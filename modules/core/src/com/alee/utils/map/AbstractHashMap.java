@@ -18,6 +18,7 @@
 package com.alee.utils.map;
 
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.collection.EmptyIterator;
 
 import java.io.IOException;
@@ -196,7 +197,7 @@ public abstract class AbstractHashMap<K, V> extends AbstractMap<K, V> implements
      * @param map the map to copy
      * @throws NullPointerException if the map is null
      */
-    protected AbstractHashMap ( final Map map )
+    protected AbstractHashMap ( @NotNull final Map map )
     {
         this ( Math.max ( 2 * map.size (), DEFAULT_CAPACITY ), DEFAULT_LOAD_FACTOR );
         putAll ( map );

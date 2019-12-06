@@ -17,6 +17,7 @@
 
 package com.alee.api.clone.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneException;
 import com.alee.api.clone.GlobalCloneBehavior;
@@ -43,91 +44,93 @@ import java.util.concurrent.atomic.AtomicLong;
 public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
 {
     @Override
-    public boolean supports ( final RecursiveClone clone, final Object object )
+    public boolean supports ( @NotNull final RecursiveClone clone, @NotNull final Object object )
     {
         return isBasic ( object );
     }
 
+    @NotNull
     @Override
-    public Object clone ( final RecursiveClone clone, final Object object, final int depth )
+    public Object clone ( @NotNull final RecursiveClone clone, @NotNull final Object object, final int depth )
     {
+        final Object copy;
         if ( isSimpleMutable ( object ) )
         {
             final Class<?> clazz = object.getClass ();
             if ( clazz == Insets.class )
             {
                 final Insets m = ( Insets ) object;
-                return new Insets ( m.top, m.left, m.bottom, m.right );
+                copy = new Insets ( m.top, m.left, m.bottom, m.right );
             }
             else if ( clazz == Dimension.class )
             {
                 final Dimension m = ( Dimension ) object;
-                return new Dimension ( m.width, m.height );
+                copy = new Dimension ( m.width, m.height );
             }
             else if ( clazz == Point.class )
             {
                 final Point m = ( Point ) object;
-                return new Point ( m.x, m.y );
+                copy = new Point ( m.x, m.y );
             }
             else if ( clazz == Point2D.Float.class )
             {
                 final Point2D.Float m = ( Point2D.Float ) object;
-                return new Point2D.Float ( m.x, m.y );
+                copy = new Point2D.Float ( m.x, m.y );
             }
             else if ( clazz == Point2D.Double.class )
             {
                 final Point2D.Double m = ( Point2D.Double ) object;
-                return new Point2D.Double ( m.x, m.y );
+                copy = new Point2D.Double ( m.x, m.y );
             }
             else if ( clazz == Line2D.Float.class )
             {
                 final Line2D.Float m = ( Line2D.Float ) object;
-                return new Line2D.Float ( m.x1, m.y1, m.x2, m.y2 );
+                copy = new Line2D.Float ( m.x1, m.y1, m.x2, m.y2 );
             }
             else if ( clazz == Line2D.Double.class )
             {
                 final Line2D.Double m = ( Line2D.Double ) object;
-                return new Line2D.Double ( m.x1, m.y1, m.x2, m.y2 );
+                copy = new Line2D.Double ( m.x1, m.y1, m.x2, m.y2 );
             }
             else if ( clazz == Rectangle.class )
             {
                 final Rectangle m = ( Rectangle ) object;
-                return new Rectangle ( m.x, m.y, m.width, m.height );
+                copy = new Rectangle ( m.x, m.y, m.width, m.height );
             }
             else if ( clazz == Rectangle2D.Float.class )
             {
                 final Rectangle2D.Float m = ( Rectangle2D.Float ) object;
-                return new Rectangle2D.Float ( m.x, m.y, m.width, m.height );
+                copy = new Rectangle2D.Float ( m.x, m.y, m.width, m.height );
             }
             else if ( clazz == Rectangle2D.Double.class )
             {
                 final Rectangle2D.Double m = ( Rectangle2D.Double ) object;
-                return new Rectangle2D.Double ( m.x, m.y, m.width, m.height );
+                copy = new Rectangle2D.Double ( m.x, m.y, m.width, m.height );
             }
             else if ( clazz == Ellipse2D.Float.class )
             {
                 final Ellipse2D.Float m = ( Ellipse2D.Float ) object;
-                return new Ellipse2D.Float ( m.x, m.y, m.width, m.height );
+                copy = new Ellipse2D.Float ( m.x, m.y, m.width, m.height );
             }
             else if ( clazz == Ellipse2D.Double.class )
             {
                 final Ellipse2D.Double m = ( Ellipse2D.Double ) object;
-                return new Ellipse2D.Double ( m.x, m.y, m.width, m.height );
+                copy = new Ellipse2D.Double ( m.x, m.y, m.width, m.height );
             }
             else if ( clazz == AtomicBoolean.class )
             {
                 final AtomicBoolean ab = ( AtomicBoolean ) object;
-                return new AtomicBoolean ( ab.get () );
+                copy = new AtomicBoolean ( ab.get () );
             }
             else if ( clazz == AtomicInteger.class )
             {
                 final AtomicInteger ai = ( AtomicInteger ) object;
-                return new AtomicInteger ( ai.get () );
+                copy = new AtomicInteger ( ai.get () );
             }
             else if ( clazz == AtomicLong.class )
             {
                 final AtomicLong al = ( AtomicLong ) object;
-                return new AtomicLong ( al.get () );
+                copy = new AtomicLong ( al.get () );
             }
             else
             {
@@ -136,8 +139,9 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
         }
         else
         {
-            return object;
+            copy = object;
         }
+        return copy;
     }
 
     @Override
@@ -152,7 +156,7 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
      * @param object object to check
      * @return {@code true} if specified object has basic type, {@code false} otherwise
      */
-    private boolean isBasic ( final Object object )
+    private boolean isBasic ( @NotNull final Object object )
     {
         return ReflectUtils.isPrimitive ( object ) || isSimpleImmutable ( object ) || isSimpleMutable ( object );
     }
@@ -164,7 +168,7 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
      * @param object object to check
      * @return {@code true} if specified object has simple immutable type, {@code false} otherwise
      */
-    private boolean isSimpleImmutable ( final Object object )
+    private boolean isSimpleImmutable ( @NotNull final Object object )
     {
         final Class<?> clazz = object.getClass ();
         return clazz.isEnum () ||
@@ -185,7 +189,7 @@ public class BasicCloneBehavior implements GlobalCloneBehavior<Object>
      * @param object object to check
      * @return {@code true} if specified object has simple mutable type, {@code false} otherwise
      */
-    private boolean isSimpleMutable ( final Object object )
+    private boolean isSimpleMutable ( @NotNull final Object object )
     {
         final Class<?> clazz = object.getClass ();
         return clazz == Insets.class ||

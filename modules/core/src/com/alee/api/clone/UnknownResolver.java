@@ -17,6 +17,9 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -36,5 +39,6 @@ public interface UnknownResolver extends Serializable
      * @param object object to clone
      * @return clone result for object of unknown type.
      */
-    public Object resolve ( RecursiveClone clone, Object object );
+    @Nullable
+    public Object resolve ( @NotNull RecursiveClone clone, @NotNull Object object );
 }

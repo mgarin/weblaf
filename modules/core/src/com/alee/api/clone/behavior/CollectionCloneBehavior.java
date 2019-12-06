@@ -17,6 +17,7 @@
 
 package com.alee.api.clone.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneException;
 import com.alee.api.clone.GlobalCloneBehavior;
@@ -37,13 +38,14 @@ import java.util.*;
 public class CollectionCloneBehavior implements GlobalCloneBehavior<Collection>
 {
     @Override
-    public boolean supports ( final RecursiveClone clone, final Object object )
+    public boolean supports ( @NotNull final RecursiveClone clone, @NotNull final Object object )
     {
         return object instanceof Collection;
     }
 
+    @NotNull
     @Override
-    public Collection clone ( final RecursiveClone clone, final Collection collection, final int depth )
+    public Collection clone ( @NotNull final RecursiveClone clone, @NotNull final Collection collection, final int depth )
     {
         try
         {

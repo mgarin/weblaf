@@ -17,6 +17,8 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -37,7 +39,7 @@ public interface GlobalCloneBehavior<O> extends Serializable
      * @param object object to clone, should never be {@code null}
      * @return {@code true} if this behavior supports cloning of the specified specified object, {@code false} otherwise
      */
-    public boolean supports ( RecursiveClone clone, Object object );
+    public boolean supports ( @NotNull RecursiveClone clone, @NotNull Object object );
 
     /**
      * Returns clone of the specified object.
@@ -47,7 +49,8 @@ public interface GlobalCloneBehavior<O> extends Serializable
      * @param depth  clone calls stack depth
      * @return clone of the specified object
      */
-    public O clone ( RecursiveClone clone, O object, int depth );
+    @NotNull
+    public O clone ( @NotNull RecursiveClone clone, @NotNull O object, int depth );
 
     /**
      * Return whether or not values cloned by this behavior are storable for recursive clone operation.

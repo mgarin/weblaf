@@ -18,6 +18,8 @@
 package com.alee.api.clone.unknownresolver;
 
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneException;
 import com.alee.api.clone.RecursiveClone;
@@ -32,8 +34,9 @@ import com.alee.api.clone.UnknownResolver;
  */
 public final class ExceptionUnknownResolver implements UnknownResolver
 {
+    @Nullable
     @Override
-    public Object resolve ( final RecursiveClone clone, final Object object )
+    public Object resolve ( @NotNull final RecursiveClone clone, @NotNull final Object object )
     {
         throw new CloneException ( "Unsupported object type clone: " + object );
     }

@@ -762,7 +762,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
         else if ( mergedCount > 0 )
         {
             // Simply set merged styles
-            final List<ComponentStyle> mergedStylesClone = Clone.deep ().clone ( style.getNestedStyles () );
+            final List<ComponentStyle> mergedStylesClone = Clone.deep ().nonNullClone ( style.getNestedStyles () );
             for ( final ComponentStyle mergedStyleClone : mergedStylesClone )
             {
                 mergedStyleClone.setParent ( this );
@@ -772,7 +772,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
         else if ( nestedCount > 0 )
         {
             // Simply set base styles
-            final List<ComponentStyle> baseStylesClone = Clone.deep ().clone ( getNestedStyles () );
+            final List<ComponentStyle> baseStylesClone = Clone.deep ().nonNullClone ( getNestedStyles () );
             for ( final ComponentStyle baseStyleClone : baseStylesClone )
             {
                 baseStyleClone.setParent ( this );
@@ -846,13 +846,13 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
                 else
                 {
                     // Adding a full copy of merged painter style
-                    resultPainterStyle = Clone.deep ().clone ( mergedPainterStyle );
+                    resultPainterStyle = Clone.deep ().nonNullClone ( mergedPainterStyle );
                 }
             }
             else
             {
                 // Adding a full copy of base painter style
-                resultPainterStyle = Clone.deep ().clone ( painterStyle );
+                resultPainterStyle = Clone.deep ().nonNullClone ( painterStyle );
             }
         }
         else
@@ -860,7 +860,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
             if ( mergedPainterStyle != null )
             {
                 // Adding a full copy of merged painter style
-                resultPainterStyle = Clone.deep ().clone ( mergedPainterStyle );
+                resultPainterStyle = Clone.deep ().nonNullClone ( mergedPainterStyle );
             }
             else
             {
@@ -929,7 +929,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     @Override
     public ComponentStyle clone ()
     {
-        return Clone.deep ().clone ( this );
+        return Clone.deep ().nonNullClone ( this );
     }
 
     @NotNull

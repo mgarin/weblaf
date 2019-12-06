@@ -18,6 +18,7 @@
 package com.alee.utils.ninepatch;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.alee.utils.TextUtils;
@@ -209,10 +210,11 @@ public final class NinePatchInterval implements Identifiable, Cloneable, Seriali
         return getEnd () - getStart ();
     }
 
+    @NotNull
     @Override
     public NinePatchInterval clone ()
     {
-        return Clone.deep ().clone ( this );
+        return Clone.deep ().nonNullClone ( this );
     }
 
     @Override

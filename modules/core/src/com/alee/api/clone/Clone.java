@@ -17,6 +17,8 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.*;
 import com.alee.api.clone.unknownresolver.ExceptionUnknownResolver;
 import com.alee.utils.collection.ImmutableList;
@@ -54,6 +56,7 @@ public final class Clone implements Serializable
      * @see #basic()
      * @see #deep()
      */
+    @Nullable
     private static Map<String, Clone> commons;
 
     /**
@@ -62,6 +65,7 @@ public final class Clone implements Serializable
      *
      * @see UnknownResolver
      */
+    @NotNull
     private final UnknownResolver unknownResolver;
 
     /**
@@ -70,6 +74,7 @@ public final class Clone implements Serializable
      *
      * @see GlobalCloneBehavior
      */
+    @NotNull
     private final List<GlobalCloneBehavior> behaviors;
 
     /**
@@ -78,7 +83,7 @@ public final class Clone implements Serializable
      * @param unknownResolver unknown object types case resolver
      * @param behaviors       behaviors taking part in this clone algorithm instance
      */
-    public Clone ( final UnknownResolver unknownResolver, final GlobalCloneBehavior... behaviors )
+    public Clone ( @NotNull final UnknownResolver unknownResolver, @NotNull final GlobalCloneBehavior... behaviors )
     {
         this ( unknownResolver, new ImmutableList<GlobalCloneBehavior> ( behaviors ) );
     }
@@ -89,7 +94,7 @@ public final class Clone implements Serializable
      * @param unknownResolver unknown object types case resolver
      * @param behaviors       behaviors taking part in this clone algorithm instance
      */
-    public Clone ( final UnknownResolver unknownResolver, final List<GlobalCloneBehavior> behaviors )
+    public Clone ( @NotNull final UnknownResolver unknownResolver, @NotNull final List<GlobalCloneBehavior> behaviors )
     {
         this.unknownResolver = unknownResolver;
         this.behaviors = behaviors instanceof ImmutableList ? behaviors : new ImmutableList<GlobalCloneBehavior> ( behaviors );
@@ -104,9 +109,30 @@ public final class Clone implements Serializable
      * @param <T>    cloned object type
      * @return clone of the specified object
      */
-    public <T> T clone ( final T object )
+    @Nullable
+    public <T> T clone ( @Nullable final T object )
     {
         return new InternalClone ().clone ( object, 0 );
+    }
+
+    /**
+     * Returns non-{@code null} clone of the specified object.
+     * New {@link Clone.InternalClone} instance is used for every separate clone operation.
+     * That is necessary because {@link Clone.InternalClone} stores cloned object references internally to preserve object links.
+     *
+     * @param object object to clone, should never be {@code null}
+     * @param <T>    cloned object type
+     * @return non-{@code null} clone of the specified object
+     */
+    @NotNull
+    public <T> T nonNullClone ( @NotNull final T object )
+    {
+        final T clone = clone ( object );
+        if ( clone == null )
+        {
+            throw new CloneException ( "Object clone is null: " + object );
+        }
+        return clone;
     }
 
     /**
@@ -115,8 +141,9 @@ public final class Clone implements Serializable
      */
     private class InternalClone extends AbstractRecursiveClone
     {
+        @Nullable
         @Override
-        public <T> T clone ( final T object, final int depth )
+        public <T> T clone ( @Nullable final T object, final int depth )
         {
             final T result;
             if ( object != null )
@@ -178,12 +205,13 @@ public final class Clone implements Serializable
             return result;
         }
 
+        @NotNull
         @Override
-        public <T> T cloneFields ( final T object, final int depth )
+        public <T> T cloneFields ( @NotNull final T object, final int depth )
         {
             for ( final GlobalCloneBehavior behavior : behaviors )
             {
-                if ( behavior instanceof ReflectionCloneBehavior )
+                if ( behavior instanceof ReflectionCloneBehavior && behavior.supports ( this, object ) )
                 {
                     return ( T ) behavior.clone ( this, object, depth );
                 }
@@ -199,6 +227,7 @@ public final class Clone implements Serializable
      *
      * @return {@link Clone} algorithm that is able to clone basic object types as well as simple {@link Collection}s and {@link Map}s
      */
+    @NotNull
     public static Clone basic ()
     {
         final String identifier = "basic";
@@ -214,7 +243,7 @@ public final class Clone implements Serializable
                     new SetCloneBehavior (),
                     new CollectionCloneBehavior ()
             );
-            commons.put ( identifier, clone );
+            getCommons ().put ( identifier, clone );
         }
         return clone;
     }
@@ -227,6 +256,7 @@ public final class Clone implements Serializable
      *
      * @return {@link Clone} algorithm that can also clone custom objects through {@link ReflectionCloneBehavior}
      */
+    @NotNull
     public static Clone deep ()
     {
         final String identifier = "deep";
@@ -243,7 +273,7 @@ public final class Clone implements Serializable
                     new CollectionCloneBehavior (),
                     new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.cloneable, ModifierType.STATIC )
             );
-            commons.put ( identifier, clone );
+            getCommons ().put ( identifier, clone );
         }
         return clone;
     }
@@ -256,6 +286,7 @@ public final class Clone implements Serializable
      *
      * @return {@link Clone} algorithm similar to {@link #deep()} that also uses base {@link Object#clone()} API
      */
+    @NotNull
     public static Clone reflective ()
     {
         final String identifier = "reflective";
@@ -272,7 +303,7 @@ public final class Clone implements Serializable
                     new CollectionCloneBehavior (),
                     new ReflectionCloneBehavior ( ReflectionCloneBehavior.Policy.all, ModifierType.STATIC )
             );
-            commons.put ( identifier, clone );
+            getCommons ().put ( identifier, clone );
         }
         return clone;
     }
@@ -283,7 +314,19 @@ public final class Clone implements Serializable
      * @param identifier {@link Clone} instance indentifier
      * @return common {@link Clone} instance by its indentifier
      */
-    private static Clone commonInstance ( final String identifier )
+    @Nullable
+    private static Clone commonInstance ( @NotNull final String identifier )
+    {
+        return getCommons ().get ( identifier );
+    }
+
+    /**
+     * Returns common instances {@link Map}.
+     *
+     * @return common instances {@link Map}
+     */
+    @NotNull
+    private static Map<String, Clone> getCommons ()
     {
         if ( commons == null )
         {
@@ -295,6 +338,6 @@ public final class Clone implements Serializable
                 }
             }
         }
-        return commons.get ( identifier );
+        return commons;
     }
 }

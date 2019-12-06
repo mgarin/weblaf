@@ -17,6 +17,8 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.BasicCloneBehavior;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.clone.unknownresolver.ExceptionUnknownResolver;
@@ -135,7 +137,7 @@ public final class CloneTest
         final Clone clone = Clone.deep ();
 
         final RecursiveTestObject recursive = new RecursiveTestObject ();
-        final RecursiveTestObject copy = clone.clone ( recursive );
+        final RecursiveTestObject copy = clone.nonNullClone ( recursive );
         for ( final RecursiveTestObject object : copy.getList () )
         {
             if ( object != copy )
@@ -151,7 +153,7 @@ public final class CloneTest
      * @param result   clone result
      * @param expected expected result
      */
-    private void checkCloneResult ( final Object result, final Object expected )
+    private void checkCloneResult ( @Nullable final Object result, @Nullable final Object expected )
     {
         if ( Objects.notEquals ( result, expected ) )
         {
@@ -169,8 +171,8 @@ public final class CloneTest
      * @param object    object to clone
      * @param exception expected {@link Exception} class
      */
-    private void checkCloneException ( final Clone clone, final Object object,
-                                       final Class<? extends Exception> exception )
+    private void checkCloneException ( @NotNull final Clone clone, @NotNull final Object object,
+                                       @NotNull final Class<? extends Exception> exception )
     {
         try
         {
@@ -203,6 +205,7 @@ public final class CloneTest
         /**
          * Sample {@link String} data.
          */
+        @NotNull
         protected final String text;
 
         /**
@@ -214,6 +217,7 @@ public final class CloneTest
         /**
          * Sample {@link List} data.
          */
+        @NotNull
         public transient final List<String> list;
 
         /**
@@ -224,7 +228,8 @@ public final class CloneTest
          * @param number sample {@link Integer} data
          * @param list   sample {@link List} data
          */
-        public TestObject ( final boolean bool, final String text, final Integer number, final List<String> list )
+        public TestObject ( final boolean bool, @NotNull final String text, @Nullable final Integer number,
+                            @NotNull final List<String> list )
         {
             this.bool = bool;
             this.text = text;
@@ -236,7 +241,7 @@ public final class CloneTest
          * Overridden to properly compare all data within {@link #checkCloneResult(Object, Object)}.
          */
         @Override
-        public boolean equals ( final Object object )
+        public boolean equals ( @Nullable final Object object )
         {
             return object instanceof TestObject &&
                     bool == ( ( TestObject ) object ).bool &&
@@ -245,11 +250,16 @@ public final class CloneTest
                     CollectionUtils.equals ( list, ( ( TestObject ) object ).list, true );
         }
 
+        @NotNull
         @Override
         public String toString ()
         {
-            return getClass ().getSimpleName () + "{" + "bool=" + bool + ", " + "text='" + text + "', " +
-                    "number=" + number + ", " + "list=" + list + "}";
+            return getClass ().getSimpleName () + "[" +
+                    "bool=" + bool + ", " +
+                    "text='" + text + "', " +
+                    "number=" + number + ", " +
+                    "list=" + list +
+                    "]";
         }
     }
 
@@ -261,6 +271,7 @@ public final class CloneTest
         /**
          * Sample {@link List} data.
          */
+        @NotNull
         private final List<RecursiveTestObject> list;
 
         /**
@@ -279,6 +290,7 @@ public final class CloneTest
          *
          * @return sample {@link List} data
          */
+        @NotNull
         public List<RecursiveTestObject> getList ()
         {
             return list;

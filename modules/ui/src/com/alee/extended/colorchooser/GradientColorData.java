@@ -17,6 +17,8 @@
 
 package com.alee.extended.colorchooser;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.Clone;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -41,6 +43,7 @@ public class GradientColorData implements Cloneable, Serializable
     /**
      * Color.
      */
+    @NotNull
     @XStreamAsAttribute
     private Color color;
 
@@ -58,29 +61,9 @@ public class GradientColorData implements Cloneable, Serializable
      * @param location color location
      * @param color    color
      */
-    public GradientColorData ( final float location, final Color color )
+    public GradientColorData ( final float location, @NotNull final Color color )
     {
         this.location = location;
-        this.color = color;
-    }
-
-    /**
-     * Returns color.
-     *
-     * @return color
-     */
-    public Color getColor ()
-    {
-        return color;
-    }
-
-    /**
-     * Sets color.
-     *
-     * @param color new color
-     */
-    public void setColor ( final Color color )
-    {
         this.color = color;
     }
 
@@ -104,14 +87,29 @@ public class GradientColorData implements Cloneable, Serializable
         this.location = location;
     }
 
-    @Override
-    public GradientColorData clone ()
+    /**
+     * Returns color.
+     *
+     * @return color
+     */
+    @NotNull
+    public Color getColor ()
     {
-        return Clone.deep ().clone ( this );
+        return color;
+    }
+
+    /**
+     * Sets color.
+     *
+     * @param color new color
+     */
+    public void setColor ( @NotNull final Color color )
+    {
+        this.color = color;
     }
 
     @Override
-    public boolean equals ( final Object obj )
+    public boolean equals ( @Nullable final Object obj )
     {
         final boolean equals;
         if ( obj instanceof GradientColorData )
@@ -124,5 +122,12 @@ public class GradientColorData implements Cloneable, Serializable
             equals = false;
         }
         return equals;
+    }
+
+    @NotNull
+    @Override
+    public GradientColorData clone ()
+    {
+        return Clone.deep ().nonNullClone ( this );
     }
 }

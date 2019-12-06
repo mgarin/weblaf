@@ -17,6 +17,8 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.map.StrictHashMap;
 
 /**
@@ -34,10 +36,11 @@ public abstract class AbstractRecursiveClone implements RecursiveClone
      * It is not always necessary for clone operation so we want to avoid always creating it.
      * It will be created on demand, mostly for objects that are deeper than one level.
      */
+    @Nullable
     private StrictHashMap<Object, Object> references;
 
     @Override
-    public void store ( final Object object, final Object clone )
+    public void store ( @NotNull final Object object, @Nullable final Object clone )
     {
         if ( references == null )
         {
@@ -46,8 +49,9 @@ public abstract class AbstractRecursiveClone implements RecursiveClone
         references.put ( object, clone );
     }
 
+    @Nullable
     @Override
-    public Object retrieve ( final Object object )
+    public Object retrieve ( @NotNull final Object object )
     {
         return references != null ? references.get ( object ) : null;
     }

@@ -480,6 +480,6 @@ public class SvgIcon extends SVGIcon implements DisabledCopySupplier<SvgIcon>, T
     protected SvgIcon clone ()
     {
         // todo Preserve Resource & adjustments instead and simply create new icon
-        return Clone.reflective ().clone ( this );
+        return Clone.reflective ().nonNullClone ( this );
     }
 }

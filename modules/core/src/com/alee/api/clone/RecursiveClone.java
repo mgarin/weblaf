@@ -17,6 +17,9 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -34,7 +37,7 @@ public interface RecursiveClone extends Serializable
      * @param object object
      * @param clone  object clone
      */
-    public void store ( Object object, Object clone );
+    public void store ( @NotNull Object object, @Nullable Object clone );
 
     /**
      * Returns object clone if it is already available, {@code null} otherwise.
@@ -42,7 +45,8 @@ public interface RecursiveClone extends Serializable
      * @param object object to retrieve cached clone for
      * @return object clone if it is already available, {@code null} otherwise
      */
-    public Object retrieve ( Object object );
+    @Nullable
+    public Object retrieve ( @NotNull Object object );
 
     /**
      * Returns clone of the specified object.
@@ -52,7 +56,8 @@ public interface RecursiveClone extends Serializable
      * @param <T>    cloned object type
      * @return clone of the specified object
      */
-    public <T> T clone ( T object, int depth );
+    @Nullable
+    public <T> T clone ( @Nullable T object, int depth );
 
     /**
      * Returns clone of the specified object with all field values cloned according to {@link Clone} settings.
@@ -62,5 +67,6 @@ public interface RecursiveClone extends Serializable
      * @param <T>    cloned object type
      * @return clone of the specified object with all field values cloned according to {@link Clone} settings
      */
-    public <T> T cloneFields ( T object, int depth );
+    @NotNull
+    public <T> T cloneFields ( @NotNull T object, int depth );
 }

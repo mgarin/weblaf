@@ -17,6 +17,8 @@
 
 package com.alee.api.clone;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Special unchecked exception used to display various clone problems.
  *
@@ -39,7 +41,7 @@ public final class CloneException extends RuntimeException
      *
      * @param message exception message
      */
-    public CloneException ( final String message )
+    public CloneException ( @NotNull final String message )
     {
         super ( message );
     }
@@ -50,7 +52,7 @@ public final class CloneException extends RuntimeException
      * @param message exception message
      * @param cause   exception cause
      */
-    public CloneException ( final String message, final Throwable cause )
+    public CloneException ( @NotNull final String message, @NotNull final Throwable cause )
     {
         super ( message, cause );
     }
@@ -60,7 +62,7 @@ public final class CloneException extends RuntimeException
      *
      * @param cause exception cause
      */
-    public CloneException ( final Throwable cause )
+    public CloneException ( @NotNull final Throwable cause )
     {
         super ( cause );
     }

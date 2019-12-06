@@ -17,6 +17,9 @@
 
 package com.alee.utils.map;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -76,19 +79,19 @@ public class StrictHashMap<K, V> extends AbstractHashMap<K, V> implements Serial
      *
      * @param map the map to copy
      */
-    public StrictHashMap ( final Map map )
+    public StrictHashMap ( @NotNull final Map map )
     {
         super ( map );
     }
 
     @Override
-    protected boolean isEqualKey ( final Object key1, final Object key2 )
+    protected boolean isEqualKey ( @Nullable final Object key1, @Nullable final Object key2 )
     {
         return key1 == key2;
     }
 
     @Override
-    protected boolean isEqualValue ( final Object value1, final Object value2 )
+    protected boolean isEqualValue ( @Nullable final Object value1, @Nullable final Object value2 )
     {
         return value1 == value2;
     }

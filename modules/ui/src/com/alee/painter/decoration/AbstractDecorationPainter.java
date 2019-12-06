@@ -1072,7 +1072,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                     else if ( decorations.size () == 1 )
                     {
                         // Single existing decoration for the states
-                        decoration = Clone.deep ().clone ( decorations.get ( 0 ) );
+                        decoration = Clone.deep ().nonNullClone ( decorations.get ( 0 ) );
                     }
                     else
                     {

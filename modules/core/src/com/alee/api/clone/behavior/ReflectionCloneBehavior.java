@@ -17,6 +17,7 @@
 
 package com.alee.api.clone.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneException;
 import com.alee.api.clone.GlobalCloneBehavior;
@@ -42,11 +43,13 @@ public class ReflectionCloneBehavior<O> implements GlobalCloneBehavior<O>
     /**
      * Behavior {@link Policy}.
      */
+    @NotNull
     private final Policy policy;
 
     /**
      * Modifiers of fields to ignore.
      */
+    @NotNull
     private final List<ModifierType> ignoredModifiers;
 
     /**
@@ -55,20 +58,21 @@ public class ReflectionCloneBehavior<O> implements GlobalCloneBehavior<O>
      * @param policy           behavior {@link Policy}
      * @param ignoredModifiers modifiers of fields to ignore
      */
-    public ReflectionCloneBehavior ( final Policy policy, final ModifierType... ignoredModifiers )
+    public ReflectionCloneBehavior ( @NotNull final Policy policy, @NotNull final ModifierType... ignoredModifiers )
     {
         this.policy = policy;
         this.ignoredModifiers = CollectionUtils.asList ( ignoredModifiers );
     }
 
     @Override
-    public boolean supports ( final RecursiveClone clone, final Object object )
+    public boolean supports ( @NotNull final RecursiveClone clone, @NotNull final Object object )
     {
         return policy == Policy.all || object instanceof Cloneable;
     }
 
+    @NotNull
     @Override
-    public O clone ( final RecursiveClone clone, final O object, final int depth )
+    public O clone ( @NotNull final RecursiveClone clone, @NotNull final O object, final int depth )
     {
         /**
          * Creating object instance copy.

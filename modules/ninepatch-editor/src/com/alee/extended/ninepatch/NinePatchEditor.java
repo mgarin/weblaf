@@ -364,9 +364,9 @@ public class NinePatchEditor extends WebPanel
         }
 
         // Update NinePatchIcon data
-        ninePatchIcon.setMargin ( Clone.basic ().clone ( state.getMargin () ) );
-        ninePatchIcon.setHorizontalStretch ( Clone.deep ().clone ( state.getHorizontalStretch () ) );
-        ninePatchIcon.setVerticalStretch ( Clone.deep ().clone ( state.getVerticalStretch () ) );
+        ninePatchIcon.setMargin ( Clone.basic ().nonNullClone ( state.getMargin () ) );
+        ninePatchIcon.setHorizontalStretch ( Clone.deep ().nonNullClone ( state.getHorizontalStretch () ) );
+        ninePatchIcon.setVerticalStretch ( Clone.deep ().nonNullClone ( state.getVerticalStretch () ) );
 
         // Updates shown image
         validateIcon ();

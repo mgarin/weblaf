@@ -17,6 +17,7 @@
 
 package com.alee.api.clone.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.CloneException;
 import com.alee.api.clone.GlobalCloneBehavior;
@@ -37,13 +38,14 @@ import java.util.*;
 public class MapCloneBehavior implements GlobalCloneBehavior<Map>
 {
     @Override
-    public boolean supports ( final RecursiveClone clone, final Object object )
+    public boolean supports ( @NotNull final RecursiveClone clone, @NotNull final Object object )
     {
         return object instanceof Map;
     }
 
+    @NotNull
     @Override
-    public Map clone ( final RecursiveClone clone, final Map map, final int depth )
+    public Map clone ( @NotNull final RecursiveClone clone, @NotNull final Map map, final int depth )
     {
         try
         {

@@ -17,6 +17,7 @@
 
 package com.alee.api.clone.behavior;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.clone.Clone;
 import com.alee.api.clone.GlobalCloneBehavior;
 import com.alee.api.clone.RecursiveClone;
@@ -34,13 +35,14 @@ import com.alee.utils.ReflectUtils;
 public class CloneableCloneBehavior<T extends Cloneable> implements GlobalCloneBehavior<T>
 {
     @Override
-    public boolean supports ( final RecursiveClone clone, final Object object )
+    public boolean supports ( @NotNull final RecursiveClone clone, @NotNull final Object object )
     {
         return object instanceof Cloneable;
     }
 
+    @NotNull
     @Override
-    public T clone ( final RecursiveClone clone, final T object, final int depth )
+    public T clone ( @NotNull final RecursiveClone clone, @NotNull final T object, final int depth )
     {
         /**
          * Using standard {@link Object#clone()} method.
