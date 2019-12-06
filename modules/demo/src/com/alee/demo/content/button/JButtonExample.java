@@ -84,7 +84,7 @@ public class JButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicButton ( final StyleId styleId )
         {
@@ -127,7 +127,7 @@ public class JButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public IconButton ( final StyleId styleId )
         {
@@ -162,7 +162,7 @@ public class JButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public StyledButton ( final StyleId styleId )
         {

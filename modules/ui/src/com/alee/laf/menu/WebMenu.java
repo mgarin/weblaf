@@ -103,7 +103,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs new menu.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebMenu ( final StyleId id )
     {
@@ -113,7 +113,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon menu icon
      */
     public WebMenu ( final StyleId id, final Icon icon )
@@ -124,7 +124,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu text
      */
     public WebMenu ( final StyleId id, final String text )
@@ -135,7 +135,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action menu action
      */
     public WebMenu ( final StyleId id, final Action action )
@@ -147,7 +147,7 @@ public class WebMenu extends JMenu implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs new menu using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu text
      * @param icon menu item icon
      */

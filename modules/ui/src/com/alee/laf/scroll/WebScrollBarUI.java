@@ -317,7 +317,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
         /**
          * Constructs new scroll bar button wit the specified style.
          *
-         * @param id style ID
+         * @param id {@link StyleId}
          */
         public ScrollBarButton ( final StyleId id )
         {

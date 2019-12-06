@@ -136,7 +136,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     /**
      * Creates a non-resizable, non-closable, non-maximizable, non-iconifiable {@code JInternalFrame} with no title.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebInternalFrame ( @NotNull final StyleId id )
     {
@@ -147,7 +147,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
      * Creates a non-resizable, non-closable, non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title.
      * Note that passing in a {@code null} {@code title} results in unspecified behavior and possibly an exception.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param title the non-{@code null} {@code String} to display in the title bar
      */
     public WebInternalFrame ( @NotNull final StyleId id, @Nullable final String title )
@@ -158,7 +158,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     /**
      * Creates a non-closable, non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title and resizability.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param title     the {@code String} to display in the title bar
      * @param resizable if {@code true}, the internal frame can be resized
      */
@@ -170,7 +170,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     /**
      * Creates a non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title, resizability, and closability.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param title     the {@code String} to display in the title bar
      * @param resizable if {@code true}, the internal frame can be resized
      * @param closable  if {@code true}, the internal frame can be closed
@@ -183,7 +183,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     /**
      * Creates a non-iconifiable {@code WebInternalFrame} with the specified title, resizability, closability, and maximizability.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param title       the {@code String} to display in the title bar
      * @param resizable   if {@code true}, the internal frame can be resized
      * @param closable    if {@code true}, the internal frame can be closed
@@ -198,7 +198,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Paint
     /**
      * Creates a {@code WebInternalFrame} with the specified title, resizability, closability, maximizability, and iconifiability.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param title       the {@code String} to display in the title bar
      * @param resizable   if {@code true}, the internal frame can be resized
      * @param closable    if {@code true}, the internal frame can be closed

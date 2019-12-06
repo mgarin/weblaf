@@ -53,7 +53,7 @@ public abstract class AbstractControlButton extends WebButton implements Statefu
     /**
      * Constructs new {@link AbstractControlButton}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public AbstractControlButton ( @NotNull final StyleId id )
     {

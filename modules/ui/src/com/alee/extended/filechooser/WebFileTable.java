@@ -104,7 +104,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
     /**
      * Constructs empty WebFileTable.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebFileTable ( final StyleId id )
     {
@@ -114,7 +114,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
     /**
      * Constructs empty WebFileTable.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param files displayed files
      */
     public WebFileTable ( final StyleId id, final List<File> files )
@@ -125,7 +125,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
     /**
      * Constructs empty WebFileTable.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param files   displayed files
      * @param columns displayed columns
      */
@@ -137,7 +137,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
     /**
      * Constructs empty WebFileTable.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param files   displayed files
      * @param columns displayed columns
      */

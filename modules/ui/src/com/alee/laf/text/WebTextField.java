@@ -116,7 +116,7 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     /**
      * Constructs new text field.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebTextField ( final StyleId id )
     {
@@ -126,7 +126,7 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     /**
      * Constructs new text field.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text initially displayed text
      */
     public WebTextField ( final StyleId id, final String text )
@@ -137,7 +137,7 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     /**
      * Constructs new text field.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param columns number of columns used to calculate field preferred width
      */
     public WebTextField ( final StyleId id, final int columns )
@@ -148,7 +148,7 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     /**
      * Constructs new text field.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param text    initially displayed text
      * @param columns number of columns used to calculate field preferred width
      */
@@ -160,7 +160,7 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
     /**
      * Constructs new text field.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param doc     text storage to use
      * @param text    initially displayed text
      * @param columns number of columns used to calculate field preferred width

@@ -84,7 +84,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public BasicTooltip ( final FeatureState featureState, final StyleId styleId )
         {
@@ -110,7 +110,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public InstantTooltip ( final FeatureState featureState, final StyleId styleId )
         {
@@ -136,7 +136,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public MultipleTooltips ( final FeatureState featureState, final StyleId styleId )
         {
@@ -165,7 +165,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public HotkeyTooltip ( final FeatureState featureState, final StyleId styleId )
         {
@@ -204,7 +204,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public OneTimeTooltip ( final FeatureState featureState, final StyleId styleId )
         {
@@ -237,7 +237,7 @@ public class WebCustomTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public CustomTooltip ( final FeatureState featureState, final StyleId styleId )
         {

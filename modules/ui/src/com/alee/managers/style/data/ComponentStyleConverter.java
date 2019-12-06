@@ -233,15 +233,15 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final String oldComponentType = ( String ) context.get ( CONTEXT_COMPONENT_TYPE );
         context.put ( CONTEXT_COMPONENT_TYPE, type );
 
-        // Reading style ID
+        // Reading style identifier
         final String styleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
         style.setId ( styleId != null ? styleId : descriptor.getDefaultStyleId ().getCompleteId () );
 
-        // Saving context style ID
+        // Saving context style identifier
         final String oldStyleId = ( String ) context.get ( CONTEXT_STYLE_ID );
         context.put ( CONTEXT_STYLE_ID, style.getId () );
 
-        // Reading extended style ID
+        // Reading extended style identifier
         style.setExtendsId ( reader.getAttribute ( EXTENDS_ID_ATTRIBUTE ) );
 
         // Reading margin

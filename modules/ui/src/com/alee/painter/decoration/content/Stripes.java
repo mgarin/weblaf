@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
@@ -46,6 +47,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
     /**
      * Stripes orientation.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Orientation orientation;
 
@@ -53,6 +55,7 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
      * Stripes alignment.
      * It can contain different values depending on {@link #orientation}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected BoxOrientation align;
 
@@ -60,11 +63,12 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
      * Stripes data.
      * At least one {@link Stripe} must always be provided.
      */
+    @Nullable
     @XStreamImplicit
     @OverwriteOnMerge
     protected List<Stripe> stripes;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -78,16 +82,14 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
      * @param d painted decoration state
      * @return stripes orientation
      */
-    public Orientation getOrientation ( final C c, final D d )
+    @NotNull
+    protected Orientation getOrientation ( @NotNull final C c, @NotNull final D d )
     {
-        if ( orientation != null )
-        {
-            return orientation;
-        }
-        else
+        if ( orientation == null )
         {
             throw new DecorationException ( "Stripe orientation must be specified" );
         }
+        return orientation;
     }
 
     /**
@@ -97,7 +99,8 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
      * @param d painted decoration state
      * @return stripes alignment within provided bounds
      */
-    public BoxOrientation getAlign ( final C c, final D d )
+    @NotNull
+    protected BoxOrientation getAlign ( @NotNull final C c, @NotNull final D d )
     {
         final BoxOrientation actualAlign;
         if ( align != null )
@@ -143,76 +146,80 @@ public class Stripes<C extends JComponent, D extends IDecoration<C, D>, I extend
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return getStripesCount () == 0;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
-        // Display settings
-        final boolean ltr = isLeftToRight ( c, d );
-        final Orientation orientation = getOrientation ( c, d );
-        final BoxOrientation align = getAlign ( c, d );
-
-        // Painting each stripe
-        for ( int i = 0; i < stripes.size (); i++ )
+        if ( stripes != null )
         {
-            // Current stripe
-            final Stripe stripe = stripes.get ( i );
+            // Display settings
+            final boolean ltr = isLeftToRight ( c, d );
+            final Orientation orientation = getOrientation ( c, d );
+            final BoxOrientation align = getAlign ( c, d );
 
-            // Calculating stripe coordinates
-            final int x1;
-            final int y1;
-            final int x2;
-            final int y2;
-            if ( orientation.isVertical () )
+            // Painting each stripe
+            for ( int i = 0; i < stripes.size (); i++ )
             {
-                if ( ltr ? align.isLeft () : align.isRight () )
+                // Current stripe
+                final Stripe stripe = stripes.get ( i );
+
+                // Calculating stripe coordinates
+                final int x1;
+                final int y1;
+                final int x2;
+                final int y2;
+                if ( orientation.isVertical () )
                 {
-                    x1 = x2 = bounds.x + i;
-                }
-                else if ( !ltr ? align.isLeft () : align.isRight () )
-                {
-                    x1 = x2 = bounds.x + bounds.width - i - 1;
+                    if ( ltr ? align.isLeft () : align.isRight () )
+                    {
+                        x1 = x2 = bounds.x + i;
+                    }
+                    else if ( !ltr ? align.isLeft () : align.isRight () )
+                    {
+                        x1 = x2 = bounds.x + bounds.width - i - 1;
+                    }
+                    else
+                    {
+                        x1 = x2 = bounds.x + ( bounds.width - stripes.size () ) / 2 + i;
+                    }
+                    y1 = bounds.y;
+                    y2 = bounds.y + bounds.height - 1;
                 }
                 else
                 {
-                    x1 = x2 = bounds.x + ( bounds.width - stripes.size () ) / 2 + i;
+                    if ( align.isTop () )
+                    {
+                        y1 = y2 = bounds.y + i;
+                    }
+                    else if ( align.isBottom () )
+                    {
+                        y1 = y2 = bounds.y + bounds.height - stripes.size () + i;
+                    }
+                    else
+                    {
+                        y1 = y2 = bounds.y + ( bounds.height - stripes.size () ) / 2 + i;
+                    }
+                    x1 = bounds.x;
+                    x2 = bounds.x + bounds.width - 1;
                 }
-                y1 = bounds.y;
-                y2 = bounds.y + bounds.height - 1;
-            }
-            else
-            {
-                if ( align.isTop () )
-                {
-                    y1 = y2 = bounds.y + i;
-                }
-                else if ( align.isBottom () )
-                {
-                    y1 = y2 = bounds.y + bounds.height - stripes.size () + i;
-                }
-                else
-                {
-                    y1 = y2 = bounds.y + ( bounds.height - stripes.size () ) / 2 + i;
-                }
-                x1 = bounds.x;
-                x2 = bounds.x + bounds.width - 1;
-            }
 
-            // Painting stripe
-            final Stroke stroke = GraphicsUtils.setupStroke ( g2d, stripe.getStroke (), stripe.getStroke () != null );
-            final Paint op = GraphicsUtils.setupPaint ( g2d, stripe.getPaint ( x1, y1, x2, y2 ) );
-            g2d.drawLine ( x1, y1, x2, y2 );
-            GraphicsUtils.restorePaint ( g2d, op );
-            GraphicsUtils.restoreStroke ( g2d, stroke, stripe.getStroke () != null );
+                // Painting stripe
+                final Stroke stroke = GraphicsUtils.setupStroke ( g2d, stripe.getStroke (), stripe.getStroke () != null );
+                final Paint op = GraphicsUtils.setupPaint ( g2d, stripe.getPaint ( x1, y1, x2, y2 ) );
+                g2d.drawLine ( x1, y1, x2, y2 );
+                GraphicsUtils.restorePaint ( g2d, op );
+                GraphicsUtils.restoreStroke ( g2d, stroke, stripe.getStroke () != null );
+            }
         }
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         final int stripes = getStripesCount ();
         final Orientation orientation = getOrientation ( c, d );

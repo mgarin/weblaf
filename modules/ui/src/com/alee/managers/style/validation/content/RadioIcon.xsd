@@ -10,9 +10,6 @@
         <xs:complexContent>
             <xs:extension base="AbstractContent">
 
-                <!-- Preferred icon size -->
-                <xs:attribute name="size" type="java.awt:Dimension" />
-
                 <!-- Left side background color -->
                 <xs:attribute name="leftColor" type="java.awt:Color" />
 

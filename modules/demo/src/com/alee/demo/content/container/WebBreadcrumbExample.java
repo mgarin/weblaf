@@ -117,7 +117,7 @@ public class WebBreadcrumbExample extends AbstractStylePreviewExample
          *
          * @param id           preview ID
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public BreadcrumbPreview ( final String id, final FeatureState featureState, final StyleId styleId )
         {

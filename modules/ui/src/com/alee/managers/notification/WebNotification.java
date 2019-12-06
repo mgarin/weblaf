@@ -124,9 +124,9 @@ public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
     }
 
     /**
-     * Constructs new notification popup with the specified style ID.
+     * Constructs new notification popup with the specified {@link StyleId}.
      *
-     * @param styleId style ID
+     * @param styleId {@link StyleId}
      */
     public WebNotification ( final StyleId styleId )
     {

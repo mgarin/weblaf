@@ -89,7 +89,7 @@ public class JFormattedTextFieldExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          * @param mask    formatter mask
          * @param value   field value
          */

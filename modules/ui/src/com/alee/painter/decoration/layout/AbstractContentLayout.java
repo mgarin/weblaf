@@ -50,6 +50,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
      * @see IContentLayout
      * @see AbstractContentLayout
      */
+    @Nullable
     @XStreamImplicit
     protected List<IContent> contents;
 
@@ -57,9 +58,10 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
      * Contents cache map.
      * It is used for optimal contents retrieval.
      */
+    @Nullable
     protected transient Map<String, List<IContent>> contentsCache;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -93,7 +95,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         boolean isEmpty = true;
         for ( final IContent content : getContents ( c, d ) )
@@ -110,12 +112,12 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     /**
      * Returns whether or not specified content is empty.
      *
-     * @param c           painted component
-     * @param d           painted decoration state
+     * @param c           {@link JComponent} that is being painted
+     * @param d           {@link IDecoration} state
      * @param constraints content constraints
      * @return true if specified content is empty, false otherwise
      */
-    public boolean isEmpty ( final C c, final D d, final String constraints )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d, @Nullable final String constraints )
     {
         boolean isEmpty = true;
         for ( final IContent content : getContents ( c, d, constraints ) )
@@ -129,8 +131,9 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
         return isEmpty;
     }
 
+    @NotNull
     @Override
-    public List<IContent> getContents ( final C c, final D d )
+    public List<IContent> getContents ( @NotNull final C c, @NotNull final D d )
     {
         return CollectionUtils.notEmpty ( contents ) ? contents : Collections.<IContent>emptyList ();
     }
@@ -138,12 +141,13 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     /**
      * Returns contents placed under the specified constraints.
      *
-     * @param c           painted component
-     * @param d           painted decoration state
+     * @param c           {@link JComponent} that is being painted
+     * @param d           {@link IDecoration} state
      * @param constraints content constraints
      * @return contents placed under the specified constraints
      */
-    protected List<IContent> getContents ( final C c, final D d, final String constraints )
+    @NotNull
+    protected List<IContent> getContents ( @NotNull final C c, @NotNull final D d, @Nullable final String constraints )
     {
         final List<IContent> contents;
         if ( CollectionUtils.notEmpty ( this.contents ) )
@@ -173,7 +177,8 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
      * @param d painted decoration state
      * @return contents cache for existing constraints
      */
-    protected Map<String, List<IContent>> getContentsCache ( final C c, final D d )
+    @NotNull
+    protected Map<String, List<IContent>> getContentsCache ( @NotNull final C c, @NotNull final D d )
     {
         if ( contentsCache == null )
         {
@@ -195,7 +200,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     }
 
     @Override
-    public boolean hasContentBaseline ( final C c, final D d )
+    public boolean hasContentBaseline ( @NotNull final C c, @NotNull final D d )
     {
         // Simply whether or not any of the contents have meaningful baseline
         // If this behavior is not sufficient it can be overridden in specific layout implementation
@@ -215,7 +220,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     }
 
     @Override
-    public int getContentBaseline ( final C c, final D d, final Rectangle bounds )
+    public int getContentBaseline ( @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         // Simply return baseline of the first content that has it
         // If this behavior is not sufficient it can be overridden in specific layout implementation
@@ -236,8 +241,9 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
         return contentBaseline;
     }
 
+    @NotNull
     @Override
-    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( final C c, final D d )
+    public Component.BaselineResizeBehavior getContentBaselineResizeBehavior ( @NotNull final C c, @NotNull final D d )
     {
         // Simply return OTHER behavior type as it is simply impossible to "guess" how specific layout acts
         // It is up to layout to override this method and provide an appropriate baseline resize behavior
@@ -245,7 +251,7 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         // Painting only if there is something to paint
         // This global check is added to avoid running full layout
@@ -273,13 +279,15 @@ public abstract class AbstractContentLayout<C extends JComponent, D extends IDec
     /**
      * Returns preferred size of contents placed under the specified constraints.
      *
-     * @param c           painted component
-     * @param d           painted decoration state
-     * @param constraints content constraints
+     * @param c           {@link JComponent} that is being painted
+     * @param d           {@link IDecoration} state
      * @param available   theoretically available space for this content
+     * @param constraints content constraints
      * @return preferred size of contents placed under the specified constraints
      */
-    protected Dimension getPreferredSize ( final C c, final D d, final String constraints, final Dimension available )
+    @NotNull
+    protected Dimension getPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available,
+                                           @Nullable final String constraints )
     {
         final Dimension ps = new Dimension ( 0, 0 );
         for ( final IContent content : getContents ( c, d, constraints ) )

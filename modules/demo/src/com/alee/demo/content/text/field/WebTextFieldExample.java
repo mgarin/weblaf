@@ -74,7 +74,7 @@ public class WebTextFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public InputPromptField ( final StyleId styleId )
         {
@@ -99,7 +99,7 @@ public class WebTextFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public LeadingComponentField ( final StyleId styleId )
         {
@@ -125,7 +125,7 @@ public class WebTextFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public TrailingComponentField ( final StyleId styleId )
         {

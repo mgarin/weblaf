@@ -10,9 +10,6 @@
         <xs:complexContent>
             <xs:extension base="AbstractContent">
 
-                <!-- Preferred icon size -->
-                <xs:attribute name="size" type="java.awt:Dimension" />
-
                 <!-- Icon shape rounding -->
                 <xs:attribute name="round" type="xs:integer" />
 

@@ -18,6 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.IDecoration;
@@ -42,6 +43,7 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
     /**
      * Component property change listener.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient ContentPropertyListener<C, D> listener;
@@ -56,7 +58,8 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
         listener = new ContentPropertyListener<C, D> ( c, d )
         {
             @Override
-            public void propertyChange ( final C c, final D d, final String property, final Object oldValue, final Object newValue )
+            public void propertyChange ( @NotNull final C c, @NotNull final D d, @NotNull final String property,
+                                         @Nullable final Object oldValue, @Nullable final Object newValue )
             {
                 buildTextRanges ( c, d );
                 c.repaint ();
@@ -76,50 +79,53 @@ public class StyledLabelText<C extends WebStyledLabel, D extends IDecoration<C, 
         super.deactivate ( c, d );
     }
 
+    @NotNull
     @Override
-    protected List<StyleRange> getStyleRanges ( final C c, final D d )
+    protected List<StyleRange> getStyleRanges ( @NotNull final C c, @NotNull final D d )
     {
         return c.getStyleRanges ();
     }
 
+    @NotNull
     @Override
-    protected TextWrap getWrapType ( final C c, final D d )
+    protected TextWrap getWrapType ( @NotNull final C c, @NotNull final D d )
     {
         return c.getWrap ();
     }
 
     @Override
-    protected int getMaximumRows ( final C c, final D d )
+    protected int getMaximumRows ( @NotNull final C c, @NotNull final D d )
     {
         return c.getMaximumRows ();
     }
 
+    @Nullable
     @Override
-    protected String getText ( final C c, final D d )
+    protected String getText ( @NotNull final C c, @NotNull final D d )
     {
         return c.getText ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final C c, final D d )
+    protected int getMnemonicIndex ( @NotNull final C c, @NotNull final D d )
     {
         return c.getDisplayedMnemonicIndex ();
     }
 
     @Override
-    protected int getHorizontalAlignment ( final C c, final D d )
+    protected int getHorizontalAlignment ( @NotNull final C c, @NotNull final D d )
     {
         return halign != null ? halign : c.getHorizontalTextAlignment ();
     }
 
     @Override
-    protected int getVerticalAlignment ( final C c, final D d )
+    protected int getVerticalAlignment ( @NotNull final C c, @NotNull final D d )
     {
         return valign != null ? valign : c.getVerticalTextAlignment ();
     }
 
     @Override
-    protected int getMaximumTextWidth ( final C c, final D d )
+    protected int getMaximumTextWidth ( @NotNull final C c, @NotNull final D d )
     {
         return maximumTextWidth != null ? maximumTextWidth : c.getMaximumTextWidth ();
     }

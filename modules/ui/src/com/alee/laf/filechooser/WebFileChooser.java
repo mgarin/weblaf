@@ -130,7 +130,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     /**
      * Constructs a WebFileChooser pointing to the user's default directory.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebFileChooser ( final StyleId id )
     {
@@ -141,7 +141,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      * Constructs a WebFileChooser using the given path.
      * Passing in a null string causes the file chooser to point to the user's default directory.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param dirPath a String giving the path to a file or directory
      */
     public WebFileChooser ( final StyleId id, final String dirPath )
@@ -153,7 +153,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
      * Constructs a WebFileChooser using the given File as the path.
      * Passing in a null file causes the file chooser to point to the user's default directory.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param dir a File object specifying the path to a file or directory
      */
     public WebFileChooser ( final StyleId id, final File dir )
@@ -164,7 +164,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     /**
      * Constructs a WebFileChooser using the given FileSystemView.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param fsv file system view
      */
     public WebFileChooser ( final StyleId id, final FileSystemView fsv )
@@ -175,7 +175,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     /**
      * Constructs a WebFileChooser using the given current directory and FileSystemView.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param dir a File object specifying the path to a file or directory
      * @param fsv file system view
      */
@@ -188,7 +188,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     /**
      * Constructs a WebFileChooser using the given current directory path and FileSystemView.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param dirPath a String giving the path to a file or directory
      * @param fsv     file system view
      */

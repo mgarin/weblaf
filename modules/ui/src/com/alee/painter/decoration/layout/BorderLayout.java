@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
@@ -54,21 +56,25 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
     /**
      * Horizontal gap between content elements.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer hgap;
 
     /**
      * Vertical gap between content elements.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer vgap;
 
     /**
      * Returns horizontal gap between content elements.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return horizontal gap between content elements
      */
-    protected int getHorizontalGap ()
+    protected int getHorizontalGap ( @NotNull final C c, @NotNull final D d )
     {
         return hgap != null ? hgap : 0;
     }
@@ -76,15 +82,18 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
     /**
      * Returns vertical gap between content elements.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return vertical gap between content elements
      */
-    protected int getVerticalGap ()
+    protected int getVerticalGap ( @NotNull final C c, @NotNull final D d )
     {
         return vgap != null ? vgap : 0;
     }
 
+    @NotNull
     @Override
-    public List<IContent> getContents ( final C c, final D d, String constraints )
+    public List<IContent> getContents ( @NotNull final C c, @NotNull final D d, @Nullable String constraints )
     {
         // Handling constraints depending on component orientation
         final boolean ltr = isLeftToRight ( c, d );
@@ -104,38 +113,39 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
         return super.getContents ( c, d, constraints );
     }
 
+    @NotNull
     @Override
-    public ContentLayoutData layoutContent ( final C c, final D d, final Rectangle bounds )
+    public ContentLayoutData layoutContent ( @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 5 );
-        final int hgap = getHorizontalGap ();
-        final int vgap = getVerticalGap ();
+        final int hgap = getHorizontalGap ( c, d );
+        final int vgap = getVerticalGap ( c, d );
         int x = bounds.x;
         int y = bounds.y;
         int width = bounds.width;
         int height = bounds.height;
         if ( !isEmpty ( c, d, NORTH ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, NORTH, new Dimension ( width, height ) );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), NORTH );
             layoutData.put ( NORTH, new Rectangle ( x, y, width, ps.height ) );
             y += ps.height + vgap;
             height -= ps.height + vgap;
         }
         if ( !isEmpty ( c, d, SOUTH ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, SOUTH, new Dimension ( width, height ) );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), SOUTH );
             layoutData.put ( SOUTH, new Rectangle ( x, y + height - ps.height, width, ps.height ) );
             height -= ps.height + vgap;
         }
         if ( !isEmpty ( c, d, EAST ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, EAST, new Dimension ( width, height ) );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), EAST );
             layoutData.put ( EAST, new Rectangle ( x + width - ps.width, y, ps.width, height ) );
             width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, WEST ) )
         {
-            final Dimension ps = getPreferredSize ( c, d, WEST, new Dimension ( width, height ) );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), WEST );
             layoutData.put ( WEST, new Rectangle ( x, y, ps.width, height ) );
             x += ps.width + hgap;
             width -= ps.width + hgap;
@@ -147,22 +157,23 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
         return layoutData;
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
-        final int hgap = getHorizontalGap ();
-        final int vgap = getVerticalGap ();
+        final int hgap = getHorizontalGap ( c, d );
+        final int vgap = getVerticalGap ( c, d );
         final Dimension ps = new Dimension ( 0, 0 );
         if ( !isEmpty ( c, d, NORTH ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, NORTH, available );
+            final Dimension cps = getPreferredSize ( c, d, available, NORTH );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
         }
         if ( !isEmpty ( c, d, SOUTH ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, SOUTH, available );
+            final Dimension cps = getPreferredSize ( c, d, available, SOUTH );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
@@ -171,21 +182,21 @@ public class BorderLayout<C extends JComponent, D extends IDecoration<C, D>, I e
         int centerHeight = 0;
         if ( !isEmpty ( c, d, EAST ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, EAST, available );
+            final Dimension cps = getPreferredSize ( c, d, available, EAST );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, WEST ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, WEST, available );
+            final Dimension cps = getPreferredSize ( c, d, available, WEST );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, CENTER ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, CENTER, available );
+            final Dimension cps = getPreferredSize ( c, d, available, CENTER );
             centerWidth += cps.width;
             centerHeight = Math.max ( centerHeight, cps.height );
         }

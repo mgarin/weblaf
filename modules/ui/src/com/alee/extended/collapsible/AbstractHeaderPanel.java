@@ -54,7 +54,7 @@ public abstract class AbstractHeaderPanel extends WebPanel implements Stateful
     /**
      * Constructs new {@link AbstractHeaderPanel}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public AbstractHeaderPanel ( @NotNull final StyleId id )
     {

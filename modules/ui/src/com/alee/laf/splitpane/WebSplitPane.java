@@ -115,7 +115,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, Paintable, Sh
     /**
      * Constructs new split pane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebSplitPane ( final StyleId id )
     {
@@ -125,7 +125,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, Paintable, Sh
     /**
      * Constructs new split pane.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation split pane orientation
      */
     public WebSplitPane ( final StyleId id, final int orientation )
@@ -136,7 +136,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, Paintable, Sh
     /**
      * Constructs new split pane.
      *
-     * @param id               style ID
+     * @param id               {@link StyleId}
      * @param orientation      split pane orientation
      * @param continuousLayout whether or not split pane should redraw continuously as the divider changes position
      */
@@ -148,7 +148,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, Paintable, Sh
     /**
      * Constructs new split pane.
      *
-     * @param id             style ID
+     * @param id             {@link StyleId}
      * @param orientation    split pane orientation
      * @param leftComponent  left split component
      * @param rightComponent right split component
@@ -161,7 +161,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, Paintable, Sh
     /**
      * Constructs new split pane.
      *
-     * @param id               style ID
+     * @param id               {@link StyleId}
      * @param orientation      split pane orientation
      * @param continuousLayout whether or not split pane should redraw continuously as the divider changes position
      * @param leftComponent    left split component

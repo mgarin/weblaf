@@ -82,7 +82,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicArea ( final String id, final StyleId styleId )
         {
@@ -108,7 +108,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public FixedArea ( final String id, final StyleId styleId )
         {
@@ -135,7 +135,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ScrollableArea ( final String id, final StyleId styleId )
         {
@@ -162,7 +162,7 @@ public class JTextAreaExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ReadOnlyArea ( final String id, final StyleId styleId )
         {

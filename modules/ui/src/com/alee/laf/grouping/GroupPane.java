@@ -85,7 +85,7 @@ public class GroupPane extends WebPanel implements SwingConstants
     /**
      * Constructs new group pane with specified components inside.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param groupButtons whether or not should group toggle state elements
      */
     public GroupPane ( @NotNull final StyleId id, final boolean groupButtons )
@@ -96,7 +96,7 @@ public class GroupPane extends WebPanel implements SwingConstants
     /**
      * Constructs new group pane with specified components inside.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param components components to group
      */
     public GroupPane ( @NotNull final StyleId id, @NotNull final Component... components )
@@ -107,7 +107,7 @@ public class GroupPane extends WebPanel implements SwingConstants
     /**
      * Constructs new group pane with specified components inside.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation components flow orientation
      * @param components  components to group
      */
@@ -119,7 +119,7 @@ public class GroupPane extends WebPanel implements SwingConstants
     /**
      * Constructs new group pane with specified components inside.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param columns    amount of columns used to place components
      * @param rows       amount of rows used to place components
      * @param components components to group
@@ -132,7 +132,7 @@ public class GroupPane extends WebPanel implements SwingConstants
     /**
      * Constructs new group pane with specified components inside.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation components flow orientation
      * @param columns     amount of columns used to place components
      * @param rows        amount of rows used to place components
@@ -146,7 +146,7 @@ public class GroupPane extends WebPanel implements SwingConstants
     /**
      * Constructs new group pane with specified components inside.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param groupButtons whether or not should group toggle state elements
      * @param orientation  components flow orientation
      * @param columns      amount of columns used to place components

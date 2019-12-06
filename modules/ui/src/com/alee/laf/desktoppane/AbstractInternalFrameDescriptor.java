@@ -48,7 +48,7 @@ public abstract class AbstractInternalFrameDescriptor<C extends JInternalFrame, 
      * @param uiClassId      component UI class ID
      * @param baseUIClass    base UI class applicable to this component
      * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default style ID
+     * @param defaultStyleId component default {@link StyleId}
      */
     public AbstractInternalFrameDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
                                              final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )

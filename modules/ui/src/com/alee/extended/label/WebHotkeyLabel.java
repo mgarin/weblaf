@@ -42,7 +42,7 @@ public class WebHotkeyLabel extends WebStyledLabel
     /**
      * Constructs empty hotkey label.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebHotkeyLabel ( final StyleId id )
     {
@@ -62,7 +62,7 @@ public class WebHotkeyLabel extends WebStyledLabel
     /**
      * Constructs hotkey label for the specified single key code.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param keyCode single key code
      */
     public WebHotkeyLabel ( final StyleId id, final int keyCode )
@@ -84,7 +84,7 @@ public class WebHotkeyLabel extends WebStyledLabel
     /**
      * Constructs hotkey label for the specified key code and modifiers.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param keyCode   single key code
      * @param modifiers hotkey modifiers
      */
@@ -106,7 +106,7 @@ public class WebHotkeyLabel extends WebStyledLabel
     /**
      * Constructs hotkey label for the specified hotkey data.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param hotkeyData hotkey data
      */
     public WebHotkeyLabel ( final StyleId id, final HotkeyData hotkeyData )
@@ -127,7 +127,7 @@ public class WebHotkeyLabel extends WebStyledLabel
     /**
      * Constructs hotkey label for the directly specified hotkey text.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text hotkey text
      */
     public WebHotkeyLabel ( final StyleId id, final String text )

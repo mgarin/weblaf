@@ -122,9 +122,9 @@ public class WebInnerNotification extends WebInnerPopup
     }
 
     /**
-     * Constructs new notification popup with the specified style ID.
+     * Constructs new notification popup with the specified {@link StyleId}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebInnerNotification ( final StyleId id )
     {

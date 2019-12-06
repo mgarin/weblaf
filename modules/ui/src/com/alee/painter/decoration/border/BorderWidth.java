@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.border;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.merge.Mergeable;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -43,7 +44,7 @@ public final class BorderWidth implements Mergeable, Cloneable, Serializable
     /**
      * Right border width.
      */
-    public final  int right;
+    public final int right;
 
     /**
      * Bottom border width.
@@ -89,6 +90,7 @@ public final class BorderWidth implements Mergeable, Cloneable, Serializable
         return top == 0 && right == 0 && bottom == 0 && left == 0;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

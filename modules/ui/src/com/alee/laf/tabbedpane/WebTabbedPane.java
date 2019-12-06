@@ -148,7 +148,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     /**
      * Constructs new tabbed pane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebTabbedPane ( @NotNull final StyleId id )
     {
@@ -158,7 +158,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     /**
      * Constructs new tabbed pane.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param tabPlacement the placement for the tabs relative to the content
      */
     public WebTabbedPane ( @NotNull final StyleId id, final int tabPlacement )
@@ -169,7 +169,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, Paintable, 
     /**
      * Constructs new tabbed pane.
      *
-     * @param id              style ID
+     * @param id              {@link StyleId}
      * @param tabPlacement    the placement for the tabs relative to the content
      * @param tabLayoutPolicy the policy for laying out tabs when all tabs will not fit on one run
      */

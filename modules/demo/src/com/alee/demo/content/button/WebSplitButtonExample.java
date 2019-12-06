@@ -79,7 +79,7 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public TextButton ( final StyleId styleId )
         {
@@ -116,7 +116,7 @@ public class WebSplitButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public IconButton ( final StyleId styleId )
         {

@@ -28,7 +28,7 @@ import com.alee.managers.style.StyleId;
 public abstract class AbstractStylePreview extends AbstractTitledPreview
 {
     /**
-     * Preview style ID.
+     * Preview {@link StyleId}.
      */
     @NotNull
     protected final StyleId styleId;
@@ -39,7 +39,7 @@ public abstract class AbstractStylePreview extends AbstractTitledPreview
      * @param example example this preview belongs to
      * @param id      preview ID
      * @param state   feature state
-     * @param styleId preview style ID
+     * @param styleId preview {@link StyleId}
      */
     public AbstractStylePreview ( @NotNull final Example example, @NotNull final String id, @NotNull final FeatureState state,
                                   @NotNull final StyleId styleId )
@@ -49,9 +49,9 @@ public abstract class AbstractStylePreview extends AbstractTitledPreview
     }
 
     /**
-     * Returns preview style ID.
+     * Returns preview {@link StyleId}.
      *
-     * @return preview style ID
+     * @return preview {@link StyleId}
      */
     @NotNull
     protected StyleId getStyleId ()

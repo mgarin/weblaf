@@ -78,7 +78,7 @@ public class WebListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicList ( final StyleId styleId )
         {
@@ -102,7 +102,7 @@ public class WebListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ScrollableList ( final StyleId styleId )
         {
@@ -127,7 +127,7 @@ public class WebListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public EditableList ( final StyleId styleId )
         {
@@ -153,7 +153,7 @@ public class WebListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ListTooltips ( final StyleId styleId )
         {

@@ -17,6 +17,8 @@
 
 package com.alee.laf.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractIconContent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -36,8 +38,9 @@ import javax.swing.*;
 public class LabelIcon<C extends JLabel, D extends IDecoration<C, D>, I extends LabelIcon<C, D, I>>
         extends AbstractIconContent<C, D, I>
 {
+    @Nullable
     @Override
-    protected Icon getIcon ( final C c, final D d )
+    protected Icon getIcon ( @NotNull final C c, @NotNull final D d )
     {
         return c.isEnabled () ? c.getIcon () : c.getDisabledIcon ();
     }

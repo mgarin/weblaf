@@ -61,7 +61,7 @@ public class DictionariesTreeRenderer extends WebStyledLabel implements TreeCell
     public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
                                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        // Updating custom style ID
+        // Updating custom style identifier
         setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
 
         // Visual settings

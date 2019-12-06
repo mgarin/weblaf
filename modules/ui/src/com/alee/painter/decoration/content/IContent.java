@@ -18,6 +18,8 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.api.Identifiable;
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.merge.Overwriting;
 import com.alee.managers.style.BoundsType;
 import com.alee.painter.decoration.IDecoration;
@@ -48,6 +50,7 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      *
      * @return content bounds type
      */
+    @NotNull
     public BoundsType getBoundsType ();
 
     /**
@@ -56,6 +59,7 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      *
      * @return content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}
      */
+    @Nullable
     public String getConstraints ();
 
     /**
@@ -65,7 +69,7 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      * @param d painted decoration state
      * @return true if this content is empty, false otherwise
      */
-    public boolean isEmpty ( C c, D d );
+    public boolean isEmpty ( @NotNull C c, @NotNull D d );
 
     /**
      * Returns whether or not this content has a reasonable baseline.
@@ -74,7 +78,7 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      * @param d aligned component decoration state
      * @return {@code true} if this content has a reasonable baseline, {@code false} otherwise
      */
-    public boolean hasBaseline ( C c, D d );
+    public boolean hasBaseline ( @NotNull C c, @NotNull D d );
 
     /**
      * Returns content baseline within the specified bounds, measured from the top of the bounds.
@@ -85,7 +89,7 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      * @param bounds bounds to get the baseline for
      * @return content baseline within the specified bounds, measured from the top of the bounds
      */
-    public int getBaseline ( C c, D d, Rectangle bounds );
+    public int getBaseline ( @NotNull C c, @NotNull D d, @NotNull Rectangle bounds );
 
     /**
      * Returns enum indicating how the baseline of the content changes as the size changes.
@@ -94,7 +98,8 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      * @param d aligned component decoration state
      * @return enum indicating how the baseline of the content changes as the size changes
      */
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( C c, D d );
+    @NotNull
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull C c, @NotNull D d );
 
     /**
      * Paints component's content.
@@ -104,7 +109,7 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      * @param d      painted decoration state
      * @param bounds painting bounds
      */
-    public void paint ( Graphics2D g2d, C c, D d, Rectangle bounds );
+    public void paint ( @NotNull Graphics2D g2d, @NotNull C c, @NotNull D d, @NotNull Rectangle bounds );
 
     /**
      * Returns content preferred size.
@@ -114,5 +119,6 @@ public interface IContent<C extends JComponent, D extends IDecoration<C, D>, I e
      * @param available theoretically available space for this content
      * @return content preferred size
      */
-    public Dimension getPreferredSize ( C c, D d, Dimension available );
+    @NotNull
+    public Dimension getPreferredSize ( @NotNull C c, @NotNull D d, @NotNull Dimension available );
 }

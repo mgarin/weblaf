@@ -49,7 +49,7 @@ public abstract class AbstractCollapsiblePaneDescriptor<C extends WebCollapsible
      * @param uiClassId      component UI class ID
      * @param baseUIClass    base UI class applicable to this component
      * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default style ID
+     * @param defaultStyleId component default {@link StyleId}
      */
     public AbstractCollapsiblePaneDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
                                                @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,

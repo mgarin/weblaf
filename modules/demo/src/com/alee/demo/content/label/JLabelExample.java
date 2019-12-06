@@ -88,7 +88,7 @@ public class JLabelExample extends AbstractStylePreviewExample
          *
          * @param id           preview ID
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public BasicLabel ( final String id, final FeatureState featureState, final StyleId styleId )
         {
@@ -126,7 +126,7 @@ public class JLabelExample extends AbstractStylePreviewExample
          *
          * @param id           preview ID
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public SeparatorLabel ( final String id, final FeatureState featureState, final StyleId styleId )
         {

@@ -45,28 +45,33 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
     /**
      * Text wrapping type.
      */
+    @Nullable
     @XStreamAsAttribute
     protected TextWrap wrap;
 
     /**
      * Maximum amount of displayed rows.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer maximumRows;
 
     /**
      * Styled text used for rendering.
      */
+    @Nullable
     protected transient StyleRanges styleRanges;
 
     /**
      * Mnemonic index within plain text.
      */
+    @Nullable
     protected transient Integer mnemonicIndex;
 
     /**
      * Component property change listener.
      */
+    @Nullable
     protected transient ContentPropertyListener<C, D> contentListener;
 
     @Override
@@ -101,7 +106,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void initializeContentCache ( final C c, final D d )
+    protected void initializeContentCache ( @NotNull final C c, @NotNull final D d )
     {
         // Updating styled text
         styleRanges = new StyleRanges ( getComponentText ( c, d ) );
@@ -117,7 +122,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void destroyContentCache ( final C c, final D d )
+    protected void destroyContentCache ( @NotNull final C c, @NotNull final D d )
     {
         // Resetting mnemonic index
         mnemonicIndex = null;
@@ -132,7 +137,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void installContentPropertyListener ( final C c, final D d )
+    protected void installContentPropertyListener ( @NotNull final C c, @NotNull final D d )
     {
         // Adding text change listener
         final String property = getStyledTextProperty ();
@@ -141,7 +146,8 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
             contentListener = new ContentPropertyListener<C, D> ( c, d )
             {
                 @Override
-                public void propertyChange ( final C c, final D d, final String property, final Object oldValue, final Object newValue )
+                public void propertyChange ( @NotNull final C c, @NotNull final D d, @NotNull final String property,
+                                             @Nullable final Object oldValue, @Nullable final Object newValue )
                 {
                     updateContentCache ( c, d );
                 }
@@ -156,7 +162,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void uninstallContentPropertyListener ( final C c, final D d )
+    protected void uninstallContentPropertyListener ( @NotNull final C c, @NotNull final D d )
     {
         // Removing text change listener
         final String property = getStyledTextProperty ();
@@ -182,7 +188,7 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void updateContentCache ( final C c, final D d )
+    protected void updateContentCache ( @NotNull final C c, @NotNull final D d )
     {
         // Re-initializing content cache
         initializeContentCache ( c, d );
@@ -191,32 +197,35 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
         buildTextRanges ( c, d );
     }
 
+    @NotNull
     @Override
-    protected List<StyleRange> getStyleRanges ( final C c, final D d )
+    protected List<StyleRange> getStyleRanges ( @NotNull final C c, @NotNull final D d )
     {
         return styleRanges != null ? styleRanges.getStyleRanges () : Collections.<StyleRange>emptyList ();
     }
 
+    @NotNull
     @Override
-    protected int getMaximumRows ( final C c, final D d )
-    {
-        return maximumRows != null ? maximumRows : 0;
-    }
-
-    @Override
-    protected TextWrap getWrapType ( final C c, final D d )
+    protected TextWrap getWrapType ( @NotNull final C c, @NotNull final D d )
     {
         return wrap != null ? wrap : TextWrap.none;
     }
 
     @Override
-    protected String getText ( final C c, final D d )
+    protected int getMaximumRows ( @NotNull final C c, @NotNull final D d )
+    {
+        return maximumRows != null ? maximumRows : 0;
+    }
+
+    @Nullable
+    @Override
+    protected String getText ( @NotNull final C c, @NotNull final D d )
     {
         return styleRanges != null ? styleRanges.getPlainText () : getComponentText ( c, d );
     }
 
     @Override
-    protected int getMnemonicIndex ( final C c, final D d )
+    protected int getMnemonicIndex ( @NotNull final C c, @NotNull final D d )
     {
         return mnemonicIndex != null ? mnemonicIndex : -1;
     }
@@ -228,7 +237,8 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @param d painted decoration state
      * @return text to be painted
      */
-    protected abstract String getComponentText ( C c, D d );
+    @Nullable
+    protected abstract String getComponentText ( @NotNull C c, @NotNull D d );
 
     /**
      * Returns actual component mnemonic or {@code -1} if it shouldn't be displayed.
@@ -237,5 +247,5 @@ public abstract class AbstractSimpleStyledTextContent<C extends JComponent, D ex
      * @param d painted decoration state
      * @return actual component mnemonic or {@code -1} if it shouldn't be displayed
      */
-    protected abstract int getComponentMnemonic ( C c, D d );
+    protected abstract int getComponentMnemonic ( @NotNull C c, @NotNull D d );
 }

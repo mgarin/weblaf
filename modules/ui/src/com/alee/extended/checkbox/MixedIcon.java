@@ -19,6 +19,7 @@ package com.alee.extended.checkbox;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
@@ -27,7 +28,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 
 /**
  * Mixed state icon content for any {@link AbstractButton} component.
@@ -41,30 +41,27 @@ import java.awt.geom.RoundRectangle2D;
 public class MixedIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends MixedIcon<C, D, I>> extends AbstractContent<C, D, I>
 {
     /**
-     * Preferred icon size.
+     * Shape rounding.
      */
-    @XStreamAsAttribute
-    protected Dimension size;
-
-    /**
-     * Icon shape rounding.
-     */
+    @Nullable
     @XStreamAsAttribute
     protected Integer round;
 
     /**
-     * Left side background color.
+     * Left side background {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color leftColor;
 
     /**
-     * Right side background color.
+     * Right side background {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color rightColor;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -72,31 +69,84 @@ public class MixedIcon<C extends AbstractButton, D extends IDecoration<C, D>, I 
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
+    /**
+     * Returns shape rounding.
+     *
+     * @param c {@link AbstractButton} that is being painted
+     * @param d {@link IDecoration} state
+     * @return shape rounding
+     */
+    public int getRound ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( round == null )
+        {
+            throw new DecorationException ( "Shape round must be specified" );
+        }
+        return round;
+    }
+
+    /**
+     * Returns left side background {@link Color}.
+     *
+     * @param c {@link AbstractButton} that is being painted
+     * @param d {@link IDecoration} state
+     * @return left side background {@link Color}
+     */
+    @NotNull
+    public Color getLeftColor ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( leftColor == null )
+        {
+            throw new DecorationException ( "Left side background color must be specified" );
+        }
+        return leftColor;
+    }
+
+    /**
+     * Returns right side background {@link Color}.
+     *
+     * @param c {@link AbstractButton} that is being painted
+     * @param d {@link IDecoration} state
+     * @return right side background {@link Color}
+     */
+    @NotNull
+    public Color getRightColor ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( rightColor == null )
+        {
+            throw new DecorationException ( "Right side background color must be specified" );
+        }
+        return rightColor;
+    }
+
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final int x = bounds.x + 2;
-        final int y = bounds.y + 2;
         final int w = bounds.width - 4;
-        final int h = bounds.height - 4;
-        final RoundRectangle2D.Double shape = new RoundRectangle2D.Double ( x, y, w, h, round, round );
 
-        final GradientPaint paint = new GradientPaint ( x, 0, leftColor, x + w, 0, rightColor );
-        final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+        final Paint op = GraphicsUtils.setupPaint ( g2d, new GradientPaint (
+                x, 0,
+                getLeftColor ( c, d ),
+                x + w, 0,
+                getRightColor ( c, d )
+        ) );
 
-        g2d.fill ( shape );
+        final int round = getRound ( c, d );
+        g2d.fillRoundRect ( x, bounds.y + 2, w, bounds.height - 4, round, round );
 
         GraphicsUtils.restorePaint ( g2d, op );
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
-        return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
+        return new Dimension ( 0, 0 );
     }
 }

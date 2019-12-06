@@ -236,7 +236,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs empty {@link WebCollapsiblePane}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebCollapsiblePane ( @NotNull final StyleId id )
     {
@@ -246,7 +246,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs empty {@link WebCollapsiblePane} with specified expansion state.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
      */
     public WebCollapsiblePane ( @NotNull final StyleId id, final boolean expanded )
@@ -257,7 +257,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs empty {@link WebCollapsiblePane} with specified title text.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param title title text
      */
     public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final String title )
@@ -268,7 +268,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs empty {@link WebCollapsiblePane} with specified title text and expansion state.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param title    title text
      * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
      */
@@ -280,7 +280,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs empty {@link WebCollapsiblePane} with specified title icon and text.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param icon  title icon
      * @param title title text
      */
@@ -292,7 +292,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs empty {@link WebCollapsiblePane} with specified title icon, text and expansion state.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param icon     title icon
      * @param title    title text
      * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
@@ -305,7 +305,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs {@link WebCollapsiblePane} with specified content.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param content content {@link Component}
      */
     public WebCollapsiblePane ( @NotNull final StyleId id, @Nullable final Component content )
@@ -316,7 +316,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs {@link WebCollapsiblePane} with specified content and expansion state.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param content  content {@link Component}
      * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
      */
@@ -328,7 +328,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs {@link WebCollapsiblePane} with specified title text and content.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param title   title text
      * @param content content {@link Component}
      */
@@ -340,7 +340,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs {@link WebCollapsiblePane} with specified title text, content and expansion state.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param title    title text
      * @param content  content {@link Component}
      * @param expanded whether or not {@link WebCollapsiblePane} is initially expanded
@@ -354,7 +354,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs {@link WebCollapsiblePane} with specified title icon, text and content.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param icon    title icon
      * @param title   title text
      * @param content content {@link Component}
@@ -368,7 +368,7 @@ public class WebCollapsiblePane extends WebContainer<WebCollapsiblePane, WCollap
     /**
      * Constructs {@link WebCollapsiblePane} with specified title icon, text, content and expansion state.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param icon     title icon
      * @param title    title text
      * @param content  content {@link Component}

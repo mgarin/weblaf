@@ -53,7 +53,7 @@ public final class StyleConverterUtils
      * @param mapper     {@link Mapper}
      * @param properties map to read properties into
      * @param clazz      class to read properties for, it will be used to retrieve properties field types
-     * @param styleId    component style ID, might be used to report problems
+     * @param styleId    component {@link StyleId}, might be used to report problems
      */
     public static void readProperties ( @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context,
                                         @NotNull final Mapper mapper, @NotNull final Map<String, Object> properties,
@@ -73,7 +73,7 @@ public final class StyleConverterUtils
      * @param reader        {@link HierarchicalStreamReader}
      * @param context       {@link UnmarshallingContext}
      * @param mapper        {@link Mapper}
-     * @param styleId       component style ID, might be used to report problems
+     * @param styleId       component {@link StyleId}, might be used to report problems
      * @param properties    map to read property into
      * @param propertyClass class to read property for, it will be used to retrieve property field type
      * @param propertyName  property name

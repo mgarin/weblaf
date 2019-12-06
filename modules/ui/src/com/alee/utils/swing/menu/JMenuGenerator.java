@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.UILanguageManager;
 import com.alee.managers.style.StyleId;
 
@@ -31,124 +33,118 @@ import javax.swing.*;
 public class JMenuGenerator extends AbstractMenuGenerator<JMenu>
 {
     /**
-     * Constructs new menu generator using default menu.
+     * Constructs new {@link JMenuGenerator} using default {@link JMenu}.
      */
     public JMenuGenerator ()
     {
-        this ( new JMenu () );
+        this ( StyleId.auto );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
      *
-     * @param icon menu icon
+     * @param icon {@link JMenu} icon
      */
-    public JMenuGenerator ( final Icon icon )
+    public JMenuGenerator ( @Nullable final Icon icon )
     {
-        this ( new JMenu () );
-        getMenu ().setIcon ( icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
      *
-     * @param text menu text
+     * @param text {@link JMenu} text
      */
-    public JMenuGenerator ( final String text )
+    public JMenuGenerator ( @Nullable final String text )
+    {
+        this ( StyleId.auto, text );
+    }
+
+    /**
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
+     *
+     * @param text {@link JMenu} text
+     * @param icon {@link JMenu} item icon
+     */
+    public JMenuGenerator ( @Nullable final String text, @Nullable final Icon icon )
+    {
+        this ( StyleId.auto, text, icon );
+    }
+
+    /**
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
+     *
+     * @param action {@link JMenu} action
+     */
+    public JMenuGenerator ( @NotNull final Action action )
+    {
+        this ( StyleId.auto, action );
+    }
+
+    /**
+     * Constructs new {@link JMenu}.
+     *
+     * @param id {@link StyleId}
+     */
+    public JMenuGenerator ( @NotNull final StyleId id )
+    {
+        this ( id, null, null );
+    }
+
+    /**
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
+     *
+     * @param id   {@link StyleId}
+     * @param icon {@link JMenu} icon
+     */
+    public JMenuGenerator ( @NotNull final StyleId id, @Nullable final Icon icon )
+    {
+        this ( id, null, icon );
+    }
+
+    /**
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
+     *
+     * @param id   {@link StyleId}
+     * @param text {@link JMenu} text
+     */
+    public JMenuGenerator ( @NotNull final StyleId id, @Nullable final String text )
+    {
+        this ( id, text, null );
+    }
+
+    /**
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
+     *
+     * @param id   {@link StyleId}
+     * @param text {@link JMenu} text
+     * @param icon {@link JMenu} item icon
+     */
+    public JMenuGenerator ( @NotNull final StyleId id, @Nullable final String text, @Nullable final Icon icon )
     {
         this ( new JMenu ( text ) );
+        getMenu ().setIcon ( icon );
+        id.set ( getMenu () );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link JMenuGenerator} using {@link JMenu} with the specified settings.
      *
-     * @param action menu action
+     * @param id     {@link StyleId}
+     * @param action {@link JMenu} action
      */
-    public JMenuGenerator ( final Action action )
+    public JMenuGenerator ( @NotNull final StyleId id, @NotNull final Action action )
     {
         this ( new JMenu ( action ) );
-    }
-
-    /**
-     * Constructs new menu generator using menu with the specified settings.
-     *
-     * @param text menu text
-     * @param icon menu item icon
-     */
-    public JMenuGenerator ( final String text, final Icon icon )
-    {
-        this ( new JMenu ( text ) );
-        getMenu ().setIcon ( icon );
-    }
-
-    /**
-     * Constructs new menu.
-     *
-     * @param id style ID
-     */
-    public JMenuGenerator ( final StyleId id )
-    {
-        this ( new JMenu () );
         id.set ( getMenu () );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link JMenuGenerator} using the specified {@link JMenu}.
      *
-     * @param id   style ID
-     * @param icon menu icon
+     * @param menu {@link JMenu}
      */
-    public JMenuGenerator ( final StyleId id, final Icon icon )
-    {
-        this ( new JMenu () );
-        getMenu ().setIcon ( icon );
-        id.set ( getMenu () );
-    }
-
-    /**
-     * Constructs new menu generator using menu with the specified settings.
-     *
-     * @param id   style ID
-     * @param text menu text
-     */
-    public JMenuGenerator ( final StyleId id, final String text )
-    {
-        this ( new JMenu ( text ) );
-        id.set ( getMenu () );
-    }
-
-    /**
-     * Constructs new menu generator using menu with the specified settings.
-     *
-     * @param id     style ID
-     * @param action menu action
-     */
-    public JMenuGenerator ( final StyleId id, final Action action )
-    {
-        this ( new JMenu ( action ) );
-        id.set ( getMenu () );
-    }
-
-    /**
-     * Constructs new menu generator using menu with the specified settings.
-     *
-     * @param id   style ID
-     * @param text menu text
-     * @param icon menu item icon
-     */
-    public JMenuGenerator ( final StyleId id, final String text, final Icon icon )
-    {
-        this ( new JMenu ( text ) );
-        getMenu ().setIcon ( icon );
-        id.set ( getMenu () );
-    }
-
-    /**
-     * Constructs new menu generator using the specified menu.
-     *
-     * @param menu menu
-     */
-    public JMenuGenerator ( final JMenu menu )
+    public JMenuGenerator ( @NotNull final JMenu menu )
     {
         super ( menu );
     }
@@ -160,7 +156,17 @@ public class JMenuGenerator extends AbstractMenuGenerator<JMenu>
         super.setLanguagePrefix ( prefix );
 
         // Update menu language if any prefix is set
-        final String text = getMenu ().getText ();
-        UILanguageManager.registerComponent ( getMenu (), getLanguageKey ( text ) );
+        final JMenu menu = getMenu ();
+        final String text = menu.getText ();
+        final String languageKey = getLanguageKey ( text );
+        if ( languageKey != null )
+        {
+            UILanguageManager.registerComponent ( menu, languageKey );
+        }
+        else
+        {
+            UILanguageManager.unregisterComponent ( menu );
+            menu.setText ( text );
+        }
     }
 }

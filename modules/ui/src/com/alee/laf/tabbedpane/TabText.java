@@ -17,6 +17,7 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.label.StyledLabelText;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -34,8 +35,9 @@ import java.awt.*;
 @XStreamAlias ( "TabText" )
 public class TabText<C extends Tab, D extends IDecoration<C, D>, I extends TabText<C, D, I>> extends StyledLabelText<C, D, I>
 {
+    @NotNull
     @Override
-    protected Color getCustomColor ( final C c, final D d )
+    protected Color getCustomColor ( @NotNull final C c, @NotNull final D d )
     {
         return c.getTabbedPane ().getForegroundAt ( c.getIndex () );
     }

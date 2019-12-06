@@ -53,16 +53,18 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
     /**
      * Corners rounding.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer round;
 
     /**
      * Multiple backgrounds for this shape.
      */
+    @Nullable
     @XStreamImplicit
     protected List<IBackground> backgrounds;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -76,7 +78,7 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
      * @param d painted decoration state
      * @return background rounding
      */
-    protected int getRound ( final C c, final D d )
+    protected int getRound ( @NotNull final C c, @NotNull final D d )
     {
         return round != null ? round : 0;
     }
@@ -86,6 +88,7 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
      *
      * @return decoration {@link IBackground}s
      */
+    @NotNull
     public List<IBackground> getBackgrounds ()
     {
         if ( CollectionUtils.isEmpty ( backgrounds ) )
@@ -96,13 +99,13 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
@@ -116,8 +119,9 @@ public class RoundRectangle<C extends JComponent, D extends IDecoration<C, D>, I
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         final Insets padding = getPadding ( c, d );
         final int round = getRound ( c, d );

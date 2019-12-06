@@ -69,9 +69,9 @@ public class WebMenuBar extends JMenuBar implements Styleable, Paintable, ShapeM
     }
 
     /**
-     * Constructs new menu bar with the specified style ID.
+     * Constructs new menu bar with the specified {@link StyleId}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebMenuBar ( final StyleId id )
     {

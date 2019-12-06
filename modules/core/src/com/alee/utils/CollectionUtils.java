@@ -653,17 +653,31 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns copy of the specified list.
-     * Note that this method will copy same list values into the new list.
+     * Returns {@link ArrayList} that is a copy of the specified {@link Collection}.
+     * Note that this method will copy same {@link Collection} values into the new {@link ArrayList}.
      *
-     * @param collection list to copy
-     * @param <T>        list type
-     * @return copy of the specified list
+     * @param collection {@link Collection} to copy
+     * @param <T>        {@link Collection} type
+     * @return {@link ArrayList} that is a copy of the specified {@link Collection}
      */
     @Nullable
     public static <T> ArrayList<T> copy ( @Nullable final Collection<T> collection )
     {
         return collection != null ? new ArrayList<T> ( collection ) : null;
+    }
+
+    /**
+     * Returns non-{@code null} {@link ArrayList} that is a copy of the specified {@link Collection}.
+     * Note that this method will copy same {@link Collection} values into the new {@link ArrayList}.
+     *
+     * @param collection {@link Collection} to copy
+     * @param <T>        {@link Collection} type
+     * @return non-{@code null} {@link ArrayList} that is a copy of the specified {@link Collection}
+     */
+    @NotNull
+    public static <T> ArrayList<T> nonNullCopy ( @NotNull final Collection<T> collection )
+    {
+        return new ArrayList<T> ( collection );
     }
 
     /**

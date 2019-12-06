@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing.menu;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.menu.WebMenu;
 import com.alee.managers.style.StyleId;
 
@@ -31,127 +33,137 @@ import javax.swing.*;
 public class MenuGenerator extends AbstractMenuGenerator<WebMenu>
 {
     /**
-     * Constructs new menu generator using default menu.
+     * Constructs new {@link MenuGenerator} using default {@link WebMenu}.
      */
     public MenuGenerator ()
     {
-        this ( new WebMenu () );
+        this ( StyleId.auto );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param icon menu icon
+     * @param icon {@link WebMenu} {@link Icon}
      */
-    public MenuGenerator ( final Icon icon )
+    public MenuGenerator ( @Nullable final Icon icon )
     {
-        this ( new WebMenu ( icon ) );
+        this ( StyleId.auto, icon );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param text menu text
+     * @param text {@link WebMenu} text
      */
-    public MenuGenerator ( final String text )
+    public MenuGenerator ( @Nullable final String text )
     {
-        this ( new WebMenu ( text ) );
+        this ( StyleId.auto, text );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param action menu action
+     * @param text {@link WebMenu} text
+     * @param icon {@link WebMenu} {@link Icon}
      */
-    public MenuGenerator ( final Action action )
+    public MenuGenerator ( @Nullable final String text, @Nullable final Icon icon )
     {
-        this ( new WebMenu ( action ) );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param text menu text
-     * @param icon menu item icon
+     * @param action {@link WebMenu} {@link Action}
      */
-    public MenuGenerator ( final String text, final Icon icon )
+    public MenuGenerator ( @NotNull final Action action )
     {
-        this ( new WebMenu ( text, icon ) );
+        this ( StyleId.auto, action );
     }
 
     /**
-     * Constructs new menu.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
-    public MenuGenerator ( final StyleId id )
+    public MenuGenerator ( @NotNull final StyleId id )
     {
-        this ( new WebMenu ( id ) );
+        this ( id, null, null );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param id   style ID
-     * @param icon menu icon
+     * @param id   {@link StyleId}
+     * @param icon {@link WebMenu} {@link Icon}
      */
-    public MenuGenerator ( final StyleId id, final Icon icon )
+    public MenuGenerator ( @NotNull final StyleId id, @Nullable final Icon icon )
     {
-        this ( new WebMenu ( id, icon ) );
+        this ( id, null, icon );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param id   style ID
-     * @param text menu text
+     * @param id   {@link StyleId}
+     * @param text {@link WebMenu} text
      */
-    public MenuGenerator ( final StyleId id, final String text )
+    public MenuGenerator ( @NotNull final StyleId id, @Nullable final String text )
     {
-        this ( new WebMenu ( id, text ) );
+        this ( id, text, null );
     }
 
     /**
-     * Constructs new menu generator using menu with the specified settings.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param id     style ID
-     * @param action menu action
+     * @param id   {@link StyleId}
+     * @param text {@link WebMenu} text
+     * @param icon {@link WebMenu} {@link Icon}
      */
-    public MenuGenerator ( final StyleId id, final Action action )
-    {
-        this ( new WebMenu ( id, action ) );
-    }
-
-    /**
-     * Constructs new menu generator using menu with the specified settings.
-     *
-     * @param id   style ID
-     * @param text menu text
-     * @param icon menu item icon
-     */
-    public MenuGenerator ( final StyleId id, final String text, final Icon icon )
+    public MenuGenerator ( @NotNull final StyleId id, @Nullable final String text, @Nullable final Icon icon )
     {
         this ( new WebMenu ( id, text, icon ) );
     }
 
     /**
-     * Constructs new menu generator using the specified menu.
+     * Constructs new {@link MenuGenerator} using {@link WebMenu} with the specified settings.
      *
-     * @param menu menu
+     * @param id     {@link StyleId}
+     * @param action {@link WebMenu} {@link Action}
      */
-    public MenuGenerator ( final WebMenu menu )
+    public MenuGenerator ( @NotNull final StyleId id, @NotNull final Action action )
+    {
+        this ( new WebMenu ( id, action ) );
+    }
+
+    /**
+     * Constructs new {@link MenuGenerator} using the specified {@link WebMenu}.
+     *
+     * @param menu {@link WebMenu}
+     */
+    public MenuGenerator ( @NotNull final WebMenu menu )
     {
         super ( menu );
     }
 
     @Override
-    public void setLanguagePrefix ( final String prefix )
+    public void setLanguagePrefix ( @Nullable final String prefix )
     {
         // Perform default actions
         super.setLanguagePrefix ( prefix );
 
         // Update menu language if any prefix is set
-        final String text = getMenu ().getLanguage ();
-        getMenu ().setLanguage ( getLanguageKey ( text ) );
+        final WebMenu menu = getMenu ();
+        final String text = menu.getLanguage ();
+        final String languageKey = getLanguageKey ( text );
+        if ( languageKey != null )
+        {
+            menu.setLanguage ( languageKey );
+        }
+        else
+        {
+            menu.removeLanguage ();
+            menu.setText ( text );
+        }
     }
 }

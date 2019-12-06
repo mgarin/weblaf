@@ -84,7 +84,7 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicToggleButton ( final StyleId styleId )
         {
@@ -127,7 +127,7 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public IconToggleButton ( final StyleId styleId )
         {
@@ -162,7 +162,7 @@ public class JToggleButtonExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public StyledToggleButton ( final StyleId styleId )
         {

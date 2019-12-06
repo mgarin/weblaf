@@ -99,7 +99,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
     /**
      * Constructs new date field.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebDateField ( @NotNull final StyleId id )
     {
@@ -109,7 +109,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
     /**
      * Constructs new date field with specified selected date.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param date selected date
      */
     public WebDateField ( @NotNull final StyleId id,@Nullable  final Date date )

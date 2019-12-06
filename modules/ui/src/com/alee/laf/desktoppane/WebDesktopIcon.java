@@ -69,7 +69,7 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
     /**
      * Constructs new {@link WebDesktopIcon}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param frame {@link JInternalFrame} to create {@link WebDesktopIcon} for
      */
     public WebDesktopIcon ( final StyleId id, final JInternalFrame frame )

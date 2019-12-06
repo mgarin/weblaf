@@ -293,7 +293,7 @@ public class WebTableCellRenderer<V, C extends JTable, P extends TableCellParame
         // Updating custom states
         updateStates ( parameters );
 
-        // Updating style ID
+        // Updating style identifier
         updateStyleId ( parameters );
 
         // Updating renderer view

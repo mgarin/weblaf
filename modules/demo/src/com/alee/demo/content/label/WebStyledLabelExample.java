@@ -89,7 +89,7 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
          *
          * @param id           preview ID
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public StyledLabel ( final String id, final FeatureState featureState, final StyleId styleId )
         {
@@ -127,7 +127,7 @@ public class WebStyledLabelExample extends AbstractStylePreviewExample
          *
          * @param id           preview ID
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public SeparatorStyledLabel ( final String id, final FeatureState featureState, final StyleId styleId )
         {

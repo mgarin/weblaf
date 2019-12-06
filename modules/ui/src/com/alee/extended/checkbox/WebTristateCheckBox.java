@@ -202,7 +202,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action checkbox action
      */
     public WebTristateCheckBox ( final StyleId id, final Action action )
@@ -214,7 +214,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebTristateCheckBox ( final StyleId id )
     {
@@ -224,7 +224,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param checked whether checkbox should be checked or not
      */
     public WebTristateCheckBox ( final StyleId id, final boolean checked )
@@ -235,7 +235,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param state initial check state
      */
     public WebTristateCheckBox ( final StyleId id, final CheckState state )
@@ -246,7 +246,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon checkbox icon
      */
     public WebTristateCheckBox ( final StyleId id, final Icon icon )
@@ -257,7 +257,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param icon    checkbox icon
      * @param checked whether checkbox should be checked or not
      */
@@ -269,7 +269,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param icon  checkbox icon
      * @param state initial check state
      */
@@ -281,7 +281,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text checkbox text
      */
     public WebTristateCheckBox ( final StyleId id, final String text )
@@ -292,7 +292,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param text    checkbox text
      * @param checked whether checkbox should be checked or not
      */
@@ -305,7 +305,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param text  checkbox text
      * @param state initial check state
      */
@@ -317,7 +317,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text checkbox text
      * @param icon checkbox icon
      */
@@ -329,7 +329,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param text    checkbox text
      * @param icon    checkbox icon
      * @param checked whether checkbox should be checked or not
@@ -342,7 +342,7 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param text  checkbox text
      * @param icon  checkbox icon
      * @param state initial check state

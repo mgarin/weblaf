@@ -77,7 +77,7 @@ public class WebTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicTable ( final StyleId styleId )
         {
@@ -103,7 +103,7 @@ public class WebTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ScrollableTable ( final StyleId styleId )
         {
@@ -131,7 +131,7 @@ public class WebTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public EditableTable ( final StyleId styleId )
         {
@@ -160,7 +160,7 @@ public class WebTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public TableTooltips ( final StyleId styleId )
         {

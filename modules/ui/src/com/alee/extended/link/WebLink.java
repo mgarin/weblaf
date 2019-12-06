@@ -151,7 +151,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new unconfigured link.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebLink ( final StyleId id )
     {
@@ -161,7 +161,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new link with custom icon.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon link icon
      */
     public WebLink ( final StyleId id, final Icon icon )
@@ -172,7 +172,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new link with custom text.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text link text
      */
     public WebLink ( final StyleId id, final String text )
@@ -183,7 +183,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new link with custom icon and text.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon link icon
      * @param text link text
      */
@@ -195,7 +195,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new link with custom action.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action link action
      */
     public WebLink ( final StyleId id, final LinkAction action )
@@ -206,7 +206,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new link with custom icon and action.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param icon   link icon
      * @param action link action
      */
@@ -218,7 +218,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new link with custom text and action.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param text   link text
      * @param action link action
      */
@@ -230,7 +230,7 @@ public class WebLink extends WebStyledLabel
     /**
      * Constructs new link with custom icon, text and action.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param icon   link icon
      * @param text   link text
      * @param action link action

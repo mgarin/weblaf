@@ -47,22 +47,25 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
     /**
      * Focus rounding.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer round;
 
     /**
      * Focus stroke.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Stroke stroke;
 
     /**
      * Focus color.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -76,7 +79,7 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
      * @param d painted decoration state
      * @return focus rounding
      */
-    protected int getRound ( final C c, final D d )
+    protected int getRound ( @NotNull final C c, @NotNull final D d )
     {
         return round != null ? round : 0;
     }
@@ -88,7 +91,8 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
      * @param d painted decoration state
      * @return focus stroke
      */
-    public Stroke getStroke ( final C c, final D d )
+    @Nullable
+    public Stroke getStroke ( @NotNull final C c, @NotNull final D d )
     {
         return stroke;
     }
@@ -100,23 +104,24 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
      * @param d painted decoration state
      * @return focus color
      */
-    protected Color getColor ( final C c, final D d )
+    @NotNull
+    protected Color getColor ( @NotNull final C c, @NotNull final D d )
     {
-        if ( color != null )
+        if ( color == null )
         {
-            return color;
+            throw new DecorationException ( "Focus color must be specified" );
         }
-        throw new DecorationException ( "Focus color must be specified" );
+        return color;
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final Stroke stroke = getStroke ( c, d );
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
@@ -131,8 +136,9 @@ public class DashFocus<C extends JComponent, D extends IDecoration<C, D>, I exte
         GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         return new Dimension ( 0, 0 );
     }

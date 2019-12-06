@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.LanguageUtils;
 import com.alee.painter.decoration.IDecoration;
@@ -37,28 +38,30 @@ import java.awt.*;
 public class LocaleTextContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractTextContent<C, D, I>>
         extends AbstractTextContent<C, D, I>
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
         return id != null ? id : "locale";
     }
 
+    @NotNull
     @Override
-    protected Color getColor ( final C c, final D d )
+    protected Color getColor ( @NotNull final C c, @NotNull final D d )
     {
         // We're not interested in prioritizing component custom foreground in this text
         return color != null ? color : getCustomColor ( c, d );
     }
 
+    @Nullable
     @Override
-    protected String getText ( final C c, final D d )
+    protected String getText ( @NotNull final C c, @NotNull final D d )
     {
         return LanguageUtils.toString ( c.getLocale () );
     }
 
     @Override
-    protected int getMnemonicIndex ( final C c, final D d )
+    protected int getMnemonicIndex ( @NotNull final C c, @NotNull final D d )
     {
         return -1;
     }

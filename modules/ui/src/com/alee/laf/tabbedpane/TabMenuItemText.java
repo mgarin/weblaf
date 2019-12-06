@@ -17,6 +17,7 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.laf.button.StyledButtonText;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -35,8 +36,9 @@ import java.awt.*;
 public class TabMenuItemText<C extends TabMenuItem, D extends IDecoration<C, D>, I extends TabMenuItemText<C, D, I>>
         extends StyledButtonText<C, D, I>
 {
+    @NotNull
     @Override
-    protected Color getCustomColor ( final C c, final D d )
+    protected Color getCustomColor ( @NotNull final C c, @NotNull final D d )
     {
         return c.getTabbedPane ().getForegroundAt ( c.getIndex () );
     }

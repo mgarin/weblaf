@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractIconContent;
@@ -37,15 +38,16 @@ import javax.swing.*;
 public class MenuItemStateIcon<C extends JMenuItem, D extends IDecoration<C, D>, I extends MenuItemStateIcon<C, D, I>>
         extends AbstractIconContent<C, D, I>
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
         return id != null ? id : "menu-item-state-icon";
     }
 
+    @Nullable
     @Override
-    protected Icon getIcon ( final C c, final D d )
+    protected Icon getIcon ( @NotNull final C c, @NotNull final D d )
     {
         return ( Icon ) c.getClientProperty ( AbstractStateMenuItemPainter.STATE_ICON_PROPERTY );
     }

@@ -63,7 +63,7 @@ public class WebSyntaxPanel extends WebPanel
     /**
      * Constructs new WebSyntaxPanel.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param presets presets to apply
      */
     public WebSyntaxPanel ( final StyleId id, final SyntaxPreset... presets )
@@ -74,7 +74,7 @@ public class WebSyntaxPanel extends WebPanel
     /**
      * Constructs new WebSyntaxPanel.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param code    displayed code
      * @param presets presets to apply
      */

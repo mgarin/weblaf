@@ -329,7 +329,7 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId splitpaneNonContinuousDivider = ChildStyleId.of ( "non-continuous" );
 
     /**
-     * {@link com.alee.extended.split.WebMultiSplitPaneDivider} style IDs.
+     * {@link com.alee.extended.split.WebMultiSplitPaneDivider} style identifiers.
      */
     public static final StyleId multisplitpanedivider = StyleId.of ( "multisplitpanedivider" );
     public static final ChildStyleId multisplitpanedividerOneTouchButton = ChildStyleId.of ( "onetouch" );
@@ -337,7 +337,7 @@ public final class StyleId implements Identifiable
     public static final ChildStyleId multisplitpanedividerOneTouchRightButton = ChildStyleId.of ( "onetouch-right" );
 
     /**
-     * {@link com.alee.extended.split.WebMultiSplitPane} style IDs.
+     * {@link com.alee.extended.split.WebMultiSplitPane} style identifiers.
      */
     public static final StyleId multisplitpane = StyleId.of ( "multisplitpane" );
     public static final StyleId multisplitpaneNonOpaque = StyleId.of ( "non-opaque" );

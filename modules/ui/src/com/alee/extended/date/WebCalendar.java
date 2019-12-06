@@ -158,7 +158,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
     /**
      * Constructs new calendar without selected date.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebCalendar ( final StyleId id )
     {
@@ -168,7 +168,7 @@ public class WebCalendar extends WebPanel implements LanguageListener
     /**
      * Constructs new calendar with the specified selected date.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param date selected date
      */
     public WebCalendar ( final StyleId id, final Date date )

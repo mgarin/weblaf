@@ -153,7 +153,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     /**
      * Constructs an empty image component.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebImage ( @NotNull final StyleId id )
     {
@@ -163,7 +163,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     /**
      * Constructs component with an image loaded from the specified path.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param resource image {@link Resource} to load
      */
     public WebImage ( @NotNull final StyleId id, @NotNull final Resource resource )
@@ -174,7 +174,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     /**
      * Constructs component with an image retrieved from the specified {@link Icon}.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon {@link Icon} to display
      */
     public WebImage ( @NotNull final StyleId id, @Nullable final Icon icon )
@@ -185,7 +185,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     /**
      * Constructs component with a specified {@link Image}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param image {@link Image} to display
      */
     public WebImage ( @NotNull final StyleId id, @Nullable final Image image )
@@ -196,7 +196,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     /**
      * Constructs component with a specified {@link RenderedImage}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param image {@link RenderedImage} to display
      */
     public WebImage ( @NotNull final StyleId id, @Nullable final RenderedImage image )
@@ -207,7 +207,7 @@ public class WebImage extends WebComponent<WebImage, WImageUI> implements SwingC
     /**
      * Constructs component with a specified {@link BufferedImage}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param image {@link BufferedImage} to display
      */
     public WebImage ( @NotNull final StyleId id, @Nullable final BufferedImage image )

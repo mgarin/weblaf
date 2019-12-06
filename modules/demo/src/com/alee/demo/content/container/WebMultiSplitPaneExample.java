@@ -109,7 +109,7 @@ public class WebMultiSplitPaneExample extends AbstractStylePreviewExample
          * Constructs new {@link MultiSplitPanePreview}.
          *
          * @param id                 preview ID
-         * @param styleId            preview style ID
+         * @param styleId            preview {@link StyleId}
          * @param continuous         whether or not should use continuous layout
          * @param oneTouchExpandable whether or not should be one-touch expandable
          * @param simpleContent      whether or not should use simple sides content

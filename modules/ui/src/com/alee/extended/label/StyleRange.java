@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.MergeBehavior;
 import com.alee.api.merge.RecursiveMerge;
@@ -50,11 +52,13 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
     /**
      * Text foreground.
      */
+    @Nullable
     protected final Color foreground;
 
     /**
      * Text background.
      */
+    @Nullable
     protected final Color background;
 
     /**
@@ -67,31 +71,32 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
     /**
      * Custom text styles.
      *
-     * @see com.alee.extended.label.CustomStyle
+     * @see CustomStyle
      */
+    @NotNull
     protected final List<CustomStyle> customStyles;
 
     /**
      * Constructs new StyleRange based on another StyleRange settings.
      *
-     * @param styleRange style range
+     * @param styleRange {@link StyleRange}
      */
-    public StyleRange ( final StyleRange styleRange )
+    public StyleRange ( @NotNull final StyleRange styleRange )
     {
-        this ( styleRange.getStartIndex (), styleRange.getLength (), styleRange );
+        this ( styleRange, styleRange.getStartIndex (), styleRange.getLength () );
     }
 
     /**
      * Constructs new StyleRange based on another StyleRange settings but with new start index and length.
      *
+     * @param styleRange {@link StyleRange}
      * @param startIndex text style start index
      * @param length     text style length
-     * @param styleRange style range
      */
-    public StyleRange ( final int startIndex, final int length, final StyleRange styleRange )
+    public StyleRange ( @NotNull final StyleRange styleRange, final int startIndex, final int length )
     {
-        this ( startIndex, length, styleRange.getStyle (), styleRange.getForeground (),
-                styleRange.getBackground (), CollectionUtils.copy ( styleRange.getCustomStyle () ) );
+        this ( startIndex, length, styleRange.getStyle (), styleRange.getForeground (), styleRange.getBackground (),
+                CollectionUtils.copy ( styleRange.getCustomStyle () ) );
     }
 
     /**
@@ -101,7 +106,7 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      * @param length       text style length
      * @param customStyles custom text styles
      */
-    public StyleRange ( final int startIndex, final int length, final CustomStyle... customStyles )
+    public StyleRange ( final int startIndex, final int length, @NotNull final CustomStyle... customStyles )
     {
         this ( startIndex, length, -1, null, null, customStyles );
     }
@@ -114,7 +119,7 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      * @param style        basic text style
      * @param customStyles custom text styles
      */
-    public StyleRange ( final int startIndex, final int length, final int style, final CustomStyle... customStyles )
+    public StyleRange ( final int startIndex, final int length, final int style, @NotNull final CustomStyle... customStyles )
     {
         this ( startIndex, length, style, null, null, customStyles );
     }
@@ -127,7 +132,8 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      * @param foreground   text foreground color
      * @param customStyles custom text styles
      */
-    public StyleRange ( final int startIndex, final int length, final Color foreground, final CustomStyle... customStyles )
+    public StyleRange ( final int startIndex, final int length, @Nullable final Color foreground,
+                        @NotNull final CustomStyle... customStyles )
     {
         this ( startIndex, length, -1, foreground, null, customStyles );
     }
@@ -141,8 +147,8 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      * @param background   text background color
      * @param customStyles custom text styles
      */
-    public StyleRange ( final int startIndex, final int length, final Color foreground, final Color background,
-                        final CustomStyle... customStyles )
+    public StyleRange ( final int startIndex, final int length, @Nullable final Color foreground, final Color background,
+                        @NotNull final CustomStyle... customStyles )
     {
         this ( startIndex, length, -1, foreground, background, customStyles );
     }
@@ -156,7 +162,8 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      * @param foreground   text foreground color
      * @param customStyles custom text styles
      */
-    public StyleRange ( final int startIndex, final int length, final int style, final Color foreground, final CustomStyle... customStyles )
+    public StyleRange ( final int startIndex, final int length, final int style, @Nullable final Color foreground,
+                        @NotNull final CustomStyle... customStyles )
     {
         this ( startIndex, length, style, foreground, null, customStyles );
     }
@@ -171,8 +178,8 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      * @param background   text background color
      * @param customStyles custom text styles
      */
-    public StyleRange ( final int startIndex, final int length, final int style, final Color foreground, final Color background,
-                        final CustomStyle... customStyles )
+    public StyleRange ( final int startIndex, final int length, final int style, @Nullable final Color foreground,
+                        @Nullable final Color background, @NotNull final CustomStyle... customStyles )
     {
         this ( startIndex, length, style, foreground, background, CollectionUtils.asList ( customStyles ) );
     }
@@ -187,8 +194,8 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      * @param background   text background color
      * @param customStyles custom text styles
      */
-    public StyleRange ( final int startIndex, final int length, final int style, final Color foreground, final Color background,
-                        final List<CustomStyle> customStyles )
+    public StyleRange ( final int startIndex, final int length, final int style, @Nullable final Color foreground,
+                        @Nullable final Color background, @NotNull final List<CustomStyle> customStyles )
     {
         if ( startIndex < 0 )
         {
@@ -245,6 +252,7 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      *
      * @return foreground color.
      */
+    @Nullable
     public Color getForeground ()
     {
         return foreground;
@@ -255,6 +263,7 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      *
      * @return background color.
      */
+    @Nullable
     public Color getBackground ()
     {
         return background;
@@ -325,11 +334,13 @@ public class StyleRange implements MergeBehavior<StyleRange>, Cloneable
      *
      * @return custom styles applied to the text
      */
+    @NotNull
     public List<CustomStyle> getCustomStyle ()
     {
         return customStyles;
     }
 
+    @NotNull
     @Override
     public StyleRange merge ( final RecursiveMerge merge, final Class type, final StyleRange object, final int depth )
     {

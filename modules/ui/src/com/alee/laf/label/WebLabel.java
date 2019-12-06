@@ -153,7 +153,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs empty label.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebLabel ( final StyleId id )
     {
@@ -163,7 +163,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param horizontalAlignment horizontal alignment
      */
     public WebLabel ( final StyleId id, final int horizontalAlignment )
@@ -174,7 +174,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon icon
      */
     public WebLabel ( final StyleId id, final Icon icon )
@@ -185,7 +185,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param icon                label icon
      * @param horizontalAlignment horizontal alignment
      */
@@ -197,7 +197,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text text or translation key
      */
     public WebLabel ( final StyleId id, final String text )
@@ -208,7 +208,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param text                text or translation key
      * @param horizontalAlignment horizontal alignment
      * @param data                language data, may not be passed
@@ -221,7 +221,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text text or translation key
      * @param icon label icon
      */
@@ -233,7 +233,7 @@ public class WebLabel extends JLabel implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param text                text or translation key
      * @param icon                label icon
      * @param horizontalAlignment horizontal alignment

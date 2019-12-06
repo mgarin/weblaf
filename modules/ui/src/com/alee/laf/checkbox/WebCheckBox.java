@@ -155,7 +155,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebCheckBox ( final StyleId id )
     {
@@ -165,7 +165,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action checkbox action
      */
     public WebCheckBox ( final StyleId id, final Action action )
@@ -177,7 +177,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param selected whether or not checkbox should be selected
      */
     public WebCheckBox ( final StyleId id, final boolean selected )
@@ -188,7 +188,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon custom checkbox icon
      */
     public WebCheckBox ( final StyleId id, final Icon icon )
@@ -199,7 +199,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param icon     custom checkbox icon
      * @param selected whether or not checkbox should be selected
      */
@@ -211,7 +211,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text checkbox text
      */
     public WebCheckBox ( final StyleId id, final String text )
@@ -222,7 +222,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     checkbox text
      * @param selected whether or not checkbox should be selected
      */
@@ -234,7 +234,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text checkbox text
      * @param icon custom checkbox icon
      */
@@ -246,7 +246,7 @@ public class WebCheckBox extends JCheckBox implements Styleable, Paintable, Shap
     /**
      * Constructs new checkbox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     checkbox text
      * @param icon     custom checkbox icon
      * @param selected whether or not checkbox should be selected

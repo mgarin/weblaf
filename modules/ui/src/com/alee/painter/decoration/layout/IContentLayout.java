@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
 
@@ -43,7 +44,8 @@ public interface IContentLayout<C extends JComponent, D extends IDecoration<C, D
      * @param d painted decoration state
      * @return all contents of this layout
      */
-    public List<IContent> getContents ( C c, D d );
+    @NotNull
+    public List<IContent> getContents ( @NotNull C c, @NotNull D d );
 
     /**
      * Returns {@link ContentLayoutData} containing bounds for each of the layout constraints.
@@ -54,5 +56,6 @@ public interface IContentLayout<C extends JComponent, D extends IDecoration<C, D
      * @param bounds painting bounds
      * @return {@link ContentLayoutData} containing bounds for each of the layout constraints
      */
-    public ContentLayoutData layoutContent ( C c, D d, Rectangle bounds );
+    @NotNull
+    public ContentLayoutData layoutContent ( @NotNull C c, @NotNull D d, @NotNull Rectangle bounds );
 }

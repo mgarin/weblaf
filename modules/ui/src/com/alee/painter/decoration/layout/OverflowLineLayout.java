@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
@@ -63,6 +65,7 @@ public class OverflowLineLayout<C extends JComponent, D extends IDecoration<C, D
     /**
      * Horizontal gap between content elements.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer gap;
 
@@ -76,8 +79,9 @@ public class OverflowLineLayout<C extends JComponent, D extends IDecoration<C, D
         return gap != null ? gap : 0;
     }
 
+    @NotNull
     @Override
-    public List<IContent> getContents ( final C c, final D d, String constraints )
+    public List<IContent> getContents ( @NotNull final C c, @NotNull final D d, @Nullable String constraints )
     {
         // Handling constraints depending on component orientation
         final boolean ltr = isLeftToRight ( c, d );
@@ -97,19 +101,22 @@ public class OverflowLineLayout<C extends JComponent, D extends IDecoration<C, D
         return super.getContents ( c, d, constraints );
     }
 
+    @NotNull
     @Override
-    public ContentLayoutData layoutContent ( final C c, final D d, final Rectangle bounds )
+    public ContentLayoutData layoutContent ( @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 5 );
         final boolean ltr = isLeftToRight ( c, d );
         final int gap = getGap ();
 
-        final Dimension lps = getPreferredSize ( c, d, LEADING,
-                new Dimension ( bounds.width, bounds.height ) );
-        final Dimension tps = getPreferredSize ( c, d, TRAILING,
-                new Dimension ( Math.max ( 0, bounds.width - lps.width - gap ), bounds.height ) );
-        final Dimension ops = getPreferredSize ( c, d, OVERFLOW,
-                new Dimension ( Math.max ( 0, bounds.width - lps.width - gap - tps.width - gap ), bounds.height ) );
+        final Dimension lps = getPreferredSize ( c, d, new Dimension ( bounds.width, bounds.height ), LEADING
+        );
+        final Dimension tps = getPreferredSize ( c, d, new Dimension ( Math.max ( 0, bounds.width - lps.width - gap ), bounds.height ),
+                TRAILING
+        );
+        final Dimension ops = getPreferredSize ( c, d,
+                new Dimension ( Math.max ( 0, bounds.width - lps.width - gap - tps.width - gap ), bounds.height ), OVERFLOW
+        );
 
         int x = ltr ? bounds.x : Math.max ( bounds.x, bounds.x + bounds.width - lps.width - gap - ops.width - gap - tps.width );
         final int y = bounds.y;
@@ -134,28 +141,29 @@ public class OverflowLineLayout<C extends JComponent, D extends IDecoration<C, D
         return layoutData;
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         final Dimension ps = new Dimension ( 0, 0 );
         final int gap = getGap ();
         if ( !isEmpty ( c, d, LEADING ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, LEADING, available );
+            final Dimension cps = getPreferredSize ( c, d, available, LEADING );
             ps.width += cps.width + gap;
             ps.height = Math.max ( ps.height, cps.height );
             available.width -= ps.width + gap;
         }
         if ( !isEmpty ( c, d, TRAILING ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, TRAILING, available );
+            final Dimension cps = getPreferredSize ( c, d, available, TRAILING );
             ps.width += cps.width + gap;
             ps.height = Math.max ( ps.height, cps.height );
             available.width -= ps.width + gap;
         }
         if ( !isEmpty ( c, d, OVERFLOW ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, OVERFLOW, available );
+            final Dimension cps = getPreferredSize ( c, d, available, OVERFLOW );
             ps.width += cps.width;
             ps.height = Math.max ( ps.height, cps.height );
         }

@@ -18,6 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -43,11 +44,12 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
     /**
      * Whether or not menu items text should be aligned by maximum icon size.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean alignTextByIcons;
 
     @Override
-    protected boolean isAlignTextByIcons ( final C c, final D d )
+    protected boolean isAlignTextByIcons ( @NotNull final C c, @NotNull final D d )
     {
         return alignTextByIcons == null || alignTextByIcons;
     }
@@ -110,19 +112,19 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
     }
 
     @Override
-    protected int getStateIconGap ( final C c, final D d )
+    protected int getStateIconGap ( @NotNull final C c, @NotNull final D d )
     {
         return stateIconGap != null ? stateIconGap : getIconTextGap ( c, d );
     }
 
     @Override
-    protected int getIconTextGap ( final C c, final D d )
+    protected int getIconTextGap ( @NotNull final C c, @NotNull final D d )
     {
         return iconTextGap != null ? iconTextGap : c.getIconTextGap ();
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d, final String constraints )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d, final String constraints )
     {
         // Checking default emptiness conditions
         boolean empty = super.isEmpty ( c, d, constraints );
@@ -157,7 +159,7 @@ public class MenuItemLayout<C extends JMenuItem, D extends IDecoration<C, D>, I 
      * @param d painted decoration state
      * @return true if the specified menu item is placed within popup menu, false otherwise
      */
-    protected boolean isInPopupMenu ( final C c, final D d )
+    protected boolean isInPopupMenu ( @NotNull final C c, @NotNull final D d )
     {
         return c.getParent () != null && c.getParent () instanceof JPopupMenu;
     }

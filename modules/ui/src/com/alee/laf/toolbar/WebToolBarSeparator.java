@@ -63,7 +63,7 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
     /**
      * Constructs new toolbar separator.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebToolBarSeparator ( final StyleId id )
     {

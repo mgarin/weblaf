@@ -17,6 +17,7 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.extended.label.AbstractSimpleStyledTextContent;
 import com.alee.laf.WebLookAndFeel;
@@ -37,21 +38,22 @@ import javax.swing.*;
 public class StyledButtonText<C extends AbstractButton, D extends IDecoration<C, D>, I extends StyledButtonText<C, D, I>>
         extends AbstractSimpleStyledTextContent<C, D, I>
 {
-    @Nullable
+    @NotNull
     @Override
     protected String getStyledTextProperty ()
     {
         return WebLookAndFeel.TEXT_PROPERTY;
     }
 
+    @Nullable
     @Override
-    protected String getComponentText ( final C c, final D d )
+    protected String getComponentText ( @NotNull final C c, @NotNull final D d )
     {
         return c.getText ();
     }
 
     @Override
-    protected int getComponentMnemonic ( final C c, final D d )
+    protected int getComponentMnemonic ( @NotNull final C c, @NotNull final D d )
     {
         return c.getMnemonic ();
     }

@@ -157,9 +157,9 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     }
 
     /**
-     * Sets component style ID.
+     * Sets component {@link StyleId}.
      *
-     * @param id new component style ID
+     * @param id new component {@link StyleId}
      */
     public void setId ( @NotNull final String id )
     {
@@ -181,11 +181,11 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     }
 
     /**
-     * Returns path for complete style ID.
+     * Returns path for complete {@link StyleId}.
      * Not that it will also include types of each of the parents.
      * Similar to {@code StyleId#getPathId(JComponent)} method.
      *
-     * @return path for complete style ID
+     * @return path for complete {@link StyleId}
      */
     @NotNull
     private String getPathId ()
@@ -199,9 +199,9 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     }
 
     /**
-     * Returns extended component style ID or null if none extended.
+     * Returns extended component {@link StyleId} or null if none extended.
      *
-     * @return extended component style ID or null if none extended
+     * @return extended component {@link StyleId} or null if none extended
      */
     @Nullable
     public String getExtendsId ()
@@ -210,10 +210,10 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     }
 
     /**
-     * Sets extended component style ID.
+     * Sets extended component {@link StyleId}.
      * Set this to null in case you don't want to extend any style.
      *
-     * @param id new extended component style ID
+     * @param id new extended component {@link StyleId}
      */
     public void setExtendsId ( @Nullable final String id )
     {
@@ -685,7 +685,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
         // Applying new parent
         setParent ( style.getParent () );
 
-        // Applying style ID from the merged style
+        // Applying style identifier from the merged style
         setId ( style.getId () );
 
         // Applying extended ID from the merged style

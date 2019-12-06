@@ -17,6 +17,7 @@
 
 package com.alee.extended.canvas;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
 import com.alee.painter.decoration.IDecoration;
@@ -46,34 +47,39 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
     /**
      * Gripper direction.
      */
+    @Nullable
     @XStreamAsAttribute
     protected CompassDirection direction;
 
     /**
      * Gripper parts size.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Dimension part;
 
     /**
      * Spacing between gripper parts.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer spacing;
 
     /**
      * Gripper parts color.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
     /**
      * Gripper parts shadow color.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color shadow;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -81,7 +87,7 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
@@ -93,7 +99,8 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
      * @param d painted decoration state
      * @return gripper direction
      */
-    public CompassDirection getDirection ( final C c, final D d )
+    @NotNull
+    public CompassDirection getDirection ( @NotNull final C c, @NotNull final D d )
     {
         return direction != null ? direction : CompassDirection.southEast;
     }
@@ -105,7 +112,8 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
      * @param d painted decoration state
      * @return gripper parts size
      */
-    public Dimension getPart ( final C c, final D d )
+    @NotNull
+    public Dimension getPart ( @NotNull final C c, @NotNull final D d )
     {
         return part != null ? part : new Dimension ( 2, 2 );
     }
@@ -117,7 +125,7 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
      * @param d painted decoration state
      * @return spacing between gripper parts
      */
-    public Integer getSpacing ( final C c, final D d )
+    public int getSpacing ( @NotNull final C c, @NotNull final D d )
     {
         return spacing != null ? spacing : 1;
     }
@@ -129,7 +137,8 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
      * @param d painted decoration state
      * @return gripper parts color
      */
-    public Color getColor ( final C c, final D d )
+    @NotNull
+    public Color getColor ( @NotNull final C c, @NotNull final D d )
     {
         return color != null ? color : Color.WHITE;
     }
@@ -141,15 +150,19 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
      * @param d painted decoration state
      * @return gripper parts shadow color
      */
-    public Color getShadow ( final C c, final D d )
+    @NotNull
+    public Color getShadow ( @NotNull final C c, @NotNull final D d )
     {
         return shadow != null ? shadow : Color.LIGHT_GRAY;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
-        final Dimension gs = getGripSize ();
+        final CompassDirection direction = getDirection ( c, d );
+        final Dimension part = getPart ( c, d );
+        final int spacing = getSpacing ( c, d );
+        final Dimension gripSize = getGripSize ( part, spacing );
         int x;
         switch ( direction )
         {
@@ -162,11 +175,11 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
             case northEast:
             case east:
             case southEast:
-                x = bounds.x + bounds.width - gs.width + spacing;
+                x = bounds.x + bounds.width - gripSize.width + spacing;
                 break;
 
             default:
-                x = bounds.x + bounds.width / 2 - gs.width / 2 + spacing;
+                x = bounds.x + bounds.width / 2 - gripSize.width / 2 + spacing;
         }
         for ( int col = 0; col <= 2; col++ )
         {
@@ -182,15 +195,15 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
                 case northEast:
                 case east:
                 case southEast:
-                    y = bounds.y + bounds.height - gs.height + spacing;
+                    y = bounds.y + bounds.height - gripSize.height + spacing;
                     break;
 
                 default:
-                    y = bounds.y + bounds.height / 2 - gs.height / 2 + spacing;
+                    y = bounds.y + bounds.height / 2 - gripSize.height / 2 + spacing;
             }
             for ( int row = 0; row <= 2; row++ )
             {
-                paintGrip ( g2d, c, d, col, row, x, y );
+                paintGrip ( g2d, c, d, col, row, x, y, direction, part );
                 y += part.height * 1.5 + spacing;
             }
             x += part.width * 1.5 + spacing;
@@ -200,15 +213,19 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
     /**
      * Paints grip element at the specified column and row if it is necessary.
      *
-     * @param g2d graphics context
-     * @param c   painted component
-     * @param d   painted decoration state
-     * @param col grip element column
-     * @param row grip element row
-     * @param x   grip element X coordinate
-     * @param y   grip element Y coordinate
+     * @param g2d       graphics context
+     * @param c         painted component
+     * @param d         painted decoration state
+     * @param col       grip element column
+     * @param row       grip element row
+     * @param x         grip element X coordinate
+     * @param y         grip element Y coordinate
+     * @param direction gripper direction
+     * @param part      gripper parts size
      */
-    protected void paintGrip ( final Graphics2D g2d, final C c, final D d, final int col, final int row, final int x, final int y )
+    protected void paintGrip ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d,
+                               final int col, final int row, final int x, final int y,
+                               @NotNull final CompassDirection direction, @NotNull final Dimension part )
     {
         boolean paint = false;
         switch ( direction )
@@ -261,20 +278,22 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
         }
         if ( paint )
         {
-            paintGripPart ( g2d, c, d, x, y );
+            paintGripPart ( g2d, c, d, x, y, part );
         }
     }
 
     /**
      * Paints grip element at the specified column and row.
      *
-     * @param g2d graphics context
-     * @param c   painted component
-     * @param d   painted decoration state
-     * @param x   grip element X coordinate
-     * @param y   grip element Y coordinate
+     * @param g2d  graphics context
+     * @param c    painted component
+     * @param d    painted decoration state
+     * @param x    grip element X coordinate
+     * @param y    grip element Y coordinate
+     * @param part gripper parts size
      */
-    protected void paintGripPart ( final Graphics2D g2d, final C c, final D d, final int x, final int y )
+    protected void paintGripPart ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d,
+                                   final int x, final int y, @NotNull final Dimension part )
     {
         final int w = Math.round ( part.width * 1.5f );
         final int h = Math.round ( part.height * 1.5f );
@@ -284,18 +303,22 @@ public class Gripper<C extends JComponent, D extends IDecoration<C, D>, I extend
         g2d.fillRect ( x, y, part.width, part.height );
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
-        return getGripSize ();
+        return getGripSize ( getPart ( c, d ), getSpacing ( c, d ) );
     }
 
     /**
      * Returns preferred grip size.
      *
+     * @param part    gripper parts size
+     * @param spacing spacing between gripper parts
      * @return preferred grip size
      */
-    protected Dimension getGripSize ()
+    @NotNull
+    protected Dimension getGripSize ( @NotNull final Dimension part, final int spacing )
     {
         final int w = ( int ) Math.round ( part.width * 1.5 * 3 + spacing * 4 );
         final int h = ( int ) Math.round ( part.height * 1.5 * 3 + spacing * 4 );

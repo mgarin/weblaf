@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.Nullable;
+
 /**
  * Base interface for any class representing style settings.
  *
@@ -30,5 +32,6 @@ public interface IStyleSettings
      *
      * @return style range
      */
+    @Nullable
     public StyleRange getStyleRange ();
 }

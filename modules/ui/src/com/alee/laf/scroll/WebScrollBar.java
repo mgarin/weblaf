@@ -96,7 +96,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
     /**
      * Constructs new scroll bar.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebScrollBar ( final StyleId id )
     {
@@ -106,7 +106,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
     /**
      * Constructs new scroll bar with the specified orientation.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation scroll bar orientation
      */
     public WebScrollBar ( final StyleId id, final int orientation )
@@ -117,7 +117,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, Paintable, Sh
     /**
      * Constructs new scroll bar with the specified orientation and values.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation scroll bar orientation
      * @param value       scroll bar value
      * @param extent      scroll bar extent

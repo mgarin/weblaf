@@ -135,7 +135,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     /**
      * Constructs new slider.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebSlider ( final StyleId id )
     {
@@ -145,7 +145,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     /**
      * Constructs new slider.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation slider orientation
      */
     public WebSlider ( final StyleId id, final int orientation )
@@ -156,7 +156,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     /**
      * Constructs new slider.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param min minimum slider value
      * @param max maximum slider value
      */
@@ -168,7 +168,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     /**
      * Constructs new slider.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param min   minimum slider value
      * @param max   maximum slider value
      * @param value selected slider value
@@ -181,7 +181,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     /**
      * Constructs new slider.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation slider orientation
      * @param min         minimum slider value
      * @param max         maximum slider value
@@ -195,7 +195,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     /**
      * Constructs new slider.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model slider model
      */
     public WebSlider ( final StyleId id, final BoundedRangeModel model )
@@ -206,7 +206,7 @@ public class WebSlider extends JSlider implements Styleable, Paintable, ShapeMet
     /**
      * Constructs new slider.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation slider orientation
      * @param model       slider model
      */

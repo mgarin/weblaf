@@ -87,7 +87,7 @@ public class JCheckBoxExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          * @param text    check box text
          */
         public TextCheckBox ( final String id, final StyleId styleId, final String text )

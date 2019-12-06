@@ -85,7 +85,7 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
     /**
      * Constructs a {@code JTableHeader} with a default {@code TableColumnModel}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      * @see #createDefaultColumnModel
      */
     public WebTableHeader ( final StyleId id )
@@ -97,7 +97,7 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
      * Constructs a {@code JTableHeader} which is initialized with {@code cm} as the column model.
      * If {@code cm} is {@code null} this method will initialize the table header with a default {@code TableColumnModel}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      * @param cm the column model for the table
      * @see #createDefaultColumnModel
      */

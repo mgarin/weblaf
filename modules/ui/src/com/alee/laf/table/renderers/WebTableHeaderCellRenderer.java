@@ -52,7 +52,7 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
         // Whether we are printing the result or not
         boolean isPaintingForPrint = false;
 
-        // Updating custom style ID
+        // Updating custom style identifier
         if ( table != null )
         {
             setStyleId ( StyleId.tableHeaderCellRenderer.at ( table.getTableHeader () ) );

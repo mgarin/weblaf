@@ -315,7 +315,7 @@ public class StyleEditor extends WebFrame
         toolBar.addSeparator ();
 
         final WebToggleButton brushButton = new WebToggleButton ( toolId, brushIcon, brush );
-        brushButton.setToolTip ( brushIcon, "Apply component style ID" );
+        brushButton.setToolTip ( brushIcon, "Apply component style identifier" );
         brushButton.addHotkey ( Hotkey.ALT_S );
         brushButton.addActionListener ( new ActionListener ()
         {
@@ -667,7 +667,7 @@ public class StyleEditor extends WebFrame
      * Initializes single component preview.
      *
      * @param title         preview title
-     * @param styleId       style ID
+     * @param styleId       {@link StyleId}
      * @param displayedView displayed view
      * @param view          view
      * @param center        whether or not should center view
@@ -841,7 +841,7 @@ public class StyleEditor extends WebFrame
                     public void run ( @NotNull final WebTextField component, @Nullable final DocumentEvent event )
                     {
                         final String text = component.getText ().toLowerCase ( Locale.ROOT );
-                        if ( !TextUtils.isEmpty ( text ) )
+                        if ( TextUtils.notEmpty ( text ) )
                         {
                             for ( final String name : xmlNames )
                             {
@@ -1067,7 +1067,7 @@ public class StyleEditor extends WebFrame
         final StartTag tag = xmlSource.getPreviousStartTag ( syntaxArea.getCaretPosition (), "style" );
         if ( tag != null )
         {
-            // todo Won't work with new scheme, have to go all the way up and gather all style IDs
+            // todo Won't work with new scheme, have to go all the way up and gather all style identifiers
             final String type = tag.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
             final String id = tag.getAttributeValue ( ComponentStyleConverter.STYLE_ID_ATTRIBUTE );
             locateView ( previewPanel, type, id );

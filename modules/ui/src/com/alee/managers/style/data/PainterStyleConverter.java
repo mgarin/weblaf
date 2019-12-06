@@ -114,7 +114,7 @@ public final class PainterStyleConverter extends ReflectionConverter
      * @param context             {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
      * @param mapper              {@link com.thoughtworks.xstream.mapper.Mapper}
      * @param defaultPainterClass default painter class
-     * @param styleId             style ID
+     * @param styleId             {@link StyleId}
      * @return painter class according to the specified class attribute
      * @throws com.alee.managers.style.StyleException if painter class cannot be resolved
      */

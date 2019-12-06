@@ -123,7 +123,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          * @param text    progress text
          */
         public BasicProgress ( final StyleId styleId, final String text )
@@ -156,7 +156,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          * @param text    progress text
          */
         public IndeterminateProgress ( final StyleId styleId, final String text )
@@ -190,7 +190,7 @@ public class JProgressBarExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          * @param text    progress text
          */
         public VerticalProgress ( final StyleId styleId, final String text )
@@ -219,19 +219,19 @@ public class JProgressBarExample extends AbstractStylePreviewExample
      * Configures progress bar.
      *
      * @param progressBar progress bar instance
-     * @param styleId     progress bar style ID
+     * @param styleId     progress bar {@link StyleId}
      * @param text        progress bar text
      */
     protected void setup ( final JProgressBar progressBar, final StyleId styleId, final String text )
     {
-        // Setting style ID
+        // Applying style identifier
         progressBar.putClientProperty ( StyleId.STYLE_PROPERTY, styleId );
 
         // Configuring displayed text
         if ( text != null )
         {
             progressBar.setStringPainted ( true );
-            if ( !TextUtils.isEmpty ( text ) )
+            if ( TextUtils.notEmpty ( text ) )
             {
                 progressBar.setString ( text );
             }

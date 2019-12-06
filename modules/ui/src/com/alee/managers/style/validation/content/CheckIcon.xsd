@@ -10,9 +10,6 @@
         <xs:complexContent>
             <xs:extension base="AbstractContent">
 
-                <!-- Preferred icon size -->
-                <xs:attribute name="size" type="java.awt:Dimension" />
-
                 <!-- Check icon shape stroke -->
                 <xs:attribute name="stroke" type="java.awt:Stroke" />
 

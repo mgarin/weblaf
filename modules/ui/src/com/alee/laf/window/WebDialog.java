@@ -328,7 +328,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
      */
     public WebDialog ( final StyleId id, final Component owner )
@@ -341,7 +341,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
      * @param title {@link java.lang.String} to display in the dialog's title bar
      */
@@ -356,7 +356,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebDialog ( final StyleId id )
     {
@@ -369,7 +369,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Frame} from which the dialog is displayed
      */
     public WebDialog ( final StyleId id, final Frame owner )
@@ -383,7 +383,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Frame} from which the dialog is displayed
      * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
      *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
@@ -399,7 +399,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Frame} from which the dialog is displayed
      * @param title {@link java.lang.String} to display in the dialog's title bar
      */
@@ -414,7 +414,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Frame} from which the dialog is displayed
      * @param title {@link java.lang.String} to display in the dialog's title bar
      * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
@@ -431,7 +431,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Frame} from which the dialog is displayed
      * @param title {@link java.lang.String} to display in the dialog's title bar
      * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
@@ -450,7 +450,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
      */
     public WebDialog ( final StyleId id, final Dialog owner )
@@ -463,7 +463,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
      *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
@@ -478,7 +478,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param title {@link java.lang.String} to display in the dialog's title bar
      */
@@ -492,7 +492,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param title {@link java.lang.String} to display in the dialog's title bar
      * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
@@ -508,7 +508,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param title {@link java.lang.String} to display in the dialog's title bar
      * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
@@ -526,7 +526,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
      */
     public WebDialog ( final StyleId id, final Window owner )
@@ -539,7 +539,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param modalityType specifies whether dialog blocks input to other windows when shown.
      *                     {@code null} value and unsupported modality types are equivalent to {@code MODELESS}
@@ -554,7 +554,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param title {@link java.lang.String} to display in the dialog's title bar
      */
@@ -568,7 +568,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param title        {@link java.lang.String} to display in the dialog's title bar
      * @param modalityType specifies whether dialog blocks input to other windows when shown.
@@ -584,7 +584,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param title        {@link java.lang.String} to display in the dialog's title bar
      * @param modalityType specifies whether dialog blocks input to other windows when shown.
@@ -609,7 +609,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
      * Additional initialization of WebDialog settings.
      *
      * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
-     * @param id    initial style ID
+     * @param id    initial {@link StyleId}
      * @param title dialog title
      */
     protected void initialize ( final Window owner, final StyleId id, final String title )
@@ -1183,8 +1183,8 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
 
     /**
      * Custom root pane for this {@link WebDialog}.
-     * It is required to provide undecorated root pane style ID to avoid issues with further style updates.
-     * It also provides default dialog style ID instead of default root pane style ID.
+     * It is required to provide undecorated root pane {@link StyleId} to avoid issues with further style updates.
+     * It also provides default dialog {@link StyleId} instead of default root pane {@link StyleId}.
      */
     public class WebDialogRootPane extends WebRootPane
     {

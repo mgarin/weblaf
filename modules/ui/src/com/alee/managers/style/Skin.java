@@ -133,7 +133,7 @@ public interface Skin extends Identifiable
 
     /**
      * Returns style for the specified supported component type.
-     * Custom style ID can be specified in any Web-component or Web-UI to override default component style.
+     * Custom {@link StyleId} can be specified in any Web-component or Web-UI to override default component style.
      * If style for such custom ID is not found in skin descriptor then default style for that component is used.
      *
      * @param component component instance

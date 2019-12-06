@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.border;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.xml.XmlException;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
@@ -35,19 +36,21 @@ public final class BorderWidthConverter extends AbstractSingleValueConverter
     public static final String separator = ",";
 
     @Override
-    public boolean canConvert ( final Class type )
+    public boolean canConvert ( @NotNull final Class type )
     {
         return BorderWidth.class.isAssignableFrom ( type );
     }
 
+    @NotNull
     @Override
-    public String toString ( final Object object )
+    public String toString ( @NotNull final Object object )
     {
         return borderWidthToString ( ( BorderWidth ) object );
     }
 
+    @NotNull
     @Override
-    public Object fromString ( final String borderWidth )
+    public Object fromString ( @NotNull final String borderWidth )
     {
         return borderWidthFromString ( borderWidth );
     }
@@ -58,37 +61,42 @@ public final class BorderWidthConverter extends AbstractSingleValueConverter
      * @param borderWidth {@link BorderWidth} to convert
      * @return {@link BorderWidth} converted into string
      */
-    public static String borderWidthToString ( final BorderWidth borderWidth )
+    @NotNull
+    public static String borderWidthToString ( @NotNull final BorderWidth borderWidth )
     {
+        final String string;
         if ( borderWidth.top == borderWidth.right && borderWidth.right == borderWidth.bottom && borderWidth.bottom == borderWidth.left )
         {
-            return Integer.toString ( borderWidth.top );
+            string = Integer.toString ( borderWidth.top );
         }
         else if ( borderWidth.top == borderWidth.bottom && borderWidth.right == borderWidth.left )
         {
-            return borderWidth.top + separator + borderWidth.right;
+            string = borderWidth.top + separator + borderWidth.right;
         }
         else if ( borderWidth.right == borderWidth.left )
         {
-            return borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom;
+            string = borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom;
         }
         else
         {
-            return borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom + separator + borderWidth.left;
+            string = borderWidth.top + separator + borderWidth.right + separator + borderWidth.bottom + separator + borderWidth.left;
         }
+        return string;
     }
 
     /**
      * Returns {@link BorderWidth} read from string.
      *
-     * @param borderWidth {@link BorderWidth} string
+     * @param string {@link BorderWidth} string
      * @return {@link BorderWidth} read from string
      */
-    public static BorderWidth borderWidthFromString ( final String borderWidth )
+    @NotNull
+    public static BorderWidth borderWidthFromString ( @NotNull final String string )
     {
+        final BorderWidth borderWidth;
         try
         {
-            final StringTokenizer tokenizer = new StringTokenizer ( borderWidth, separator, false );
+            final StringTokenizer tokenizer = new StringTokenizer ( string, separator, false );
             if ( tokenizer.hasMoreTokens () )
             {
                 final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
@@ -101,31 +109,32 @@ public final class BorderWidthConverter extends AbstractSingleValueConverter
                         if ( tokenizer.hasMoreTokens () )
                         {
                             final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
-                            return new BorderWidth ( top, right, bottom, left );
+                            borderWidth = new BorderWidth ( top, right, bottom, left );
                         }
                         else
                         {
-                            return new BorderWidth ( top, right, bottom, right );
+                            borderWidth = new BorderWidth ( top, right, bottom, right );
                         }
                     }
                     else
                     {
-                        return new BorderWidth ( top, right, top, right );
+                        borderWidth = new BorderWidth ( top, right, top, right );
                     }
                 }
                 else
                 {
-                    return new BorderWidth ( top, top, top, top );
+                    borderWidth = new BorderWidth ( top, top, top, top );
                 }
             }
             else
             {
-                return new BorderWidth ();
+                borderWidth = new BorderWidth ();
             }
         }
         catch ( final Exception e )
         {
-            throw new XmlException ( "Unable to parse BorderWidth: " + borderWidth, e );
+            throw new XmlException ( "Unable to parse BorderWidth: " + string, e );
         }
+        return borderWidth;
     }
 }

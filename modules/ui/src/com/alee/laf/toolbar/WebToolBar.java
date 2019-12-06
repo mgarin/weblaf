@@ -106,7 +106,7 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
     /**
      * Constructs new toolbar.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebToolBar ( final StyleId id )
     {
@@ -116,7 +116,7 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
     /**
      * Constructs new toolbar.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation toolbar orientation
      */
     public WebToolBar ( final StyleId id, final int orientation )
@@ -127,7 +127,7 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
     /**
      * Constructs new toolbar.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param name toolbar name
      */
     public WebToolBar ( final StyleId id, final String name )
@@ -138,7 +138,7 @@ public class WebToolBar extends JToolBar implements Styleable, Paintable, ShapeM
     /**
      * Constructs new toolbar.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param name        toolbar name
      * @param orientation toolbar orientation
      */

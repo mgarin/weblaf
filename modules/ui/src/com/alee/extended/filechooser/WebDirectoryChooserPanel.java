@@ -114,7 +114,7 @@ public class WebDirectoryChooserPanel extends WebPanel
     /**
      * Constructs new directory chooser panel.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebDirectoryChooserPanel ( final StyleId id )
     {

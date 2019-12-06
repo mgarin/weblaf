@@ -38,7 +38,7 @@ public final class PreviewPanel extends WebPanel implements Stateful
     private final FeatureState state;
 
     /**
-     * Constructs new preview panel with the specified style ID.
+     * Constructs new preview panel with the specified {@link StyleId}.
      *
      * @param state      feature state
      * @param layout     panel layout

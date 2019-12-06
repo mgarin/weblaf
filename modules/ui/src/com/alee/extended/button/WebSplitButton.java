@@ -202,7 +202,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebSplitButton ( final StyleId id )
     {
@@ -212,7 +212,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon button icon
      */
     public WebSplitButton ( final StyleId id, final Icon icon )
@@ -223,7 +223,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text button text
      */
     public WebSplitButton ( final StyleId id, final String text )
@@ -234,7 +234,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text button text
      * @param icon button icon
      */
@@ -246,7 +246,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param listener button action listener
      */
     public WebSplitButton ( final StyleId id, final ActionListener listener )
@@ -257,7 +257,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param icon     button icon
      * @param listener button action listener
      */
@@ -269,7 +269,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
      * @param listener button action listener
      */
@@ -281,7 +281,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param icon         button icon
      * @param rolloverIcon button rollover icon
      */
@@ -294,7 +294,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action button action
      */
     public WebSplitButton ( final StyleId id, final Action action )
@@ -306,7 +306,7 @@ public class WebSplitButton extends JButton implements ActionListener, Styleable
     /**
      * Constructs new split button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     button text
      * @param icon     button icon
      * @param listener button action listener

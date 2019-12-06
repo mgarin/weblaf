@@ -1196,7 +1196,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
 
             // Updating section painters decoration states
             // This is required to provide state changes into section painters used within this painter
-            // Section painters that use default states collection mechanism are dependant on origin painter states
+            // Section painters that use default states collection mechanism are dependent on origin painter states
             final List<SectionPainter<C, U>> sectionPainters = getInstalledSectionPainters ();
             if ( CollectionUtils.notEmpty ( sectionPainters ) )
             {

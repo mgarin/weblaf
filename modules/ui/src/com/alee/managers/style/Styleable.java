@@ -21,7 +21,7 @@ import com.alee.api.annotations.NotNull;
 
 /**
  * This interface is implemented by components and UIs which support styling through WebLaF skins.
- * It provides only two methods to allow default component style ID modifications.
+ * It provides only two methods to allow default component {@link StyleId} modifications.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -32,7 +32,7 @@ public interface Styleable
 {
     /**
      * Returns default component {@link com.alee.managers.style.StyleId}.
-     * This method is asked when initial component style ID have to be provided.
+     * This method is asked when initial component {@link StyleId} have to be provided.
      *
      * @return default component {@link com.alee.managers.style.StyleId}
      */
@@ -40,26 +40,26 @@ public interface Styleable
     public StyleId getDefaultStyleId ();
 
     /**
-     * Returns component style ID.
+     * Returns component {@link StyleId}.
      *
-     * @return component style ID
+     * @return component {@link StyleId}
      */
     @NotNull
     public StyleId getStyleId ();
 
     /**
-     * Sets new component style ID.
+     * Sets new component {@link StyleId}.
      * If style for the specified ID cannot be found in skin then its default style will be used instead.
      *
-     * @param id custom component style ID
-     * @return previously used style ID
+     * @param id custom component {@link StyleId}
+     * @return previously used {@link StyleId}
      */
     public StyleId setStyleId ( StyleId id );
 
     /**
-     * Resets style ID to default value.
+     * Resets {@link StyleId} to default value.
      *
-     * @return previously used style ID
+     * @return previously used {@link StyleId}
      */
     public StyleId resetStyleId ();
 

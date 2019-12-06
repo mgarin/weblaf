@@ -100,7 +100,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public OpenFileChooserDialog ( final StyleId styleId )
         {
@@ -136,7 +136,7 @@ public class JFileChooserExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public SaveFileChooserDialog ( final StyleId styleId )
         {

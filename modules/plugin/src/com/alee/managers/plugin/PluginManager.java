@@ -824,13 +824,13 @@ public abstract class PluginManager<P extends Plugin>
                             {
                                 for ( final String dependencyId : dependencyIds )
                                 {
-                                    List<DetectedPlugin<P>> dependant = references.get ( dependencyId );
-                                    if ( dependant == null )
+                                    List<DetectedPlugin<P>> dependent = references.get ( dependencyId );
+                                    if ( dependent == null )
                                     {
-                                        dependant = new ArrayList<DetectedPlugin<P>> ( 1 );
-                                        references.put ( dependencyId, dependant );
+                                        dependent = new ArrayList<DetectedPlugin<P>> ( 1 );
+                                        references.put ( dependencyId, dependent );
                                     }
-                                    dependant.add ( plugin );
+                                    dependent.add ( plugin );
                                 }
                             }
 

@@ -66,9 +66,9 @@ public class WebRootPane extends JRootPane implements Styleable, Paintable, Shap
     }
 
     /**
-     * Constructs new root pane with the specified style ID.
+     * Constructs new root pane with the specified {@link StyleId}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebRootPane ( final StyleId id )
     {

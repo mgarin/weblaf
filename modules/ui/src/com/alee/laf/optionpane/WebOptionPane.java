@@ -136,7 +136,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     /**
      * Constructs new option pane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebOptionPane ( final StyleId id )
     {
@@ -146,7 +146,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     /**
      * Constructs new option pane.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param message message
      */
     public WebOptionPane ( final StyleId id, final Object message )
@@ -157,7 +157,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     /**
      * Constructs new option pane.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param message     message
      * @param messageType message type
      */
@@ -169,7 +169,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     /**
      * Constructs new option pane.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param message     message
      * @param messageType message type
      * @param optionType  option pane type
@@ -182,7 +182,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     /**
      * Constructs new option pane.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param message     message
      * @param messageType message type
      * @param optionType  option pane type
@@ -196,7 +196,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     /**
      * Constructs new option pane.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param message     message
      * @param messageType message type
      * @param optionType  option pane type
@@ -212,7 +212,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     /**
      * Constructs new option pane.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param message      message
      * @param messageType  message type
      * @param optionType   option pane type

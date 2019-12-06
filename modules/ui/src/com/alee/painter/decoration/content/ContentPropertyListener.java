@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -35,11 +37,13 @@ public abstract class ContentPropertyListener<C extends JComponent, D extends ID
     /**
      * Component this content is used for.
      */
+    @NotNull
     protected transient C component;
 
     /**
      * Decoration this content is used for.
      */
+    @NotNull
     protected transient D decoration;
 
     /**
@@ -48,15 +52,14 @@ public abstract class ContentPropertyListener<C extends JComponent, D extends ID
      * @param component  component to listen
      * @param decoration active decoration
      */
-    public ContentPropertyListener ( final C component, final D decoration )
+    public ContentPropertyListener ( @NotNull final C component, @NotNull final D decoration )
     {
-        super ();
         this.component = component;
         this.decoration = decoration;
     }
 
     @Override
-    public final void propertyChange ( final PropertyChangeEvent evt )
+    public final void propertyChange ( @NotNull final PropertyChangeEvent evt )
     {
         propertyChange ( component, decoration, evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
     }
@@ -70,5 +73,6 @@ public abstract class ContentPropertyListener<C extends JComponent, D extends ID
      * @param oldValue old property value
      * @param newValue new property value
      */
-    public abstract void propertyChange ( C c, D d, String property, Object oldValue, Object newValue );
+    public abstract void propertyChange ( @NotNull C c, @NotNull D d, @NotNull String property,
+                                          @Nullable Object oldValue, @Nullable Object newValue );
 }

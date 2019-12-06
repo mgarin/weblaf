@@ -72,7 +72,7 @@ public class WebMemoryBarExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id          preview identifier
-         * @param styleId     preview style ID
+         * @param styleId     preview {@link StyleId}
          * @param orientation memory bar orientation
          */
         public BasicProgress ( final String id, final StyleId styleId, final Orientation orientation )

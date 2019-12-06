@@ -76,7 +76,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public IconsFileList ( final StyleId styleId )
         {
@@ -102,7 +102,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public TilesFileList ( final StyleId styleId )
         {
@@ -128,7 +128,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ScrollableList ( final StyleId styleId )
         {
@@ -152,7 +152,7 @@ public class WebFileListExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public EditableList ( final StyleId styleId )
         {

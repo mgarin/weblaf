@@ -128,7 +128,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     /**
      * Constructs new progress bar.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebProgressBar ( final StyleId id )
     {
@@ -138,7 +138,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     /**
      * Constructs new progress bar.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation progress bar orientation
      */
     public WebProgressBar ( final StyleId id, final int orientation )
@@ -149,7 +149,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     /**
      * Constructs new progress bar.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param min minimum progress value
      * @param max maximum progress value
      */
@@ -161,7 +161,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     /**
      * Constructs new progress bar.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation progress bar orientation
      * @param min         minimum progress value
      * @param max         maximum progress value
@@ -174,7 +174,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     /**
      * Constructs new progress bar.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model data model
      */
     public WebProgressBar ( final StyleId id, final BoundedRangeModel model )
@@ -185,7 +185,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, Paintable
     /**
      * Constructs new progress bar.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation progress bar orientation
      * @param model       data model
      */

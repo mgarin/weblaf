@@ -62,7 +62,7 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator implements Style
     /**
      * Constructs new menu separator.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebPopupMenuSeparator ( final StyleId id )
     {

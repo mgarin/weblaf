@@ -47,17 +47,17 @@ public interface StyleListener extends EventListener
      * Informs about component style change.
      *
      * @param component  component which style has changed
-     * @param oldStyleId previously used style ID
-     * @param newStyleId currently used style ID
+     * @param oldStyleId previously used {@link StyleId}
+     * @param newStyleId currently used {@link StyleId}
      */
     public void styleChanged ( @NotNull JComponent component, @Nullable StyleId oldStyleId, @NotNull StyleId newStyleId );
 
     /**
      * Informs about component skin visual update.
-     * Skin update might occur when component style ID changes or its parent style component style ID changes.
+     * Skin update might occur when component {@link StyleId} changes or its parent style component {@link StyleId} changes.
      *
      * @param component component which style have been updated
-     * @param styleId   component style ID
+     * @param styleId   component {@link StyleId}
      */
     public void skinUpdated ( @NotNull JComponent component, @NotNull StyleId styleId );
 }

@@ -86,7 +86,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     protected final Class<? extends U> uiClass;
 
     /**
-     * Component default style ID.
+     * Component default {@link StyleId}.
      */
     @NotNull
     protected final StyleId defaultStyleId;
@@ -99,7 +99,7 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
      * @param uiClassId      component UI class ID
      * @param baseUIClass    base UI class applicable to this component
      * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default style ID
+     * @param defaultStyleId component default {@link StyleId}
      */
     public AbstractComponentDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
                                          @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,

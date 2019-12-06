@@ -60,9 +60,9 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, Paintable, Sh
     }
 
     /**
-     * Constructs new popup menu with the specified style ID.
+     * Constructs new popup menu with the specified {@link StyleId}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebPopupMenu ( final StyleId id )
     {

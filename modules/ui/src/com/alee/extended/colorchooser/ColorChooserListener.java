@@ -25,7 +25,6 @@ import java.util.EventListener;
 /**
  * {@link WebColorChooserField} color change listener.
  *
- * @param <T> chooser data type
  * @author Mikle Garin
  */
 public interface ColorChooserListener extends EventListener

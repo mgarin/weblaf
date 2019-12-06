@@ -102,7 +102,7 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
     /**
      * Constructs new editor pane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebEditorPane ( final StyleId id )
     {
@@ -113,7 +113,7 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
     /**
      * Constructs new editor pane.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param type mime type for the content editing support
      * @param text initial editor content
      */
@@ -127,7 +127,7 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
     /**
      * Constructs new editor pane.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param url URL of the page
      * @throws IOException exception for a {@code null} or invalid URL specification
      */
@@ -140,7 +140,7 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
     /**
      * Constructs new editor pane.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param url URL of the page
      * @throws IOException exception for a {@code null} or invalid page specification, or exception from the stream being read
      */

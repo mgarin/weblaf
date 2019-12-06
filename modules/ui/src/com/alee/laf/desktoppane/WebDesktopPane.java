@@ -72,7 +72,7 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Paintable
     /**
      * Constructs new desktop pane component.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebDesktopPane ( final StyleId id )
     {

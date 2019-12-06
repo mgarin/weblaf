@@ -107,7 +107,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
     /**
      * Constructs new empty scrollpane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebScrollPane ( final StyleId id )
     {
@@ -117,7 +117,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
     /**
      * Construct new scrollpane with the specified view.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param view scrollpane view component
      */
     public WebScrollPane ( final StyleId id, final Component view )
@@ -128,7 +128,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
     /**
      * Construct new empty scrollpane with the specified scroll policies.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param vsbPolicy vertical scroll bar policy
      * @param hsbPolicy horizontal scroll bar policy
      */
@@ -140,7 +140,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, Paintable, 
     /**
      * Construct new scrollpane with the specified view and scroll policies.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param view      scrollpane view component
      * @param vsbPolicy vertical scroll bar policy
      * @param hsbPolicy horizontal scroll bar policy

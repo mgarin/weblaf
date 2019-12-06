@@ -152,7 +152,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebPopOver ( final StyleId id )
     {
@@ -162,7 +162,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner frame
      */
     public WebPopOver ( final StyleId id, final Frame owner )
@@ -173,7 +173,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner frame
      * @param title dialog title (might not be displayed depending on styling)
      */
@@ -185,7 +185,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner dialog
      */
     public WebPopOver ( final StyleId id, final Dialog owner )
@@ -196,7 +196,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner dialog
      * @param title dialog title (might not be displayed depending on styling)
      */
@@ -208,7 +208,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner component
      */
     public WebPopOver ( final StyleId id, final Component owner )
@@ -219,7 +219,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner component
      * @param title dialog title (might not be displayed depending on styling)
      */
@@ -231,7 +231,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner window
      */
     public WebPopOver ( final StyleId id, final Window owner )
@@ -242,7 +242,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Constructs new WebPopOver dialog.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner dialog owner window
      * @param title dialog title (might not be displayed depending on styling)
      */
@@ -255,7 +255,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      * WebPopOver settings initialization.
      *
      * @param owner owner window
-     * @param id    initial style ID
+     * @param id    initial {@link StyleId}
      * @param title dialog title
      */
     @Override

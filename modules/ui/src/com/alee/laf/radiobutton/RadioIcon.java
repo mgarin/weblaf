@@ -19,6 +19,7 @@ package com.alee.laf.radiobutton;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
@@ -41,24 +42,20 @@ import java.awt.geom.Ellipse2D;
 public class RadioIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends RadioIcon<C, D, I>> extends AbstractContent<C, D, I>
 {
     /**
-     * Preferred icon size.
+     * Left side background {@link Color}.
      */
-    @XStreamAsAttribute
-    protected Dimension size;
-
-    /**
-     * Left side background color.
-     */
+    @Nullable
     @XStreamAsAttribute
     protected Color leftColor;
 
     /**
-     * Right side background color.
+     * Right side background {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color rightColor;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -66,33 +63,67 @@ public class RadioIcon<C extends AbstractButton, D extends IDecoration<C, D>, I 
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
-    @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    /**
+     * Returns left side background {@link Color}.
+     *
+     * @param c {@link AbstractButton} that is being painted
+     * @param d {@link IDecoration} state
+     * @return left side background {@link Color}
+     */
+    @NotNull
+    public Color getLeftColor ( @NotNull final C c, @NotNull final D d )
     {
-        final int x = bounds.x;
-        final int y = bounds.y;
-        final int w = bounds.width;
-        final int h = bounds.height;
+        if ( leftColor == null )
+        {
+            throw new DecorationException ( "Left side background color must be specified" );
+        }
+        return leftColor;
+    }
 
+    /**
+     * Returns right side background {@link Color}.
+     *
+     * @param c {@link AbstractButton} that is being painted
+     * @param d {@link IDecoration} state
+     * @return right side background {@link Color}
+     */
+    @NotNull
+    public Color getRightColor ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( rightColor == null )
+        {
+            throw new DecorationException ( "Right side background color must be specified" );
+        }
+        return rightColor;
+    }
+
+    @Override
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
+    {
         // Configuring graphics
-        final GradientPaint paint = new GradientPaint ( x, 0, leftColor, x + w, 0, rightColor );
-        final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+        final Paint op = GraphicsUtils.setupPaint ( g2d, new GradientPaint (
+                bounds.x, 0,
+                getLeftColor ( c, d ),
+                bounds.x + bounds.width, 0,
+                getRightColor ( c, d )
+        ) );
 
         // Filling content shape
-        g2d.fill ( new Ellipse2D.Double ( x, y, w, h ) );
+        g2d.fill ( new Ellipse2D.Double ( bounds.x, bounds.y, bounds.width, bounds.height ) );
 
         // Restoring graphics settings
         GraphicsUtils.restorePaint ( g2d, op );
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
-        return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
+        return new Dimension ( 0, 0 );
     }
 }

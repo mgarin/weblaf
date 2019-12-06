@@ -17,6 +17,8 @@
 
 package com.alee.laf.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -34,14 +36,15 @@ import javax.swing.*;
 @XStreamAlias ( "LabelText" )
 public class LabelText<C extends JLabel, D extends IDecoration<C, D>, I extends LabelText<C, D, I>> extends AbstractTextContent<C, D, I>
 {
+    @Nullable
     @Override
-    protected String getText ( final C c, final D d )
+    protected String getText ( @NotNull final C c, @NotNull final D d )
     {
         return c.getText ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final C c, final D d )
+    protected int getMnemonicIndex ( @NotNull final C c, @NotNull final D d )
     {
         return c.getDisplayedMnemonicIndex ();
     }

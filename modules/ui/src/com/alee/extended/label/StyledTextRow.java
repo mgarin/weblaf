@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.TextUtils;
 
 import java.awt.*;
@@ -34,12 +36,13 @@ public class StyledTextRow
     /**
      * List of styled text fragments.
      */
-    public List<TextRange> fragments;
+    @NotNull
+    public final List<TextRange> fragments;
 
     /**
      * Whether the row is leading (first in text or after hard break) or not.
      */
-    public boolean leading;
+    public final boolean leading;
 
     /**
      * Row width.
@@ -74,17 +77,18 @@ public class StyledTextRow
     /**
      * Appends the row.
      *
-     * @param s             text fragment
+     * @param text          text fragment
      * @param style         fragment style
      * @param fm            font metrics
      * @param charOffset    fragment total offset in chars
      * @param mnemonicIndex mnemonic index
      * @return width of appended fragment
      */
-    public int append ( final String s, final StyleRange style, final FontMetrics fm, final int charOffset, final int mnemonicIndex )
+    public int append ( @NotNull final String text, @Nullable final StyleRange style, @NotNull final FontMetrics fm,
+                        final int charOffset, final int mnemonicIndex )
     {
         int sWidth = 0;
-        if ( mnemonicIndex >= 0 && s.length () > mnemonicIndex - charOffset )
+        if ( mnemonicIndex >= 0 && text.length () > mnemonicIndex - charOffset )
         {
             mnemonic = mnemonicIndex - charOffset;
             for ( final TextRange fragment : fragments )
@@ -95,10 +99,10 @@ public class StyledTextRow
         if ( fragments.isEmpty () && !leading )
         {
             // Trimming left first fragment
-            final int fw = TextUtils.findFirstWordFromIndex ( s, 0 );
+            final int fw = TextUtils.findFirstWordFromIndex ( text, 0 );
             if ( fw >= 0 )
             {
-                final String trimmed = s.substring ( fw, s.length () );
+                final String trimmed = text.substring ( fw );
                 fragments.add ( new TextRange ( trimmed, style ) );
                 if ( mnemonic > 0 )
                 {
@@ -110,15 +114,15 @@ public class StyledTextRow
             {
                 if ( mnemonic > 0 )
                 {
-                    mnemonic -= s.length ();
+                    mnemonic -= text.length ();
                 }
                 fragments.add ( new TextRange ( "", style ) );
             }
         }
         else
         {
-            fragments.add ( new TextRange ( s, style ) );
-            sWidth += fm.stringWidth ( s );
+            fragments.add ( new TextRange ( text, style ) );
+            sWidth += fm.stringWidth ( text );
         }
         width += sWidth;
         return sWidth;

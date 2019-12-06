@@ -214,7 +214,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     /**
      * Constructs new popup.
      *
-     * @param styleId style ID
+     * @param styleId {@link StyleId}
      */
     public WebPopup ( final StyleId styleId )
     {
@@ -224,7 +224,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     /**
      * Constructs new popup.
      *
-     * @param styleId   style ID
+     * @param styleId   {@link StyleId}
      * @param component popup content
      */
     public WebPopup ( final StyleId styleId, final Component component )
@@ -235,7 +235,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<T, WPopupUI>
     /**
      * Constructs new popup.
      *
-     * @param styleId    style ID
+     * @param styleId    {@link StyleId}
      * @param layout     popup layout
      * @param components popup contents
      */

@@ -161,7 +161,7 @@ public class WebDockablePane extends WebContainer<WebDockablePane, WDockablePane
     /**
      * Constructs new dockable pane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebDockablePane ( @NotNull final StyleId id )
     {

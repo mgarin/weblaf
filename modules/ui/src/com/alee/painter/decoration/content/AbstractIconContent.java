@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 
@@ -35,7 +36,7 @@ import java.awt.*;
 public abstract class AbstractIconContent<C extends JComponent, D extends IDecoration<C, D>, I extends AbstractIconContent<C, D, I>>
         extends AbstractContent<C, D, I>
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -43,13 +44,13 @@ public abstract class AbstractIconContent<C extends JComponent, D extends IDecor
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return getIcon ( c, d ) == null;
     }
 
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final Icon icon = getIcon ( c, d );
         if ( icon != null )
@@ -60,8 +61,9 @@ public abstract class AbstractIconContent<C extends JComponent, D extends IDecor
         }
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         final Icon icon = getIcon ( c, d );
         return icon != null ? new Dimension ( icon.getIconWidth (), icon.getIconHeight () ) : new Dimension ( 0, 0 );
@@ -74,5 +76,6 @@ public abstract class AbstractIconContent<C extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return icon to paint
      */
-    protected abstract Icon getIcon ( C c, D d );
+    @Nullable
+    protected abstract Icon getIcon ( @NotNull C c, @NotNull D d );
 }

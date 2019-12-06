@@ -17,6 +17,7 @@
 
 package com.alee.utils.swing.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -30,30 +31,30 @@ import javax.swing.*;
 public class JPopupMenuGenerator extends AbstractMenuGenerator<JPopupMenu>
 {
     /**
-     * Constructs new popup menu generator using default popup menu.
+     * Constructs new {@link JPopupMenuGenerator} using default {@link JPopupMenu}.
      */
     public JPopupMenuGenerator ()
     {
-        this ( new JPopupMenu () );
+        this ( StyleId.auto );
     }
 
     /**
-     * Constructs new popup menu generator using default popup menu using the specified style ID.
+     * Constructs new {@link JPopupMenuGenerator} using {@link JPopupMenu} with the specified {@link StyleId}.
      *
-     * @param id popup menu style ID
+     * @param id {@link JPopupMenu} {@link StyleId}
      */
-    public JPopupMenuGenerator ( final StyleId id )
+    public JPopupMenuGenerator ( @NotNull final StyleId id )
     {
         this ( new JPopupMenu () );
         id.set ( getMenu () );
     }
 
     /**
-     * Constructs new popup menu generator using the specified popup menu.
+     * Constructs new {@link JPopupMenuGenerator} using the specified {@link JPopupMenu}.
      *
-     * @param menu popup menu
+     * @param menu {@link JPopupMenu}
      */
-    public JPopupMenuGenerator ( final JPopupMenu menu )
+    public JPopupMenuGenerator ( @NotNull final JPopupMenu menu )
     {
         super ( menu );
     }

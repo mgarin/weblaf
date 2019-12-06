@@ -20,7 +20,7 @@ package com.alee.managers.language;
 import javax.swing.*;
 
 /**
- * This interface provides basic methods required for updating component language-dependant variables.
+ * This interface provides basic methods required for updating component language-dependent variables.
  * There is also a predefined set of language updaters registered in {@link com.alee.managers.language.LanguageManager}.
  *
  * @param <C> component type
@@ -38,7 +38,7 @@ public interface LanguageUpdater<C extends JComponent>
     public Class getComponentClass ();
 
     /**
-     * Updates component language-dependant variables.
+     * Updates component language-dependent variables.
      *
      * @param component {@link JComponent}
      * @param language  {@link Language}

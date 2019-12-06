@@ -91,7 +91,7 @@ public class WebTableBooleanCellRenderer<C extends JTable, P extends TableCellPa
     }
 
     /**
-     * Updates table cell renderer component style ID.
+     * Updates table cell renderer component {@link StyleId}.
      *
      * @param parameters {@link TableCellParameters}
      */
@@ -203,7 +203,7 @@ public class WebTableBooleanCellRenderer<C extends JTable, P extends TableCellPa
         // Updating custom states
         updateStates ( parameters );
 
-        // Updating style ID
+        // Updating style identifier
         updateStyleId ( parameters );
 
         // Updating renderer view

@@ -299,7 +299,7 @@ public class WebListCellRenderer<V, C extends JList, P extends ListCellParameter
         // Updating custom states
         updateStates ( parameters );
 
-        // Updating style ID
+        // Updating style identifier
         updateStyleId ( parameters );
 
         // Updating renderer view

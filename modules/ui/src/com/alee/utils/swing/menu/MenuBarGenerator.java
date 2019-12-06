@@ -29,7 +29,7 @@ import com.alee.managers.style.StyleId;
 public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
 {
     /**
-     * Constructs new menu bar generator using default menu bar.
+     * Constructs new {@link MenuBarGenerator} using default {@link WebMenuBar}.
      */
     public MenuBarGenerator ()
     {
@@ -37,9 +37,9 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
     }
 
     /**
-     * Constructs new menu bar generator using menu bar with the specified style.
+     * Constructs new {@link MenuBarGenerator} using {@link WebMenuBar} with the specified {@link StyleId}.
      *
-     * @param id menu bar style ID
+     * @param id {@link WebMenuBar} {@link StyleId}
      */
     public MenuBarGenerator ( final StyleId id )
     {
@@ -47,9 +47,9 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
     }
 
     /**
-     * Constructs new menu bar generator using specified menu bar.
+     * Constructs new {@link MenuBarGenerator} using specified {@link WebMenuBar}.
      *
-     * @param menu menu bar
+     * @param menu {@link WebMenuBar}
      */
     public MenuBarGenerator ( final WebMenuBar menu )
     {

@@ -93,7 +93,7 @@ public class WebDirectoryChooserExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public StaticDirectoryChooserDialog ( final StyleId styleId )
         {
@@ -152,7 +152,7 @@ public class WebDirectoryChooserExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public CustomDirectoryChooserDialog ( final StyleId styleId )
         {

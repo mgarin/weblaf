@@ -110,7 +110,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * Costructs file tree with system hard drives as root.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebFileTree ( @NotNull final StyleId id )
     {
@@ -120,7 +120,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * Constructs file tree with the specified root type.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param rootType file tree root type
      */
     public WebFileTree ( @NotNull final StyleId id, @NotNull final FileTreeRootType rootType )
@@ -131,7 +131,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * Constructs file tree with file under specified path as root.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param rootPath path to root file
      */
     public WebFileTree ( @NotNull final StyleId id, @NotNull final String rootPath )
@@ -142,7 +142,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * Constructs file tree with specified files as root.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param rootFiles root files
      */
     public WebFileTree ( @NotNull final StyleId id, @NotNull final File... rootFiles )
@@ -153,7 +153,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * Constructs file tree with specified files as root.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param rootFiles root files
      */
     public WebFileTree ( @NotNull final StyleId id, @NotNull final List<File> rootFiles )

@@ -18,6 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.behavior.OmitOnMerge;
 import com.alee.painter.decoration.DecorationException;
@@ -54,30 +55,35 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     /**
      * Whether or not should ignore style font color settings.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean ignoreStyleColors;
 
     /**
      * Script font ratio.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Float scriptFontRatio;
 
     /**
      * Whether or not should keep hard line breaks.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean preserveLineBreaks;
 
     /**
      * Size of gaps between label rows in pixels.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer rowGap;
 
     /**
      * Maximum preferred text width.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer maximumTextWidth;
 
@@ -93,6 +99,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      *
      * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStyledLabel#styled-text-syntax">Styled text syntax</a>
      */
+    @Nullable
     @XStreamAsAttribute
     protected String globalStyle;
 
@@ -130,7 +137,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return true if ignore style font color settings, false otherwise
      */
-    protected boolean isIgnoreColorSettings ( final C c, final D d )
+    protected boolean isIgnoreColorSettings ( @NotNull final C c, @NotNull final D d )
     {
         return ignoreStyleColors != null && ignoreStyleColors;
     }
@@ -142,7 +149,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return script font ratio
      */
-    protected Float getScriptFontRatio ( final C c, final D d )
+    protected Float getScriptFontRatio ( @NotNull final C c, @NotNull final D d )
     {
         return scriptFontRatio != null ? scriptFontRatio : 1.5f;
     }
@@ -154,7 +161,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return true if hard breaks are preserved, false otherwise
      */
-    protected boolean isPreserveLineBreaks ( final C c, final D d )
+    protected boolean isPreserveLineBreaks ( @NotNull final C c, @NotNull final D d )
     {
         return preserveLineBreaks == null || preserveLineBreaks;
     }
@@ -166,7 +173,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return text row gap
      */
-    protected int getRowGap ( final C c, final D d )
+    protected int getRowGap ( @NotNull final C c, @NotNull final D d )
     {
         return rowGap != null ? rowGap : 0;
     }
@@ -178,7 +185,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return maximum preferred text width
      */
-    protected int getMaximumTextWidth ( final C c, final D d )
+    protected int getMaximumTextWidth ( @NotNull final C c, @NotNull final D d )
     {
         return maximumTextWidth != null ? maximumTextWidth : Short.MAX_VALUE;
     }
@@ -186,15 +193,17 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     /**
      * Returns global style range.
      *
-     * @param plainText plain text
      * @param c         painted component
      * @param d         painted decoration state   @return text row gap
+     * @param plainText plain text
      * @return global style range
      */
-    protected StyleRange getGlobalStyle ( final String plainText, final C c, final D d )
+    @Nullable
+    protected StyleRange getGlobalStyle ( @NotNull final C c, @NotNull final D d, @Nullable final String plainText )
     {
-        return !TextUtils.isEmpty ( globalStyle ) && plainText != null ?
-                new StyleSettings ( 0, plainText.length (), globalStyle ).getStyleRange () : null;
+        return TextUtils.notEmpty ( globalStyle ) && plainText != null
+                ? new StyleSettings ( 0, plainText.length (), globalStyle ).getStyleRange ()
+                : null;
     }
 
     /**
@@ -204,7 +213,8 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return list of text style ranges
      */
-    protected abstract List<StyleRange> getStyleRanges ( C c, D d );
+    @NotNull
+    protected abstract List<StyleRange> getStyleRanges ( @NotNull C c, @NotNull D d );
 
     /**
      * Returns text wrapping type.
@@ -213,7 +223,8 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return text wrapping type
      */
-    protected abstract TextWrap getWrapType ( C c, D d );
+    @NotNull
+    protected abstract TextWrap getWrapType ( @NotNull C c, @NotNull D d );
 
     /**
      * Returns maximum rows count.
@@ -222,7 +233,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return maximum rows count
      */
-    protected abstract int getMaximumRows ( C c, D d );
+    protected abstract int getMaximumRows ( @NotNull C c, @NotNull D d );
 
     /**
      * Builds text ranges based on plain text and style ranges.
@@ -230,7 +241,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param c painted component
      * @param d painted decoration state
      */
-    protected void buildTextRanges ( final C c, final D d )
+    protected void buildTextRanges ( @NotNull final C c, @NotNull final D d )
     {
         // Retrieving plain text
         final String plainText = getText ( c, d );
@@ -239,7 +250,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
         List<StyleRange> styleRanges = getStyleRanges ( c, d );
 
         // Adding global style on top of them
-        final StyleRange globalStyle = getGlobalStyle ( plainText, c, d );
+        final StyleRange globalStyle = getGlobalStyle ( c, d, plainText );
         if ( globalStyle != null )
         {
             // We have to copy ranges list to avoid affecting the source list
@@ -251,7 +262,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     }
 
     @Override
-    public int getContentBaseline ( final C c, final D d, final Rectangle bounds )
+    public int getContentBaseline ( @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         // todo Return baseline appropriate for styled label
         // todo This should refer to either first or last line of text
@@ -259,7 +270,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     }
 
     @Override
-    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final C c, final D d )
+    protected void paintText ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         if ( textRanges != null )
         {
@@ -327,7 +338,8 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param bounds painting bounds
      * @return List of rows to paint
      */
-    protected List<StyledTextRow> layout ( final C c, final D d, final Rectangle bounds )
+    @NotNull
+    protected List<StyledTextRow> layout ( @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final int endY = bounds.y + bounds.height;
         final int endX = bounds.x + bounds.width;
@@ -544,8 +556,8 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param row    painted row
      * @param isLast whether or not painted row is last
      */
-    protected void paintRow ( final C c, final D d, final Graphics2D g2d, final Rectangle bounds, final int textX, final int textY,
-                              final StyledTextRow row, final boolean isLast )
+    protected void paintRow ( @NotNull final C c, @NotNull final D d, @NotNull final Graphics2D g2d, @NotNull final Rectangle bounds,
+                              final int textX, final int textY, @NotNull final StyledTextRow row, final boolean isLast )
     {
         // Painting settings
         final Font font = c.getFont ();
@@ -667,7 +679,8 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param d painted decoration state
      * @return font max height and ascent
      */
-    protected Pair<Integer, Integer> getFontSize ( final C c, final D d )
+    @NotNull
+    protected Pair<Integer, Integer> getFontSize ( @NotNull final C c, @NotNull final D d )
     {
         final Font font = c.getFont ();
         final int defaultFontSize = font.getSize ();
@@ -709,8 +722,9 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param style         style of text fragment
      * @param strWidth      text fragment width
      */
-    protected void paintStyledTextFragment ( final C c, final D d, final Graphics2D g2d, final String s, final int x, final int y,
-                                             final int mnemonicIndex, final FontMetrics fm, final StyleRange style, final int strWidth )
+    protected void paintStyledTextFragment ( @NotNull final C c, @NotNull final D d, @NotNull final Graphics2D g2d,
+                                             @NotNull final String s, final int x, final int y, final int mnemonicIndex,
+                                             @NotNull final FontMetrics fm, @Nullable final StyleRange style, final int strWidth )
     {
         // This is required to properly render sub-pixel text antialias
         final RenderingHints rh = g2d.getRenderingHints ();
@@ -763,8 +777,9 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
         g2d.setRenderingHints ( rh );
     }
 
+    @NotNull
     @Override
-    protected Dimension getPreferredTextSize ( final C c, final D d, final Dimension available )
+    protected Dimension getPreferredTextSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         final int maximumTextWidth = getMaximumTextWidth ( c, d );
 
@@ -775,7 +790,7 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
         available.width = Math.min ( available.width, maximumTextWidth );
         final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
 
-        return SwingUtils.max ( vSize, hSize );
+        return SwingUtils.maxNonNull ( vSize, hSize );
 
         /**
          * This doesn't work for some cases and causes issue when available size expands.
@@ -805,7 +820,8 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
      * @param available theoretically available space for this content
      * @return preferred styled text size
      */
-    protected Dimension getPreferredStyledTextSize ( final C c, final D d, final Dimension available )
+    @NotNull
+    protected Dimension getPreferredStyledTextSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         final Dimension ps = new Dimension ( 0, 0 );
         if ( textRanges != null )

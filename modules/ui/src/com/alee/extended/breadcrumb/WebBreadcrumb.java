@@ -86,7 +86,7 @@ public class WebBreadcrumb extends WebContainer<WebBreadcrumb, WBreadcrumbUI>
     /**
      * Constructs new {@link WebBreadcrumb}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebBreadcrumb ( final StyleId id )
     {

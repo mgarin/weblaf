@@ -153,7 +153,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs empty list.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebList ( final StyleId id )
     {
@@ -163,7 +163,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs list with the specified data.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data list data
      */
     public WebList ( final StyleId id, final List data )
@@ -174,7 +174,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs list with the specified data.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data list data
      */
     public WebList ( final StyleId id, final Vector data )
@@ -185,7 +185,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs list with the specified data.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data list data
      */
     public WebList ( final StyleId id, final Object[] data )
@@ -196,7 +196,7 @@ public class WebList extends JList implements Styleable, Paintable, ShapeMethods
     /**
      * Constructs list with the specified list model.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model list model
      */
     public WebList ( final StyleId id, final ListModel model )

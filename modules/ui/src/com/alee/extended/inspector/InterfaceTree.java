@@ -85,7 +85,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode>
     /**
      * Constructs new interface tree.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param root root component
      */
     public InterfaceTree ( @NotNull final StyleId id, @Nullable final Component root )

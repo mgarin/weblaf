@@ -333,7 +333,7 @@ public class WebTreeCellRenderer<N extends TreeNode, C extends JTree, P extends 
         // Updating custom states
         updateStates ( parameters );
 
-        // Updating style ID
+        // Updating style identifier
         updateStyleId ( parameters );
 
         // Updating renderer view

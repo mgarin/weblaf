@@ -71,7 +71,7 @@ public class LanguageChooserExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          * @param id      preview ID
          */
         public BasicLanguageChooser ( final StyleId styleId, final String id )

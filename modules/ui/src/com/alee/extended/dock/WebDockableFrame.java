@@ -177,7 +177,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     /**
      * Constructs new {@link WebDockableFrame}.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param frameId unique frame ID
      * @param title   frame title
      */
@@ -189,7 +189,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     /**
      * Constructs new {@link WebDockableFrame}.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param frameId unique frame ID
      * @param icon    frame icon
      */
@@ -201,7 +201,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrame, WDockableFr
     /**
      * Constructs new {@link WebDockableFrame}.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param frameId unique frame ID
      * @param icon    frame icon
      * @param title   frame title

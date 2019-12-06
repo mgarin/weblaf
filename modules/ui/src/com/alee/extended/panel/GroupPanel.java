@@ -61,7 +61,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally in a single row with a zero gap.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param components components to place
      */
     public GroupPanel ( final StyleId id, final Component... components )
@@ -83,7 +83,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally or vertically in a single row with a zero gap.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param horizontal layout orientation
      * @param components components to place
      */
@@ -106,7 +106,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally in a single row with a specified gap.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param gap        gap between components
      * @param components components to place
      */
@@ -130,7 +130,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally or vertically in a single row with a specified gap.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param gap        gap between components
      * @param horizontal layout orientation
      * @param components components to place
@@ -154,7 +154,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally in a single row with a zero gap using special grouping type.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param groupingType special grouping type
      * @param components   components to place
      */
@@ -178,7 +178,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally or vertically in a single row with a zero gap using special grouping type.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param groupingType special grouping type
      * @param horizontal   layout orientation
      * @param components   components to place
@@ -203,7 +203,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally in a single row with a specified gap using special grouping type.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param groupingType special grouping type
      * @param gap          gap between components
      * @param components   components to place
@@ -229,7 +229,7 @@ public class GroupPanel extends WebPanel
     /**
      * Constructor that places components horizontally or vertically in a single row with a specified gap using special grouping type.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param groupingType special grouping type
      * @param gap          gap between components
      * @param horizontal   layout orientation

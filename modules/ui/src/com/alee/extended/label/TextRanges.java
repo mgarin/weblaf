@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.clone.behavior.OmitOnClone;
 import com.alee.api.merge.Merge;
 import com.alee.api.merge.behavior.OmitOnMerge;
@@ -50,16 +52,19 @@ public class TextRanges implements ITextRanges
     /**
      * Plain text.
      */
+    @Nullable
     protected final String plainText;
 
     /**
      * Style ranges list.
      */
+    @NotNull
     protected final List<StyleRange> styleRanges;
 
     /**
      * Cached text ranges built using {@link #plainText} and {@link #styleRanges}.
      */
+    @Nullable
     @OmitOnClone
     @OmitOnMerge
     protected transient List<TextRange> textRanges;
@@ -70,13 +75,13 @@ public class TextRanges implements ITextRanges
      * @param plainText   plain text
      * @param styleRanges style ranges list
      */
-    public TextRanges ( final String plainText, final List<StyleRange> styleRanges )
+    public TextRanges ( @Nullable final String plainText, @NotNull final List<StyleRange> styleRanges )
     {
-        super ();
         this.plainText = plainText;
         this.styleRanges = styleRanges;
     }
 
+    @NotNull
     @Override
     public List<TextRange> getTextRanges ()
     {
@@ -148,19 +153,13 @@ public class TextRanges implements ITextRanges
                                 }
                             }
                         }
-                        styleRange = styleRange != null ? new StyleRange ( start, end - start, styleRange ) : null;
+                        styleRange = styleRange != null ? new StyleRange ( styleRange, start, end - start ) : null;
 
                         // Adding new text range
                         textRanges.add ( new TextRange ( part, styleRange ) );
 
-                        // Moving forward to the next closest style borrt;
+                        // Moving forward to the next closest style part
                         start = end;
-                    }
-
-                    // Adding enclosing text range if needed
-                    if ( start < plainText.length () )
-                    {
-                        textRanges.add ( new TextRange ( plainText.substring ( start ) ) );
                     }
                 }
             }

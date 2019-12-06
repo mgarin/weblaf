@@ -88,7 +88,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public UrlLink ( final FeatureState featureState, final StyleId styleId )
         {
@@ -113,7 +113,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public EmailLink ( final FeatureState featureState, final StyleId styleId )
         {
@@ -138,7 +138,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public FileLink ( final FeatureState featureState, final StyleId styleId )
         {
@@ -163,7 +163,7 @@ public class WebLinkExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public ActionLink ( final FeatureState featureState, final StyleId styleId )
         {

@@ -76,7 +76,7 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ExTree ( final StyleId styleId )
         {
@@ -108,7 +108,7 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public AsyncTree ( final StyleId styleId )
         {
@@ -140,7 +140,7 @@ public class WebTreeFilterFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ExCheckBoxTree ( final StyleId styleId )
         {

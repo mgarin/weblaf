@@ -55,7 +55,7 @@ public class WebStatusBar extends WebContainer<WebStatusBar, WStatusBarUI>
     /**
      * Constructs new status bar.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebStatusBar ( @NotNull final StyleId id )
     {

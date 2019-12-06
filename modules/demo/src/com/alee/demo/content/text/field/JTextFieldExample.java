@@ -80,7 +80,7 @@ public class JTextFieldExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicField ( final String id, final StyleId styleId )
         {

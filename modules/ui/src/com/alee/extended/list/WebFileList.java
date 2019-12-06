@@ -135,7 +135,7 @@ public class WebFileList extends WebList
     /**
      * Constructs empty file list.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebFileList ( final StyleId id )
     {
@@ -146,7 +146,7 @@ public class WebFileList extends WebList
     /**
      * Constructs file list with files from directory under the specified path.
      *
-     * @param id            style ID
+     * @param id            {@link StyleId}
      * @param directoryPath directory path
      */
     public WebFileList ( final StyleId id, final String directoryPath )
@@ -158,7 +158,7 @@ public class WebFileList extends WebList
     /**
      * Constructs file list with files from the specified directory.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param directory directory
      */
     public WebFileList ( final StyleId id, final File directory )
@@ -170,7 +170,7 @@ public class WebFileList extends WebList
     /**
      * Constructs file list with the specified files.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data files array
      */
     public WebFileList ( final StyleId id, final File[] data )
@@ -182,7 +182,7 @@ public class WebFileList extends WebList
     /**
      * Constructs file list with the specified files.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data files list
      */
     public WebFileList ( final StyleId id, final List<File> data )

@@ -17,6 +17,7 @@
 
 package com.alee.laf.separator;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
 import com.alee.painter.decoration.IDecoration;
@@ -37,14 +38,16 @@ import javax.swing.*;
 public class SeparatorStripes<C extends JSeparator, D extends IDecoration<C, D>, I extends SeparatorStripes<C, D, I>>
         extends Stripes<C, D, I>
 {
+    @NotNull
     @Override
-    public Orientation getOrientation ( final C c, final D d )
+    public Orientation getOrientation ( @NotNull final C c, @NotNull final D d )
     {
         return Orientation.get ( c.getOrientation () );
     }
 
+    @NotNull
     @Override
-    public BoxOrientation getAlign ( final C c, final D d )
+    public BoxOrientation getAlign ( @NotNull final C c, @NotNull final D d )
     {
         return BoxOrientation.center;
     }

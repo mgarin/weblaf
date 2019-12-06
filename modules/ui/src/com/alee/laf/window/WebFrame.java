@@ -118,7 +118,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
      * Constructs a new frame that is initially invisible.
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebFrame ( final StyleId id )
     {
@@ -129,7 +129,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
      * Creates a {@code Frame} in the specified {@code GraphicsConfiguration} of a screen device and a blank title.
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      * @param gc the {@code GraphicsConfiguration} that is used to construct the new {@code Frame};
      *           if {@code gc} is {@code null}, the system default {@code GraphicsConfiguration} is assumed
      */
@@ -142,7 +142,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
      * Creates a new, initially invisible {@code Frame} with the specified title.
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param title the title for the frame
      */
     public WebFrame ( final StyleId id, final String title )
@@ -154,7 +154,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
      * Creates a {@code JFrame} with the specified title and the specified {@code GraphicsConfiguration} of a screen device.
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param title the title to be displayed in the frame's border. A {@code null} value is treated as an empty string, ""
      * @param gc    the {@code GraphicsConfiguration} that is used to construct the new {@code JFrame} with;
      *              if {@code gc} is {@code null}, the system default {@code GraphicsConfiguration} is assumed
@@ -174,7 +174,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
     /**
      * Additional initialization of WebFrame settings.
      *
-     * @param id    initial style ID
+     * @param id    initial {@link StyleId}
      * @param title frame title
      */
     protected void initialize ( final StyleId id, final String title )
@@ -741,8 +741,8 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
 
     /**
      * Custom root pane for this {@link WebFrame}.
-     * It is required to provide undecorated root pane style ID to avoid issues with further style updates.
-     * It also provides default frame style ID instead of default root pane style ID.
+     * It is required to provide undecorated root pane {@link StyleId} to avoid issues with further style updates.
+     * It also provides default frame {@link StyleId} instead of default root pane {@link StyleId}.
      */
     public class WebFrameRootPane extends WebRootPane
     {

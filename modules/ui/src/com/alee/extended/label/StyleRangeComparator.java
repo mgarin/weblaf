@@ -33,17 +33,19 @@ public class StyleRangeComparator implements Comparator<StyleRange>
     @Override
     public int compare ( final StyleRange r1, final StyleRange r2 )
     {
+        final int result;
         final int s1 = r1.getStartIndex ();
         final int s2 = r2.getStartIndex ();
         if ( s1 != s2 )
         {
-            return s1 < s2 ? -1 : 1;
+            result = s1 < s2 ? -1 : 1;
         }
         else
         {
             final int l1 = r1.getLength ();
             final int l2 = r2.getLength ();
-            return l1 > l2 ? -1 : l1 < l2 ? 1 : 0;
+            result = l1 > l2 ? -1 : l1 < l2 ? 1 : 0;
         }
+        return result;
     }
 }

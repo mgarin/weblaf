@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -32,5 +34,6 @@ public interface ITextRanges
      *
      * @return text ranges
      */
+    @NotNull
     public List<TextRange> getTextRanges ();
 }

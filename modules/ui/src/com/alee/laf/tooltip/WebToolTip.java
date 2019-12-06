@@ -62,7 +62,7 @@ public class WebToolTip extends JToolTip implements Styleable, Paintable, ShapeM
     /**
      * Constructs empty tooltip.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebToolTip ( final StyleId id )
     {

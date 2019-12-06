@@ -47,7 +47,7 @@ public abstract class AbstractDockableFrameDescriptor<C extends WebDockableFrame
      * @param uiClassId      component UI class ID
      * @param baseUIClass    base UI class applicable to this component
      * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default style ID
+     * @param defaultStyleId component default {@link StyleId}
      */
     public AbstractDockableFrameDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
                                              @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,

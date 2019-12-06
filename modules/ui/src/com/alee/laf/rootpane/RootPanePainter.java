@@ -193,7 +193,7 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
         if ( Objects.equals ( property, WebWindow.WINDOW_DECORATION_STYLE_PROPERTY ) )
         {
             // Updating decoration state first
-            // This is necessary to avoid issues with state-dependant decorations
+            // This is necessary to avoid issues with state-dependent decorations
             updateDecorationState ();
 
             // Removing window decoration

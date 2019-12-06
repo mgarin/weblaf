@@ -142,7 +142,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         // Applying skin
         StyleManager.installSkin ( root );
 
-        // Installing content pane style ID
+        // Installing content pane style identifier
         // We are not listening for its changes since the only way is to track layered pane contents
         // In that case we would also need to track root pane contents for layered pane changes which is excessive
         // Content pane is usually not changed or provided by the root pane override and this style will be applied then
@@ -851,7 +851,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     {
         final String title = isDialog () ? dialog.getTitle () : isFrame () ? frame.getTitle () : null;
         final String t = !TextUtils.isBlank ( title ) ? title : emptyTitleText != null ? LM.get ( emptyTitleText ) : null;
-        return !TextUtils.isEmpty ( t ) ? t : " ";
+        return TextUtils.notEmpty ( t ) ? t : " ";
     }
 
     /**

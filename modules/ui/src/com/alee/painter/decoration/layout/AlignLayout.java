@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.collection.ImmutableList;
@@ -76,33 +78,39 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
     /**
      * Horizontal gap between content elements.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer hgap;
 
     /**
      * Vertical gap between content elements.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Integer vgap;
 
     /**
      * Whether or not content elements should fill all available horizontal space.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean hfill;
 
     /**
      * Whether or not content elements should fill all available vertical space.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Boolean vfill;
 
     /**
      * Returns horizontal gap between content elements.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return horizontal gap between content elements
      */
-    public int getHorizontalGap ()
+    public int getHorizontalGap ( @NotNull final C c, @NotNull final D d )
     {
         return hgap != null ? hgap : 0;
     }
@@ -110,9 +118,11 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
     /**
      * Returns vertical gap between content elements.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return vertical gap between content elements
      */
-    public int getVerticalGap ()
+    public int getVerticalGap ( @NotNull final C c, @NotNull final D d )
     {
         return vgap != null ? vgap : 0;
     }
@@ -120,9 +130,11 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
     /**
      * Returns whether content elements should fill all available horizontal space or not.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return {@code true} if content elements should fill all available horizontal space, {@code false} otherwise
      */
-    public boolean isHorizontalFill ()
+    public boolean isHorizontalFill ( @NotNull final C c, @NotNull final D d )
     {
         return hfill != null && hfill;
     }
@@ -130,19 +142,22 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
     /**
      * Returns whether content elements should fill all available vertical space or not.
      *
+     * @param c {@link JComponent} that is being painted
+     * @param d {@link IDecoration} state
      * @return {@code true} if content elements should fill all available vertical space, {@code false} otherwise
      */
-    public boolean isVerticalFill ()
+    public boolean isVerticalFill ( @NotNull final C c, @NotNull final D d )
     {
         return vfill != null && vfill;
     }
 
+    @NotNull
     @Override
-    public ContentLayoutData layoutContent ( final C c, final D d, final Rectangle bounds )
+    public ContentLayoutData layoutContent ( @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final ContentLayoutData layoutData = new ContentLayoutData ( 2 );
-        final boolean hfill = isHorizontalFill ();
-        final boolean vfill = isHorizontalFill ();
+        final boolean hfill = isHorizontalFill ( c, d );
+        final boolean vfill = isVerticalFill ( c, d );
         for ( final String halign : horizontals )
         {
             for ( final String valign : verticals )
@@ -151,7 +166,7 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
                 if ( !isEmpty ( c, d, constraints ) )
                 {
                     // Component size
-                    final Dimension ps = getPreferredSize ( c, d, constraints, bounds.getSize () );
+                    final Dimension ps = getPreferredSize ( c, d, bounds.getSize (), constraints );
                     ps.width = Math.min ( ps.width, bounds.width );
                     ps.height = Math.min ( ps.height, bounds.height );
 
@@ -219,17 +234,18 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
         return layoutData;
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
         final Dimension ps;
         final List<IContent> contents = getContents ( c, d );
         if ( contents.size () > 1 )
         {
-            final int hgap = getHorizontalGap ();
-            final int vgap = getVerticalGap ();
-            final boolean hfill = isHorizontalFill ();
-            final boolean vfill = isHorizontalFill ();
+            final int hgap = getHorizontalGap ( c, d );
+            final int vgap = getVerticalGap ( c, d );
+            final boolean hfill = isHorizontalFill ( c, d );
+            final boolean vfill = isVerticalFill ( c, d );
 
             // Counting size for each block
             final Map<String, Integer> widths = new HashMap<String, Integer> ();
@@ -306,7 +322,9 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
      * @param vertical   vertical position
      * @return size for the area specified by horizontal and vertical alignments
      */
-    protected Dimension getAreaSize ( final C c, final D d, final Dimension available, final String horizontal, final String vertical )
+    @Nullable
+    protected Dimension getAreaSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available,
+                                      @NotNull final String horizontal, @NotNull final String vertical )
     {
         final Dimension size = new Dimension ( 0, 0 );
         for ( final IContent content : getContents ( c, d, constraints ( horizontal, vertical ) ) )
@@ -327,7 +345,8 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
      * @param contents  content elements to process
      * @return maximum content elements width
      */
-    protected int maxWidth ( final C c, final D d, final Dimension available, final List<IContent> contents )
+    protected int maxWidth ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available,
+                             @NotNull final List<IContent> contents )
     {
         int max = 0;
         for ( final IContent content : contents )
@@ -346,7 +365,8 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
      * @param contents  content elements to process
      * @return maximum content elements height
      */
-    protected int maxHeight ( final C c, final D d, final Dimension available, final List<IContent> contents )
+    protected int maxHeight ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available,
+                              @NotNull final List<IContent> contents )
     {
         int max = 0;
         for ( final IContent content : contents )
@@ -363,7 +383,8 @@ public class AlignLayout<C extends JComponent, D extends IDecoration<C, D>, I ex
      * @param vertical   vertical position
      * @return complete constraints for specified horizontal and vertical positions
      */
-    protected String constraints ( final String horizontal, final String vertical )
+    @NotNull
+    protected String constraints ( @NotNull final String horizontal, @NotNull final String vertical )
     {
         return horizontal + SEPARATOR + vertical;
     }

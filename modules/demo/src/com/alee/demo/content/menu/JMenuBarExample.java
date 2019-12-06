@@ -92,7 +92,7 @@ public class JMenuBarExample extends AbstractStylePreviewExample
          *
          * @param id      preview ID
          * @param state   preview feature state
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public MenuBarPreview ( final String id, final FeatureState state, final StyleId styleId )
         {
@@ -165,13 +165,13 @@ public class JMenuBarExample extends AbstractStylePreviewExample
 
             final MenuGenerator settingsMenu = generator.addSubMenu ( "settings", "settings" );
             settingsMenu.openGroup ();
-            settingsMenu.addRadioItem ( "choice1", Hotkey.F1, true, action );
-            settingsMenu.addRadioItem ( "choice2", Hotkey.F2, false, action );
+            settingsMenu.addRadioItem ( "image", "choice1", Hotkey.F1, true, action );
+            settingsMenu.addRadioItem ( "video", "choice2", Hotkey.F2, false, action );
             settingsMenu.addRadioItem ( "choice3", Hotkey.F3, false, action );
             settingsMenu.closeGroup ();
             settingsMenu.addSeparator ();
-            settingsMenu.addCheckItem ( "option1", Hotkey.F4, true, action );
-            settingsMenu.addCheckItem ( "option2", Hotkey.F5, false, action );
+            settingsMenu.addCheckItem ( "save", "option1", Hotkey.F4, true, action );
+            settingsMenu.addCheckItem ( "print", "option2", Hotkey.F5, false, action );
             settingsMenu.addCheckItem ( "option3", Hotkey.F6, false, action );
             menuBar.add ( settingsMenu.getMenu () );
 
@@ -182,7 +182,7 @@ public class JMenuBarExample extends AbstractStylePreviewExample
          * Returns new dialog preview button.
          *
          * @param text          button text
-         * @param dialogStyleId dialog style ID
+         * @param dialogStyleId dialog {@link StyleId}
          * @return new dialog preview button
          */
         protected WebToggleButton createDialogButton ( final String text, final StyleId dialogStyleId )

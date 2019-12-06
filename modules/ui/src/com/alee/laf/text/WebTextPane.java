@@ -78,7 +78,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
     /**
      * Constructs new text pane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebTextPane ( final StyleId id )
     {
@@ -89,7 +89,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
     /**
      * Constructs new text pane.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param doc initially displayed document
      */
     public WebTextPane ( final StyleId id, final StyledDocument doc )

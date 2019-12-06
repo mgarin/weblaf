@@ -72,7 +72,7 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
     /**
      * Constructs new separator.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebSeparator ( final StyleId id )
     {
@@ -82,7 +82,7 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
     /**
      * Constructs new separator with the specified orientation.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation component orientation
      */
     public WebSeparator ( final StyleId id, final int orientation )

@@ -209,7 +209,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     /**
      * Constructs new document pane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebDocumentPane ( final StyleId id )
     {
@@ -219,7 +219,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     /**
      * Constructs new document pane.
      *
-     * @param id                   style ID
+     * @param id                   {@link StyleId}
      * @param tabbedPaneCustomizer tabbed pane customizer
      */
     public WebDocumentPane ( final StyleId id, final Customizer<WebTabbedPane> tabbedPaneCustomizer )
@@ -230,7 +230,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     /**
      * Constructs new document pane.
      *
-     * @param id                        style ID
+     * @param id                        {@link StyleId}
      * @param tabTitleComponentProvider tab title component customizer
      */
     public WebDocumentPane ( final StyleId id, final TabTitleComponentProvider<T> tabTitleComponentProvider )
@@ -241,7 +241,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     /**
      * Constructs new document pane.
      *
-     * @param id                        style ID
+     * @param id                        {@link StyleId}
      * @param tabbedPaneCustomizer      tabbed pane customizer
      * @param tabTitleComponentProvider tab title component customizer
      */
@@ -254,7 +254,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     /**
      * Constructs new document pane.
      *
-     * @param id                   style ID
+     * @param id                   {@link StyleId}
      * @param splitPaneCustomizer  split pane customizer
      * @param tabbedPaneCustomizer tabbed pane customizer
      */
@@ -267,7 +267,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     /**
      * Constructs new document pane.
      *
-     * @param id                        style ID
+     * @param id                        {@link StyleId}
      * @param splitPaneCustomizer       split pane customizer
      * @param tabbedPaneCustomizer      tabbed pane customizer
      * @param tabTitleComponentProvider tab title component customizer

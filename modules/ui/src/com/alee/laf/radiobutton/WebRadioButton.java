@@ -155,7 +155,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebRadioButton ( final StyleId id )
     {
@@ -165,7 +165,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action radio button action
      */
     public WebRadioButton ( final StyleId id, final Action action )
@@ -177,7 +177,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param selected whether or not radio button should be selected
      */
     public WebRadioButton ( final StyleId id, final boolean selected )
@@ -188,7 +188,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon custom radio button icon
      */
     public WebRadioButton ( final StyleId id, final Icon icon )
@@ -199,7 +199,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param icon     custom radio button icon
      * @param selected whether or not radio button should be selected
      */
@@ -211,7 +211,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text radio button text
      */
     public WebRadioButton ( final StyleId id, final String text )
@@ -222,7 +222,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     radio button text
      * @param selected whether or not radio button should be selected
      */
@@ -234,7 +234,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text radio button text
      * @param icon custom radio button icon
      */
@@ -246,7 +246,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, Paintable
     /**
      * Constructs new radio button.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     radio button text
      * @param icon     custom radio button icon
      * @param selected whether or not radio button should be selected

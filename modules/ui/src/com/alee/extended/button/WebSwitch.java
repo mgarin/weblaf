@@ -85,7 +85,7 @@ public class WebSwitch extends WebPanel implements ItemSelectable
     /**
      * Constructs a deselected switch.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebSwitch ( final StyleId id )
     {
@@ -95,7 +95,7 @@ public class WebSwitch extends WebPanel implements ItemSelectable
     /**
      * Constructs either selected or deselected switch.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param selected whether switch is selected or not
      */
     public WebSwitch ( final StyleId id, final boolean selected )

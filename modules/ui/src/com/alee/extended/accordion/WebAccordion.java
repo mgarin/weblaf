@@ -149,7 +149,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebAccordion ( @NotNull final StyleId id )
     {
@@ -159,7 +159,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param id                       style ID
+     * @param id                       {@link StyleId}
      * @param minimumExpandedPaneCount minimum amount of {@link AccordionPane}s that should be expanded at all times
      * @param maximumExpandedPaneCount maximum amount of {@link AccordionPane}s that can be expanded
      */
@@ -171,7 +171,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param id             style ID
+     * @param id             {@link StyleId}
      * @param headerPosition {@link BoxOrientation} for header panel positioning, also defines accordion orientation
      */
     public WebAccordion ( @NotNull final StyleId id, @NotNull final BoxOrientation headerPosition )
@@ -182,7 +182,7 @@ public class WebAccordion extends WebContainer<WebAccordion, WAccordionUI>
     /**
      * Constructs new {@link WebAccordion}.
      *
-     * @param id                       style ID
+     * @param id                       {@link StyleId}
      * @param headerPosition           {@link BoxOrientation} for header panel positioning, also defines accordion orientation
      * @param minimumExpandedPaneCount minimum amount of {@link AccordionPane}s that should be expanded at all times
      * @param maximumExpandedPaneCount maximum amount of {@link AccordionPane}s that can be expanded

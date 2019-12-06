@@ -75,7 +75,7 @@ public class WebFileTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicTable ( final StyleId styleId )
         {
@@ -86,7 +86,7 @@ public class WebFileTableExample extends AbstractStylePreviewExample
         @Override
         protected List<? extends JComponent> createPreviewElements ()
         {
-            final File[] home = FileUtils.getUserHome ().listFiles ();
+            final File[] home = FileUtils.listFiles ( FileUtils.getUserHome () );
             final List<File> files = CollectionUtils.asList ( home.length > 4 ? Arrays.copyOfRange ( home, 0, 4 ) : home );
             final WebFileTable table = new WebFileTable ( getStyleId (), files );
             return CollectionUtils.asList ( table );
@@ -101,7 +101,7 @@ public class WebFileTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ScrollableTable ( final StyleId styleId )
         {
@@ -127,7 +127,7 @@ public class WebFileTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public EditableTable ( final StyleId styleId )
         {

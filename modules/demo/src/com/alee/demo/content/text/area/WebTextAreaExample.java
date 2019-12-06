@@ -72,7 +72,7 @@ public class WebTextAreaExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public PromptArea ( final String id, final StyleId styleId )
         {
@@ -98,7 +98,7 @@ public class WebTextAreaExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public DecoratedArea ( final String id, final StyleId styleId )
         {

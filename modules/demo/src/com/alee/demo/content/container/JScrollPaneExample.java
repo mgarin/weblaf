@@ -90,7 +90,7 @@ public class JScrollPaneExample extends AbstractStylePreviewExample
          *
          * @param id           preview ID
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public BasicScrollPane ( final String id, final FeatureState featureState, final StyleId styleId )
         {

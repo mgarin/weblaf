@@ -17,6 +17,9 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -60,6 +63,7 @@ public enum TextRasterization
     /**
      * Text rendering hints offered by this text rasterization option.
      */
+    @Nullable
     private Map renderingHints;
 
     /**
@@ -114,7 +118,7 @@ public enum TextRasterization
      *
      * @param hints rendering hints
      */
-    private void setupHints ( final Map hints )
+    private void setupHints ( @Nullable final Map hints )
     {
         if ( hints != null )
         {
@@ -131,6 +135,7 @@ public enum TextRasterization
      *
      * @return default rendering hints
      */
+    @NotNull
     private Map getDefaultHints ()
     {
         return new RenderingHints ( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
@@ -141,6 +146,7 @@ public enum TextRasterization
      *
      * @return text rendering hints offered by this text rasterization option
      */
+    @Nullable
     public Map getRenderingHints ()
     {
         return renderingHints;

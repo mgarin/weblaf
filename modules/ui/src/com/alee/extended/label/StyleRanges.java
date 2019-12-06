@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -41,16 +43,19 @@ public class StyleRanges implements IStyleRanges
     /**
      * Text containing style syntax.
      */
+    @Nullable
     protected final String styledText;
 
     /**
      * Cached plain text extracted from {@link #styledText}.
      */
+    @Nullable
     protected String plainText;
 
     /**
      * Cached style ranges extracted from {@link #styledText}.
      */
+    @Nullable
     protected List<StyleRange> styleRanges;
 
     /**
@@ -58,21 +63,28 @@ public class StyleRanges implements IStyleRanges
      *
      * @param styledText text containing style syntax
      */
-    public StyleRanges ( final String styledText )
+    public StyleRanges ( @Nullable final String styledText )
     {
         this.styledText = styledText;
     }
 
+    @Nullable
     @Override
     public String getPlainText ()
     {
         return parseStyledText ().plainText;
     }
 
+    @NotNull
     @Override
     public List<StyleRange> getStyleRanges ()
     {
-        return parseStyledText ().styleRanges;
+        final List<StyleRange> styleRanges = parseStyledText ().styleRanges;
+        if ( styleRanges == null )
+        {
+            throw new RuntimeException ( "Unable to parse style ranges for text: " + styledText );
+        }
+        return styleRanges;
     }
 
     /**
@@ -81,13 +93,14 @@ public class StyleRanges implements IStyleRanges
      *
      * @return resulting {@link StyleRanges}
      */
+    @NotNull
     protected StyleRanges parseStyledText ()
     {
         // Parse only if it is needed and it wasn't already completed
         if ( styleRanges == null )
         {
             styleRanges = new ArrayList<StyleRange> ();
-            if ( !TextUtils.isEmpty ( styledText ) )
+            if ( TextUtils.notEmpty ( styledText ) )
             {
                 int begin = nextUnescaped ( styledText, "{", 0 );
                 if ( begin != -1 )
@@ -157,7 +170,7 @@ public class StyleRanges implements IStyleRanges
      * @param from    starting search index
      * @return next unescaped text that fits specified pattern
      */
-    protected int nextUnescaped ( final String text, final String pattern, final int from )
+    protected int nextUnescaped ( @NotNull final String text, @NotNull final String pattern, final int from )
     {
         // todo Enhance this syntax with an escape recognition, probably an "\\" one
         return text.indexOf ( pattern, from );
@@ -170,7 +183,8 @@ public class StyleRanges implements IStyleRanges
      * @param statement  {@link String} statement
      * @return {@link TextRange} parsed from statement
      */
-    protected TextRange parseStatement ( final int startIndex, final String statement )
+    @Nullable
+    protected TextRange parseStatement ( final int startIndex, @NotNull final String statement )
     {
         TextRange textRange = null;
         try
@@ -205,7 +219,8 @@ public class StyleRanges implements IStyleRanges
      * @param settings   {@link String} style settings
      * @return {@link IStyleSettings} implementation which will resolve style settings
      */
-    protected IStyleSettings getStyleSettings ( final int startIndex, final int length, final String settings )
+    @NotNull
+    protected IStyleSettings getStyleSettings ( final int startIndex, final int length, @NotNull final String settings )
     {
         return new StyleSettings ( startIndex, length, settings );
     }

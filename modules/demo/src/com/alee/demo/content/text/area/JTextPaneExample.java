@@ -81,7 +81,7 @@ public class JTextPaneExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicPane ( final String id, final StyleId styleId )
         {
@@ -108,7 +108,7 @@ public class JTextPaneExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ScrollablePane ( final String id, final StyleId styleId )
         {
@@ -135,7 +135,7 @@ public class JTextPaneExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param id      preview ID
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ReadOnlyPane ( final String id, final StyleId styleId )
         {

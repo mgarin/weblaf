@@ -78,7 +78,7 @@ public class WebCanvas extends WebComponent<WebCanvas, WCanvasUI> implements Sta
     /**
      * Constructs new {@link WebCanvas}.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param states custom {@link WebCanvas} states
      */
     public WebCanvas ( @NotNull final StyleId id, @Nullable final String... states )

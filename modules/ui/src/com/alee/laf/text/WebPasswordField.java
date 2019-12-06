@@ -116,7 +116,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
     /**
      * Constructs new password field.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebPasswordField ( final StyleId id )
     {
@@ -126,7 +126,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
     /**
      * Constructs new password field.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param password initially entered password
      */
     public WebPasswordField ( final StyleId id, final String password )
@@ -137,7 +137,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
     /**
      * Constructs new password field.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param columns number of columns used to calculate field preferred width
      */
     public WebPasswordField ( final StyleId id, final int columns )
@@ -148,7 +148,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
     /**
      * Constructs new password field.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param password initially entered password
      * @param columns  number of columns used to calculate field preferred width
      */
@@ -160,7 +160,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
     /**
      * Constructs new password field.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param doc      password storage to use
      * @param password initially entered password
      * @param columns  number of columns used to calculate field preferred width

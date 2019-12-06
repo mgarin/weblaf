@@ -124,7 +124,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
     /**
      * Constructs new text area.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebTextArea ( final StyleId id )
     {
@@ -134,7 +134,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
     /**
      * Constructs new text area.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text initially displayed text
      */
     public WebTextArea ( final StyleId id, final String text )
@@ -145,7 +145,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
     /**
      * Constructs new text area.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param rows    number of rows used to calculate area preferred height
      * @param columns number of columns used to calculate area preferred width
      */
@@ -157,7 +157,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
     /**
      * Constructs new text area.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param text    initially displayed text
      * @param rows    number of rows used to calculate area preferred height
      * @param columns number of columns used to calculate area preferred width
@@ -170,7 +170,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
     /**
      * Constructs new text area.
      *
-     * @param id  style ID
+     * @param id  {@link StyleId}
      * @param doc text storage to use
      */
     public WebTextArea ( final StyleId id, final Document doc )
@@ -181,7 +181,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, P
     /**
      * Constructs new text area.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param doc     text storage to use
      * @param text    initially displayed text
      * @param rows    number of rows used to calculate area preferred height

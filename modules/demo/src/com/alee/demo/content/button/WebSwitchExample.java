@@ -71,7 +71,7 @@ public class WebSwitchExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public TextSwitch ( final StyleId styleId )
         {
@@ -96,7 +96,7 @@ public class WebSwitchExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public IconSwitch ( final StyleId styleId )
         {

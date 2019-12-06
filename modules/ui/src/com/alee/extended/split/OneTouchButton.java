@@ -43,7 +43,7 @@ public class OneTouchButton extends WebButton implements Stateful
     /**
      * Constructs new {@link OneTouchButton}.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param divider {@link WebMultiSplitPaneDivider} this button is attached to
      */
     public OneTouchButton ( final StyleId id, final WebMultiSplitPaneDivider divider )

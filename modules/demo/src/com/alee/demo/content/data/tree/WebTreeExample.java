@@ -76,7 +76,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicTree ( final StyleId styleId )
         {
@@ -101,7 +101,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public EditableTree ( final StyleId styleId )
         {
@@ -127,7 +127,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public TreeTooltips ( final StyleId styleId )
         {
@@ -161,7 +161,7 @@ public class WebTreeExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public DragAndDropTree ( final StyleId styleId )
         {

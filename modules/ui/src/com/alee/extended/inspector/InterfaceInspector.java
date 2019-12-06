@@ -89,7 +89,7 @@ public class InterfaceInspector extends WebPanel
     /**
      * Constructs new empty {@link InterfaceInspector}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public InterfaceInspector ( @NotNull final StyleId id )
     {
@@ -99,7 +99,7 @@ public class InterfaceInspector extends WebPanel
     /**
      * Constructs new {@link InterfaceInspector} for the specified {@link Component} and its childrens tree.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param inspected {@link Component} to inspect
      */
     public InterfaceInspector ( @NotNull final StyleId id, @Nullable final Component inspected )

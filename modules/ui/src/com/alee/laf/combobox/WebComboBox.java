@@ -213,7 +213,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebComboBox ( final StyleId id )
     {
@@ -223,7 +223,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param items combobox items
      */
     public WebComboBox ( final StyleId id, final Collection<?> items )
@@ -234,7 +234,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param items    combobox items
      * @param selected selected index
      */
@@ -246,7 +246,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param items    combobox items
      * @param selected selected item
      */
@@ -258,7 +258,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param items combobox items
      */
     public WebComboBox ( final StyleId id, final Vector<?> items )
@@ -269,7 +269,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param items    combobox items
      * @param selected selected index
      */
@@ -281,7 +281,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param items    combobox items
      * @param selected selected item
      */
@@ -293,7 +293,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param items combobox items
      */
     public WebComboBox ( final StyleId id, final Object[] items )
@@ -304,7 +304,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param items    combobox items
      * @param selected selected index
      */
@@ -316,7 +316,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param items    combobox items
      * @param selected selected item
      */
@@ -328,7 +328,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param model    combobox model
      * @param selected selected index
      */
@@ -341,7 +341,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param model    combobox model
      * @param selected selected item
      */
@@ -354,7 +354,7 @@ public class WebComboBox extends JComboBox implements Styleable, Paintable, Shap
     /**
      * Constructs new combobox.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model combobox model
      */
     public WebComboBox ( final StyleId id, final ComboBoxModel model )

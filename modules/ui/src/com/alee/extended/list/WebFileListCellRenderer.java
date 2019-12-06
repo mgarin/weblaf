@@ -209,7 +209,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
         final FileElement element = ( FileElement ) value;
         final File file = element.getFile ();
 
-        // Updating style ID
+        // Updating style identifier
         setStyleId ( getStyleId ( list, value, index, isSelected, cellHasFocus ) );
 
         // Renderer icon
@@ -248,7 +248,7 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
             // Settings description
             final FileDescription fileDescription = FileUtils.getFileDescription ( file, imageSize );
             final String name = fileDescription.getName ();
-            nameLabel.setText ( !TextUtils.isEmpty ( name ) ? name : " " );
+            nameLabel.setText ( TextUtils.notEmpty ( name ) ? name : " " );
 
             // Updating tile view additional description
             if ( isTilesView () )
@@ -282,14 +282,14 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
     }
 
     /**
-     * Returns style ID for specific list cell.
+     * Returns {@link StyleId} for specific list cell.
      *
      * @param list         tree
      * @param value        cell value
      * @param index        cell index
      * @param isSelected   whether cell is selected or not
      * @param cellHasFocus whether cell has focus or not
-     * @return style ID for specific list cell
+     * @return {@link StyleId} for specific list cell
      */
     @NotNull
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
@@ -322,8 +322,8 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
             final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
             final Insets i = getInsets ();
             final boolean tilesView = isTilesView ();
-            final boolean hasDescription = tilesView && !TextUtils.isEmpty ( descriptionLabel.getText () );
-            final boolean hasFileSize = tilesView && !TextUtils.isEmpty ( sizeLabel.getText () );
+            final boolean hasDescription = tilesView && TextUtils.notEmpty ( descriptionLabel.getText () );
+            final boolean hasFileSize = tilesView && TextUtils.notEmpty ( sizeLabel.getText () );
 
             // Updating elements visibility
             descriptionLabel.setVisible ( hasDescription );

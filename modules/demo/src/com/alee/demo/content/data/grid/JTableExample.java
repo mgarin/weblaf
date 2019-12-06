@@ -81,7 +81,7 @@ public class JTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicTable ( final StyleId styleId )
         {
@@ -106,7 +106,7 @@ public class JTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ScrollableTable ( final StyleId styleId )
         {
@@ -132,7 +132,7 @@ public class JTableExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public EditableTable ( final StyleId styleId )
         {

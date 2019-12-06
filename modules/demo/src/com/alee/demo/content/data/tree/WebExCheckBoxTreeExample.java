@@ -77,7 +77,7 @@ public class WebExCheckBoxTreeExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicTree ( final StyleId styleId )
         {
@@ -103,7 +103,7 @@ public class WebExCheckBoxTreeExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public CustomizedTree ( final StyleId styleId )
         {

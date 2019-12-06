@@ -17,6 +17,8 @@
 
 package com.alee.managers.icon.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.icon.IconManager;
 import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
@@ -41,12 +43,9 @@ import javax.swing.*;
 public class SetIcon<C extends JComponent, D extends IDecoration<C, D>, I extends SetIcon<C, D, I>> extends AbstractIconContent<C, D, I>
 {
     /**
-     * todo 1. Rename to something more convenient
-     */
-
-    /**
      * Unique set icon ID.
      */
+    @Nullable
     @XStreamAsAttribute
     protected String icon;
 
@@ -55,20 +54,19 @@ public class SetIcon<C extends JComponent, D extends IDecoration<C, D>, I extend
      *
      * @return set icon ID
      */
+    @NotNull
     protected String getIconId ()
     {
-        if ( !TextUtils.isEmpty ( icon ) )
+        if ( TextUtils.isEmpty ( icon ) )
         {
-            return icon;
+            throw new DecorationException ( "Icon identifier must be specified" );
         }
-        else
-        {
-            throw new DecorationException ( "Set icon ID must be specified" );
-        }
+        return icon;
     }
 
+    @Nullable
     @Override
-    protected Icon getIcon ( final C c, final D d )
+    protected Icon getIcon ( @NotNull final C c, @NotNull final D d )
     {
         return IconManager.getIcon ( getIconId () );
     }

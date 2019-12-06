@@ -52,7 +52,7 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     /**
      * Constructs new viewport component.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebViewport ( final StyleId id )
     {

@@ -209,7 +209,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     /**
      * Returns properly styled and configured scroll.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      * @return properly styled and configured scroll
      */
     @NotNull

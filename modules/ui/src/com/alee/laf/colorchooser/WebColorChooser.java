@@ -84,7 +84,7 @@ public class WebColorChooser extends JColorChooser implements Styleable, Paintab
     /**
      * Constructs new color chooser.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebColorChooser ( final StyleId id )
     {
@@ -94,7 +94,7 @@ public class WebColorChooser extends JColorChooser implements Styleable, Paintab
     /**
      * Constructs new color chooser.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param initialColor initially selected color
      */
     public WebColorChooser ( final StyleId id, final Color initialColor )
@@ -105,7 +105,7 @@ public class WebColorChooser extends JColorChooser implements Styleable, Paintab
     /**
      * Constructs new color chooser.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model color selection model
      */
     public WebColorChooser ( final StyleId id, final ColorSelectionModel model )

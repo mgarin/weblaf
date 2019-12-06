@@ -56,7 +56,7 @@ public abstract class AbstractTitleLabel extends WebStyledLabel implements State
     /**
      * Constructs new {@link AbstractTitleLabel}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public AbstractTitleLabel ( @NotNull final StyleId id )
     {

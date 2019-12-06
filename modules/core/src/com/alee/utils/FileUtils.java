@@ -507,6 +507,18 @@ public final class FileUtils
      * Returns directory files array or empty array (instead of null) if no files present.
      *
      * @param directory  directory to look into
+     * @return directory files array or empty array (instead of null) if no files present
+     */
+    @NotNull
+    public static File[] listFiles ( @NotNull final File directory )
+    {
+        return listFiles ( directory, ( FileFilter ) null );
+    }
+
+    /**
+     * Returns directory files array or empty array (instead of null) if no files present.
+     *
+     * @param directory  directory to look into
      * @param fileFilter file filter
      * @return directory files array or empty array (instead of null) if no files present
      */
@@ -533,7 +545,7 @@ public final class FileUtils
     @NotNull
     public static File[] listFiles ( @NotNull final File directory, @Nullable final FileFilter fileFilter )
     {
-        final File[] files = directory.listFiles ( fileFilter );
+        final File[] files = fileFilter != null ? directory.listFiles ( fileFilter ) : directory.listFiles ();
         return files != null ? files : new File[ 0 ];
     }
 
@@ -1026,7 +1038,7 @@ public final class FileUtils
     public static String getFileNamePart ( @Nullable final String name )
     {
         final String namePart;
-        if ( !TextUtils.isEmpty ( name ) )
+        if ( TextUtils.notEmpty ( name ) )
         {
             final int first = name.indexOf ( "." );
             final int last = name.lastIndexOf ( "." );
@@ -1063,7 +1075,7 @@ public final class FileUtils
     public static String getFileExtPart ( @Nullable final String name, final boolean withDot )
     {
         final String ext;
-        if ( !TextUtils.isEmpty ( name ) )
+        if ( TextUtils.notEmpty ( name ) )
         {
             final int i = name.lastIndexOf ( "." );
             ext = i == -1 ? "" : withDot ? name.substring ( i ) : name.substring ( i + 1 );

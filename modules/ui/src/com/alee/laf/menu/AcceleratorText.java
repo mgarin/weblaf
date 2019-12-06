@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
@@ -38,36 +39,38 @@ import java.awt.*;
 public class AcceleratorText<C extends JMenuItem, D extends IDecoration<C, D>, I extends AcceleratorText<C, D, I>>
         extends AbstractTextContent<C, D, I>
 {
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
         return id != null ? id : "accelerator";
     }
 
+    @NotNull
     @Override
-    protected Color getColor ( final C c, final D d )
+    protected Color getColor ( @NotNull final C c, @NotNull final D d )
     {
         // We're not interested in prioritizing component custom foreground in this text
         return color != null ? color : getCustomColor ( c, d );
     }
 
     @Override
-    public boolean hasContentBaseline ( final C c, final D d )
+    public boolean hasContentBaseline ( @NotNull final C c, @NotNull final D d )
     {
         // Return false not to interfere with menu item text
         return false;
     }
 
+    @Nullable
     @Override
-    protected String getText ( final C c, final D d )
+    protected String getText ( @NotNull final C c, @NotNull final D d )
     {
         final KeyStroke accelerator = c.getAccelerator ();
         return accelerator != null ? SwingUtils.hotkeyToString ( accelerator ) : null;
     }
 
     @Override
-    protected int getMnemonicIndex ( final C c, final D d )
+    protected int getMnemonicIndex ( @NotNull final C c, @NotNull final D d )
     {
         return -1;
     }

@@ -77,7 +77,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public SwingTooltips ( final FeatureState featureState, final StyleId styleId )
         {
@@ -113,7 +113,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public FullRowSwingTooltips ( final FeatureState featureState, final StyleId styleId )
         {
@@ -149,7 +149,7 @@ public class TreeTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public CustomTooltips ( final FeatureState featureState, final StyleId styleId )
         {

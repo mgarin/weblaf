@@ -396,7 +396,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
             if ( component != null && component instanceof JComponent )
             {
                 final String hotkeyText = HotkeyManager.getComponentHotkeysString ( ( JComponent ) component );
-                if ( !TextUtils.isEmpty ( hotkeyText ) )
+                if ( TextUtils.notEmpty ( hotkeyText ) )
                 {
                     // Updating hotkey
                     hotkey.setText ( hotkeyText );

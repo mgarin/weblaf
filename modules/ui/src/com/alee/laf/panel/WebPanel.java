@@ -90,9 +90,9 @@ public class WebPanel extends JPanel implements Styleable, Paintable, ShapeMetho
     }
 
     /**
-     * Constructs new panel with the specified style ID.
+     * Constructs new panel with the specified {@link StyleId}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebPanel ( final StyleId id )
     {
@@ -100,9 +100,9 @@ public class WebPanel extends JPanel implements Styleable, Paintable, ShapeMetho
     }
 
     /**
-     * Constructs new panel with the specified style ID.
+     * Constructs new panel with the specified {@link StyleId}.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param component component to add into panel
      */
     public WebPanel ( final StyleId id, final Component component )
@@ -111,9 +111,9 @@ public class WebPanel extends JPanel implements Styleable, Paintable, ShapeMetho
     }
 
     /**
-     * Constructs new panel with the specified style ID.
+     * Constructs new panel with the specified {@link StyleId}.
      *
-     * @param id         style ID
+     * @param id         {@link StyleId}
      * @param layout     panel layout
      * @param components components to add into panel
      */

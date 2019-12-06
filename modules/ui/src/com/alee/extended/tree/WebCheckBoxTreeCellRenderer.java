@@ -138,7 +138,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
     }
 
     /**
-     * Updates tree cell renderer component style ID.
+     * Updates tree cell renderer component {@link StyleId}.
      *
      * @param parameters {@link CheckBoxTreeNodeParameters}
      */
@@ -246,7 +246,7 @@ public class WebCheckBoxTreeCellRenderer<N extends MutableTreeNode, C extends We
         // Updating custom states
         updateStates ( parameters );
 
-        // Updating style ID
+        // Updating style identifier
         updateStyleId ( parameters );
 
         // Updating renderer view

@@ -207,7 +207,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs empty label.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebStyledLabel ( final StyleId id )
     {
@@ -217,7 +217,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param horizontalAlignment horizontal alignment
      */
     public WebStyledLabel ( final StyleId id, final int horizontalAlignment )
@@ -228,7 +228,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon icon
      */
     public WebStyledLabel ( final StyleId id, final Icon icon )
@@ -239,7 +239,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param icon                label icon
      * @param horizontalAlignment horizontal alignment
      */
@@ -251,7 +251,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text text or translation key
      */
     public WebStyledLabel ( final StyleId id, final String text )
@@ -262,7 +262,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param text                text or translation key
      * @param horizontalAlignment horizontal alignment
      * @param data                language data, may not be passed
@@ -275,7 +275,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text text or translation key
      * @param icon label icon
      */
@@ -287,7 +287,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     /**
      * Constructs label with the specified preferences.
      *
-     * @param id                  style ID
+     * @param id                  {@link StyleId}
      * @param text                text or translation key
      * @param icon                label icon
      * @param horizontalAlignment horizontal alignment
@@ -308,7 +308,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
     }
 
     @Override
-    public void setText ( final String text )
+    public void setText ( @Nullable final String text )
     {
         // Parsing styles
         final IStyleRanges styleRanges = getStyleRanges ( text );
@@ -327,7 +327,8 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      * @param text text containing style syntax
      * @return style ranges implementation used to parse style syntax
      */
-    protected IStyleRanges getStyleRanges ( final String text )
+    @NotNull
+    protected IStyleRanges getStyleRanges ( @Nullable final String text )
     {
         return new StyleRanges ( text );
     }
@@ -337,6 +338,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @return added style ranges
      */
+    @NotNull
     public List<StyleRange> getStyleRanges ()
     {
         return CollectionUtils.copy ( getStyleRangesImpl () );
@@ -347,7 +349,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRange new style range
      */
-    public void addStyleRange ( final StyleRange styleRange )
+    public void addStyleRange ( @NotNull final StyleRange styleRange )
     {
         addStyleRangeImpl ( styleRange );
         firePropertyChange ( STYLE_RANGES_PROPERTY, null, styleRange );
@@ -358,7 +360,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRanges new style ranges list
      */
-    public void addStyleRanges ( final List<StyleRange> styleRanges )
+    public void addStyleRanges ( @Nullable final List<StyleRange> styleRanges )
     {
         addStyleRangesImpl ( styleRanges );
         firePropertyChange ( STYLE_RANGES_PROPERTY, null, styleRanges );
@@ -369,7 +371,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRange style range to remove
      */
-    public void removeStyleRange ( final StyleRange styleRange )
+    public void removeStyleRange ( @NotNull final StyleRange styleRange )
     {
         removeStyleRangeImpl ( styleRange );
         firePropertyChange ( STYLE_RANGES_PROPERTY, styleRange, null );
@@ -380,7 +382,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRanges style ranges to remove
      */
-    public void removeStyleRanges ( final List<StyleRange> styleRanges )
+    public void removeStyleRanges ( @Nullable final List<StyleRange> styleRanges )
     {
         removeStyleRangesImpl ( styleRanges );
         firePropertyChange ( STYLE_RANGES_PROPERTY, styleRanges, null );
@@ -391,7 +393,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRanges new style ranges
      */
-    public void setStyleRanges ( final List<StyleRange> styleRanges )
+    public void setStyleRanges ( @Nullable final List<StyleRange> styleRanges )
     {
         clearStyleRangesImpl ();
         addStyleRangesImpl ( styleRanges );
@@ -412,6 +414,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @return added style ranges
      */
+    @NotNull
     protected List<StyleRange> getStyleRangesImpl ()
     {
         if ( styleRanges == null )
@@ -426,7 +429,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRange new style range
      */
-    protected void addStyleRangeImpl ( final StyleRange styleRange )
+    protected void addStyleRangeImpl ( @NotNull final StyleRange styleRange )
     {
         getStyleRangesImpl ().add ( styleRange );
     }
@@ -436,7 +439,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRanges new style ranges list
      */
-    protected void addStyleRangesImpl ( final List<StyleRange> styleRanges )
+    protected void addStyleRangesImpl ( @Nullable final List<StyleRange> styleRanges )
     {
         if ( CollectionUtils.notEmpty ( styleRanges ) )
         {
@@ -452,7 +455,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRange style range to remove
      */
-    protected void removeStyleRangeImpl ( final StyleRange styleRange )
+    protected void removeStyleRangeImpl ( @NotNull final StyleRange styleRange )
     {
         if ( !getStyleRangesImpl ().remove ( styleRange ) )
         {
@@ -473,9 +476,9 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param styleRanges style ranges to remove
      */
-    protected void removeStyleRangesImpl ( final List<StyleRange> styleRanges )
+    protected void removeStyleRangesImpl ( @Nullable final List<StyleRange> styleRanges )
     {
-        if ( styleRanges != null )
+        if ( CollectionUtils.notEmpty ( styleRanges ) )
         {
             for ( final StyleRange styleRange : styleRanges )
             {
@@ -497,6 +500,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @return text wrapping type
      */
+    @NotNull
     public TextWrap getWrap ()
     {
         return wrap != null ? wrap : TextWrap.none;
@@ -507,7 +511,7 @@ public class WebStyledLabel extends JLabel implements Styleable, Paintable, Shap
      *
      * @param wrap text wrapping type
      */
-    public void setWrap ( final TextWrap wrap )
+    public void setWrap ( @Nullable final TextWrap wrap )
     {
         final TextWrap old = this.wrap;
         this.wrap = wrap;

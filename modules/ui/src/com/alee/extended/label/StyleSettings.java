@@ -17,6 +17,8 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.xml.ColorConverter;
 
 import java.awt.*;
@@ -66,6 +68,7 @@ public class StyleSettings implements IStyleSettings
     /**
      * Style settings.
      */
+    @NotNull
     protected final String settings;
 
     /**
@@ -73,14 +76,14 @@ public class StyleSettings implements IStyleSettings
      * @param length     {@link StyleRange} length
      * @param settings   style settings
      */
-    public StyleSettings ( final int startIndex, final int length, final String settings )
+    public StyleSettings ( final int startIndex, final int length, @NotNull final String settings )
     {
-        super ();
         this.startIndex = startIndex;
         this.length = length;
         this.settings = settings;
     }
 
+    @Nullable
     @Override
     public StyleRange getStyleRange ()
     {
@@ -153,18 +156,18 @@ public class StyleSettings implements IStyleSettings
         }
 
         // Checking styles existence
+        final StyleRange styleRange;
         if ( p || b || i || fg != null || bg != null || customStyles.size () > 0 )
         {
-            // Creating style
             final int style = b && i ? Font.BOLD | Font.ITALIC : b ? Font.BOLD : i ? Font.ITALIC : p ? Font.PLAIN : -1;
             final CustomStyle[] cs = customStyles.toArray ( new CustomStyle[ customStyles.size () ] );
-            return new StyleRange ( startIndex, length, style, fg, bg, cs );
+            styleRange = new StyleRange ( startIndex, length, style, fg, bg, cs );
         }
         else
         {
-            // No style available
-            return null;
+            styleRange = null;
         }
+        return styleRange;
     }
 
     /**
@@ -173,8 +176,10 @@ public class StyleSettings implements IStyleSettings
      * @param statement {@link String} statement
      * @return {@link Color} parsed from statement
      */
-    protected Color parseColor ( final String statement )
+    @Nullable
+    protected Color parseColor ( @NotNull final String statement )
     {
+        Color color = null;
         final int i1 = statement.indexOf ( "(" );
         final int i2 = statement.lastIndexOf ( ")" );
         if ( i1 != -1 && i2 != -1 )
@@ -182,16 +187,12 @@ public class StyleSettings implements IStyleSettings
             try
             {
                 final String colorString = statement.substring ( i1 + 1, i2 );
-                return ColorConverter.colorFromString ( colorString );
+                color = ColorConverter.colorFromString ( colorString );
             }
-            catch ( final Exception e )
+            catch ( final Exception ignored )
             {
-                return null;
             }
         }
-        else
-        {
-            return null;
-        }
+        return color;
     }
 }

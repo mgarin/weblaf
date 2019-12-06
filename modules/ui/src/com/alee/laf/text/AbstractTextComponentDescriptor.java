@@ -45,7 +45,7 @@ public class AbstractTextComponentDescriptor<C extends JTextComponent, U extends
      * @param uiClassID      component UI class ID
      * @param baseUIClass    base UI class applicable to this component
      * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default style ID
+     * @param defaultStyleId component default {@link StyleId}
      */
     public AbstractTextComponentDescriptor ( final String id, final Class<C> componentClass, final String uiClassID,
                                              final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )

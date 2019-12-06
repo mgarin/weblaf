@@ -408,7 +408,7 @@ public class WebSplitPaneDivider extends WebContainer<WebSplitPaneDivider, WSpli
         /**
          * Constructs new {@link OneTouchButton}.
          *
-         * @param id style ID
+         * @param id {@link StyleId}
          */
         public OneTouchButton ( final StyleId id )
         {

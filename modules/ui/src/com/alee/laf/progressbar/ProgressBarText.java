@@ -17,6 +17,8 @@
 
 package com.alee.laf.progressbar;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractTextContent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -36,19 +38,20 @@ public class ProgressBarText<C extends JProgressBar, D extends IDecoration<C, D>
         extends AbstractTextContent<C, D, I>
 {
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return !c.isStringPainted () || super.isEmpty ( c, d );
     }
 
+    @Nullable
     @Override
-    protected String getText ( final C c, final D d )
+    protected String getText ( @NotNull final C c, @NotNull final D d )
     {
         return c.getString ();
     }
 
     @Override
-    protected int getMnemonicIndex ( final C c, final D d )
+    protected int getMnemonicIndex ( @NotNull final C c, @NotNull final D d )
     {
         return -1;
     }

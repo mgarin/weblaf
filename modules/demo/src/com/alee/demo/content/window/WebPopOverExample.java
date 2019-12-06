@@ -91,7 +91,7 @@ public class WebPopOverExample extends AbstractStylePreviewExample
          *
          * @param id      preview ID
          * @param state   preview feature state
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public PopOverPreview ( final String id, final FeatureState state, final StyleId styleId )
         {

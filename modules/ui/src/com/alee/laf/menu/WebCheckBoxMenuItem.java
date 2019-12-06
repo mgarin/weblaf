@@ -199,7 +199,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action menu item action
      */
     public WebCheckBoxMenuItem ( final StyleId id, final Action action )
@@ -211,7 +211,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebCheckBoxMenuItem ( final StyleId id )
     {
@@ -221,7 +221,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon menu item icon
      */
     public WebCheckBoxMenuItem ( final StyleId id, final Icon icon )
@@ -232,7 +232,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu item text
      */
     public WebCheckBoxMenuItem ( final StyleId id, final String text )
@@ -243,7 +243,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param accelerator menu item accelerator
      */
@@ -255,7 +255,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param accelerator menu item accelerator
      */
@@ -267,7 +267,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     menu item text
      * @param selected whether this checkbox item is selected or not
      */
@@ -279,7 +279,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu item text
      * @param icon menu item icon
      */
@@ -291,7 +291,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     menu item text
      * @param icon     menu item icon
      * @param selected whether this checkbox item is selected or not
@@ -304,7 +304,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param accelerator menu item accelerator
@@ -317,7 +317,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param accelerator menu item accelerator
@@ -330,7 +330,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param selected    whether this checkbox item is selected or not
@@ -345,7 +345,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param selected    whether this checkbox item is selected or not

@@ -74,7 +74,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param id           preview style ID
+         * @param id           preview {@link StyleId}
          */
         public MixedGrouping ( final FeatureState featureState, final StyleId id )
         {
@@ -104,7 +104,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param id           preview style ID
+         * @param id           preview {@link StyleId}
          */
         public GridGrouping ( final FeatureState featureState, final StyleId id )
         {
@@ -145,7 +145,7 @@ public class GroupPaneExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param id           preview style ID
+         * @param id           preview {@link StyleId}
          */
         public ButtonsGrouping ( final FeatureState featureState, final StyleId id )
         {

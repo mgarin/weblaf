@@ -19,6 +19,7 @@ package com.alee.laf.checkbox;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
@@ -41,28 +42,20 @@ import java.awt.geom.GeneralPath;
 public class CheckIcon<C extends AbstractButton, D extends IDecoration<C, D>, I extends CheckIcon<C, D, I>> extends AbstractContent<C, D, I>
 {
     /**
-     * todo 1. Move check shape into some kind of settings presented in XML
+     * Shape {@link Stroke}.
      */
-
-    /**
-     * Preferred icon size.
-     */
-    @XStreamAsAttribute
-    protected Dimension size;
-
-    /**
-     * Check icon shape stroke.
-     */
+    @Nullable
     @XStreamAsAttribute
     protected Stroke stroke;
 
     /**
-     * Check icon color.
+     * Shape {@link Color}.
      */
+    @Nullable
     @XStreamAsAttribute
     protected Color color;
 
-    @Nullable
+    @NotNull
     @Override
     public String getId ()
     {
@@ -70,34 +63,61 @@ public class CheckIcon<C extends AbstractButton, D extends IDecoration<C, D>, I 
     }
 
     @Override
-    public boolean isEmpty ( final C c, final D d )
+    public boolean isEmpty ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
 
+    /**
+     * Returns shape {@link Stroke}.
+     *
+     * @param c {@link AbstractButton} that is being painted
+     * @param d {@link IDecoration} state
+     * @return shape {@link Stroke}
+     */
+    @Nullable
+    public Stroke getStroke ( @NotNull final C c, @NotNull final D d )
+    {
+        return stroke;
+    }
+
+    /**
+     * Returns shape {@link Color}.
+     *
+     * @param c {@link AbstractButton} that is being painted
+     * @param d {@link IDecoration} state
+     * @return shape {@link Color}
+     */
+    @NotNull
+    public Color getColor ( @NotNull final C c, @NotNull final D d )
+    {
+        if ( color == null )
+        {
+            throw new DecorationException ( "Shape color must be specified" );
+        }
+        return color;
+    }
+
     @Override
-    protected void paintContent ( final Graphics2D g2d, final C c, final D d, final Rectangle bounds )
+    protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final D d, @NotNull final Rectangle bounds )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
         final Paint op = GraphicsUtils.setupPaint ( g2d, color );
 
-        final int w = bounds.width;
-        final int h = bounds.height;
-        final int x = bounds.x;
-        final int y = bounds.y;
         final GeneralPath gp = new GeneralPath ();
-        gp.moveTo ( x + w * 0.1875, y + h * 0.375 );
-        gp.lineTo ( x + w * 0.4575, y + h * 0.6875 );
-        gp.lineTo ( x + w * 0.875, y + h * 0.125 );
+        gp.moveTo ( bounds.x + bounds.width * 0.1875, bounds.y + bounds.height * 0.375 );
+        gp.lineTo ( bounds.x + bounds.width * 0.4575, bounds.y + bounds.height * 0.6875 );
+        gp.lineTo ( bounds.x + bounds.width * 0.875, bounds.y + bounds.height * 0.125 );
         g2d.draw ( gp );
 
         GraphicsUtils.restorePaint ( g2d, op );
         GraphicsUtils.restoreStroke ( g2d, os );
     }
 
+    @NotNull
     @Override
-    protected Dimension getContentPreferredSize ( final C c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
-        return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
+        return new Dimension ( 0, 0 );
     }
 }

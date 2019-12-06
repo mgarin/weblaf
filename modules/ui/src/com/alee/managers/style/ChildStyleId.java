@@ -24,7 +24,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Component style ID container that can be used for convenient {@link StyleId} construction.
+ * Component {@link StyleId} container that can be used for convenient {@link StyleId} construction.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -40,7 +40,7 @@ public final class ChildStyleId
     private final String id;
 
     /**
-     * Constructs new child style ID container.
+     * Constructs new child {@link StyleId} container.
      *
      * @param id style identifier
      */

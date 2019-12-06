@@ -37,7 +37,7 @@ public class WebCheckBoxListElement extends WebCheckBox
     /**
      * Constructs default checkbox list cell renderer element in the specified state.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param selected whether or not checkbox is selected
      */
     public WebCheckBoxListElement ( final StyleId id, final boolean selected )

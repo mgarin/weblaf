@@ -253,7 +253,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     public void propertyChange ( @NotNull final PropertyChangeEvent event )
     {
         /**
-         * Since hover state might be dependant on enabled state we have to update it properly.
+         * Since hover state might be dependent on enabled state we have to update it properly.
          */
         if ( enabledOnly )
         {

@@ -143,8 +143,8 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     }
 
     /**
-     * Performs table header style ID update.
-     * This method helps to keep header style ID in sync with table style.
+     * Performs table header {@link StyleId} update.
+     * This method helps to keep header {@link StyleId} in sync with table style.
      */
     protected void updateTableHeaderStyleId ()
     {

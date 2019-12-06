@@ -79,7 +79,7 @@ public class JTooltipExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public BasicTooltip ( final FeatureState featureState, final StyleId styleId )
         {

@@ -126,7 +126,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     /**
      * Constructs new formatted text field.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebFormattedTextField ( final StyleId id )
     {
@@ -137,7 +137,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     /**
      * Constructs new formatted text field.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param value initial value
      */
     public WebFormattedTextField ( final StyleId id, final Object value )
@@ -149,7 +149,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     /**
      * Constructs new formatted text field.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param factory factory used for formatting
      */
     public WebFormattedTextField ( final StyleId id, final AbstractFormatterFactory factory )
@@ -161,7 +161,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     /**
      * Constructs new formatted text field.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param factory factory used for formatting
      * @param value   initial value
      */
@@ -174,7 +174,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     /**
      * Constructs new formatted text field.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param format format used to look up a formatter
      */
     public WebFormattedTextField ( final StyleId id, final Format format )
@@ -186,7 +186,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
     /**
      * Constructs new formatted text field.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param formatter formatter to use for formatting
      */
     public WebFormattedTextField ( final StyleId id, final AbstractFormatter formatter )

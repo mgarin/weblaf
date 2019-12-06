@@ -75,7 +75,7 @@ public class WebDateFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public DateField ( @NotNull final StyleId styleId )
         {

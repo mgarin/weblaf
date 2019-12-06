@@ -97,7 +97,7 @@ public class JTabbedPaneExample extends AbstractStylePreviewExample
          * Constructs new {@link TabbedPanePreview}.
          *
          * @param id           preview ID
-         * @param styleId      style ID
+         * @param styleId      {@link StyleId}
          * @param featureState feature state
          * @param tabPlacement tab placement
          */

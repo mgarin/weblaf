@@ -30,7 +30,7 @@ import javax.swing.*;
 public class JMenuBarGenerator extends AbstractMenuGenerator<JMenuBar>
 {
     /**
-     * Constructs new menu bar generator using default menu bar.
+     * Constructs new {@link JMenuBarGenerator} using default {@link JMenuBar}.
      */
     public JMenuBarGenerator ()
     {
@@ -38,9 +38,9 @@ public class JMenuBarGenerator extends AbstractMenuGenerator<JMenuBar>
     }
 
     /**
-     * Constructs new menu bar generator using menu bar with the specified style.
+     * Constructs new {@link JMenuBarGenerator} using {@link JMenuBar} with the specified {@link StyleId}.
      *
-     * @param id menu bar style ID
+     * @param id {@link JMenuBar} {@link StyleId}
      */
     public JMenuBarGenerator ( final StyleId id )
     {
@@ -49,9 +49,9 @@ public class JMenuBarGenerator extends AbstractMenuGenerator<JMenuBar>
     }
 
     /**
-     * Constructs new menu bar generator using specified menu bar.
+     * Constructs new {@link JMenuBarGenerator} using specified {@link JMenuBar}.
      *
-     * @param menu menu bar
+     * @param menu {@link JMenuBar}
      */
     public JMenuBarGenerator ( final JMenuBar menu )
     {

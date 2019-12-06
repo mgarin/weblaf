@@ -107,7 +107,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     /**
      * Constructs new {@link WebMultiSplitPane}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebMultiSplitPane ( @NotNull final StyleId id )
     {
@@ -117,7 +117,7 @@ public class WebMultiSplitPane extends WebContainer<WebMultiSplitPane, WMultiSpl
     /**
      * Constructs new {@link WebMultiSplitPane}.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param orientation split {@link Orientation}
      */
     public WebMultiSplitPane ( @NotNull final StyleId id, @Nullable final Orientation orientation )

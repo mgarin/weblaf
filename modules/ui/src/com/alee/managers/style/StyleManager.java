@@ -791,7 +791,7 @@ public final class StyleManager
      */
     public static boolean isSupported ( @NotNull final String id )
     {
-        return !TextUtils.isEmpty ( id ) && descriptorsByIdentifier.containsKey ( id );
+        return TextUtils.notEmpty ( id ) && descriptorsByIdentifier.containsKey ( id );
     }
 
     /**
@@ -1161,10 +1161,10 @@ public final class StyleManager
     }
 
     /**
-     * Returns component style ID.
+     * Returns component {@link StyleId}.
      *
-     * @param component component to retrieve style ID for
-     * @return component style ID
+     * @param component component to retrieve {@link StyleId} for
+     * @return component {@link StyleId}
      */
     @NotNull
     public static StyleId getStyleId ( @NotNull final JComponent component )
@@ -1173,11 +1173,11 @@ public final class StyleManager
     }
 
     /**
-     * Sets new component style ID.
+     * Sets new component {@link StyleId}.
      *
-     * @param component component to set style ID for
-     * @param id        new style ID
-     * @return previously used style ID
+     * @param component component to set {@link StyleId} for
+     * @param id        new {@link StyleId}
+     * @return previously used {@link StyleId}
      */
     @NotNull
     public static StyleId setStyleId ( @NotNull final JComponent component, @NotNull final StyleId id )
@@ -1186,10 +1186,10 @@ public final class StyleManager
     }
 
     /**
-     * Resets style ID to default value.
+     * Resets {@link StyleId} to default value.
      *
-     * @param component component to reset style ID for
-     * @return previously used style ID
+     * @param component component to reset {@link StyleId} for
+     * @return previously used {@link StyleId}
      */
     @NotNull
     public static StyleId resetStyleId ( @NotNull final JComponent component )

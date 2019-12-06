@@ -78,7 +78,7 @@ public class WebSpinner extends JSpinner implements Styleable, Paintable, ShapeM
     /**
      * Constructs a spinner with an {@link javax.swing.SpinnerNumberModel} with initial value 0 and no minimum or maximum limits.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebSpinner ( final StyleId id )
     {
@@ -88,7 +88,7 @@ public class WebSpinner extends JSpinner implements Styleable, Paintable, ShapeM
     /**
      * Constructs a complete spinner with pair of next/previous buttons and an editor for the {@link javax.swing.SpinnerModel}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model {@link javax.swing.SpinnerModel}
      */
     public WebSpinner ( final StyleId id, final SpinnerModel model )

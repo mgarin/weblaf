@@ -188,7 +188,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Constructs tree with default sample model.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebTree ( @NotNull final StyleId id )
     {
@@ -198,7 +198,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data tree data
      */
     public WebTree ( @NotNull final StyleId id, @NotNull final Object[] data )
@@ -209,7 +209,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data tree data
      */
     public WebTree ( @NotNull final StyleId id, @NotNull final Vector<?> data )
@@ -220,7 +220,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data tree data
      */
     public WebTree ( @NotNull final StyleId id, @NotNull final Hashtable<?, ?> data )
@@ -231,7 +231,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Constructs tree with model based on specified root node.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param root tree root node
      */
     public WebTree ( @NotNull final StyleId id, @Nullable final N root )
@@ -242,7 +242,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Constructs tree with model based on specified root node and which decides whether a node is a leaf node in the specified manner.
      *
-     * @param id                 style ID
+     * @param id                 {@link StyleId}
      * @param root               tree root node
      * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
      */
@@ -254,7 +254,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
     /**
      * Constructs tree with specified model.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param newModel tree model
      */
     public WebTree ( @NotNull final StyleId id, @Nullable final TreeModel newModel )

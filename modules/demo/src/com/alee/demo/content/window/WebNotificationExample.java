@@ -91,7 +91,7 @@ public class WebNotificationExample extends AbstractStylePreviewExample
          *
          * @param id      preview ID
          * @param state   preview feature state
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public BasicNotificationPreview ( final String id, final FeatureState state, final StyleId styleId )
         {
@@ -126,7 +126,7 @@ public class WebNotificationExample extends AbstractStylePreviewExample
          *
          * @param id      preview ID
          * @param state   preview feature state
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public OptionalNotificationPreview ( final String id, final FeatureState state, final StyleId styleId )
         {
@@ -162,7 +162,7 @@ public class WebNotificationExample extends AbstractStylePreviewExample
          *
          * @param id      preview ID
          * @param state   preview feature state
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public CustomNotificationPreview ( final String id, final FeatureState state, final StyleId styleId )
         {

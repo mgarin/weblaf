@@ -82,7 +82,7 @@ public class LanguageChooser extends WebComboBox
     /**
      * Constructs new {@link LanguageChooser}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public LanguageChooser ( final StyleId id )
     {
@@ -92,7 +92,7 @@ public class LanguageChooser extends WebComboBox
     /**
      * Constructs new {@link LanguageChooser}.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param locales {@link Locale}s to limit choice to
      */
     public LanguageChooser ( final StyleId id, final Locale... locales )
@@ -103,7 +103,7 @@ public class LanguageChooser extends WebComboBox
     /**
      * Constructs new {@link LanguageChooser}.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param locales {@link Collection} of {@link Locale}s to limit choice to
      */
     public LanguageChooser ( final StyleId id, final Collection<Locale> locales )
@@ -114,7 +114,7 @@ public class LanguageChooser extends WebComboBox
     /**
      * Constructs new {@link LanguageChooser}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model {@link LanguageChooserModel}
      */
     public LanguageChooser ( final StyleId id, final LanguageChooserModel model )

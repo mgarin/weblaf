@@ -211,7 +211,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action menu item action
      */
     public WebRadioButtonMenuItem ( final StyleId id, final Action action )
@@ -223,7 +223,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebRadioButtonMenuItem ( final StyleId id )
     {
@@ -233,7 +233,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon menu item icon
      */
     public WebRadioButtonMenuItem ( final StyleId id, final Icon icon )
@@ -244,7 +244,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param icon     menu item icon
      * @param selected whether this radiobutton item is selected or not
      */
@@ -256,7 +256,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu item text
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text )
@@ -267,7 +267,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param accelerator menu item accelerator
      */
@@ -279,7 +279,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param accelerator menu item accelerator
      */
@@ -291,7 +291,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu item text
      * @param icon menu item icon
      */
@@ -303,7 +303,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     menu item text
      * @param icon     menu item icon
      * @param selected whether this radiobutton item is selected or not
@@ -316,7 +316,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     menu item text
      * @param selected whether this radiobutton item is selected or not
      */
@@ -328,7 +328,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param accelerator menu item accelerator
@@ -341,7 +341,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param accelerator menu item accelerator
@@ -354,7 +354,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param selected    whether this checkbox item is selected or not
@@ -369,7 +369,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param selected    whether this checkbox item is selected or not

@@ -163,7 +163,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebWindow ( @NotNull final StyleId id )
     {
@@ -175,7 +175,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      * @param gc the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
      *           the system default {@code GraphicsConfiguration} is assumed
      */
@@ -191,7 +191,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner the componnt from which parent window this window is displayed
      */
     public WebWindow ( @NotNull final StyleId id, @Nullable final Component owner )
@@ -205,7 +205,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner the window from which the window is displayed
      */
     public WebWindow ( @NotNull final StyleId id, @Nullable final Window owner )
@@ -219,7 +219,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner the window from which the window is displayed
      * @param gc    the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
      *              the system default {@code GraphicsConfiguration} is assumed, unless {@code owner} is also null, in which
@@ -238,7 +238,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param owner the frame from which the window is displayed
      */
     public WebWindow ( @NotNull final StyleId id, @Nullable final Frame owner )
@@ -256,7 +256,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
     /**
      * Additional initializtion of WebWindow settings.
      *
-     * @param id initial style ID
+     * @param id initial {@link StyleId}
      */
     protected void initialize ( @NotNull final StyleId id )
     {
@@ -667,8 +667,8 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
 
     /**
      * Custom root pane for this {@link WebWindow}.
-     * It is required to provide undecorated root pane style ID to avoid issues with further style updates.
-     * It also provides default window style ID instead of default root pane style ID.
+     * It is required to provide undecorated root pane {@link StyleId} to avoid issues with further style updates.
+     * It also provides default window {@link StyleId} instead of default root pane {@link StyleId}.
      */
     public class WebWindowRootPane extends WebRootPane
     {

@@ -74,7 +74,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public TextHotkeyLabel ( final FeatureState featureState, final StyleId styleId )
         {
@@ -101,7 +101,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public CodeHotkeyLabel ( final FeatureState featureState, final StyleId styleId )
         {
@@ -127,7 +127,7 @@ public class WebHotkeyLabelExample extends AbstractStylePreviewExample
          * Constructs new style preview.
          *
          * @param featureState feature state
-         * @param styleId      preview style ID
+         * @param styleId      preview {@link StyleId}
          */
         public DataHotkeyLabel ( final FeatureState featureState, final StyleId styleId )
         {

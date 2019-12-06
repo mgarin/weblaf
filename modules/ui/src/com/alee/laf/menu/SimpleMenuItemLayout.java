@@ -38,7 +38,7 @@ public class SimpleMenuItemLayout<C extends JComponent, D extends IDecoration<C,
         extends AbstractMenuItemLayout<C, D, I>
 {
     @Override
-    protected boolean isAlignTextByIcons ( final C c, final D d )
+    protected boolean isAlignTextByIcons ( @NotNull final C c, @NotNull final D d )
     {
         return false;
     }
@@ -64,13 +64,13 @@ public class SimpleMenuItemLayout<C extends JComponent, D extends IDecoration<C,
     }
 
     @Override
-    protected int getStateIconGap ( final C c, final D d )
+    protected int getStateIconGap ( @NotNull final C c, @NotNull final D d )
     {
         return 0;
     }
 
     @Override
-    protected int getIconTextGap ( final C c, final D d )
+    protected int getIconTextGap ( @NotNull final C c, @NotNull final D d )
     {
         final int gap;
         if ( iconTextGap != null )

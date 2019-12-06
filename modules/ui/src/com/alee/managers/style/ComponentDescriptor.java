@@ -72,18 +72,18 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
     public Class<? extends U> getUIClass ();
 
     /**
-     * Returns component default style ID.
+     * Returns component default {@link StyleId}.
      *
-     * @return component default style ID
+     * @return component default {@link StyleId}
      */
     @NotNull
     public StyleId getDefaultStyleId ();
 
     /**
-     * Returns component instance-specific default style ID.
+     * Returns component instance-specific default {@link StyleId}.
      *
-     * @param component component instance to retrieve default style ID for
-     * @return component instance-specific default style ID
+     * @param component component instance to retrieve default {@link StyleId} for
+     * @return component instance-specific default {@link StyleId}
      */
     @NotNull
     public StyleId getDefaultStyleId ( @NotNull JComponent component );

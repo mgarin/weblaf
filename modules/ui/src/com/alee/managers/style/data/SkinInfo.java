@@ -400,7 +400,7 @@ public final class SkinInfo implements Serializable
 
     /**
      * Returns style for the specified supported component type.
-     * Custom style ID can be specified in any Web-component or Web-UI to override default component style.
+     * Custom {@link StyleId} can be specified in any Web-component or Web-UI to override default component style.
      * If style for such custom ID is not found in skin descriptor then default style for that component is used.
      *
      * @param component component we are looking style for
@@ -672,7 +672,7 @@ public final class SkinInfo implements Serializable
 
         // Searching for extended style
         // This can be a style explicitely specified in style XML as extended one or default one
-        if ( !TextUtils.isEmpty ( style.getExtendsId () ) )
+        if ( TextUtils.notEmpty ( style.getExtendsId () ) )
         {
             // Style cannot extend itself
             final String extendsId = style.getExtendsId ();
@@ -871,7 +871,7 @@ public final class SkinInfo implements Serializable
      *
      * @param type        component type
      * @param id          ID of the style to find
-     * @param excludeId   style ID that should be excluded on the current level
+     * @param excludeId   {@link StyleId} that should be excluded on the current level
      * @param levelStyles current level styles
      * @param styles      global styles
      * @param maxIndex    max style index

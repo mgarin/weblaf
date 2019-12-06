@@ -215,7 +215,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Constructs tree with default sample model.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebCheckBoxTree ( @NotNull final StyleId id )
     {
@@ -225,7 +225,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data tree data
      */
     public WebCheckBoxTree ( @NotNull final StyleId id, @NotNull final Object[] data )
@@ -236,7 +236,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data tree data
      */
     public WebCheckBoxTree ( @NotNull final StyleId id, @NotNull final Vector<?> data )
@@ -247,7 +247,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param data tree data
      */
     public WebCheckBoxTree ( @NotNull final StyleId id, @NotNull final Hashtable<?, ?> data )
@@ -258,7 +258,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Constructs tree with model based on specified root node.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param root tree root node
      */
     public WebCheckBoxTree ( @NotNull final StyleId id, @Nullable final N root )
@@ -269,7 +269,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Constructs tree with model based on specified root node and which decides whether a node is a leaf node in the specified manner.
      *
-     * @param id                 style ID
+     * @param id                 {@link StyleId}
      * @param root               tree root node
      * @param asksAllowsChildren {@code false} if any node can have children,
      *                           {@code true} if each node is asked to see if it can have children
@@ -282,7 +282,7 @@ public class WebCheckBoxTree<N extends MutableTreeNode> extends WebTree<N>
     /**
      * Constructs tree with specified model.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param newModel tree model
      */
     public WebCheckBoxTree ( @NotNull final StyleId id, @Nullable final TreeModel newModel )

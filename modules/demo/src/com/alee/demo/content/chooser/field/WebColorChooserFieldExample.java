@@ -70,7 +70,7 @@ public class WebColorChooserFieldExample extends AbstractStylePreviewExample
         /**
          * Constructs new style preview.
          *
-         * @param styleId preview style ID
+         * @param styleId preview {@link StyleId}
          */
         public ColorChooserField ( final StyleId styleId )
         {

@@ -66,7 +66,7 @@ public class WebCheckBoxList<T> extends WebList
     /**
      * Constructs empty checkbox list.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebCheckBoxList ( final StyleId id )
     {
@@ -76,7 +76,7 @@ public class WebCheckBoxList<T> extends WebList
     /**
      * Constructs checkbox list with a specified model.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model checkbox list model
      */
     public WebCheckBoxList ( final StyleId id, final CheckBoxListModel<T> model )

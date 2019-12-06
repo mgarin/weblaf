@@ -46,7 +46,7 @@ public class AlignPanel extends WebPanel implements SwingConstants
     /**
      * Constructs new {@link AlignPanel}.
      *
-     * @param id        style ID
+     * @param id        {@link StyleId}
      * @param component component to align
      * @param halign    horizontal alignment
      * @param valign    vertical alignment

@@ -57,7 +57,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     /**
      * Constructs new syntax scrollpane with the specified syntax area inside.
      *
-     * @param syntaxArea {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param syntaxArea {@link WebSyntaxArea}
      */
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea )
     {
@@ -67,7 +67,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     /**
      * Constructs new syntax scrollpane with the specified syntax area inside.
      *
-     * @param syntaxArea  {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param syntaxArea  {@link WebSyntaxArea}
      * @param lineNumbers whether or not should display line numbers
      */
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea, final boolean lineNumbers )
@@ -78,7 +78,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     /**
      * Constructs new syntax scrollpane with the specified syntax area inside.
      *
-     * @param syntaxArea      {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param syntaxArea      {@link WebSyntaxArea}
      * @param lineNumbers     whether or not should display line numbers
      * @param lineNumberColor line numbers foreground
      */
@@ -90,7 +90,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     /**
      * Constructs new empty syntax scrollpane.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebSyntaxScrollPane ( final StyleId id )
     {
@@ -100,8 +100,8 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     /**
      * Constructs new syntax scrollpane with the specified syntax area inside.
      *
-     * @param id         style ID
-     * @param syntaxArea {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param id         {@link StyleId}
+     * @param syntaxArea {@link WebSyntaxArea}
      */
     public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea )
     {
@@ -111,8 +111,8 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     /**
      * Constructs new syntax scrollpane with the specified syntax area inside.
      *
-     * @param id          style ID
-     * @param syntaxArea  {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param id          {@link StyleId}
+     * @param syntaxArea  {@link WebSyntaxArea}
      * @param lineNumbers whether or not should display line numbers
      */
     public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea, final boolean lineNumbers )
@@ -123,8 +123,8 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     /**
      * Constructs new syntax scrollpane with the specified syntax area inside.
      *
-     * @param id              style ID
-     * @param syntaxArea      {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param id              {@link StyleId}
+     * @param syntaxArea      {@link WebSyntaxArea}
      * @param lineNumbers     whether or not should display line numbers
      * @param lineNumberColor line numbers foreground
      */
@@ -186,9 +186,9 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     }
 
     /**
-     * Sets gutter panel style ID.
+     * Sets gutter panel {@link StyleId}.
      *
-     * @param id gutter panel style ID
+     * @param id gutter panel {@link StyleId}
      */
     public void setGutterStyleId ( final StyleId id )
     {

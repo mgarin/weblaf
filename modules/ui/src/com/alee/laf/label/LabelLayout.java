@@ -17,6 +17,7 @@
 
 package com.alee.laf.label;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.layout.IconTextLayout;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -35,31 +36,31 @@ import javax.swing.*;
 public class LabelLayout<C extends JLabel, D extends IDecoration<C, D>, I extends IconTextLayout<C, D, I>> extends IconTextLayout<C, D, I>
 {
     @Override
-    protected int getIconTextGap ( final C c, final D d )
+    protected int getIconTextGap ( @NotNull final C c, @NotNull final D d )
     {
         return gap != null ? gap : c.getIconTextGap ();
     }
 
     @Override
-    protected int getHorizontalAlignment ( final C c, final D d )
+    protected int getHorizontalAlignment ( @NotNull final C c, @NotNull final D d )
     {
         return halign != null ? halign.getValue () : c.getHorizontalAlignment ();
     }
 
     @Override
-    protected int getVerticalAlignment ( final C c, final D d )
+    protected int getVerticalAlignment ( @NotNull final C c, @NotNull final D d )
     {
         return valign != null ? valign.getValue () : c.getVerticalAlignment ();
     }
 
     @Override
-    protected int getHorizontalTextPosition ( final C c, final D d )
+    protected int getHorizontalTextPosition ( @NotNull final C c, @NotNull final D d )
     {
         return hpos != null ? hpos.getValue () : c.getHorizontalTextPosition ();
     }
 
     @Override
-    protected int getVerticalTextPosition ( final C c, final D d )
+    protected int getVerticalTextPosition ( @NotNull final C c, @NotNull final D d )
     {
         return vpos != null ? vpos.getValue () : c.getVerticalTextPosition ();
     }

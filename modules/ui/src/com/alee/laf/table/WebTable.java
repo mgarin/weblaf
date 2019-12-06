@@ -176,7 +176,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs new table.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebTable ( final StyleId id )
     {
@@ -186,7 +186,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs new table.
      *
-     * @param id      style ID
+     * @param id      {@link StyleId}
      * @param rows    table rows amount
      * @param columns table columns amount
      */
@@ -198,7 +198,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs new table.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param data        table data
      * @param columnNames table column names
      */
@@ -210,7 +210,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs new table.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param data        table data
      * @param columnNames table column names
      */
@@ -222,7 +222,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs new table.
      *
-     * @param id    style ID
+     * @param id    {@link StyleId}
      * @param model table model
      */
     public WebTable ( final StyleId id, final TableModel model )
@@ -233,7 +233,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs new table.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param model       table model
      * @param columnModel table column model
      */
@@ -245,7 +245,7 @@ public class WebTable extends JTable implements Styleable, Paintable, ShapeMetho
     /**
      * Constructs new table.
      *
-     * @param id             style ID
+     * @param id             {@link StyleId}
      * @param model          table model
      * @param columnModel    table column model
      * @param selectionModel table selection model

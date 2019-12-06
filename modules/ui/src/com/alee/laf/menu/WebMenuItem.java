@@ -161,7 +161,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id     style ID
+     * @param id     {@link StyleId}
      * @param action menu item action
      */
     public WebMenuItem ( final StyleId id, final Action action )
@@ -173,7 +173,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item.
      *
-     * @param id style ID
+     * @param id {@link StyleId}
      */
     public WebMenuItem ( final StyleId id )
     {
@@ -183,7 +183,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param icon menu item icon
      */
     public WebMenuItem ( final StyleId id, final Icon icon )
@@ -194,7 +194,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu item text
      */
     public WebMenuItem ( final StyleId id, final String text )
@@ -205,7 +205,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param accelerator menu item accelerator
      */
@@ -217,7 +217,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param accelerator menu item accelerator
      */
@@ -229,7 +229,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param text menu item text
      * @param icon menu item icon
      */
@@ -241,7 +241,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id       style ID
+     * @param id       {@link StyleId}
      * @param text     menu item text
      * @param mnemonic menu item mnemonic
      */
@@ -254,7 +254,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param accelerator menu item accelerator
@@ -267,7 +267,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, Paintable, Shap
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param id          style ID
+     * @param id          {@link StyleId}
      * @param text        menu item text
      * @param icon        menu item icon
      * @param accelerator menu item accelerator

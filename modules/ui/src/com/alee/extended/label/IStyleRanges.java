@@ -17,6 +17,9 @@
 
 package com.alee.extended.label;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import java.util.List;
 
 /**
@@ -32,6 +35,7 @@ public interface IStyleRanges
      *
      * @return plain text
      */
+    @Nullable
     public String getPlainText ();
 
     /**
@@ -39,5 +43,6 @@ public interface IStyleRanges
      *
      * @return style ranges
      */
+    @NotNull
     public List<StyleRange> getStyleRanges ();
 }

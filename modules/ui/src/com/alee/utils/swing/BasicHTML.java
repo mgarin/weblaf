@@ -17,6 +17,9 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
@@ -50,18 +53,19 @@ public final class BasicHTML
      * @param text text possibly containing HTML
      * @return {@code true} if provided string should trigger the HTML rendering logic, {@code false} otherwise
      */
-    public static boolean isHTMLString ( final JComponent c, final String text )
+    public static boolean isHTMLString ( @NotNull final JComponent c, @Nullable final String text )
     {
+        boolean isHTML = false;
         final Boolean disabled = ( Boolean ) c.getClientProperty ( htmlDisable );
         if ( disabled != Boolean.TRUE )
         {
             if ( text != null && text.length () >= 6 && text.charAt ( 0 ) == '<' && text.charAt ( 5 ) == '>' )
             {
                 final String tag = text.substring ( 1, 5 );
-                return tag.equalsIgnoreCase ( javax.swing.plaf.basic.BasicHTML.propertyKey );
+                isHTML = tag.equalsIgnoreCase ( javax.swing.plaf.basic.BasicHTML.propertyKey );
             }
         }
-        return false;
+        return isHTML;
     }
 
     /**

@@ -192,7 +192,7 @@ public class SvgTransform extends AbstractSvgAttributeAdjustment
             }
             if ( scale != null )
             {
-                if ( !TextUtils.isEmpty ( transform ) )
+                if ( TextUtils.notEmpty ( transform ) )
                 {
                     transform += " ";
                 }
@@ -203,7 +203,7 @@ public class SvgTransform extends AbstractSvgAttributeAdjustment
             }
             if ( rotate != null )
             {
-                if ( !TextUtils.isEmpty ( transform ) )
+                if ( TextUtils.notEmpty ( transform ) )
                 {
                     transform += " ";
                 }

@@ -123,7 +123,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
     /**
      * Constructs new tree filter field.
      *
-     * @param id   style ID
+     * @param id   {@link StyleId}
      * @param tree tree to which this field applies filtering
      */
     public WebTreeFilterField ( @NotNull final StyleId id, @NotNull final JTree tree )
@@ -134,7 +134,7 @@ public class WebTreeFilterField<N extends UniqueNode> extends WebTextField
     /**
      * Constructs new tree filter field.
      *
-     * @param id           style ID
+     * @param id           {@link StyleId}
      * @param tree         tree to which this field applies filtering
      * @param textProvider node text provider
      */
