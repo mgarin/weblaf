@@ -398,8 +398,10 @@ public class WebMemoryBar extends WebComponent<WebMemoryBar, WMemoryBarUI<WebMem
      */
     public void doGC ()
     {
+        fireGCCalled ();
         System.gc ();
         getUI ().updateMemoryUsage ();
+        fireGCCompleted ();
         fireActionPerformed ();
     }
 
@@ -442,6 +444,48 @@ public class WebMemoryBar extends WebComponent<WebMemoryBar, WMemoryBarUI<WebMem
                 );
             }
             listener.actionPerformed ( event );
+        }
+    }
+
+    /**
+     * Adds {@link MemoryBarListener} for this {@link WebMemoryBar} GC action.
+     *
+     * @param listener {@link MemoryBarListener} to add
+     */
+    public void addMemoryBarListener ( @NotNull final MemoryBarListener listener )
+    {
+        listenerList.add ( MemoryBarListener.class, listener );
+    }
+
+    /**
+     * Removes {@link MemoryBarListener} from this {@link WebMemoryBar} GC action.
+     *
+     * @param listener {@link MemoryBarListener} to remove
+     */
+    public void removeMemoryBarListener ( @NotNull final MemoryBarListener listener )
+    {
+        listenerList.remove ( MemoryBarListener.class, listener );
+    }
+
+    /**
+     * Informs all {@link MemoryBarListener}s about GC action being invoked.
+     */
+    public void fireGCCalled ()
+    {
+        for ( final MemoryBarListener listener : listenerList.getListeners ( MemoryBarListener.class ) )
+        {
+            listener.gcCalled ( this );
+        }
+    }
+
+    /**
+     * Informs all {@link MemoryBarListener}s about GC action being completed.
+     */
+    public void fireGCCompleted ()
+    {
+        for ( final MemoryBarListener listener : listenerList.getListeners ( MemoryBarListener.class ) )
+        {
+            listener.gcCompleted ( this );
         }
     }
 

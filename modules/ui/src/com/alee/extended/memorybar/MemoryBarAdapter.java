@@ -15,24 +15,30 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.statusbar;
+package com.alee.extended.memorybar;
 
-import java.util.EventListener;
+import com.alee.api.annotations.NotNull;
 
 /**
- * Custom listener for WebMemoryBar component.
+ * Adapter for {@link MemoryBarListener}.
  *
  * @author Mikle Garin
  */
-public interface MemoryBarListener extends EventListener
+public abstract class MemoryBarAdapter implements MemoryBarListener
 {
-    /**
-     * Called when user clicks on memory bar forcing it to call GC.
-     */
-    public void gcCalled ();
+    @Override
+    public void gcCalled ( @NotNull final WebMemoryBar memoryBar )
+    {
+        /**
+         * Do nothing by default.
+         */
+    }
 
-    /**
-     * Called when called GC operation is completed.
-     */
-    public void gcCompleted ();
+    @Override
+    public void gcCompleted ( @NotNull final WebMemoryBar memoryBar )
+    {
+        /**
+         * Do nothing by default.
+         */
+    }
 }
