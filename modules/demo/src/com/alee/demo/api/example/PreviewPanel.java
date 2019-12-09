@@ -28,21 +28,23 @@ import java.awt.*;
 import java.util.List;
 
 /**
+ * Custom panel for a single preview.
+ *
  * @author Mikle Garin
  */
 public final class PreviewPanel extends WebPanel implements Stateful
 {
     /**
-     * Preview feature state.
+     * Preview {@link FeatureState}.
      */
     private final FeatureState state;
 
     /**
-     * Constructs new preview panel with the specified {@link StyleId}.
+     * Constructs new {@link PreviewPanel} with the specified settings.
      *
-     * @param state      feature state
-     * @param layout     panel layout
-     * @param components components to add into panel
+     * @param state      {@link FeatureState}
+     * @param layout     panel {@link LayoutManager}
+     * @param components {@link Component}s to add into panel
      */
     public PreviewPanel ( @NotNull final FeatureState state, final LayoutManager layout, final Component... components )
     {
@@ -52,9 +54,9 @@ public final class PreviewPanel extends WebPanel implements Stateful
     }
 
     /**
-     * Returns preview feature state.
+     * Returns preview {@link FeatureState}.
      *
-     * @return preview feature state
+     * @return preview {@link FeatureState}
      */
     @NotNull
     public FeatureState getState ()
