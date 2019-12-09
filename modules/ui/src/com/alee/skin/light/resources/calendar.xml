@@ -82,17 +82,17 @@
         <!-- Month panel -->
         <style type="panel" id="month" extends="transparent" padding="1,1,1,1">
 
-            <!-- Week title separator -->
+            <!-- Week days separator -->
             <style type="separator" id="separator">
                 <painter>
                     <decorations>
                         <decoration>
                             <SeparatorStripes padding="0,1,0,1">
                                 <Stripe>
-                                    <color fraction="0.0">176,182,188,5</color>
-                                    <color fraction="0.25">176,182,188</color>
-                                    <color fraction="0.95">176,182,188</color>
-                                    <color fraction="1.0">176,182,188,5</color>
+                                    <color fraction="0.0">176,182,188,55</color>
+                                    <color fraction="0.1">176,182,188</color>
+                                    <color fraction="0.9">176,182,188</color>
+                                    <color fraction="1.0">176,182,188,55</color>
                                 </Stripe>
                             </SeparatorStripes>
                         </decoration>
