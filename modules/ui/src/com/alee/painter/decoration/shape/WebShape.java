@@ -15,7 +15,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 
 /**
  * Common WebLaF component shape implementation.
@@ -58,10 +57,12 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
     /**
      * Returns decoration corners rounding.
      *
+     * @param c painted component
+     * @param d painted decoration
      * @return decoration corners rounding
      */
     @NotNull
-    public Round getRound ()
+    public Round getRound ( @NotNull final C c, @NotNull final D d )
     {
         return round != null ? round : new Round ();
     }
@@ -216,6 +217,24 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
         return isPaintTopLine ( c, d ) || isPaintLeftLine ( c, d ) || isPaintBottomLine ( c, d ) || isPaintRightLine ( c, d );
     }
 
+    /**
+     * Returns {@link Sides}.
+     *
+     * @param c   painted component
+     * @param d   painted decoration
+     * @return {@link Sides}
+     */
+    protected Sides createSides ( @NotNull final C c, @NotNull final D d )
+    {
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        return new Sides (
+                isPaintTop ( c, d ),
+                ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d ),
+                isPaintBottom ( c, d ),
+                ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d )
+        );
+    }
+
     @Override
     public boolean isVisible ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
@@ -248,13 +267,9 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
     public Shape getShape ( @NotNull final ShapeType type, @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
         // Shape settings
-        final Round r = getRound ();
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final boolean top = isPaintTop ( c, d );
-        final boolean bottom = isPaintBottom ( c, d );
-        final boolean left = ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d );
-        final boolean right = ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d );
         final int sw = d.getShadowWidth ( ShadowType.outer );
+        final Round round = getRound ( c, d );
+        final Sides sides = createSides ( c, d );
 
         // Retrieving shape
         return ShapeUtils.getShape ( c, "WebShape." + type, new Supplier<Shape> ()
@@ -264,137 +279,27 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
             public Shape get ()
             {
                 final Shape result;
-                final int x = bounds.x;
-                final int y = bounds.y;
-                final int w = bounds.width;
-                final int h = bounds.height;
                 if ( type.isBorder () )
                 {
-                    final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-                    boolean connect;
-                    boolean moved = false;
-                    if ( top )
-                    {
-                        shape.moveTo ( x + ( left ? sw + r.topLeft : 0 ), y + sw );
-                        if ( right )
-                        {
-                            shape.lineTo ( x + w - sw - r.topRight - 1, y + sw );
-                            shape.quadTo ( x + w - sw - 1, y + sw, x + w - sw - 1, y + sw + r.topRight );
-                        }
-                        else
-                        {
-                            shape.lineTo ( x + w - 1, y + sw );
-                        }
-                        connect = true;
-                    }
-                    else
-                    {
-                        connect = false;
-                    }
-                    if ( right )
-                    {
-                        if ( !connect )
-                        {
-                            shape.moveTo ( x + w - sw - 1, y );
-                            moved = true;
-                        }
-                        if ( bottom )
-                        {
-                            shape.lineTo ( x + w - sw - 1, y + h - sw - r.bottomRight - 1 );
-                            shape.quadTo ( x + w - sw - 1, y + h - sw - 1, x + w - sw - r.bottomRight - 1, y + h - sw - 1 );
-                        }
-                        else
-                        {
-                            shape.lineTo ( x + w - sw - 1, y + h - 1 );
-                        }
-                        connect = true;
-                    }
-                    else
-                    {
-                        connect = false;
-                    }
-                    if ( bottom )
-                    {
-                        if ( !connect )
-                        {
-                            shape.moveTo ( x + w - 1, y + h - sw - 1 );
-                            moved = true;
-                        }
-                        if ( left )
-                        {
-                            shape.lineTo ( x + sw + r.bottomLeft, y + h - sw - 1 );
-                            shape.quadTo ( x + sw, y + h - sw - 1, x + sw, y + h - sw - r.bottomLeft - 1 );
-                        }
-                        else
-                        {
-                            shape.lineTo ( x, y + h - sw - 1 );
-                        }
-                        connect = true;
-                    }
-                    else
-                    {
-                        connect = false;
-                    }
-                    if ( left )
-                    {
-                        if ( !connect )
-                        {
-                            shape.moveTo ( x + sw, y + h - 1 );
-                            moved = true;
-                        }
-                        if ( top )
-                        {
-                            shape.lineTo ( x + sw, y + sw + r.topLeft );
-                            shape.quadTo ( x + sw, y + sw, x + sw + r.topLeft, y + sw );
-                            if ( !moved )
-                            {
-                                shape.closePath ();
-                            }
-                        }
-                        else
-                        {
-                            shape.lineTo ( x + sw, y );
-                        }
-                    }
-                    result = shape;
+                    result = ShapeUtils.createBorderShape ( sw, bounds, round, sides );
                 }
                 else
                 {
-                    final int shShear = type.isOuterShadow () ? sw : 0;
-
-                    final Point[] corners = new Point[ 4 ];
-                    final int[] rounded = new int[ 4 ];
-
-                    corners[ 0 ] = new Point ( x + ( left ? sw : -shShear ), y + ( top ? sw : -shShear ) );
-                    rounded[ 0 ] = left && top && r.topLeft > 0 ? r.topLeft + 1 : 0;
-
-                    corners[ 1 ] = new Point ( x + ( right ? w - sw : w + shShear ), y + ( top ? sw : -shShear ) );
-                    rounded[ 1 ] = right && top && r.topRight > 0 ? r.topRight + 1 : 0;
-
-                    corners[ 2 ] = new Point ( x + ( right ? w - sw : w + shShear ), y + ( bottom ? h - sw : h + shShear ) );
-                    rounded[ 2 ] = right && bottom && r.bottomRight > 0 ? r.bottomRight + 1 : 0;
-
-                    corners[ 3 ] = new Point ( x + ( left ? sw : -shShear ), y + ( bottom ? h - sw : h + shShear ) );
-                    rounded[ 3 ] = left && bottom && r.bottomLeft > 0 ? r.bottomLeft + 1 : 0;
-
-                    result = ShapeUtils.createRoundedShape ( corners, rounded );
+                    result = ShapeUtils.createFillShape ( sw, bounds, round, sides, type );
                 }
                 return result;
             }
-        }, bounds, sw, r, top, bottom, left, right );
+
+        }, bounds, sw, round, sides );
     }
 
     @NotNull
     @Override
     public Object[] getShapeSettings ( @NotNull final Rectangle bounds, @NotNull final C c, @NotNull final D d )
     {
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         return new Object[]{
-                getRound (),
-                isPaintTop ( c, d ),
-                isPaintBottom ( c, d ),
-                ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d ),
-                ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d )
+                getRound ( c, d ),
+                createSides ( c, d )
         };
     }
 
@@ -407,28 +312,27 @@ public class WebShape<C extends JComponent, D extends WebDecoration<C, D>, I ext
         // todo Right now this works fine for common implementation but could cause issues for other implementations
 
         // Shape settings
-        final Round r = getRound ();
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final boolean top = isPaintTop ( c, d );
-        final boolean bottom = isPaintBottom ( c, d );
-        final boolean left = ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d );
-        final boolean right = ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d );
         final int sw = d.getShadowWidth ( ShadowType.outer );
+        final Round r = getRound ( c, d );
+        final Sides sides = createSides ( c, d );
         final BorderWidth bw = d.getBorderWidth ();
         final int isw = d.getShadowWidth ( ShadowType.inner );
 
         // Horizontal stretch zone
-        final int x0 = bounds.x + ( left ? sw : 0 ) + MathUtils.max ( bw.left, isw, r.topLeft, r.bottomLeft, sw );
-        final int x1 = bounds.x + bounds.width - 1 - ( right ? sw : 0 ) - MathUtils.max ( isw, bw.right, r.topRight, r.bottomRight, sw );
-        final Pair<Integer, Integer> hor = x0 < x1 ? new Pair<Integer, Integer> ( x0, x1 ) : null;
+        final int x0 = bounds.x + ( sides.left ? sw : 0 )
+                + MathUtils.max ( bw.left, isw, r.topLeft, r.bottomLeft, sw );
+        final int x1 = bounds.x + bounds.width - 1 - ( sides.right ? sw : 0 )
+                - MathUtils.max ( isw, bw.right, r.topRight, r.bottomRight, sw );
 
         // Vertical stretch zone
-        final int y0 = bounds.y + ( top ? sw : 0 )
+        final int y0 = bounds.y + ( sides.top ? sw : 0 )
                 + MathUtils.max ( bw.top, isw, r.topLeft, r.topRight, sw );
-        final int y1 = bounds.y + bounds.height - 1 - ( bottom ? sw : 0 )
+        final int y1 = bounds.y + bounds.height - 1 - ( sides.bottom ? sw : 0 )
                 - MathUtils.max ( bw.bottom, isw, r.bottomLeft, r.bottomRight, sw );
-        final Pair<Integer, Integer> ver = y0 < y1 ? new Pair<Integer, Integer> ( y0, y1 ) : null;
 
-        return new StretchInfo ( hor, ver );
+        return new StretchInfo (
+                x0 < x1 ? new Pair<Integer, Integer> ( x0, x1 ) : null,
+                y0 < y1 ? new Pair<Integer, Integer> ( y0, y1 ) : null
+        );
     }
 }

@@ -31,13 +31,23 @@ import javax.swing.table.JTableHeader;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class TableHeaderDescriptor extends AbstractTableHeaderDescriptor<JTableHeader, WebTableHeaderUI>
+public final class TableHeaderDescriptor extends AbstractTableHeaderDescriptor<JTableHeader, WTableHeaderUI, ITableHeaderPainter>
 {
     /**
-     * Constructs new descriptor for {@link JTableHeader} component.
+     * Constructs new {@link TableHeaderDescriptor}.
      */
     public TableHeaderDescriptor ()
     {
-        super ( "tableheader", JTableHeader.class, "TableHeaderUI", WebTableHeaderUI.class, WebTableHeaderUI.class, StyleId.tableheader );
+        super (
+                "tableheader",
+                JTableHeader.class,
+                "TableHeaderUI",
+                WTableHeaderUI.class,
+                WebTableHeaderUI.class,
+                ITableHeaderPainter.class,
+                TableHeaderPainter.class,
+                AdaptiveTableHeaderPainter.class,
+                StyleId.tableheader
+        );
     }
 }

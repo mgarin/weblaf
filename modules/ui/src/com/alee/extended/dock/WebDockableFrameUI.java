@@ -19,7 +19,6 @@ package com.alee.extended.dock;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.dock.drag.DockableFrameTransferHandler;
@@ -32,8 +31,6 @@ import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
@@ -61,12 +58,6 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( DockableFramePainter.class )
-    protected IDockableFramePainter painter;
-
-    /**
      * Listeners.
      */
     protected transient DefaultFocusTracker focusTracker;
@@ -92,7 +83,8 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
      * @param c component that will use UI instance
      * @return instance of the {@link WebDockableFrameUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebDockableFrameUI ();
     }
@@ -248,7 +240,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         minimizeButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 frame.minimize ();
             }
@@ -257,7 +249,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         dockButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 if ( frame.isPreview () || frame.isFloating () )
                 {
@@ -278,7 +270,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         floatButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 // Requesting focus into the frame
                 requestFocusInFrame ();
@@ -291,7 +283,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         maximizeButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 // Requesting focus into the frame
                 requestFocusInFrame ();
@@ -304,7 +296,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 // Closing frame
                 frame.close ();
@@ -347,7 +339,7 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent evt )
+    public void propertyChange ( @NotNull final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
         if ( Objects.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
@@ -549,19 +541,19 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( frame, painter );
+        return PainterSupport.getShape ( frame );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( frame, painter );
+        return PainterSupport.isShapeDetectionEnabled ( frame );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( frame, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( frame, enabled );
     }
 
     @Nullable
@@ -590,64 +582,35 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
         PainterSupport.setPadding ( frame, padding );
     }
 
-    /**
-     * Returns dockable frame painter.
-     *
-     * @return dockable frame painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets dockable frame painter.
-     * Pass null to remove dockable frame painter.
-     *
-     * @param painter new dockable frame painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( frame, this, new Consumer<IDockableFramePainter> ()
-        {
-            @Override
-            public void accept ( final IDockableFramePainter newPainter )
-            {
-                WebDockableFrameUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IDockableFramePainter.class, AdaptiveDockableFramePainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

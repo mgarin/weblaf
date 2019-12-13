@@ -20,7 +20,6 @@ package com.alee.laf.table;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Corner;
-import com.alee.api.jdk.Consumer;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.scroll.ScrollPaneCornerProvider;
 import com.alee.laf.table.editors.WebBooleanEditor;
@@ -29,13 +28,10 @@ import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicTableUI;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -47,14 +43,8 @@ import java.util.Date;
  *
  * @author Mikle Garin
  */
-public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
+public class WebTableUI extends WTableUI implements ShapeSupport, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
 {
-    /**
-     * Component painter.
-     */
-    @DefaultPainter ( TablePainter.class )
-    protected ITablePainter painter;
-
     /**
      * Listeners.
      */
@@ -67,13 +57,14 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
      * @param c component that will use UI instance
      * @return instance of the {@link WebTableUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebTableUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -118,7 +109,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            public void propertyChange ( @NotNull final PropertyChangeEvent evt )
             {
                 updateTableHeaderStyleId ();
             }
@@ -130,7 +121,7 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( table );
@@ -161,19 +152,19 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( table, painter );
+        return PainterSupport.getShape ( table );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( table, painter );
+        return PainterSupport.isShapeDetectionEnabled ( table );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( table, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( table, enabled );
     }
 
     @Nullable
@@ -202,59 +193,36 @@ public class WebTableUI extends BasicTableUI implements ShapeSupport, MarginSupp
         PainterSupport.setPadding ( table, padding );
     }
 
-    /**
-     * Returns text field painter.
-     *
-     * @return text field painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets text field painter.
-     * Pass null to remove text field painter.
-     *
-     * @param painter new text field painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( table, this, new Consumer<ITablePainter> ()
-        {
-            @Override
-            public void accept ( final ITablePainter newPainter )
-            {
-                WebTableUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ITablePainter.class, AdaptiveTablePainter.class );
-    }
-
+    @Nullable
     @Override
-    public JComponent getCorner ( final Corner type )
+    public JComponent getCorner ( @NotNull final Corner type )
     {
         return type == Corner.upperTrailing ? new WebCanvas ( StyleId.tableCorner.at ( table ), type.name () ) : null;
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this,  x, y );
+    }
+
+    @NotNull
+    @Override
+    public CellRendererPane getCellRendererPane ()
+    {
+        return rendererPane;
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.prepareToPaint ( rendererPane );
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ) );
     }
 }

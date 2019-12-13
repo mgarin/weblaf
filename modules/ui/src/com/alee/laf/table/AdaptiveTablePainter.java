@@ -1,5 +1,6 @@
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -13,21 +14,15 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public final class AdaptiveTablePainter<C extends JTable, U extends WebTableUI> extends AdaptivePainter<C, U> implements ITablePainter<C, U>
+public final class AdaptiveTablePainter<C extends JTable, U extends WTableUI> extends AdaptivePainter<C, U> implements ITablePainter<C, U>
 {
     /**
      * Constructs new {@link AdaptiveTablePainter} for the specified painter.
      *
      * @param painter {@link Painter} to adapt
      */
-    public AdaptiveTablePainter ( final Painter painter )
+    public AdaptiveTablePainter ( @NotNull final Painter painter )
     {
         super ( painter );
-    }
-
-    @Override
-    public void prepareToPaint ( final CellRendererPane rendererPane )
-    {
-        // Ignore this method in adaptive class
     }
 }

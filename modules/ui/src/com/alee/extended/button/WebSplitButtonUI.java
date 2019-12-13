@@ -19,9 +19,10 @@ package com.alee.extended.button;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 
@@ -39,19 +40,14 @@ public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C
         implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( SplitButtonPainter.class )
-    protected ISplitButtonPainter painter;
-
-    /**
      * Returns an instance of the {@link WebSplitButtonUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebSplitButtonUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebSplitButtonUI ();
     }
@@ -76,23 +72,30 @@ public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C
         super.uninstallUI ( c );
     }
 
+    @Override
+    public boolean isOnSplit ()
+    {
+        final Painter painter = PainterSupport.getPainter ( button );
+        return painter instanceof ISplitButtonPainter && ( ( ISplitButtonPainter ) painter ).isOnMenu ();
+    }
+
     @NotNull
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( button, painter );
+        return PainterSupport.getShape ( button );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( button, painter );
+        return PainterSupport.isShapeDetectionEnabled ( button );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( button, enabled );
     }
 
     @Nullable
@@ -122,69 +125,34 @@ public class WebSplitButtonUI<C extends WebSplitButton> extends WSplitButtonUI<C
     }
 
     @Override
-    public boolean isOnSplit ()
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return painter != null && painter.isOnMenu ();
-    }
-
-    /**
-     * Returns button painter.
-     *
-     * @return button painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets button painter.
-     * Pass null to remove button painter.
-     *
-     * @param painter new button painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( button, this, new Consumer<ISplitButtonPainter> ()
-        {
-            @Override
-            public void accept ( final ISplitButtonPainter newPainter )
-            {
-                WebSplitButtonUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ISplitButtonPainter.class, AdaptiveSplitButtonPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

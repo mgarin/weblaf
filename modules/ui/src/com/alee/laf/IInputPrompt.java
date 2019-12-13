@@ -17,6 +17,8 @@
 
 package com.alee.laf;
 
+import com.alee.api.annotations.Nullable;
+
 /**
  * Interface for elements supporting input prompt.
  * It could be anything from component or UI to any custom object.
@@ -30,6 +32,7 @@ public interface IInputPrompt
      *
      * @return input prompt text
      */
+    @Nullable
     public String getInputPrompt ();
 
     /**
@@ -37,5 +40,5 @@ public interface IInputPrompt
      *
      * @param text input prompt text
      */
-    public void setInputPrompt ( String text );
+    public void setInputPrompt ( @Nullable String text );
 }

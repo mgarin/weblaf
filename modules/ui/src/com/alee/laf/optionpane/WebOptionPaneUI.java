@@ -23,13 +23,10 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.LafLookup;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -55,25 +52,20 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     public static final ImageIcon QUESTION_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/question.png" ) );
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( OptionPanePainter.class )
-    protected IOptionPanePainter painter;
-
-    /**
      * Returns an instance of the {@link WebOptionPaneUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebOptionPaneUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebOptionPaneUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -83,7 +75,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( optionPane );
@@ -96,19 +88,19 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( optionPane, painter );
+        return PainterSupport.getShape ( optionPane );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( optionPane, painter );
+        return PainterSupport.isShapeDetectionEnabled ( optionPane );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( optionPane, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( optionPane, enabled );
     }
 
     @Nullable
@@ -137,6 +129,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
         PainterSupport.setPadding ( optionPane, padding );
     }
 
+    @NotNull
     @Override
     protected Container createMessageArea ()
     {
@@ -187,8 +180,8 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     }
 
     @Override
-    protected void addMessageComponents ( final Container body, final GridBagConstraints cons, final Object msg, final int maxll,
-                                          final boolean internallyCreated )
+    protected void addMessageComponents ( @NotNull final Container body, @NotNull final GridBagConstraints cons, @Nullable final Object msg,
+                                          final int maxll, final boolean internallyCreated )
     {
         if ( msg != null )
         {
@@ -233,72 +226,75 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
             {
                 final String s = msg.toString ();
                 final int len = s.length ();
-                if ( len <= 0 )
+                if ( len > 0 )
                 {
-                    return;
-                }
-
-                int nl;
-                int nll = 0;
-                final String newline = TextUtils.getSystemLineSeparator ();
-                if ( ( nl = s.indexOf ( newline ) ) >= 0 )
-                {
-                    nll = newline.length ();
-                }
-                else if ( ( nl = s.indexOf ( "\r\n" ) ) >= 0 )
-                {
-                    nll = 2;
-                }
-                else if ( ( nl = s.indexOf ( '\n' ) ) >= 0 )
-                {
-                    nll = 1;
-                }
-                if ( nl >= 0 )
-                {
-                    // break up newlines
-                    if ( nl == 0 )
+                    int nl;
+                    int nll = 0;
+                    final String newline = TextUtils.getSystemLineSeparator ();
+                    if ( ( nl = s.indexOf ( newline ) ) >= 0 )
                     {
-                        final JPanel breakPanel = new JPanel ()
+                        nll = newline.length ();
+                    }
+                    else if ( ( nl = s.indexOf ( "\r\n" ) ) >= 0 )
+                    {
+                        nll = 2;
+                    }
+                    else if ( ( nl = s.indexOf ( '\n' ) ) >= 0 )
+                    {
+                        nll = 1;
+                    }
+                    if ( nl >= 0 )
+                    {
+                        // break up newlines
+                        if ( nl == 0 )
                         {
-                            @Override
-                            public Dimension getPreferredSize ()
+                            final JPanel breakPanel = new JPanel ()
                             {
-                                final Font f = getFont ();
-
-                                if ( f != null )
+                                @NotNull
+                                @Override
+                                public Dimension getPreferredSize ()
                                 {
-                                    return new Dimension ( 1, f.getSize () + 2 );
+                                    final Dimension ps;
+                                    final Font f = getFont ();
+                                    if ( f != null )
+                                    {
+                                        ps = new Dimension ( 1, f.getSize () + 2 );
+                                    }
+                                    else
+                                    {
+                                        ps = new Dimension ( 0, 0 );
+                                    }
+                                    return ps;
                                 }
-                                return new Dimension ( 0, 0 );
-                            }
-                        };
-                        breakPanel.setName ( "OptionPane.break" );
-                        addMessageComponents ( body, cons, breakPanel, maxll, true );
+                            };
+                            breakPanel.setName ( "OptionPane.break" );
+                            addMessageComponents ( body, cons, breakPanel, maxll, true );
+                        }
+                        else
+                        {
+                            addMessageComponents ( body, cons, s.substring ( 0, nl ), maxll, false );
+                        }
+                        addMessageComponents ( body, cons, s.substring ( nl + nll ), maxll, false );
+                    }
+                    else if ( len > maxll )
+                    {
+                        final Container c = Box.createVerticalBox ();
+                        c.setName ( "OptionPane.verticalBox" );
+                        burstStringInto ( body, c, s, maxll );
+                        addMessageComponents ( body, cons, c, maxll, true );
                     }
                     else
                     {
-                        addMessageComponents ( body, cons, s.substring ( 0, nl ), maxll, false );
+                        final JLabel label = createMessageLabel ( body, s );
+                        addMessageComponents ( body, cons, label, maxll, true );
                     }
-                    addMessageComponents ( body, cons, s.substring ( nl + nll ), maxll, false );
-                }
-                else if ( len > maxll )
-                {
-                    final Container c = Box.createVerticalBox ();
-                    c.setName ( "OptionPane.verticalBox" );
-                    burstStringInto ( body, c, s, maxll );
-                    addMessageComponents ( body, cons, c, maxll, true );
-                }
-                else
-                {
-                    final JLabel label = createMessageLabel ( body, s );
-                    addMessageComponents ( body, cons, label, maxll, true );
                 }
             }
         }
     }
 
     @Override
-    protected void burstStringInto ( final Container c, final String msg, final int maxll )
+    protected void burstStringInto ( @NotNull final Container c, @Nullable final String msg, final int maxll )
     {
         // todo Temporary placeholder to pinpoint possible issues
         throw new RuntimeException ( "This method is not supported by WebLookAndFeel" );
@@ -313,29 +309,34 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
      * @param msg   message text
      * @param maxll maximum characters per line
      */
-    protected void burstStringInto ( final Container body, final Container c, final String msg, final int maxll )
+    protected void burstStringInto ( @NotNull final Container body, @NotNull final Container c, @NotNull final String msg, final int maxll )
     {
         // Primitive line wrapping
         final int len = msg.length ();
-        if ( len <= 0 )
+        if ( len > 0 )
         {
-            return;
-        }
-        if ( len > maxll )
-        {
-            int p = msg.lastIndexOf ( ' ', maxll );
-            if ( p <= 0 )
+            if ( len > maxll )
             {
-                p = msg.indexOf ( ' ', maxll );
+                int p = msg.lastIndexOf ( ' ', maxll );
+                if ( p <= 0 )
+                {
+                    p = msg.indexOf ( ' ', maxll );
+                }
+                if ( p > 0 && p < len )
+                {
+                    burstStringInto ( c, msg.substring ( 0, p ), maxll );
+                    burstStringInto ( c, msg.substring ( p + 1 ), maxll );
+                }
+                else
+                {
+                    c.add ( createMessageLabel ( body, msg ) );
+                }
             }
-            if ( p > 0 && p < len )
+            else
             {
-                burstStringInto ( c, msg.substring ( 0, p ), maxll );
-                burstStringInto ( c, msg.substring ( p + 1 ), maxll );
-                return;
+                c.add ( createMessageLabel ( body, msg ) );
             }
         }
-        c.add ( createMessageLabel ( body, msg ) );
     }
 
     /**
@@ -345,7 +346,8 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
      * @param msg  message text
      * @return new label component used for text message
      */
-    protected WebLabel createMessageLabel ( final Container body, final String msg )
+    @NotNull
+    protected WebLabel createMessageLabel ( @NotNull final Container body, @NotNull final String msg )
     {
         final StyleId styleId = StyleId.optionpaneMessageLabel.at ( ( JComponent ) body );
         final WebLabel label = new WebLabel ( styleId, msg, JLabel.LEADING );
@@ -353,6 +355,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
         return label;
     }
 
+    @NotNull
     @Override
     protected Container createButtonArea ()
     {
@@ -372,7 +375,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
     }
 
     @Override
-    protected void addButtonComponents ( final Container container, final Object[] buttons, final int initialIndex )
+    protected void addButtonComponents ( @NotNull final Container container, @Nullable final Object[] buttons, final int initialIndex )
     {
         if ( container instanceof JComponent )
         {
@@ -380,29 +383,18 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
         }
         if ( buttons != null && buttons.length > 0 )
         {
-            final boolean sizeButtonsToSame = getSizeButtonsToSameWidth ();
             boolean createdAll = true;
             final int numButtons = buttons.length;
-            JButton[] createdButtons = null;
-            int maxWidth = 0;
-
-            if ( sizeButtonsToSame )
-            {
-                createdButtons = new JButton[ numButtons ];
-            }
-
             for ( int counter = 0; counter < numButtons; counter++ )
             {
                 final Object button = buttons[ counter ];
                 final Component newComponent;
-
                 if ( button instanceof Component )
                 {
                     createdAll = false;
                     newComponent = ( Component ) button;
                     container.add ( newComponent );
                     hasCustomComponents = true;
-
                 }
                 else
                 {
@@ -431,11 +423,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
                     }
                     newComponent = aButton;
                 }
-                if ( sizeButtonsToSame && createdAll && newComponent instanceof JButton )
-                {
-                    createdButtons[ counter ] = ( JButton ) newComponent;
-                    maxWidth = Math.max ( maxWidth, newComponent.getMinimumSize ().width );
-                }
                 if ( counter == initialIndex )
                 {
                     initialFocusComponent = newComponent;
@@ -461,7 +448,10 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
                     }
                 }
             }
-            ( ( ButtonAreaLayout ) container.getLayout () ).setSyncAllWidths ( sizeButtonsToSame && createdAll );
+
+            // Equalizing button sizes through layout
+            final ButtonAreaLayout layout = ( ButtonAreaLayout ) container.getLayout ();
+            layout.setSyncAllWidths ( createdAll && getSizeButtonsToSameWidth () );
         }
     }
 
@@ -480,8 +470,10 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
      * @param buttonArea buttons container
      * @return the buttons to display from the JOptionPane the receiver is providing the look and feel for
      */
-    protected Object[] getButtons ( final WebPanel buttonArea )
+    @Nullable
+    protected Object[] getButtons ( @NotNull final WebPanel buttonArea )
     {
+        Object[] buttons = null;
         if ( optionPane != null )
         {
             final Object[] suppliedOptions = optionPane.getOptions ();
@@ -522,11 +514,14 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
                     defaultOptions[ i ].addActionListener ( createButtonActionListener ( i ) );
                 }
 
-                return defaultOptions;
+                buttons = defaultOptions;
             }
-            return suppliedOptions;
+            else
+            {
+                buttons = suppliedOptions;
+            }
         }
-        return null;
+        return buttons;
     }
 
     /**
@@ -534,7 +529,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
      *
      * @param button button to configure
      */
-    private void configureButton ( final WebButton button )
+    private void configureButton ( @NotNull final WebButton button )
     {
         // Minimum size
         button.setMinimumSize ( new Dimension ( 70, 0 ) );
@@ -559,85 +554,63 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeSupport, 
      * @param messageType option pane message type
      * @return icon for specified option pane message type
      */
+    @Nullable
     public static ImageIcon getTypeIcon ( final int messageType )
     {
-        if ( messageType < 0 || messageType > 3 )
+        ImageIcon icon = null;
+        if ( messageType >= 0 && messageType <= 3 )
         {
-            return null;
-        }
-        switch ( messageType )
-        {
-            case 0:
-                return ERROR_ICON;
-            case 1:
-                return INFORMATION_ICON;
-            case 2:
-                return WARNING_ICON;
-            case 3:
-                return QUESTION_ICON;
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * Returns option pane painter.
-     *
-     * @return option pane painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets option pane painter.
-     * Pass null to remove option pane painter.
-     *
-     * @param painter new option pane painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( optionPane, this, new Consumer<IOptionPanePainter> ()
-        {
-            @Override
-            public void accept ( final IOptionPanePainter newPainter )
+            switch ( messageType )
             {
-                WebOptionPaneUI.this.painter = newPainter;
+                case 0:
+                    icon = ERROR_ICON;
+                    break;
+
+                case 1:
+                    icon = INFORMATION_ICON;
+                    break;
+
+                case 2:
+                    icon = WARNING_ICON;
+                    break;
+
+                case 3:
+                    icon = QUESTION_ICON;
+                    break;
             }
-        }, this.painter, painter, IOptionPanePainter.class, AdaptiveOptionPanePainter.class );
-    }
-
-    @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
-    {
-        return PainterSupport.contains ( c, this, painter, x, y );
-    }
-
-    @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
-    {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
-    }
-
-    @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
-    {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
         }
+        return icon;
     }
 
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.contains ( c, this, x, y );
+    }
+
+    @Override
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
+    {
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
+    }
+
+    @Override
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
+    {
+        PainterSupport.paint ( g, c, this );
+    }
+
+    @Nullable
+    @Override
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ) );
     }
 }

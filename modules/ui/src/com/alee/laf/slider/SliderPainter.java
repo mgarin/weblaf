@@ -81,6 +81,7 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
     /**
      * Painting variables.
      */
+    protected transient SliderPaintParameters paintParameters;
     protected transient int trackBuffer = 0;  // The distance that the track is from the side of the control
     protected transient Rectangle focusRect = null;
     protected transient Rectangle contentRect = null;
@@ -88,7 +89,6 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
     protected transient Rectangle tickRect = null;
     protected transient Rectangle trackRect = null;
     protected transient Rectangle thumbRect = null;
-    protected transient boolean dragging = false;
 
     @Override
     protected void installPropertiesAndListeners ()
@@ -229,6 +229,18 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
         thumbRect = null;
 
         super.uninstallPropertiesAndListeners ();
+    }
+
+    @Override
+    public void prepareToPaint ( @NotNull final SliderPaintParameters parameters )
+    {
+        this.paintParameters = parameters;
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        this.paintParameters = null;
     }
 
     @Override
@@ -918,7 +930,7 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
         // Track border & focus
         {
             // Track border
-            g2d.setPaint ( component.isEnabled () ? rolloverDarkBorderOnly && !dragging ?
+            g2d.setPaint ( component.isEnabled () ? rolloverDarkBorderOnly && !paintParameters.dragging ?
                     getBorderColor () : Color.GRAY : Color.LIGHT_GRAY );
             g2d.draw ( ss );
         }
@@ -1207,11 +1219,5 @@ public class SliderPainter<C extends JSlider, U extends WebSliderUI> extends Abs
     protected Color getBorderColor ()
     {
         return ColorUtils.intermediate ( new Color ( 170, 170, 170 ), Color.GRAY, getProgress () );
-    }
-
-    @Override
-    public void setDragging ( final boolean dragging )
-    {
-        this.dragging = dragging;
     }
 }

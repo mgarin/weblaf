@@ -245,11 +245,14 @@ public class WebCheckBoxList<T> extends WebList
                     final WebCheckBoxListElement element = renderer.getElement ( list, checkBoxListModel.get ( index ) );
                     final Rectangle cellRect = getUI ().getCellBounds ( list, index, index );
                     final Rectangle iconRect = element.getUI ().getIconBounds ();
-                    iconRect.x += cellRect.x;
-                    iconRect.y += cellRect.y;
-                    if ( iconRect.contains ( e.getPoint () ) )
+                    if ( iconRect != null )
                     {
-                        invertCheckBoxSelection ( index );
+                        iconRect.x += cellRect.x;
+                        iconRect.y += cellRect.y;
+                        if ( iconRect.contains ( e.getPoint () ) )
+                        {
+                            invertCheckBoxSelection ( index );
+                        }
                     }
                 }
                 else

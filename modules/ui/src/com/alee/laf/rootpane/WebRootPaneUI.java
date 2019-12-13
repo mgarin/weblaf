@@ -20,7 +20,6 @@ package com.alee.laf.rootpane;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Function;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.ComponentResizeBehavior;
@@ -33,8 +32,6 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebWindow;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.*;
 
@@ -85,12 +82,6 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     protected boolean displayMenuBar;
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( RootPanePainter.class )
-    protected IRootPanePainter painter;
-
-    /**
      * Listeners.
      */
     protected transient PropertyChangeListener resizableChangeListener;
@@ -113,6 +104,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      * Runtime variables
      */
     protected transient JRootPane root;
+    protected transient boolean decorated;
     protected transient Window window;
     protected transient Frame frame;
     protected transient Dialog dialog;
@@ -126,13 +118,14 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      * @param c component that will use UI instance
      * @return instance of the {@link WebRootPaneUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebRootPaneUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -158,7 +151,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( root );
@@ -173,19 +166,19 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( root, painter );
+        return PainterSupport.getShape ( root );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( root, painter );
+        return PainterSupport.isShapeDetectionEnabled ( root );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( root, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( root, enabled );
     }
 
     @Nullable
@@ -214,45 +207,18 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         PainterSupport.setPadding ( root, padding );
     }
 
-    /**
-     * Returns root pane painter.
-     *
-     * @return root pane painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets root pane painter.
-     * Pass null to remove root pane painter.
-     *
-     * @param painter new root pane painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( root, this, new Consumer<IRootPanePainter> ()
-        {
-            @Override
-            public void accept ( final IRootPanePainter newPainter )
-            {
-                WebRootPaneUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IRootPanePainter.class, AdaptiveRootPanePainter.class );
-    }
-
     @Override
     public boolean isDecorated ()
     {
-        return painter != null && painter.isDecorated ();
+        return decorated;
     }
 
     @Override
     public void installWindowDecorations ()
     {
-        if ( root.getWindowDecorationStyle () != JRootPane.NONE && isDecorated () )
+        if ( root.getWindowDecorationStyle () != JRootPane.NONE  )
         {
+            decorated = true;
             window = getWindow ();
             frame = window instanceof Frame ? ( Frame ) window : null;
             dialog = window instanceof Dialog ? ( Dialog ) window : null;
@@ -275,6 +241,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
             dialog = null;
             frame = null;
             window = null;
+            decorated = false;
         }
     }
 
@@ -420,7 +387,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         resizableChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            public void propertyChange ( @NotNull final PropertyChangeEvent evt )
             {
                 updateButtons ();
             }
@@ -432,7 +399,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
         resizeBehavior = new ComponentResizeBehavior ( root, new Function<Point, CompassDirection> ()
         {
             @Override
-            public CompassDirection apply ( final Point p )
+            public CompassDirection apply ( @NotNull final Point p )
             {
                 // Ensure dialog or frame is resizable
                 final CompassDirection direction;
@@ -615,7 +582,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                 private final int initialAlignment = titleLabel.getHorizontalAlignment ();
 
                 @Override
-                public void componentResized ( final ComponentEvent e )
+                public void componentResized ( @NotNull final ComponentEvent e )
                 {
                     // Changing title horizontal alignment to avoid title jumping left/right
                     final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
@@ -630,7 +597,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
             windowTitleListener = new PropertyChangeListener ()
             {
                 @Override
-                public void propertyChange ( final PropertyChangeEvent evt )
+                public void propertyChange ( @NotNull final PropertyChangeEvent evt )
                 {
                     final String property = evt.getPropertyName ();
                     if ( Objects.equals ( property, WebWindow.ICON_IMAGE_PROPERTY ) )
@@ -697,12 +664,14 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                     final StyleId minimizeId = StyleId.rootpaneMinimizeButton.at ( buttonsPanel );
                     minimizeButton = new WebButton ( minimizeId )
                     {
+                        @Nullable
                         @Override
                         public Icon getIcon ()
                         {
                             return setupButtonIcons ? minimizeIcon : null;
                         }
 
+                        @Nullable
                         @Override
                         public Icon getRolloverIcon ()
                         {
@@ -714,7 +683,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                     minimizeButton.addActionListener ( new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( final ActionEvent e )
+                        public void actionPerformed ( @NotNull final ActionEvent e )
                         {
                             iconify ();
                         }
@@ -738,12 +707,14 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                     final StyleId maximizeId = StyleId.rootpaneMaximizeButton.at ( buttonsPanel );
                     maximizeButton = new WebButton ( maximizeId )
                     {
+                        @Nullable
                         @Override
                         public Icon getIcon ()
                         {
                             return setupButtonIcons ? isMaximized () ? restoreIcon : maximizeIcon : null;
                         }
 
+                        @Nullable
                         @Override
                         public Icon getRolloverIcon ()
                         {
@@ -755,7 +726,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                     maximizeButton.addActionListener ( new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( final ActionEvent e )
+                        public void actionPerformed ( @NotNull final ActionEvent e )
                         {
                             if ( isFrame () )
                             {
@@ -789,12 +760,14 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                     final StyleId closeId = StyleId.rootpaneCloseButton.at ( buttonsPanel );
                     closeButton = new WebButton ( closeId )
                     {
+                        @Nullable
                         @Override
                         public Icon getIcon ()
                         {
                             return setupButtonIcons ? closeIcon : null;
                         }
 
+                        @Nullable
                         @Override
                         public Icon getRolloverIcon ()
                         {
@@ -806,7 +779,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
                     closeButton.addActionListener ( new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( final ActionEvent e )
+                        public void actionPerformed ( @NotNull final ActionEvent e )
                         {
                             close ();
                         }
@@ -847,6 +820,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      *
      * @return window title text
      */
+    @NotNull
     protected String getWindowTitle ()
     {
         final String title = isDialog () ? dialog.getTitle () : isFrame () ? frame.getTitle () : null;
@@ -860,6 +834,7 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
      *
      * @return window image of suitable size if possible
      */
+    @Nullable
     protected Image getWindowImage ()
     {
         final Image image;
@@ -1010,36 +985,34 @@ public class WebRootPaneUI extends WRootPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        // return PainterSupport.getPreferredSize ( c, painter );
         return null;
     }
 }

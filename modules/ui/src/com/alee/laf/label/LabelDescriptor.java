@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class LabelDescriptor extends AbstractLabelDescriptor<JLabel, WLabelUI>
+public final class LabelDescriptor extends AbstractLabelDescriptor<JLabel, WLabelUI, ILabelPainter>
 {
     /**
-     * Constructs new descriptor for {@link JLabel} component.
+     * Constructs new {@link LabelDescriptor}.
      */
     public LabelDescriptor ()
     {
-        super ( "label", JLabel.class, "LabelUI", WLabelUI.class, WebLabelUI.class, StyleId.label );
+        super (
+                "label",
+                JLabel.class,
+                "LabelUI",
+                WLabelUI.class,
+                WebLabelUI.class,
+                ILabelPainter.class,
+                LabelPainter.class,
+                AdaptiveLabelPainter.class,
+                StyleId.label
+        );
     }
 }

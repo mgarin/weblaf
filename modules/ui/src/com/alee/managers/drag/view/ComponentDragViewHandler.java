@@ -17,6 +17,8 @@
 
 package com.alee.managers.drag.view;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
 
@@ -42,42 +44,25 @@ public abstract class ComponentDragViewHandler<C extends JComponent, T> implemen
      * Initial mouse location on dragged component.
      * Used to position component snapshot correctly under the mouse.
      */
+    @Nullable
     protected Point location;
 
     /**
      * Dragged object reference.
      */
+    @Nullable
     protected WeakReference<C> reference;
 
+    @NotNull
     @Override
-    public BufferedImage getView ( final T object, final DragSourceDragEvent event )
+    public BufferedImage getView ( @NotNull final T object, @NotNull final DragSourceDragEvent event )
     {
-        // Retrieving dragged component
         final C component = getComponent ( object, event );
-
-        // Saving initial mouse location
         if ( reference == null || reference.get () != component )
         {
-            location = calculateViewRelativeLocation ( component, event );
             reference = new WeakReference<C> ( component );
         }
-
-        // Returning component snapshot
         return createComponentView ( component );
-    }
-
-    /**
-     * Returns image object representation location relative to mouse location.
-     *
-     * @param component dragged component
-     * @param event     drag event
-     * @return image object representation location relative to mouse location
-     */
-    protected Point calculateViewRelativeLocation ( final C component, final DragSourceDragEvent event )
-    {
-        final Point los = CoreSwingUtils.locationOnScreen ( component );
-        final Point eloc = event.getLocation ();
-        return new Point ( los.x - eloc.x, los.y - eloc.y );
     }
 
     /**
@@ -86,7 +71,8 @@ public abstract class ComponentDragViewHandler<C extends JComponent, T> implemen
      * @param component dragged component
      * @return component view image
      */
-    protected BufferedImage createComponentView ( final C component )
+    @NotNull
+    protected BufferedImage createComponentView ( @NotNull final C component )
     {
         return SwingUtils.createComponentSnapshot ( component, getSnapshotOpacity () );
     }
@@ -102,14 +88,35 @@ public abstract class ComponentDragViewHandler<C extends JComponent, T> implemen
         return 0.8f;
     }
 
+    @NotNull
     @Override
-    public Point getViewRelativeLocation ( final T object, final DragSourceDragEvent event, final BufferedImage view )
+    public Point getViewRelativeLocation ( @NotNull final T object, final DragSourceDragEvent event, @NotNull final BufferedImage view )
     {
+        if ( location == null )
+        {
+            final C component = getComponent ( object, event );
+            location = calculateViewRelativeLocation ( component, event );
+        }
         return location;
     }
 
+    /**
+     * Returns image object representation location relative to mouse location.
+     *
+     * @param component dragged component
+     * @param event     drag event
+     * @return image object representation location relative to mouse location
+     */
+    @NotNull
+    protected Point calculateViewRelativeLocation ( @NotNull final C component, @NotNull final DragSourceDragEvent event )
+    {
+        final Point los = CoreSwingUtils.locationOnScreen ( component );
+        final Point eloc = event.getLocation ();
+        return new Point ( los.x - eloc.x, los.y - eloc.y );
+    }
+
     @Override
-    public void dragEnded ( final T object, final DragSourceDropEvent event )
+    public void dragEnded ( @NotNull final T object, @NotNull final DragSourceDropEvent event )
     {
         // Clearing initial mouse location
         location = null;
@@ -123,5 +130,6 @@ public abstract class ComponentDragViewHandler<C extends JComponent, T> implemen
      * @param event  drag event
      * @return dragged component retrieved from drag data
      */
-    public abstract C getComponent ( T object, DragSourceDragEvent event );
+    @NotNull
+    public abstract C getComponent ( @NotNull T object, @NotNull DragSourceDragEvent event );
 }

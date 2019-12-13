@@ -116,6 +116,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
         setText ( "" );
     }
 
+    @Nullable
     @Override
     public String getInputPrompt ()
     {
@@ -123,7 +124,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, P
     }
 
     @Override
-    public void setInputPrompt ( final String text )
+    public void setInputPrompt ( @Nullable final String text )
     {
         getUI ().setInputPrompt ( text );
     }

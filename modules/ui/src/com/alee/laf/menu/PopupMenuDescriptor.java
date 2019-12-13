@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class PopupMenuDescriptor extends AbstractPopupMenuDescriptor<JPopupMenu, WPopupMenuUI>
+public final class PopupMenuDescriptor extends AbstractPopupMenuDescriptor<JPopupMenu, WPopupMenuUI, IPopupMenuPainter>
 {
     /**
-     * Constructs new descriptor for {@link JPopupMenu} component.
+     * Constructs new {@link PopupMenuDescriptor}.
      */
     public PopupMenuDescriptor ()
     {
-        super ( "popupmenu", JPopupMenu.class, "PopupMenuUI", WPopupMenuUI.class, WebPopupMenuUI.class, StyleId.popupmenu );
+        super (
+                "popupmenu",
+                JPopupMenu.class,
+                "PopupMenuUI",
+                WPopupMenuUI.class,
+                WebPopupMenuUI.class,
+                IPopupMenuPainter.class,
+                PopupMenuPainter.class,
+                AdaptivePopupMenuPainter.class,
+                StyleId.popupmenu
+        );
     }
 }

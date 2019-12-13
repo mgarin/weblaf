@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.painter.SpecificPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
@@ -35,13 +36,15 @@ import java.util.Map;
  *
  * @param <C> {@link JComponent} type
  * @param <U> base {@link ComponentUI} type
+ * @param <P> {@link SpecificPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see StyleManager
  * @see StyleManager#registerComponentDescriptor(ComponentDescriptor)
  * @see StyleManager#unregisterComponentDescriptor(ComponentDescriptor)
  */
-public abstract class AbstractComponentDescriptor<C extends JComponent, U extends ComponentUI> implements ComponentDescriptor<C, U>
+public abstract class AbstractComponentDescriptor<C extends JComponent, U extends ComponentUI, P extends SpecificPainter>
+        implements ComponentDescriptor<C, U, P>
 {
     /**
      * todo 1. Add specific painter class definition
@@ -50,43 +53,62 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
      */
 
     /**
-     * Component icons cache.
+     * {@link JComponent} icons cache.
      * {@link Icon}s are saved per component class.
      */
     protected static final Map<Class, Icon> componentIcons = new HashMap<Class, Icon> ();
 
     /**
-     * Component identifier.
+     * {@link JComponent} identifier.
      */
     @NotNull
     protected final String id;
 
     /**
-     * Component class.
+     * {@link JComponent} {@link Class}.
      */
     @NotNull
     protected final Class<C> componentClass;
 
     /**
-     * Component UI class identifier.
+     * {@link ComponentUI} {@link Class} identifier.
      */
     @NotNull
     protected final String uiClassId;
 
     /**
-     * Base UI class applicable to this component.
+     * Base {@link ComponentUI} {@link Class} applicable to {@link JComponent}.
+     * This is not an interface because all Swing {@link JComponent}s are based on {@link ComponentUI} class.
      */
     @NotNull
     protected final Class<U> baseUIClass;
 
     /**
-     * UI class applied to the component by default.
+     * {@link ComponentUI} {@link Class} used for {@link JComponent} by default.
      */
     @NotNull
     protected final Class<? extends U> uiClass;
 
     /**
-     * Component default {@link StyleId}.
+     * {@link SpecificPainter} interface {@link Class}.
+     */
+    @NotNull
+    protected final Class<P> painterInterface;
+
+    /**
+     * Default {@link SpecificPainter} implementation {@link Class}.
+     */
+    @NotNull
+    protected final Class<? extends P> painterClass;
+
+    /**
+     * Adapter for {@link SpecificPainter}.
+     */
+    @NotNull
+    protected final Class<? extends P> painterAdapterClass;
+
+    /**
+     * {@link JComponent} default {@link StyleId}.
      */
     @NotNull
     protected final StyleId defaultStyleId;
@@ -94,23 +116,37 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
     /**
      * Constructs new {@link AbstractComponentDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JComponent} identifier
+     * @param componentClass      {@link JComponent} {@link Class}
+     * @param uiClassId           {@link ComponentUI} {@link Class} identifier
+     * @param baseUIClass         base {@link ComponentUI} {@link Class} applicable to {@link JComponent}
+     * @param uiClass             {@link ComponentUI} {@link Class} used for {@link JComponent} by default
+     * @param painterInterface    {@link SpecificPainter} interface {@link Class}
+     * @param painterClass        default {@link SpecificPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link SpecificPainter}
+     * @param defaultStyleId      {@link JComponent} default {@link StyleId}
      */
     public AbstractComponentDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
                                          @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
-                                         @NotNull final StyleId defaultStyleId )
+                                         @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                         @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
         this.id = id;
         this.componentClass = componentClass;
         this.uiClassId = uiClassId;
         this.baseUIClass = baseUIClass;
         this.uiClass = uiClass;
+        this.painterInterface = painterInterface;
+        this.painterClass = painterClass;
+        this.painterAdapterClass = painterAdapterClass;
         this.defaultStyleId = defaultStyleId;
+    }
+
+    @NotNull
+    @Override
+    public String getId ()
+    {
+        return id;
     }
 
     @NotNull
@@ -143,6 +179,27 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
 
     @NotNull
     @Override
+    public Class<P> getPainterInterface ()
+    {
+        return painterInterface;
+    }
+
+    @NotNull
+    @Override
+    public Class<? extends P> getPainterClass ()
+    {
+        return painterClass;
+    }
+
+    @NotNull
+    @Override
+    public Class<? extends P> getPainterAdapterClass ()
+    {
+        return painterAdapterClass;
+    }
+
+    @NotNull
+    @Override
     public StyleId getDefaultStyleId ()
     {
         return defaultStyleId;
@@ -163,18 +220,6 @@ public abstract class AbstractComponentDescriptor<C extends JComponent, U extend
             styleId = getDefaultStyleId ();
         }
         return styleId;
-    }
-
-    @NotNull
-    @Override
-    public String getId ()
-    {
-        final String id = getDefaultStyleId ().getId ();
-        if ( id == null )
-        {
-            throw new StyleException ( "Default StyleId must have an identifier" );
-        }
-        return id;
     }
 
     @NotNull

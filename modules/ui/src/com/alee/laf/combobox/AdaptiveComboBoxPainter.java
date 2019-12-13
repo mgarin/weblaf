@@ -22,14 +22,24 @@ public final class AdaptiveComboBoxPainter<C extends JComboBox, U extends WCombo
      *
      * @param painter painter to adapt
      */
-    public AdaptiveComboBoxPainter ( final Painter painter )
+    public AdaptiveComboBoxPainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }
 
     @Override
-    public void prepareToPaint ( @NotNull final CellRendererPane currentValuePane )
+    public void prepareToPaint ( @NotNull final ComboBoxPaintParameters parameters )
     {
-        // Ignore this method in adaptive class
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
     }
 }

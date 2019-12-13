@@ -17,6 +17,8 @@
 
 package com.alee.managers.drag.view;
 
+import com.alee.api.annotations.NotNull;
+
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DragSourceDragEvent;
@@ -38,6 +40,7 @@ public interface DragViewHandler<T>
      *
      * @return object flavor that can be used to retrieve dragged object
      */
+    @NotNull
     public DataFlavor getObjectFlavor ();
 
     /**
@@ -47,7 +50,7 @@ public interface DragViewHandler<T>
      * @param event  drag event
      * @return true if this handler can produce view for the specified data and event, false otherwise
      */
-    public boolean supports ( T object, DragSourceDragEvent event );
+    public boolean supports ( @NotNull T object, @NotNull DragSourceDragEvent event );
 
     /**
      * Returns image object representation.
@@ -57,7 +60,8 @@ public interface DragViewHandler<T>
      * @param event  drag event
      * @return image object representation
      */
-    public BufferedImage getView ( T object, DragSourceDragEvent event );
+    @NotNull
+    public BufferedImage getView ( @NotNull T object, @NotNull DragSourceDragEvent event );
 
     /**
      * Returns image object representation location relative to mouse location.
@@ -68,7 +72,8 @@ public interface DragViewHandler<T>
      * @param view   resulting view of the dragged object
      * @return image object representation location relative to mouse location
      */
-    public Point getViewRelativeLocation ( T object, DragSourceDragEvent event, BufferedImage view );
+    @NotNull
+    public Point getViewRelativeLocation ( @NotNull T object, DragSourceDragEvent event, @NotNull BufferedImage view );
 
     /**
      * Notifies about drag operation end.
@@ -77,5 +82,5 @@ public interface DragViewHandler<T>
      * @param object dragged object
      * @param event  drag event
      */
-    public void dragEnded ( T object, DragSourceDropEvent event );
+    public void dragEnded ( @NotNull T object, @NotNull DragSourceDropEvent event );
 }

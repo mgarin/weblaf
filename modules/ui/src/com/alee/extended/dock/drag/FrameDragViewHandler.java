@@ -57,6 +57,7 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
         this.dockablePane = new WeakReference<WebDockablePane> ( dockablePane );
     }
 
+    @NotNull
     @Override
     public DataFlavor getObjectFlavor ()
     {
@@ -64,19 +65,20 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     }
 
     @Override
-    public boolean supports ( final FrameDragData object, final DragSourceDragEvent event )
+    public boolean supports ( @NotNull final FrameDragData object, @NotNull final DragSourceDragEvent event )
     {
         final WebDockablePane dockablePane = this.dockablePane.get ();
         return dockablePane != null && dockablePane.findFrame ( object.getId () ) != null;
     }
 
+    @NotNull
     @Override
-    public WebDockableFrame getComponent ( final FrameDragData object, final DragSourceDragEvent event )
+    public WebDockableFrame getComponent ( @NotNull final FrameDragData object, @NotNull final DragSourceDragEvent event )
     {
         final WebDockablePane pane = dockablePane.get ();
         if ( pane != null )
         {
-            return pane.findFrame ( object.getId () );
+            return pane.getFrame ( object.getId () );
         }
         else
         {
@@ -85,8 +87,9 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
         }
     }
 
+    @NotNull
     @Override
-    protected Point calculateViewRelativeLocation ( final WebDockableFrame frame, final DragSourceDragEvent event )
+    protected Point calculateViewRelativeLocation ( @NotNull final WebDockableFrame frame, @NotNull final DragSourceDragEvent event )
     {
         final Point location = super.calculateViewRelativeLocation ( frame, event );
         final WebDockablePane pane = frame.getDockablePane ();
@@ -106,8 +109,9 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
         }
     }
 
+    @NotNull
     @Override
-    protected BufferedImage createComponentView ( final WebDockableFrame frame )
+    protected BufferedImage createComponentView ( @NotNull final WebDockableFrame frame )
     {
         final WebDockablePane pane = frame.getDockablePane ();
         if ( pane != null )

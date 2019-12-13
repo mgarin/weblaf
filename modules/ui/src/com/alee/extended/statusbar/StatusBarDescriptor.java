@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class StatusBarDescriptor extends AbstractStatusBarDescriptor<WebStatusBar, WStatusBarUI>
+public final class StatusBarDescriptor extends AbstractStatusBarDescriptor<WebStatusBar, WStatusBarUI, IStatusBarPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebStatusBar} component.
+     * Constructs new {@link StatusBarDescriptor}.
      */
     public StatusBarDescriptor ()
     {
-        super ( "statusbar", WebStatusBar.class, "StatusBarUI", WStatusBarUI.class, WebStatusBarUI.class, StyleId.statusbar );
+        super (
+                "statusbar",
+                WebStatusBar.class,
+                "StatusBarUI",
+                WStatusBarUI.class,
+                WebStatusBarUI.class,
+                IStatusBarPainter.class,
+                StatusBarPainter.class,
+                AdaptiveStatusBarPainter.class,
+                StyleId.statusbar
+        );
     }
 }

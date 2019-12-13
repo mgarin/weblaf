@@ -1,9 +1,9 @@
 package com.alee.laf.table;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
-import javax.swing.*;
 import javax.swing.table.JTableHeader;
 
 /**
@@ -14,7 +14,7 @@ import javax.swing.table.JTableHeader;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public final class AdaptiveTableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends AdaptivePainter<C, U>
+public final class AdaptiveTableHeaderPainter<C extends JTableHeader, U extends WTableHeaderUI> extends AdaptivePainter<C, U>
         implements ITableHeaderPainter<C, U>
 {
     /**
@@ -22,14 +22,8 @@ public final class AdaptiveTableHeaderPainter<C extends JTableHeader, U extends 
      *
      * @param painter {@link Painter} to adapt
      */
-    public AdaptiveTableHeaderPainter ( final Painter painter )
+    public AdaptiveTableHeaderPainter ( @NotNull final Painter painter )
     {
         super ( painter );
-    }
-
-    @Override
-    public void prepareToPaint ( final CellRendererPane rendererPane )
-    {
-        // Ignore this method in adaptive class
     }
 }

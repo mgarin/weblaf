@@ -36,9 +36,9 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
     protected transient LanguageListener languageSensitive;
 
     /**
-     * Painting variables.
+     * {@link ComboBoxPaintParameters} provided for paint operation.
      */
-    protected transient CellRendererPane currentValuePane = null;
+    protected transient ComboBoxPaintParameters paintParameters = null;
 
     @Override
     protected void installPropertiesAndListeners ()
@@ -173,9 +173,15 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
     }
 
     @Override
-    public void prepareToPaint ( @NotNull final CellRendererPane currentValuePane )
+    public void prepareToPaint ( @NotNull final ComboBoxPaintParameters parameters )
     {
-        this.currentValuePane = currentValuePane;
+        this.paintParameters = parameters;
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        this.paintParameters = null;
     }
 
     @Override
@@ -186,14 +192,6 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
 
         // Cleaning up paint variables
         cleanupAfterPaint ();
-    }
-
-    /**
-     * Method called when single paint operation is completed.
-     */
-    protected void cleanupAfterPaint ()
-    {
-        this.currentValuePane = null;
     }
 
     /**
@@ -223,7 +221,7 @@ public class ComboBoxPainter<C extends JComboBox, U extends WComboBoxUI, D exten
             final int w = bounds.width;
             final int h = bounds.height;
             final boolean shouldValidate = c instanceof JPanel;
-            currentValuePane.paintComponent ( g2d, c, component, x, y, w, h, shouldValidate );
+            paintParameters.currentValuePane.paintComponent ( g2d, c, component, x, y, w, h, shouldValidate );
         }
     }
 }

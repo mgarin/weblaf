@@ -25,37 +25,43 @@ import com.alee.utils.ReflectUtils;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link JFileChooser} component.
  * Extend this class for creating custom {@link JFileChooser} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link JFileChooser} type
+ * @param <U> base {@link WFileChooserUI} type
+ * @param <P> {@link IFileChooserPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractFileChooserDescriptor<C extends JFileChooser, U extends WFileChooserUI>
-        extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractFileChooserDescriptor<C extends JFileChooser, U extends WFileChooserUI, P extends IFileChooserPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractFileChooserDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JFileChooser} identifier
+     * @param componentClass      {@link JFileChooser} {@link Class}
+     * @param uiClassId           {@link WFileChooserUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WFileChooserUI} {@link Class} applicable to {@link JFileChooser}
+     * @param uiClass             {@link WFileChooserUI} {@link Class} used for {@link JFileChooser} by default
+     * @param painterInterface    {@link IFileChooserPainter} interface {@link Class}
+     * @param painterClass        {@link IFileChooserPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IFileChooserPainter}
+     * @param defaultStyleId      {@link JFileChooser} default {@link StyleId}
      */
-    public AbstractFileChooserDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                           final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractFileChooserDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
+                                           @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
+                                           @NotNull final Class<? extends U> uiClass, @NotNull final Class<P> painterInterface,
+                                           @NotNull final Class<? extends P> painterClass,
+                                           @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 
     @Override

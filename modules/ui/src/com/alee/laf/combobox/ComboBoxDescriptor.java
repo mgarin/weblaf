@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ComboBoxDescriptor extends AbstractComboBoxDescriptor<JComboBox, WComboBoxUI>
+public final class ComboBoxDescriptor extends AbstractComboBoxDescriptor<JComboBox, WComboBoxUI, IComboBoxPainter>
 {
     /**
-     * Constructs new descriptor for {@link JComboBox} component.
+     * Constructs new {@link ComboBoxDescriptor}.
      */
     public ComboBoxDescriptor ()
     {
-        super ( "combobox", JComboBox.class, "ComboBoxUI", WComboBoxUI.class, WebComboBoxUI.class, StyleId.combobox );
+        super (
+                "combobox",
+                JComboBox.class,
+                "ComboBoxUI",
+                WComboBoxUI.class,
+                WebComboBoxUI.class,
+                IComboBoxPainter.class,
+                ComboBoxPainter.class,
+                AdaptiveComboBoxPainter.class,
+                StyleId.combobox
+        );
     }
 }

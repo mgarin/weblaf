@@ -19,13 +19,14 @@ package com.alee.laf.tree;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.behavior.TreePathHoverBehavior;
 import com.alee.managers.icon.Icons;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 
@@ -49,12 +50,6 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     protected TreeSelectionStyle selectionStyle;
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( TreePainter.class )
-    protected ITreePainter painter;
-
-    /**
      * Listeners.
      */
     protected transient TreePathHoverBehavior hoverNodeTracker;
@@ -71,13 +66,14 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      * @param c component that will use UI instance
      * @return instance of the {@link WebTreeUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebTreeUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -116,7 +112,8 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
 
                 // Repainting nodes according to hover changes
                 // This occurs only if hover highlight is enabled
-                if ( painter != null && painter.isRowHoverDecorationSupported () )
+                final Painter painter = PainterSupport.getPainter ( tree );
+                if ( painter instanceof ITreePainter && ( ( ITreePainter ) painter ).isRowHoverDecorationSupported () )
                 {
                     repaintRow ( previousRow );
                     repaintRow ( hoverRow );
@@ -163,7 +160,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( tree );
@@ -180,19 +177,19 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( tree, painter );
+        return PainterSupport.getShape ( tree );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( tree, painter );
+        return PainterSupport.isShapeDetectionEnabled ( tree );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( tree, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( tree, enabled );
     }
 
     @Nullable
@@ -219,34 +216,6 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( tree, padding );
-    }
-
-    /**
-     * Returns tree painter.
-     *
-     * @return tree painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets tree painter.
-     * Pass null to remove tree painter.
-     *
-     * @param painter new tree painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( tree, this, new Consumer<ITreePainter> ()
-        {
-            @Override
-            public void accept ( final ITreePainter newPainter )
-            {
-                WebTreeUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ITreePainter.class, AdaptiveTreePainter.class );
     }
 
     @Override
@@ -312,7 +281,8 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      * @param fullRow whether take the whole row into account or just node renderer rect
      * @return full path bounds
      */
-    public Rectangle getPathBounds ( final TreePath path, final boolean fullRow )
+    @Nullable
+    public Rectangle getPathBounds ( @Nullable final TreePath path, final boolean fullRow )
     {
         return fullRow ? getFullPathBounds ( path ) : getPathBounds ( tree, path );
     }
@@ -324,7 +294,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      * @return full path bounds
      */
     @Nullable
-    private Rectangle getFullPathBounds ( final TreePath path )
+    private Rectangle getFullPathBounds ( @Nullable final TreePath path )
     {
         final Rectangle b = getPathBounds ( tree, path );
         if ( b != null )
@@ -342,6 +312,7 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
      *
      * @return visible paths enumeration
      */
+    @Nullable
     public Enumeration<TreePath> getVisiblePaths ()
     {
         final Enumeration<TreePath> result;
@@ -365,12 +336,14 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         return result;
     }
 
+    @NotNull
     @Override
     protected TreeCellEditor createDefaultCellEditor ()
     {
         return new WebTreeCellEditor ();
     }
 
+    @NotNull
     @Override
     protected TreeCellRenderer createDefaultCellRenderer ()
     {
@@ -418,12 +391,14 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
         return inCheckBox;
     }
 
+    @NotNull
     @Override
     public Icon getExpandedIcon ()
     {
         return tree.isEnabled () ? Icons.squareMinus : Icons.squareMinusDisabled;
     }
 
+    @NotNull
     @Override
     public Icon getCollapsedIcon ()
     {
@@ -481,24 +456,21 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.prepareToPaint ( drawingCache, currentCellRenderer );
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        PainterSupport.paint ( g, c, this, new TreePaintParameters ( currentCellRenderer ) );
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ) );
     }
 }

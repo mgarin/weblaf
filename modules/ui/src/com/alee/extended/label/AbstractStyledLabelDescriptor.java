@@ -21,38 +21,41 @@ import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-
 /**
  * Abstract descriptor for {@link WebStyledLabel} component.
  * Extend this class for creating custom {@link WebStyledLabel} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link WebStyledLabel} type
+ * @param <U> base {@link WStyledLabelUI} type
+ * @param <P> {@link IStyledLabelPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractStyledLabelDescriptor<C extends WebStyledLabel, U extends WStyledLabelUI>
-        extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractStyledLabelDescriptor<C extends WebStyledLabel, U extends WStyledLabelUI, P extends IStyledLabelPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractStyledLabelDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link WebStyledLabel} identifier
+     * @param componentClass      {@link WebStyledLabel} {@link Class}
+     * @param uiClassId           {@link WStyledLabelUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WStyledLabelUI} {@link Class} applicable to {@link WebStyledLabel}
+     * @param uiClass             {@link WStyledLabelUI} {@link Class} used for {@link WebStyledLabel} by default
+     * @param painterInterface    {@link IStyledLabelPainter} interface {@link Class}
+     * @param painterClass        {@link IStyledLabelPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IStyledLabelPainter}
+     * @param defaultStyleId      {@link WebStyledLabel} default {@link StyleId}
      */
     public AbstractStyledLabelDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
                                            @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
-                                           @NotNull final Class<? extends U> uiClass, @NotNull final StyleId defaultStyleId )
+                                           @NotNull final Class<? extends U> uiClass, @NotNull final Class<P> painterInterface,
+                                           @NotNull final Class<? extends P> painterClass,
+                                           @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

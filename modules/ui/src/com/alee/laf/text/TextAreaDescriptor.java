@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class TextAreaDescriptor extends AbstractTextAreaDescriptor<JTextArea, WTextAreaUI>
+public final class TextAreaDescriptor extends AbstractTextAreaDescriptor<JTextArea, WTextAreaUI, ITextAreaPainter>
 {
     /**
-     * Constructs new descriptor for {@link JTextArea} component.
+     * Constructs new {@link TextAreaDescriptor}.
      */
     public TextAreaDescriptor ()
     {
-        super ( "textarea", JTextArea.class, "TextAreaUI", WTextAreaUI.class, WebTextAreaUI.class, StyleId.textarea );
+        super (
+                "textarea",
+                JTextArea.class,
+                "TextAreaUI",
+                WTextAreaUI.class,
+                WebTextAreaUI.class,
+                ITextAreaPainter.class,
+                TextAreaPainter.class,
+                AdaptiveTextAreaPainter.class,
+                StyleId.textarea
+        );
     }
 }

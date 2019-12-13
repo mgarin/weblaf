@@ -17,6 +17,8 @@
 
 package com.alee.extended.tab;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.drag.view.SimpleDragViewHandler;
 
 import javax.swing.*;
@@ -38,6 +40,7 @@ public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragV
     /**
      * {@link WebDocumentPane} using this drag view handler.
      */
+    @NotNull
     protected final WebDocumentPane documentPane;
 
     /**
@@ -45,44 +48,48 @@ public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragV
      *
      * @param documentPane {@link WebDocumentPane} using this drag view handler
      */
-    public DocumentDragViewHandler ( final WebDocumentPane documentPane )
+    public DocumentDragViewHandler ( @NotNull final WebDocumentPane documentPane )
     {
-        super ();
         this.documentPane = documentPane;
     }
 
     @Override
-    public boolean supports ( final T object, final DragSourceDragEvent event )
+    public boolean supports ( @NotNull final T object, @NotNull final DragSourceDragEvent event )
     {
         return true;
     }
 
+    @NotNull
     @Override
     public DataFlavor getObjectFlavor ()
     {
         return DocumentTransferable.dataFlavor;
     }
 
+    @NotNull
     @Override
-    protected FontMetrics getFontMetrics ( final T document )
+    protected FontMetrics getFontMetrics ( @NotNull final T document )
     {
         return documentPane.getFontMetrics ( documentPane.getFont () );
     }
 
+    @Nullable
     @Override
-    protected Icon getIcon ( final T document )
+    protected Icon getIcon ( @NotNull final T document )
     {
         return document.getIcon ();
     }
 
+    @Nullable
     @Override
-    protected Color getForeground ( final T document )
+    protected Color getForeground ( @NotNull final T document )
     {
         return document.getForeground ();
     }
 
+    @NotNull
     @Override
-    protected String getText ( final T document )
+    protected String getText ( @NotNull final T document )
     {
         return document.getTitle ();
     }

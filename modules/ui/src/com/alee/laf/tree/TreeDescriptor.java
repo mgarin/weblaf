@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class TreeDescriptor extends AbstractTreeDescriptor<JTree, WTreeUI>
+public final class TreeDescriptor extends AbstractTreeDescriptor<JTree, WTreeUI, ITreePainter>
 {
     /**
-     * Constructs new descriptor for {@link JTree} component.
+     * Constructs new {@link TreeDescriptor}.
      */
     public TreeDescriptor ()
     {
-        super ( "tree", JTree.class, "TreeUI", WTreeUI.class, WebTreeUI.class, StyleId.tree );
+        super (
+                "tree",
+                JTree.class,
+                "TreeUI",
+                WTreeUI.class,
+                WebTreeUI.class,
+                ITreePainter.class,
+                TreePainter.class,
+                AdaptiveTreePainter.class,
+                StyleId.tree
+        );
     }
 }

@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ImageDescriptor extends AbstractImageDescriptor<WebImage, WImageUI>
+public final class ImageDescriptor extends AbstractImageDescriptor<WebImage, WImageUI, IImagePainter>
 {
     /**
-     * Constructs new descriptor for {@link WebImage} component.
+     * Constructs new {@link ImageDescriptor}.
      */
     public ImageDescriptor ()
     {
-        super ( "image", WebImage.class, "ImageUI", WImageUI.class, WebImageUI.class, StyleId.image );
+        super (
+                "image",
+                WebImage.class,
+                "ImageUI",
+                WImageUI.class,
+                WebImageUI.class,
+                IImagePainter.class,
+                ImagePainter.class,
+                AdaptiveImagePainter.class,
+                StyleId.image
+        );
     }
 }

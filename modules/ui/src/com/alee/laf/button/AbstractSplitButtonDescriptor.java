@@ -17,42 +17,48 @@
 
 package com.alee.laf.button;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.extended.button.ISplitButtonPainter;
 import com.alee.extended.button.WSplitButtonUI;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-
 /**
  * Abstract descriptor for {@link WebSplitButton} component.
  * Extend this class for creating custom {@link WebSplitButton} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link WebSplitButton} type
+ * @param <U> base {@link WSplitButtonUI} type
+ * @param <P> {@link ISplitButtonPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractSplitButtonDescriptor<C extends WebSplitButton, U extends WSplitButtonUI>
-        extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractSplitButtonDescriptor<C extends WebSplitButton, U extends WSplitButtonUI, P extends ISplitButtonPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractSplitButtonDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link WebSplitButton} identifier
+     * @param componentClass      {@link WebSplitButton} {@link Class}
+     * @param uiClassId           {@link WSplitButtonUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WSplitButtonUI} {@link Class} applicable to {@link WebSplitButton}
+     * @param uiClass             {@link WSplitButtonUI} {@link Class} used for {@link WebSplitButton} by default
+     * @param painterInterface    {@link ISplitButtonPainter} interface {@link Class}
+     * @param painterClass        {@link ISplitButtonPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link ISplitButtonPainter}
+     * @param defaultStyleId      {@link WebSplitButton} default {@link StyleId}
      */
-    public AbstractSplitButtonDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                           final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractSplitButtonDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
+                                           @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
+                                           @NotNull final Class<? extends U> uiClass, @NotNull final Class<P> painterInterface,
+                                           @NotNull final Class<? extends P> painterClass,
+                                           @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

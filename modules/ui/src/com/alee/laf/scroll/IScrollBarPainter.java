@@ -17,10 +17,10 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.painter.ParameterizedPaint;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Base interface for {@link JScrollBar} component painters.
@@ -29,29 +29,10 @@ import java.awt.*;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-public interface IScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> extends SpecificPainter<C, U>
+public interface IScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI>
+        extends SpecificPainter<C, U>, ParameterizedPaint<ScrollBarPaintParameters>
 {
     /**
-     * Sets whether scroll bar thumb is being dragged or not.
-     * This value is updated by WebScrollBarUI when drag event starts or ends.
-     *
-     * @param dragged whether scroll bar thumb is being dragged or not
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void setDragged ( boolean dragged );
-
-    /**
-     * Sets scroll bar track bounds.
-     * This value is updated by WebScrollBarUI on each paint call to ensure that proper bounds presented.
-     *
-     * @param bounds new scroll bar track bounds
-     */
-    public void setTrackBounds ( Rectangle bounds );
-
-    /**
-     * Sets scroll bar thumb bounds.
-     * This value is updated by WebScrollBarUI on each paint call to ensure that proper bounds presented.
-     *
-     * @param bounds new scroll bar thumb bounds
-     */
-    public void setThumbBounds ( Rectangle bounds );
 }

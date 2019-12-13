@@ -79,7 +79,7 @@ public final class ExamplesFrame extends WebDockableFrame
             }
         } );
         examplesTree.registerSettings ( new Configuration<TreeState> ( "ExamplesTree" ) );
-        final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneTransparentHovering, examplesTree );
+        final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneTransparentHoveringExtending, examplesTree );
         examplesTreeScroll.registerSettings ( new Configuration<ScrollPaneState> ( "ExamplesScroll" ) );
 
         // Filtering field

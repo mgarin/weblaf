@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ProgressBarDescriptor extends AbstractProgressBarDescriptor<JProgressBar, WProgressBarUI>
+public final class ProgressBarDescriptor extends AbstractProgressBarDescriptor<JProgressBar, WProgressBarUI, IProgressBarPainter>
 {
     /**
-     * Constructs new descriptor for {@link JProgressBar} component.
+     * Constructs new {@link ProgressBarDescriptor}.
      */
     public ProgressBarDescriptor ()
     {
-        super ( "progressbar", JProgressBar.class, "ProgressBarUI", WProgressBarUI.class, WebProgressBarUI.class, StyleId.progressbar );
+        super (
+                "progressbar",
+                JProgressBar.class,
+                "ProgressBarUI",
+                WProgressBarUI.class,
+                WebProgressBarUI.class,
+                IProgressBarPainter.class,
+                ProgressBarPainter.class,
+                AdaptiveProgressBarPainter.class,
+                StyleId.progressbar
+        );
     }
 }

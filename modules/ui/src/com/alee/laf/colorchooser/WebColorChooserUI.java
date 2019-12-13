@@ -20,10 +20,7 @@ package com.alee.laf.colorchooser;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.colorchooser.ColorSelectionModel;
@@ -45,12 +42,6 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
      */
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( ColorChooserPainter.class )
-    protected IColorChooserPainter painter;
-
-    /**
      * Runtime variables.
      */
     protected transient WebColorChooserPanel colorChooserPanel;
@@ -65,13 +56,14 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
      * @param c component that will use UI instance
      * @return instance of the {@link WebColorChooserUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebColorChooserUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving color chooser reference
         chooser = ( JColorChooser ) c;
@@ -117,7 +109,7 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Removing content
         chooser.remove ( colorChooserPanel );
@@ -138,19 +130,19 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( chooser, painter );
+        return PainterSupport.getShape ( chooser );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( chooser, painter );
+        return PainterSupport.isShapeDetectionEnabled ( chooser );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( chooser, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( chooser, enabled );
     }
 
     @Nullable
@@ -177,34 +169,6 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( chooser, padding );
-    }
-
-    /**
-     * Returns color chooser painter.
-     *
-     * @return color chooser painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets color chooser painter.
-     * Pass null to remove color chooser painter.
-     *
-     * @param painter new color chooser painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( chooser, this, new Consumer<IColorChooserPainter> ()
-        {
-            @Override
-            public void accept ( final IColorChooserPainter newPainter )
-            {
-                WebColorChooserUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IColorChooserPainter.class, AdaptiveColorChooserPainter.class );
     }
 
     @Override
@@ -262,48 +226,46 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
     }
 
     @Override
-    public void addColorChooserListener ( final ColorChooserListener listener )
+    public void addColorChooserListener ( @NotNull final ColorChooserListener listener )
     {
         colorChooserPanel.addColorChooserListener ( listener );
     }
 
     @Override
-    public void removeColorChooserListener ( final ColorChooserListener listener )
+    public void removeColorChooserListener ( @NotNull final ColorChooserListener listener )
     {
         colorChooserPanel.removeColorChooserListener ( listener );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        // return PainterSupport.getPreferredSize ( c, painter );
         return null;
     }
 }

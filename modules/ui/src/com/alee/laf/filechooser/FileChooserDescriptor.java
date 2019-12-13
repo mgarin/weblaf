@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class FileChooserDescriptor extends AbstractFileChooserDescriptor<JFileChooser, WFileChooserUI>
+public final class FileChooserDescriptor extends AbstractFileChooserDescriptor<JFileChooser, WFileChooserUI, IFileChooserPainter>
 {
     /**
-     * Constructs new descriptor for {@link JFileChooser} component.
+     * Constructs new {@link FileChooserDescriptor}.
      */
     public FileChooserDescriptor ()
     {
-        super ( "filechooser", JFileChooser.class, "FileChooserUI", WFileChooserUI.class, WebFileChooserUI.class, StyleId.filechooser );
+        super (
+                "filechooser",
+                JFileChooser.class,
+                "FileChooserUI",
+                WFileChooserUI.class,
+                WebFileChooserUI.class,
+                IFileChooserPainter.class,
+                FileChooserPainter.class,
+                AdaptiveFileChooserPainter.class,
+                StyleId.filechooser
+        );
     }
 }

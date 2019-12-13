@@ -20,15 +20,12 @@ package com.alee.extended.dock;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.data.CompassDirection;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
@@ -62,12 +59,6 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     protected static final String FRAME_DIALOG = "frame.dialog";
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( DockablePanePainter.class )
-    protected IDockablePanePainter painter;
-
-    /**
      * Listeners.
      */
     protected transient VisibilityBehavior<C> visibilityBehavior;
@@ -85,6 +76,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
      * @param c component that will use UI instance
      * @return instance of the {@link WebDockablePaneUI}
      */
+    @NotNull
     public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebDockablePaneUI ();
@@ -155,7 +147,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent evt )
+    public void propertyChange ( @NotNull final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
         if ( Objects.equals ( property, WebDockablePane.MODEL_PROPERTY, WebDockablePane.MODEL_STATE_PROPERTY ) )
@@ -397,7 +389,7 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         final PropertyChangeListener frameListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            public void propertyChange ( @NotNull final PropertyChangeEvent evt )
             {
                 final String property = evt.getPropertyName ();
                 if ( Objects.equals ( property, WebDockableFrame.FRAME_ID_PROPERTY ) )
@@ -670,19 +662,19 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( pane, painter );
+        return PainterSupport.getShape ( pane );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( pane, painter );
+        return PainterSupport.isShapeDetectionEnabled ( pane );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( pane, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( pane, enabled );
     }
 
     @Nullable
@@ -711,64 +703,35 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
         PainterSupport.setPadding ( pane, padding );
     }
 
-    /**
-     * Returns dockable pane painter.
-     *
-     * @return dockable pane painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets dockable pane painter.
-     * Pass null to remove dockable pane painter.
-     *
-     * @param painter new dockable pane painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( pane, this, new Consumer<IDockablePanePainter> ()
-        {
-            @Override
-            public void accept ( final IDockablePanePainter newPainter )
-            {
-                WebDockablePaneUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IDockablePanePainter.class, AdaptiveDockablePanePainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

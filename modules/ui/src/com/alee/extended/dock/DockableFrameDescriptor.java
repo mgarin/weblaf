@@ -31,14 +31,24 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class DockableFrameDescriptor extends AbstractDockableFrameDescriptor<WebDockableFrame, WDockableFrameUI>
+public final class DockableFrameDescriptor
+        extends AbstractDockableFrameDescriptor<WebDockableFrame, WDockableFrameUI, IDockableFramePainter>
 {
     /**
-     * Constructs new descriptor for {@link WebDockableFrame} component.
+     * Constructs new {@link DockableFrameDescriptor}.
      */
     public DockableFrameDescriptor ()
     {
-        super ( "dockableframe", WebDockableFrame.class, "DockableFrameUI", WDockableFrameUI.class, WebDockableFrameUI.class,
-                StyleId.dockableframe );
+        super (
+                "dockableframe",
+                WebDockableFrame.class,
+                "DockableFrameUI",
+                WDockableFrameUI.class,
+                WebDockableFrameUI.class,
+                IDockableFramePainter.class,
+                DockableFramePainter.class,
+                AdaptiveDockableFramePainter.class,
+                StyleId.dockableframe
+        );
     }
 }

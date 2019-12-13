@@ -35,7 +35,6 @@ import com.alee.managers.icon.Icons;
 import com.alee.managers.style.ComponentDescriptor;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
-import com.alee.painter.Painter;
 import com.alee.skin.light.WebLightSkin;
 import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
@@ -170,7 +169,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * {@link com.alee.managers.style.ShapeSupport} API available in all WebLaF components and providing the setting through component
      * style - that way you will ensure that it is enabled only for components that actually use some sort of complex shape.
      *
-     * @see com.alee.painter.PainterSupport#contains(JComponent, ComponentUI, Painter, int, int)
+     * @see com.alee.painter.PainterSupport#contains(JComponent, ComponentUI, int, int)
      * @see com.alee.managers.style.ShapeSupport
      */
     protected static boolean shapeDetectionEnabled = true;

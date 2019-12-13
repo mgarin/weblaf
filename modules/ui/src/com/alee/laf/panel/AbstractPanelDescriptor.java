@@ -17,39 +17,46 @@
 
 package com.alee.laf.panel;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link JPanel} component.
  * Extend this class for creating custom {@link JPanel} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link JPanel} type
+ * @param <U> base {@link WPanelUI} type
+ * @param <P> {@link IPanelPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractPanelDescriptor<C extends JPanel, U extends WPanelUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractPanelDescriptor<C extends JPanel, U extends WPanelUI, P extends IPanelPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractPanelDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JPanel} identifier
+     * @param componentClass      {@link JPanel} {@link Class}
+     * @param uiClassId           {@link WPanelUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WPanelUI} {@link Class} applicable to {@link JPanel}
+     * @param uiClass             {@link WPanelUI} {@link Class} used for {@link JPanel} by default
+     * @param painterInterface    {@link IPanelPainter} interface {@link Class}
+     * @param painterClass        {@link IPanelPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IPanelPainter}
+     * @param defaultStyleId      {@link JPanel} default {@link StyleId}
      */
-    public AbstractPanelDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                     final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractPanelDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                     @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                     @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                     @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

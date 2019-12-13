@@ -21,38 +21,41 @@ import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-
 /**
  * Abstract descriptor for {@link WebDockableFrame} component.
  * Extend this class for creating custom {@link WebDockableFrame} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link WebDockableFrame} type
+ * @param <U> base {@link WDockableFrameUI} type
+ * @param <P> {@link IDockableFramePainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractDockableFrameDescriptor<C extends WebDockableFrame, U extends WDockableFrameUI>
-        extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractDockableFrameDescriptor<C extends WebDockableFrame, U extends WDockableFrameUI, P extends IDockableFramePainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractDockableFrameDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link WebDockableFrame} identifier
+     * @param componentClass      {@link WebDockableFrame} {@link Class}
+     * @param uiClassId           {@link WDockableFrameUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WDockableFrameUI} {@link Class} applicable to {@link WebDockableFrame}
+     * @param uiClass             {@link WDockableFrameUI} {@link Class} used for {@link WebDockableFrame} by default
+     * @param painterInterface    {@link IDockableFramePainter} interface {@link Class}
+     * @param painterClass        {@link IDockableFramePainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IDockableFramePainter}
+     * @param defaultStyleId      {@link WebDockableFrame} default {@link StyleId}
      */
     public AbstractDockableFrameDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
                                              @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
-                                             @NotNull final Class<? extends U> uiClass, @NotNull final StyleId defaultStyleId )
+                                             @NotNull final Class<? extends U> uiClass, @NotNull final Class<P> painterInterface,
+                                             @NotNull final Class<? extends P> painterClass,
+                                             @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

@@ -752,7 +752,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
          */
         public WebFrameRootPane ()
         {
-            super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
+            super ( StyleId.auto );
         }
 
         @NotNull

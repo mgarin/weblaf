@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class TableDescriptor extends AbstractTableDescriptor<JTable, WebTableUI>
+public final class TableDescriptor extends AbstractTableDescriptor<JTable, WebTableUI, ITablePainter>
 {
     /**
-     * Constructs new descriptor for {@link JTable} component.
+     * Constructs new {@link TableDescriptor}.
      */
     public TableDescriptor ()
     {
-        super ( "table", JTable.class, "TableUI", WebTableUI.class, WebTableUI.class, StyleId.table );
+        super (
+                "table",
+                JTable.class,
+                "TableUI",
+                WebTableUI.class,
+                WebTableUI.class,
+                ITablePainter.class,
+                TablePainter.class,
+                AdaptiveTablePainter.class,
+                StyleId.table
+        );
     }
 }

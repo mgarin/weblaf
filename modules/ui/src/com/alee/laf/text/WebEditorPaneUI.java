@@ -19,11 +19,11 @@ package com.alee.laf.text;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ReflectUtils;
 
@@ -45,12 +45,6 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     protected String inputPrompt;
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( EditorPanePainter.class )
-    protected IEditorPanePainter painter;
-
-    /**
      * Runtime variables.
      */
     protected transient JEditorPane editorPane = null;
@@ -62,13 +56,14 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
      * @param c component that will use UI instance
      * @return instance of the {@link WebEditorPaneUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebEditorPaneUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving editor pane reference
         editorPane = ( JEditorPane ) c;
@@ -80,7 +75,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( editorPane );
@@ -95,19 +90,19 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( editorPane, painter );
+        return PainterSupport.getShape ( editorPane );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( editorPane, painter );
+        return PainterSupport.isShapeDetectionEnabled ( editorPane );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( editorPane, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( editorPane, enabled );
     }
 
     @Nullable
@@ -136,34 +131,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
         PainterSupport.setPadding ( editorPane, padding );
     }
 
-    /**
-     * Returns editor pane painter.
-     *
-     * @return editor pane painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets editor pane painter.
-     * Pass null to remove editor pane painter.
-     *
-     * @param painter new editor pane painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( editorPane, this, new Consumer<IEditorPanePainter> ()
-        {
-            @Override
-            public void accept ( final IEditorPanePainter newPainter )
-            {
-                WebEditorPaneUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IEditorPanePainter.class, AdaptiveEditorPanePainter.class );
-    }
-
+    @Nullable
     @Override
     public String getInputPrompt ()
     {
@@ -171,7 +139,7 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public void setInputPrompt ( final String text )
+    public void setInputPrompt ( @Nullable final String text )
     {
         if ( Objects.notEquals ( text, this.inputPrompt ) )
         {
@@ -181,29 +149,26 @@ public class WebEditorPaneUI extends WEditorPaneUI implements ShapeSupport, Marg
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    protected void paintSafely ( final Graphics g )
+    protected void paintSafely ( @NotNull final Graphics g )
     {
-        if ( painter != null )
-        {
-            // Updating painted field
-            // This is important for proper basic UI usage
-            ReflectUtils.setFieldValueSafely ( this, "painted", true );
+        // Updating painted field
+        // This is important for proper basic UI usage
+        ReflectUtils.setFieldValueSafely ( this, "painted", true );
 
-            // Painting text component
-            final JComponent c = getComponent ();
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        // Painting text component
+        PainterSupport.paint ( g, getComponent (), this );
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ) );
     }
 }

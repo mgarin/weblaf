@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class PanelDescriptor extends AbstractPanelDescriptor<JPanel, WPanelUI>
+public final class PanelDescriptor extends AbstractPanelDescriptor<JPanel, WPanelUI, IPanelPainter>
 {
     /**
-     * Constructs new descriptor for {@link JPanel} component.
+     * Constructs new {@link PanelDescriptor}.
      */
     public PanelDescriptor ()
     {
-        super ( "panel", JPanel.class, "PanelUI", WPanelUI.class, WebPanelUI.class, StyleId.panel );
+        super (
+                "panel",
+                JPanel.class,
+                "PanelUI",
+                WPanelUI.class,
+                WebPanelUI.class,
+                IPanelPainter.class,
+                PanelPainter.class,
+                AdaptivePanelPainter.class,
+                StyleId.panel
+        );
     }
 }

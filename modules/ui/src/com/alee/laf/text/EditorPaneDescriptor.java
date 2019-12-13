@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class EditorPaneDescriptor extends AbstractEditorPaneDescriptor<JEditorPane, WEditorPaneUI>
+public final class EditorPaneDescriptor extends AbstractEditorPaneDescriptor<JEditorPane, WEditorPaneUI, IEditorPanePainter>
 {
     /**
-     * Constructs new descriptor for {@link JEditorPane} component.
+     * Constructs new {@link EditorPaneDescriptor}.
      */
     public EditorPaneDescriptor ()
     {
-        super ( "editorpane", JEditorPane.class, "EditorPaneUI", WEditorPaneUI.class, WebEditorPaneUI.class, StyleId.editorpane );
+        super (
+                "editorpane",
+                JEditorPane.class,
+                "EditorPaneUI",
+                WEditorPaneUI.class,
+                WebEditorPaneUI.class,
+                IEditorPanePainter.class,
+                EditorPanePainter.class,
+                AdaptiveEditorPanePainter.class,
+                StyleId.editorpane
+        );
     }
 }

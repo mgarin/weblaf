@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class SliderDescriptor extends AbstractSliderDescriptor<JSlider, WebSliderUI>
+public final class SliderDescriptor extends AbstractSliderDescriptor<JSlider, WebSliderUI, ISliderPainter>
 {
     /**
-     * Constructs new descriptor for {@link JSlider} component.
+     * Constructs new {@link SliderDescriptor}.
      */
     public SliderDescriptor ()
     {
-        super ( "slider", JSlider.class, "SliderUI", WebSliderUI.class, WebSliderUI.class, StyleId.slider );
+        super (
+                "slider",
+                JSlider.class,
+                "SliderUI",
+                WebSliderUI.class,
+                WebSliderUI.class,
+                ISliderPainter.class,
+                SliderPainter.class,
+                AdaptiveSliderPainter.class,
+                StyleId.slider
+        );
     }
 }

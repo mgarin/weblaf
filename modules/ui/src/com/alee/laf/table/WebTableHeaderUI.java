@@ -21,14 +21,10 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicTableHeaderUI;
 import java.awt.*;
 
 /**
@@ -36,14 +32,8 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebTableHeaderUI extends WTableHeaderUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    /**
-     * Component painter.
-     */
-    @DefaultPainter ( TableHeaderPainter.class )
-    protected ITableHeaderPainter painter;
-
     /**
      * Returns an instance of the {@link WebTableHeaderUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
@@ -51,13 +41,14 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the {@link WebTableHeaderUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebTableHeaderUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -69,7 +60,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( header );
@@ -81,19 +72,19 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( header, painter );
+        return PainterSupport.getShape ( header );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( header, painter );
+        return PainterSupport.isShapeDetectionEnabled ( header );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( header, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( header, enabled );
     }
 
     @Nullable
@@ -122,53 +113,29 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeSupport
         PainterSupport.setPadding ( header, padding );
     }
 
-    /**
-     * Returns table header painter.
-     *
-     * @return table header painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
-    /**
-     * Sets table header painter.
-     * Pass null to remove table header painter.
-     *
-     * @param painter new table header painter
-     */
-    public void setPainter ( final Painter painter )
+    @NotNull
+    @Override
+    public CellRendererPane getCellRendererPane ()
     {
-        PainterSupport.setPainter ( header, this, new Consumer<ITableHeaderPainter> ()
-        {
-            @Override
-            public void accept ( final ITableHeaderPainter newPainter )
-            {
-                WebTableHeaderUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ITableHeaderPainter.class, AdaptiveTableHeaderPainter.class );
+        return rendererPane;
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.prepareToPaint ( rendererPane );
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ) );
     }
 }

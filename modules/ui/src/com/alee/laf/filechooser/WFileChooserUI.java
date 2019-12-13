@@ -17,6 +17,8 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.plaf.FileChooserUI;
 
 /**
@@ -27,9 +29,10 @@ import javax.swing.plaf.FileChooserUI;
 public abstract class WFileChooserUI extends FileChooserUI
 {
     /**
-     * Returns file chooser panel.
+     * Returns {@link WebFileChooserPanel}.
      *
-     * @return file chooser panel
+     * @return {@link WebFileChooserPanel}
      */
+    @NotNull
     public abstract WebFileChooserPanel getFileChooserPanel ();
 }

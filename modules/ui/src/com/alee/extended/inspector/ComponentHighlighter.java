@@ -26,6 +26,9 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.decoration.shape.Round;
+import com.alee.painter.decoration.shape.ShapeType;
+import com.alee.painter.decoration.shape.Sides;
 import com.alee.utils.*;
 
 import javax.swing.*;
@@ -377,26 +380,23 @@ public final class ComponentHighlighter extends JComponent implements ComponentL
         final boolean top = tipPosition == CompassDirection.northWest || tipPosition == CompassDirection.northEast;
         final boolean left = tipPosition == CompassDirection.northWest || tipPosition == CompassDirection.southWest;
         final boolean longTip = component.getWidth () < tipBounds.width;
-        final Point[] points = new Point[]{
-                new Point ( tipBounds.x, tipBounds.y ),
-                new Point ( tipBounds.x + tipBounds.width, tipBounds.y ),
-                new Point ( tipBounds.x + tipBounds.width, tipBounds.y + tipBounds.height ),
-                new Point ( tipBounds.x, tipBounds.y + tipBounds.height )
-        };
-        final int[] round = new int[]{
-                top || !left && longTip ? 4 : 0,
-                top || left && longTip ? 4 : 0,
-                !top || left && longTip ? 4 : 0,
-                !top || !left && longTip ? 4 : 0
-        };
-        final Shape shape = ShapeUtils.createRoundedShape ( points, round );
 
-        // Background
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
+
+        final Round round = new Round (
+                top || !left && longTip ? 5 : 0,
+                top || left && longTip ? 5 : 0,
+                !top || left && longTip ? 5 : 0,
+                !top || !left && longTip ? 5 : 0
+        );
+        final Sides sides = new Sides ( true );
+
         g2d.setPaint ( Color.WHITE );
-        g2d.fill ( shape );
-        g2d.setPaint ( Color.BLACK );
-        g2d.draw ( shape );
+        g2d.fill ( ShapeUtils.createFillShape ( 0, tipBounds, round, sides, ShapeType.background ) );
+
+        g2d.setPaint ( Color.DARK_GRAY );
+        g2d.draw ( ShapeUtils.createBorderShape ( 0, tipBounds, round, sides ) );
+
         GraphicsUtils.restoreAntialias ( g2d, aa );
 
         // Text

@@ -19,11 +19,11 @@ package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -38,25 +38,20 @@ import java.awt.*;
 public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( MenuPainter.class )
-    protected IMenuPainter painter;
-
-    /**
      * Returns an instance of the {@link WebMenuUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebMenuUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebMenuUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         super.installUI ( c );
 
@@ -65,7 +60,7 @@ public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSuppor
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( menuItem );
@@ -77,19 +72,19 @@ public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSuppor
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( menuItem, painter );
+        return PainterSupport.getShape ( menuItem );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( menuItem, painter );
+        return PainterSupport.isShapeDetectionEnabled ( menuItem );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( menuItem, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( menuItem, enabled );
     }
 
     @Nullable
@@ -118,70 +113,35 @@ public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSuppor
         PainterSupport.setPadding ( menuItem, padding );
     }
 
-    /**
-     * Returns menu item painter.
-     *
-     * @return menu item painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets menu item painter.
-     * Pass null to remove menu item painter.
-     *
-     * @param painter new menu item painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( menuItem, this, new Consumer<IMenuPainter> ()
-        {
-            @Override
-            public void accept ( final IMenuPainter newPainter )
-            {
-                WebMenuUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IMenuPainter.class, AdaptiveMenuPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    /**
-     * Returns menu item preferred size.
-     *
-     * @param c menu item component
-     * @return menu item preferred size
-     */
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

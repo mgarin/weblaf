@@ -60,6 +60,10 @@
                 <value lang="ru">Gitter Чат</value>
             </record>
         </Dictionary>
+        <record key="jvm">
+            <value lang="en">Running on: {%s:b}</value>
+            <value lang="ru">Запущено на: {%s:b}</value>
+        </record>
     </Dictionary>
     <Dictionary name="Feature state" prefix="state">
         <record key="beta">
@@ -3245,8 +3249,8 @@
                     <value lang="ru">Примеры определения формы</value>
                 </record>
                 <record key="info1">
-                    <value lang="en">Try hovering and clicking components below around their {visual:b} border,{br}ones with WebLaF shape detection enabled will only react to mouse events within border bounds.</value>
-                    <value lang="ru">Попробуйте навести мышь и покликать около {визуальных:b} бордеров компонентов,{br}приведённых ниже - те что используют расширенное определение форм будут реагировать{br}только на события в рамках своего визуального бордера.</value>
+                    <value lang="en">Try hovering and clicking components below outside of their {visible:b} border,{br}ones with WebLaF shape detection enabled will only react to mouse events within border bounds.</value>
+                    <value lang="ru">Попробуйте навести мышь и покликать снаружи {видимых:b} бордеров компонентов,{br}те что используют расширенное определение форм будут реагировать{br}только на события в рамках своего бордера.</value>
                 </record>
                 <record key="basic">
                     <value lang="en">Basic {Swing:b}</value>

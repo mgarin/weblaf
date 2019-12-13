@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ViewportDescriptor extends AbstractViewportDescriptor<JViewport, WViewportUI>
+public final class ViewportDescriptor extends AbstractViewportDescriptor<JViewport, WViewportUI, IViewportPainter>
 {
     /**
-     * Constructs new descriptor for {@link JViewport} component.
+     * Constructs new {@link ViewportDescriptor}.
      */
     public ViewportDescriptor ()
     {
-        super ( "viewport", JViewport.class, "ViewportUI", WViewportUI.class, WebViewportUI.class, StyleId.viewport );
+        super (
+                "viewport",
+                JViewport.class,
+                "ViewportUI",
+                WViewportUI.class,
+                WebViewportUI.class,
+                IViewportPainter.class,
+                ViewportPainter.class,
+                AdaptiveViewportPainter.class,
+                StyleId.viewport
+        );
     }
 }

@@ -17,18 +17,17 @@
 
 package com.alee.extended.link;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
-
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link WebLink} component.
  * Extend this class for creating custom {@link WebLink} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link WebLink} type
+ * @param <U> base {@link WLinkUI} type
+ * @param <P> {@link ILinkPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLink">How to use WebLink</a>
  * @see WebLink
@@ -37,21 +36,27 @@ import javax.swing.plaf.ComponentUI;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractLinkDescriptor<C extends WebLink, U extends WLinkUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractLinkDescriptor<C extends WebLink, U extends WLinkUI, P extends ILinkPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractLinkDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link WebLink} identifier
+     * @param componentClass      {@link WebLink} {@link Class}
+     * @param uiClassId           {@link WLinkUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WLinkUI} {@link Class} applicable to {@link WebLink}
+     * @param uiClass             {@link WLinkUI} {@link Class} used for {@link WebLink} by default
+     * @param painterInterface    {@link ILinkPainter} interface {@link Class}
+     * @param painterClass        {@link ILinkPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link ILinkPainter}
+     * @param defaultStyleId      {@link WebLink} default {@link StyleId}
      */
-    public AbstractLinkDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                    final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractLinkDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                    @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                    @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                    @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

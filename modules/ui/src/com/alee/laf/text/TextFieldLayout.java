@@ -32,6 +32,7 @@ public class TextFieldLayout extends AbstractLayoutManager
     /**
      * Text field painter implementation.
      */
+    @NotNull
     private final IAbstractTextFieldPainter painter;
 
     /**
@@ -39,9 +40,8 @@ public class TextFieldLayout extends AbstractLayoutManager
      *
      * @param painter text field painter implementation
      */
-    public TextFieldLayout ( final IAbstractTextFieldPainter painter )
+    public TextFieldLayout ( @NotNull final IAbstractTextFieldPainter painter )
     {
-        super ();
         this.painter = painter;
     }
 

@@ -1040,21 +1040,20 @@ public final class SwingUtils
     public static Dimension max ( @Nullable final Dimension dimension1, @Nullable final Dimension dimension2 )
     {
         final Dimension max;
-        if ( dimension1 == null && dimension2 == null )
+        if ( dimension1 != null && dimension2 != null )
         {
-            max = null;
+            max = new Dimension (
+                    Math.max ( dimension1.width, dimension2.width ),
+                    Math.max ( dimension1.height, dimension2.height )
+            );
         }
-        else if ( dimension1 == null )
-        {
-            max = dimension2;
-        }
-        else if ( dimension2 == null )
+        else if ( dimension1 != null )
         {
             max = dimension1;
         }
         else
         {
-            max = new Dimension ( Math.max ( dimension1.width, dimension2.width ), Math.max ( dimension1.height, dimension2.height ) );
+            max = dimension2;
         }
         return max;
     }
@@ -1067,12 +1066,29 @@ public final class SwingUtils
      * @return maximum dimension
      */
     @NotNull
-    public static Dimension maxNonNull ( @NotNull final Dimension dimension1, @NotNull final Dimension dimension2 )
+    public static Dimension maxNonNull ( @Nullable final Dimension dimension1, @Nullable final Dimension dimension2 )
     {
-        return new Dimension (
-                Math.max ( dimension1.width, dimension2.width ),
-                Math.max ( dimension1.height, dimension2.height )
-        );
+        final Dimension max;
+        if ( dimension1 != null && dimension2 != null )
+        {
+            max = new Dimension (
+                    Math.max ( dimension1.width, dimension2.width ),
+                    Math.max ( dimension1.height, dimension2.height )
+            );
+        }
+        else if ( dimension1 != null )
+        {
+            max = dimension1;
+        }
+        else if ( dimension2 != null )
+        {
+            max = dimension2;
+        }
+        else
+        {
+            throw new UtilityException ( "At least one of the Dimensions must not be null" );
+        }
+        return max;
     }
 
     /**

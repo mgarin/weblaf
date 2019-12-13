@@ -19,13 +19,8 @@ package com.alee.painter;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.Bounds;
-import com.alee.managers.style.BoundsType;
-import com.alee.managers.style.PainterShapeProvider;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.data.ComponentStyle;
+import com.alee.managers.style.*;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -53,9 +48,6 @@ public final class PainterSupport
     /**
      * Installed painters.
      * todo These should be moved into {@link StyleManager} and preserver in {@link com.alee.managers.style.StyleData}
-     *
-     * @see #installPainter(JComponent, ComponentUI, Painter)
-     * @see #uninstallPainter(JComponent, ComponentUI, Painter)
      */
     @NotNull
     private static final WeakComponentData<JComponent, Painter> installedPainters =
@@ -87,52 +79,69 @@ public final class PainterSupport
      * Shape detection settings saved for each {@link JComponent} instance.
      * todo These settings should be completely moved into {@link AbstractPainter} upon multiple painters elimination
      *
-     * @see #isShapeDetectionEnabled(JComponent, Painter)
-     * @see #setShapeDetectionEnabled(JComponent, Painter, boolean)
+     * @see #isShapeDetectionEnabled(JComponent)
+     * @see #setShapeDetectionEnabled(JComponent, boolean)
      */
     @NotNull
     private static final WeakComponentData<JComponent, Boolean> shapeDetectionEnabled =
             new WeakComponentData<JComponent, Boolean> ( "PainterSupport.shapeDetectionEnabled", 200 );
 
+
     /**
-     * Returns either specified {@link Painter} if it is not an {@link AdaptivePainter} or the adapted {@link Painter} otherwise.
-     * Used by {@link ComponentUI}s to retrieve {@link Painter}s adapted for their specific needs.
+     * Returns {@link Painter} currently installed on the specified {@link Component}.
+     * Note that {@link Painter}s can only be installed on {@link JComponent}s, but this method accepts {@link Component} for convenience.
      *
-     * @param painter {@link Painter} to process
-     * @param <P>     desired {@link Painter} type
-     * @return either specified {@link Painter} if it is not an {@link AdaptivePainter} or the adapted {@link Painter} otherwise
+     * @param component {@link Component} to retreive {@link Painter} for
+     * @return {@link Painter} currently installed on the specified {@link Component}
      */
     @Nullable
-    public static <P extends Painter> P getPainter ( @Nullable final Painter painter )
+    public static Painter getPainter ( @Nullable final Component component )
     {
-        return ( P ) ( painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
+        return component instanceof JComponent ? installedPainters.get ( ( JComponent ) component ) : null;
     }
 
     /**
-     * Sets component {@link Painter}.
-     * Provided {@link Painter} can be {@code null} in which case current {@link Painter} will be uninstalled.
+     * Sets {@link Painter} for the specified {@link JComponent}.
+     * Provided {@link Painter} can be {@code null} in which case current {@link Painter} will simply be uninstalled.
      *
-     * @param component     {@link JComponent}
-     * @param componentUI   {@link ComponentUI}
-     * @param setter        {@link Consumer} that updates actual painter field
-     * @param oldPainter    previously installed {@link Painter}
-     * @param painter       {@link Painter} to install
-     * @param specificClass {@link SpecificPainter} class
-     * @param adaptiveClass {@link SpecificPainter} adapter class
-     * @param <P>           {@link SpecificPainter} class type
+     * @param component   {@link JComponent}
+     * @param componentUI {@link ComponentUI}
+     * @param painter     {@link Painter} to install
      */
-    public static <P extends SpecificPainter> void setPainter ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
-                                                                @NotNull final Consumer<P> setter, @Nullable final P oldPainter,
-                                                                @Nullable final Painter painter, @NotNull final Class<P> specificClass,
-                                                                @NotNull final Class<? extends P> adaptiveClass )
+    public static void setPainter ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
+                                    @Nullable final Painter painter )
     {
-        // Creating adaptive painter if required
-        final P newPainter = getApplicablePainter ( painter, specificClass, adaptiveClass );
+        final ComponentDescriptor descriptor = StyleManager.getDescriptor ( component );
 
-        // Properly updating painter
-        uninstallPainter ( component, componentUI, oldPainter );
-        setter.accept ( newPainter );
-        installPainter ( component, componentUI, newPainter );
+        // Creating adaptive painter if required
+        final SpecificPainter newPainter = getApplicablePainter (
+                painter,
+                descriptor.getPainterInterface (),
+                descriptor.getPainterAdapterClass ()
+        );
+
+        // Uninstalling old painter
+        final Painter oldPainter = installedPainters.get ( component );
+        if ( oldPainter != null )
+        {
+            oldPainter.uninstall ( component, componentUI );
+            installedPainters.clear ( component );
+        }
+
+        // Installing new painter
+        if ( newPainter != null )
+        {
+            // Installing painter
+            newPainter.install ( component, componentUI );
+            installedPainters.set ( component, newPainter );
+
+            // Applying initial component settings
+            final Boolean opaque = newPainter.isOpaque ();
+            if ( opaque != null )
+            {
+                LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
+            }
+        }
 
         // Firing painter change event
         SwingUtils.firePropertyChanged ( component, WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
@@ -170,83 +179,6 @@ public final class PainterSupport
             result = null;
         }
         return result;
-    }
-
-    /**
-     * Installs {@link Painter} into the specified {@link JComponent} and {@link ComponentUI}.
-     * todo Move this code into {@link AbstractPainter#install(JComponent, ComponentUI)}
-     *
-     * @param component   {@link JComponent}
-     * @param componentUI {@link ComponentUI}
-     * @param painter     {@link Painter} to install
-     */
-    private static void installPainter ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
-                                         @Nullable final Painter painter )
-    {
-        if ( painter != null )
-        {
-            if ( !installedPainters.contains ( component ) )
-            {
-                // Installing painter
-                painter.install ( component, componentUI );
-
-                // Applying initial component settings
-                final Boolean opaque = painter.isOpaque ();
-                if ( opaque != null )
-                {
-                    LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
-                }
-
-                // Saving painter-listener pair
-                installedPainters.set ( component, painter );
-            }
-            else
-            {
-                // Inform about painters usage issue
-                final String msg = "Another painter is already installed on component: %s";
-                throw new PainterException ( String.format ( msg, component ) );
-            }
-        }
-    }
-
-    /**
-     * Uninstalls {@link Painter} from the specified {@link JComponent} and {@link ComponentUI}.
-     * todo Move this code into {@link AbstractPainter#uninstall(JComponent, ComponentUI)}
-     *
-     * @param component   {@link JComponent}
-     * @param componentUI {@link ComponentUI}
-     * @param painter     {@link Painter} to uninstall
-     */
-    private static void uninstallPainter ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
-                                           @Nullable final Painter painter )
-    {
-        if ( painter != null )
-        {
-            if ( installedPainters.contains ( component ) )
-            {
-                final Painter installedPainter = installedPainters.get ( component );
-                if ( installedPainter == painter )
-                {
-                    // Uninstalling painter
-                    installedPainter.uninstall ( component, componentUI );
-
-                    // Removing painter reference
-                    installedPainters.clear ( component );
-                }
-                else
-                {
-                    // Inform about painters usage issue
-                    final String msg = "Wrong painter uninstall was requested for component: %s";
-                    throw new PainterException ( String.format ( msg, component ) );
-                }
-            }
-            else
-            {
-                // Inform about painters usage issue
-                final String msg = "There are no painters installed on component: %s";
-                throw new PainterException ( String.format ( msg, component ) );
-            }
-        }
     }
 
     /**
@@ -412,16 +344,16 @@ public final class PainterSupport
     }
 
     /**
-     * Returns component {@link Shape}.
+     * Returns {@link Shape} of the specified {@link JComponent}.
      *
      * @param component {@link JComponent} to return {@link Shape} for
-     * @param painter   {@link Painter} currently used by the {@link JComponent}
-     * @return component {@link Shape}
+     * @return {@link Shape} of the specified {@link JComponent}
      */
     @NotNull
-    public static Shape getShape ( @NotNull final JComponent component, @Nullable final Painter painter )
+    public static Shape getShape ( @NotNull final JComponent component )
     {
         final Shape shape;
+        final Painter painter = getPainter ( component );
         if ( painter instanceof PainterShapeProvider )
         {
             shape = ( ( PainterShapeProvider ) painter ).provideShape ( component, BoundsType.margin.bounds ( component ) );
@@ -436,13 +368,11 @@ public final class PainterSupport
     /**
      * Returns whether or not {@link JComponent}'s custom {@link Shape} is used for better mouse events detection.
      * If it wasn't explicitly specified - {@link WebLookAndFeel#isShapeDetectionEnabled()} is used as result.
-     * todo Either use {@link Painter}, remove it from here or rework shape detection source
      *
      * @param component {@link JComponent} to return {@link Shape} for
-     * @param painter   {@link Painter} currently used by the {@link JComponent}
      * @return {@code true} if {@link JComponent}'s custom {@link Shape} is used for better mouse events detection, {@code false} otherwise
      */
-    public static boolean isShapeDetectionEnabled ( @NotNull final JComponent component, @Nullable final Painter painter )
+    public static boolean isShapeDetectionEnabled ( @NotNull final JComponent component )
     {
         final Boolean enabled = shapeDetectionEnabled.get ( component );
         return enabled != null ? enabled : WebLookAndFeel.isShapeDetectionEnabled ();
@@ -451,14 +381,11 @@ public final class PainterSupport
     /**
      * Sets whether or not {@link JComponent}'s custom {@link Shape} should be used for better mouse events detection.
      * It can be enabled globally through {@link com.alee.laf.WebLookAndFeel#setShapeDetectionEnabled(boolean)}.
-     * todo Either use {@link Painter}, remove it from here or rework shape detection source
      *
      * @param component {@link JComponent} to return {@link Shape} for
-     * @param painter   {@link Painter} currently used by the {@link JComponent}
      * @param enabled   whether or not {@link JComponent}'s custom {@link Shape} should be used for better mouse events detection
      */
-    public static void setShapeDetectionEnabled ( @NotNull final JComponent component, @Nullable final Painter painter,
-                                                  final boolean enabled )
+    public static void setShapeDetectionEnabled ( @NotNull final JComponent component, final boolean enabled )
     {
         shapeDetectionEnabled.set ( component, enabled );
     }
@@ -468,16 +395,15 @@ public final class PainterSupport
      *
      * @param component   {@link JComponent}
      * @param componentUI {@link ComponentUI}
-     * @param painter     {@link Painter}
      * @param x           X coordinate
      * @param y           Y coordinate
      * @return {@code true} if specified (x,y) location is contained within the shape of the component, {@code false} otherwise
      */
-    public static boolean contains ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
-                                     @Nullable final Painter painter, final int x, final int y )
+    public static boolean contains ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI, final int x, final int y )
     {
         final boolean contains;
-        if ( painter != null && isShapeDetectionEnabled ( component, painter ) )
+        final Painter painter = getPainter ( component );
+        if ( painter != null && isShapeDetectionEnabled ( component ) )
         {
             contains = painter.contains ( component, componentUI, new Bounds ( component ), x, y );
         }
@@ -495,18 +421,18 @@ public final class PainterSupport
      *
      * @param component   {@link JComponent}
      * @param componentUI {@link ComponentUI}
-     * @param painter     {@link Painter}
      * @param width       offered component width
      * @param height      offered component height
      * @return {@link JComponent} baseline measured from the top of the component bounds for the specified {@link JComponent} size
      */
     public static int getBaseline ( @NotNull final JComponent component, @NotNull final ComponentUI componentUI,
-                                    @Nullable final Painter painter, final int width, final int height )
+                                    final int width, final int height )
     {
         // Default baseline
         int baseline = -1;
 
         // Painter baseline support
+        final Painter painter = getPainter ( component );
         if ( painter != null )
         {
             // Creating appropriate bounds for painter
@@ -535,15 +461,14 @@ public final class PainterSupport
      *
      * @param component   {@link JComponent}
      * @param componentUI {@link ComponentUI}
-     * @param painter     {@link Painter}
      * @return {@link java.awt.Component.BaselineResizeBehavior} indicating how baseline of a {@link Component} changes when resized
      */
     @NotNull
     public static Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent component,
-                                                                               @NotNull final ComponentUI componentUI,
-                                                                               @Nullable final Painter painter )
+                                                                               @NotNull final ComponentUI componentUI )
     {
         final Component.BaselineResizeBehavior behavior;
+        final Painter painter = getPainter ( component );
         if ( painter != null )
         {
             behavior = painter.getBaselineResizeBehavior ( component, componentUI );
@@ -565,16 +490,58 @@ public final class PainterSupport
     }
 
     /**
+     * Paints {@link JComponent} on the specified {@link Graphics}.
+     *
+     * @param g         {@link Graphics} to paint on
+     * @param component {@link JComponent} to paint
+     * @param ui        {@link JComponent}'s {@link ComponentUI}
+     */
+    public static void paint ( @NotNull final Graphics g, @NotNull final JComponent component, @NotNull final ComponentUI ui )
+    {
+        final Painter painter = PainterSupport.getPainter ( component );
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, component, ui, new Bounds ( component ) );
+        }
+    }
+
+    /**
+     * Paints {@link JComponent} on the specified {@link Graphics}.
+     *
+     * @param g          {@link Graphics} to paint on
+     * @param component  {@link JComponent} to paint
+     * @param ui         {@link JComponent}'s {@link ComponentUI}
+     * @param parameters {@link PaintParameters}
+     */
+    public static void paint ( @NotNull final Graphics g, @NotNull final JComponent component, @NotNull final ComponentUI ui,
+                               @NotNull final PaintParameters parameters )
+    {
+        final Painter painter = PainterSupport.getPainter ( component );
+        if ( painter != null )
+        {
+            if ( painter instanceof ParameterizedPaint )
+            {
+                final ParameterizedPaint parameterizedPaint = ( ParameterizedPaint ) painter;
+                parameterizedPaint.prepareToPaint ( parameters );
+                painter.paint ( ( Graphics2D ) g, component, ui, new Bounds ( component ) );
+            }
+            else
+            {
+                throw new PainterException ( "Painter doesn't support parameters: " + painter );
+            }
+        }
+    }
+
+    /**
      * Returns {@link JComponent} preferred size or {@code null} if there is no preferred size.
      *
      * @param component {@link JComponent}
-     * @param painter   {@link Painter}
      * @return {@link JComponent} preferred size or {@code null} if there is no preferred size
      */
     @Nullable
-    public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Painter painter )
+    public static Dimension getPreferredSize ( @NotNull final JComponent component )
     {
-        return getPreferredSize ( component, null, painter, false );
+        return getPreferredSize ( component, null, false );
     }
 
     /**
@@ -583,14 +550,12 @@ public final class PainterSupport
      *
      * @param component component painter is applied to
      * @param preferred component preferred size
-     * @param painter   component painter
      * @return component preferred size or {@code null} if there is no preferred size
      */
     @Nullable
-    public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Dimension preferred,
-                                               @Nullable final Painter painter )
+    public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Dimension preferred )
     {
-        return getPreferredSize ( component, preferred, painter, false );
+        return getPreferredSize ( component, preferred, false );
     }
 
     /**
@@ -598,18 +563,18 @@ public final class PainterSupport
      *
      * @param component        component painter is applied to
      * @param preferred        component preferred size
-     * @param painter          component painter
      * @param ignoreLayoutSize whether or not layout preferred size should be ignored
      * @return component preferred size or {@code null} if there is no preferred size
      */
     @Nullable
     public static Dimension getPreferredSize ( @NotNull final JComponent component, @Nullable final Dimension preferred,
-                                               @Nullable final Painter painter, final boolean ignoreLayoutSize )
+                                               final boolean ignoreLayoutSize )
     {
         // Event Dispatch Thread check
         WebLookAndFeel.checkEventDispatchThread ();
 
         // Painter's preferred size
+        final Painter painter = getPainter ( component );
         Dimension ps = SwingUtils.max ( preferred, painter != null ? painter.getPreferredSize () : null );
 
         // Layout preferred size
@@ -633,19 +598,7 @@ public final class PainterSupport
      */
     public static boolean isDecoratable ( @Nullable final Component component )
     {
-        final boolean decoratable;
-        if ( component instanceof JComponent )
-        {
-            final JComponent jComponent = ( JComponent ) component;
-            final ComponentStyle style = StyleManager.getSkin ( jComponent ).getStyle ( jComponent );
-            final Painter painter = style != null ? style.getPainter ( jComponent ) : null;
-            decoratable = painter instanceof AbstractDecorationPainter;
-            // todo Add additional decoration conditions? For: && ((AbstractDecorationPainter)painter)...
-        }
-        else
-        {
-            decoratable = false;
-        }
-        return decoratable;
+        // todo Add additional decoration conditions for: && ((AbstractDecorationPainter)painter)... ?
+        return getPainter ( component ) instanceof AbstractDecorationPainter;
     }
 }

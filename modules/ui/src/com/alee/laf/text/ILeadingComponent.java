@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 
 /**
@@ -32,6 +34,7 @@ public interface ILeadingComponent
      *
      * @return field leading component
      */
+    @Nullable
     public JComponent getLeadingComponent ();
 
     /**
@@ -41,12 +44,14 @@ public interface ILeadingComponent
      * @param leadingComponent field leading component
      * @return removed leading component
      */
-    public JComponent setLeadingComponent ( JComponent leadingComponent );
+    @Nullable
+    public JComponent setLeadingComponent ( @Nullable JComponent leadingComponent );
 
     /**
      * Removes field leading component.
      *
      * @return removed leading component
      */
+    @Nullable
     public JComponent removeLeadingComponent ();
 }

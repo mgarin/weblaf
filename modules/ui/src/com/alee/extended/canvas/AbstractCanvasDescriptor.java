@@ -21,37 +21,40 @@ import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-
 /**
  * Abstract descriptor for {@link WebCanvas} component.
  * Extend this class for creating custom {@link WebCanvas} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link WebCanvas} type
+ * @param <U> base {@link WCanvasUI} type
+ * @param <P> {@link ICanvasPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractCanvasDescriptor<C extends WebCanvas, U extends WCanvasUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractCanvasDescriptor<C extends WebCanvas, U extends WCanvasUI, P extends ICanvasPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractCanvasDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link WebCanvas} identifier
+     * @param componentClass      {@link WebCanvas} {@link Class}
+     * @param uiClassId           {@link WCanvasUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WCanvasUI} {@link Class} applicable to {@link WebCanvas}
+     * @param uiClass             {@link WCanvasUI} {@link Class} used for {@link WebCanvas} by default
+     * @param painterInterface    {@link ICanvasPainter} interface {@link Class}
+     * @param painterClass        {@link ICanvasPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link ICanvasPainter}
+     * @param defaultStyleId      {@link WebCanvas} default {@link StyleId}
      */
     public AbstractCanvasDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
                                       @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
-                                      @NotNull final StyleId defaultStyleId )
+                                      @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                      @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

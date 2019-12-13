@@ -307,6 +307,12 @@ public final class DemoApplication extends WebFrame
         statusBar.add ( new WebLink ( DemoStyles.resourceLink, DemoIcons.gitter19, "demo.statusbar.resources.gitter",
                 new UrlLinkAction ( WEBLAF_GITTER ) ) );
 
+        final WebStyledLabel jvm = new WebStyledLabel ( DemoIcons.java19, SwingConstants.CENTER );
+        jvm.setLanguage ( "demo.statusbar.jvm", SystemUtils.getJavaVersion ().toString () );
+        statusBar.addToEnd ( jvm );
+
+        statusBar.addSpacingToEnd ( 10 );
+
         final WebOverlay memoryBarOverlay = new WebOverlay ();
 
         memoryBarOverlay.setContent ( new WebMemoryBar ().setPreferredWidth ( 150 ) );

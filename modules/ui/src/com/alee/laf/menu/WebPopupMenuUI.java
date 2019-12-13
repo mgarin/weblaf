@@ -19,9 +19,7 @@ package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
@@ -38,12 +36,6 @@ import java.awt.*;
 public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( PopupMenuPainter.class )
-    protected IPopupMenuPainter painter;
-
-    /**
      * Runtime variables.
      */
     protected transient PopupMenuWay popupMenuWay = null;
@@ -55,13 +47,14 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the {@link WebPopupMenuUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebPopupMenuUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -82,7 +75,7 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( popupMenu );
@@ -98,19 +91,19 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( popupMenu, painter );
+        return PainterSupport.getShape ( popupMenu );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( popupMenu, painter );
+        return PainterSupport.isShapeDetectionEnabled ( popupMenu );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( popupMenu, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( popupMenu, enabled );
     }
 
     @Nullable
@@ -152,34 +145,6 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
     }
 
     /**
-     * Returns popup menu painter.
-     *
-     * @return popup menu painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets popup menu painter.
-     * Pass null to remove popup menu painter.
-     *
-     * @param painter new popup menu painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( popupMenu, this, new Consumer<IPopupMenuPainter> ()
-        {
-            @Override
-            public void accept ( final IPopupMenuPainter newPainter )
-            {
-                WebPopupMenuUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IPopupMenuPainter.class, AdaptivePopupMenuPainter.class );
-    }
-
-    /**
      * Returns the {@code Popup} that will be responsible for displaying the {@code JPopupMenu}.
      * Also does necessary modifications to popup coordinates in case they are actually required.
      *
@@ -188,14 +153,16 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
      * @param y     screen y location Popup is to be shown at
      * @return Popup that will show the JPopupMenu
      */
+    @NotNull
     @Override
-    public Popup getPopup ( final JPopupMenu popup, int x, int y )
+    public Popup getPopup ( @NotNull final JPopupMenu popup, int x, int y )
     {
         // Requesting painter to fix popup position if it is required
-        if ( painter != null )
+        final Painter painter = PainterSupport.getPainter ( popup );
+        if ( painter instanceof IPopupMenuPainter )
         {
             // Retrieving fixed popup menu location
-            final Point fixed = painter.preparePopupMenu ( popup, popup.getInvoker (), x, y );
+            final Point fixed = ( ( IPopupMenuPainter ) painter ).preparePopupMenu ( popup, popup.getInvoker (), x, y );
             if ( fixed != null )
             {
                 // Applying fixed coordinates
@@ -211,9 +178,9 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
         final Popup p = super.getPopup ( popup, x, y );
 
         // Configuring actual popup if needed
-        if ( painter != null )
+        if ( painter instanceof IPopupMenuPainter )
         {
-            painter.configurePopup ( popup, popup.getInvoker (), x, y, p );
+            ( ( IPopupMenuPainter ) painter ).configurePopup ( popup, popup.getInvoker (), x, y, p );
         }
 
         // Returning actual popup
@@ -221,36 +188,34 @@ public class WebPopupMenuUI extends WPopupMenuUI implements ShapeSupport, Margin
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        // return PainterSupport.getPreferredSize ( c, painter );
         return null;
     }
 }

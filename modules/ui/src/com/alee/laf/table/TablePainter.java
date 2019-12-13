@@ -35,7 +35,7 @@ import java.util.List;
  * @param <D> decoration type
  * @author Alexandr Zernov
  */
-public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
+public class TablePainter<C extends JTable, U extends WTableUI, D extends IDecoration<C, D>> extends AbstractDecorationPainter<C, U, D>
         implements ITablePainter<C, U>
 {
     /**
@@ -340,14 +340,11 @@ public class TablePainter<C extends JTable, U extends WebTableUI, D extends IDec
     }
 
     @Override
-    public void prepareToPaint ( final CellRendererPane rendererPane )
-    {
-        this.rendererPane = rendererPane;
-    }
-
-    @Override
     protected void paintContent ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Rectangle bounds )
     {
+        // Retrieving renderer pane
+        this.rendererPane = ui.getCellRendererPane ();
+
         // Avoiding painting the entire table when there are no cells
         // Also this check prevents us from painting the entire table when the clip doesn't intersect our bounds at all
         final Rectangle clip = g2d.getClipBounds ();

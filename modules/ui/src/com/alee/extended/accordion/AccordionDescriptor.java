@@ -34,14 +34,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class AccordionDescriptor extends AbstractAccordionDescriptor<WebAccordion, WAccordionUI>
+public final class AccordionDescriptor extends AbstractAccordionDescriptor<WebAccordion, WAccordionUI, IAccordionPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebAccordion} component.
+     * Constructs new {@link AccordionDescriptor}.
      */
     public AccordionDescriptor ()
     {
-        super ( "accordion", WebAccordion.class, "AccordionUI",
-                WAccordionUI.class, WebAccordionUI.class, StyleId.accordion );
+        super (
+                "accordion",
+                WebAccordion.class,
+                "AccordionUI",
+                WAccordionUI.class,
+                WebAccordionUI.class,
+                IAccordionPainter.class,
+                AccordionPainter.class,
+                AdaptiveAccordionPainter.class,
+                StyleId.accordion
+        );
     }
 }

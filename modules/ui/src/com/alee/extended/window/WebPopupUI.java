@@ -19,10 +19,10 @@ package com.alee.extended.window;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
@@ -38,19 +38,14 @@ import java.awt.*;
 public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( PopupPainter.class )
-    protected IPopupPainter painter;
-
-    /**
      * Returns an instance of the {@link WebPopupUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebPopupUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebPopupUI ();
     }
@@ -79,19 +74,19 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( popup, painter );
+        return PainterSupport.getShape ( popup );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( popup, painter );
+        return PainterSupport.isShapeDetectionEnabled ( popup );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( popup, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( popup, enabled );
     }
 
     @Nullable
@@ -120,65 +115,35 @@ public class WebPopupUI<C extends WebPopup> extends WPopupUI<C> implements Shape
         PainterSupport.setPadding ( popup, padding );
     }
 
-    /**
-     * Returns popup painter.
-     *
-     * @return popup painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets popup painter.
-     * Pass null to remove popup painter.
-     *
-     * @param painter new popup painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( popup, this, new Consumer<IPopupPainter> ()
-        {
-            @Override
-            public void accept ( final IPopupPainter newPainter )
-            {
-                WebPopupUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IPopupPainter.class, AdaptivePopupPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        // return PainterSupport.getPreferredSize ( c, painter );
         return null;
     }
 }

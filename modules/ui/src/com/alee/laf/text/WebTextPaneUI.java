@@ -19,11 +19,11 @@ package com.alee.laf.text;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ReflectUtils;
 
@@ -45,12 +45,6 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
     protected String inputPrompt;
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( TextPanePainter.class )
-    protected ITextPanePainter painter;
-
-    /**
      * Runtime variables.
      */
     protected transient JTextPane textPane = null;
@@ -62,13 +56,14 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
      * @param c component that will use UI instance
      * @return instance of the {@link WebTextPaneUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebTextPaneUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving text pane reference
         textPane = ( JTextPane ) c;
@@ -80,7 +75,7 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( textPane );
@@ -95,19 +90,19 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( textPane, painter );
+        return PainterSupport.getShape ( textPane );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( textPane, painter );
+        return PainterSupport.isShapeDetectionEnabled ( textPane );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( textPane, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( textPane, enabled );
     }
 
     @Nullable
@@ -136,34 +131,7 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
         PainterSupport.setPadding ( textPane, padding );
     }
 
-    /**
-     * Returns text pane painter.
-     *
-     * @return text pane painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets text pane painter.
-     * Pass null to remove text pane painter.
-     *
-     * @param painter new text pane painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( textPane, this, new Consumer<ITextPanePainter> ()
-        {
-            @Override
-            public void accept ( final ITextPanePainter newPainter )
-            {
-                WebTextPaneUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ITextPanePainter.class, AdaptiveTextPanePainter.class );
-    }
-
+    @Nullable
     @Override
     public String getInputPrompt ()
     {
@@ -171,7 +139,7 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public void setInputPrompt ( final String text )
+    public void setInputPrompt ( @Nullable final String text )
     {
         if ( Objects.notEquals ( text, this.inputPrompt ) )
         {
@@ -181,29 +149,26 @@ public class WebTextPaneUI extends WTextPaneUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    protected void paintSafely ( final Graphics g )
+    protected void paintSafely ( @NotNull final Graphics g )
     {
-        if ( painter != null )
-        {
-            // Updating painted field
-            // This is important for proper basic UI usage
-            ReflectUtils.setFieldValueSafely ( this, "painted", true );
+        // Updating painted field
+        // This is important for proper basic UI usage
+        ReflectUtils.setFieldValueSafely ( this, "painted", true );
 
-            // Painting text component
-            final JComponent c = getComponent ();
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        // Painting text component
+        PainterSupport.paint ( g, getComponent (), this );
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ) );
     }
 }

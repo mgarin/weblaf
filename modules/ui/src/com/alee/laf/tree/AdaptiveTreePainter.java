@@ -1,12 +1,10 @@
 package com.alee.laf.tree;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreePath;
-import java.util.Hashtable;
 
 /**
  * Simple {@link TreePainter} adapter class.
@@ -23,7 +21,7 @@ public final class AdaptiveTreePainter<C extends JTree, U extends WTreeUI> exten
      *
      * @param painter {@link Painter} to adapt
      */
-    public AdaptiveTreePainter ( final Painter painter )
+    public AdaptiveTreePainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }
@@ -35,8 +33,18 @@ public final class AdaptiveTreePainter<C extends JTree, U extends WTreeUI> exten
     }
 
     @Override
-    public void prepareToPaint ( final Hashtable<TreePath, Boolean> drawingCache, final TreeCellRenderer currentCellRenderer )
+    public void prepareToPaint ( @NotNull final TreePaintParameters parameters )
     {
-        // Ignore this method in adaptive class
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
     }
 }

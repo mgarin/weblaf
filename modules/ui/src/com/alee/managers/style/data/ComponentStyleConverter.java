@@ -289,7 +289,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
             else if ( nodeName.equals ( PAINTER_NODE ) )
             {
                 // Reading painter settings
-                readPainterStyle ( style, reader, context );
+                readPainterStyle ( style, descriptor, reader, context );
             }
             else if ( nodeName.equals ( STYLE_NODE ) )
             {
@@ -423,21 +423,20 @@ public final class ComponentStyleConverter extends ReflectionConverter
     /**
      * Reads {@link PainterStyle} for the specified {@link ComponentStyle}.
      *
-     * @param style   {@link ComponentStyle} to read {@link PainterStyle} for
-     * @param reader  {@link HierarchicalStreamReader}
-     * @param context {@link UnmarshallingContext}
+     * @param style      {@link ComponentStyle} to read {@link PainterStyle} for
+     * @param descriptor {@link ComponentDescriptor}
+     * @param reader     {@link HierarchicalStreamReader}
+     * @param context    {@link UnmarshallingContext}
      */
-    private void readPainterStyle ( @NotNull final ComponentStyle style, @NotNull final HierarchicalStreamReader reader,
-                                    @NotNull final UnmarshallingContext context )
+    private void readPainterStyle ( @NotNull final ComponentStyle style, @NotNull final ComponentDescriptor descriptor,
+                                    @NotNull final HierarchicalStreamReader reader, @NotNull final UnmarshallingContext context )
     {
         // Retrieving overwrite policy
         final String ow = reader.getAttribute ( OVERWRITE_ATTRIBUTE );
         final Boolean overwrite = ow != null ? Boolean.parseBoolean ( ow ) : null;
 
-        // Retrieving default painter class based on UI class and default painter field name
-        // Basically we are reading this painter as a field of the UI class here
-        final Class<? extends ComponentUI> uiClass = ( Class<? extends ComponentUI> ) context.get ( CONTEXT_UI_CLASS );
-        final Class<? extends Painter> defaultPainter = StyleConverterUtils.getDefaultPainter ( uiClass, PAINTER_NODE );
+        // Retrieving default painter class from component descriptor
+        final Class<? extends Painter> defaultPainter = descriptor.getPainterClass ();
 
         // Unmarshalling painter class
         final Class<? extends Painter> painterClass =

@@ -19,11 +19,13 @@ package com.alee.extended.checkbox;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
+import com.alee.laf.radiobutton.IAbstractStateButtonPainter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -40,19 +42,14 @@ public class WebTristateCheckBoxUI<C extends WebTristateCheckBox> extends WTrist
         implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( TristateCheckBoxPainter.class )
-    protected ITristateCheckBoxPainter painter;
-
-    /**
      * Returns an instance of the {@link WebTristateCheckBoxUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebTristateCheckBoxUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebTristateCheckBoxUI ();
     }
@@ -81,19 +78,19 @@ public class WebTristateCheckBoxUI<C extends WebTristateCheckBox> extends WTrist
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( button, painter );
+        return PainterSupport.getShape ( button );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( button, painter );
+        return PainterSupport.isShapeDetectionEnabled ( button );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( button, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( button, enabled );
     }
 
     @Nullable
@@ -123,77 +120,47 @@ public class WebTristateCheckBoxUI<C extends WebTristateCheckBox> extends WTrist
     }
 
     /**
-     * Returns checkbox painter.
-     *
-     * @return checkbox painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets checkbox painter.
-     * Pass null to remove checkbox painter.
-     *
-     * @param painter new checkbox painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( button, this, new Consumer<ITristateCheckBoxPainter> ()
-        {
-            @Override
-            public void accept ( final ITristateCheckBoxPainter newPainter )
-            {
-                WebTristateCheckBoxUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ITristateCheckBoxPainter.class, AdaptiveTristateCheckBoxPainter.class );
-    }
-
-    /**
      * Returns icon bounds.
      *
      * @return icon bounds
      */
+    @Nullable
+    @Override
     public Rectangle getIconBounds ()
     {
-        if ( painter != null )
-        {
-            return painter.getIconBounds ();
-        }
-        return null;
+        final Painter painter = PainterSupport.getPainter ( button );
+        return painter instanceof IAbstractStateButtonPainter ? ( ( IAbstractStateButtonPainter ) painter ).getIconBounds () : null;
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

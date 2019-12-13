@@ -18,6 +18,7 @@
 package com.alee.laf.checkbox;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.button.WButtonUI;
 
 import javax.swing.*;
@@ -39,9 +40,10 @@ public abstract class WCheckBoxUI<C extends JCheckBox> extends WButtonUI<C>
     }
 
     /**
-     * Returns icon bounds.
+     * Returns check {@link Icon} bounds.
      *
-     * @return icon bounds
+     * @return check {@link Icon} bounds
      */
+    @Nullable
     public abstract Rectangle getIconBounds ();
 }

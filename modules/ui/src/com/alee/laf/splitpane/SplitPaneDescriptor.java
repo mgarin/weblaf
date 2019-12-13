@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class SplitPaneDescriptor extends AbstractSplitPaneDescriptor<JSplitPane, WSplitPaneUI>
+public final class SplitPaneDescriptor extends AbstractSplitPaneDescriptor<JSplitPane, WSplitPaneUI, ISplitPanePainter>
 {
     /**
-     * Constructs new descriptor for {@link JSplitPane} component.
+     * Constructs new {@link SplitPaneDescriptor}.
      */
     public SplitPaneDescriptor ()
     {
-        super ( "splitpane", JSplitPane.class, "SplitPaneUI", WSplitPaneUI.class, WebSplitPaneUI.class, StyleId.splitpane );
+        super (
+                "splitpane",
+                JSplitPane.class,
+                "SplitPaneUI",
+                WSplitPaneUI.class,
+                WebSplitPaneUI.class,
+                ISplitPanePainter.class,
+                SplitPanePainter.class,
+                AdaptiveSplitPanePainter.class,
+                StyleId.splitpane
+        );
     }
 }

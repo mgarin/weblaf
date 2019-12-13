@@ -1,5 +1,7 @@
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
+
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
 import java.awt.*;
@@ -20,6 +22,7 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
     /**
      * Enclosing scroll pane reference.
      */
+    @NotNull
     private final transient WeakReference<JScrollPane> scrollPane;
 
     /**
@@ -27,6 +30,7 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
      * If this is false the viewport's view is obtained and if it is an instance of {@code Scrollable} the unit increment from it is used.
      */
     private boolean unitIncrementSet;
+
     /**
      * Set to true when the block increment has been explicitly set.
      * If this is false the viewport's view is obtained and if it is an instance of {@code Scrollable} the block increment from it is used.
@@ -44,11 +48,27 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
      * @param scrollPane  scrollpane this bar will be attached to
      * @param orientation an integer specifying one of the legal orientation values shown above
      */
-    public WebScrollPaneBar ( final JScrollPane scrollPane, final int orientation )
+    public WebScrollPaneBar ( @NotNull final JScrollPane scrollPane, final int orientation )
     {
         super ( orientation );
         this.scrollPane = new WeakReference<JScrollPane> ( scrollPane );
-        this.putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
+        putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
+    }
+
+    /**
+     * Returns {@link JScrollPane} that uses this {@link WebScrollPaneBar}.
+     *
+     * @return {@link JScrollPane} that uses this {@link WebScrollPaneBar}
+     */
+    @NotNull
+    protected JScrollPane getScrollPane ()
+    {
+        final JScrollPane scrollPane = this.scrollPane.get ();
+        if ( scrollPane == null )
+        {
+            throw new RuntimeException ( "JScrollPane is not available anymore" );
+        }
+        return scrollPane;
     }
 
     /**
@@ -75,17 +95,19 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
     @Override
     public int getUnitIncrement ( final int direction )
     {
-        final JViewport vp = scrollPane.get ().getViewport ();
+        final int unitIncrement;
+        final JViewport vp = getScrollPane ().getViewport ();
         if ( !unitIncrementSet && vp != null && vp.getView () instanceof Scrollable )
         {
             final Scrollable view = ( Scrollable ) vp.getView ();
             final Rectangle vr = vp.getViewRect ();
-            return view.getScrollableUnitIncrement ( vr, getOrientation (), direction );
+            unitIncrement = view.getScrollableUnitIncrement ( vr, getOrientation (), direction );
         }
         else
         {
-            return super.getUnitIncrement ( direction );
+            unitIncrement = super.getUnitIncrement ( direction );
         }
+        return unitIncrement;
     }
 
     /**
@@ -113,24 +135,26 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
     @Override
     public int getBlockIncrement ( final int direction )
     {
-        final JViewport vp = scrollPane.get ().getViewport ();
+        final int blockIncrement;
+        final JViewport vp = getScrollPane ().getViewport ();
         if ( blockIncrementSet || vp == null )
         {
-            return super.getBlockIncrement ( direction );
+            blockIncrement = super.getBlockIncrement ( direction );
         }
         else if ( vp.getView () instanceof Scrollable )
         {
             final Scrollable view = ( Scrollable ) vp.getView ();
             final Rectangle vr = vp.getViewRect ();
-            return view.getScrollableBlockIncrement ( vr, getOrientation (), direction );
+            blockIncrement = view.getScrollableBlockIncrement ( vr, getOrientation (), direction );
         }
         else if ( getOrientation () == VERTICAL )
         {
-            return vp.getExtentSize ().height;
+            blockIncrement = vp.getExtentSize ().height;
         }
         else
         {
-            return vp.getExtentSize ().width;
+            blockIncrement = vp.getExtentSize ().width;
         }
+        return blockIncrement;
     }
 }

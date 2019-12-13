@@ -32,14 +32,24 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class PopupMenuSeparatorDescriptor extends AbstractPopupMenuSeparatorDescriptor<JPopupMenu.Separator, WPopupMenuSeparatorUI>
+public final class PopupMenuSeparatorDescriptor
+        extends AbstractPopupMenuSeparatorDescriptor<JPopupMenu.Separator, WPopupMenuSeparatorUI, IPopupMenuSeparatorPainter>
 {
     /**
-     * Constructs new descriptor for {@link javax.swing.JPopupMenu.Separator} component.
+     * Constructs new {@link PopupMenuSeparatorDescriptor}.
      */
     public PopupMenuSeparatorDescriptor ()
     {
-        super ( "popupmenuseparator", JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WPopupMenuSeparatorUI.class,
-                WebPopupMenuSeparatorUI.class, StyleId.popupmenuseparator );
+        super (
+                "popupmenuseparator",
+                JPopupMenu.Separator.class,
+                "PopupMenuSeparatorUI",
+                WPopupMenuSeparatorUI.class,
+                WebPopupMenuSeparatorUI.class,
+                IPopupMenuSeparatorPainter.class,
+                PopupMenuSeparatorPainter.class,
+                AdaptivePopupMenuSeparatorPainter.class,
+                StyleId.popupmenuseparator
+        );
     }
 }

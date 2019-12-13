@@ -19,6 +19,7 @@ package com.alee.managers.style.data;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleException;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -28,6 +29,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 import com.thoughtworks.xstream.mapper.Mapper;
 
+import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 
 /**
@@ -81,7 +83,7 @@ public final class PainterStyleConverter extends ReflectionConverter
         // Retrieving default painter class based on parent painter and this node name
         // Basically we are reading this painter as a field of another painter here
         final Class<? extends Painter> parent = ( Class<? extends Painter> ) context.get ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS );
-        final Class<? extends Painter> defaultPainter = StyleConverterUtils.getDefaultPainter ( parent, reader.getNodeName () );
+        final Class<? extends Painter> defaultPainter = getDefaultPainter ( parent, reader.getNodeName () );
 
         // Unmarshalling painter class
         final Class<? extends Painter> painterClass =
@@ -105,6 +107,37 @@ public final class PainterStyleConverter extends ReflectionConverter
         context.put ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS, parent );
 
         return painterStyle;
+    }
+
+    /**
+     * Retuns default painter class for the painter field in specified class.
+     *
+     * @param inClass class containing painter referencing field
+     * @param field   painter referencing field name
+     * @return default painter class for the painter field in specified class
+     */
+    @NotNull
+    private Class<? extends Painter> getDefaultPainter ( @NotNull final Class<?> inClass, @NotNull final String field )
+    {
+        try
+        {
+            final Field painterField = ReflectUtils.getField ( inClass, field );
+            final DefaultPainter defaultPainter = painterField.getAnnotation ( DefaultPainter.class );
+            if ( defaultPainter != null )
+            {
+                return defaultPainter.value ();
+            }
+            else
+            {
+                final String msg = "Painter field '%s' in class '%s' doesn't have DefaultPainter annotation";
+                throw new StyleException ( String.format ( msg, field, inClass ) );
+            }
+        }
+        catch ( final Exception e )
+        {
+            final String msg = "Unable to find Painter field '%s' in class '%s' for class retrieval from DefaultPainter annotation";
+            throw new StyleException ( String.format ( msg, field, inClass ) );
+        }
     }
 
     /**

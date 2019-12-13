@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ToolTipDescriptor extends AbstractToolTipDescriptor<JToolTip, WToolTipUI>
+public final class ToolTipDescriptor extends AbstractToolTipDescriptor<JToolTip, WToolTipUI, IToolTipPainter>
 {
     /**
-     * Constructs new descriptor for {@link JToolTip} component.
+     * Constructs new {@link ToolTipDescriptor}.
      */
     public ToolTipDescriptor ()
     {
-        super ( "tooltip", JToolTip.class, "ToolTipUI", WToolTipUI.class, WebToolTipUI.class, StyleId.tooltip );
+        super (
+                "tooltip",
+                JToolTip.class,
+                "ToolTipUI",
+                WToolTipUI.class,
+                WebToolTipUI.class,
+                IToolTipPainter.class,
+                ToolTipPainter.class,
+                AdaptiveToolTipPainter.class,
+                StyleId.tooltip
+        );
     }
 }

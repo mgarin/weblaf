@@ -19,7 +19,6 @@ package com.alee.extended.date;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
@@ -30,8 +29,6 @@ import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.FocusEventRunnable;
@@ -60,12 +57,6 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      */
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( DateFieldPainter.class )
-    protected IDateFieldPainter painter;
-
-    /**
      * Listeners.
      */
     protected transient PropertyChangeListener propertyChangeListener;
@@ -91,6 +82,7 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
      * @param c component that will use UI instance
      * @return instance of the {@link WebDateFieldUI}
      */
+    @NotNull
     public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebDateFieldUI ();
@@ -469,19 +461,19 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( dateField, painter );
+        return PainterSupport.getShape ( dateField );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( dateField, painter );
+        return PainterSupport.isShapeDetectionEnabled ( dateField );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( dateField, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( dateField, enabled );
     }
 
     @Nullable
@@ -510,73 +502,38 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
         PainterSupport.setPadding ( dateField, padding );
     }
 
-    /**
-     * Returns date field painter.
-     *
-     * @return date field painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets date field painter.
-     * Pass null to remove date field painter.
-     *
-     * @param painter new date field painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( dateField, this, new Consumer<IDateFieldPainter> ()
-        {
-            @Override
-            public void accept ( final IDateFieldPainter newPainter )
-            {
-                WebDateFieldUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IDateFieldPainter.class, AdaptiveDateFieldPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
-    {
-        return PainterSupport.contains ( c, this, painter, x, y );
-    }
-
-    @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
         // todo Requires proper support
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
     }
 
+    @NotNull
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
     {
         // todo Requires proper support
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    /**
-     * Paints date field.
-     *
-     * @param g graphics
-     * @param c component
-     */
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        PainterSupport.paint ( g, c, this );
+    }
+
+    @Nullable
+    @Override
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c );
     }
 
     /**

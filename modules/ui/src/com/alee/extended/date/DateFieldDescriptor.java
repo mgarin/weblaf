@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class DateFieldDescriptor extends AbstractDateFieldDescriptor<WebDateField, WDateFieldUI>
+public final class DateFieldDescriptor extends AbstractDateFieldDescriptor<WebDateField, WDateFieldUI, IDateFieldPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebDateField} component.
+     * Constructs new {@link DateFieldDescriptor}.
      */
     public DateFieldDescriptor ()
     {
-        super ( "datefield", WebDateField.class, "DateFieldUI", WDateFieldUI.class, WebDateFieldUI.class, StyleId.datefield );
+        super (
+                "datefield",
+                WebDateField.class,
+                "DateFieldUI",
+                WDateFieldUI.class,
+                WebDateFieldUI.class,
+                IDateFieldPainter.class,
+                DateFieldPainter.class,
+                AdaptiveDateFieldPainter.class,
+                StyleId.datefield
+        );
     }
 }

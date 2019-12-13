@@ -19,12 +19,9 @@ package com.alee.laf.text;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -47,12 +44,6 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     protected String inputPrompt;
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( PasswordFieldPainter.class )
-    protected IPasswordFieldPainter painter;
-
-    /**
      * Runtime variables.
      */
     protected transient JPasswordField field = null;
@@ -66,13 +57,14 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
      * @param c component that will use UI instance
      * @return instance of the {@link WebPasswordFieldUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebPasswordFieldUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving text field reference
         // This have to be set before calling super to make sure field reference is available
@@ -85,7 +77,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( field );
@@ -104,19 +96,19 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( field, painter );
+        return PainterSupport.getShape ( field );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( field, painter );
+        return PainterSupport.isShapeDetectionEnabled ( field );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( field, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( field, enabled );
     }
 
     @Nullable
@@ -145,34 +137,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
         PainterSupport.setPadding ( field, padding );
     }
 
-    /**
-     * Returns field painter.
-     *
-     * @return field painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets field painter.
-     * Pass null to remove field painter.
-     *
-     * @param painter new field painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( field, this, new Consumer<IPasswordFieldPainter> ()
-        {
-            @Override
-            public void accept ( final IPasswordFieldPainter newPainter )
-            {
-                WebPasswordFieldUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IPasswordFieldPainter.class, AdaptivePasswordFieldPainter.class );
-    }
-
+    @Nullable
     @Override
     public String getInputPrompt ()
     {
@@ -180,7 +145,7 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     }
 
     @Override
-    public void setInputPrompt ( final String text )
+    public void setInputPrompt ( @Nullable final String text )
     {
         if ( Objects.notEquals ( text, this.inputPrompt ) )
         {
@@ -189,90 +154,88 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
         }
     }
 
+    @Nullable
     @Override
     public JComponent getLeadingComponent ()
     {
         return leadingComponent;
     }
 
+    @Nullable
     @Override
-    public JComponent setLeadingComponent ( final JComponent leadingComponent )
+    public JComponent setLeadingComponent ( @Nullable final JComponent leadingComponent )
     {
-        // Component haven't changed
-        if ( this.leadingComponent == leadingComponent )
-        {
-            return null;
-        }
-
-        // Removing old leading component
         final JComponent old = this.leadingComponent;
-        if ( this.leadingComponent != null )
+        if ( leadingComponent != this.leadingComponent )
         {
-            field.remove ( this.leadingComponent );
-            this.leadingComponent = null;
+            // Removing old leading component
+            if ( this.leadingComponent != null )
+            {
+                field.remove ( this.leadingComponent );
+                this.leadingComponent = null;
+            }
+
+            // Adding new leading component
+            if ( leadingComponent != null )
+            {
+                this.leadingComponent = leadingComponent;
+                field.add ( leadingComponent );
+            }
+
+            // Informing about leading component change
+            SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, leadingComponent );
+
+            // Updating layout
+            field.revalidate ();
         }
-
-        // New leading component
-        if ( leadingComponent != null )
-        {
-            this.leadingComponent = leadingComponent;
-            field.add ( leadingComponent );
-        }
-
-        // Informing about leading component change
-        SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, leadingComponent );
-
-        // Updating layout
-        field.revalidate ();
-
         return old;
     }
 
+    @Nullable
     @Override
     public JComponent removeLeadingComponent ()
     {
         return setLeadingComponent ( null );
     }
 
+    @Nullable
     @Override
     public JComponent getTrailingComponent ()
     {
         return trailingComponent;
     }
 
+    @Nullable
     @Override
-    public JComponent setTrailingComponent ( final JComponent trailingComponent )
+    public JComponent setTrailingComponent ( @Nullable final JComponent trailingComponent )
     {
-        // Component haven't changed
-        if ( this.trailingComponent == trailingComponent )
-        {
-            return null;
-        }
-
-        // Removing old trailing component
         final JComponent old = this.trailingComponent;
-        if ( this.trailingComponent != null )
+        if ( trailingComponent != this.trailingComponent )
         {
-            field.remove ( this.trailingComponent );
-            this.trailingComponent = null;
+            // Removing old trailing component
+            if ( this.trailingComponent != null )
+            {
+                field.remove ( this.trailingComponent );
+                this.trailingComponent = null;
+            }
+
+            // Adding new trailing component
+            if ( trailingComponent != null )
+            {
+                this.trailingComponent = trailingComponent;
+                field.add ( trailingComponent );
+            }
+
+            // Informing about trailing component change
+            SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, trailingComponent );
+
+            // Updating layout
+            field.revalidate ();
         }
-
-        // New trailing component
-        if ( trailingComponent != null )
-        {
-            this.trailingComponent = trailingComponent;
-            field.add ( trailingComponent );
-        }
-
-        // Informing about trailing component change
-        SwingUtils.firePropertyChanged ( field, WebLookAndFeel.LEADING_COMPONENT_PROPERTY, old, trailingComponent );
-
-        // Updating layout
-        field.revalidate ();
-
         return old;
     }
 
+    @Nullable
     @Override
     public JComponent removeTrailingComponent ()
     {
@@ -280,34 +243,31 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    protected void paintSafely ( final Graphics g )
+    protected void paintSafely ( @NotNull final Graphics g )
     {
-        if ( painter != null )
-        {
-            // Updating painted field
-            // This is important for proper basic UI usage
-            ReflectUtils.setFieldValueSafely ( this, "painted", true );
+        // Updating painted field
+        // This is important for proper basic UI usage
+        ReflectUtils.setFieldValueSafely ( this, "painted", true );
 
-            // Painting text component
-            final JComponent c = getComponent ();
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        // Painting text component
+        PainterSupport.paint ( g, getComponent (), this );
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
         final Dimension ps = super.getPreferredSize ( c );
 
         // Fix for Swing bug with pointless scrolling when field's default preferred size is already reached
         ps.width += 1;
 
-        return PainterSupport.getPreferredSize ( c, ps, painter );
+        return PainterSupport.getPreferredSize ( c, ps );
     }
 }

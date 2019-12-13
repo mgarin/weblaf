@@ -678,7 +678,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
          */
         public WebWindowRootPane ()
         {
-            super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
+            super ( StyleId.auto );
         }
 
         @NotNull

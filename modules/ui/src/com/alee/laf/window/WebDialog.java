@@ -1194,7 +1194,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
          */
         public WebDialogRootPane ()
         {
-            super ( StyleManager.getDescriptor ( JRootPane.class ).getDefaultStyleId () );
+            super ( StyleId.auto );
         }
 
         @NotNull

@@ -31,13 +31,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class LinkDescriptor extends AbstractLinkDescriptor<WebLink, WLinkUI>
+public final class LinkDescriptor extends AbstractLinkDescriptor<WebLink, WLinkUI, ILinkPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebLink} component.
+     * Constructs new {@link LinkDescriptor}.
      */
     public LinkDescriptor ()
     {
-        super ( "link", WebLink.class, "LinkUI", WLinkUI.class, WebLinkUI.class, StyleId.link );
+        super (
+                "link",
+                WebLink.class,
+                "LinkUI",
+                WLinkUI.class,
+                WebLinkUI.class,
+                ILinkPainter.class,
+                LinkPainter.class,
+                AdaptiveLinkPainter.class,
+                StyleId.link
+        );
     }
 }

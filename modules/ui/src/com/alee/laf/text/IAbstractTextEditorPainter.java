@@ -19,7 +19,7 @@ package com.alee.laf.text;
 
 import com.alee.painter.SpecificPainter;
 
-import javax.swing.plaf.basic.BasicTextUI;
+import javax.swing.plaf.TextUI;
 import javax.swing.text.JTextComponent;
 
 /**
@@ -29,7 +29,7 @@ import javax.swing.text.JTextComponent;
  * @param <U> component UI type
  * @author Mikle Garin
  */
-public interface IAbstractTextEditorPainter<C extends JTextComponent, U extends BasicTextUI> extends SpecificPainter<C, U>
+public interface IAbstractTextEditorPainter<C extends JTextComponent, U extends TextUI> extends SpecificPainter<C, U>
 {
     /**
      * Returns input prompt text.

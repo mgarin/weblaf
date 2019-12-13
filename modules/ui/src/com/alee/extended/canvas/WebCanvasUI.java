@@ -19,10 +19,10 @@ package com.alee.extended.canvas;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
@@ -37,13 +37,6 @@ import java.awt.*;
  */
 public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    /**
-     * Component painter.
-     */
-    @Nullable
-    @DefaultPainter ( CanvasPainter.class )
-    protected ICanvasPainter painter;
-
     /**
      * Returns an instance of the {@link WebCanvasUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
@@ -81,19 +74,19 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( canvas, painter );
+        return PainterSupport.getShape ( canvas );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( canvas, painter );
+        return PainterSupport.isShapeDetectionEnabled ( canvas );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( canvas, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( canvas, enabled );
     }
 
     @Nullable
@@ -122,64 +115,34 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
         PainterSupport.setPadding ( canvas, padding );
     }
 
-    /**
-     * Returns canvas painter.
-     *
-     * @return canvas painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets canvas painter.
-     * Pass null to remove canvas painter.
-     *
-     * @param painter new canvas painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( canvas, this, new Consumer<ICanvasPainter> ()
-        {
-            @Override
-            public void accept ( final ICanvasPainter newPainter )
-            {
-                WebCanvasUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ICanvasPainter.class, AdaptiveCanvasPainter.class );
-    }
-
     @Override
     public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
     public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
     }
 
+    @NotNull
     @Override
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
     public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        PainterSupport.paint ( g, c, this );
     }
 
     @Override
     public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

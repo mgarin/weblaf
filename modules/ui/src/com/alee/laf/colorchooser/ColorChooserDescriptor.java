@@ -31,14 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ColorChooserDescriptor extends AbstractColorChooserDescriptor<JColorChooser, WColorChooserUI>
+public final class ColorChooserDescriptor extends AbstractColorChooserDescriptor<JColorChooser, WColorChooserUI, IColorChooserPainter>
 {
     /**
-     * Constructs new descriptor for {@link JColorChooser} component.
+     * Constructs new {@link ColorChooserDescriptor}.
      */
     public ColorChooserDescriptor ()
     {
-        super ( "colorchooser", JColorChooser.class, "ColorChooserUI", WColorChooserUI.class, WebColorChooserUI.class,
-                StyleId.colorchooser );
+        super (
+                "colorchooser",
+                JColorChooser.class,
+                "ColorChooserUI",
+                WColorChooserUI.class,
+                WebColorChooserUI.class,
+                IColorChooserPainter.class,
+                ColorChooserPainter.class,
+                AdaptiveColorChooserPainter.class,
+                StyleId.colorchooser
+        );
     }
 }

@@ -19,11 +19,11 @@ package com.alee.laf.tooltip;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -32,17 +32,11 @@ import java.awt.*;
 /**
  * Custom UI for {@link JToolTip} component.
  *
- * @param <C> component type
+ * @param <C> {@link JToolTip} type
  * @author Mikle Garin
  */
 public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    /**
-     * Component painter.
-     */
-    @DefaultPainter ( ToolTipPainter.class )
-    protected IToolTipPainter painter;
-
     /**
      * Returns an instance of the {@link WebToolTipUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
@@ -50,7 +44,8 @@ public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements S
      * @param c component that will use UI instance
      * @return instance of the {@link WebToolTipUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebToolTipUI ();
     }
@@ -79,19 +74,19 @@ public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements S
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( toolTip, painter );
+        return PainterSupport.getShape ( toolTip );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( toolTip, painter );
+        return PainterSupport.isShapeDetectionEnabled ( toolTip );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( toolTip, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( toolTip, enabled );
     }
 
     @Nullable
@@ -120,64 +115,35 @@ public class WebToolTipUI<C extends JToolTip> extends WToolTipUI<C> implements S
         PainterSupport.setPadding ( toolTip, padding );
     }
 
-    /**
-     * Returns tooltip painter.
-     *
-     * @return tooltip painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets tooltip painter.
-     * Pass null to remove tooltip painter.
-     *
-     * @param painter new tooltip painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( toolTip, this, new Consumer<IToolTipPainter> ()
-        {
-            @Override
-            public void accept ( final IToolTipPainter newPainter )
-            {
-                WebToolTipUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IToolTipPainter.class, AdaptiveToolTipPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

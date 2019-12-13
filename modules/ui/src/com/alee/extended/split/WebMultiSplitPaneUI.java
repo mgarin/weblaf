@@ -19,11 +19,11 @@ package com.alee.extended.split;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
@@ -44,19 +44,14 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
         implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( MultiSplitPanePainter.class )
-    protected IMultiSplitPanePainter painter;
-
-    /**
      * Returns an instance of the {@link WebMultiSplitPaneUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebMultiSplitPaneUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebMultiSplitPaneUI ();
     }
@@ -102,7 +97,7 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent evt )
+    public void propertyChange ( @NotNull final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
         if ( Objects.equals ( property, WebMultiSplitPane.DIVIDER_SIZE_PROPERTY ) )
@@ -125,19 +120,19 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( multisplitpane, painter );
+        return PainterSupport.getShape ( multisplitpane );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( multisplitpane, painter );
+        return PainterSupport.isShapeDetectionEnabled ( multisplitpane );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( multisplitpane, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( multisplitpane, enabled );
     }
 
     @Nullable
@@ -166,64 +161,35 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
         PainterSupport.setPadding ( multisplitpane, padding );
     }
 
-    /**
-     * Returns multi split pane painter.
-     *
-     * @return multi split pane painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets multi split pane painter.
-     * Pass null to remove multi split pane painter.
-     *
-     * @param painter new multi split pane painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( multisplitpane, this, new Consumer<IMultiSplitPanePainter> ()
-        {
-            @Override
-            public void accept ( final IMultiSplitPanePainter newPainter )
-            {
-                WebMultiSplitPaneUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IMultiSplitPanePainter.class, AdaptiveMultiSplitPanePainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

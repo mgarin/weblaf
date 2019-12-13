@@ -31,14 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ToggleButtonDescriptor extends AbstractToggleButtonDescriptor<JToggleButton, WToggleButtonUI>
+public final class ToggleButtonDescriptor extends AbstractToggleButtonDescriptor<JToggleButton, WToggleButtonUI, IToggleButtonPainter>
 {
     /**
-     * Constructs new descriptor for {@link JToggleButton} component.
+     * Constructs new {@link ToggleButtonDescriptor}.
      */
     public ToggleButtonDescriptor ()
     {
-        super ( "togglebutton", JToggleButton.class, "ToggleButtonUI", WToggleButtonUI.class, WebToggleButtonUI.class,
-                StyleId.togglebutton );
+        super (
+                "togglebutton",
+                JToggleButton.class,
+                "ToggleButtonUI",
+                WToggleButtonUI.class,
+                WebToggleButtonUI.class,
+                IToggleButtonPainter.class,
+                ToggleButtonPainter.class,
+                AdaptiveToggleButtonPainter.class,
+                StyleId.togglebutton
+        );
     }
 }

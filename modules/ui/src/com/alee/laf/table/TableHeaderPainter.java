@@ -27,7 +27,7 @@ import java.awt.event.MouseEvent;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends AbstractPainter<C, U>
+public class TableHeaderPainter<C extends JTableHeader, U extends WTableHeaderUI> extends AbstractPainter<C, U>
         implements ITableHeaderPainter<C, U>
 {
     /**
@@ -296,15 +296,10 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WebTableHeader
     }
 
     @Override
-    public void prepareToPaint ( final CellRendererPane rendererPane )
-    {
-        // Saving renderer pane reference
-        this.rendererPane = rendererPane;
-    }
-
-    @Override
     public void paint ( @NotNull final Graphics2D g2d, @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds )
     {
+        this.rendererPane = ui.getCellRendererPane ();
+
         // Creating background paint
         final Paint bgPaint = getBackgroundPaint ( 0, 0, 0, component.getHeight () - 1 );
 

@@ -19,13 +19,13 @@ package com.alee.laf.toolbar;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebDialog;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.ProprietaryUtils;
@@ -50,25 +50,20 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      */
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( ToolBarPainter.class )
-    protected IToolBarPainter painter;
-
-    /**
      * Returns an instance of the {@link WebToolBarUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebToolBarUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebToolBarUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -78,7 +73,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( toolBar );
@@ -93,13 +88,14 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     /**
      * Overridden to skip unnecessary operations.
      */
+    @Nullable
     @Override
     protected PropertyChangeListener createPropertyListener ()
     {
         return new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            public void propertyChange ( @NotNull final PropertyChangeEvent evt )
             {
                 propertyChanged ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
             }
@@ -113,9 +109,9 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
      * @param oldValue old property value
      * @param newValue new property value
      */
-    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
     {
-        if ( Objects.equals ( property, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        if ( Objects.equals ( property, WebLookAndFeel.ORIENTATION_PROPERTY ) && newValue != null )
         {
             /**
              * Search for {@link JSeparator} components and change their
@@ -147,19 +143,19 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( toolBar, painter );
+        return PainterSupport.getShape ( toolBar );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( toolBar, painter );
+        return PainterSupport.isShapeDetectionEnabled ( toolBar );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( toolBar, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( toolBar, enabled );
     }
 
     @Nullable
@@ -188,65 +184,35 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
         PainterSupport.setPadding ( toolBar, padding );
     }
 
-    /**
-     * Returns toolbar painter.
-     *
-     * @return toolbar painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets toolbar painter.
-     * Pass null to remove toolbar painter.
-     *
-     * @param painter new toolbar painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( toolBar, this, new Consumer<IToolBarPainter> ()
-        {
-            @Override
-            public void accept ( final IToolBarPainter newPainter )
-            {
-                WebToolBarUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IToolBarPainter.class, AdaptiveToolBarPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        // return PainterSupport.getPreferredSize ( c, painter );
         return null;
     }
 
@@ -276,7 +242,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    protected DragWindow createDragWindow ( final JToolBar toolbar )
+    protected DragWindow createDragWindow ( @NotNull final JToolBar toolbar )
     {
         final DragWindow dragWindow = super.createDragWindow ( toolbar );
         ProprietaryUtils.setWindowOpacity ( dragWindow, 0.5f );
@@ -284,37 +250,37 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    protected void installRolloverBorders ( final JComponent c )
+    protected void installRolloverBorders ( @NotNull final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
     @Override
-    protected void installNonRolloverBorders ( final JComponent c )
+    protected void installNonRolloverBorders ( @NotNull final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
     @Override
-    protected void installNormalBorders ( final JComponent c )
+    protected void installNormalBorders ( @NotNull final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
     @Override
-    protected void setBorderToRollover ( final Component c )
+    protected void setBorderToRollover ( @NotNull final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
     @Override
-    protected void setBorderToNonRollover ( final Component c )
+    protected void setBorderToNonRollover ( @NotNull final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
     @Override
-    protected void setBorderToNormal ( final Component c )
+    protected void setBorderToNormal ( @NotNull final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
@@ -330,7 +296,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
          * @param owner owner frame
          * @param title dialog title
          */
-        public ToolBarDialog ( final Frame owner, final String title )
+        public ToolBarDialog ( @Nullable final Frame owner, @Nullable final String title )
         {
             super ( owner, title, false );
         }
@@ -341,16 +307,17 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
          * @param owner owner dialog
          * @param title dialog title
          */
-        public ToolBarDialog ( final Dialog owner, final String title )
+        public ToolBarDialog ( @Nullable final Dialog owner, @Nullable final String title )
         {
             super ( owner, title, false );
         }
 
+        @NotNull
         @Override
         protected JRootPane createRootPane ()
         {
             // Override createRootPane() to automatically resize the frame when contents change
-            final JRootPane rootPane = new JRootPane ()
+            final WebDialogRootPane rootPane = new WebDialogRootPane ()
             {
                 private boolean packing = false;
 

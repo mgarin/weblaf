@@ -17,41 +17,46 @@
 
 package com.alee.extended.split;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
-
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link WebMultiSplitPaneDivider} component.
  * Extend this class for creating custom {@link WebMultiSplitPaneDivider} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link WebMultiSplitPaneDivider} type
+ * @param <U> base {@link WMultiSplitPaneDividerUI} type
+ * @param <P> {@link IMultiSplitPaneDividerPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractMultiSplitPaneDividerDescriptor<C extends WebMultiSplitPaneDivider, U extends WMultiSplitPaneDividerUI>
-        extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractMultiSplitPaneDividerDescriptor<C extends WebMultiSplitPaneDivider, U extends WMultiSplitPaneDividerUI, P extends IMultiSplitPaneDividerPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractMultiSplitPaneDividerDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link WebMultiSplitPaneDivider} identifier
+     * @param componentClass      {@link WebMultiSplitPaneDivider} {@link Class}
+     * @param uiClassId           {@link WMultiSplitPaneDividerUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WMultiSplitPaneDividerUI} {@link Class} applicable to {@link WebMultiSplitPaneDivider}
+     * @param uiClass             {@link WMultiSplitPaneDividerUI} {@link Class} used for {@link WebMultiSplitPaneDivider} by default
+     * @param painterInterface    {@link IMultiSplitPaneDividerPainter} interface {@link Class}
+     * @param painterClass        {@link IMultiSplitPaneDividerPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IMultiSplitPaneDividerPainter}
+     * @param defaultStyleId      {@link WebMultiSplitPaneDivider} default {@link StyleId}
      */
-    public AbstractMultiSplitPaneDividerDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                                     final Class<U> baseUIClass, final Class<? extends U> uiClass,
-                                                     final StyleId defaultStyleId )
+    public AbstractMultiSplitPaneDividerDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
+                                                     @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
+                                                     @NotNull final Class<? extends U> uiClass, @NotNull final Class<P> painterInterface,
+                                                     @NotNull final Class<? extends P> painterClass,
+                                                     @NotNull final Class<? extends P> painterAdapterClass,
+                                                     @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

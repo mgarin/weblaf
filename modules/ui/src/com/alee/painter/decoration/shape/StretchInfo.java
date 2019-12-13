@@ -17,6 +17,8 @@
 
 package com.alee.painter.decoration.shape;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.general.Pair;
 
 import java.io.Serializable;
@@ -31,11 +33,13 @@ public class StretchInfo implements Serializable
     /**
      * Horizontal stretch intervals.
      */
+    @Nullable
     protected Pair<Integer, Integer> horizontalStretch;
 
     /**
      * Vertical stretch intervals.
      */
+    @Nullable
     protected Pair<Integer, Integer> verticalStretch;
 
     /**
@@ -43,7 +47,7 @@ public class StretchInfo implements Serializable
      */
     public StretchInfo ()
     {
-        super ();
+        this ( null, null );
     }
 
     /**
@@ -52,9 +56,8 @@ public class StretchInfo implements Serializable
      * @param horizontalStretch horizontal stretch intervals
      * @param verticalStretch   vertical stretch intervals
      */
-    public StretchInfo ( final Pair<Integer, Integer> horizontalStretch, final Pair<Integer, Integer> verticalStretch )
+    public StretchInfo ( @Nullable final Pair<Integer, Integer> horizontalStretch, @Nullable final Pair<Integer, Integer> verticalStretch )
     {
-        super ();
         this.horizontalStretch = horizontalStretch;
         this.verticalStretch = verticalStretch;
     }
@@ -64,6 +67,7 @@ public class StretchInfo implements Serializable
      *
      * @return horizontal stretch intervals
      */
+    @Nullable
     public Pair<Integer, Integer> getHorizontalStretch ()
     {
         return horizontalStretch;
@@ -74,6 +78,7 @@ public class StretchInfo implements Serializable
      *
      * @return vertical stretch intervals
      */
+    @Nullable
     public Pair<Integer, Integer> getVerticalStretch ()
     {
         return verticalStretch;
@@ -96,12 +101,12 @@ public class StretchInfo implements Serializable
         if ( horizontalStretch != null )
         {
             sb.append ( "hor:" );
-            toString ( sb, horizontalStretch );
+            append ( sb, horizontalStretch );
         }
         if ( verticalStretch != null )
         {
             sb.append ( "ver:" );
-            toString ( sb, verticalStretch );
+            append ( sb, verticalStretch );
         }
         return sb.toString ();
     }
@@ -112,7 +117,7 @@ public class StretchInfo implements Serializable
      * @param sb       string builder
      * @param interval stretch interval
      */
-    protected void toString ( final StringBuilder sb, final Pair<Integer, Integer> interval )
+    protected void append ( @NotNull final StringBuilder sb, @NotNull final Pair<Integer, Integer> interval )
     {
         sb.append ( interval.getKey () ).append ( "," ).append ( interval.getValue () );
     }

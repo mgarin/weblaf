@@ -1,5 +1,6 @@
 package com.alee.laf.list;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -20,7 +21,7 @@ public final class AdaptiveListPainter<C extends JList, U extends WListUI> exten
      *
      * @param painter painter to adapt
      */
-    public AdaptiveListPainter ( final Painter painter )
+    public AdaptiveListPainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }
@@ -32,10 +33,18 @@ public final class AdaptiveListPainter<C extends JList, U extends WListUI> exten
     }
 
     @Override
-    public void prepareToPaint ( final Integer layoutOrientation, final Integer listHeight, final Integer listWidth,
-                                 final Integer columnCount, final Integer rowsPerColumn, final Integer preferredHeight, final int cellWidth,
-                                 final int cellHeight, final int[] cellHeights )
+    public void prepareToPaint ( @NotNull final ListPaintParameters parameters )
     {
-        // Ignore this method in adaptive class
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
     }
 }

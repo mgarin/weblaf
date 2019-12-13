@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ToolBarDescriptor extends AbstractToolBarDescriptor<JToolBar, WebToolBarUI>
+public final class ToolBarDescriptor extends AbstractToolBarDescriptor<JToolBar, WebToolBarUI, IToolBarPainter>
 {
     /**
-     * Constructs new descriptor for {@link JToolBar} component.
+     * Constructs new {@link ToolBarDescriptor}.
      */
     public ToolBarDescriptor ()
     {
-        super ( "toolbar", JToolBar.class, "ToolBarUI", WebToolBarUI.class, WebToolBarUI.class, StyleId.toolbar );
+        super (
+                "toolbar",
+                JToolBar.class,
+                "ToolBarUI",
+                WebToolBarUI.class,
+                WebToolBarUI.class,
+                IToolBarPainter.class,
+                ToolBarPainter.class,
+                AdaptiveToolBarPainter.class,
+                StyleId.toolbar
+        );
     }
 }

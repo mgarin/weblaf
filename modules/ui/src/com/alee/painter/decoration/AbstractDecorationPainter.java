@@ -37,8 +37,13 @@ import com.alee.managers.style.BoundsType;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.AbstractPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.SystemUtils;
+import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -455,28 +460,17 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                     inFocusedParent = true;
                     break;
                 }
-                else if ( current != component && current instanceof JComponent )
+                else if ( current != component )
                 {
                     // Ensure that component supports styling
-                    final JComponent jComponent = ( JComponent ) current;
-                    if ( LafUtils.hasWebLafUI ( jComponent ) )
+                    final Painter painter = PainterSupport.getPainter ( current );
+                    if ( painter instanceof AbstractDecorationPainter )
                     {
-                        // In a parent that tracks children focus and visually displays it
-                        // This case is not obvious but really important for correct visual representation of the state
-                        final ComponentUI ui = LafUtils.getUI ( jComponent );
-                        if ( ui != null )
+                        final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
+                        if ( dp.usesFocusedView () )
                         {
-                            // todo Replace with proper painter retrieval upon Paintable interface implementation
-                            final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
-                            if ( painter != null && painter instanceof AbstractDecorationPainter )
-                            {
-                                final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
-                                if ( dp.usesFocusedView () )
-                                {
-                                    inFocusedParent = dp.isFocused ();
-                                    break;
-                                }
-                            }
+                            inFocusedParent = dp.isFocused ();
+                            break;
                         }
                     }
                 }
@@ -690,28 +684,17 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
                     inHoveredParent = true;
                     break;
                 }
-                else if ( current != component && current instanceof JComponent )
+                else if ( current != component )
                 {
                     // Ensure that component supports styling
-                    final JComponent jComponent = ( JComponent ) current;
-                    if ( LafUtils.hasWebLafUI ( jComponent ) )
+                    final Painter painter = PainterSupport.getPainter ( current );
+                    if ( painter != null && painter instanceof AbstractDecorationPainter )
                     {
-                        // In a parent that tracks children hover and visually displays it
-                        // This case is not obvious but really important for correct visual representation of the state
-                        final ComponentUI ui = LafUtils.getUI ( jComponent );
-                        if ( ui != null )
+                        final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
+                        if ( dp.usesHoverView () )
                         {
-                            // todo Replace with proper painter retrieval upon Paintable interface implementation
-                            final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
-                            if ( painter != null && painter instanceof AbstractDecorationPainter )
-                            {
-                                final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
-                                if ( dp.usesHoverView () )
-                                {
-                                    inHoveredParent = dp.isHover ();
-                                    break;
-                                }
-                            }
+                            inHoveredParent = dp.isHover ();
+                            break;
                         }
                     }
                 }
@@ -1404,7 +1387,7 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
      * @param c component to paint background for
      * @return {@code true} if painting plain component background is required, {@code false} otherwise
      */
-    protected boolean isPlainBackgroundRequired ( final C c )
+    protected boolean isPlainBackgroundRequired ( @NotNull final C c )
     {
         return c.isOpaque ();
     }
@@ -1426,6 +1409,6 @@ public abstract class AbstractDecorationPainter<C extends JComponent, U extends 
     {
         final Dimension ps = super.getPreferredSize ();
         final D d = getDecoration ();
-        return d != null ? SwingUtils.max ( d.getPreferredSize ( component ), ps ) : ps;
+        return d != null ? SwingUtils.maxNonNull ( d.getPreferredSize ( component ), ps ) : ps;
     }
 }

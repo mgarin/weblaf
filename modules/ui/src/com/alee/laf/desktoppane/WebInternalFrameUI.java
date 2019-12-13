@@ -19,10 +19,7 @@ package com.alee.laf.desktoppane;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
@@ -40,12 +37,6 @@ import java.beans.PropertyChangeListener;
 public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrameUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( InternalFramePainter.class )
-    protected IInternalFramePainter painter;
-
-    /**
      * Listeners.
      */
     protected transient PropertyChangeListener rootPaneTracker;
@@ -57,7 +48,8 @@ public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrame
      * @param c component that will use UI instance
      * @return instance of the {@link WebInternalFrameUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebInternalFrameUI ();
     }
@@ -81,7 +73,7 @@ public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrame
         rootPaneTracker = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            public void propertyChange ( @NotNull final PropertyChangeEvent evt )
             {
                 updateRootPaneStyle ();
             }
@@ -119,19 +111,19 @@ public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrame
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( internalFrame, painter );
+        return PainterSupport.getShape ( internalFrame );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( internalFrame, painter );
+        return PainterSupport.isShapeDetectionEnabled ( internalFrame );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( internalFrame, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( internalFrame, enabled );
     }
 
     @Nullable
@@ -160,34 +152,7 @@ public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrame
         PainterSupport.setPadding ( internalFrame, padding );
     }
 
-    /**
-     * Returns internal frame painter.
-     *
-     * @return internal frame painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets internal frame painter.
-     * Pass null to remove internal frame painter.
-     *
-     * @param painter new internal frame painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( internalFrame, this, new Consumer<IInternalFramePainter> ()
-        {
-            @Override
-            public void accept ( final IInternalFramePainter newPainter )
-            {
-                WebInternalFrameUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IInternalFramePainter.class, AdaptiveInternalFramePainter.class );
-    }
-
+    @NotNull
     @Override
     protected LayoutManager createLayoutManager ()
     {
@@ -195,40 +160,40 @@ public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrame
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getMinimumSize ( final JComponent c )
+    public Dimension getMinimumSize ( @NotNull final JComponent c )
     {
         return null;
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
         return null;
     }

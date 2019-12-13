@@ -29,14 +29,10 @@ import com.alee.extended.link.WebLink;
 import com.alee.managers.style.ComponentException;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -289,21 +285,9 @@ public class WebBreadcrumb extends WebContainer<WebBreadcrumb, WBreadcrumbUI>
      * @param component {@link Component} to check
      * @return {@code true} if specified {@link Component} is supported as element of {@link WebBreadcrumb}, {@code false} otherwise
      */
-    protected boolean isApplied ( final Component component )
+    protected boolean isApplied ( @NotNull final Component component )
     {
-        final boolean applied;
-        if ( component instanceof JComponent )
-        {
-            // todo Better way to retrieve painter
-            final ComponentUI ui = LafUtils.getUI ( ( JComponent ) component );
-            final Painter painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
-            applied = painter instanceof BreadcrumbElementPainter;
-        }
-        else
-        {
-            applied = false;
-        }
-        return applied;
+        return PainterSupport.getPainter ( component ) instanceof BreadcrumbElementPainter;
     }
 
     /**

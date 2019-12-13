@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ScrollBarDescriptor extends AbstractScrollBarDescriptor<JScrollBar, WScrollBarUI>
+public final class ScrollBarDescriptor extends AbstractScrollBarDescriptor<JScrollBar, WScrollBarUI, IScrollBarPainter>
 {
     /**
-     * Constructs new descriptor for {@link JScrollBar} component.
+     * Constructs new {@link ScrollBarDescriptor}.
      */
     public ScrollBarDescriptor ()
     {
-        super ( "scrollbar", JScrollBar.class, "ScrollBarUI", WScrollBarUI.class, WebScrollBarUI.class, StyleId.scrollbar );
+        super (
+                "scrollbar",
+                JScrollBar.class,
+                "ScrollBarUI",
+                WScrollBarUI.class,
+                WebScrollBarUI.class,
+                IScrollBarPainter.class,
+                ScrollBarPainter.class,
+                AdaptiveScrollBarPainter.class,
+                StyleId.scrollbar
+        );
     }
 }

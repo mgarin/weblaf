@@ -189,6 +189,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
         setText ( "" );
     }
 
+    @Nullable
     @Override
     public String getInputPrompt ()
     {
@@ -196,41 +197,47 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
     }
 
     @Override
-    public void setInputPrompt ( final String text )
+    public void setInputPrompt ( @Nullable final String text )
     {
         getUI ().setInputPrompt ( text );
     }
 
+    @Nullable
     @Override
     public JComponent getLeadingComponent ()
     {
         return getUI ().getLeadingComponent ();
     }
 
+    @Nullable
     @Override
-    public JComponent setLeadingComponent ( final JComponent leadingComponent )
+    public JComponent setLeadingComponent ( @Nullable final JComponent leadingComponent )
     {
         return getUI ().setLeadingComponent ( leadingComponent );
     }
 
+    @Nullable
     @Override
     public JComponent removeLeadingComponent ()
     {
         return getUI ().removeLeadingComponent ();
     }
 
+    @Nullable
     @Override
     public JComponent getTrailingComponent ()
     {
         return getUI ().getTrailingComponent ();
     }
 
+    @Nullable
     @Override
-    public JComponent setTrailingComponent ( final JComponent trailingComponent )
+    public JComponent setTrailingComponent ( @Nullable final JComponent trailingComponent )
     {
         return getUI ().setTrailingComponent ( trailingComponent );
     }
 
+    @Nullable
     @Override
     public JComponent removeTrailingComponent ()
     {

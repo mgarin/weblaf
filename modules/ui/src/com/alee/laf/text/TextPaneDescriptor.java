@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class TextPaneDescriptor extends AbstractTextPaneDescriptor<JTextPane, WTextPaneUI>
+public final class TextPaneDescriptor extends AbstractTextPaneDescriptor<JTextPane, WTextPaneUI, ITextPanePainter>
 {
     /**
-     * Constructs new descriptor for {@link JTextPane} component.
+     * Constructs new {@link TextPaneDescriptor}.
      */
     public TextPaneDescriptor ()
     {
-        super ( "textpane", JTextPane.class, "TextPaneUI", WTextPaneUI.class, WebTextPaneUI.class, StyleId.textpane );
+        super (
+                "textpane",
+                JTextPane.class,
+                "TextPaneUI",
+                WTextPaneUI.class,
+                WebTextPaneUI.class,
+                ITextPanePainter.class,
+                TextPanePainter.class,
+                AdaptiveTextPanePainter.class,
+                StyleId.textpane
+        );
     }
 }

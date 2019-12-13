@@ -31,14 +31,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class DockablePaneDescriptor extends AbstractDockablePaneDescriptor<WebDockablePane, WDockablePaneUI>
+public final class DockablePaneDescriptor extends AbstractDockablePaneDescriptor<WebDockablePane, WDockablePaneUI, IDockablePanePainter>
 {
     /**
-     * Constructs new descriptor for {@link WebDockablePane} component.
+     * Constructs new {@link DockablePaneDescriptor}.
      */
     public DockablePaneDescriptor ()
     {
-        super ( "dockablepane", WebDockablePane.class, "DockablePaneUI", WDockablePaneUI.class, WebDockablePaneUI.class,
-                StyleId.dockablepane );
+        super (
+                "dockablepane",
+                WebDockablePane.class,
+                "DockablePaneUI",
+                WDockablePaneUI.class,
+                WebDockablePaneUI.class,
+                IDockablePanePainter.class,
+                DockablePanePainter.class,
+                AdaptiveDockablePanePainter.class,
+                StyleId.dockablepane
+        );
     }
 }

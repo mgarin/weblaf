@@ -27,5 +27,6 @@
  * @see com.alee.utils.ProprietaryUtils
  * @see com.alee.utils.SelectorUtils
  * @see com.alee.utils.SwingUtils
+ * @see com.alee.utils.ShapeUtils
  */
 package com.alee.utils;

@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class MemoryBarDescriptor extends AbstractMemoryBarDescriptor<WebMemoryBar, WMemoryBarUI>
+public final class MemoryBarDescriptor extends AbstractMemoryBarDescriptor<WebMemoryBar, WMemoryBarUI, IMemoryBarPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebMemoryBar} component.
+     * Constructs new {@link MemoryBarDescriptor}.
      */
     public MemoryBarDescriptor ()
     {
-        super ( "memorybar", WebMemoryBar.class, "MemoryBarUI", WMemoryBarUI.class, WebMemoryBarUI.class, StyleId.memorybar );
+        super (
+                "memorybar",
+                WebMemoryBar.class,
+                "MemoryBarUI",
+                WMemoryBarUI.class,
+                WebMemoryBarUI.class,
+                IMemoryBarPainter.class,
+                MemoryBarPainter.class,
+                AdaptiveMemoryBarPainter.class,
+                StyleId.memorybar
+        );
     }
 }

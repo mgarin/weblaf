@@ -168,6 +168,7 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
         setText ( "" );
     }
 
+    @Nullable
     @Override
     public String getInputPrompt ()
     {
@@ -175,7 +176,7 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
     }
 
     @Override
-    public void setInputPrompt ( final String text )
+    public void setInputPrompt ( @Nullable final String text )
     {
         getUI ().setInputPrompt ( text );
     }

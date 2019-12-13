@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class SeparatorDescriptor extends AbstractSeparatorDescriptor<JSeparator, WSeparatorUI>
+public final class SeparatorDescriptor extends AbstractSeparatorDescriptor<JSeparator, WSeparatorUI, ISeparatorPainter>
 {
     /**
-     * Constructs new descriptor for {@link JSeparator} component.
+     * Constructs new {@link SeparatorDescriptor}.
      */
     public SeparatorDescriptor ()
     {
-        super ( "separator", JSeparator.class, "SeparatorUI", WSeparatorUI.class, WebSeparatorUI.class, StyleId.separator );
+        super (
+                "separator",
+                JSeparator.class,
+                "SeparatorUI",
+                WSeparatorUI.class,
+                WebSeparatorUI.class,
+                ISeparatorPainter.class,
+                SeparatorPainter.class,
+                AdaptiveSeparatorPainter.class,
+                StyleId.separator
+        );
     }
 }

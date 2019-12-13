@@ -60,16 +60,8 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     /**
      * Painting variables.
      */
-    protected transient Integer layoutOrientation;
+    protected transient ListPaintParameters paintParameters;
     protected transient CellRendererPane rendererPane;
-    protected transient Integer listHeight = -1;
-    protected transient Integer listWidth = -1;
-    protected transient Integer columnCount;
-    protected transient Integer preferredHeight;
-    protected transient Integer rowsPerColumn;
-    protected transient int cellWidth = -1;
-    protected transient int cellHeight = -1;
-    protected transient int[] cellHeights = null;
 
     @Nullable
     @Override
@@ -216,7 +208,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      */
     protected void uninstallRuntimeVariables ()
     {
-        cellHeights = null;
+        paintParameters = null;
     }
 
     @Override
@@ -234,19 +226,15 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     }
 
     @Override
-    public void prepareToPaint ( final Integer layoutOrientation, final Integer listHeight, final Integer listWidth,
-                                 final Integer columnCount, final Integer rowsPerColumn, final Integer preferredHeight, final int cellWidth,
-                                 final int cellHeight, final int[] cellHeights )
+    public void prepareToPaint ( @NotNull final ListPaintParameters parameters )
     {
-        this.layoutOrientation = layoutOrientation;
-        this.listHeight = listHeight;
-        this.listWidth = listWidth;
-        this.columnCount = columnCount;
-        this.rowsPerColumn = rowsPerColumn;
-        this.preferredHeight = preferredHeight;
-        this.cellWidth = cellWidth;
-        this.cellHeight = cellHeight;
-        this.cellHeights = cellHeights;
+        paintParameters = parameters;
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        paintParameters = null;
     }
 
     @Override
@@ -270,7 +258,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    protected void paintBackground ( final Graphics2D g2d )
+    protected void paintBackground ( @NotNull final Graphics2D g2d )
     {
         if ( itemPainter != null )
         {
@@ -297,7 +285,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
                     endColumn = convertLocationToColumn ( paintBounds.x, paintBounds.y );
                 }
                 final int maxY = paintBounds.y + paintBounds.height;
-                final int rowIncrement = layoutOrientation == JList.HORIZONTAL_WRAP ? columnCount : 1;
+                final int rowIncrement = component.getLayoutOrientation () == JList.HORIZONTAL_WRAP ? paintParameters.columnCount : 1;
                 for ( int colCounter = startColumn; colCounter <= endColumn; colCounter++ )
                 {
                     // And then how many rows in this column
@@ -305,24 +293,27 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
                     final int rowCount = getRowCount ( colCounter );
                     int index = getModelIndex ( colCounter, row );
                     final Rectangle rowBounds = ui.getCellBounds ( component, index, index );
-                    if ( rowBounds == null )
+                    if ( rowBounds != null )
+                    {
+                        while ( row < rowCount && rowBounds.y < maxY && index < size )
+                        {
+                            rowBounds.height = getHeight ( colCounter, row );
+                            g2d.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
+                            g2d.clipRect ( paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height );
+
+                            // Painting hover cell background
+                            itemPainter.prepareToPaint ( index );
+                            paintSection ( itemPainter, g2d, rowBounds );
+
+                            rowBounds.y += rowBounds.height;
+                            index += rowIncrement;
+                            row++;
+                        }
+                    }
+                    else
                     {
                         // Not valid, bail!
-                        return;
-                    }
-                    while ( row < rowCount && rowBounds.y < maxY && index < size )
-                    {
-                        rowBounds.height = getHeight ( colCounter, row );
-                        g2d.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
-                        g2d.clipRect ( paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height );
-
-                        // Painting hover cell background
-                        itemPainter.prepareToPaint ( index );
-                        paintSection ( itemPainter, g2d, rowBounds );
-
-                        rowBounds.y += rowBounds.height;
-                        index += rowIncrement;
-                        row++;
+                        break;
                     }
                 }
             }
@@ -332,22 +323,22 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
         }
 
 
-//        if ( isItemHoverDecorationSupported () )
-//        {
-//            // Checking hover cell availability
-//            final int hoverIndex = ui.getHoverIndex ();
-//            if ( hoverIndex != -1 && !component.isSelectedIndex ( hoverIndex ) )
-//            {
-//                // Checking hover cell bounds
-//                final Rectangle bounds = ui.getCellBounds ( component, hoverIndex, hoverIndex );
-//                if ( bounds != null )
-//                {
-//                    // Painting hover cell background
-//                    itemPainter.prepareToPaint ( hoverIndex );
-//                    paintSection ( itemPainter, g2d, bounds );
-//                }
-//            }
-//        }
+        //        if ( isItemHoverDecorationSupported () )
+        //        {
+        //            // Checking hover cell availability
+        //            final int hoverIndex = ui.getHoverIndex ();
+        //            if ( hoverIndex != -1 && !component.isSelectedIndex ( hoverIndex ) )
+        //            {
+        //                // Checking hover cell bounds
+        //                final Rectangle bounds = ui.getCellBounds ( component, hoverIndex, hoverIndex );
+        //                if ( bounds != null )
+        //                {
+        //                    // Painting hover cell background
+        //                    itemPainter.prepareToPaint ( hoverIndex );
+        //                    paintSection ( itemPainter, g2d, bounds );
+        //                }
+        //            }
+        //        }
     }
 
     /**
@@ -374,10 +365,9 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      *
      * @param g2d graphics context
      */
-    protected void paintList ( final Graphics2D g2d )
+    protected void paintList ( @NotNull final Graphics2D g2d )
     {
         // Retrieving paint settings
-        layoutOrientation = component.getLayoutOrientation ();
         rendererPane = ui.getCellRendererPane ();
 
         final ListCellRenderer renderer = component.getCellRenderer ();
@@ -404,7 +394,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
             }
             final int maxY = paintBounds.y + paintBounds.height;
             final int leadIndex = adjustIndex ( component.getLeadSelectionIndex (), component );
-            final int rowIncrement = layoutOrientation == JList.HORIZONTAL_WRAP ? columnCount : 1;
+            final int rowIncrement = component.getLayoutOrientation () == JList.HORIZONTAL_WRAP ? paintParameters.columnCount : 1;
 
             final ListSelectionModel selModel = component.getSelectionModel ();
             for ( int colCounter = startColumn; colCounter <= endColumn; colCounter++ )
@@ -414,20 +404,23 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
                 final int rowCount = getRowCount ( colCounter );
                 int index = getModelIndex ( colCounter, row );
                 final Rectangle rowBounds = ui.getCellBounds ( component, index, index );
-                if ( rowBounds == null )
+                if ( rowBounds != null )
+                {
+                    while ( row < rowCount && rowBounds.y < maxY && index < size )
+                    {
+                        rowBounds.height = getHeight ( colCounter, row );
+                        g2d.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
+                        g2d.clipRect ( paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height );
+                        paintCell ( g2d, index, rowBounds, renderer, dataModel, selModel, leadIndex );
+                        rowBounds.y += rowBounds.height;
+                        index += rowIncrement;
+                        row++;
+                    }
+                }
+                else
                 {
                     // Not valid, bail!
-                    return;
-                }
-                while ( row < rowCount && rowBounds.y < maxY && index < size )
-                {
-                    rowBounds.height = getHeight ( colCounter, row );
-                    g2d.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
-                    g2d.clipRect ( paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height );
-                    paintCell ( g2d, index, rowBounds, renderer, dataModel, selModel, leadIndex );
-                    rowBounds.y += rowBounds.height;
-                    index += rowIncrement;
-                    row++;
+                    break;
                 }
             }
 
@@ -471,19 +464,20 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      */
     protected int getHeight ( final int column, final int row )
     {
-        if ( column < 0 || column > columnCount || row < 0 )
+        if ( column < 0 || column > paintParameters.columnCount || row < 0 )
         {
             return -1;
         }
-        if ( layoutOrientation != JList.VERTICAL )
+        if ( component.getLayoutOrientation () != JList.VERTICAL )
         {
-            return cellHeight;
+            return paintParameters.cellHeight;
         }
         if ( row >= component.getModel ().getSize () )
         {
             return -1;
         }
-        return cellHeights == null ? cellHeight : row < cellHeights.length ? cellHeights[ row ] : -1;
+        return paintParameters.cellHeights == null ? paintParameters.cellHeight :
+                row < paintParameters.cellHeights.length ? paintParameters.cellHeights[ row ] : -1;
     }
 
     /**
@@ -496,12 +490,17 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      */
     protected int getModelIndex ( final int column, final int row )
     {
-        switch ( layoutOrientation )
+        switch ( component.getLayoutOrientation () )
         {
             case JList.VERTICAL_WRAP:
-                return Math.min ( component.getModel ().getSize () - 1, rowsPerColumn * column + Math.min ( row, rowsPerColumn - 1 ) );
+                return Math.min (
+                        component.getModel ().getSize () - 1,
+                        paintParameters.rowsPerColumn * column + Math.min ( row, paintParameters.rowsPerColumn - 1 )
+                );
+
             case JList.HORIZONTAL_WRAP:
-                return Math.min ( component.getModel ().getSize () - 1, row * columnCount + column );
+                return Math.min ( component.getModel ().getSize () - 1, row * paintParameters.columnCount + column );
+
             default:
                 return row;
         }
@@ -515,34 +514,35 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      */
     protected int getRowCount ( final int column )
     {
-        if ( column < 0 || column >= columnCount )
+        if ( column < 0 || column >= paintParameters.columnCount )
         {
             return -1;
         }
-        if ( layoutOrientation == JList.VERTICAL || column == 0 && columnCount == 1 )
+        if ( component.getLayoutOrientation () == JList.VERTICAL || column == 0 && paintParameters.columnCount == 1 )
         {
             return component.getModel ().getSize ();
         }
-        if ( column >= columnCount )
+        if ( column >= paintParameters.columnCount )
         {
             return -1;
         }
-        if ( layoutOrientation == JList.VERTICAL_WRAP )
+        if ( component.getLayoutOrientation () == JList.VERTICAL_WRAP )
         {
-            if ( column < columnCount - 1 )
+            if ( column < paintParameters.columnCount - 1 )
             {
-                return rowsPerColumn;
+                return paintParameters.rowsPerColumn;
             }
-            return component.getModel ().getSize () - ( columnCount - 1 ) * rowsPerColumn;
+            return component.getModel ().getSize () - ( paintParameters.columnCount - 1 ) * paintParameters.rowsPerColumn;
         }
         // JList.HORIZONTAL_WRAP
-        final int diff = columnCount - ( columnCount * rowsPerColumn - component.getModel ().getSize () );
+        final int diff = paintParameters.columnCount -
+                ( paintParameters.columnCount * paintParameters.rowsPerColumn - component.getModel ().getSize () );
 
         if ( column >= diff )
         {
-            return Math.max ( 0, rowsPerColumn - 1 );
+            return Math.max ( 0, paintParameters.rowsPerColumn - 1 );
         }
-        return rowsPerColumn;
+        return paintParameters.rowsPerColumn;
     }
 
     /**
@@ -555,15 +555,15 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     protected int convertLocationToRowInColumn ( final int y, final int column )
     {
         int x = 0;
-        if ( layoutOrientation != JList.VERTICAL )
+        if ( component.getLayoutOrientation () != JList.VERTICAL )
         {
             if ( ltr )
             {
-                x = column * cellWidth;
+                x = column * paintParameters.cellWidth;
             }
             else
             {
-                x = component.getWidth () - ( column + 1 ) * cellWidth - component.getInsets ().right;
+                x = component.getWidth () - ( column + 1 ) * paintParameters.cellWidth - component.getInsets ().right;
             }
         }
         return convertLocationToRow ( x, y, true );
@@ -587,9 +587,9 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
         }
 
         final Insets insets = component.getInsets ();
-        if ( cellHeights == null )
+        if ( paintParameters.cellHeights == null )
         {
-            int row = cellHeight == 0 ? 0 : ( y0 - insets.top ) / cellHeight;
+            int row = paintParameters.cellHeight == 0 ? 0 : ( y0 - insets.top ) / paintParameters.cellHeight;
             if ( closest )
             {
                 if ( row < 0 )
@@ -603,7 +603,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
             }
             return row;
         }
-        else if ( size > cellHeights.length )
+        else if ( size > paintParameters.cellHeights.length )
         {
             return -1;
         }
@@ -619,11 +619,11 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
             int i;
             for ( i = 0; i < size; i++ )
             {
-                if ( y0 >= y && y0 < y + cellHeights[ i ] )
+                if ( y0 >= y && y0 < y + paintParameters.cellHeights[ i ] )
                 {
                     return row;
                 }
-                y += cellHeights[ i ];
+                y += paintParameters.cellHeights[ i ];
                 row += 1;
             }
             return i - 1;
@@ -639,9 +639,9 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
      */
     protected int convertLocationToColumn ( final int x, final int y )
     {
-        if ( cellWidth > 0 )
+        if ( paintParameters.cellWidth > 0 )
         {
-            if ( layoutOrientation == JList.VERTICAL )
+            if ( component.getLayoutOrientation () == JList.VERTICAL )
             {
                 return 0;
             }
@@ -649,19 +649,19 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
             final int col;
             if ( ltr )
             {
-                col = ( x - insets.left ) / cellWidth;
+                col = ( x - insets.left ) / paintParameters.cellWidth;
             }
             else
             {
-                col = ( component.getWidth () - x - insets.right - 1 ) / cellWidth;
+                col = ( component.getWidth () - x - insets.right - 1 ) / paintParameters.cellWidth;
             }
             if ( col < 0 )
             {
                 return 0;
             }
-            else if ( col >= columnCount )
+            else if ( col >= paintParameters.columnCount )
             {
-                return columnCount - 1;
+                return paintParameters.columnCount - 1;
             }
             return col;
         }
@@ -688,20 +688,18 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     protected void paintDropLocation ( final Graphics2D g2d )
     {
         final JList.DropLocation loc = component.getDropLocation ();
-        if ( loc == null || !loc.isInsert () )
+        //noinspection StatementWithEmptyBody
+        if ( loc != null && loc.isInsert () )
         {
-            //noinspection UnnecessaryReturnStatement
-            return;
+            // todo check needs. Maybe move to the style
+            //        final Color c = DefaultLookup.getColor ( list, this, "List.dropLineColor", null );
+            //        if ( c != null )
+            //        {
+            //            g.setPaint ( c );
+            //            final Rectangle rect = getDropLineRect ( loc );
+            //            g.fillRect ( rect.x, rect.y, rect.width, rect.height );
+            //        }
         }
-
-        // todo check needs. Maybe move to the style
-        //        final Color c = DefaultLookup.getColor ( list, this, "List.dropLineColor", null );
-        //        if ( c != null )
-        //        {
-        //            g.setPaint ( c );
-        //            final Rectangle rect = getDropLineRect ( loc );
-        //            g.fillRect ( rect.x, rect.y, rect.width, rect.height );
-        //        }
     }
 
     //    private Rectangle getDropLineRect ( final JList.DropLocation loc )
@@ -711,7 +709,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     //        if ( size == 0 )
     //        {
     //            final Insets insets = list.getInsets ();
-    //            if ( layoutOrientation == JList.HORIZONTAL_WRAP )
+    //            if ( component.getLayoutOrientation () == JList.HORIZONTAL_WRAP )
     //            {
     //                if ( ltr )
     //                {
@@ -732,7 +730,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     //        int index = loc.getIndex ();
     //        boolean decr = false;
     //
-    //        if ( layoutOrientation == JList.HORIZONTAL_WRAP )
+    //        if ( component.getLayoutOrientation () == JList.HORIZONTAL_WRAP )
     //        {
     //            if ( index == size )
     //            {
@@ -789,7 +787,7 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     //
     //            rect.width = DROP_LINE_THICKNESS;
     //        }
-    //        else if ( layoutOrientation == JList.VERTICAL_WRAP )
+    //        else if ( component.getLayoutOrientation () == JList.VERTICAL_WRAP )
     //        {
     //            if ( index == size )
     //            {
@@ -863,10 +861,9 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     //            return -1;
     //        }
     //
-    //        if ( layoutOrientation != JList.VERTICAL && columnCount > 1 &&
-    //                rowsPerColumn > 0 )
+    //        if ( component.getLayoutOrientation () != JList.VERTICAL && columnCount > 1 && rowsPerColumn > 0 )
     //        {
-    //            if ( layoutOrientation == JList.VERTICAL_WRAP )
+    //            if ( component.getLayoutOrientation () == JList.VERTICAL_WRAP )
     //            {
     //                return index % rowsPerColumn;
     //            }
@@ -887,10 +884,9 @@ public class ListPainter<C extends JList, U extends WListUI, D extends IDecorati
     //            return -1;
     //        }
     //
-    //        if ( layoutOrientation != JList.VERTICAL && rowsPerColumn > 0 &&
-    //                columnCount > 1 )
+    //        if ( component.getLayoutOrientation () != JList.VERTICAL && rowsPerColumn > 0 && columnCount > 1 )
     //        {
-    //            if ( layoutOrientation == JList.VERTICAL_WRAP )
+    //            if ( component.getLayoutOrientation () == JList.VERTICAL_WRAP )
     //            {
     //                return index / rowsPerColumn;
     //            }

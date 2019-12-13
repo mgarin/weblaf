@@ -19,7 +19,6 @@ package com.alee.laf.combobox;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
@@ -28,8 +27,6 @@ import com.alee.laf.list.WebList;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
@@ -72,12 +69,6 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
      * Default combobox renderer.
      */
     protected static ListCellRenderer DEFAULT_RENDERER;
-
-    /**
-     * Component painter.
-     */
-    @DefaultPainter ( ComboBoxPainter.class )
-    protected IComboBoxPainter painter;
 
     /**
      * Listeners.
@@ -263,19 +254,19 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( comboBox, painter );
+        return PainterSupport.getShape ( comboBox );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( comboBox, painter );
+        return PainterSupport.isShapeDetectionEnabled ( comboBox );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( comboBox, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( comboBox, enabled );
     }
 
     @Nullable
@@ -302,36 +293,6 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( comboBox, padding );
-    }
-
-    /**
-     * Returns combobox painter.
-     *
-     * @return combobox painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets combobox painter.
-     * Pass null to remove combobox painter.
-     *
-     * @param painter new combobox painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        comboBox.hidePopup ();
-        resetRendererSize ();
-        PainterSupport.setPainter ( comboBox, this, new Consumer<IComboBoxPainter> ()
-        {
-            @Override
-            public void accept ( final IComboBoxPainter newPainter )
-            {
-                WebComboBoxUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IComboBoxPainter.class, AdaptiveComboBoxPainter.class );
     }
 
     @NotNull
@@ -590,29 +551,27 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.prepareToPaint ( currentValuePane );
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        PainterSupport.paint ( g, c, this, new ComboBoxPaintParameters ( currentValuePane ) );
     }
 
+    @NotNull
     @Override
     protected LayoutManager createLayoutManager ()
     {
         return new WebComboBoxLayout ();
     }
 
+    @NotNull
     @Override
-    public Dimension getMinimumSize ( final JComponent c )
+    public Dimension getMinimumSize ( @NotNull final JComponent c )
     {
         final Dimension minimumSize;
         if ( isMinimumSizeDirty )
@@ -679,7 +638,7 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
     @Override
     public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter, true );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), true );
     }
 
     @NotNull

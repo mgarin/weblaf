@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ButtonDescriptor extends AbstractButtonDescriptor<JButton, WButtonUI>
+public final class ButtonDescriptor extends AbstractButtonDescriptor<JButton, WButtonUI, IButtonPainter>
 {
     /**
-     * Constructs new descriptor for {@link JButton} component.
+     * Constructs new {@link ButtonDescriptor}.
      */
     public ButtonDescriptor ()
     {
-        super ( "button", JButton.class, "ButtonUI", WButtonUI.class, WebButtonUI.class, StyleId.button );
+        super (
+                "button",
+                JButton.class,
+                "ButtonUI",
+                WButtonUI.class,
+                WebButtonUI.class,
+                IButtonPainter.class,
+                ButtonPainter.class,
+                AdaptiveButtonPainter.class,
+                StyleId.button
+        );
     }
 }

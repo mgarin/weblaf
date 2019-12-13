@@ -19,6 +19,7 @@ package com.alee.managers.style;
 
 import com.alee.api.Identifiable;
 import com.alee.api.annotations.NotNull;
+import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -28,6 +29,7 @@ import javax.swing.plaf.ComponentUI;
  *
  * @param <C> {@link JComponent} type
  * @param <U> base {@link ComponentUI} type
+ * @param <P> {@link SpecificPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see StyleManager
@@ -35,81 +37,106 @@ import javax.swing.plaf.ComponentUI;
  * @see StyleManager#unregisterComponentDescriptor(ComponentDescriptor)
  * @see AbstractComponentDescriptor
  */
-public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI> extends Identifiable
+public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI, P extends SpecificPainter> extends Identifiable
 {
     /**
-     * Returns {@link JComponent} class.
-     *
-     * @return {@link JComponent} class
-     */
-    @NotNull
-    public Class<C> getComponentClass ();
-
-    /**
-     * Returns UI class ID used by LookAndFeel to store various settings.
-     *
-     * @return UI class ID
-     */
-    @NotNull
-    public String getUIClassId ();
-
-    /**
-     * Returns base UI class applicable to this {@link JComponent}.
-     * This class is required to limit and properly check UIs that can be applied to specific {@link JComponent} implementations.
-     *
-     * @return base UI class applicable to this component
-     */
-    @NotNull
-    public Class<U> getBaseUIClass ();
-
-    /**
-     * Returns UI class applied to the component by default.
-     * This value is used in {@link com.alee.laf.WebLookAndFeel} to provide default UI classes.
-     *
-     * @return UI class applied to the component by default
-     */
-    @NotNull
-    public Class<? extends U> getUIClass ();
-
-    /**
-     * Returns component default {@link StyleId}.
-     *
-     * @return component default {@link StyleId}
-     */
-    @NotNull
-    public StyleId getDefaultStyleId ();
-
-    /**
-     * Returns component instance-specific default {@link StyleId}.
-     *
-     * @param component component instance to retrieve default {@link StyleId} for
-     * @return component instance-specific default {@link StyleId}
-     */
-    @NotNull
-    public StyleId getDefaultStyleId ( @NotNull JComponent component );
-
-    /**
-     * Returns component identifier.
+     * Returns {@link JComponent} identifier.
      * It is used as component style type and in most cases as default style identifier.
      *
-     * @return component identifier
+     * @return {@link JComponent} identifier
      */
     @NotNull
     @Override
     public String getId ();
 
     /**
-     * Returns component {@link Icon}.
+     * Returns {@link JComponent} {@link Class}.
      *
-     * @return component {@link Icon}
+     * @return {@link JComponent} {@link Class}
+     */
+    @NotNull
+    public Class<C> getComponentClass ();
+
+    /**
+     * Returns {@link ComponentUI} {@link Class} identifier.
+     * This identifier is used by LookAndFeel to store various settings.
+     *
+     * @return {@link ComponentUI} {@link Class} identifier
+     */
+    @NotNull
+    public String getUIClassId ();
+
+    /**
+     * Returns base {@link ComponentUI} {@link Class} applicable to {@link JComponent}.
+     * This class is required to limit and properly check UIs that can be applied to specific {@link JComponent} implementations.
+     *
+     * @return base {@link ComponentUI} {@link Class} applicable to {@link JComponent}
+     */
+    @NotNull
+    public Class<U> getBaseUIClass ();
+
+    /**
+     * Returns {@link ComponentUI} {@link Class} used for {@link JComponent} by default.
+     * This value is used in {@link com.alee.laf.WebLookAndFeel} to provide default UI classes.
+     *
+     * @return {@link ComponentUI} {@link Class} used for {@link JComponent} by default
+     */
+    @NotNull
+    public Class<? extends U> getUIClass ();
+
+    /**
+     * Returns {@link SpecificPainter} interface {@link Class}.
+     *
+     * @return {@link SpecificPainter} interface {@link Class}
+     */
+    @NotNull
+    public Class<P> getPainterInterface ();
+
+    /**
+     * Returns default {@link SpecificPainter} implementation {@link Class}.
+     *
+     * @return default {@link SpecificPainter} implementation {@link Class}
+     */
+    @NotNull
+    public Class<? extends P> getPainterClass ();
+
+    /**
+     * Returns adapter for {@link SpecificPainter}.
+     *
+     * @return adapter for {@link SpecificPainter}
+     */
+    @NotNull
+    public Class<? extends P> getPainterAdapterClass ();
+
+    /**
+     * Returns {@link JComponent} default {@link StyleId}.
+     *
+     * @return {@link JComponent} default {@link StyleId}
+     */
+    @NotNull
+    public StyleId getDefaultStyleId ();
+
+    /**
+     * Returns {@link JComponent} instance-specific default {@link StyleId}.
+     *
+     * @param component {@link JComponent} instance to retrieve default {@link StyleId} for
+     * @return {@link JComponent} instance-specific default {@link StyleId}
+     */
+    @NotNull
+    public StyleId getDefaultStyleId ( @NotNull JComponent component );
+
+    /**
+     * Returns {@link JComponent} {@link Icon}.
+     *
+     * @return {@link JComponent} {@link Icon}
      */
     @NotNull
     public Icon getIcon ();
 
     /**
-     * Returns component name.
+     * Returns {@link JComponent} name.
      *
-     * @return component name
+     * @return {@link JComponent} name
      */
     @NotNull
     public String getTitle ();
@@ -127,7 +154,7 @@ public interface ComponentDescriptor<C extends JComponent, U extends ComponentUI
      * It is up to implementation whether {@link ComponentUI} instance will be preserved or changed to the one currently provided by LaF.
      * Various {@link ComponentDescriptor} implementations might customize this behavior to update used sub-component UIs.
      *
-     * @param component component instance
+     * @param component {@link JComponent} instance
      */
     public void updateUI ( @NotNull C component );
 }

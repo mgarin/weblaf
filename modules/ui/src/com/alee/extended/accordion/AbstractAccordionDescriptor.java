@@ -17,18 +17,17 @@
 
 package com.alee.extended.accordion;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
-
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link WebAccordion} component.
  * Extend this class for creating custom {@link WebAccordion} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link WebAccordion} type
+ * @param <U> base {@link WAccordionUI} type
+ * @param <P> {@link IAccordionPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAccordion">How to use WebAccordion</a>
  * @see WebAccordion
@@ -40,22 +39,27 @@ import javax.swing.plaf.ComponentUI;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractAccordionDescriptor<C extends WebAccordion, U extends WAccordionUI>
-        extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractAccordionDescriptor<C extends WebAccordion, U extends WAccordionUI, P extends IAccordionPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractAccordionDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link WebAccordion} identifier
+     * @param componentClass      {@link WebAccordion} {@link Class}
+     * @param uiClassId           {@link WAccordionUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WAccordionUI} {@link Class} applicable to {@link WebAccordion}
+     * @param uiClass             {@link WAccordionUI} {@link Class} used for {@link WebAccordion} by default
+     * @param painterInterface    {@link IAccordionPainter} interface {@link Class}
+     * @param painterClass        {@link IAccordionPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IAccordionPainter}
+     * @param defaultStyleId      {@link WebAccordion} default {@link StyleId}
      */
-    public AbstractAccordionDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                         final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractAccordionDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                         @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                         @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                         @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

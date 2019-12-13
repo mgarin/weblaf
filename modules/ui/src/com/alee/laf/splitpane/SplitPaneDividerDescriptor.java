@@ -29,14 +29,24 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class SplitPaneDividerDescriptor extends AbstractSplitPaneDividerDescriptor<WebSplitPaneDivider, WSplitPaneDividerUI>
+public final class SplitPaneDividerDescriptor
+        extends AbstractSplitPaneDividerDescriptor<WebSplitPaneDivider, WSplitPaneDividerUI, ISplitPaneDividerPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebSplitPaneDivider} component.
+     * Constructs new {@link SplitPaneDividerDescriptor}.
      */
     public SplitPaneDividerDescriptor ()
     {
-        super ( "splitpanedivider", WebSplitPaneDivider.class, "SplitPaneDividerUI", WSplitPaneDividerUI.class, WebSplitPaneDividerUI.class,
-                StyleId.splitpanedivider );
+        super (
+                "splitpanedivider",
+                WebSplitPaneDivider.class,
+                "SplitPaneDividerUI",
+                WSplitPaneDividerUI.class,
+                WebSplitPaneDividerUI.class,
+                ISplitPaneDividerPainter.class,
+                SplitPaneDividerPainter.class,
+                AdaptiveSplitPaneDividerPainter.class,
+                StyleId.splitpanedivider
+        );
     }
 }

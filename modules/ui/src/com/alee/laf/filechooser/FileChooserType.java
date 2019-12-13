@@ -17,6 +17,10 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.api.annotations.NotNull;
+
+import javax.swing.*;
+
 /**
  * This enumeration represents all available {@link javax.swing.JFileChooser} types.
  *
@@ -51,5 +55,32 @@ public enum FileChooserType
     public String getApproveButtonText ()
     {
         return "weblaf.filechooser." + this;
+    }
+
+    /**
+     * Returns {@link FileChooserType} for the specified {@link JFileChooser} type.
+     *
+     * @param type {@link JFileChooser} type
+     * @return {@link FileChooserType} for the specified {@link JFileChooser} type
+     */
+    @NotNull
+    public static FileChooserType forType ( final int type )
+    {
+        final FileChooserType fileChooserType;
+        switch ( type )
+        {
+            case JFileChooser.SAVE_DIALOG:
+                fileChooserType = save;
+                break;
+
+            case JFileChooser.OPEN_DIALOG:
+                fileChooserType = open;
+                break;
+
+            default:
+                fileChooserType = custom;
+                break;
+        }
+        return fileChooserType;
     }
 }

@@ -174,7 +174,7 @@ public abstract class AbstractSectionDecorationPainter<C extends JComponent, U e
      * @return always {@code false}
      */
     @Override
-    protected boolean isPlainBackgroundRequired ( final C c )
+    protected boolean isPlainBackgroundRequired ( @NotNull final C c )
     {
         return false;
     }

@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class RootPaneDescriptor extends AbstractRootPaneDescriptor<JRootPane, WRootPaneUI>
+public final class RootPaneDescriptor extends AbstractRootPaneDescriptor<JRootPane, WRootPaneUI, IRootPanePainter>
 {
     /**
-     * Constructs new descriptor for {@link JRootPane} component.
+     * Constructs new {@link RootPaneDescriptor}.
      */
     public RootPaneDescriptor ()
     {
-        super ( "rootpane", JRootPane.class, "RootPaneUI", WRootPaneUI.class, WebRootPaneUI.class, StyleId.rootpane );
+        super (
+                "rootpane",
+                JRootPane.class,
+                "RootPaneUI",
+                WRootPaneUI.class,
+                WebRootPaneUI.class,
+                IRootPanePainter.class,
+                RootPanePainter.class,
+                AdaptiveRootPanePainter.class,
+                StyleId.rootpane
+        );
     }
 }

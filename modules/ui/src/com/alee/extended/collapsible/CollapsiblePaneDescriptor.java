@@ -31,14 +31,24 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class CollapsiblePaneDescriptor extends AbstractCollapsiblePaneDescriptor<WebCollapsiblePane, WCollapsiblePaneUI>
+public final class CollapsiblePaneDescriptor
+        extends AbstractCollapsiblePaneDescriptor<WebCollapsiblePane, WCollapsiblePaneUI, ICollapsiblePanePainter>
 {
     /**
-     * Constructs new descriptor for {@link WebCollapsiblePane} component.
+     * Constructs new {@link CollapsiblePaneDescriptor}.
      */
     public CollapsiblePaneDescriptor ()
     {
-        super ( "collapsiblepane", WebCollapsiblePane.class, "CollapsiblePaneUI",
-                WCollapsiblePaneUI.class, WebCollapsiblePaneUI.class, StyleId.collapsiblepane );
+        super (
+                "collapsiblepane",
+                WebCollapsiblePane.class,
+                "CollapsiblePaneUI",
+                WCollapsiblePaneUI.class,
+                WebCollapsiblePaneUI.class,
+                ICollapsiblePanePainter.class,
+                CollapsiblePanePainter.class,
+                AdaptiveCollapsiblePanePainter.class,
+                StyleId.collapsiblepane
+        );
     }
 }

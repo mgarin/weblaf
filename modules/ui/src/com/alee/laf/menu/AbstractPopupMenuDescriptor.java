@@ -17,39 +17,46 @@
 
 package com.alee.laf.menu;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link JPopupMenu} component.
  * Extend this class for creating custom {@link JPopupMenu} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link JPopupMenu} type
+ * @param <U> base {@link WPopupMenuUI} type
+ * @param <P> {@link IPopupMenuPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractPopupMenuDescriptor<C extends JPopupMenu, U extends WPopupMenuUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractPopupMenuDescriptor<C extends JPopupMenu, U extends WPopupMenuUI, P extends IPopupMenuPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractPopupMenuDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JPopupMenu} identifier
+     * @param componentClass      {@link JPopupMenu} {@link Class}
+     * @param uiClassId           {@link WPopupMenuUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WPopupMenuUI} {@link Class} applicable to {@link JPopupMenu}
+     * @param uiClass             {@link WPopupMenuUI} {@link Class} used for {@link JPopupMenu} by default
+     * @param painterInterface    {@link IPopupMenuPainter} interface {@link Class}
+     * @param painterClass        {@link IPopupMenuPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IPopupMenuPainter}
+     * @param defaultStyleId      {@link JPopupMenu} default {@link StyleId}
      */
-    public AbstractPopupMenuDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                         final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractPopupMenuDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                         @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                         @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                         @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

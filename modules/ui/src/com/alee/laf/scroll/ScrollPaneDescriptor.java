@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ScrollPaneDescriptor extends AbstractScrollPaneDescriptor<JScrollPane, WebScrollPaneUI>
+public final class ScrollPaneDescriptor extends AbstractScrollPaneDescriptor<JScrollPane, WebScrollPaneUI, IScrollPanePainter>
 {
     /**
-     * Constructs new descriptor for {@link JScrollPane} component.
+     * Constructs new {@link ScrollPaneDescriptor}.
      */
     public ScrollPaneDescriptor ()
     {
-        super ( "scrollpane", JScrollPane.class, "ScrollPaneUI", WebScrollPaneUI.class, WebScrollPaneUI.class, StyleId.scrollpane );
+        super (
+                "scrollpane",
+                JScrollPane.class,
+                "ScrollPaneUI",
+                WebScrollPaneUI.class,
+                WebScrollPaneUI.class,
+                IScrollPanePainter.class,
+                ScrollPanePainter.class,
+                AdaptiveScrollPanePainter.class,
+                StyleId.scrollpane
+        );
     }
 }

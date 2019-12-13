@@ -1,5 +1,6 @@
 package com.alee.laf.slider;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
@@ -21,14 +22,24 @@ public final class AdaptiveSliderPainter<C extends JSlider, U extends WebSliderU
      *
      * @param painter painter to adapt
      */
-    public AdaptiveSliderPainter ( final Painter painter )
+    public AdaptiveSliderPainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }
 
     @Override
-    public void setDragging ( final boolean dragging )
+    public void prepareToPaint ( @NotNull final SliderPaintParameters parameters )
     {
-        // Ignore this method in adaptive class
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
     }
 }

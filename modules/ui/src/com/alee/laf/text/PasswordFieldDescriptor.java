@@ -31,14 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class PasswordFieldDescriptor extends AbstractPasswordFieldDescriptor<JPasswordField, WPasswordFieldUI>
+public final class PasswordFieldDescriptor extends AbstractPasswordFieldDescriptor<JPasswordField, WPasswordFieldUI, IPasswordFieldPainter>
 {
     /**
-     * Constructs new descriptor for {@link JPasswordField} component.
+     * Constructs new {@link PasswordFieldDescriptor}.
      */
     public PasswordFieldDescriptor ()
     {
-        super ( "passwordfield", JPasswordField.class, "PasswordFieldUI", WPasswordFieldUI.class, WebPasswordFieldUI.class,
-                StyleId.passwordfield );
+        super (
+                "passwordfield",
+                JPasswordField.class,
+                "PasswordFieldUI",
+                WPasswordFieldUI.class,
+                WebPasswordFieldUI.class,
+                IPasswordFieldPainter.class,
+                PasswordFieldPainter.class,
+                AdaptivePasswordFieldPainter.class,
+                StyleId.passwordfield
+        );
     }
 }

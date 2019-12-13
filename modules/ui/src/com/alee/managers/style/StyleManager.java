@@ -139,7 +139,6 @@ import com.alee.utils.swing.WeakComponentData;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
-import javax.swing.plaf.ComponentUI;
 import java.util.*;
 
 /**
@@ -669,13 +668,11 @@ public final class StyleManager
     /**
      * Returns {@link ComponentDescriptor} with the specified identifier.
      *
-     * @param id  {@link ComponentDescriptor} identifier
-     * @param <C> {@link JComponent} type
-     * @param <U> {@link ComponentUI} type
+     * @param id {@link ComponentDescriptor} identifier
      * @return {@link ComponentDescriptor} with the specified identifier
      */
     @NotNull
-    public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor ( @NotNull final String id )
+    public static ComponentDescriptor getDescriptor ( @NotNull final String id )
     {
         // Checking manager initialization
         mustBeInitialized ();
@@ -684,7 +681,7 @@ public final class StyleManager
         synchronized ( descriptors )
         {
             // Looking for descriptor
-            final ComponentDescriptor<C, U> descriptor = descriptorsByIdentifier.get ( id );
+            final ComponentDescriptor descriptor = descriptorsByIdentifier.get ( id );
 
             // Ensure we found descriptor
             if ( descriptor == null )
@@ -700,12 +697,10 @@ public final class StyleManager
      * Returns {@link ComponentDescriptor} for the specified {@link JComponent}.
      *
      * @param component {@link JComponent} to find {@link ComponentDescriptor} for
-     * @param <C>       {@link JComponent} type
-     * @param <U>       {@link ComponentUI} type
      * @return {@link ComponentDescriptor} for the specified {@link JComponent}
      */
     @NotNull
-    public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor ( @NotNull final C component )
+    public static ComponentDescriptor getDescriptor ( @NotNull final JComponent component )
     {
         return getDescriptor ( component.getClass () );
     }
@@ -715,13 +710,10 @@ public final class StyleManager
      * This method will also ensure that returned {@link ComponentDescriptor} is never {@code null}.
      *
      * @param componentClass {@link JComponent} class to find {@link ComponentDescriptor} for
-     * @param <C>            {@link JComponent} type
-     * @param <U>            {@link ComponentUI} type
      * @return {@link ComponentDescriptor} for the specified {@link JComponent} class
      */
     @NotNull
-    public static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptor (
-            @NotNull final Class<? extends JComponent> componentClass )
+    public static ComponentDescriptor getDescriptor ( @NotNull final Class<? extends JComponent> componentClass )
     {
         // Checking manager initialization
         mustBeInitialized ();
@@ -730,7 +722,7 @@ public final class StyleManager
         synchronized ( descriptors )
         {
             // Looking for descriptor
-            final ComponentDescriptor<C, U> descriptor = getDescriptorImpl ( componentClass );
+            final ComponentDescriptor descriptor = getDescriptorImpl ( componentClass );
 
             // Ensure we found descriptor
             if ( descriptor == null )
@@ -746,15 +738,12 @@ public final class StyleManager
      * Returns {@link ComponentDescriptor} for the specified {@link JComponent} class.
      *
      * @param componentClass {@link JComponent} class to find {@link ComponentDescriptor} for
-     * @param <C>            {@link JComponent} type
-     * @param <U>            {@link ComponentUI} type
      * @return {@link ComponentDescriptor} for the specified {@link JComponent} class
      */
     @Nullable
-    private static <C extends JComponent, U extends ComponentUI> ComponentDescriptor<C, U> getDescriptorImpl (
-            @NotNull final Class<? extends JComponent> componentClass )
+    private static ComponentDescriptor getDescriptorImpl ( @NotNull final Class<? extends JComponent> componentClass )
     {
-        final ComponentDescriptor<C, U> descriptor;
+        final ComponentDescriptor descriptor;
         if ( descriptorsByClass.containsKey ( componentClass ) )
         {
             // Looking for registered descriptor

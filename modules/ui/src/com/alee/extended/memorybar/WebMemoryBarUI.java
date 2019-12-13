@@ -19,10 +19,10 @@ package com.alee.extended.memorybar;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
@@ -37,13 +37,6 @@ import java.awt.*;
  */
 public class WebMemoryBarUI<C extends WebMemoryBar> extends WMemoryBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
-    /**
-     * Component painter.
-     */
-    @Nullable
-    @DefaultPainter ( MemoryBarPainter.class )
-    protected IMemoryBarPainter painter;
-
     /**
      * Returns an instance of the {@link WebMemoryBarUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
@@ -81,19 +74,19 @@ public class WebMemoryBarUI<C extends WebMemoryBar> extends WMemoryBarUI<C> impl
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( memoryBar, painter );
+        return PainterSupport.getShape ( memoryBar );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( memoryBar, painter );
+        return PainterSupport.isShapeDetectionEnabled ( memoryBar );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( memoryBar, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( memoryBar, enabled );
     }
 
     @Nullable
@@ -122,64 +115,35 @@ public class WebMemoryBarUI<C extends WebMemoryBar> extends WMemoryBarUI<C> impl
         PainterSupport.setPadding ( memoryBar, padding );
     }
 
-    /**
-     * Returns memory bar painter.
-     *
-     * @return memory bar painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets memory bar painter.
-     * Pass null to remove memory bar painter.
-     *
-     * @param painter new memory bar painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( memoryBar, this, new Consumer<IMemoryBarPainter> ()
-        {
-            @Override
-            public void accept ( final IMemoryBarPainter newPainter )
-            {
-                WebMemoryBarUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IMemoryBarPainter.class, AdaptiveMemoryBarPainter.class );
-    }
-
     @Override
     public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
     public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
     }
 
+    @NotNull
     @Override
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
     public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
     public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

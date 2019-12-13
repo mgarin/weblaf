@@ -18,6 +18,7 @@
 package com.alee.laf.radiobutton;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.button.WButtonUI;
 
 import javax.swing.*;
@@ -39,9 +40,10 @@ public abstract class WRadioButtonUI<C extends JRadioButton> extends WButtonUI<C
     }
 
     /**
-     * Returns icon bounds.
+     * Returns radio {@link Icon} bounds.
      *
-     * @return icon bounds
+     * @return radio {@link Icon} bounds
      */
+    @Nullable
     public abstract Rectangle getIconBounds ();
 }

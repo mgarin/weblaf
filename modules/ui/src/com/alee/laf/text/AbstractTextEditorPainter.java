@@ -31,7 +31,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.plaf.basic.BasicTextUI;
+import javax.swing.plaf.TextUI;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Highlighter;
@@ -49,7 +49,7 @@ import java.util.Map;
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
-public abstract class AbstractTextEditorPainter<C extends JTextComponent, U extends BasicTextUI, D extends IDecoration<C, D>>
+public abstract class AbstractTextEditorPainter<C extends JTextComponent, U extends TextUI, D extends IDecoration<C, D>>
         extends AbstractDecorationPainter<C, U, D> implements IAbstractTextEditorPainter<C, U>, SwingConstants
 {
     /**

@@ -28,6 +28,7 @@ import com.alee.api.merge.Merge;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
@@ -42,9 +43,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import java.awt.*;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +59,6 @@ import java.util.Map;
 @XStreamConverter ( ComponentStyleConverter.class )
 public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Serializable
 {
-    /**
-     * Component painter identifier.
-     */
-    public static final String COMPONENT_PAINTER_ID = "painter";
-
     /**
      * Style component type.
      * Refers to identifier of a component this style belongs to.
@@ -353,7 +347,11 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
             applyProperties ( ui, appendEmptyUIProperties ( ui, getUIProperties () ) );
 
             // Installing painter
-            installPainter ( ui, component, true, COMPONENT_PAINTER_ID, getPainterStyle () );
+            // todo Only reapply settings if painter already exists?
+            // todo Update component instead of reinstalling painter if it is the same?
+            final Painter customPainter = StyleManager.getCustomPainter ( component );
+            final Painter painter = customPainter != null ? customPainter : createPainter ( getPainterStyle () );
+            PainterSupport.setPainter ( component, ui, painter );
         }
         catch ( final Exception e )
         {
@@ -362,54 +360,34 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     }
 
     /**
-     * Installs {@link Painter} based on {@link PainterStyle} into specified object based on provided painter style.
+     * Returns new {@link Painter} instance for the specified {@link PainterStyle}.
      *
-     * @param object       object to install painter into
-     * @param component    component painter is installed for
-     * @param customizable whether or not this painter customizable through {@link StyleManager}
-     * @param painterId    {@link Painter} identifier
      * @param painterStyle {@link PainterStyle}
-     * @throws NoSuchFieldException      if painter could not be set into object
-     * @throws NoSuchMethodException     if painter setter method could not be found
-     * @throws InvocationTargetException if painter setter method invocation failed
-     * @throws IllegalAccessException    if painter setter method is not accessible
+     * @return new {@link Painter} instance for the specified {@link PainterStyle}
+     * @throws NoSuchFieldException      when some painter settings could not be applied
+     * @throws NoSuchMethodException     when some painter settings could not be applied
+     * @throws InvocationTargetException when some painter settings could not be applied
+     * @throws IllegalAccessException    when some painter settings could not be applied
      */
-    protected void installPainter ( @NotNull final Object object, @Nullable final JComponent component, final boolean customizable,
-                                    @NotNull final String painterId, @NotNull final PainterStyle painterStyle )
-            throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    @NotNull
+    private Painter createPainter ( @NotNull final PainterStyle painterStyle )
+            throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException
     {
-        // Retrieving painter to install into component
-        // There could be a custom painter present which will take over one offered by painter style
-        final Painter painter;
-        final Painter customPainter = customizable ? StyleManager.getCustomPainter ( component ) : null;
-        if ( customPainter != null )
+        // Creating painter instance
+        // Be aware that all painters must have default constructor
+        final String painterClass = painterStyle.getPainterClass ();
+        final Painter painter = ReflectUtils.createInstanceSafely ( painterClass );
+        if ( painter == null )
         {
-            // Using custom painter provided in the application code
-            // This painter is set through API provided by {@link com.alee.painter.Paintable} interface
-            painter = customPainter;
-        }
-        else
-        {
-            // Creating painter instance
-            // Be aware that all painters must have default constructor
-            // todo Only reapply settings if painter already exists?
-            final String painterClass = painterStyle.getPainterClass ();
-            painter = ReflectUtils.createInstanceSafely ( painterClass );
-            if ( painter == null )
-            {
-                final String componentType = component != null ? component.toString () : "none";
-                final String msg = "Unable to create painter '%s' for component '%s' in style '%s'";
-                throw new StyleException ( String.format ( msg, painterClass, componentType, getId () ) );
-            }
-
-            // Applying painter properties
-            // These properties are applied only for style-provided painters
-            applyProperties ( painter, painterStyle.getProperties () );
+            final String msg = "Unable to create painter '%s' in style '%s'";
+            throw new StyleException ( String.format ( msg, painterClass, getId () ) );
         }
 
-        // Installing painter into the UI
-        // todo Update component instead of reinstalling painter if it is the same?
-        setFieldValue ( object, painterId, painter );
+        // Applying painter properties
+        // These properties are applied only for style-provided painters
+        applyProperties ( painter, painterStyle.getProperties () );
+
+        return painter;
     }
 
     /**
@@ -434,8 +412,8 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
                 if ( value instanceof PainterStyle )
                 {
                     // PainterStyle is handled differently
-                    final PainterStyle style = ( PainterStyle ) value;
-                    installPainter ( object, null, false, entry.getKey (), style );
+                    final Painter painter = createPainter ( ( PainterStyle ) value );
+                    setFieldValue ( object, entry.getKey (), painter );
                 }
                 else if ( entry.getKey ().equals ( "layout" ) && object instanceof Container )
                 {
@@ -519,8 +497,7 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
         {
             // Uninstalling skin painters from the UI
             final ComponentUI ui = getComponentUI ( component );
-            final String setterMethod = ReflectUtils.getSetterMethodName ( COMPONENT_PAINTER_ID );
-            ReflectUtils.callMethod ( ui, setterMethod, ( Painter ) null );
+            PainterSupport.setPainter ( component, ui, null );
         }
         catch ( final Exception e )
         {
@@ -604,73 +581,6 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
             throw new StyleException ( String.format ( msg, component ) );
         }
         return ui;
-    }
-
-    /**
-     * Returns actual painter used within specified component.
-     *
-     * @param component component to retrieve painter from
-     * @param <T>       painter type
-     * @return actual painter used within specified component
-     */
-    @Nullable
-    public <T extends Painter> T getPainter ( @NotNull final JComponent component )
-    {
-        final ComponentUI ui = getComponentUI ( component );
-        return getFieldValue ( ui, COMPONENT_PAINTER_ID );
-    }
-
-    /**
-     * Returns object field value.
-     * This method allows to access even private object fields.
-     * Note that this method might also work even if there is no real field with the specified name but there is fitting getter method.
-     *
-     * @param object object instance
-     * @param field  object field
-     * @param <T>    value type
-     * @return field value for the specified object or null
-     */
-    @Nullable
-    private <T> T getFieldValue ( @NotNull final Object object, @NotNull final String field )
-    {
-        final Class<?> objectClass = object.getClass ();
-
-        // Trying to use getter method to retrieve value
-        // Note that this method might work even if there is no real field with the specified name but there is fitting getter method
-        // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
-        try
-        {
-            final Method getter = ReflectUtils.getFieldGetter ( object, field );
-            return ( T ) getter.invoke ( object );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-        }
-
-        // Retrieving field value directly
-        // This one is rarely used and in most of times will be called when inappropriate property is set
-        T value;
-        try
-        {
-            final Field actualField = ReflectUtils.getField ( objectClass, field );
-            value = ( T ) actualField.get ( object );
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-            value = null;
-        }
-        catch ( final IllegalAccessException e )
-        {
-            LoggerFactory.getLogger ( ComponentStyle.class ).error ( e.toString (), e );
-            value = null;
-        }
-        return value;
     }
 
     /**

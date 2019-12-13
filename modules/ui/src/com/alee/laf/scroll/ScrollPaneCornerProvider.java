@@ -1,5 +1,7 @@
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Corner;
 
 import javax.swing.*;
@@ -12,10 +14,11 @@ import javax.swing.*;
 public interface ScrollPaneCornerProvider
 {
     /**
-     * Returns the component at the specified corner.
+     * Returns {@link JComponent} for the specified scroll pane corner or {@code null} if none provided.
      *
-     * @param corner corner type
-     * @return component for the specified scroll pane corner or {@code null} if none provided
+     * @param corner {@link Corner} type
+     * @return {@link JComponent} for the specified scroll pane corner or {@code null} if none provided
      */
-    public JComponent getCorner ( Corner corner );
+    @Nullable
+    public JComponent getCorner ( @NotNull Corner corner );
 }

@@ -1,5 +1,6 @@
 package com.alee.laf.slider;
 
+import com.alee.painter.ParameterizedPaint;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,12 +12,10 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public interface ISliderPainter<C extends JSlider, U extends WebSliderUI> extends SpecificPainter<C, U>
+public interface ISliderPainter<C extends JSlider, U extends WebSliderUI>
+        extends SpecificPainter<C, U>, ParameterizedPaint<SliderPaintParameters>
 {
     /**
-     * Provide true if the user is dragging the slider.
-     *
-     * @param dragging true if the user is dragging
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void setDragging ( boolean dragging );
 }

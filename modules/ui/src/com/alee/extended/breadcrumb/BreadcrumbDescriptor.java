@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class BreadcrumbDescriptor extends AbstractBreadcrumbDescriptor<WebBreadcrumb, WBreadcrumbUI>
+public final class BreadcrumbDescriptor extends AbstractBreadcrumbDescriptor<WebBreadcrumb, WBreadcrumbUI, IBreadcrumbPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebBreadcrumb} component.
+     * Constructs new {@link BreadcrumbDescriptor}.
      */
     public BreadcrumbDescriptor ()
     {
-        super ( "breadcrumb", WebBreadcrumb.class, "BreadcrumbUI", WBreadcrumbUI.class, WebBreadcrumbUI.class, StyleId.breadcrumb );
+        super (
+                "breadcrumb",
+                WebBreadcrumb.class,
+                "BreadcrumbUI",
+                WBreadcrumbUI.class,
+                WebBreadcrumbUI.class,
+                IBreadcrumbPainter.class,
+                BreadcrumbPainter.class,
+                AdaptiveBreadcrumbPainter.class,
+                StyleId.breadcrumb
+        );
     }
 }

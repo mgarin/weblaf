@@ -11,12 +11,9 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public interface ITablePainter<C extends JTable, U extends WebTableUI> extends SpecificPainter<C, U>
+public interface ITablePainter<C extends JTable, U extends WTableUI> extends SpecificPainter<C, U>
 {
     /**
-     * Prepares painter to paint table.
-     *
-     * @param rendererPane renderer pane
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void prepareToPaint ( CellRendererPane rendererPane );
 }

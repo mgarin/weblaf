@@ -18,7 +18,10 @@
 package com.alee.extended.checkbox;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.button.WButtonUI;
+
+import java.awt.*;
 
 /**
  * Pluggable look and feel interface for {@link WebTristateCheckBox} component.
@@ -34,4 +37,12 @@ public abstract class WTristateCheckBoxUI<C extends WebTristateCheckBox> extends
     {
         return "TristateCheckBox.";
     }
+
+    /**
+     * Returns check {@link Icon} bounds.
+     *
+     * @return check {@link Icon} bounds
+     */
+    @Nullable
+    public abstract Rectangle getIconBounds ();
 }

@@ -30,13 +30,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class SplitButtonDescriptor extends AbstractSplitButtonDescriptor<WebSplitButton, WSplitButtonUI>
+public final class SplitButtonDescriptor extends AbstractSplitButtonDescriptor<WebSplitButton, WSplitButtonUI, ISplitButtonPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebSplitButton} component.
+     * Constructs new {@link SplitButtonDescriptor}.
      */
     public SplitButtonDescriptor ()
     {
-        super ( "splitbutton", WebSplitButton.class, "SplitButtonUI", WSplitButtonUI.class, WebSplitButtonUI.class, StyleId.splitbutton );
+        super (
+                "splitbutton",
+                WebSplitButton.class,
+                "SplitButtonUI",
+                WSplitButtonUI.class,
+                WebSplitButtonUI.class,
+                ISplitButtonPainter.class,
+                SplitButtonPainter.class,
+                AdaptiveSplitButtonPainter.class,
+                StyleId.splitbutton
+        );
     }
 }

@@ -22,37 +22,43 @@ import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
  * Abstract descriptor for {@link JComboBox} component.
  * Extend this class for creating custom {@link JComboBox} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link JComboBox} type
+ * @param <U> base {@link WComboBoxUI} type
+ * @param <P> {@link IComboBoxPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractComboBoxDescriptor<C extends JComboBox, U extends WComboBoxUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractComboBoxDescriptor<C extends JComboBox, U extends WComboBoxUI, P extends IComboBoxPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractComboBoxDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JComboBox} identifier
+     * @param componentClass      {@link JComboBox} {@link Class}
+     * @param uiClassId           {@link WComboBoxUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WComboBoxUI} {@link Class} applicable to {@link JComboBox}
+     * @param uiClass             {@link WComboBoxUI} {@link Class} used for {@link JComboBox} by default
+     * @param painterInterface    {@link IComboBoxPainter} interface {@link Class}
+     * @param painterClass        {@link IComboBoxPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IComboBoxPainter}
+     * @param defaultStyleId      {@link JComboBox} default {@link StyleId}
      */
-    public AbstractComboBoxDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                        final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractComboBoxDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                        @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                        @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                        @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 
     @Override

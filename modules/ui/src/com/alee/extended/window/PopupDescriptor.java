@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class PopupDescriptor extends AbstractPopupDescriptor<WebPopup, WPopupUI>
+public final class PopupDescriptor extends AbstractPopupDescriptor<WebPopup, WPopupUI, IPopupPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebPopup} component.
+     * Constructs new {@link PopupDescriptor}.
      */
     public PopupDescriptor ()
     {
-        super ( "popup", WebPopup.class, "PopupUI", WPopupUI.class, WebPopupUI.class, StyleId.popup );
+        super (
+                "popup",
+                WebPopup.class,
+                "PopupUI",
+                WPopupUI.class,
+                WebPopupUI.class,
+                IPopupPainter.class,
+                PopupPainter.class,
+                AdaptivePopupPainter.class,
+                StyleId.popup
+        );
     }
 }

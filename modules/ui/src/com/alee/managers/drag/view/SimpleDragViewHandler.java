@@ -17,6 +17,8 @@
 
 package com.alee.managers.drag.view;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.language.LM;
 import com.alee.painter.decoration.content.TextRasterization;
 import com.alee.utils.GraphicsUtils;
@@ -56,7 +58,8 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * @param object dragged object
      * @return font metrics used to display text
      */
-    protected FontMetrics getFontMetrics ( final T object )
+    @NotNull
+    protected FontMetrics getFontMetrics ( @NotNull final T object )
     {
         return SwingUtils.getDefaultLabelFontMetrics ();
     }
@@ -67,7 +70,8 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * @param object dragged object
      * @return displayed icon
      */
-    protected abstract Icon getIcon ( T object );
+    @Nullable
+    protected abstract Icon getIcon ( @NotNull T object );
 
     /**
      * Returns displayed text foreground.
@@ -75,7 +79,8 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * @param object dragged object
      * @return displayed text foreground
      */
-    protected abstract Color getForeground ( T object );
+    @Nullable
+    protected abstract Color getForeground ( @NotNull T object );
 
     /**
      * Returns displayed text.
@@ -83,10 +88,12 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * @param object dragged object
      * @return displayed text
      */
-    protected abstract String getText ( T object );
+    @NotNull
+    protected abstract String getText ( @NotNull T object );
 
+    @NotNull
     @Override
-    public BufferedImage getView ( final T object, final DragSourceDragEvent event )
+    public BufferedImage getView ( @NotNull final T object, @NotNull final DragSourceDragEvent event )
     {
         final Icon icon = getIcon ( object );
         final Color foreground = getForeground ( object );
@@ -117,14 +124,15 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
         return image;
     }
 
+    @NotNull
     @Override
-    public Point getViewRelativeLocation ( final T document, final DragSourceDragEvent event, final BufferedImage view )
+    public Point getViewRelativeLocation ( @NotNull final T document, final DragSourceDragEvent event, @NotNull final BufferedImage view )
     {
         return new Point ( 25, 5 );
     }
 
     @Override
-    public void dragEnded ( final T object, final DragSourceDropEvent event )
+    public void dragEnded ( @NotNull final T object, @NotNull final DragSourceDropEvent event )
     {
         /**
          * Don't need to do anything on drag end.

@@ -19,12 +19,12 @@ package com.alee.extended.accordion;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.collapsible.AbstractHeaderPanel;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.SwingUtils;
@@ -50,29 +50,14 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
         implements PropertyChangeListener, AccordionListener, ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( AccordionPainter.class )
-    protected IAccordionPainter painter;
-
-    /**
-     * Header {@link JComponent}.
-     */
-    protected JComponent header;
-
-    /**
-     * Control {@link JComponent}.
-     */
-    protected JComponent control;
-
-    /**
      * Returns an instance of the {@link WebAccordionUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebAccordionUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebAccordionUI ();
     }
@@ -190,19 +175,19 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( accordion, painter );
+        return PainterSupport.getShape ( accordion );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( accordion, painter );
+        return PainterSupport.isShapeDetectionEnabled ( accordion );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( accordion, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( accordion, enabled );
     }
 
     @Nullable
@@ -231,58 +216,29 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
         PainterSupport.setPadding ( accordion, padding );
     }
 
-    /**
-     * Returns accordion painter.
-     *
-     * @return accordion painter
-     */
-    public Painter getPainter ()
+    @Override
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getPainter ( painter );
+        return PainterSupport.getBaseline ( c, this, width, height );
     }
 
-    /**
-     * Sets accordion painter.
-     * Pass null to remove accordion painter.
-     *
-     * @param painter new accordion painter
-     */
-    public void setPainter ( final Painter painter )
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
     {
-        PainterSupport.setPainter ( accordion, this, new Consumer<IAccordionPainter> ()
-        {
-            @Override
-            public void accept ( final IAccordionPainter newPainter )
-            {
-                WebAccordionUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IAccordionPainter.class, AdaptiveAccordionPainter.class );
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 }

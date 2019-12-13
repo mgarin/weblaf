@@ -110,13 +110,13 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     /**
      * Painting variables.
      */
+    protected transient Map<TreePath, Boolean> paintingCache;
+    protected transient TreePaintParameters paintParameters;
     protected transient int totalChildIndent;
     protected transient int depthOffset;
     protected transient TreeModel treeModel;
     protected transient AbstractLayoutCache treeLayoutCache;
-    protected transient Hashtable<TreePath, Boolean> paintingCache;
     protected transient CellRendererPane rendererPane;
-    protected transient TreeCellRenderer currentCellRenderer;
     protected transient int editingRow = -1;
     protected transient int lastSelectionRow = -1;
 
@@ -130,6 +130,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     @Override
     protected void installPropertiesAndListeners ()
     {
+        paintingCache = new HashMap<TreePath, Boolean> ();
         super.installPropertiesAndListeners ();
         installTreeSelectionListeners ();
         installTreeExpansionListeners ();
@@ -145,6 +146,7 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         uninstallTreeExpansionListeners ();
         uninstallTreeSelectionListeners ();
         super.uninstallPropertiesAndListeners ();
+        paintingCache = null;
     }
 
     /**
@@ -705,10 +707,15 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
     }
 
     @Override
-    public void prepareToPaint ( final Hashtable<TreePath, Boolean> paintingCache, final TreeCellRenderer currentCellRenderer )
+    public void prepareToPaint ( @NotNull final TreePaintParameters parameters )
     {
-        this.paintingCache = paintingCache;
-        this.currentCellRenderer = currentCellRenderer;
+        this.paintParameters = parameters;
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        this.paintParameters = null;
     }
 
     @Override
@@ -748,7 +755,6 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
         // Cleaning up
         treeModel = null;
         treeLayoutCache = null;
-        paintingCache = null;
         rendererPane = null;
     }
 
@@ -1189,14 +1195,15 @@ public class TreePainter<C extends JTree, U extends WTreeUI, D extends IDecorati
                               final boolean isExpanded, final boolean hasBeenExpanded, final boolean isLeaf )
     {
         // Don't paint the renderer if editing this row.
-        if ( editingRow != row )
+        if ( editingRow != row && paintParameters != null )
         {
             // Retrieving row cell renderer
             final Object value = path.getLastPathComponent ();
             final boolean hasFocus = ( component.hasFocus () ? lastSelectionRow : -1 ) == row;
             final boolean selected = component.isRowSelected ( row );
-            final Component rowComponent =
-                    currentCellRenderer.getTreeCellRendererComponent ( component, value, selected, isExpanded, isLeaf, row, hasFocus );
+            final Component rowComponent = paintParameters.renderer.getTreeCellRendererComponent (
+                    component, value, selected, isExpanded, isLeaf, row, hasFocus
+            );
 
             // Painting cell renderer
             rendererPane.paintComponent ( g2d, rowComponent, component, bounds.x, bounds.y, bounds.width, bounds.height, true );

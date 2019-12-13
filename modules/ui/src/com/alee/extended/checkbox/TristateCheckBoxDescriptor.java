@@ -30,14 +30,24 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class TristateCheckBoxDescriptor extends AbstractTristateCheckBoxDescriptor<WebTristateCheckBox, WTristateCheckBoxUI>
+public final class TristateCheckBoxDescriptor
+        extends AbstractTristateCheckBoxDescriptor<WebTristateCheckBox, WTristateCheckBoxUI, ITristateCheckBoxPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebTristateCheckBox} component.
+     * Constructs new {@link TristateCheckBoxDescriptor}.
      */
     public TristateCheckBoxDescriptor ()
     {
-        super ( "tristatecheckbox", WebTristateCheckBox.class, "TristateCheckBoxUI", WTristateCheckBoxUI.class, WebTristateCheckBoxUI.class,
-                StyleId.tristatecheckbox );
+        super (
+                "tristatecheckbox",
+                WebTristateCheckBox.class,
+                "TristateCheckBoxUI",
+                WTristateCheckBoxUI.class,
+                WebTristateCheckBoxUI.class,
+                ITristateCheckBoxPainter.class,
+                TristateCheckBoxPainter.class,
+                AdaptiveTristateCheckBoxPainter.class,
+                StyleId.tristatecheckbox
+        );
     }
 }

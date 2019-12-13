@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class OptionPaneDescriptor extends AbstractOptionPaneDescriptor<JOptionPane, WebOptionPaneUI>
+public final class OptionPaneDescriptor extends AbstractOptionPaneDescriptor<JOptionPane, WebOptionPaneUI, IOptionPanePainter>
 {
     /**
-     * Constructs new descriptor for {@link JOptionPane} component.
+     * Constructs new {@link OptionPaneDescriptor}.
      */
     public OptionPaneDescriptor ()
     {
-        super ( "optionpane", JOptionPane.class, "OptionPaneUI", WebOptionPaneUI.class, WebOptionPaneUI.class, StyleId.optionpane );
+        super (
+                "optionpane",
+                JOptionPane.class,
+                "OptionPaneUI",
+                WebOptionPaneUI.class,
+                WebOptionPaneUI.class,
+                IOptionPanePainter.class,
+                OptionPanePainter.class,
+                AdaptiveOptionPanePainter.class,
+                StyleId.optionpane
+        );
     }
 }

@@ -31,14 +31,24 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ToolBarSeparatorDescriptor extends AbstractToolBarSeparatorDescriptor<JToolBar.Separator, WToolBarSeparatorUI>
+public final class ToolBarSeparatorDescriptor
+        extends AbstractToolBarSeparatorDescriptor<JToolBar.Separator, WToolBarSeparatorUI, IToolBarSeparatorPainter>
 {
     /**
-     * Constructs new descriptor for {@link javax.swing.JToolBar.Separator} component.
+     * Constructs new {@link ToolBarSeparatorDescriptor}.
      */
     public ToolBarSeparatorDescriptor ()
     {
-        super ( "toolbarseparator", JToolBar.Separator.class, "ToolBarSeparatorUI", WToolBarSeparatorUI.class, WebToolBarSeparatorUI.class,
-                StyleId.toolbarseparator );
+        super (
+                "toolbarseparator",
+                JToolBar.Separator.class,
+                "ToolBarSeparatorUI",
+                WToolBarSeparatorUI.class,
+                WebToolBarSeparatorUI.class,
+                IToolBarSeparatorPainter.class,
+                ToolBarSeparatorPainter.class,
+                AdaptiveToolBarSeparatorPainter.class,
+                StyleId.toolbarseparator
+        );
     }
 }

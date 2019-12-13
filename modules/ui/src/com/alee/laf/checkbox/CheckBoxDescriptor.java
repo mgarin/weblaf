@@ -32,13 +32,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class CheckBoxDescriptor extends AbstractCheckBoxDescriptor<JCheckBox, WCheckBoxUI>
+public final class CheckBoxDescriptor extends AbstractCheckBoxDescriptor<JCheckBox, WCheckBoxUI, ICheckBoxPainter>
 {
     /**
-     * Constructs new descriptor for {@link JCheckBox} component.
+     * Constructs new {@link CheckBoxDescriptor}.
      */
     public CheckBoxDescriptor ()
     {
-        super ( "checkbox", JCheckBox.class, "CheckBoxUI", WCheckBoxUI.class, WebCheckBoxUI.class, StyleId.checkbox );
+        super (
+                "checkbox",
+                JCheckBox.class,
+                "CheckBoxUI",
+                WCheckBoxUI.class,
+                WebCheckBoxUI.class,
+                ICheckBoxPainter.class,
+                CheckBoxPainter.class,
+                AdaptiveCheckBoxPainter.class,
+                StyleId.checkbox
+        );
     }
 }

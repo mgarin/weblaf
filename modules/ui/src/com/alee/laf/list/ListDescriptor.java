@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class ListDescriptor extends AbstractListDescriptor<JList, WListUI>
+public final class ListDescriptor extends AbstractListDescriptor<JList, WListUI, IListPainter>
 {
     /**
-     * Constructs new descriptor for {@link JList} component.
+     * Constructs new {@link ListDescriptor}.
      */
     public ListDescriptor ()
     {
-        super ( "list", JList.class, "ListUI", WListUI.class, WebListUI.class, StyleId.list );
+        super (
+                "list",
+                JList.class,
+                "ListUI",
+                WListUI.class,
+                WebListUI.class,
+                IListPainter.class,
+                ListPainter.class,
+                AdaptiveListPainter.class,
+                StyleId.list
+        );
     }
 }

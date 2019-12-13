@@ -31,14 +31,24 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class FormattedTextFieldDescriptor extends AbstractFormattedTextFieldDescriptor<JFormattedTextField, WFormattedTextFieldUI>
+public final class FormattedTextFieldDescriptor
+        extends AbstractFormattedTextFieldDescriptor<JFormattedTextField, WFormattedTextFieldUI, IFormattedTextFieldPainter>
 {
     /**
-     * Constructs new descriptor for {@link JFormattedTextField} component.
+     * Constructs new {@link FormattedTextFieldDescriptor}.
      */
     public FormattedTextFieldDescriptor ()
     {
-        super ( "formattedtextfield", JFormattedTextField.class, "FormattedTextFieldUI", WFormattedTextFieldUI.class,
-                WebFormattedTextFieldUI.class, StyleId.formattedtextfield );
+        super (
+                "formattedtextfield",
+                JFormattedTextField.class,
+                "FormattedTextFieldUI",
+                WFormattedTextFieldUI.class,
+                WebFormattedTextFieldUI.class,
+                IFormattedTextFieldPainter.class,
+                FormattedTextFieldPainter.class,
+                AdaptiveFormattedTextFieldPainter.class,
+                StyleId.formattedtextfield
+        );
     }
 }

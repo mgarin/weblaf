@@ -22,7 +22,6 @@ import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationState;
@@ -30,7 +29,6 @@ import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -62,12 +60,6 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     protected Dimension minimumThumbSize;
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( ScrollBarPainter.class )
-    protected IScrollBarPainter painter;
-
-    /**
      * Listeners.
      */
     private transient PropertyChangeListener buttonsStateUpdater;
@@ -79,13 +71,14 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
      * @param c component that will use UI instance
      * @return instance of the {@link WebScrollBarUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebScrollBarUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -98,7 +91,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( scrollbar );
@@ -114,19 +107,19 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( scrollbar, painter );
+        return PainterSupport.getShape ( scrollbar );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( scrollbar, painter );
+        return PainterSupport.isShapeDetectionEnabled ( scrollbar );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( scrollbar, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( scrollbar, enabled );
     }
 
     @Nullable
@@ -184,34 +177,6 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     }
 
     /**
-     * Returns scroll bar painter.
-     *
-     * @return scroll bar painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets scroll bar painter.
-     * Pass null to remove scroll bar painter.
-     *
-     * @param painter new scroll bar painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( scrollbar, this, new Consumer<IScrollBarPainter> ()
-        {
-            @Override
-            public void accept ( final IScrollBarPainter newPainter )
-            {
-                WebScrollBarUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IScrollBarPainter.class, AdaptiveScrollBarPainter.class );
-    }
-
-    /**
      * Installs additional scroll bar components.
      */
     @Override
@@ -253,40 +218,36 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
+        PainterSupport.paint ( g, c, this, new ScrollBarPaintParameters ( isDragging, trackRect, thumbRect ) );
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.setDragged ( isDragging );
-            painter.setTrackBounds ( trackRect );
-            painter.setThumbBounds ( thumbRect );
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
         // Scroll bar preferred size
         final boolean ver = scrollbar.getOrientation () == Adjustable.VERTICAL;
+        final Painter painter = PainterSupport.getPainter ( c );
         final Dimension ps = painter != null ? painter.getPreferredSize () : new Dimension ( ver ? 0 : 48, ver ? 48 : 0 );
 
         // Arrow button preferred sizes
@@ -319,7 +280,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
          *
          * @param id {@link StyleId}
          */
-        public ScrollBarButton ( final StyleId id )
+        public ScrollBarButton ( @NotNull final StyleId id )
         {
             super ( id );
             setFocusable ( false );
@@ -352,7 +313,7 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
         public Dimension getPreferredSize ()
         {
             // The best way (so far) to hide buttons without causing a serious mess in the code
-            return painter != null && displayButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
+            return displayButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
         }
     }
 }

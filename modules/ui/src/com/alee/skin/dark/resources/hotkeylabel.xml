@@ -8,7 +8,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" />
-                    <HotkeyLabelBackground round="6" border="68,72,74" spacing="81,85,87" color="77,81,83" />
+                    <HotkeyLabelBackground round="6" border="40,40,40" spacing="81,85,87" color="68,68,68" />
                     <LabelLayout padding="2,6,3,6" />
                 </decoration>
             </decorations>

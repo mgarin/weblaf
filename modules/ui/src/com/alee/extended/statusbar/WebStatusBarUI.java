@@ -19,11 +19,11 @@ package com.alee.extended.statusbar;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
-import com.alee.api.jdk.Consumer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -38,19 +38,14 @@ import java.awt.*;
 public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( StatusBarPainter.class )
-    protected IStatusBarPainter painter;
-
-    /**
      * Returns an instance of the {@link WebStatusBarUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebStatusBarUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebStatusBarUI ();
     }
@@ -79,19 +74,19 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( statusBar, painter );
+        return PainterSupport.getShape ( statusBar );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( statusBar, painter );
+        return PainterSupport.isShapeDetectionEnabled ( statusBar );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( statusBar, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( statusBar, enabled );
     }
 
     @Nullable
@@ -120,65 +115,35 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
         PainterSupport.setPadding ( statusBar, padding );
     }
 
-    /**
-     * Returns statusbar painter.
-     *
-     * @return statusbar painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets statusbar painter.
-     * Pass null to remove statusbar painter.
-     *
-     * @param painter new statusbar painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( statusBar, this, new Consumer<IStatusBarPainter> ()
-        {
-            @Override
-            public void accept ( final IStatusBarPainter newPainter )
-            {
-                WebStatusBarUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IStatusBarPainter.class, AdaptiveStatusBarPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        // return PainterSupport.getPreferredSize ( c, painter );
         return null;
     }
 }

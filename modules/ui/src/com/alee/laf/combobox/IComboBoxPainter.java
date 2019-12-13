@@ -1,6 +1,6 @@
 package com.alee.laf.combobox;
 
-import com.alee.api.annotations.NotNull;
+import com.alee.painter.ParameterizedPaint;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -12,12 +12,10 @@ import javax.swing.*;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public interface IComboBoxPainter<C extends JComboBox, U extends WComboBoxUI> extends SpecificPainter<C, U>
+public interface IComboBoxPainter<C extends JComboBox, U extends WComboBoxUI>
+        extends SpecificPainter<C, U>, ParameterizedPaint<ComboBoxPaintParameters>
 {
     /**
-     * Prepares painter to pain combobox.
-     *
-     * @param currentValuePane current value pane
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void prepareToPaint ( @NotNull CellRendererPane currentValuePane );
 }

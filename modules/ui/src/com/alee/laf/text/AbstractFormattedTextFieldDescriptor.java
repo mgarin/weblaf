@@ -17,39 +17,47 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link JFormattedTextField} component.
  * Extend this class for creating custom {@link JFormattedTextField} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link JFormattedTextField} type
+ * @param <U> base {@link WFormattedTextFieldUI} type
+ * @param <P> {@link IFormattedTextFieldPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractFormattedTextFieldDescriptor<C extends JFormattedTextField, U extends WFormattedTextFieldUI>
-        extends AbstractTextComponentDescriptor<C, U>
+public abstract class AbstractFormattedTextFieldDescriptor<C extends JFormattedTextField, U extends WFormattedTextFieldUI, P extends IFormattedTextFieldPainter>
+        extends AbstractTextComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractFormattedTextFieldDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JFormattedTextField} identifier
+     * @param componentClass      {@link JFormattedTextField} {@link Class}
+     * @param uiClassId           {@link WFormattedTextFieldUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WFormattedTextFieldUI} {@link Class} applicable to {@link JFormattedTextField}
+     * @param uiClass             {@link WFormattedTextFieldUI} {@link Class} used for {@link JFormattedTextField} by default
+     * @param painterInterface    {@link IFormattedTextFieldPainter} interface {@link Class}
+     * @param painterClass        {@link IFormattedTextFieldPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IFormattedTextFieldPainter}
+     * @param defaultStyleId      {@link JFormattedTextField} default {@link StyleId}
      */
-    public AbstractFormattedTextFieldDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                                  final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractFormattedTextFieldDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
+                                                  @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
+                                                  @NotNull final Class<? extends U> uiClass, @NotNull final Class<P> painterInterface,
+                                                  @NotNull final Class<? extends P> painterClass,
+                                                  @NotNull final Class<? extends P> painterAdapterClass,
+                                                  @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

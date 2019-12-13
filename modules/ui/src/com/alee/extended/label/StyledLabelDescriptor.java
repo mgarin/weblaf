@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class StyledLabelDescriptor extends AbstractStyledLabelDescriptor<WebStyledLabel, WStyledLabelUI>
+public final class StyledLabelDescriptor extends AbstractStyledLabelDescriptor<WebStyledLabel, WStyledLabelUI, IStyledLabelPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebStyledLabel} component.
+     * Constructs new {@link StyledLabelDescriptor}.
      */
     public StyledLabelDescriptor ()
     {
-        super ( "styledlabel", WebStyledLabel.class, "StyledLabelUI", WStyledLabelUI.class, WebStyledLabelUI.class, StyleId.styledlabel );
+        super (
+                "styledlabel",
+                WebStyledLabel.class,
+                "StyledLabelUI",
+                WStyledLabelUI.class,
+                WebStyledLabelUI.class,
+                IStyledLabelPainter.class,
+                StyledLabelPainter.class,
+                AdaptiveStyledLabelPainter.class,
+                StyleId.styledlabel
+        );
     }
 }

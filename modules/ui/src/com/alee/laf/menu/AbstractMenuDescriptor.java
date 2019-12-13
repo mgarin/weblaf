@@ -22,36 +22,42 @@ import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link JMenu} component.
  * Extend this class for creating custom {@link JMenu} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link JMenu} type
+ * @param <U> base {@link WebMenuUI} type
+ * @param <P> {@link IMenuPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractMenuDescriptor<C extends JMenu, U extends WebMenuUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractMenuDescriptor<C extends JMenu, U extends WebMenuUI, P extends IMenuPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractMenuDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JMenu} identifier
+     * @param componentClass      {@link JMenu} {@link Class}
+     * @param uiClassId           {@link WebMenuUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WebMenuUI} {@link Class} applicable to {@link JMenu}
+     * @param uiClass             {@link WebMenuUI} {@link Class} used for {@link JMenu} by default
+     * @param painterInterface    {@link IMenuPainter} interface {@link Class}
+     * @param painterClass        {@link IMenuPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IMenuPainter}
+     * @param defaultStyleId      {@link JMenu} default {@link StyleId}
      */
-    public AbstractMenuDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                    final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractMenuDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                    @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                    @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                    @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 
     @Override

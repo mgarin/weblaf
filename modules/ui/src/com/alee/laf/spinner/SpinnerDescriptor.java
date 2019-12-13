@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class SpinnerDescriptor extends AbstractSpinnerDescriptor<JSpinner, WebSpinnerUI>
+public final class SpinnerDescriptor extends AbstractSpinnerDescriptor<JSpinner, WebSpinnerUI, ISpinnerPainter>
 {
     /**
      * Constructs new descriptor for {@link JSpinner} component.
      */
     public SpinnerDescriptor ()
     {
-        super ( "spinner", JSpinner.class, "SpinnerUI", WebSpinnerUI.class, WebSpinnerUI.class, StyleId.spinner );
+        super (
+                "spinner",
+                JSpinner.class,
+                "SpinnerUI",
+                WebSpinnerUI.class,
+                WebSpinnerUI.class,
+                ISpinnerPainter.class,
+                SpinnerPainter.class,
+                AdaptiveSpinnerPainter.class,
+                StyleId.spinner
+        );
     }
 }

@@ -32,14 +32,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
 public final class MultiSplitPaneDividerDescriptor
-        extends AbstractMultiSplitPaneDividerDescriptor<WebMultiSplitPaneDivider, WMultiSplitPaneDividerUI>
+        extends AbstractMultiSplitPaneDividerDescriptor<WebMultiSplitPaneDivider, WMultiSplitPaneDividerUI, IMultiSplitPaneDividerPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebMultiSplitPaneDivider} component.
+     * Constructs new {@link MultiSplitPaneDividerDescriptor}.
      */
     public MultiSplitPaneDividerDescriptor ()
     {
-        super ( "multisplitpanedivider", WebMultiSplitPaneDivider.class, "MultiSplitPaneDividerUI", WMultiSplitPaneDividerUI.class,
-                WebMultiSplitPaneDividerUI.class, StyleId.multisplitpanedivider );
+        super (
+                "multisplitpanedivider",
+                WebMultiSplitPaneDivider.class,
+                "MultiSplitPaneDividerUI",
+                WMultiSplitPaneDividerUI.class,
+                WebMultiSplitPaneDividerUI.class,
+                IMultiSplitPaneDividerPainter.class,
+                MultiSplitPaneDividerPainter.class,
+                AdaptiveMultiSplitPaneDividerPainter.class,
+                StyleId.multisplitpanedivider
+        );
     }
 }

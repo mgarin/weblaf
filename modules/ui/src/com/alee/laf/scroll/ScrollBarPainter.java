@@ -80,13 +80,11 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
     protected transient float rolloverState;
     protected transient boolean rollover;
     protected transient boolean pressed;
-    protected transient boolean dragged;
 
     /**
      * Painting variables.
      */
-    protected transient Rectangle trackBounds;
-    protected transient Rectangle thumbBounds;
+    protected transient ScrollBarPaintParameters paintParameters;
     protected transient Insets thumbMarginR;
     protected transient Insets thumbMarginHL;
     protected transient Insets thumbMarginHR;
@@ -103,31 +101,31 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void mousePressed ( @NotNull final MouseEvent e )
             {
                 setPressed ( true );
             }
 
             @Override
-            public void mouseReleased ( final MouseEvent e )
+            public void mouseReleased ( @NotNull final MouseEvent e )
             {
                 setPressed ( false );
             }
 
             @Override
-            public void mouseEntered ( final MouseEvent e )
+            public void mouseEntered ( @NotNull final MouseEvent e )
             {
-                setRollover ( thumbBounds != null && thumbBounds.contains ( e.getPoint () ) );
+                setRollover ( paintParameters != null && paintParameters.thumbBounds.contains ( e.getPoint () ) );
             }
 
             @Override
-            public void mouseMoved ( final MouseEvent e )
+            public void mouseMoved ( @NotNull final MouseEvent e )
             {
-                setRollover ( thumbBounds != null && thumbBounds.contains ( e.getPoint () ) );
+                setRollover ( paintParameters != null && paintParameters.thumbBounds.contains ( e.getPoint () ) );
             }
 
             @Override
-            public void mouseExited ( final MouseEvent e )
+            public void mouseExited ( @NotNull final MouseEvent e )
             {
                 setRollover ( false );
             }
@@ -183,7 +181,7 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
                         rolloverAnimator = new WebTimer ( SwingUtils.frameRateDelay ( 36 ), new ActionListener ()
                         {
                             @Override
-                            public void actionPerformed ( final ActionEvent e )
+                            public void actionPerformed ( @NotNull final ActionEvent e )
                             {
                                 if ( rolloverState > 0f )
                                 {
@@ -234,24 +232,6 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
         }
     }
 
-    @Override
-    public void setDragged ( final boolean dragged )
-    {
-        this.dragged = dragged;
-    }
-
-    @Override
-    public void setTrackBounds ( final Rectangle bounds )
-    {
-        this.trackBounds = bounds;
-    }
-
-    @Override
-    public void setThumbBounds ( final Rectangle bounds )
-    {
-        this.thumbBounds = bounds;
-    }
-
     @NotNull
     @Override
     public Boolean isOpaque ()
@@ -280,12 +260,24 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
     }
 
     @Override
+    public void prepareToPaint ( @NotNull final ScrollBarPaintParameters parameters )
+    {
+        this.paintParameters = parameters;
+    }
+
+    @Override
+    public void cleanupAfterPaint ()
+    {
+        // Parameters are preserved for other operations
+    }
+
+    @Override
     public void paint ( @NotNull final Graphics2D g2d, @NotNull final C scrollbar, @NotNull final U ui, @NotNull final Bounds bounds )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         paintBackground ( g2d, scrollbar, bounds.get () );
-        paintTrack ( g2d, scrollbar, trackBounds );
-        paintThumb ( g2d, scrollbar, thumbBounds );
+        paintTrack ( g2d, scrollbar, paintParameters.trackBounds );
+        paintThumb ( g2d, scrollbar, paintParameters.thumbBounds );
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
@@ -402,8 +394,27 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
     @NotNull
     protected Color getCurrentThumbBorderColor ( @NotNull final C scrollbar )
     {
-        return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBorderColor : rollover ? thumbRolloverBorderColor :
-                ColorUtils.intermediate ( thumbBorderColor, thumbRolloverBorderColor, rolloverState ) : thumbDisabledBorderColor;
+        final Color color;
+        if ( scrollbar.isEnabled () )
+        {
+            if ( pressed || paintParameters.dragged )
+            {
+                color = thumbPressedBorderColor;
+            }
+            else if ( rollover )
+            {
+                color = thumbRolloverBorderColor;
+            }
+            else
+            {
+                color = ColorUtils.intermediate ( thumbBorderColor, thumbRolloverBorderColor, rolloverState );
+            }
+        }
+        else
+        {
+            color = thumbDisabledBorderColor;
+        }
+        return color;
     }
 
     /**
@@ -415,9 +426,27 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
     @NotNull
     protected Color getCurrentThumbBackgroundColor ( @NotNull final C scrollbar )
     {
-        return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBackgroundColor : rollover ? thumbRolloverBackgroundColor :
-                ColorUtils.intermediate ( thumbBackgroundColor, thumbRolloverBackgroundColor, rolloverState ) :
-                thumbDisabledBackgroundColor;
+        final Color color;
+        if ( scrollbar.isEnabled () )
+        {
+            if ( pressed || paintParameters.dragged )
+            {
+                color = thumbPressedBackgroundColor;
+            }
+            else if ( rollover )
+            {
+                color = thumbRolloverBackgroundColor;
+            }
+            else
+            {
+                color = ColorUtils.intermediate ( thumbBackgroundColor, thumbRolloverBackgroundColor, rolloverState );
+            }
+        }
+        else
+        {
+            color = thumbDisabledBackgroundColor;
+        }
+        return color;
     }
 
     /**
@@ -425,9 +454,9 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
      */
     public void repaintThumb ()
     {
-        if ( thumbBounds != null )
+        if ( paintParameters != null )
         {
-            repaint ( thumbBounds );
+            repaint ( paintParameters.thumbBounds );
         }
         else
         {
@@ -439,9 +468,16 @@ public class ScrollBarPainter<C extends JScrollBar, U extends WScrollBarUI> exte
     @Override
     public Dimension getPreferredSize ()
     {
+        final Dimension ps;
         final Insets i = component.getInsets ();
-        final boolean ver = component.getOrientation () == Adjustable.VERTICAL;
-        return ver ? new Dimension ( i.left + scrollBarWidth + i.right, i.top + 48 + i.bottom ) :
-                new Dimension ( i.left + 48 + i.right, i.top + scrollBarWidth + i.bottom );
+        if ( component.getOrientation () == Adjustable.VERTICAL )
+        {
+            ps = new Dimension ( i.left + scrollBarWidth + i.right, i.top + 48 + i.bottom );
+        }
+        else
+        {
+            ps = new Dimension ( i.left + 48 + i.right, i.top + scrollBarWidth + i.bottom );
+        }
+        return ps;
     }
 }

@@ -19,12 +19,9 @@ package com.alee.laf.spinner;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
@@ -41,25 +38,20 @@ import java.awt.*;
 public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( SpinnerPainter.class )
-    protected ISpinnerPainter painter;
-
-    /**
      * Returns an instance of the {@link WebSpinnerUI} for the specified component.
      * This tricky method is used by {@link UIManager} to create component UIs when needed.
      *
      * @param c component that will use UI instance
      * @return instance of the {@link WebSpinnerUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebSpinnerUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -69,7 +61,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( spinner );
@@ -78,12 +70,14 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
         super.uninstallUI ( c );
     }
 
+    @NotNull
     @Override
     protected LayoutManager createLayout ()
     {
         return new WebSpinnerLayout ();
     }
 
+    @NotNull
     @Override
     protected JComponent createEditor ()
     {
@@ -108,9 +102,8 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
      * @param container spinner editor container
      * @param spinner   spinner
      */
-    protected void configureEditorContainer ( final JSpinner.DefaultEditor container, final JSpinner spinner )
+    protected void configureEditorContainer ( @NotNull final JSpinner.DefaultEditor container, @NotNull final JSpinner spinner )
     {
-        // Installing proper styling
         StyleId.spinnerEditorContainer.at ( spinner ).set ( container );
     }
 
@@ -120,12 +113,12 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
      * @param field   spinner editor
      * @param spinner spinner
      */
-    protected void configureEditor ( final JTextComponent field, final JSpinner spinner )
+    protected void configureEditor ( @NotNull final JTextComponent field, @NotNull final JSpinner spinner )
     {
-        // Installing proper styling
         StyleId.spinnerEditor.at ( spinner ).set ( field );
     }
 
+    @NotNull
     @Override
     protected Component createNextButton ()
     {
@@ -135,6 +128,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
         return nextButton;
     }
 
+    @NotNull
     @Override
     protected Component createPreviousButton ()
     {
@@ -148,19 +142,19 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( spinner, painter );
+        return PainterSupport.getShape ( spinner );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( spinner, painter );
+        return PainterSupport.isShapeDetectionEnabled ( spinner );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( spinner, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( spinner, enabled );
     }
 
     @Nullable
@@ -189,53 +183,22 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeSupport, Margin
         PainterSupport.setPadding ( spinner, padding );
     }
 
-    /**
-     * Returns spinner painter.
-     *
-     * @return spinner painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets spinner painter.
-     * Pass null to remove spinner painter.
-     *
-     * @param painter new spinner painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( spinner, this, new Consumer<ISpinnerPainter> ()
-        {
-            @Override
-            public void accept ( final ISpinnerPainter newPainter )
-            {
-                WebSpinnerUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, ISpinnerPainter.class, AdaptiveSpinnerPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        // return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
         return null;
     }
 }

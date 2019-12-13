@@ -16,6 +16,7 @@ public interface IRootPanePainter<C extends JRootPane, U extends WRootPaneUI> ex
 {
     /**
      * Returns whether or not this {@link IRootPanePainter} implementation will provide window decoration.
+     * todo This method might not be necessary outside of implementation anymore
      *
      * @return {@code true} if this {@link IRootPanePainter} implementation will provide window decoration, {@code false} otherwise
      */

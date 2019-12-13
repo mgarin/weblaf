@@ -32,14 +32,24 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class DesktopIconDescriptor extends AbstractDesktopIconDescriptor<JInternalFrame.JDesktopIcon, WDesktopIconUI>
+public final class DesktopIconDescriptor
+        extends AbstractDesktopIconDescriptor<JInternalFrame.JDesktopIcon, WDesktopIconUI, IDesktopIconPainter>
 {
     /**
-     * Constructs new descriptor for {@link javax.swing.JInternalFrame.JDesktopIcon} component.
+     * Constructs new {@link DesktopIconDescriptor}.
      */
     public DesktopIconDescriptor ()
     {
-        super ( "desktopicon", JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WDesktopIconUI.class, WebDesktopIconUI.class,
-                StyleId.desktopicon );
+        super (
+                "desktopicon",
+                JInternalFrame.JDesktopIcon.class,
+                "DesktopIconUI",
+                WDesktopIconUI.class,
+                WebDesktopIconUI.class,
+                IDesktopIconPainter.class,
+                DesktopIconPainter.class,
+                AdaptiveDesktopIconPainter.class,
+                StyleId.desktopicon
+        );
     }
 }

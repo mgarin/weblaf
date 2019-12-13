@@ -17,40 +17,48 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link javax.swing.JToolBar.Separator} component.
  * Extend this class for creating custom {@link javax.swing.JToolBar.Separator} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link javax.swing.JToolBar.Separator} type
+ * @param <U> base {@link WToolBarSeparatorUI} type
+ * @param <P> {@link IToolBarSeparatorPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractToolBarSeparatorDescriptor<C extends JToolBar.Separator, U extends WToolBarSeparatorUI>
-        extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractToolBarSeparatorDescriptor<C extends JToolBar.Separator, U extends WToolBarSeparatorUI, P extends IToolBarSeparatorPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractToolBarSeparatorDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link javax.swing.JToolBar.Separator} identifier
+     * @param componentClass      {@link javax.swing.JToolBar.Separator} {@link Class}
+     * @param uiClassId           {@link WToolBarSeparatorUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WToolBarSeparatorUI} {@link Class} applicable to {@link javax.swing.JToolBar.Separator}
+     * @param uiClass             {@link WToolBarSeparatorUI} {@link Class} used for {@link javax.swing.JToolBar.Separator} by default
+     * @param painterInterface    {@link IToolBarSeparatorPainter} interface {@link Class}
+     * @param painterClass        {@link IToolBarSeparatorPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link IToolBarSeparatorPainter}
+     * @param defaultStyleId      {@link javax.swing.JToolBar.Separator} default {@link StyleId}
      */
-    public AbstractToolBarSeparatorDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                                final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractToolBarSeparatorDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass,
+                                                @NotNull final String uiClassId, @NotNull final Class<U> baseUIClass,
+                                                @NotNull final Class<? extends U> uiClass, @NotNull final Class<P> painterInterface,
+                                                @NotNull final Class<? extends P> painterClass,
+                                                @NotNull final Class<? extends P> painterAdapterClass,
+                                                @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 }

@@ -19,12 +19,12 @@ package com.alee.laf.filechooser;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LM;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AllFilesFilter;
@@ -51,12 +51,6 @@ import java.util.List;
 public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( FileChooserPainter.class )
-    protected IFileChooserPainter painter;
-
-    /**
      * Runtime variables.
      */
     protected transient JFileChooser fileChooser;
@@ -76,13 +70,14 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      * @param c component that will use UI instance
      * @return instance of the {@link WebFileChooserUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebFileChooserUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Saving file chooser reference
         fileChooser = ( JFileChooser ) c;
@@ -100,7 +95,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         fileChooserPanel.setAcceptListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 ignoreFileSelectionChanges = true;
                 final List<File> selectedFiles = fileChooserPanel.getSelectedFiles ();
@@ -112,7 +107,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         fileChooserPanel.setCancelListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void actionPerformed ( @NotNull final ActionEvent e )
             {
                 fileChooser.cancelSelection ();
             }
@@ -148,7 +143,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            public void propertyChange ( @NotNull final PropertyChangeEvent evt )
             {
                 propertyChanged ( evt );
             }
@@ -157,7 +152,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( fileChooser );
@@ -176,7 +171,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      *
      * @param event property change event
      */
-    protected void propertyChanged ( final PropertyChangeEvent event )
+    protected void propertyChanged ( @NotNull final PropertyChangeEvent event )
     {
         final String prop = event.getPropertyName ();
         if ( prop.equals ( JFileChooser.ACCESSORY_CHANGED_PROPERTY ) )
@@ -190,10 +185,6 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         else if ( prop.equals ( JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY ) )
         {
             fileChooserPanel.setShowControlButtons ( fileChooser.getControlButtonsAreShown () );
-        }
-        else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         }
         else if ( prop.equals ( JFileChooser.FILE_FILTER_CHANGED_PROPERTY ) ||
                 prop.equals ( JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY ) ||
@@ -267,7 +258,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         }
         else if ( prop.equals ( JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ) )
         {
-            fileChooserPanel.setChooserType ( getFileChooserType () );
+            fileChooserPanel.setChooserType ( FileChooserType.forType ( fileChooser.getDialogType () ) );
         }
         else if ( prop.equals ( JFileChooser.FILE_HIDING_CHANGED_PROPERTY ) )
         {
@@ -289,28 +280,32 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      * @param fileChooser {@link JFileChooser}
      * @return main file chooser panel
      */
-    protected WebFileChooserPanel createPanel ( final JFileChooser fileChooser )
+    @NotNull
+    protected WebFileChooserPanel createPanel ( @NotNull final JFileChooser fileChooser )
     {
-        return new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
+        return new WebFileChooserPanel (
+                FileChooserType.forType ( fileChooser.getDialogType () ),
+                fileChooser.getControlButtonsAreShown ()
+        );
     }
 
     @NotNull
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( fileChooser, painter );
+        return PainterSupport.getShape ( fileChooser );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( fileChooser, painter );
+        return PainterSupport.isShapeDetectionEnabled ( fileChooser );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( fileChooser, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( fileChooser, enabled );
     }
 
     @Nullable
@@ -339,34 +334,7 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         PainterSupport.setPadding ( fileChooser, padding );
     }
 
-    /**
-     * Returns file chooser painter.
-     *
-     * @return file chooser painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets file chooser painter.
-     * Pass null to remove file chooser painter.
-     *
-     * @param painter new file chooser painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( fileChooser, this, new Consumer<IFileChooserPainter> ()
-        {
-            @Override
-            public void accept ( final IFileChooserPainter newPainter )
-            {
-                WebFileChooserUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IFileChooserPainter.class, AdaptiveFileChooserPainter.class );
-    }
-
+    @NotNull
     @Override
     public WebFileChooserPanel getFileChooserPanel ()
     {
@@ -374,38 +342,38 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
     }
 
     @Override
-    public FileFilter getAcceptAllFileFilter ( final JFileChooser fc )
+    public FileFilter getAcceptAllFileFilter ( @NotNull final JFileChooser fc )
     {
         return new AllFilesFilter ();
     }
 
     @Override
-    public FileView getFileView ( final JFileChooser fc )
+    public FileView getFileView ( @NotNull final JFileChooser fc )
     {
         return fileView;
     }
 
     @Override
-    public String getApproveButtonText ( final JFileChooser fc )
+    public String getApproveButtonText ( @NotNull final JFileChooser fc )
     {
         return fileChooserPanel.getAcceptButtonText ();
     }
 
     @Override
-    public String getDialogTitle ( final JFileChooser fc )
+    public String getDialogTitle ( @NotNull final JFileChooser fc )
     {
         final String dialogTitle = fc.getDialogTitle ();
         return dialogTitle != null ? dialogTitle : LM.get ( "weblaf.filechooser.title" );
     }
 
     @Override
-    public void rescanCurrentDirectory ( final JFileChooser fc )
+    public void rescanCurrentDirectory ( @NotNull final JFileChooser fc )
     {
         fileChooserPanel.reloadCurrentFolder ();
     }
 
     @Override
-    public void ensureFileIsVisible ( final JFileChooser fc, final File f )
+    public void ensureFileIsVisible ( @NotNull final JFileChooser fc, @NotNull final File f )
     {
         //        // This is pretty annoying and pointless method, will ignore it for now
         //        ignoreFileSelectionChanges = true;
@@ -413,52 +381,36 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
         //        ignoreFileSelectionChanges = true;
     }
 
-    /**
-     * Returns JFileChooser type converted into FileChooserType form.
-     *
-     * @return JFileChooser type converted into FileChooserType form
-     */
-    public FileChooserType getFileChooserType ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        if ( fileChooser.getDialogType () == JFileChooser.SAVE_DIALOG )
-        {
-            return FileChooserType.save;
-        }
-        else if ( fileChooser.getDialogType () == JFileChooser.OPEN_DIALOG )
-        {
-            return FileChooserType.open;
-        }
-        else
-        {
-            return FileChooserType.custom;
-        }
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        return null;
     }
 
     /**
@@ -469,26 +421,30 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
      */
     protected class WebFileView extends FileView
     {
+        @NotNull
         @Override
-        public String getName ( final File f )
+        public String getName ( @NotNull final File f )
         {
             return FileUtils.getDisplayFileName ( f );
         }
 
+        @NotNull
         @Override
-        public String getDescription ( final File f )
+        public String getDescription ( @NotNull final File f )
         {
             return getTypeDescription ( f );
         }
 
+        @NotNull
         @Override
-        public String getTypeDescription ( final File f )
+        public String getTypeDescription ( @NotNull final File f )
         {
             return FileUtils.getFileTypeDescription ( f );
         }
 
+        @Nullable
         @Override
-        public Icon getIcon ( final File f )
+        public Icon getIcon ( @NotNull final File f )
         {
             return FileUtils.getFileIcon ( f );
         }

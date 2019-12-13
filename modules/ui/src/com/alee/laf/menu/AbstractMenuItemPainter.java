@@ -56,6 +56,6 @@ public abstract class AbstractMenuItemPainter<C extends JMenuItem, U extends Men
      */
     protected void uninstallMenuItemChangeListener ()
     {
-        menuItemChangeListener = MenuItemChangeListener.uninstall ( menuItemChangeListener, component );
+        menuItemChangeListener = MenuItemChangeListener.uninstall ( component, menuItemChangeListener );
     }
 }

@@ -32,14 +32,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
 public final class RadioButtonMenuItemDescriptor
-        extends AbstractRadioButtonMenuItemDescriptor<JRadioButtonMenuItem, WebRadioButtonMenuItemUI>
+        extends AbstractRadioButtonMenuItemDescriptor<JRadioButtonMenuItem, WebRadioButtonMenuItemUI, IRadioButtonMenuItemPainter>
 {
     /**
-     * Constructs new descriptor for {@link JRadioButtonMenuItem} component.
+     * Constructs new {@link RadioButtonMenuItemDescriptor}.
      */
     public RadioButtonMenuItemDescriptor ()
     {
-        super ( "radiobuttonmenuitem", JRadioButtonMenuItem.class, "RadioButtonMenuItemUI", WebRadioButtonMenuItemUI.class,
-                WebRadioButtonMenuItemUI.class, StyleId.radiobuttonmenuitem );
+        super (
+                "radiobuttonmenuitem",
+                JRadioButtonMenuItem.class,
+                "RadioButtonMenuItemUI",
+                WebRadioButtonMenuItemUI.class,
+                WebRadioButtonMenuItemUI.class,
+                IRadioButtonMenuItemPainter.class,
+                RadioButtonMenuItemPainter.class,
+                AdaptiveRadioButtonMenuItemPainter.class,
+                StyleId.radiobuttonmenuitem
+        );
     }
 }

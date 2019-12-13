@@ -18,9 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.LabelDescriptor;
-import com.alee.laf.label.WLabelUI;
-import com.alee.laf.label.WebLabelUI;
+import com.alee.laf.label.*;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.LafUtils;
 import org.junit.AfterClass;
@@ -98,11 +96,18 @@ public final class ComponentDescriptorTest
     private void checkUI ( final JComponent component, final Class<? extends ComponentUI> uiClass )
     {
         final ComponentUI ui = LafUtils.getUI ( component );
-        if ( !uiClass.isInstance ( ui ) )
+        if ( ui != null && !uiClass.isInstance ( ui ) )
         {
             throw new StyleException ( String.format (
                     "UI class '%s' is expected instead of '%s' in component: %s",
                     uiClass, ui.getClass (), component
+            ) );
+        }
+        else if ( ui == null )
+        {
+            throw new StyleException ( String.format (
+                    "UI is not availble in component: %s",
+                    component
             ) );
         }
     }
@@ -110,14 +115,24 @@ public final class ComponentDescriptorTest
     /**
      * Custom {@link ComponentDescriptor} for {@link JLabel}.
      */
-    public static class MyLabelDescriptor extends AbstractComponentDescriptor<JLabel, WLabelUI>
+    public static class MyLabelDescriptor extends AbstractComponentDescriptor<JLabel, WLabelUI, ILabelPainter>
     {
         /**
          * Constrcuts new {@link MyLabelDescriptor}.
          */
         public MyLabelDescriptor ()
         {
-            super ( "label", JLabel.class, "LabelUI", WLabelUI.class, MyLabelUI.class, StyleId.label );
+            super (
+                    "label",
+                    JLabel.class,
+                    "LabelUI",
+                    WLabelUI.class,
+                    MyLabelUI.class,
+                    ILabelPainter.class,
+                    LabelPainter.class,
+                    AdaptiveLabelPainter.class,
+                    StyleId.label
+            );
         }
     }
 

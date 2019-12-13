@@ -22,36 +22,42 @@ import com.alee.managers.style.AbstractComponentDescriptor;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 
 /**
  * Abstract descriptor for {@link JSpinner} component.
  * Extend this class for creating custom {@link JSpinner} descriptors.
  *
- * @param <C> {@link JComponent} type
- * @param <U> base {@link ComponentUI} type
+ * @param <C> {@link JSpinner} type
+ * @param <U> base {@link WebSpinnerUI} type
+ * @param <P> {@link ISpinnerPainter} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public abstract class AbstractSpinnerDescriptor<C extends JSpinner, U extends WebSpinnerUI> extends AbstractComponentDescriptor<C, U>
+public abstract class AbstractSpinnerDescriptor<C extends JSpinner, U extends WebSpinnerUI, P extends ISpinnerPainter>
+        extends AbstractComponentDescriptor<C, U, P>
 {
     /**
      * Constructs new {@link AbstractSpinnerDescriptor}.
      *
-     * @param id             component identifier
-     * @param componentClass component class
-     * @param uiClassId      component UI class ID
-     * @param baseUIClass    base UI class applicable to this component
-     * @param uiClass        UI class applied to the component by default
-     * @param defaultStyleId component default {@link StyleId}
+     * @param id                  {@link JSpinner} identifier
+     * @param componentClass      {@link JSpinner} {@link Class}
+     * @param uiClassId           {@link WebSpinnerUI} {@link Class} identifier
+     * @param baseUIClass         base {@link WebSpinnerUI} {@link Class} applicable to {@link JSpinner}
+     * @param uiClass             {@link WebSpinnerUI} {@link Class} used for {@link JSpinner} by default
+     * @param painterInterface    {@link ISpinnerPainter} interface {@link Class}
+     * @param painterClass        {@link ISpinnerPainter} implementation {@link Class}
+     * @param painterAdapterClass adapter for {@link ISpinnerPainter}
+     * @param defaultStyleId      {@link JSpinner} default {@link StyleId}
      */
-    public AbstractSpinnerDescriptor ( final String id, final Class<C> componentClass, final String uiClassId,
-                                       final Class<U> baseUIClass, final Class<? extends U> uiClass, final StyleId defaultStyleId )
+    public AbstractSpinnerDescriptor ( @NotNull final String id, @NotNull final Class<C> componentClass, @NotNull final String uiClassId,
+                                       @NotNull final Class<U> baseUIClass, @NotNull final Class<? extends U> uiClass,
+                                       @NotNull final Class<P> painterInterface, @NotNull final Class<? extends P> painterClass,
+                                       @NotNull final Class<? extends P> painterAdapterClass, @NotNull final StyleId defaultStyleId )
     {
-        super ( id, componentClass, uiClassId, baseUIClass, uiClass, defaultStyleId );
+        super ( id, componentClass, uiClassId, baseUIClass, uiClass, painterInterface, painterClass, painterAdapterClass, defaultStyleId );
     }
 
     @Override

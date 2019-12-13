@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class DesktopPaneDescriptor extends AbstractDesktopPaneDescriptor<JDesktopPane, WDesktopPaneUI>
+public final class DesktopPaneDescriptor extends AbstractDesktopPaneDescriptor<JDesktopPane, WDesktopPaneUI, IDesktopPanePainter>
 {
     /**
-     * Constructs new descriptor for {@link JDesktopPane} component.
+     * Constructs new {@link DesktopPaneDescriptor}.
      */
     public DesktopPaneDescriptor ()
     {
-        super ( "desktoppane", JDesktopPane.class, "DesktopPaneUI", WDesktopPaneUI.class, WebDesktopPaneUI.class, StyleId.desktoppane );
+        super (
+                "desktoppane",
+                JDesktopPane.class,
+                "DesktopPaneUI",
+                WDesktopPaneUI.class,
+                WebDesktopPaneUI.class,
+                IDesktopPanePainter.class,
+                DesktopPanePainter.class,
+                AdaptiveDesktopPanePainter.class,
+                StyleId.desktoppane
+        );
     }
 }

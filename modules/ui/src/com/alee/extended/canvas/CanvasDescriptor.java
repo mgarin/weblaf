@@ -29,13 +29,23 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class CanvasDescriptor extends AbstractCanvasDescriptor<WebCanvas, WCanvasUI>
+public final class CanvasDescriptor extends AbstractCanvasDescriptor<WebCanvas, WCanvasUI, ICanvasPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebCanvas} component.
+     * Constructs new {@link CanvasDescriptor}.
      */
     public CanvasDescriptor ()
     {
-        super ( "canvas", WebCanvas.class, "CanvasUI", WCanvasUI.class, WebCanvasUI.class, StyleId.canvas );
+        super (
+                "canvas",
+                WebCanvas.class,
+                "CanvasUI",
+                WCanvasUI.class,
+                WebCanvasUI.class,
+                ICanvasPainter.class,
+                CanvasPainter.class,
+                AdaptiveCanvasPainter.class,
+                StyleId.canvas
+        );
     }
 }

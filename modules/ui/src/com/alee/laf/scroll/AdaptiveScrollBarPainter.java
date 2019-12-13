@@ -17,11 +17,11 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Simple {@link ScrollBarPainter} adapter class.
@@ -39,26 +39,24 @@ public final class AdaptiveScrollBarPainter<C extends JScrollBar, U extends WScr
      *
      * @param painter painter to adapt
      */
-    public AdaptiveScrollBarPainter ( final Painter painter )
+    public AdaptiveScrollBarPainter ( @NotNull final Painter painter )
     {
         super ( painter );
     }
 
     @Override
-    public void setDragged ( final boolean dragged )
+    public void prepareToPaint ( @NotNull final ScrollBarPaintParameters parameters )
     {
-        // Ignore this method in adaptive class
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
     }
 
     @Override
-    public void setTrackBounds ( final Rectangle bounds )
+    public void cleanupAfterPaint ()
     {
-        // Ignore this method in adaptive class
-    }
-
-    @Override
-    public void setThumbBounds ( final Rectangle bounds )
-    {
-        // Ignore this method in adaptive class
+        /**
+         * Nothing needs to be done for adaptive class.
+         */
     }
 }

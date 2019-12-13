@@ -28,15 +28,24 @@ import com.alee.managers.style.StyleId;
  * @see com.alee.managers.style.StyleManager
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
- * @see com.alee.managers.style.StyleManager#initializeDescriptors()
  */
-public final class OverlayDescriptor extends AbstractOverlayDescriptor<WebOverlay, WOverlayUI>
+public final class OverlayDescriptor extends AbstractOverlayDescriptor<WebOverlay, WOverlayUI, IOverlayPainter>
 {
     /**
-     * Constructs new descriptor for {@link WebOverlay} component.
+     * Constructs new {@link OverlayDescriptor}.
      */
     public OverlayDescriptor ()
     {
-        super ( "overlay", WebOverlay.class, "OverlayUI", WOverlayUI.class, WebOverlayUI.class, StyleId.overlay );
+        super (
+                "overlay",
+                WebOverlay.class,
+                "OverlayUI",
+                WOverlayUI.class,
+                WebOverlayUI.class,
+                IOverlayPainter.class,
+                OverlayPainter.class,
+                AdaptiveOverlayPainter.class,
+                StyleId.overlay
+        );
     }
 }

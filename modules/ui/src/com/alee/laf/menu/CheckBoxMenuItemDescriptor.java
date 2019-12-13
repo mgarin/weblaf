@@ -31,14 +31,24 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class CheckBoxMenuItemDescriptor extends AbstractCheckBoxMenuItemDescriptor<JCheckBoxMenuItem, WebCheckBoxMenuItemUI>
+public final class CheckBoxMenuItemDescriptor
+        extends AbstractCheckBoxMenuItemDescriptor<JCheckBoxMenuItem, WebCheckBoxMenuItemUI, ICheckBoxMenuItemPainter>
 {
     /**
-     * Constructs new descriptor for {@link JCheckBoxMenuItem} component.
+     * Constructs new {@link CheckBoxMenuItemDescriptor}.
      */
     public CheckBoxMenuItemDescriptor ()
     {
-        super ( "checkboxmenuitem", JCheckBoxMenuItem.class, "CheckBoxMenuItemUI", WebCheckBoxMenuItemUI.class, WebCheckBoxMenuItemUI.class,
-                StyleId.checkboxmenuitem );
+        super (
+                "checkboxmenuitem",
+                JCheckBoxMenuItem.class,
+                "CheckBoxMenuItemUI",
+                WebCheckBoxMenuItemUI.class,
+                WebCheckBoxMenuItemUI.class,
+                ICheckBoxMenuItemPainter.class,
+                CheckBoxMenuItemPainter.class,
+                AdaptiveCheckBoxMenuItemPainter.class,
+                StyleId.checkboxmenuitem
+        );
     }
 }

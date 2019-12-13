@@ -19,11 +19,11 @@ package com.alee.laf.progressbar;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.api.jdk.Objects;
-import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
-import com.alee.painter.Painter;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
@@ -48,12 +48,6 @@ import java.beans.PropertyChangeListener;
 public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( ProgressBarPainter.class )
-    protected IProgressBarPainter painter;
-
-    /**
      * Runtime variables.
      */
     protected transient EventsHandler eventsHandler;
@@ -65,7 +59,8 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
      * @param c component that will use UI instance
      * @return instance of the {@link WebProgressBarUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebProgressBarUI ();
     }
@@ -118,19 +113,19 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( progressBar, painter );
+        return PainterSupport.getShape ( progressBar );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( progressBar, painter );
+        return PainterSupport.isShapeDetectionEnabled ( progressBar );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( progressBar, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( progressBar, enabled );
     }
 
     @Nullable
@@ -159,80 +154,51 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
         PainterSupport.setPadding ( progressBar, padding );
     }
 
-    /**
-     * Returns progress bar painter.
-     *
-     * @return progress bar painter
-     */
-    public Painter getPainter ()
+    @Override
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets progress bar painter.
-     * Pass null to remove progress bar painter.
-     *
-     * @param painter new progress bar painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( progressBar, this, new Consumer<IProgressBarPainter> ()
-        {
-            @Override
-            public void accept ( final IProgressBarPainter newPainter )
-            {
-                WebProgressBarUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IProgressBarPainter.class, AdaptiveProgressBarPainter.class );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public int getBaseline ( @NotNull final JComponent c, final int width, final int height )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.getBaseline ( c, this, width, height );
+    }
+
+    @NotNull
+    @Override
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( @NotNull final JComponent c )
+    {
+        return PainterSupport.getBaselineResizeBehavior ( c, this );
     }
 
     @Override
-    public int getBaseline ( final JComponent c, final int width, final int height )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        return PainterSupport.getBaseline ( c, this, painter, width, height );
+        PainterSupport.paint ( g, c, this );
     }
 
+    @Nullable
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getBaselineResizeBehavior ( c, this, painter );
-    }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c );
     }
 
     /**
-     * Events handler replacing {@link javax.swing.plaf.basic.BasicProgressBarUI.Handler} one.
+     * Events handler replacing {@code javax.swing.plaf.basic.BasicProgressBarUI.Handler} one.
      */
     protected class EventsHandler implements ChangeListener, PropertyChangeListener
     {
         @Override
-        public void stateChanged ( final ChangeEvent e )
+        public void stateChanged ( @NotNull final ChangeEvent e )
         {
             progressBar.repaint ();
         }
 
         @Override
-        public void propertyChange ( final PropertyChangeEvent e )
+        public void propertyChange ( @NotNull final PropertyChangeEvent e )
         {
             final String propertyName = e.getPropertyName ();
             if ( Objects.equals ( propertyName, WebProgressBar.INDETERMINATE_PROPERTY ) )

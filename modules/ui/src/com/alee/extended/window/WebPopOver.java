@@ -17,11 +17,12 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Supplier;
-import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -577,10 +578,10 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      *
      * @return popover painter
      */
+    @Nullable
     protected IPopOverPainter getPainter ()
     {
-        // todo Acquire painter properly
-        final Painter painter = ( ( WebRootPaneUI ) getUI () ).getPainter ();
+        final Painter painter = PainterSupport.getPainter ( getRootPane () );
         return painter instanceof IPopOverPainter ? ( IPopOverPainter ) painter : null;
     }
 

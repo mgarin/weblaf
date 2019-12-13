@@ -19,10 +19,8 @@ package com.alee.laf.list;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.api.jdk.Consumer;
 import com.alee.laf.list.behavior.ListItemHoverBehavior;
 import com.alee.managers.style.*;
-import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ReflectUtils;
@@ -50,12 +48,6 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     protected ListSelectionStyle selectionStyle;
 
     /**
-     * Component painter.
-     */
-    @DefaultPainter ( ListPainter.class )
-    protected IListPainter painter;
-
-    /**
      * Listeners.
      */
     protected transient ListItemHoverBehavior hoverCellTracker;
@@ -72,13 +64,14 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      * @param c component that will use UI instance
      * @return instance of the {@link WebListUI}
      */
-    public static ComponentUI createUI ( final JComponent c )
+    @NotNull
+    public static ComponentUI createUI ( @NotNull final JComponent c )
     {
         return new WebListUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    public void installUI ( @NotNull final JComponent c )
     {
         // Installing UI
         super.installUI ( c );
@@ -95,7 +88,8 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
 
                 // Repainting nodes according to hover changes
                 // This occurs only if hover highlight is enabled
-                if ( painter != null && painter.isItemHoverDecorationSupported () )
+                final Painter painter = PainterSupport.getPainter ( list );
+                if ( painter instanceof IListPainter && ( ( IListPainter ) painter ).isItemHoverDecorationSupported () )
                 {
                     repaintCell ( previousIndex );
                     repaintCell ( hoverIndex );
@@ -144,7 +138,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public void uninstallUI ( final JComponent c )
+    public void uninstallUI ( @NotNull final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( list );
@@ -161,19 +155,19 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     @Override
     public Shape getShape ()
     {
-        return PainterSupport.getShape ( list, painter );
+        return PainterSupport.getShape ( list );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return PainterSupport.isShapeDetectionEnabled ( list, painter );
+        return PainterSupport.isShapeDetectionEnabled ( list );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        PainterSupport.setShapeDetectionEnabled ( list, painter, enabled );
+        PainterSupport.setShapeDetectionEnabled ( list, enabled );
     }
 
     @Nullable
@@ -200,34 +194,6 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     public void setPadding ( @Nullable final Insets padding )
     {
         PainterSupport.setPadding ( list, padding );
-    }
-
-    /**
-     * Returns list painter.
-     *
-     * @return list painter
-     */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getPainter ( painter );
-    }
-
-    /**
-     * Sets list painter.
-     * Pass null to remove list painter.
-     *
-     * @param painter new list painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( list, this, new Consumer<IListPainter> ()
-        {
-            @Override
-            public void accept ( final IListPainter newPainter )
-            {
-                WebListUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, IListPainter.class, AdaptiveListPainter.class );
     }
 
     @Override
@@ -262,26 +228,28 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     }
 
     @Override
-    public boolean contains ( final JComponent c, final int x, final int y )
+    public boolean contains ( @NotNull final JComponent c, final int x, final int y )
     {
-        return PainterSupport.contains ( c, this, painter, x, y );
+        return PainterSupport.contains ( c, this, x, y );
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public void paint ( @NotNull final Graphics g, @NotNull final JComponent c )
     {
-        if ( painter != null )
-        {
-            // Invalidating list layout
-            validateListLayout ();
+        // Invalidating list layout
+        validateListLayout ();
 
-            // Preparing list painter
-            painter.prepareToPaint ( getLayoutOrientation (), getListHeight (), getListWidth (), getColumnCount (), getRowsPerColumn (),
-                    getPreferredHeight (), cellWidth, cellHeight, cellHeights );
-
-            // Painting list
-            painter.paint ( ( Graphics2D ) g, c, this, new Bounds ( c ) );
-        }
+        // Painting list
+        PainterSupport.paint ( g, c, this, new ListPaintParameters (
+                getListWidth (),
+                getListHeight (),
+                getColumnCount (),
+                getRowsPerColumn (),
+                getPreferredHeight (),
+                cellWidth,
+                cellHeight,
+                cellHeights
+        ) );
     }
 
     /**
@@ -289,7 +257,7 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      */
     protected void validateListLayout ()
     {
-        switch ( getLayoutOrientation () )
+        switch ( list.getLayoutOrientation () )
         {
             case JList.VERTICAL_WRAP:
                 if ( list.getHeight () != getListHeight () )
@@ -323,25 +291,19 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
     }
 
     /**
-     * Returns layout orientation field value.
-     * This is a bridge method to access private basic list UI field.
-     *
-     * @return layout orientation field value
-     */
-    protected Integer getLayoutOrientation ()
-    {
-        return getBasicListUIValue ( "layoutOrientation" );
-    }
-
-    /**
      * Returns cached list height field value.
      * This is a bridge method to access private basic list UI field.
      *
      * @return cached list height field value
      */
-    protected Integer getListHeight ()
+    protected int getListHeight ()
     {
-        return getBasicListUIValue ( "listHeight" );
+        final Integer listHeight = getBasicListUIValue ( "listHeight" );
+        if ( listHeight == null )
+        {
+            throw new UIException ( "List height value is not available" );
+        }
+        return listHeight;
     }
 
     /**
@@ -350,9 +312,14 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      *
      * @return cached list width field value
      */
-    protected Integer getListWidth ()
+    protected int getListWidth ()
     {
-        return getBasicListUIValue ( "listWidth" );
+        final Integer listWidth = getBasicListUIValue ( "listWidth" );
+        if ( listWidth == null )
+        {
+            throw new UIException ( "List width value is not available" );
+        }
+        return listWidth;
     }
 
     /**
@@ -361,9 +328,14 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      *
      * @return cached column count field value
      */
-    protected Integer getColumnCount ()
+    protected int getColumnCount ()
     {
-        return getBasicListUIValue ( "columnCount" );
+        final Integer columnCount = getBasicListUIValue ( "columnCount" );
+        if ( columnCount == null )
+        {
+            throw new UIException ( "List column count value is not available" );
+        }
+        return columnCount;
     }
 
     /**
@@ -372,9 +344,14 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      *
      * @return cached rows per column amount field value
      */
-    protected Integer getRowsPerColumn ()
+    protected int getRowsPerColumn ()
     {
-        return getBasicListUIValue ( "rowsPerColumn" );
+        final Integer rowsPerColumn = getBasicListUIValue ( "rowsPerColumn" );
+        if ( rowsPerColumn == null )
+        {
+            throw new UIException ( "List rows per column value is not available" );
+        }
+        return rowsPerColumn;
     }
 
     /**
@@ -383,9 +360,14 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      *
      * @return cached preferred height field value
      */
-    protected Integer getPreferredHeight ()
+    protected int getPreferredHeight ()
     {
-        return getBasicListUIValue ( "preferredHeight" );
+        final Integer preferredHeight = getBasicListUIValue ( "preferredHeight" );
+        if ( preferredHeight == null )
+        {
+            throw new UIException ( "List preferred height value is not available" );
+        }
+        return preferredHeight;
     }
 
     /**
@@ -396,9 +378,17 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
      * @param <T>   field type
      * @return basic list UI field value
      */
-    protected <T> T getBasicListUIValue ( final String field )
+    @Nullable
+    protected <T> T getBasicListUIValue ( @NotNull final String field )
     {
-        return ReflectUtils.getFieldValueSafely ( this, field );
+        try
+        {
+            return ReflectUtils.getFieldValue ( this, field );
+        }
+        catch ( final Exception e )
+        {
+            throw new UIException ( "Unable to access BasicListUI field: " + field, e );
+        }
     }
 
     /**
@@ -414,9 +404,10 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
                 null;
     }
 
+    @Nullable
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
+    public Dimension getPreferredSize ( @NotNull final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ) );
     }
 }

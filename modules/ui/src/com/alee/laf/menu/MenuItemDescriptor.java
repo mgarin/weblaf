@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class MenuItemDescriptor extends AbstractMenuItemDescriptor<JMenuItem, WebMenuItemUI>
+public final class MenuItemDescriptor extends AbstractMenuItemDescriptor<JMenuItem, WebMenuItemUI, IMenuItemPainter>
 {
     /**
-     * Constructs new descriptor for {@link JMenuItem} component.
+     * Constructs new {@link MenuItemDescriptor}.
      */
     public MenuItemDescriptor ()
     {
-        super ( "menuitem", JMenuItem.class, "MenuItemUI", WebMenuItemUI.class, WebMenuItemUI.class, StyleId.menuitem );
+        super (
+                "menuitem",
+                JMenuItem.class,
+                "MenuItemUI",
+                WebMenuItemUI.class,
+                WebMenuItemUI.class,
+                IMenuItemPainter.class,
+                MenuItemPainter.class,
+                AdaptiveMenuItemPainter.class,
+                StyleId.menuitem
+        );
     }
 }

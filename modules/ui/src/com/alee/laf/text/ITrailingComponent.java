@@ -17,6 +17,8 @@
 
 package com.alee.laf.text;
 
+import com.alee.api.annotations.Nullable;
+
 import javax.swing.*;
 
 /**
@@ -32,6 +34,7 @@ public interface ITrailingComponent
      *
      * @return field trailing component
      */
+    @Nullable
     public JComponent getTrailingComponent ();
 
     /**
@@ -41,12 +44,14 @@ public interface ITrailingComponent
      * @param trailingComponent field trailing component
      * @return removed trailing component
      */
-    public JComponent setTrailingComponent ( JComponent trailingComponent );
+    @Nullable
+    public JComponent setTrailingComponent ( @Nullable JComponent trailingComponent );
 
     /**
      * Removes field trailing component.
      *
      * @return removed trailing component
      */
+    @Nullable
     public JComponent removeTrailingComponent ();
 }

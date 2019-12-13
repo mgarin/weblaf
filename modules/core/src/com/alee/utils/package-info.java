@@ -34,7 +34,6 @@
  * @see com.alee.utils.MathUtils
  * @see com.alee.utils.NetUtils
  * @see com.alee.utils.ReflectUtils
- * @see com.alee.utils.ShapeUtils
  * @see com.alee.utils.SystemUtils
  * @see com.alee.utils.TextUtils
  * @see com.alee.utils.ThreadUtils

@@ -2,7 +2,6 @@ package com.alee.laf.table;
 
 import com.alee.painter.SpecificPainter;
 
-import javax.swing.*;
 import javax.swing.table.JTableHeader;
 
 /**
@@ -12,12 +11,9 @@ import javax.swing.table.JTableHeader;
  * @param <U> component UI type
  * @author Alexandr Zernov
  */
-public interface ITableHeaderPainter<C extends JTableHeader, U extends WebTableHeaderUI> extends SpecificPainter<C, U>
+public interface ITableHeaderPainter<C extends JTableHeader, U extends WTableHeaderUI> extends SpecificPainter<C, U>
 {
     /**
-     * Prepares painter to paint table header.
-     *
-     * @param rendererPane renderer pane
+     * This interface doesn't offer any additional methods to implement.
      */
-    public void prepareToPaint ( CellRendererPane rendererPane );
 }

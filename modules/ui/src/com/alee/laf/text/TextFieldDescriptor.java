@@ -31,13 +31,23 @@ import javax.swing.*;
  * @see com.alee.managers.style.StyleManager#registerComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  * @see com.alee.managers.style.StyleManager#unregisterComponentDescriptor(com.alee.managers.style.ComponentDescriptor)
  */
-public final class TextFieldDescriptor extends AbstractTextFieldDescriptor<JTextField, WTextFieldUI>
+public final class TextFieldDescriptor extends AbstractTextFieldDescriptor<JTextField, WTextFieldUI, ITextFieldPainter>
 {
     /**
-     * Constructs new descriptor for {@link JTextField} component.
+     * Constructs new {@link TextFieldDescriptor}.
      */
     public TextFieldDescriptor ()
     {
-        super ( "textfield", JTextField.class, "TextFieldUI", WTextFieldUI.class, WebTextFieldUI.class, StyleId.textfield );
+        super (
+                "textfield",
+                JTextField.class,
+                "TextFieldUI",
+                WTextFieldUI.class,
+                WebTextFieldUI.class,
+                ITextFieldPainter.class,
+                TextFieldPainter.class,
+                AdaptiveTextFieldPainter.class,
+                StyleId.textfield
+        );
     }
 }
