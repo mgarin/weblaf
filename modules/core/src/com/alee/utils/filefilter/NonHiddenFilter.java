@@ -21,6 +21,7 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.ui.RenderingParameters;
 import com.alee.managers.language.LM;
+import com.alee.utils.FileUtils;
 
 import javax.swing.*;
 import java.io.File;
@@ -54,6 +55,6 @@ public class NonHiddenFilter extends AbstractFileFilter
     @Override
     public boolean accept ( @NotNull final File file )
     {
-        return !file.isHidden ();
+        return !FileUtils.isHidden ( file );
     }
 }
