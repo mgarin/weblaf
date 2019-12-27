@@ -20,9 +20,6 @@ package com.alee.laf.progressbar;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -45,7 +42,7 @@ import java.beans.PropertyChangeListener;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C>
 {
     /**
      * Runtime variables.
@@ -107,51 +104,6 @@ public class WebProgressBarUI<C extends JProgressBar> extends WProgressBarUI<C> 
 
         // Uninstalling default listeners
         super.uninstallListeners ();
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( progressBar );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( progressBar );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( progressBar, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( progressBar );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( progressBar, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( progressBar );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( progressBar, padding );
     }
 
     @Override

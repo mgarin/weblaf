@@ -18,10 +18,6 @@
 package com.alee.extended.canvas;
 
 import com.alee.api.annotations.NotNull;
-import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -35,7 +31,7 @@ import java.awt.*;
  * @param <C> {@link WebCanvas} type
  * @author Mikle Garin
  */
-public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C>
 {
     /**
      * Returns an instance of the {@link WebCanvasUI} for the specified component.
@@ -68,51 +64,6 @@ public class WebCanvasUI<C extends WebCanvas> extends WCanvasUI<C> implements Sh
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( canvas );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( canvas );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( canvas, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( canvas );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( canvas, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( canvas );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( canvas, padding );
     }
 
     @Override

@@ -17,15 +17,15 @@
 
 package com.alee.managers.tooltip;
 
-import com.alee.api.annotations.NotNull;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.style.ShapeMethods;
-import com.alee.managers.style.ShapeMethodsImpl;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.laf.ShadeType;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.AncestorAdapter;
@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * @author Mikle Garin
  */
-public class WebCustomTooltip extends JComponent implements ShapeMethods
+public class WebCustomTooltip extends JComponent
 {
     /**
      * todo 1. Make this a custom styleable component
@@ -1116,7 +1116,7 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
      * Shape provider
      */
 
-    @NotNull
+    /*@NotNull
     @Override
     public Shape getShape ()
     {
@@ -1126,14 +1126,14 @@ public class WebCustomTooltip extends JComponent implements ShapeMethods
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+        return PainterSupport.isShapeDetectionEnabled ( this );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
-    }
+        PainterSupport.setShapeDetectionEnabled ( this, enabled );
+    }*/
 
     /**
      * Tooltip background painting

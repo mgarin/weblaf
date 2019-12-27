@@ -34,7 +34,7 @@ import java.beans.PropertyChangeListener;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrameUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrameUI<C>
 {
     /**
      * Listeners.
@@ -105,51 +105,6 @@ public class WebInternalFrameUI<C extends JInternalFrame> extends WInternalFrame
     protected void updateRootPaneStyle ()
     {
         StyleId.internalframeRootpane.at ( internalFrame ).set ( internalFrame.getRootPane () );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( internalFrame );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( internalFrame );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( internalFrame, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( internalFrame );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( internalFrame, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( internalFrame );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( internalFrame, padding );
     }
 
     @NotNull

@@ -19,9 +19,6 @@ package com.alee.laf.label;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -35,7 +32,7 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebLabelUI<C extends JLabel> extends WLabelUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebLabelUI<C extends JLabel> extends WLabelUI<C>
 {
     /**
      * Returns an instance of the {@link WebLabelUI} for the specified component.
@@ -66,51 +63,6 @@ public class WebLabelUI<C extends JLabel> extends WLabelUI<C> implements ShapeSu
         StyleManager.uninstallSkin ( label );
 
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( label );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( label );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( label, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( label );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( label, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( label );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( label, padding );
     }
 
     @Override

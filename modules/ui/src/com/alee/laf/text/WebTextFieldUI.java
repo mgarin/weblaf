@@ -21,9 +21,6 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ReflectUtils;
@@ -39,7 +36,7 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebTextFieldUI extends WTextFieldUI
 {
     /**
      * Input prompt text.
@@ -93,51 +90,6 @@ public class WebTextFieldUI extends WTextFieldUI implements ShapeSupport, Margin
 
         // Removing field reference
         field = null;
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( field );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( field );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( field, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( field );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( field, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( field );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( field, padding );
     }
 
     @Nullable

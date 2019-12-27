@@ -21,9 +21,6 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LM;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
@@ -48,7 +45,7 @@ import java.util.List;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebFileChooserUI extends WFileChooserUI
 {
     /**
      * Runtime variables.
@@ -287,51 +284,6 @@ public class WebFileChooserUI extends WFileChooserUI implements ShapeSupport, Ma
                 FileChooserType.forType ( fileChooser.getDialogType () ),
                 fileChooser.getControlButtonsAreShown ()
         );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( fileChooser );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( fileChooser );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( fileChooser, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( fileChooser );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( fileChooser, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( fileChooser );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( fileChooser, padding );
     }
 
     @NotNull

@@ -35,7 +35,7 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebColorChooserUI extends WColorChooserUI
 {
     /**
      * todo 1. Implement some of the missing JColorChooser features
@@ -124,51 +124,6 @@ public class WebColorChooserUI extends WColorChooserUI implements ShapeSupport, 
 
         // Removing color chooser reference
         chooser = null;
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( chooser );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( chooser );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( chooser, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( chooser );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( chooser, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( chooser );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( chooser, padding );
     }
 
     @Override

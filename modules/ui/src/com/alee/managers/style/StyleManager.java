@@ -1280,10 +1280,10 @@ public final class StyleManager
     }
 
     /**
-     * Adds skin change listener.
+     * Adds {@link StyleListener}.
      *
-     * @param component component to listen skin changes on
-     * @param listener  skin change listener to add
+     * @param component {@link JComponent} to add listener for
+     * @param listener  {@link StyleListener}
      */
     public static void addStyleListener ( @NotNull final JComponent component, @NotNull final StyleListener listener )
     {
@@ -1291,10 +1291,10 @@ public final class StyleManager
     }
 
     /**
-     * Removes skin change listener.
+     * Removes {@link StyleListener}.
      *
-     * @param component component to listen skin changes on
-     * @param listener  skin change listener to remove
+     * @param component {@link JComponent} to remove listener for
+     * @param listener  {@link StyleListener}
      */
     public static void removeStyleListener ( @NotNull final JComponent component, @NotNull final StyleListener listener )
     {
@@ -1302,10 +1302,10 @@ public final class StyleManager
     }
 
     /**
-     * Returns custom painter for the specified component.
+     * Returns custom {@link Painter} used for the specified {@link JComponent}.
      *
-     * @param component component to retrieve custom painter for
-     * @return custom painter for the specified component
+     * @param component {@link JComponent} to retrieve custom {@link Painter} for
+     * @return custom {@link Painter} used for the specified {@link JComponent}
      */
     @Nullable
     public static Painter getCustomPainter ( @NotNull final JComponent component )
@@ -1314,12 +1314,11 @@ public final class StyleManager
     }
 
     /**
-     * Sets new custom {@link Painter} for the specified {@link JComponent}.
-     * You should call this method when setting painter outside of the UI.
+     * Sets custom {@link Painter} for the specified {@link JComponent}.
      *
-     * @param component component to set painter for
-     * @param painter   {@link Painter}
-     * @return previously used custom {@link Painter}
+     * @param component {@link JComponent} to change custom {@link Painter} for
+     * @param painter   custom {@link Painter}
+     * @return custom {@link Painter} previously used for the specified {@link JComponent}
      */
     @Nullable
     public static Painter setCustomPainter ( @NotNull final JComponent component, @NotNull final Painter painter )

@@ -30,7 +30,8 @@ import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.icon.Icons;
-import com.alee.managers.style.*;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.SwingUtils;
@@ -54,8 +55,7 @@ import java.beans.PropertyChangeListener;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockablePane
  */
-public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFrameUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFrameUI<C> implements PropertyChangeListener
 {
     /**
      * Listeners.
@@ -535,51 +535,6 @@ public class WebDockableFrameUI<C extends WebDockableFrame> extends WDockableFra
     public SidebarButton getSidebarButton ()
     {
         return sidebarButton;
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( frame );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( frame );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( frame, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( frame );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( frame, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( frame );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( frame, padding );
     }
 
     @Override

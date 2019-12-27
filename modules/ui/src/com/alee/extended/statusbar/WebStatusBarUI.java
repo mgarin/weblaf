@@ -19,9 +19,6 @@ package com.alee.extended.statusbar;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -35,7 +32,7 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C>
 {
     /**
      * Returns an instance of the {@link WebStatusBarUI} for the specified component.
@@ -68,51 +65,6 @@ public class WebStatusBarUI<C extends WebStatusBar> extends WStatusBarUI<C> impl
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( statusBar );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( statusBar );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( statusBar, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( statusBar );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( statusBar, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( statusBar );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( statusBar, padding );
     }
 
     @Override

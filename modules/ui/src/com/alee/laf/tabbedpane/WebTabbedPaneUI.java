@@ -19,9 +19,6 @@ package com.alee.laf.tabbedpane;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -36,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebTabbedPaneUI<C extends JTabbedPane> extends WTabbedPaneUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebTabbedPaneUI<C extends JTabbedPane> extends WTabbedPaneUI<C>
 {
     /**
      * Returns an instance of the {@link WebTabbedPaneUI} for the specified component.
@@ -69,51 +66,6 @@ public class WebTabbedPaneUI<C extends JTabbedPane> extends WTabbedPaneUI<C> imp
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( tabbedPane );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( tabbedPane );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( tabbedPane, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( tabbedPane );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( tabbedPane, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( tabbedPane );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( tabbedPane, padding );
     }
 
     @Override

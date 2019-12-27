@@ -36,7 +36,7 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebPasswordFieldUI extends WPasswordFieldUI
 {
     /**
      * Input prompt text.
@@ -90,51 +90,6 @@ public class WebPasswordFieldUI extends WPasswordFieldUI implements ShapeSupport
 
         // Removing field reference
         field = null;
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( field );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( field );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( field, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( field );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( field, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( field );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( field, padding );
     }
 
     @Nullable

@@ -49,8 +49,7 @@ import java.beans.PropertyChangeListener;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see WebDockablePane
  */
-public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneUI<C> implements ShapeSupport, MarginSupport,
-        PaddingSupport, PropertyChangeListener
+public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneUI<C> implements PropertyChangeListener
 {
     /**
      * UI properties.
@@ -656,51 +655,6 @@ public class WebDockablePaneUI<C extends WebDockablePane> extends WDockablePaneU
     public JComponent createGlassLayer ()
     {
         return new DockablePaneGlassLayer ( pane );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( pane );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( pane );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( pane, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( pane );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( pane, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( pane );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( pane, padding );
     }
 
     @Override

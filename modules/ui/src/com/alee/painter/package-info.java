@@ -31,7 +31,6 @@
  * @see com.alee.painter.decoration.background.IBackground
  * @see com.alee.painter.decoration.content.IContent
  * @see com.alee.painter.decoration.layout.IContentLayout
- * @see com.alee.painter.Paintable
  * @see com.alee.painter.DefaultPainter
  */
 package com.alee.painter;

@@ -20,9 +20,6 @@ package com.alee.extended.collapsible;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
@@ -43,7 +40,7 @@ import java.beans.PropertyChangeListener;
  * @see WebCollapsiblePane
  */
 public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollapsiblePaneUI<C>
-        implements PropertyChangeListener, CollapsiblePaneListener, ShapeSupport, MarginSupport, PaddingSupport
+        implements PropertyChangeListener, CollapsiblePaneListener
 {
     /**
      * Returns an instance of the {@link WebCollapsiblePaneUI} for the specified component.
@@ -252,51 +249,6 @@ public class WebCollapsiblePaneUI<C extends WebCollapsiblePane> extends WCollaps
             }
         }
         pane.removeAll ();
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( pane );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( pane );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( pane, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( pane );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( pane, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( pane );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( pane, padding );
     }
 
     @Override

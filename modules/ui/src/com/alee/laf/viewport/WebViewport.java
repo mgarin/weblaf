@@ -18,11 +18,12 @@
 package com.alee.laf.viewport;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.laf.scroll.layout.ScrollBarSettings;
 import com.alee.laf.scroll.layout.ScrollPaneLayout;
 import com.alee.managers.style.*;
-import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,7 @@ import java.awt.*;
  * @see WebViewportUI
  * @see ViewportPainter
  */
-public class WebViewport extends JViewport implements Styleable, Paintable
+public class WebViewport extends JViewport implements Styleable
 {
     /**
      * Constructs new viewport component.
@@ -74,36 +75,42 @@ public class WebViewport extends JViewport implements Styleable, Paintable
         return StyleManager.getStyleId ( this );
     }
 
+    @NotNull
     @Override
-    public StyleId setStyleId ( final StyleId id )
+    public StyleId setStyleId ( @NotNull final StyleId id )
     {
         return StyleManager.setStyleId ( this, id );
     }
 
+    @NotNull
     @Override
     public StyleId resetStyleId ()
     {
         return StyleManager.resetStyleId ( this );
     }
 
+    @NotNull
     @Override
     public Skin getSkin ()
     {
         return StyleManager.getSkin ( this );
     }
 
+    @Nullable
     @Override
-    public Skin setSkin ( final Skin skin )
+    public Skin setSkin ( @NotNull final Skin skin )
     {
         return StyleManager.setSkin ( this, skin );
     }
 
+    @Nullable
     @Override
-    public Skin setSkin ( final Skin skin, final boolean recursively )
+    public Skin setSkin ( @NotNull final Skin skin, final boolean recursively )
     {
         return StyleManager.setSkin ( this, skin, recursively );
     }
 
+    @Nullable
     @Override
     public Skin resetSkin ()
     {
@@ -111,25 +118,27 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     }
 
     @Override
-    public void addStyleListener ( final StyleListener listener )
+    public void addStyleListener ( @NotNull final StyleListener listener )
     {
         StyleManager.addStyleListener ( this, listener );
     }
 
     @Override
-    public void removeStyleListener ( final StyleListener listener )
+    public void removeStyleListener ( @NotNull final StyleListener listener )
     {
         StyleManager.removeStyleListener ( this, listener );
     }
 
+    @Nullable
     @Override
     public Painter getCustomPainter ()
     {
         return StyleManager.getCustomPainter ( this );
     }
 
+    @Nullable
     @Override
-    public Painter setCustomPainter ( final Painter painter )
+    public Painter setCustomPainter ( @NotNull final Painter painter )
     {
         return StyleManager.setCustomPainter ( this, painter );
     }
@@ -138,6 +147,75 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     public boolean resetCustomPainter ()
     {
         return StyleManager.resetCustomPainter ( this );
+    }
+
+    @NotNull
+    @Override
+    public Shape getShape ()
+    {
+        return PainterSupport.getShape ( this );
+    }
+
+    @Override
+    public boolean isShapeDetectionEnabled ()
+    {
+        return PainterSupport.isShapeDetectionEnabled ( this );
+    }
+
+    @Override
+    public void setShapeDetectionEnabled ( final boolean enabled )
+    {
+        PainterSupport.setShapeDetectionEnabled ( this, enabled );
+    }
+
+    @Nullable
+    @Override
+    public Insets getMargin ()
+    {
+        return PainterSupport.getMargin ( this );
+    }
+
+    @Override
+    public void setMargin ( final int margin )
+    {
+        PainterSupport.setMargin ( this, margin );
+    }
+
+    @Override
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        PainterSupport.setMargin ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setMargin ( @Nullable final Insets margin )
+    {
+        PainterSupport.setMargin ( this, margin );
+    }
+
+    @Nullable
+    @Override
+    public Insets getPadding ()
+    {
+        return PainterSupport.getPadding ( this );
+    }
+
+    @Override
+    public void setPadding ( final int padding )
+    {
+        PainterSupport.setPadding ( this, padding );
+    }
+
+    @Override
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        PainterSupport.setPadding ( this, top, left, bottom, right );
+    }
+
+    @Override
+    public void setPadding ( @Nullable final Insets padding )
+    {
+        PainterSupport.setPadding ( this, padding );
     }
 
     /**
@@ -226,11 +304,6 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     private int calculateAdjustment ( final int curPos, final int curLen, final int newPos, final int newLen, final int barLen )
     {
         final int len = Math.min ( curLen, newLen );
-        if ( curPos + curLen < newPos + len + barLen )
-        {
-            return barLen;
-        }
-
-        return 0;
+        return curPos + curLen < newPos + len + barLen ? barLen : 0;
     }
 }

@@ -19,9 +19,6 @@ package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -36,7 +33,6 @@ import java.awt.*;
  * @author Mikle Garin
  */
 public class WebPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WPopupMenuSeparatorUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Returns an instance of the {@link WebPopupMenuSeparatorUI} for the specified component.
@@ -69,51 +65,6 @@ public class WebPopupMenuSeparatorUI<C extends JPopupMenu.Separator> extends WPo
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( separator );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( separator );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( separator, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( separator );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( separator, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( separator );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( separator, padding );
     }
 
     @Override

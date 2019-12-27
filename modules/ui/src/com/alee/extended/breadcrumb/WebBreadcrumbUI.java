@@ -19,9 +19,6 @@ package com.alee.extended.breadcrumb;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -35,7 +32,7 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C>
 {
     /**
      * Returns an instance of the {@link WebBreadcrumbUI} for the specified component.
@@ -79,51 +76,6 @@ public class WebBreadcrumbUI<C extends WebBreadcrumb> extends WBreadcrumbUI<C> i
     protected BreadcrumbLayout createDefaultLayout ()
     {
         return new BreadcrumbLayout ();
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( breadcrumb );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( breadcrumb );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( breadcrumb, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( breadcrumb );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( breadcrumb, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( breadcrumb );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( breadcrumb, padding );
     }
 
     @Override

@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebScrollBarUI extends WScrollBarUI
 {
     /**
      * Whether or not scroll bar buttons should be displayed.
@@ -101,51 +101,6 @@ public class WebScrollBarUI extends WScrollBarUI implements ShapeSupport, Margin
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( scrollbar );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( scrollbar );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( scrollbar, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( scrollbar );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( scrollbar, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( scrollbar );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( scrollbar, padding );
     }
 
     @Override

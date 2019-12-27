@@ -32,7 +32,7 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-public class WebTableHeaderUI extends WTableHeaderUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebTableHeaderUI extends WTableHeaderUI
 {
     /**
      * Returns an instance of the {@link WebTableHeaderUI} for the specified component.
@@ -66,51 +66,6 @@ public class WebTableHeaderUI extends WTableHeaderUI implements ShapeSupport, Ma
         StyleManager.uninstallSkin ( header );
 
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( header );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( header );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( header, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( header );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( header, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( header );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( header, padding );
     }
 
     @Override

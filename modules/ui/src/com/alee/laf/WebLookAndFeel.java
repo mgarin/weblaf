@@ -166,11 +166,14 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * Best solution overall - if you want to both keep performance and have neat shapes detection - is to enable this settings only
      * for certain components while leaving this feature disabled for others. It is possible to do just that using
-     * {@link com.alee.managers.style.ShapeSupport} API available in all WebLaF components and providing the setting through component
+     * {@link com.alee.managers.style.Styleable} API available in all WebLaF components and providing the setting through component
      * style - that way you will ensure that it is enabled only for components that actually use some sort of complex shape.
      *
+     * todo Change to enum and add "selective" option to avoid usage for simple components like panels
+     *
      * @see com.alee.painter.PainterSupport#contains(JComponent, ComponentUI, int, int)
-     * @see com.alee.managers.style.ShapeSupport
+     * @see com.alee.managers.style.Styleable#isShapeDetectionEnabled()
+     * @see com.alee.managers.style.Styleable#setShapeDetectionEnabled(boolean)
      */
     protected static boolean shapeDetectionEnabled = true;
 

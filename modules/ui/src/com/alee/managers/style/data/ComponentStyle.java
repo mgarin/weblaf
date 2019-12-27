@@ -26,7 +26,10 @@ import com.alee.api.clone.behavior.PreserveOnClone;
 import com.alee.api.jdk.Objects;
 import com.alee.api.merge.Merge;
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.managers.style.*;
+import com.alee.managers.style.ComponentDescriptor;
+import com.alee.managers.style.StyleException;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CollectionUtils;
@@ -341,10 +344,10 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
             final ComponentUI ui = getComponentUI ( component );
 
             // Applying component properties
-            applyProperties ( component, getComponentProperties () );
+            applyProperties ( component, appendEmptyComponentProperties ( getComponentProperties () ) );
 
             // Applying UI properties
-            applyProperties ( ui, appendEmptyUIProperties ( ui, getUIProperties () ) );
+            applyProperties ( ui, getUIProperties () );
 
             // Installing painter
             // todo Only reapply settings if painter already exists?
@@ -443,6 +446,16 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
                         throw new StyleException ( "Value provided for Container `layout` property is not LayoutManager" );
                     }
                 }
+                else if ( entry.getKey ().equalsIgnoreCase ( ComponentStyleConverter.MARGIN_ATTRIBUTE ) && object instanceof JComponent )
+                {
+                    // Temporary workaround for margin attribute
+                    PainterSupport.setMargin ( ( JComponent ) object, ( Insets ) entry.getValue () );
+                }
+                else if ( entry.getKey ().equalsIgnoreCase ( ComponentStyleConverter.PADDING_ATTRIBUTE ) && object instanceof JComponent )
+                {
+                    // Temporary workaround for padding attribute
+                    PainterSupport.setPadding ( ( JComponent ) object, ( Insets ) entry.getValue () );
+                }
                 else
                 {
                     // Other fields are simply set through common means
@@ -468,22 +481,21 @@ public final class ComponentStyle implements CloneBehavior<ComponentStyle>, Seri
     /**
      * Appends empty property values if required.
      *
-     * @param ui           component UI
-     * @param uiProperties properties
-     * @return modified properties map
+     * @param properties property values
+     * @return modified property values
      */
     @NotNull
-    protected Map<String, Object> appendEmptyUIProperties ( @NotNull final ComponentUI ui, @NotNull final Map<String, Object> uiProperties )
+    protected Map<String, Object> appendEmptyComponentProperties ( @NotNull final Map<String, Object> properties )
     {
-        if ( ui instanceof MarginSupport && !uiProperties.containsKey ( ComponentStyleConverter.MARGIN_ATTRIBUTE ) )
+        if ( !properties.containsKey ( ComponentStyleConverter.MARGIN_ATTRIBUTE ) )
         {
-            uiProperties.put ( ComponentStyleConverter.MARGIN_ATTRIBUTE, new InsetsUIResource ( 0, 0, 0, 0 ) );
+            properties.put ( ComponentStyleConverter.MARGIN_ATTRIBUTE, new InsetsUIResource ( 0, 0, 0, 0 ) );
         }
-        if ( ui instanceof PaddingSupport && !uiProperties.containsKey ( ComponentStyleConverter.PADDING_ATTRIBUTE ) )
+        if ( !properties.containsKey ( ComponentStyleConverter.PADDING_ATTRIBUTE ) )
         {
-            uiProperties.put ( ComponentStyleConverter.PADDING_ATTRIBUTE, new InsetsUIResource ( 0, 0, 0, 0 ) );
+            properties.put ( ComponentStyleConverter.PADDING_ATTRIBUTE, new InsetsUIResource ( 0, 0, 0, 0 ) );
         }
-        return uiProperties;
+        return properties;
     }
 
     /**

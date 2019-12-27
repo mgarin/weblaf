@@ -141,9 +141,13 @@ public final class ComponentStyleConverter extends ReflectionConverter
             writer.startNode ( COMPONENT_NODE );
             for ( final Map.Entry<String, Object> property : componentProperties.entrySet () )
             {
-                writer.startNode ( property.getKey () );
-                context.convertAnother ( property.getValue () );
-                writer.endNode ();
+                final String key = property.getKey ();
+                if ( Objects.notEquals ( key, MARGIN_ATTRIBUTE, PADDING_ATTRIBUTE ) )
+                {
+                    writer.startNode ( key );
+                    context.convertAnother ( property.getValue () );
+                    writer.endNode ();
+                }
             }
             writer.endNode ();
         }
@@ -154,13 +158,9 @@ public final class ComponentStyleConverter extends ReflectionConverter
             writer.startNode ( UI_NODE );
             for ( final Map.Entry<String, Object> property : uiProperties.entrySet () )
             {
-                final String key = property.getKey ();
-                if ( Objects.notEquals ( key, MARGIN_ATTRIBUTE, PADDING_ATTRIBUTE ) )
-                {
-                    writer.startNode ( key );
-                    context.convertAnother ( property.getValue () );
-                    writer.endNode ();
-                }
+                writer.startNode ( property.getKey () );
+                context.convertAnother ( property.getValue () );
+                writer.endNode ();
             }
             writer.endNode ();
         }
@@ -248,16 +248,20 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final String marginAttribute = reader.getAttribute ( MARGIN_ATTRIBUTE );
         if ( marginAttribute != null )
         {
-            final Insets margin = InsetsConverter.insetsFromString ( marginAttribute );
-            uiProperties.put ( MARGIN_ATTRIBUTE, new InsetsUIResource ( margin.top, margin.left, margin.bottom, margin.right ) );
+            componentProperties.put (
+                    MARGIN_ATTRIBUTE,
+                    new InsetsUIResource ( InsetsConverter.insetsFromString ( marginAttribute ) )
+            );
         }
 
         // Reading padding
         final String paddingAttribute = reader.getAttribute ( PADDING_ATTRIBUTE );
         if ( paddingAttribute != null )
         {
-            final Insets padding = InsetsConverter.insetsFromString ( paddingAttribute );
-            uiProperties.put ( PADDING_ATTRIBUTE, new InsetsUIResource ( padding.top, padding.left, padding.bottom, padding.right ) );
+            componentProperties.put (
+                    PADDING_ATTRIBUTE,
+                    new InsetsUIResource ( InsetsConverter.insetsFromString ( paddingAttribute ) )
+            );
         }
 
         // Saving previously set context values

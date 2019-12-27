@@ -19,9 +19,6 @@ package com.alee.laf.desktoppane;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -37,7 +34,6 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 public class WebDesktopIconUI<C extends JInternalFrame.JDesktopIcon> extends WDesktopIconUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Returns an instance of the {@link WebDesktopIconUI} for the specified component.
@@ -68,51 +64,6 @@ public class WebDesktopIconUI<C extends JInternalFrame.JDesktopIcon> extends WDe
         StyleManager.uninstallSkin ( desktopIcon );
 
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( desktopIcon );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( desktopIcon );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( desktopIcon, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( desktopIcon );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( desktopIcon, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( desktopIcon );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( desktopIcon, padding );
     }
 
     @Override

@@ -39,9 +39,9 @@ public abstract class WTristateCheckBoxUI<C extends WebTristateCheckBox> extends
     }
 
     /**
-     * Returns check {@link Icon} bounds.
+     * Returns check {@link javax.swing.Icon} bounds.
      *
-     * @return check {@link Icon} bounds
+     * @return check {@link javax.swing.Icon} bounds
      */
     @Nullable
     public abstract Rectangle getIconBounds ();

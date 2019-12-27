@@ -25,8 +25,8 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.UISettingsManager;
 import com.alee.managers.style.*;
-import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.FileUtils;
@@ -56,8 +56,8 @@ import java.util.List;
  * @see WebFileChooserUI
  * @see FileChooserPainter
  */
-public class WebFileChooser extends JFileChooser implements Styleable, Paintable, ShapeMethods, MarginMethods, PaddingMethods,
-        LanguageMethods, LanguageEventMethods, SettingsMethods, FontMethods<WebFileChooser>, SizeMethods<WebFileChooser>
+public class WebFileChooser extends JFileChooser implements Styleable, LanguageMethods, LanguageEventMethods, SettingsMethods,
+        FontMethods<WebFileChooser>, SizeMethods<WebFileChooser>
 {
     /**
      * Custom icons for file chooser dialog.
@@ -344,36 +344,42 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
         return StyleManager.getStyleId ( this );
     }
 
+    @NotNull
     @Override
-    public StyleId setStyleId ( final StyleId id )
+    public StyleId setStyleId ( @NotNull final StyleId id )
     {
         return StyleManager.setStyleId ( this, id );
     }
 
+    @NotNull
     @Override
     public StyleId resetStyleId ()
     {
         return StyleManager.resetStyleId ( this );
     }
 
+    @NotNull
     @Override
     public Skin getSkin ()
     {
         return StyleManager.getSkin ( this );
     }
 
+    @Nullable
     @Override
-    public Skin setSkin ( final Skin skin )
+    public Skin setSkin ( @NotNull final Skin skin )
     {
         return StyleManager.setSkin ( this, skin );
     }
 
+    @Nullable
     @Override
-    public Skin setSkin ( final Skin skin, final boolean recursively )
+    public Skin setSkin ( @NotNull final Skin skin, final boolean recursively )
     {
         return StyleManager.setSkin ( this, skin, recursively );
     }
 
+    @Nullable
     @Override
     public Skin resetSkin ()
     {
@@ -381,25 +387,27 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     }
 
     @Override
-    public void addStyleListener ( final StyleListener listener )
+    public void addStyleListener ( @NotNull final StyleListener listener )
     {
         StyleManager.addStyleListener ( this, listener );
     }
 
     @Override
-    public void removeStyleListener ( final StyleListener listener )
+    public void removeStyleListener ( @NotNull final StyleListener listener )
     {
         StyleManager.removeStyleListener ( this, listener );
     }
 
+    @Nullable
     @Override
     public Painter getCustomPainter ()
     {
         return StyleManager.getCustomPainter ( this );
     }
 
+    @Nullable
     @Override
-    public Painter setCustomPainter ( final Painter painter )
+    public Painter setCustomPainter ( @NotNull final Painter painter )
     {
         return StyleManager.setCustomPainter ( this, painter );
     }
@@ -414,69 +422,69 @@ public class WebFileChooser extends JFileChooser implements Styleable, Paintable
     @Override
     public Shape getShape ()
     {
-        return ShapeMethodsImpl.getShape ( this );
+        return PainterSupport.getShape ( this );
     }
 
     @Override
     public boolean isShapeDetectionEnabled ()
     {
-        return ShapeMethodsImpl.isShapeDetectionEnabled ( this );
+        return PainterSupport.isShapeDetectionEnabled ( this );
     }
 
     @Override
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
-        ShapeMethodsImpl.setShapeDetectionEnabled ( this, enabled );
+        PainterSupport.setShapeDetectionEnabled ( this, enabled );
     }
 
     @Nullable
     @Override
     public Insets getMargin ()
     {
-        return MarginMethodsImpl.getMargin ( this );
+        return PainterSupport.getMargin ( this );
     }
 
     @Override
     public void setMargin ( final int margin )
     {
-        MarginMethodsImpl.setMargin ( this, margin );
+        PainterSupport.setMargin ( this, margin );
     }
 
     @Override
     public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        MarginMethodsImpl.setMargin ( this, top, left, bottom, right );
+        PainterSupport.setMargin ( this, top, left, bottom, right );
     }
 
     @Override
     public void setMargin ( @Nullable final Insets margin )
     {
-        MarginMethodsImpl.setMargin ( this, margin );
+        PainterSupport.setMargin ( this, margin );
     }
 
     @Nullable
     @Override
     public Insets getPadding ()
     {
-        return PaddingMethodsImpl.getPadding ( this );
+        return PainterSupport.getPadding ( this );
     }
 
     @Override
     public void setPadding ( final int padding )
     {
-        PaddingMethodsImpl.setPadding ( this, padding );
+        PainterSupport.setPadding ( this, padding );
     }
 
     @Override
     public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        PaddingMethodsImpl.setPadding ( this, top, left, bottom, right );
+        PainterSupport.setPadding ( this, top, left, bottom, right );
     }
 
     @Override
     public void setPadding ( @Nullable final Insets padding )
     {
-        PaddingMethodsImpl.setPadding ( this, padding );
+        PainterSupport.setPadding ( this, padding );
     }
 
     @Nullable

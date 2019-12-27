@@ -22,9 +22,6 @@ import com.alee.api.annotations.Nullable;
 import com.alee.api.data.Orientation;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.button.WebButton;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
@@ -47,7 +44,6 @@ import java.beans.PropertyChangeListener;
  * @see WebMultiSplitPane
  */
 public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> extends WMultiSplitPaneDividerUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport
 {
     /**
      * Button for quickly toggling the left component.
@@ -337,51 +333,6 @@ public class WebMultiSplitPaneDividerUI<C extends WebMultiSplitPaneDivider> exte
          */
         divider.revalidate ();
         divider.repaint ();
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( divider );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( divider );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( divider, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( divider );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( divider, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( divider );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( divider, padding );
     }
 
     @Override

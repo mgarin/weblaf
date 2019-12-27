@@ -17,6 +17,7 @@
 
 package com.alee.managers.popup;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AlignLayout;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
@@ -69,7 +70,7 @@ public class ShadeLayer extends PopupLayer
         final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void mousePressed ( @NotNull final MouseEvent e )
             {
                 if ( !blockClose )
                 {
@@ -82,7 +83,7 @@ public class ShadeLayer extends PopupLayer
     }
 
     @Override
-    public void showPopup ( final WebInnerPopup popup )
+    public void showPopup ( @NotNull final WebInnerPopup popup )
     {
         showPopup ( popup, false, false );
     }
@@ -94,7 +95,7 @@ public class ShadeLayer extends PopupLayer
      * @param hfill whether popup should fill the whole available window width or not
      * @param vfill whether popup should fill the whole available window height or not
      */
-    public void showPopup ( final WebInnerPopup popup, final boolean hfill, final boolean vfill )
+    public void showPopup ( @NotNull final WebInnerPopup popup, final boolean hfill, final boolean vfill )
     {
         // Informing that popup will now become visible
         popup.firePopupWillBeOpened ();
@@ -160,7 +161,7 @@ public class ShadeLayer extends PopupLayer
     }
 
     @Override
-    public void paint ( final Graphics g )
+    public void paint ( @NotNull final Graphics g )
     {
         // todo Really bad workaround
         GraphicsUtils.setupAlphaComposite ( ( Graphics2D ) g, ( float ) opacity / 100, opacity < 100 );
@@ -168,7 +169,7 @@ public class ShadeLayer extends PopupLayer
     }
 
     @Override
-    protected void paintComponent ( final Graphics g )
+    protected void paintComponent ( @NotNull final Graphics g )
     {
         super.paintComponent ( g );
 

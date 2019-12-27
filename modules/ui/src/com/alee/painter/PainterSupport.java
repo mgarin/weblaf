@@ -255,6 +255,31 @@ public final class PainterSupport
 
     /**
      * Sets {@link JComponent} margin.
+     *
+     * @param component {@link JComponent} to set margin for
+     * @param margin    new margin
+     */
+    public static void setMargin ( @NotNull final JComponent component, final int margin )
+    {
+        setMargin ( component, margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets {@link JComponent} margin.
+     *
+     * @param component {@link JComponent} to set margin for
+     * @param top       new top margin
+     * @param left      new left margin
+     * @param bottom    new bottom margin
+     * @param right     new right margin
+     */
+    public static void setMargin ( @NotNull final JComponent component, final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( component, new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * Sets {@link JComponent} margin.
      * {@code null} can be provided to set an empty [0,0,0,0] margin.
      *
      * @param component {@link JComponent} to set margin for
@@ -325,6 +350,31 @@ public final class PainterSupport
 
     /**
      * Sets {@link JComponent} padding.
+     *
+     * @param component {@link JComponent} to set padding for
+     * @param padding    new padding
+     */
+    public static void setPadding ( @NotNull final JComponent component, final int padding )
+    {
+        setPadding ( component, padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets {@link JComponent} padding.
+     *
+     * @param component {@link JComponent} to set padding for
+     * @param top       new top padding
+     * @param left      new left padding
+     * @param bottom    new bottom padding
+     * @param right     new right padding
+     */
+    public static void setPadding ( @NotNull final JComponent component, final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( component, new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * Sets {@link JComponent} padding.
      * {@code null} can be provided to set an empty [0,0,0,0] padding.
      *
      * @param component {@link JComponent} to set padding for
@@ -356,7 +406,10 @@ public final class PainterSupport
         final Painter painter = getPainter ( component );
         if ( painter instanceof PainterShapeProvider )
         {
-            shape = ( ( PainterShapeProvider ) painter ).provideShape ( component, BoundsType.margin.bounds ( component ) );
+            shape = ( ( PainterShapeProvider ) painter ).provideShape (
+                    component,
+                    BoundsType.margin.bounds ( component )
+            );
         }
         else
         {

@@ -19,7 +19,6 @@ package com.alee.laf.viewport;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -35,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implements ShapeSupport
+public class WebViewportUI<C extends JViewport> extends WViewportUI<C>
 {
     /**
      * Returns an instance of the {@link WebViewportUI} for the specified component.
@@ -72,25 +71,6 @@ public class WebViewportUI<C extends JViewport> extends WViewportUI<C> implement
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( viewport );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( viewport );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( viewport, enabled );
     }
 
     @Override

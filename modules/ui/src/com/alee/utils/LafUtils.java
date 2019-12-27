@@ -183,42 +183,6 @@ public final class LafUtils
     }
 
     /**
-     * Returns {@link Shape} of the specified {@link JComponent}. If it is not possible to determine actual {@link Shape}
-     * then {@link Rectangle} representing {@link JComponent} bounds within its coordinates is returned.
-     *
-     * @param component {@link JComponent} to process
-     * @return {@link Shape} of the specified {@link JComponent}
-     */
-    @NotNull
-    public static Shape getShape ( @NotNull final JComponent component )
-    {
-        final Shape shape;
-        if ( component instanceof ShapeSupport )
-        {
-            final ShapeSupport shapeSupport = ( ShapeSupport ) component;
-            shape = shapeSupport.getShape ();
-        }
-        else if ( hasUI ( component ) )
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui instanceof ShapeSupport )
-            {
-                final ShapeSupport shapeSupport = ( ShapeSupport ) ui;
-                shape = shapeSupport.getShape ();
-            }
-            else
-            {
-                shape = BoundsType.margin.bounds ( component );
-            }
-        }
-        else
-        {
-            shape = BoundsType.margin.bounds ( component );
-        }
-        return shape;
-    }
-
-    /**
      * Installs specified LaF as current application's LaF.
      *
      * @param clazz LaF class

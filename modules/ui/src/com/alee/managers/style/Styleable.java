@@ -18,23 +18,27 @@
 package com.alee.managers.style;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.painter.Painter;
+
+import java.awt.*;
 
 /**
- * This interface is implemented by components and UIs which support styling through WebLaF skins.
- * It provides only two methods to allow default component {@link StyleId} modifications.
+ * This interface is implemented by {@link javax.swing.JComponent}s which support styling through WebLaF skins.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.painter.PainterSupport
  * @see StyleManager
  * @see Skin
  */
 public interface Styleable
 {
     /**
-     * Returns default component {@link com.alee.managers.style.StyleId}.
+     * Returns default component {@link StyleId}.
      * This method is asked when initial component {@link StyleId} have to be provided.
      *
-     * @return default component {@link com.alee.managers.style.StyleId}
+     * @return default component {@link StyleId}
      */
     @NotNull
     public StyleId getDefaultStyleId ();
@@ -54,13 +58,15 @@ public interface Styleable
      * @param id custom component {@link StyleId}
      * @return previously used {@link StyleId}
      */
-    public StyleId setStyleId ( StyleId id );
+    @NotNull
+    public StyleId setStyleId ( @NotNull StyleId id );
 
     /**
      * Resets {@link StyleId} to default value.
      *
      * @return previously used {@link StyleId}
      */
+    @NotNull
     public StyleId resetStyleId ();
 
     /**
@@ -68,49 +74,169 @@ public interface Styleable
      *
      * @return skin currently applied to this component
      */
+    @NotNull
     public Skin getSkin ();
 
     /**
-     * Applies specified custom skin to the styleable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
-     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Applies specified custom skin to the styleable component and all of its children linked via {@link StyleId}.
+     * Actual linked children information is stored within {@link StyleData} data objects.
      * Custom skin provided using this method will not be replaced if application skin changes.
      *
      * @param skin skin to be applied
      * @return previously applied skin
      */
-    public Skin setSkin ( Skin skin );
+    @Nullable
+    public Skin setSkin ( @NotNull Skin skin );
 
     /**
-     * Applies specified custom skin to the styleable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
-     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Applies specified custom skin to the styleable component and all of its children linked via {@link StyleId}.
+     * Actual linked children information is stored within {@link StyleData} data objects.
      * Custom skin provided using this method will not be replaced if application skin changes.
      *
      * @param skin        skin to be applied
      * @param recursively whether or not should apply skin to child components
      * @return previously applied skin
      */
-    public Skin setSkin ( Skin skin, boolean recursively );
+    @Nullable
+    public Skin setSkin ( @NotNull Skin skin, boolean recursively );
 
     /**
-     * Resets skin for this component and all of its children linked via {@link com.alee.managers.style.StyleId}.
-     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Resets skin for this component and all of its children linked via {@link StyleId}.
+     * Actual linked children information is stored within {@link StyleData} data objects.
      * Resetting component skin will also include it back into the skin update cycle in case global skin will be changed.
      *
      * @return skin applied to this component after reset
      */
+    @Nullable
     public Skin resetSkin ();
 
     /**
-     * Adds style change listener.
+     * Adds {@link StyleListener}.
      *
-     * @param listener style change listener to add
+     * @param listener {@link StyleListener} to add
      */
-    public void addStyleListener ( StyleListener listener );
+    public void addStyleListener ( @NotNull StyleListener listener );
 
     /**
-     * Removes style change listener.
+     * Removes {@link StyleListener}.
      *
-     * @param listener style change listener to remove
+     * @param listener {@link StyleListener} to remove
      */
-    public void removeStyleListener ( StyleListener listener );
+    public void removeStyleListener ( @NotNull StyleListener listener );
+
+    /**
+     * Returns custom {@link Painter} used for implementing {@link javax.swing.JComponent}.
+     *
+     * @return custom {@link Painter} used for implementing {@link javax.swing.JComponent}
+     */
+    @Nullable
+    public Painter getCustomPainter ();
+
+    /**
+     * Sets custom {@link Painter} for implementing {@link javax.swing.JComponent}.
+     *
+     * @param painter custom {@link Painter}
+     * @return custom {@link Painter} previously used for implementing {@link javax.swing.JComponent}
+     */
+    @Nullable
+    public Painter setCustomPainter ( @NotNull Painter painter );
+
+    /**
+     * Resets custom {@link Painter} for implementing {@link javax.swing.JComponent} to default one.
+     *
+     * @return {@code true} if custom {@link Painter} was successfully resetted, {@code false} otherwise
+     */
+    public boolean resetCustomPainter ();
+
+    /**
+     * Returns component {@link Shape}.
+     *
+     * @return component {@link Shape}
+     */
+    @NotNull
+    public Shape getShape ();
+
+    /**
+     * Returns whether or not component's custom {@link Shape} is used for better mouse events detection.
+     * If it wasn't explicitly specified - {@link com.alee.laf.WebLookAndFeel#isShapeDetectionEnabled()} is used as result.
+     *
+     * @return {@code true} if component's custom {@link Shape} is used for better mouse events detection, {@code false} otherwise
+     */
+    public boolean isShapeDetectionEnabled ();
+
+    /**
+     * Sets whether or not component's custom {@link Shape} should be used for better mouse events detection.
+     * It can be enabled globally through {@link com.alee.laf.WebLookAndFeel#setShapeDetectionEnabled(boolean)}.
+     *
+     * @param enabled whether or not component's custom {@link Shape} should be used for better mouse events detection
+     */
+    public void setShapeDetectionEnabled ( boolean enabled );
+
+    /**
+     * Returns current margin.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] margin.
+     *
+     * @return current margin
+     */
+    @Nullable
+    public Insets getMargin ();
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( int margin );
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( int top, int left, int bottom, int right );
+
+    /**
+     * Sets new margin.
+     * {@code null} can be provided to set an empty [0,0,0,0] margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( @Nullable Insets margin );
+
+    /**
+     * Returns current padding.
+     * Might return {@code null} which is basically the same as an empty [0,0,0,0] padding.
+     *
+     * @return current padding
+     */
+    @Nullable
+    public Insets getPadding ();
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( int padding );
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( int top, int left, int bottom, int right );
+
+    /**
+     * Sets new padding.
+     * {@code null} can be provided to set an empty [0,0,0,0] padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( @Nullable Insets padding );
 }

@@ -19,10 +19,10 @@ package com.alee.extended.overlay;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.extended.canvas.WebCanvas;
+import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.shape.AbstractShape;
 import com.alee.painter.decoration.shape.ShapeType;
-import com.alee.utils.LafUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
@@ -50,7 +50,7 @@ public class ProgressOverlayShape<C extends WebCanvas, D extends WebDecoration<C
             final JComponent content = ( ( WebProgressOverlay ) c.getParent () ).getContent ();
             if ( content != null )
             {
-                shape = LafUtils.getShape ( content );
+                shape = PainterSupport.getShape ( content );
             }
         }
         return shape;

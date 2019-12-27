@@ -19,9 +19,6 @@ package com.alee.extended.image;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -35,7 +32,7 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebImageUI<C extends WebImage> extends WImageUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebImageUI<C extends WebImage> extends WImageUI<C>
 {
     /**
      * Returns an instance of the {@link WebImageUI} for the specified component.
@@ -66,51 +63,6 @@ public class WebImageUI<C extends WebImage> extends WImageUI<C> implements Shape
         StyleManager.uninstallSkin ( image );
 
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( image );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( image );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( image, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( image );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( image, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( image );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( image, padding );
     }
 
     @Override

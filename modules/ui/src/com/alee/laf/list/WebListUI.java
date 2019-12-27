@@ -34,7 +34,7 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebListUI extends WListUI
 {
     /**
      * Static fields from {@link javax.swing.plaf.basic.BasicListUI}.
@@ -149,51 +149,6 @@ public class WebListUI extends WListUI implements ShapeSupport, MarginSupport, P
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( list );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( list );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( list, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( list );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( list, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( list );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( list, padding );
     }
 
     @Override

@@ -21,9 +21,6 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.extended.collapsible.AbstractHeaderPanel;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
@@ -46,8 +43,7 @@ import java.beans.PropertyChangeListener;
  * @see AccordionModel
  * @see WebAccordionModel
  */
-public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
-        implements PropertyChangeListener, AccordionListener, ShapeSupport, MarginSupport, PaddingSupport
+public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C> implements PropertyChangeListener, AccordionListener
 {
     /**
      * Returns an instance of the {@link WebAccordionUI} for the specified component.
@@ -169,51 +165,6 @@ public class WebAccordionUI<C extends WebAccordion> extends WAccordionUI<C>
         }
         DecorationUtils.fireStatesChanged ( header );
         DecorationUtils.fireStatesChanged ( pane );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( accordion );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( accordion );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( accordion, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( accordion );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( accordion, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( accordion );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( accordion, padding );
     }
 
     @Override

@@ -32,7 +32,7 @@ import java.awt.*;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebSeparatorUI<C extends JSeparator> extends WSeparatorUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebSeparatorUI<C extends JSeparator> extends WSeparatorUI<C>
 {
     /**
      * Returns an instance of the {@link WebSeparatorUI} for the specified component.
@@ -65,51 +65,6 @@ public class WebSeparatorUI<C extends JSeparator> extends WSeparatorUI<C> implem
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( separator );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( separator );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( separator, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( separator );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( separator, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( separator );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( separator, padding );
     }
 
     @Override

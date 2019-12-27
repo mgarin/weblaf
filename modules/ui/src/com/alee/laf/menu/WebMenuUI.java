@@ -19,9 +19,6 @@ package com.alee.laf.menu;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -35,7 +32,7 @@ import java.awt.*;
  *
  * @author Mikle Garin
  */
-public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebMenuUI extends BasicMenuUI
 {
     /**
      * Returns an instance of the {@link WebMenuUI} for the specified component.
@@ -66,51 +63,6 @@ public class WebMenuUI extends BasicMenuUI implements ShapeSupport, MarginSuppor
         StyleManager.uninstallSkin ( menuItem );
 
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( menuItem );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( menuItem );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( menuItem, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( menuItem );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( menuItem, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( menuItem );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( menuItem, padding );
     }
 
     @Override

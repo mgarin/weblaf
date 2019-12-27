@@ -58,7 +58,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebComboBoxUI extends WComboBoxUI
 {
     /**
      * {@link JComboBox} instance placed as popup {@link JList} client property.
@@ -248,51 +248,6 @@ public class WebComboBoxUI extends WComboBoxUI implements ShapeSupport, MarginSu
             }
             arrowButton = null;
         }
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( comboBox );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( comboBox );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( comboBox, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( comboBox );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( comboBox, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( comboBox );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( comboBox, padding );
     }
 
     @NotNull

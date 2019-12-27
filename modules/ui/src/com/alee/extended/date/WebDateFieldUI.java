@@ -49,7 +49,7 @@ import java.util.Date;
  * @param <C> component type
  * @author Mikle Garin
  */
-public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C>
 {
     /**
      * todo 1. Change popover to popup-based window
@@ -455,51 +455,6 @@ public class WebDateFieldUI<C extends WebDateField> extends WDateFieldUI<C> impl
     protected String getText ( @Nullable final Date date )
     {
         return date != null ? dateField.getDateFormat ().format ( date ) : "";
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( dateField );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( dateField );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( dateField, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( dateField );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( dateField, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( dateField );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( dateField, padding );
     }
 
     @Override

@@ -19,9 +19,6 @@ package com.alee.laf.slider;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -37,7 +34,7 @@ import java.awt.*;
  * @author Michka Popoff
  * @author Alexandr Zernov
  */
-public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebSliderUI extends BasicSliderUI
 {
     /**
      * Returns an instance of the {@link WebSliderUI} for the specified component.
@@ -80,51 +77,6 @@ public class WebSliderUI extends BasicSliderUI implements ShapeSupport, MarginSu
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( slider );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( slider );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( slider, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( slider );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( slider, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( slider );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( slider, padding );
     }
 
     @Override

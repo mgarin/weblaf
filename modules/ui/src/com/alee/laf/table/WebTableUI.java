@@ -43,7 +43,7 @@ import java.util.Date;
  *
  * @author Mikle Garin
  */
-public class WebTableUI extends WTableUI implements ShapeSupport, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
+public class WebTableUI extends WTableUI implements ScrollPaneCornerProvider
 {
     /**
      * Listeners.
@@ -146,51 +146,6 @@ public class WebTableUI extends WTableUI implements ShapeSupport, MarginSupport,
             // Pairing table header style with table as parent
             StyleId.tableHeader.at ( table ).set ( header );
         }
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( table );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( table );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( table, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( table );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( table, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( table );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( table, padding );
     }
 
     @Nullable

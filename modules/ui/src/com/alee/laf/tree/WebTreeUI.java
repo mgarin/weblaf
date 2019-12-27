@@ -23,9 +23,6 @@ import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.behavior.TreePathHoverBehavior;
 import com.alee.managers.icon.Icons;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -42,7 +39,7 @@ import java.util.Enumeration;
  *
  * @author Mikle Garin
  */
-public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebTreeUI extends WTreeUI
 {
     /**
      * Style settings.
@@ -171,51 +168,6 @@ public class WebTreeUI extends WTreeUI implements ShapeSupport, MarginSupport, P
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( tree );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( tree );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( tree, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( tree );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( tree, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( tree );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( tree, padding );
     }
 
     @Override

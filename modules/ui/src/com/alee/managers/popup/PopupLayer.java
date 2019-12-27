@@ -17,11 +17,13 @@
 
 package com.alee.managers.popup;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.style.ShapeMethods;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.PainterSupport;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -47,7 +49,7 @@ public class PopupLayer extends WebPanel
      *
      * @param layoutManager custom layout manager for this layer
      */
-    public PopupLayer ( final LayoutManager layoutManager )
+    public PopupLayer ( @NotNull final LayoutManager layoutManager )
     {
         super ( StyleId.panelTransparent, layoutManager );
         setOpaque ( false );
@@ -58,9 +60,15 @@ public class PopupLayer extends WebPanel
      *
      * @return popup layer actual layout
      */
+    @NotNull
     public MultiLayout getMultiLayout ()
     {
-        return ( MultiLayout ) getLayout ();
+        final LayoutManager layout = getLayout ();
+        if ( !( layout instanceof MultiLayout ) )
+        {
+            throw new RuntimeException ( "Installed layout is not MultiLayout" );
+        }
+        return ( MultiLayout ) layout;
     }
 
     /**
@@ -68,7 +76,7 @@ public class PopupLayer extends WebPanel
      *
      * @param layoutManager layout manager to add
      */
-    public void addLayoutManager ( final LayoutManager layoutManager )
+    public void addLayoutManager ( @NotNull final LayoutManager layoutManager )
     {
         getMultiLayout ().addLayoutManager ( layoutManager );
     }
@@ -78,7 +86,7 @@ public class PopupLayer extends WebPanel
      *
      * @param layoutManager layout manager to remove
      */
-    public void removeLayoutManager ( final LayoutManager layoutManager )
+    public void removeLayoutManager ( @NotNull final LayoutManager layoutManager )
     {
         getMultiLayout ().removeLayoutManager ( layoutManager );
     }
@@ -98,7 +106,7 @@ public class PopupLayer extends WebPanel
      *
      * @param popup popup to display
      */
-    public void showPopup ( final WebInnerPopup popup )
+    public void showPopup ( @NotNull final WebInnerPopup popup )
     {
         // Informing that popup will now become visible
         popup.firePopupWillBeOpened ();
@@ -120,22 +128,19 @@ public class PopupLayer extends WebPanel
      *
      * @param popup popup to hide
      */
-    public void hidePopup ( final WebInnerPopup popup )
+    public void hidePopup ( @NotNull final WebInnerPopup popup )
     {
-        // Ignore hide
-        if ( !popup.isShowing () || popup.getParent () != PopupLayer.this )
+        if ( popup.isShowing () && popup.getParent () == PopupLayer.this )
         {
-            return;
+            // Informing that popup will now become invisible
+            popup.firePopupWillBeClosed ();
+
+            // Removing popup
+            final Rectangle bounds = popup.getBounds ();
+            remove ( popup );
+            revalidate ();
+            repaint ( bounds );
         }
-
-        // Informing that popup will now become invisible
-        popup.firePopupWillBeClosed ();
-
-        // Removing popup
-        final Rectangle bounds = popup.getBounds ();
-        remove ( popup );
-        revalidate ();
-        repaint ( bounds );
     }
 
     /**
@@ -149,26 +154,29 @@ public class PopupLayer extends WebPanel
     @Override
     public boolean contains ( final int x, final int y )
     {
+        boolean contains = false;
         for ( final Component child : getComponents () )
         {
             final Point l = child.getLocation ();
-            if ( child instanceof ShapeMethods )
+            if ( child instanceof JComponent )
             {
-                final Shape shape = ( ( ShapeMethods ) child ).getShape ();
-                if ( shape != null && shape.contains ( x - l.x, y - l.y ) )
+                final Shape shape = PainterSupport.getShape ( ( JComponent ) child );
+                if ( shape.contains ( x - l.x, y - l.y ) )
                 {
-                    return true;
+                    contains = true;
+                    break;
                 }
             }
             else
             {
                 if ( child.getBounds ().contains ( x, y ) )
                 {
-                    return true;
+                    contains = true;
+                    break;
                 }
             }
         }
-        return false;
+        return contains;
     }
 
     /**

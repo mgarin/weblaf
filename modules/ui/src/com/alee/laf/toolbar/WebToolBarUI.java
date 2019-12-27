@@ -22,9 +22,6 @@ import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebDialog;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CoreSwingUtils;
@@ -43,7 +40,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  * @author Alexandr Zernov
  */
-public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, MarginSupport, PaddingSupport
+public class WebToolBarUI extends BasicToolBarUI
 {
     /**
      * todo 1. Restore toolbar element focus upon floating mode enter/exit
@@ -137,51 +134,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeSupport, Margin
                 }
             }
         }
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( toolBar );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( toolBar );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( toolBar, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( toolBar );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( toolBar, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( toolBar );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( toolBar, padding );
     }
 
     @Override

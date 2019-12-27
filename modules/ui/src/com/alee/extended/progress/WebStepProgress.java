@@ -19,7 +19,6 @@ package com.alee.extended.progress;
 
 import com.alee.api.annotations.NotNull;
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.managers.style.ShapeMethods;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
@@ -51,7 +50,7 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStepProgress">How to use WebStepProgress</a>
  */
-public class WebStepProgress extends JComponent implements SwingConstants, ShapeMethods, SizeMethods<WebStepProgress>
+public class WebStepProgress extends JComponent implements SwingConstants, SizeMethods<WebStepProgress>
 {
     /**
      * todo 1. Implement ShapeCache
@@ -997,7 +996,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
-    @NotNull
+    /*@NotNull
     @Override
     public Shape getShape ()
     {
@@ -1014,7 +1013,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
         throw new UnsupportedOperationException ( "Shape detection is not yet supported for WebStepProgress" );
-    }
+    }*/
 
     /**
      * Updates border shape.

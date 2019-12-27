@@ -23,7 +23,6 @@ import com.alee.graphics.filters.GaussianFilter;
 import com.alee.graphics.filters.GrayscaleFilter;
 import com.alee.graphics.filters.MotionBlurFilter;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.ShapeMethods;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 
@@ -35,7 +34,7 @@ import java.awt.image.BufferedImage;
 /**
  * @author Mikle Garin
  */
-public class WebDecoratedImage extends JComponent implements SwingConstants, ShapeMethods
+public class WebDecoratedImage extends JComponent implements SwingConstants
 {
     /**
      * todo 1. Implement proper UI and styling or merge functionality into existing {@link WebImage}
@@ -582,7 +581,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         return ps;
     }
 
-    @NotNull
+    /*@NotNull
     @Override
     public Shape getShape ()
     {
@@ -600,5 +599,5 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
     public void setShapeDetectionEnabled ( final boolean enabled )
     {
         throw new UnsupportedOperationException ( "Shape detection is not yet supported for WebDecoratedImage" );
-    }
+    }*/
 }

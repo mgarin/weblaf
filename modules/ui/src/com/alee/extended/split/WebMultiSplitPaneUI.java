@@ -20,9 +20,6 @@ package com.alee.extended.split;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 
@@ -40,8 +37,7 @@ import java.beans.PropertyChangeListener;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebMultiSplitPane">How to use WebMultiSplitPane</a>
  * @see WebMultiSplitPane
  */
-public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSplitPaneUI<C>
-        implements ShapeSupport, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSplitPaneUI<C> implements PropertyChangeListener
 {
     /**
      * Returns an instance of the {@link WebMultiSplitPaneUI} for the specified component.
@@ -114,51 +110,6 @@ public class WebMultiSplitPaneUI<C extends WebMultiSplitPane> extends WMultiSpli
                 multisplitpane.collapseExpandedView ();
             }
         }
-    }
-
-    @NotNull
-    @Override
-    public Shape getShape ()
-    {
-        return PainterSupport.getShape ( multisplitpane );
-    }
-
-    @Override
-    public boolean isShapeDetectionEnabled ()
-    {
-        return PainterSupport.isShapeDetectionEnabled ( multisplitpane );
-    }
-
-    @Override
-    public void setShapeDetectionEnabled ( final boolean enabled )
-    {
-        PainterSupport.setShapeDetectionEnabled ( multisplitpane, enabled );
-    }
-
-    @Nullable
-    @Override
-    public Insets getMargin ()
-    {
-        return PainterSupport.getMargin ( multisplitpane );
-    }
-
-    @Override
-    public void setMargin ( @Nullable final Insets margin )
-    {
-        PainterSupport.setMargin ( multisplitpane, margin );
-    }
-
-    @Nullable
-    @Override
-    public Insets getPadding ()
-    {
-        return PainterSupport.getPadding ( multisplitpane );
-    }
-
-    @Override
-    public void setPadding ( @Nullable final Insets padding )
-    {
-        PainterSupport.setPadding ( multisplitpane, padding );
     }
 
     @Override
