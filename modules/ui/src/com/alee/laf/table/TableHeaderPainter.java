@@ -387,10 +387,10 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WTableHeaderUI
 
             // Remove all components in the rendererPane
             rendererPane.removeAll ();
-
-            // Clearing renderer pane reference
-            rendererPane = null;
         }
+
+        // Clearing renderer pane reference
+        rendererPane = null;
     }
 
     /**
