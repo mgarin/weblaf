@@ -55,6 +55,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      * Runtime variables.
      */
     protected transient PopupMenuType popupMenuType = null;
+    protected transient Window popupWindow = null;
 
     @Override
     protected void propertyChanged ( @NotNull final String property, @Nullable final Object oldValue, @Nullable final Object newValue )
@@ -100,17 +101,24 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
             // Either install or uninstall popup settings
             if ( newValue == Boolean.TRUE )
             {
+                // Saving popup window, otherwise it won't be available on uninstall
+                popupWindow = CoreSwingUtils.getWindowAncestor ( component );
+
                 // For unix systems it is not required to repeat this update
+                // todo Is this really necessary for all Windows/Mac OS X cases?
                 if ( !SystemUtils.isUnix () )
                 {
                     // Install custom popup window settings
-                    installPopupSettings ( CoreSwingUtils.getWindowAncestor ( component ), component );
+                    installPopupWindowSettings ( popupWindow, component );
                 }
             }
             else
             {
                 // Uninstall custom popup window settings
-                uninstallPopupSettings ( CoreSwingUtils.getWindowAncestor ( component ), component );
+                uninstallPopupWindowSettings ( popupWindow, component );
+
+                // Removing window reference
+                popupWindow = null;
             }
         }
     }
@@ -200,7 +208,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
     }
 
     @Override
-    protected void paintTransparentPopup ( final Graphics2D g2d, final C popupMenu )
+    protected void paintTransparentPopup ( @NotNull final Graphics2D g2d, @NotNull final C popupMenu )
     {
         final Dimension menuSize = popupMenu.getSize ();
 
@@ -225,7 +233,7 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param popupMenu popup menu
      * @param menuSize  menu size
      */
-    protected void paintDropdownCornerFill ( final Graphics2D g2d, final C popupMenu, final Dimension menuSize )
+    protected void paintDropdownCornerFill ( @NotNull final Graphics2D g2d, @NotNull final C popupMenu, @NotNull final Dimension menuSize )
     {
         // Checking whether corner should be filled or not
         if ( popupStyle == PopupStyle.dropdown && round == 0 )
@@ -302,14 +310,14 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param popupMenu popup menu to retrieve combobox UI for
      * @return combobox UI for the specified combobox popup menu
      */
-    protected WebComboBoxUI geComboBoxUI ( final C popupMenu )
+    protected WebComboBoxUI geComboBoxUI ( @NotNull final C popupMenu )
     {
         final JComboBox comboBox = ReflectUtils.getFieldValueSafely ( popupMenu, "comboBox" );
         return comboBox != null && comboBox.getUI () instanceof WebComboBoxUI ? ( WebComboBoxUI ) comboBox.getUI () : null;
     }
 
     @Override
-    public Point preparePopupMenu ( final C popupMenu, final Component invoker, int x, int y )
+    public Point preparePopupMenu ( @NotNull final C popupMenu, @Nullable final Component invoker, int x, int y )
     {
         // Updating popup location according to popup menu UI settings
         if ( invoker != null )
@@ -458,12 +466,12 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
                                  @NotNull final Popup popup )
     {
         // todo There need to be a better way
-        // Retrieve component directly from the popup
+        // Retrieving window directly from the popup
         final Component window = ReflectUtils.callMethodSafely ( popup, "getComponent" );
         if ( window instanceof Window )
         {
-            // Install custom popup window settings
-            installPopupSettings ( ( Window ) window, popupMenu );
+            // Installing custom popup window settings
+            installPopupWindowSettings ( ( Window ) window, popupMenu );
         }
     }
 
@@ -473,35 +481,31 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    protected void installPopupSettings ( @Nullable final Window window, @NotNull final C popupMenu )
+    protected void installPopupWindowSettings ( @Nullable final Window window, @NotNull final C popupMenu )
     {
+        // Adjusting popup menu heavyweight window settings
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
-            // Workaround to remove Mac OS X shade around the window
+            // Removing Mac OS X shade around the window
             if ( window instanceof JWindow && SystemUtils.isMac () )
             {
                 ( ( JWindow ) window ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
             }
 
-            // Updating window opacity state in case menu is displayed in a heavy-weight popup
-            if ( SwingUtils.isHeavyWeightWindow ( window ) )
+            // Either change window opacity or shape if it is possible
+            if ( ProprietaryUtils.isWindowTransparencyAllowed () )
             {
-                // Either change window opacity or shape if it is possible
-                if ( ProprietaryUtils.isWindowTransparencyAllowed () )
-                {
-                    // Change window opacity
-                    ProprietaryUtils.setWindowOpaque ( window, false );
-                }
-                else if ( ProprietaryUtils.isWindowShapeAllowed () )
-                {
-                    // Change window shape
-                    window.pack ();
-                    final Rectangle bounds = window.getBounds ();
-                    ++bounds.width;
-                    ++bounds.height;
-                    final Shape shape = provideShape ( popupMenu, bounds );
-                    ProprietaryUtils.setWindowShape ( window, shape );
-                }
+                // Changing window to be non-opaque
+                ProprietaryUtils.setWindowOpaque ( window, false );
+            }
+            else if ( ProprietaryUtils.isWindowShapeAllowed () )
+            {
+                // Adjusting window shape
+                // todo Use a better shape to avoid cutting corner border out
+                window.pack ();
+                final Dimension popupSize = new Dimension ( window.getWidth () + 1, window.getHeight () + 1 );
+                final Shape shape = getBorderShape ( popupMenu, popupSize, false );
+                ProprietaryUtils.setWindowShape ( window, shape );
             }
         }
     }
@@ -512,12 +516,22 @@ public class PopupMenuPainter<C extends JPopupMenu, U extends WPopupMenuUI> exte
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    protected void uninstallPopupSettings ( final Window window, final C popupMenu )
+    protected void uninstallPopupWindowSettings ( @Nullable final Window window, @NotNull final C popupMenu )
     {
+        // Restoring popup menu heavyweight window settings
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
-            // Restoring menu opacity state in case menu is in a separate heavy-weight window
+            // todo Should maybe restore this as well, or not?
+            // Restoring Mac OS X shade around the window
+            /*if ( window instanceof JWindow && SystemUtils.isMac () )
+            {
+                ( ( JWindow ) window ).getRootPane ().putClientProperty ( "Window.shadow", null );
+            }*/
+
+            // Restoring window to be opaque
             ProprietaryUtils.setWindowOpaque ( window, true );
+
+            // Restoring window to default shape
             ProprietaryUtils.setWindowShape ( window, null );
         }
     }
