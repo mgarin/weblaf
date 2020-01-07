@@ -747,7 +747,7 @@ public class WebStyledLabel extends JLabel implements Styleable, EventMethods, T
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

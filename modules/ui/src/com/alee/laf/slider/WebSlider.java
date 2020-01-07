@@ -332,7 +332,7 @@ public class WebSlider extends JSlider implements Styleable, EventMethods, ToolT
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

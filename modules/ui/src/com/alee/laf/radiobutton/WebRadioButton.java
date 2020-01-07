@@ -420,7 +420,7 @@ public class WebRadioButton extends JRadioButton implements Styleable, EventMeth
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

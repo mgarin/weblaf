@@ -465,7 +465,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements Styleable,
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

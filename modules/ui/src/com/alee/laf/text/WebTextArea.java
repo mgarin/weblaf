@@ -313,7 +313,7 @@ public class WebTextArea extends JTextArea implements IInputPrompt, Styleable, D
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

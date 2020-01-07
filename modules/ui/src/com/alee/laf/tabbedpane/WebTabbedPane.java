@@ -533,7 +533,7 @@ public class WebTabbedPane extends JTabbedPane implements Styleable, EventMethod
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

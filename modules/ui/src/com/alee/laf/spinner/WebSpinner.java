@@ -187,7 +187,7 @@ public class WebSpinner extends JSpinner implements Styleable, EventMethods, Too
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

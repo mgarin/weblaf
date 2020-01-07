@@ -959,7 +959,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( getRootPane () );
     }

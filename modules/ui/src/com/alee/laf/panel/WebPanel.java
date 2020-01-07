@@ -213,7 +213,7 @@ public class WebPanel extends JPanel implements Styleable, ContainerMethods<WebP
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

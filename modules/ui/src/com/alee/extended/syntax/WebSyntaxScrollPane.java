@@ -258,7 +258,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane implements Styleable, S
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

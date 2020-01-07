@@ -218,7 +218,7 @@ public class WebTextPane extends JTextPane implements IInputPrompt, Styleable, D
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

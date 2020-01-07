@@ -312,7 +312,7 @@ public class WebColorChooser extends JColorChooser implements Styleable, Languag
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

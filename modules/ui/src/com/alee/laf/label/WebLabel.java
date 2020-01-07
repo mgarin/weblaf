@@ -336,7 +336,7 @@ public class WebLabel extends JLabel implements Styleable, EventMethods, ToolTip
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

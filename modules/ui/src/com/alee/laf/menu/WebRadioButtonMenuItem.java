@@ -489,7 +489,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem implements Styl
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

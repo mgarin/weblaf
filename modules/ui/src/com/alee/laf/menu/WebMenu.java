@@ -332,7 +332,7 @@ public class WebMenu extends JMenu implements Styleable, LanguageMethods, Langua
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

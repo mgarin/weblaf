@@ -285,7 +285,7 @@ public class WebProgressBar extends JProgressBar implements Styleable, EventMeth
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

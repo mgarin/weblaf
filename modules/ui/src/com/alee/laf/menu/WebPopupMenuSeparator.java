@@ -160,7 +160,7 @@ public class WebPopupMenuSeparator extends JPopupMenu.Separator implements Style
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

@@ -175,7 +175,7 @@ public class WebToolBarSeparator extends JToolBar.Separator implements Styleable
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

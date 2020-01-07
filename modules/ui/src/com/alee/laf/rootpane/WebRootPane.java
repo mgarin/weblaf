@@ -184,7 +184,7 @@ public class WebRootPane extends JRootPane implements Styleable, EventMethods, L
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

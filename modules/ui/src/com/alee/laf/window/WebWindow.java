@@ -443,7 +443,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( getRootPane () );
     }

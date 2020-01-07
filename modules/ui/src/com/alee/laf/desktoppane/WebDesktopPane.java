@@ -170,7 +170,7 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, EventMeth
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

@@ -339,7 +339,7 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, LanguageMetho
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

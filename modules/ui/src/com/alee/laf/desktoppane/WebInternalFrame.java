@@ -346,7 +346,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Event
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

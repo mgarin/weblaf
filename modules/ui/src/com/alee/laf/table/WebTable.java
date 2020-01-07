@@ -732,7 +732,7 @@ public class WebTable extends JTable implements Styleable, EventMethods, Languag
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

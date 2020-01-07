@@ -316,7 +316,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, SettingsMet
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

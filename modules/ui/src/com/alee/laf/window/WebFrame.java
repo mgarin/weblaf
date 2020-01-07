@@ -517,7 +517,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( getRootPane () );
     }

@@ -270,7 +270,7 @@ public class WebEditorPane extends JEditorPane implements IInputPrompt, Styleabl
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

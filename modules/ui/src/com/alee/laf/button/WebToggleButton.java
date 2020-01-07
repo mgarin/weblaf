@@ -569,7 +569,7 @@ public class WebToggleButton extends JToggleButton implements Styleable, EventMe
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

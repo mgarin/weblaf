@@ -168,7 +168,7 @@ public class WebDesktopIcon extends JInternalFrame.JDesktopIcon implements Style
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

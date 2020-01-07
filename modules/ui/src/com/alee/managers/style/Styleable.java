@@ -149,12 +149,13 @@ public interface Styleable
     public boolean resetCustomPainter ();
 
     /**
-     * Returns component {@link Shape}.
+     * Returns component's {@link Painter} {@link Shape}.
+     * This method is not named {@code getShape ()} to avoid clashing with JDK7+ method in {@link Window} ancestors.
      *
-     * @return component {@link Shape}
+     * @return component's {@link Painter} {@link Shape}
      */
     @NotNull
-    public Shape getShape ();
+    public Shape getPainterShape ();
 
     /**
      * Returns whether or not component's custom {@link Shape} is used for better mouse events detection.

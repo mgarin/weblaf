@@ -334,7 +334,7 @@ public class WebPasswordField extends JPasswordField implements IInputPrompt, IL
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

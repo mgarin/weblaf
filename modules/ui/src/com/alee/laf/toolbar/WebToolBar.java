@@ -453,7 +453,7 @@ public class WebToolBar extends JToolBar implements Styleable, ContainerMethods<
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

@@ -217,7 +217,7 @@ public class WebTableHeader extends JTableHeader implements Styleable, EventMeth
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

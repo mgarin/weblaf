@@ -420,7 +420,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, LanguageM
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

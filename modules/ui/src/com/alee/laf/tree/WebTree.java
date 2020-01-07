@@ -1880,7 +1880,7 @@ public class WebTree<N extends MutableTreeNode> extends JTree implements Styleab
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

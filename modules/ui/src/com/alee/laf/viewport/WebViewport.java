@@ -151,7 +151,7 @@ public class WebViewport extends JViewport implements Styleable
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

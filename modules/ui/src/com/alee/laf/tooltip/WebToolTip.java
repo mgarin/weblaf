@@ -160,7 +160,7 @@ public class WebToolTip extends JToolTip implements Styleable, LanguageMethods, 
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

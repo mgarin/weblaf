@@ -295,7 +295,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, EventMethods,
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

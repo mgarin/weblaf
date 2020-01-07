@@ -414,7 +414,7 @@ public class WebFormattedTextField extends JFormattedTextField implements IInput
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

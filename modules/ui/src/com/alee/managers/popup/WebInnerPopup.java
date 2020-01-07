@@ -568,7 +568,7 @@ public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
     @Override
     public boolean contains ( final int x, final int y )
     {
-        return fadeStateType != FadeStateType.fadeOut && getShape ().contains ( x, y );
+        return fadeStateType != FadeStateType.fadeOut && getPainterShape ().contains ( x, y );
     }
 
     /**

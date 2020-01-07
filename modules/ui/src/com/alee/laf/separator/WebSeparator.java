@@ -181,7 +181,7 @@ public class WebSeparator extends JSeparator implements Styleable, EventMethods,
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

@@ -389,7 +389,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, LanguageMethods
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

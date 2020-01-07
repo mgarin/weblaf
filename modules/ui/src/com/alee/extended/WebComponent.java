@@ -145,7 +145,7 @@ public abstract class WebComponent<C extends WebComponent<C, U>, U extends Compo
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

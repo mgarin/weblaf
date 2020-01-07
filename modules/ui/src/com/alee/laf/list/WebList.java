@@ -732,7 +732,7 @@ public class WebList extends JList implements Styleable, EventMethods, LanguageM
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

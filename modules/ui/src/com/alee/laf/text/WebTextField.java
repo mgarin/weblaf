@@ -334,7 +334,7 @@ public class WebTextField extends JTextField implements IInputPrompt, ILeadingCo
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }

@@ -168,7 +168,7 @@ public class WebMenuBar extends JMenuBar implements Styleable, ContainerMethods<
 
     @NotNull
     @Override
-    public Shape getShape ()
+    public Shape getPainterShape ()
     {
         return PainterSupport.getShape ( this );
     }
