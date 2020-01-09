@@ -126,9 +126,6 @@ public class WebPopupMenuUI extends WPopupMenuUI implements  SwingConstants
             }
         }
 
-        // Resetting preferred popup menu display way
-        popupMenuWay = null;
-
         // Creating actual popup to place menu into
         final Popup p = super.getPopup ( popup, x, y );
 
