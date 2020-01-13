@@ -189,7 +189,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
         // Additional settings
         WebLookAndFeel.setOrientation ( this );
 
-        // Installing root pane style
+        // Applying style
         setStyleId ( id );
 
         // Language updater
@@ -793,18 +793,18 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame implements Styleable
 
     /**
      * Custom root pane for this {@link WebFrame}.
-     * It is required to provide undecorated root pane {@link StyleId} to avoid issues with further style updates.
-     * It also provides default frame {@link StyleId} instead of default root pane {@link StyleId}.
+     * It is required to create {@link WebRootPane} with undecorated style.
+     * It is necessary to apply actual {@link StyleId} in {@link #initialize(StyleId, String)}.
+     * It also provides default {@link WebFrame} {@link StyleId} instead of default {@link WebRootPane} {@link StyleId}.
      */
     public class WebFrameRootPane extends WebRootPane
     {
         /**
          * Constructs new root pane for this {@link WebFrame}.
-         * Providing default {@link StyleId} here is very important to avoid calling any updates.
          */
         public WebFrameRootPane ()
         {
-            super ( StyleId.auto );
+            super ( StyleManager.getDescriptor ( WebFrameRootPane.class ).getDefaultStyleId () );
         }
 
         @NotNull

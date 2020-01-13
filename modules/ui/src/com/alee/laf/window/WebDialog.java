@@ -631,7 +631,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
         WebLookAndFeel.setOrientation ( this );
         setDefaultCloseOperation ( DISPOSE_ON_CLOSE );
 
-        // Installing root pane style
+        // Applying style
         setStyleId ( id );
 
         // Language updater
@@ -1235,18 +1235,18 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog implements Stylea
 
     /**
      * Custom root pane for this {@link WebDialog}.
-     * It is required to provide undecorated root pane {@link StyleId} to avoid issues with further style updates.
-     * It also provides default dialog {@link StyleId} instead of default root pane {@link StyleId}.
+     * It is required to create {@link WebRootPane} with undecorated style.
+     * It is necessary to apply actual {@link StyleId} in {@link #initialize(Window, StyleId, String)}.
+     * It also provides default {@link WebDialog} {@link StyleId} instead of default {@link WebRootPane} {@link StyleId}.
      */
     public class WebDialogRootPane extends WebRootPane
     {
         /**
          * Constructs new root pane for this {@link WebDialog}.
-         * Providing default {@link StyleId} here is very important to avoid calling any updates.
          */
         public WebDialogRootPane ()
         {
-            super ( StyleId.auto );
+            super ( StyleManager.getDescriptor ( WebDialogRootPane.class ).getDefaultStyleId () );
         }
 
         @NotNull

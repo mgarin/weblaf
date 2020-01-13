@@ -271,7 +271,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
         setFocusableWindowState ( true );
         WebLookAndFeel.setOrientation ( this );
 
-        // Installing root pane style
+        // Applying style
         setStyleId ( id );
 
         // Adding focus tracker for this window
@@ -719,18 +719,18 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow implements Stylea
 
     /**
      * Custom root pane for this {@link WebWindow}.
-     * It is required to provide undecorated root pane {@link StyleId} to avoid issues with further style updates.
-     * It also provides default window {@link StyleId} instead of default root pane {@link StyleId}.
+     * It is required to create {@link WebRootPane} with undecorated style.
+     * It is necessary to apply actual {@link StyleId} in {@link #initialize(StyleId)}.
+     * It also provides default {@link WebWindow} {@link StyleId} instead of default {@link WebRootPane} {@link StyleId}.
      */
     public class WebWindowRootPane extends WebRootPane
     {
         /**
-         * Constructs new root pane for this {@link WebWindow}.
-         * Providing default {@link StyleId} here is very important to avoid calling any updates.
+         * Constructs new {@link WebWindowRootPane} for this {@link WebWindow}.
          */
         public WebWindowRootPane ()
         {
-            super ( StyleId.auto );
+            super ( StyleManager.getDescriptor ( WebWindowRootPane.class ).getDefaultStyleId () );
         }
 
         @NotNull
