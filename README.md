@@ -7,9 +7,9 @@ About
 [![Last Commit](https://img.shields.io/github/last-commit/mgarin/weblaf)](https://github.com/mgarin/weblaf/commits/master)
 [![Chat on Gitter](https://img.shields.io/gitter/room/mgarin/weblaf?color=%2342ac8c)](https://gitter.im/mgarin/weblaf)
 
-**WebLaf** is a Look and Feel and component library written in pure Java for cross-platform desktop Swing applications.
+**WebLaf** is a fully open-source Look and Feel and component library written in pure Java for cross-platform desktop Swing applications. But it is also more than just that - it was made with intention of covering pretty much all aspects of UI development and at this point WebLaF includes an extensive set of features that goes beyond just Look and Feel or Swing component library.
 
-You can check out brand new demo application -
+To look at some features provided by WebLaF I recommend checking out the demo -
 
 [![DemoApplication](./screenshots/demo.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.12/weblaf-demo-1.2.12-jar-with-dependencies.jar)
 
@@ -31,18 +31,16 @@ It is an [executable JAR](https://github.com/mgarin/weblaf/releases/download/v1.
 - Application plugin support
 - And more...
 
-**WebLaF project is...**
+**WebLaF project**
 
-- Fully open-source without any hidden proprietary code
-- Constantly growing and being improved
-- Open for any suggestions and improvements
+- [Fully open-source without any hidden proprietary code](https://github.com/mgarin/weblaf)
+- [Have been developed for 10+ years](https://github.com/mgarin/weblaf/releases)
+- [Constantly growing and being improved](https://github.com/mgarin/weblaf/projects)
+- [Open for any suggestions and improvements](https://github.com/mgarin/weblaf/blob/master/CONTRIBUTING.md)
 
 
 Binaries
 ----------
-
-You can acquire latest WebLaF binaries from "releases" section here:<br>
-https://github.com/mgarin/weblaf/releases
 
 If you are working with a Maven project you can add WebLaF dependency like this:
 ```xml
@@ -54,21 +52,26 @@ If you are working with a Maven project you can add WebLaF dependency like this:
 ```
 You can also use `RELEASE` or `LATEST` version instead of specific one.
 
+Alternatively can find latest WebLaF binaries in [releases section](https://github.com/mgarin/weblaf/releases). These are the very same binaries that are available through Maven, simply provided for convenience.
+
+
+Modules
+----------
 Full list of modules/artifacts available in v1.2.12:
 
-- `weblaf-core` - Module containing all basic managers, interfaces and classes
+- `weblaf-core` - Module containing all core library managers, interfaces and classes
 - `weblaf-ui` - Module containing all components, UIs, painters, skins, managers and anything related to them
 - `weblaf-plugin` - Module containing `PluginManager` [ [wiki guide](https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager) ]
 - `weblaf-ninepatch-editor` - Module containing `NinePatchEditor`
 - `weblaf-demo` - Module containing `DemoApplication`
 
-You can use any of these in your Maven project to include respective module.
+You can use any of these in your Maven project to include respective module, similarly to how `weblaf-ui` is used in the example from the section above.
 
 
 Quick start
 ----------
 
-First you will need to download one of the [newest releases](https://github.com/mgarin/weblaf/releases) or add a Maven dependency to your project as shown above. If you are not using Maven - don't forget to download all dependencies mentioned in release notes.
+First you will need to download one of the [releases](https://github.com/mgarin/weblaf/releases) or add a Maven dependency to your project as shown above. If you are not using Maven - don't forget to download all dependencies, they are always mentioned in release notes.
 
 Once you have all necessary binaries attached to your project you can to install WebLaF by simply calling `WebLookAndFeel.install ()` or using one of standard Swing `UIManager` methods for installing L&F:
 ```java
@@ -103,81 +106,21 @@ public class QuickStart
 ```
 That's it, now your application is using WebLaF.
 
-If you are new to WebLaF or Swing in general I recommend reading these wiki articles first:
+If you are new to Swing I recommend reading official Oracle articles about it first:
+- [Creating a GUI with JFC/Swing](https://docs.oracle.com/javase/tutorial/uiswing/index.html)
+
+It is also important to understand how threading should be approached when working with Swing:
+- [Event Dispatch Thread](https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread)
+
+And if are new to WebLaF - I recommend checkin out these wiki articles first:
 - [How to use WebLaF](https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF)
-- [Event-Dispatch-Thread](https://github.com/mgarin/weblaf/wiki/Event-Dispatch-Thread)
-- [Styling introduction](https://github.com/mgarin/weblaf/wiki/Styling-introduction)
+- [Styling introduction](https://github.com/mgarin/weblaf/wiki/Styling-introduction) 
 
 You can also check [other wiki articles](https://github.com/mgarin/weblaf/wiki) - there are quite a few available for different WebLaF components and features and they might save you a lot of time.
 
-Another thing I would higly recommend is having WebLaF sources attached to your IDE project. I'm doing my best to keep it clean and well-documented, so if you are wondering what some method does or how a feature works - it should help you a lot. 
+I also higly recommend you to have WebLaF sources attached to your IDE project. I'm doing my best to keep it clean and well-documented, so if you are wondering what some method does or how a feature works - peeking into the source code might be the easiest and fastest way to find it out. 
 
-All of WebLaF source code is fully disclosed and available here on GitHub. Source code for releases is available in [releases](https://github.com/mgarin/weblaf/releases) section and on [Maven](https://search.maven.org/search?q=g:com.weblookandfeel). 
-
-
-Java 9+
-----------
-Starting from Java 9 once you run an application with WebLaF you will most probably see next warning: 
-```
-WARNING: An illegal reflective access operation has occurred
-WARNING: Illegal reflective access by com.alee.utils.ReflectUtils (file:weblaf-core-x.x.x.jar) to method {method.name}
-WARNING: Please consider reporting this to the maintainers of com.alee.utils.ReflectUtils
-WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
-WARNING: All illegal access operations will be denied in a future release
-```
-Or a similar one pointing at a different JAR or method.
-
-This warning appears because WebLaF uses Reflection API a lot to access various private/proprietary Java features as it is nearly impossible to have a robust Look and Feel otherwise due to some Swing limitations and bad design decisions. Starting from Java 9 - such "unauthorized" access displays a warning like the one shown above. Start from Java 12 some of Reflection API features were also made unavailable, but workaround for that was already made.
-
-To avoid receiving warnings - application must specify at launch which modules specifically should be accessible to other modules through Reflection API. If suchs permissions are not given or given incorrectly - you will keep encountering warning from above pointing at "illegal" reflective access point.
-
-Here is a list of JVM options that can be used with Java 9 and higher to avoid the warnings:
-```
---add-opens java.base/java.util=ALL-UNNAMED
---add-opens java.base/java.text=ALL-UNNAMED
---add-opens java.base/java.lang.reflect=ALL-UNNAMED
---add-opens java.base/java.net=ALL-UNNAMED
---add-opens java.base/java.lang=ALL-UNNAMED
---add-opens java.base/jdk.internal.loader=ALL-UNNAMED
---add-opens java.desktop/javax.swing=ALL-UNNAMED
---add-opens java.desktop/javax.swing.text=ALL-UNNAMED
---add-opens java.desktop/java.awt.font=ALL-UNNAMED
---add-opens java.desktop/java.awt.geom=ALL-UNNAMED
---add-opens java.desktop/java.awt=ALL-UNNAMED
---add-opens java.desktop/java.beans=ALL-UNNAMED
---add-opens java.desktop/javax.swing.table=ALL-UNNAMED
---add-opens java.desktop/com.sun.awt=ALL-UNNAMED
---add-opens java.desktop/sun.awt=ALL-UNNAMED
---add-opens java.desktop/sun.swing=ALL-UNNAMED
---add-opens java.desktop/sun.font=ALL-UNNAMED
---add-opens java.desktop/javax.swing.plaf.basic=ALL-UNNAMED
---add-opens java.desktop/javax.swing.plaf.synth=ALL-UNNAMED
---add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
---add-opens java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED
---add-opens java.desktop/com.apple.laf=ALL-UNNAMED
-```
-This should hide the "illegal reflective access" warnings, but you would instead see new ones: 
-```
-WARNING: package com.sun.java.swing.plaf.gtk not in java.desktop
-WARNING: package com.apple.laf not in java.desktop
-```
-This happens because the list above is made for cross-platform use and includes all different modules accessed by WebLaF which you most probably won't ever have all at once. And JVM simply warns you in that case that some modules you're granting access to do not exist in your application.
-
-These are the modules that are platform-related:
-```
-java.desktop/com.sun.java.swing.plaf.windows
-java.desktop/com.sun.java.swing.plaf.gtk
-java.desktop/com.apple.laf
-```
-If you want to completely avoid any warnings - you will need to use a platform-related list of JVM options for your application, basically excluding some of these three.
-
-Also note that some new warnings might appear at some point if you would be accessing your custom components through the styling system because it uses Reflection API to access fields and methods in various classes it uses, including any custom ones. You can block any illegal reflection access to make those cases visible faster by adding next JVM option:
-```
---illegal-access=deny
-```
-This will force JVM to throw an exception whenever Reflection API is used illegally anywhere with a full stack trace that can be used to track down the source and add aother JVM option for the module access.
-
-If you would find any JVM modules that I've missed in the list above - I would appreciate if you can post an issue here or contact me directly so I could update the information for other WebLaF users.
+All of WebLaF source code is fully disclosed and available here on GitHub. Source code for releases is available in [releases](https://github.com/mgarin/weblaf/releases) section and on [Maven](https://search.maven.org/search?q=g:com.weblookandfeel).
 
 
 Dependencies
@@ -220,12 +163,79 @@ Other non-code mentions:
 It is also important to mention that all dependencies and borrowed code pieces are properly attributed within the library source code itself and within available binary distributions.
 
 
+Java 9+
+----------
+Starting from Java 9 once you run an application with WebLaF you will most probably see next warning: 
+```
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.alee.utils.ReflectUtils (file:weblaf-core-x.x.x.jar) to method {method.name}
+WARNING: Please consider reporting this to the maintainers of com.alee.utils.ReflectUtils
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+```
+Or a similar one pointing at a different JAR or method.
+
+This warning appears because WebLaF uses Reflection API a lot to access various private/proprietary Java features as it is nearly impossible to have a robust Look and Feel otherwise due to Swing limitations and some bad Sun/Oracle design decisions. Starting from Java 9 - such "unauthorized" access displays a warning like the one shown above. 
+
+Also starting from Java 12 some of Reflection API features were made unavailable, but I already added a workaround for that which is available (and enabled by default) within release artifacts on both GitHub and Maven. This workaround uses new backward-compatible multi-release JAR feature to provide a separate code implementation for Java 12+ runtime.
+
+Problem is - it is still impossible to fully "fix" these warnings from the library side. To avoid seeing them - your application must specify at launch which modules specifically should be accessible to other modules through Reflection API. If suchs permissions are not given or given incorrectly - you will keep encountering warnings (or even errors) from above pointing at "illegal" reflective access point.
+
+Here is a list of JVM options that can be used with Java 9 and higher to avoid the warnings:
+```
+--add-opens java.base/java.util=ALL-UNNAMED
+--add-opens java.base/java.text=ALL-UNNAMED
+--add-opens java.base/java.lang.reflect=ALL-UNNAMED
+--add-opens java.base/java.net=ALL-UNNAMED
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-opens java.base/jdk.internal.loader=ALL-UNNAMED
+--add-opens java.desktop/javax.swing=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.text=ALL-UNNAMED
+--add-opens java.desktop/java.awt.font=ALL-UNNAMED
+--add-opens java.desktop/java.awt.geom=ALL-UNNAMED
+--add-opens java.desktop/java.awt=ALL-UNNAMED
+--add-opens java.desktop/java.beans=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.table=ALL-UNNAMED
+--add-opens java.desktop/com.sun.awt=ALL-UNNAMED
+--add-opens java.desktop/sun.awt=ALL-UNNAMED
+--add-opens java.desktop/sun.swing=ALL-UNNAMED
+--add-opens java.desktop/sun.font=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.plaf.basic=ALL-UNNAMED
+--add-opens java.desktop/javax.swing.plaf.synth=ALL-UNNAMED
+--add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
+--add-opens java.desktop/com.sun.java.swing.plaf.gtk=ALL-UNNAMED
+--add-opens java.desktop/com.apple.laf=ALL-UNNAMED
+```
+This should hide the "illegal reflective access" warnings, but you most probably will see new ones instead: 
+```
+WARNING: package com.sun.java.swing.plaf.gtk not in java.desktop
+WARNING: package com.apple.laf not in java.desktop
+```
+This happens because the list above is made for cross-platform use and includes all different modules accessed by WebLaF which you most probably won't ever have all at once. And JVM simply warns you in that case that some modules you're granting access to do not exist in your application.
+
+These are the modules that are platform-related:
+```
+java.desktop/com.sun.java.swing.plaf.windows
+java.desktop/com.sun.java.swing.plaf.gtk
+java.desktop/com.apple.laf
+```
+If you want to completely avoid any warnings - you will need to use a platform-related list of JVM options for your application, basically excluding some of these three.
+
+Also note that some new warnings might appear at some point if you would be accessing your custom components through the styling system because it uses Reflection API to access fields and methods in various classes it uses, including any custom ones. You can block any illegal reflection access to make those cases visible faster by adding next JVM option:
+```
+--illegal-access=deny
+```
+This will force JVM to throw an exception whenever Reflection API is used illegally anywhere with a full stack trace that can be used to track down the source and add aother JVM option for the module access.
+
+If you would find any JVM modules that I've missed in the list above - I would appreciate if you can post an issue here or contact me directly so I could update the information for other WebLaF users.
+
+
 Licensing
 ----------
 
 WebLaF is available under GPLv3 license for any non-commercial open-source projects. Commercial license is available as an alternative option and intended for closed-source and/or commercial projects. It removes restrictions dictated by GPLv3 license and can either be used for a single or any amounts of projects, depending on the commercial license sub-type.
 
-I know how much frustration license policies could cause, that is why here is a short compilation of restrictions of each available WebLaF license: 
+Here is a summary of different available WebLaF licenses: 
 
 1. **GPLv3 license [ [weblaf-gpl.txt](licenses/weblaf-gpl.txt) ]**
 
@@ -241,7 +251,7 @@ I know how much frustration license policies could cause, that is why here is a 
     - Cannot use in any commercial projects
     - Cannot create any commercial derivative projects
 
-2. **Single-application commercial license [ [weblaf-commercial.txt](licenses/weblaf-commercial.txt) ]**
+2. **[Single-application commercial license](http://weblookandfeel.com/buy/) [ [weblaf-commercial.txt](licenses/weblaf-commercial.txt) ]**
 
     - Single commercial closed-source project
     - Unlimited amount of developers working with your commercial project
@@ -255,7 +265,7 @@ I know how much frustration license policies could cause, that is why here is a 
     - Can only be used in one of your commercial closed-source project
     - Cannot create any commercial derivative L&F libraries
 
-3. **Multi-application commercial license [ [weblaf-commercial.txt](licenses/weblaf-commercial.txt) ]**
+3. **[Multi-application commercial license](http://weblookandfeel.com/buy/) [ [weblaf-commercial.txt](licenses/weblaf-commercial.txt) ]**
 
     - Unlimited amount of commercial closed-source projects
     - Unlimited amount of developers working with your commercial project(s)
@@ -269,6 +279,21 @@ I know how much frustration license policies could cause, that is why here is a 
     - Cannot create any commercial derivative L&F libraries
     
 Commercial license can be purchased from the [WebLaF site](http://weblookandfeel.com/buy/). You can also contact me directly [through e-mail](mailto:mgarin@alee.com) for other payment options.
+
+
+Development
+----------
+Back in 2011 I was the only one working on the project, it was quite rudimentary and wasn't really used in any real-life projects, but since then project has grown, received multiple updates, major improvements and reworks and is now used by multiple users and organizations. 
+
+We are also using WebLaF as our main framework for all our desktop applications in Alee Software and are actively working on improving and adding new features to it. This might not be much, but you can take is a guarantee that project won't suddenly close or die out. One more thing I can add is that I personally plan to work on this project for as long as Oracle supports Swing in their new Java releases as I still consider it to be a superior UI framework compared to any other Java or non-Java UI frameworks, even considering all it's flaws and issues.
+
+Those who are following the project might have noticed that pacing of updates have changed dramatically over last year. There are considerably more updates now and they are coming out at a more predictable rate - roughly every 1-2 months, depending on amount of features and changes. This partially happened because I finally finished the huge styling update that I've been working on for the last 3-4 years in background and that stopped me from delivering any changes for the time. Releasing that update allowed me to finally get new stuff rolling out, fix the library versioning, get WebLaF releases to Maven and do a lot of internal improvements to the library that I've wanted to do for a long while. I'm nowhere near being done though and you can expect new features and long-awaited improvements in the future!
+
+Now, I must be honest here - WebLaF is not the only project I am working on and I do have quite busy periods from time to time where I can't get a lot of new stuff out (and it was one of the big reasons that styling update took years to release), but I am going to dedicate to consistent releases that have already been going on for a while. It's not all about new features - bugfixes and polish is just as important, and it is usually much easier and faster to do (except for you, JDK bugs) - that is something that will keep on coming even during the busy periods.
+
+If you are interested in what's coming - I recommend taking a look at the [projects page](https://github.com/mgarin/weblaf/projects). I keep it up-to-date so you can easily see what I am working on right now and what is planned for the upcoming updates. That being said - features might get delayed or even moved to later updates in case they don't fit into 1-2 months release cycle, so don't take this as granted, but I will do my best to stick to the plan.
+
+Planned release dates can be found on [milestones page](https://github.com/mgarin/weblaf/milestones), but just like the projects - dont take it as granted. They should be more accurate now that I have shorter release cycle, but I will still delay the update if it is necessary or might as well release it earlier if it is ready.
 
 
 Feedback
