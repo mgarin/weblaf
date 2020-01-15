@@ -39,10 +39,12 @@ It is an [executable JAR](https://github.com/mgarin/weblaf/releases/download/v1.
 - [Open for any suggestions and improvements](https://github.com/mgarin/weblaf/blob/master/CONTRIBUTING.md)
 
 
-Binaries
+Quick start
 ----------
 
-If you are working with a Maven project you can add WebLaF dependency like this:
+**Including WebLaF in your project (Maven)**
+
+If you are working with a Maven project you can simply add dependency for `weblaf-ui` module:
 ```xml
 <dependency>
   <groupId>com.weblookandfeel</groupId>
@@ -52,28 +54,15 @@ If you are working with a Maven project you can add WebLaF dependency like this:
 ```
 You can also use `RELEASE` or `LATEST` version instead of specific one.
 
-Alternatively can find latest WebLaF binaries in [releases section](https://github.com/mgarin/weblaf/releases). These are the very same binaries that are available through Maven, simply provided for convenience.
+**Including WebLaF in your project (binaries)**
 
+You can always find latest WebLaF binaries in [releases section](https://github.com/mgarin/weblaf/releases). These are the very same binaries that are available through Maven, simply copied over to release section for convenience. Don't forget to download all dependencies in this case as well, they are always linked at the end of release notes.
 
-Modules
-----------
-Full list of modules/artifacts available in v1.2.12:
+If you aren't sure which binaries to use or which dependencies you might be missing - I recommend reading [How to use WebLaF](https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF) wiki article - it gives a short explanation on what each module does and requires.
 
-- `weblaf-core` - Module containing all core library managers, interfaces and classes
-- `weblaf-ui` - Module containing all components, UIs, painters, skins, managers and anything related to them
-- `weblaf-plugin` - Module containing `PluginManager` [ [wiki guide](https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager) ]
-- `weblaf-ninepatch-editor` - Module containing `NinePatchEditor`
-- `weblaf-demo` - Module containing `DemoApplication`
+**Installing L&F**
 
-You can use any of these in your Maven project to include respective module, similarly to how `weblaf-ui` is used in the example from the section above.
-
-
-Quick start
-----------
-
-First you will need to download one of the [releases](https://github.com/mgarin/weblaf/releases) or add a Maven dependency to your project as shown above. If you are not using Maven - don't forget to download all dependencies, they are always mentioned in release notes.
-
-Once you have all necessary binaries attached to your project you can to install WebLaF by simply calling `WebLookAndFeel.install ()` or using one of standard Swing `UIManager` methods for installing L&F:
+You can install WebLaF by simply calling `WebLookAndFeel.install ()` or using one of standard Swing `UIManager` methods:
 ```java
 public class QuickStart
 {
@@ -89,15 +78,24 @@ public class QuickStart
                 // Install WebLaF as application LaF
                 WebLookAndFeel.install ();
 
-                // You can also do that in one of the old-fashioned ways:
+                // You can also specify preferred skin right-away
+                // WebLookAndFeel.install ( WebDarkSkin.class );
+
+                // You can also do that in one of the old-fashioned ways
                 // UIManager.setLookAndFeel ( new WebLookAndFeel () );
                 // UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
                 // UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
 
-                // Create you application here using Swing components
+                // You can also configure other WebLaF managers as you like now
+                // StyleManager
+                // SettingsManager
+                // LanguageManager
+                // ...
+
+                // Initialize your application once you're done setting everything up  
                 // JFrame frame = ...
 
-                // Or use similar Web* components to get access to some extended features
+                // You can also use Web* components to get access to some extended WebLaF features
                 // WebFrame frame = ...
             }
         } );
@@ -105,6 +103,8 @@ public class QuickStart
 }
 ```
 That's it, now your application is using WebLaF.
+
+**Helpful articles**
 
 If you are new to Swing I recommend reading official Oracle articles about it first:
 - [Creating a GUI with JFC/Swing](https://docs.oracle.com/javase/tutorial/uiswing/index.html)
@@ -118,7 +118,9 @@ And if are new to WebLaF - I recommend checkin out these wiki articles first:
 
 You can also check [other wiki articles](https://github.com/mgarin/weblaf/wiki) - there are quite a few available for different WebLaF components and features and they might save you a lot of time.
 
-I also higly recommend you to have WebLaF sources attached to your IDE project. I'm doing my best to keep it clean and well-documented, so if you are wondering what some method does or how a feature works - peeking into the source code might be the easiest and fastest way to find it out. 
+**Sources**
+
+One last thing - I higly recommend having WebLaF sources attached to your IDE project. I'm doing my best to keep it clean and well-documented, so if you are wondering what some method does or how a feature works - peeking into the source code might be the easiest and fastest way to find out. 
 
 All of WebLaF source code is fully disclosed and available here on GitHub. Source code for releases is available in [releases](https://github.com/mgarin/weblaf/releases) section and on [Maven](https://search.maven.org/search?q=g:com.weblookandfeel).
 
