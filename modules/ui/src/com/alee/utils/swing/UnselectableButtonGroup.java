@@ -17,6 +17,7 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 
@@ -27,7 +28,7 @@ import java.util.List;
 
 /**
  * Custom button group that allows empty selection state.
- * It can also contain custom {@link com.alee.utils.swing.ButtonGroupListener} to receive
+ * It can also contain custom {@link ButtonGroupListener} to receive
  *
  * @author Mikle Garin
  */
@@ -36,6 +37,7 @@ public class UnselectableButtonGroup extends ButtonGroup
     /**
      * Group selection change listeners.
      */
+    @NotNull
     protected final EventListenerList listeners = new EventListenerList ();
 
     /**
@@ -56,7 +58,7 @@ public class UnselectableButtonGroup extends ButtonGroup
      *
      * @param buttons {@link AbstractButton}s to group
      */
-    public UnselectableButtonGroup ( final AbstractButton... buttons )
+    public UnselectableButtonGroup ( @NotNull final AbstractButton... buttons )
     {
         this ( true );
         add ( buttons );
@@ -67,7 +69,7 @@ public class UnselectableButtonGroup extends ButtonGroup
      *
      * @param buttons {@link List} of {@link AbstractButton}s to group
      */
-    public UnselectableButtonGroup ( final List<AbstractButton> buttons )
+    public UnselectableButtonGroup ( @NotNull final List<AbstractButton> buttons )
     {
         this ( true );
         add ( buttons );
@@ -78,7 +80,7 @@ public class UnselectableButtonGroup extends ButtonGroup
      *
      * @param container {@link Container} to find {@link AbstractButton}s to group in
      */
-    public UnselectableButtonGroup ( final Container container )
+    public UnselectableButtonGroup ( @NotNull final Container container )
     {
         this ( true );
         add ( container );
@@ -100,6 +102,7 @@ public class UnselectableButtonGroup extends ButtonGroup
      *
      * @return all buttons added into this group
      */
+    @NotNull
     public List<AbstractButton> getButtons ()
     {
         return CollectionUtils.copy ( buttons );
@@ -110,7 +113,7 @@ public class UnselectableButtonGroup extends ButtonGroup
      *
      * @param buttons {@link AbstractButton}s to group
      */
-    public void add ( final AbstractButton... buttons )
+    public void add ( @NotNull final AbstractButton... buttons )
     {
         for ( final AbstractButton button : buttons )
         {
@@ -123,7 +126,7 @@ public class UnselectableButtonGroup extends ButtonGroup
      *
      * @param buttons {@link List} of {@link AbstractButton}s to group
      */
-    public void add ( final List<AbstractButton> buttons )
+    public void add ( @NotNull final List<AbstractButton> buttons )
     {
         for ( final AbstractButton button : buttons )
         {
@@ -136,7 +139,7 @@ public class UnselectableButtonGroup extends ButtonGroup
      *
      * @param container {@link Container} to find {@link AbstractButton}s to group in
      */
-    public void add ( final Container container )
+    public void add ( @NotNull final Container container )
     {
         for ( int i = 0; i < container.getComponentCount (); i++ )
         {
@@ -184,41 +187,44 @@ public class UnselectableButtonGroup extends ButtonGroup
     }
 
     @Override
-    public void setSelected ( final ButtonModel model, final boolean selected )
+    public void setSelected ( @NotNull final ButtonModel model, final boolean selected )
     {
-        if ( selected || !unselectable )
+        if ( selected != model.isSelected () )
         {
-            super.setSelected ( model, selected );
+            if ( selected || !unselectable )
+            {
+                super.setSelected ( model, selected );
+            }
+            else
+            {
+                clearSelection ();
+            }
+            fireSelectionChanged ();
         }
-        else
-        {
-            clearSelection ();
-        }
-        fireSelectionChanged ();
     }
 
     /**
-     * Adds {@link com.alee.utils.swing.ButtonGroupListener}.
+     * Adds {@link ButtonGroupListener}.
      *
-     * @param listener {@link com.alee.utils.swing.ButtonGroupListener} to add
+     * @param listener {@link ButtonGroupListener} to add
      */
-    public void addButtonGroupListener ( final ButtonGroupListener listener )
+    public void addButtonGroupListener ( @NotNull final ButtonGroupListener listener )
     {
         listeners.add ( ButtonGroupListener.class, listener );
     }
 
     /**
-     * Removes {@link com.alee.utils.swing.ButtonGroupListener}.
+     * Removes {@link ButtonGroupListener}.
      *
-     * @param listener {@link com.alee.utils.swing.ButtonGroupListener} to remove
+     * @param listener {@link ButtonGroupListener} to remove
      */
-    public void removeButtonGroupListener ( final ButtonGroupListener listener )
+    public void removeButtonGroupListener ( @NotNull final ButtonGroupListener listener )
     {
         listeners.remove ( ButtonGroupListener.class, listener );
     }
 
     /**
-     * Informs all {@link com.alee.utils.swing.ButtonGroupListener}s about group selection change.
+     * Informs all {@link ButtonGroupListener}s about group selection change.
      */
     public void fireSelectionChanged ()
     {
@@ -235,7 +241,8 @@ public class UnselectableButtonGroup extends ButtonGroup
      * @param buttons {@link AbstractButton}s to group
      * @return {@link UnselectableButtonGroup} used to group specified {@link AbstractButton}s
      */
-    public static UnselectableButtonGroup group ( final AbstractButton... buttons )
+    @NotNull
+    public static UnselectableButtonGroup group ( @NotNull final AbstractButton... buttons )
     {
         return new UnselectableButtonGroup ( buttons );
     }
@@ -247,7 +254,8 @@ public class UnselectableButtonGroup extends ButtonGroup
      * @param buttons {@link List} of {@link AbstractButton}s to group
      * @return {@link UnselectableButtonGroup} used to group specified {@link AbstractButton}s
      */
-    public static UnselectableButtonGroup group ( final List<AbstractButton> buttons )
+    @NotNull
+    public static UnselectableButtonGroup group ( @NotNull final List<AbstractButton> buttons )
     {
         return new UnselectableButtonGroup ( buttons );
     }
@@ -259,7 +267,8 @@ public class UnselectableButtonGroup extends ButtonGroup
      * @param container {@link Container} to find {@link AbstractButton}s to group in
      * @return {@link UnselectableButtonGroup} used to group {@link AbstractButton}s from the specified {@link Container}
      */
-    public static UnselectableButtonGroup group ( final Container container )
+    @NotNull
+    public static UnselectableButtonGroup group ( @NotNull final Container container )
     {
         return new UnselectableButtonGroup ( container );
     }
