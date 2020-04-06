@@ -1521,7 +1521,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setOrientation ( @NotNull final Component component )
     {
         final ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
-        if ( orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () )
+        if ( orientation.isLeftToRight () != component.getComponentOrientation ().isLeftToRight () &&
+                ( !SystemUtils.isJava9orAbove () || !( component instanceof JSpinner.NumberEditor ) ) )
         {
             component.setComponentOrientation ( orientation );
         }
