@@ -17,11 +17,11 @@
 
 package com.alee.managers.plugin;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.*;
 import com.alee.utils.collection.ImmutableList;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.filefilter.DirectoriesFilter;
 import com.alee.utils.sort.TopologicalGraphProvider;
 import com.alee.utils.sort.TopologicalSorter;
 import org.slf4j.LoggerFactory;
@@ -50,6 +50,18 @@ public abstract class PluginManager<P extends Plugin>
     /**
      * todo 1. Replace {@link #applyInitializationStrategy()} this with a custom comparator for listener events
      */
+
+    /**
+     * {@link FileFilter} used to filter out directories only.
+     */
+    protected static final FileFilter DIRECTORIES_FILTER = new FileFilter ()
+    {
+        @Override
+        public boolean accept ( @NotNull final File file )
+        {
+            return file.isDirectory ();
+        }
+    };
 
     /**
      * Plugin checks lock object.
@@ -723,12 +735,14 @@ public abstract class PluginManager<P extends Plugin>
         // Checking sub-directories recursively
         if ( recursively )
         {
-            final File[] subfolders = dir.listFiles ( new DirectoriesFilter () );
+            // todo Once moved to NIO this filter should be changed, right now it might not accept drives and custom native stuff
+            // todo DirectoriesFilter usage was removed due to FileSystemView usage and related calls
+            final File[] subfolders = dir.listFiles ( DIRECTORIES_FILTER );
             if ( subfolders != null )
             {
                 for ( final File subfolder : subfolders )
                 {
-                    collectPluginsInformationImpl ( subfolder, recursively );
+                    collectPluginsInformationImpl ( subfolder, true );
                 }
             }
         }
