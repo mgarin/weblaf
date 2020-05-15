@@ -109,6 +109,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String TRAILING_COMPONENT_PROPERTY = "trailingComponent";
 
     /**
+     * Whether or not {@link WebLookAndFeel} is currently installed as application's Look and Feel.
+     * Separate field is used to store the state instead of checking current Look and Feel to avoid initalization time issues.
+     */
+    protected static boolean installed = false;
+
+    /**
      * Whether or not library should force Event Dispatch Thread usage for all UI-related operations.
      * Enabling this might allow you to find out places where you try to interact with UI elements outside of the EDT.
      * By default it is disabled to avoid issues this might cause in different applications not following proper Swing design patterns.
@@ -395,6 +401,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Listening to ALT key for menubar quick focusing
         KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
+
+        // Updating state
+        installed = true;
     }
 
     /**
@@ -408,6 +417,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Removing alt processor
         KeyboardFocusManager.getCurrentKeyboardFocusManager ().removeKeyEventPostProcessor ( altProcessor );
+
+        // Updating state
+        installed = false;
     }
 
     /**
@@ -1115,7 +1127,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static boolean isInstalled ()
     {
-        return WebLookAndFeel.class.isInstance ( UIManager.getLookAndFeel () );
+        return installed;
     }
 
     /**
