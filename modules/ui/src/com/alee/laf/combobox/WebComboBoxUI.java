@@ -26,7 +26,8 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.list.WebList;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
-import com.alee.managers.style.*;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
@@ -495,6 +496,41 @@ public class WebComboBoxUI extends WComboBoxUI
                 setPreferredSize ( new Dimension ( width, height ) );
 
                 return popupBounds.getLocation ();
+            }
+
+            /**
+             * Overridden to fix incorrect behavior on Java 9+ due to border being accounted for.
+             */
+            @Override
+            protected Rectangle computePopupBounds ( final int px, final int py, final int pw, final int ph )
+            {
+                final Toolkit toolkit = Toolkit.getDefaultToolkit ();
+                final Rectangle screenBounds;
+
+                // Calculate the desktop dimensions relative to the combo box.
+                final GraphicsConfiguration gc = comboBox.getGraphicsConfiguration ();
+                final Point p = new Point ();
+                SwingUtilities.convertPointFromScreen ( p, comboBox );
+                if ( gc != null )
+                {
+                    final Insets screenInsets = toolkit.getScreenInsets ( gc );
+                    screenBounds = gc.getBounds ();
+                    screenBounds.width -= screenInsets.left + screenInsets.right;
+                    screenBounds.height -= screenInsets.top + screenInsets.bottom;
+                    screenBounds.x += p.x + screenInsets.left;
+                    screenBounds.y += p.y + screenInsets.top;
+                }
+                else
+                {
+                    screenBounds = new Rectangle ( p, toolkit.getScreenSize () );
+                }
+
+                final Rectangle rect = new Rectangle ( px, py, pw, ph );
+                if ( py + ph > screenBounds.y + screenBounds.height && ph < screenBounds.height )
+                {
+                    rect.y = -rect.height;
+                }
+                return rect;
             }
         };
     }
