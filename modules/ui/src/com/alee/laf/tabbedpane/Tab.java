@@ -24,6 +24,7 @@ import com.alee.extended.label.WebStyledLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.Stateful;
+import com.alee.utils.FontUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -58,6 +59,7 @@ public class Tab extends WebStyledLabel implements Stateful, UIResource
         setDisplayedMnemonicIndex ( tabbedPane.getDisplayedMnemonicIndexAt ( index ) );
         setEnabled ( tabbedPane.isEnabledAt ( index ) );
         applyComponentOrientation ( tabbedPane.getComponentOrientation () );
+        FontUtils.replaceFontUIResource ( this, FontUtils.getFontUIResource ( tabbedPane.getFont () ) );
     }
 
     /**

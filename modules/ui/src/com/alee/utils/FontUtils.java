@@ -18,9 +18,12 @@
 package com.alee.utils;
 
 import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.font.DerivedFontAttributes;
 import com.alee.utils.map.SoftHashMap;
 
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.UIResource;
 import java.awt.*;
 import java.util.Map;
 
@@ -283,5 +286,49 @@ public final class FontUtils
             complex = false;
         }
         return complex;
+    }
+
+    /**
+     * Returns {@link FontUIResource} for the specified {@link Font}.
+     * It can either be the {@link Font} itself, new {@link FontUIResource} based on that {@link Font} or {@code null}.
+     *
+     * @param font {@link Font} to retrieve {@link FontUIResource} for
+     * @return {@link FontUIResource} for the specified {@link Font}
+     */
+    @Nullable
+    public static FontUIResource getFontUIResource ( @Nullable final Font font )
+    {
+        final FontUIResource fontUIResource;
+        if ( font != null )
+        {
+            if ( font instanceof FontUIResource )
+            {
+                fontUIResource = ( FontUIResource ) font;
+            }
+            else
+            {
+                fontUIResource = new FontUIResource ( font );
+            }
+        }
+        else
+        {
+            fontUIResource = null;
+        }
+        return fontUIResource;
+    }
+
+    /**
+     * Replaces {@link Font} to the specified {@link Component} if it's current {@link Font} is {@code null} or {@link UIResource}.
+     *
+     * @param component {@link Component} to replace {@link Font} for
+     * @param font      {@link Font} to replace current one with
+     */
+    public static void replaceFontUIResource ( @NotNull final Component component, @Nullable final Font font )
+    {
+        final Font oldFont = component.getFont ();
+        if ( oldFont == null || oldFont instanceof UIResource )
+        {
+            component.setFont ( font );
+        }
     }
 }

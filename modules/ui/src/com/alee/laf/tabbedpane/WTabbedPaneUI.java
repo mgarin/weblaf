@@ -20,6 +20,7 @@ package com.alee.laf.tabbedpane;
 import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.WebUI;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.viewport.WebViewport;
@@ -30,12 +31,14 @@ import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.CoreSwingUtils;
+import com.alee.utils.FontUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.TabbedPaneUI;
 import java.awt.*;
 import java.awt.event.*;
@@ -410,6 +413,18 @@ public abstract class WTabbedPaneUI<C extends JTabbedPane> extends TabbedPaneUI 
                     if ( index != null )
                     {
                         removeTab ( index );
+                    }
+                }
+                else if ( Objects.equals ( property, WebLookAndFeel.FONT_PROPERTY ) )
+                {
+                    final FontUIResource font = FontUtils.getFontUIResource ( tabbedPane.getFont () );
+                    for ( int i = 0; i < tabContainer.getComponentCount (); i++ )
+                    {
+                        final Component component = tabContainer.getComponent ( i );
+                        if ( component instanceof Tab )
+                        {
+                            FontUtils.replaceFontUIResource ( component, font );
+                        }
                     }
                 }
                 else if ( Objects.equals ( property, WebTabbedPane.ENABLED_AT_PROPERTY ) )
