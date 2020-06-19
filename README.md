@@ -246,7 +246,7 @@ Here is a summary of different available WebLaF licenses:
     - Unlimited amount of end-user distributions of your non-commercial open-source projects 
     - Full access to complete library [source code](https://github.com/mgarin/weblaf)
     - Free [updates](https://github.com/mgarin/weblaf/releases) to all newer minor and major versions
-    - Free support via [GitHub](https://github.com/mgarin/weblaf/issues), [Gitter](https://gitter.im/mgarin/weblaf) and [e-mail](mailto:mgarin@alee.com
+    - Free support via [GitHub](https://github.com/mgarin/weblaf/issues), [Gitter](https://gitter.im/mgarin/weblaf) and [e-mail](mailto:mgarin@alee.com)
     
     Limitations:
     
