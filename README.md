@@ -11,11 +11,11 @@ About
 
 To look at some features provided by WebLaF I recommend checking out the demo -
 
-[![DemoApplication](./screenshots/demo.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.12/weblaf-demo-1.2.12-jar-with-dependencies.jar)
+[![DemoApplication](./screenshots/demo.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.13/weblaf-demo-1.2.13-jar-with-dependencies.jar)
 
-[![DemoApplication](./screenshots/demo-dark.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.12/weblaf-demo-1.2.12-jar-with-dependencies.jar)
+[![DemoApplication](./screenshots/demo-dark.png)](https://github.com/mgarin/weblaf/releases/download/v1.2.13/weblaf-demo-1.2.13-jar-with-dependencies.jar)
 
-It is an [executable JAR](https://github.com/mgarin/weblaf/releases/download/v1.2.12/weblaf-demo-1.2.12-jar-with-dependencies.jar) which you can run if you have JRE 6 or higher installed.
+It is an [executable JAR](https://github.com/mgarin/weblaf/releases/download/v1.2.13/weblaf-demo-1.2.13-jar-with-dependencies.jar) which you can run if you have JRE 6 or higher installed.
 
 **Features**
 
@@ -49,7 +49,7 @@ If you are working with a Maven project you can simply add dependency for `webla
 <dependency>
   <groupId>com.weblookandfeel</groupId>
   <artifactId>weblaf-ui</artifactId>
-  <version>1.2.12</version>
+  <version>1.2.13</version>
 </dependency>
 ```
 You can also use `RELEASE` or `LATEST` version instead of specific one.
