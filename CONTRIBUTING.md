@@ -1,38 +1,60 @@
 Contributing to WebLaF
 ---
 
-First off, thanks for taking the time to read this and potentially contribute to WebLaF project!
+First of all, thank you for taking the time to read this and potentially contribute to WebLaF project!
 
-This document contains a set of guidelines that you might find useful for contributing to WebLaF project. Those are just guidelines, not rules. Use your best judgment and feel free to propose changes to this document if you feel that something can be improved.
+I am developing this project mostly alone and I try to keep releases as polished as they can be, but bugs or other potential problems are unavoidable and the sooner I know about them - the sooner I can deliver a fix and release new update containing it. So any kind of contribution to the project is welcome!
+
+ This document contains a set of guidelines that you might find useful. Those are just guidelines, not rules. Use your best judgment and feel free to propose changes to this document if you feel that it can be improved.
 
 
 Issues
 ---
 
-The easiest way to contribute to WebLaF project is opening a [new issue](https://github.com/mgarin/weblaf/issues/new) for reporting a bug or suggesting a feature, improvement or a new wiki article.
+The easiest way to contribute to WebLaF project is opening a [new issue](https://github.com/mgarin/weblaf/issues/new) which can be a: 
+
+- Question
+- Bug report
+- Feature suggestion
+- Improvement suggestion
+- Wiki article request
+- Wiki article suggestion
+
+And yes, I do consider any questions asked as valuable contribution to the library because if answered and solved - it might help other people to solve similar issue much faster in the future.
  
- I am developing this project mostly alone and I try to keep releases as polished as they can be, but bugs are unavoidable and the sooner I know about them - the sooner I can deliver a fix. 
- 
- Any improvement or feature suggestions are just as I do want to expand WebLaF functionality as much as possible and make it as user-friendly as possible.
+Any improvement or feature suggestions are just as I do want to expand WebLaF functionality as much as possible and make it as user-friendly as possible.
+
+### Question
+
+If you got any question about WebLaF - I recommend checking [wiki](https://github.com/mgarin/weblaf/wiki) section of the project first. It contains multiple helpful articles that might answer your queston right away. 
+
+Otherwise - feel free to [open new issue](https://github.com/mgarin/weblaf/issues/new) and ask about anything related to WebLaF - I'll do my best to answer your question as soon as possible.
 
 #### Bug report
 
-If you found a bug and want to [report it](https://github.com/mgarin/weblaf/issues/new) - next few things are crucial for me to know:
+https://github.com/mgarin/weblaf/issues
 
-- **WebLaF version** you found it in
-- **JDK version** you are using to reproduce the bug
-- **OS type & version** you are running your application on
+If you found a bug and want to report it - I do recommend checking [issues](https://github.com/mgarin/weblaf/issues) project section first to see if someone already submitted a similar request. 
 
-Also if bug cannot be reproduced in demo app or on a basic component - please provide a [SSCCE](http://sscce.org/) that can be used to reproduce it. The harder it is for me to reproduce - the longer it will take to fix.
+In case you are going to [report a bug](https://github.com/mgarin/weblaf/issues/new) - there are a few things that are crucial for me to know:
+
+- **WebLaF version** you found it in<br>*For example: WebLaF v1.2.11*
+
+- **JDK type and version** you are using to reproduce the bug<br>In case with Open JDK - specify where particular build you are using can be found<br>*For example: Oracle JDK 14.0.1 or [Open JDK 8 u262](https://developers.redhat.com/products/openjdk/download)*
+
+- **OS type & version** you are running your application on<br>*For example: Windows 10 or Mac OS X Catalina*
+
+
+Also if bug cannot be reproduced in demo app or on a basic component - please provide a [SSCCE](http://sscce.org/) that can be used to reproduce it. The harder it is for me to reproduce the issue - the longer it will take to fix it.
 
 #### Feature suggestion
 
-Something is missing in WebLaF and you would like to see it added? - feel free to [open an issue](https://github.com/mgarin/weblaf/issues/new)! And make sure to describe feature you would like to see added as much is possible.
+Something is missing in WebLaF and you would like to see it added? - feel free to [open an issue](https://github.com/mgarin/weblaf/issues/new)! Just make sure to describe how you would like to see it added into the library.
 
 If it is a new component request -
 
 - What exactly is it and how should it work?
-- Any analog examples from other applications? (doens't really need to be a Java app)
+- Any examples from other applications or libraries?
 - Anything specific you would like to be added to it?
 - Any particular ideas about the visual style?
 
@@ -47,21 +69,23 @@ These questions should help you to shape your general idea you have into a more 
 
 #### Improvement suggestion
 
-You found some tangled code, some weirdly behaving component or something else that you know how to improve? - feel free to [open an issue](https://github.com/mgarin/weblaf/issues/new)!
+You found some tangled code, some weirdly behaving component, inconsistent API or something else that you would like to see improved? - feel free to [open an issue](https://github.com/mgarin/weblaf/issues/new)!
 
-If you want to suggest a behavior/view change - simply describe how you see it and we will discuss it.
+If you want to suggest a behavior/view change - simply describe how you see it and we will discuss it. Image or video examples are also welcome.
 
 If you want to suggest a code change - you can check Pull Requests section below.
 
-#### Wiki article suggestion
+#### Wiki article request
 
-If you want to ask for a new wiki aricle:
+If you want to ask me to write new wiki aricle:
 
 - Did you already check [available wiki articles](https://github.com/mgarin/weblaf/wiki)?
-- Did you check [previously answered questions](https://github.com/mgarin/weblaf/issues?q=label%3Aquestion+is%3Aclosed)?
+- Did you check [previously answered questions](https://github.com/mgarin/weblaf/issues?q=label%3Aquestion+is%3Aclosed) that might cover the topic?
 - What functionality you want to see covered in it?
 
 If what you're looking haven't been mentioned/described yet - [open an issue](https://github.com/mgarin/weblaf/issues/new).
+
+### Wiki article suggestion
 
 If you would like to write a wiki article:
 
@@ -71,7 +95,7 @@ If you would like to write a wiki article:
 - Use [GitHub markdown](https://guides.github.com/features/mastering-markdown/) for the article content 
 - Specify which WebLaF version this article is written for & modules necessary
 
-Once you're done writing it - you can [open an issue](https://github.com/mgarin/weblaf/issues/new) with the article content. I will review it, make adjustments if necessary and will post it in the [project wiki](https://github.com/mgarin/weblaf/wiki).
+Once you're done writing it - you can [open an issue](https://github.com/mgarin/weblaf/issues/new) with the article content. I will review it, make adjustments if necessary and will add it to the [project wiki](https://github.com/mgarin/weblaf/wiki) section.
 
 
 Pull Requests
