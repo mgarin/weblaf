@@ -33,6 +33,7 @@ public final class BreadcrumbElementUtils
 {
     /**
      * Adds {@link WebBreadcrumb} element states for the specified {@link JComponent}.
+     * todo Move into an interface as a default method when moved to JDK8+
      *
      * @param component {@link JComponent} to add states for
      * @param states    {@link List} of states to add elements states into
@@ -55,11 +56,11 @@ public final class BreadcrumbElementUtils
             {
                 states.add ( DecorationState.middle );
             }
-            else if ( last && !first )
+            else if ( !first )
             {
                 states.add ( DecorationState.last );
             }
-            else if ( first && last )
+            else
             {
                 states.add ( DecorationState.single );
             }

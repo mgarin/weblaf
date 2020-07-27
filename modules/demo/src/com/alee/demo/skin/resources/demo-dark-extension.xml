@@ -111,6 +111,7 @@
         <painter>
             <decorations>
                 <decoration>
+                    <LineBorder color="47,51,53" />
                     <ColorBackground color="77,81,83" />
                 </decoration>
                 <decoration states="beta">
