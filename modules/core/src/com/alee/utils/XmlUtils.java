@@ -36,6 +36,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
@@ -126,6 +127,10 @@ public final class XmlUtils
 
             // XStream instance initialization
             xStream = new XStream ( reflectionProvider, hierarchicalStreamDriver );
+
+            // Allowing XStream to load any types
+            // Any kind of security doesn't make any sense for styling purposes right now
+            xStream.addPermission ( AnyTypePermission.ANY );
 
             // Make sure that XStream ClassLoader finds WebLaF classes in cases where multiple ClassLoaders are used
             // E.g. IntelliJ IDEA uses different ClassLoaders for plugins (e.g. JFormDesigner) and its core (which includes XStream)
