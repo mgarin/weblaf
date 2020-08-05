@@ -6,6 +6,7 @@ import com.alee.api.jdk.Objects;
 import com.alee.extended.behavior.VisibilityBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebWindow;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
@@ -553,5 +554,16 @@ public class RootPanePainter<C extends JRootPane, U extends WRootPaneUI, D exten
     {
         final Container parent = component.getParent ();
         return parent instanceof Window ? ( Window ) parent : null;
+    }
+
+    /**
+     * Overridden to ensure that all points within {@link JRootPane} are available for events, otherwise all points outside
+     * of the {@link JRootPane} decoration shape will be ignored for events which causes issues for components on layered and glass panes.
+     * We have to ignore even passed {@link Bounds} because those might exclude margin space which will cause similar issues.
+     */
+    @Override
+    public boolean contains ( @NotNull final C c, @NotNull final U ui, @NotNull final Bounds bounds, final int x, final int y )
+    {
+        return x >= 0 && x < c.getWidth () && y >= 0 && y < c.getHeight ();
     }
 }
