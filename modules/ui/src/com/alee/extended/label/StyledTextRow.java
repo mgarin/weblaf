@@ -137,4 +137,14 @@ public class StyledTextRow
     {
         return fragments.isEmpty ();
     }
+
+    /**
+     * Returns whether the row is leading or not.
+     *
+     * @return true if the row is leading, false otherwise
+     */
+    public boolean isLeading ()
+    {
+        return leading;
+    }
 }

@@ -414,14 +414,15 @@ public final class TextUtils
     /**
      * Returns begin index of last word in the specified text.
      *
-     * @param string text to process
+     * @param string             text to process
+     * @param skipTrailingSpaces whether or not trailing "spaces" would be skipped
      * @return begin index of last word in the specified text
      */
-    public static int findLastRowWordStartIndex ( @NotNull final String string )
+    public static int findLastRowWordStartIndex ( @NotNull final String string, final boolean skipTrailingSpaces )
     {
         int index = -1;
         boolean spaceFound = false;
-        boolean skipSpace = true;
+        boolean skipSpace = skipTrailingSpaces;
         for ( int i = string.length () - 1; i >= 0; i-- )
         {
             final char c = string.charAt ( i );
