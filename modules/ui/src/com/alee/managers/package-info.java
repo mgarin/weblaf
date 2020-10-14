@@ -19,8 +19,6 @@
  * This package contains managers provided by 'ui' module and various related classes used within those managers.
  *
  * @author Mikle Garin
- * @see com.alee.managers.UIManagers
- * @see com.alee.managers.version.VersionManager
  * @see com.alee.managers.language.UILanguageManager
  * @see com.alee.managers.settings.UISettingsManager
  * @see com.alee.managers.hotkey.HotkeyManager
