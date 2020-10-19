@@ -17,6 +17,7 @@
 
 package com.alee.managers.plugin;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.plugin.data.DetectedPlugin;
 
 import java.util.List;
@@ -34,5 +35,5 @@ public interface DetectedPluginsRunnable<P extends Plugin>
      *
      * @param plugins detected plugins list
      */
-    public void run ( List<DetectedPlugin<P>> plugins );
+    public void run ( @NotNull List<DetectedPlugin<P>> plugins );
 }

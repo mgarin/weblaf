@@ -17,6 +17,8 @@
 
 package com.alee.managers.plugin;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.SystemUtils;
 import org.slf4j.LoggerFactory;
@@ -47,6 +49,7 @@ public abstract class Plugin<P extends Plugin<P>>
     /**
      * Cached plugin initialization strategy.
      */
+    @Nullable
     protected InitializationStrategy initializationStrategy;
 
     /**
@@ -109,7 +112,7 @@ public abstract class Plugin<P extends Plugin<P>>
      *
      * @return plugin logo
      */
-    public Icon getPluginLogo ()
+    public Icon getLogo ()
     {
         return !SystemUtils.isHeadlessEnvironment () && detectedPlugin != null ? detectedPlugin.getLogo () : null;
     }
@@ -222,6 +225,7 @@ public abstract class Plugin<P extends Plugin<P>>
      *
      * @return plugin initialization strategy
      */
+    @NotNull
     public final InitializationStrategy getInitializationStrategy ()
     {
         if ( initializationStrategy == null )
@@ -232,11 +236,12 @@ public abstract class Plugin<P extends Plugin<P>>
     }
 
     /**
-     * Creates and returns plugin initialization strategy.
+     * Returns plugin {@link InitializationStrategy}.
      * It will determine order in which plugins are sorted for further usage.
      *
      * @return plugin initialization strategy
      */
+    @NotNull
     protected InitializationStrategy createInitializationStrategy ()
     {
         return InitializationStrategy.any ();

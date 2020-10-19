@@ -17,71 +17,82 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.managers.plugin.Plugin;
+import com.alee.managers.plugin.PluginException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.io.Serializable;
 
 /**
- * {@link com.alee.managers.plugin.Plugin} library information data class.
+ * Information about single {@link Plugin} library.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
- * @see com.alee.managers.plugin.Plugin
+ * @see Plugin
  */
 @XStreamAlias ( "PluginLibrary" )
 public class PluginLibrary implements Serializable
 {
     /**
-     * Application-wide unique library ID.
-     * This should be the same in different version of the same library.
-     * Will be used to warn that this library getting loaded more than once, possibly with different version.
+     * Unique library identifier.
+     * This identifier must remain the same between different version of the library.
      */
+    @Nullable
     private String id;
 
     /**
      * Library title.
      */
+    @Nullable
     private String title;
 
     /**
-     * Short library description.
-     * Will be useful to understand what the hell this library is doing in this plugin.
+     * Library description.
      */
+    @Nullable
     private String description;
 
     /**
-     * Plugin version.
-     * Made string as different plugins might use lots of different versioning types.
-     * Simply put any plugin version string here so version can be compared.
+     * Library version.
+     * Version formats vary between application so it is up to developers which format they will be using.
      */
+    @Nullable
     private String version;
 
     /**
-     * Library file path relative to plugin file location.
+     * Library file path relative to {@link Plugin} file location.
      */
+    @Nullable
     private String file;
 
     /**
-     * Constructs new plugin library information data object.
+     * Constructs new empty {@link PluginLibrary}.
+     * This constructor is not intended for public use and only added for XStream deserializer.
      */
     public PluginLibrary ()
     {
-        super ();
+        this.id = null;
+        this.title = null;
+        this.description = null;
+        this.version = null;
+        this.file = null;
     }
 
     /**
-     * Constructs new plugin library information data object with the specified values.
+     * Constructs new empty {@link PluginLibrary} with the specified settings.
      *
-     * @param id          application-wide unique library ID
+     * @param id          unique library identifier
      * @param title       library title
      * @param description library description
      * @param version     library version
-     * @param file        library file path
+     * @param file        library file path relative to {@link Plugin} file location
      */
-    public PluginLibrary ( final String id, final String title, final String description, final String version, final String file )
+    public PluginLibrary ( @NotNull final String id, @NotNull final String title, @Nullable final String description,
+                           @NotNull final String version, @NotNull final String file )
     {
-        super ();
         this.id = id;
         this.title = title;
         this.description = description;
@@ -90,105 +101,127 @@ public class PluginLibrary implements Serializable
     }
 
     /**
-     * Returns plugin library ID.
+     * Returns unique library identifier.
      *
-     * @return plugin library ID
+     * @return unique library identifier
      */
+    @NotNull
     public String getId ()
     {
+        if ( id == null )
+        {
+            throw new PluginException ( "Plugin library was not properly configured yet" );
+        }
         return id;
     }
 
     /**
-     * Sets plugin library ID.
+     * Sets unique library identifier.
      *
-     * @param id new plugin library ID
+     * @param id new unique library identifier
      */
-    public void setId ( final String id )
+    public void setId ( @NotNull final String id )
     {
         this.id = id;
     }
 
     /**
-     * Returns plugin library title.
+     * Returns library title.
      *
-     * @return plugin library title
+     * @return library title
      */
+    @NotNull
     public String getTitle ()
     {
+        if ( title == null )
+        {
+            throw new PluginException ( "Plugin library was not properly configured yet" );
+        }
         return title;
     }
 
     /**
-     * Sets plugin library title.
+     * Sets library title.
      *
-     * @param title new plugin library title
+     * @param title new library title
      */
-    public void setTitle ( final String title )
+    public void setTitle ( @NotNull final String title )
     {
         this.title = title;
     }
 
     /**
-     * Returns plugin library description.
+     * Returns library description.
      *
-     * @return plugin library description
+     * @return library description
      */
+    @Nullable
     public String getDescription ()
     {
         return description;
     }
 
     /**
-     * Sets plugin library description.
+     * Sets library description.
      *
-     * @param description new plugin library description
+     * @param description new library description
      */
-    public void setDescription ( final String description )
+    public void setDescription ( @Nullable final String description )
     {
         this.description = description;
     }
 
     /**
-     * Returns plugin library version.
+     * Returns library version.
      *
-     * @return plugin library version
+     * @return library version
      */
+    @NotNull
     public String getVersion ()
     {
+        if ( version == null )
+        {
+            throw new PluginException ( "Plugin library was not properly configured yet" );
+        }
         return version;
     }
 
     /**
-     * Sets plugin library version.
+     * Sets library version.
      *
-     * @param version new plugin library version
+     * @param version new library version
      */
-    public void setVersion ( final String version )
+    public void setVersion ( @NotNull final String version )
     {
         this.version = version;
     }
 
     /**
-     * Returns plugin library file path relative to plugin file location.
+     * Returns library file path relative to {@link Plugin} file location.
      *
-     * @return plugin library file path relative to plugin file location
+     * @return library file path relative to {@link Plugin} file location
      */
+    @NotNull
     public String getFile ()
     {
+        if ( file == null )
+        {
+            throw new PluginException ( "Plugin library was not properly configured yet" );
+        }
         return file;
     }
 
     /**
-     * Sets plugin library file path relative to plugin file location.
+     * Sets library file path relative to {@link Plugin} file location.
      *
-     * @param file new plugin library file path
+     * @param file new library file path relative to {@link Plugin} file location
      */
-    public void setFile ( final String file )
+    public void setFile ( @NotNull final String file )
     {
         this.file = file;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {

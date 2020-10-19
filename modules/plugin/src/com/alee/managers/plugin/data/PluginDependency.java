@@ -17,6 +17,10 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
+import com.alee.managers.plugin.Plugin;
+import com.alee.managers.plugin.PluginException;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.io.Serializable;
@@ -31,34 +35,38 @@ import java.io.Serializable;
 public class PluginDependency implements Serializable
 {
     /**
-     * Dependency plugin ID.
+     * Identifier of the {@link Plugin} this dependency is pointing at.
      */
+    @Nullable
     private String pluginId;
 
     /**
-     * Minimum plugin version.
+     * Minimum {@link Plugin} version.
      * If null minimum version is ignored.
      */
+    @Nullable
     private PluginVersion minVersion;
 
     /**
-     * Maximum plugin version.
+     * Maximum {@link Plugin} version.
      * If null maximum version is ignored.
      */
+    @Nullable
     private PluginVersion maxVersion;
 
     /**
-     * Whether this dependency is mandatory or not.
+     * Whether or not this dependency is mandatory.
      * If this dependency is mandatory then plugin will not be loaded unless dependency is provided.
      */
+    @Nullable
     private Boolean optional;
 
     /**
-     * Constructs new empty dependency.
+     * Constructs new empty {@link PluginDependency}.
+     * This constructor is not intended for public use and only added for XStream deserializer.
      */
     public PluginDependency ()
     {
-        super ();
         this.pluginId = null;
         this.minVersion = null;
         this.maxVersion = null;
@@ -68,60 +76,47 @@ public class PluginDependency implements Serializable
     /**
      * Constructs new dependency.
      *
-     * @param pluginId plugin ID
+     * @param pluginId identifier of the {@link Plugin} this dependency is pointing at
      */
-    public PluginDependency ( final String pluginId )
+    public PluginDependency ( @NotNull final String pluginId )
     {
-        super ();
-        this.pluginId = pluginId;
-        this.minVersion = null;
-        this.maxVersion = null;
-        this.optional = null;
+        this ( pluginId, null, null, null );
     }
 
     /**
      * Constructs new dependency.
      *
-     * @param pluginId   plugin ID
-     * @param minVersion minimum plugin version
+     * @param pluginId   identifier of the {@link Plugin} this dependency is pointing at
+     * @param minVersion minimum {@link Plugin} version
      */
-    public PluginDependency ( final String pluginId, final PluginVersion minVersion )
+    public PluginDependency ( @NotNull final String pluginId, @Nullable final PluginVersion minVersion )
     {
-        super ();
-        this.pluginId = pluginId;
-        this.minVersion = minVersion;
-        this.maxVersion = null;
-        this.optional = null;
+        this ( pluginId, minVersion, null, null );
     }
 
     /**
      * Constructs new dependency.
      *
-     * @param pluginId   plugin ID
-     * @param minVersion minimum plugin version
-     * @param maxVersion maximum plugin version
+     * @param pluginId   identifier of the {@link Plugin} this dependency is pointing at
+     * @param minVersion minimum {@link Plugin} version
+     * @param maxVersion maximum {@link Plugin} version
      */
-    public PluginDependency ( final String pluginId, final PluginVersion minVersion, final PluginVersion maxVersion )
+    public PluginDependency ( final String pluginId, @Nullable final PluginVersion minVersion, @Nullable final PluginVersion maxVersion )
     {
-        super ();
-        this.pluginId = pluginId;
-        this.minVersion = minVersion;
-        this.maxVersion = maxVersion;
-        this.optional = null;
+        this ( pluginId, minVersion, maxVersion, null );
     }
 
     /**
      * Constructs new dependency.
      *
-     * @param pluginId   plugin ID
-     * @param minVersion minimum plugin version
-     * @param maxVersion maximum plugin version
+     * @param pluginId   identifier of the {@link Plugin} this dependency is pointing at
+     * @param minVersion minimum {@link Plugin} version
+     * @param maxVersion maximum {@link Plugin} version
      * @param optional   whether this dependency is mandatory or not
      */
-    public PluginDependency ( final String pluginId, final PluginVersion minVersion, final PluginVersion maxVersion,
-                              final Boolean optional )
+    public PluginDependency ( @NotNull final String pluginId, @Nullable final PluginVersion minVersion,
+                              @Nullable final PluginVersion maxVersion, @Nullable final Boolean optional )
     {
-        super ();
         this.pluginId = pluginId;
         this.minVersion = minVersion;
         this.maxVersion = maxVersion;
@@ -129,70 +124,78 @@ public class PluginDependency implements Serializable
     }
 
     /**
-     * Returns plugin ID.
+     * Returns identifier of the {@link Plugin} this dependency is pointing at.
      *
-     * @return plugin ID
+     * @return identifier of the {@link Plugin} this dependency is pointing at
      */
+    @NotNull
     public String getPluginId ()
     {
+        if ( pluginId == null )
+        {
+            throw new PluginException ( "Plugin dependency was not properly configured yet" );
+        }
         return pluginId;
     }
 
     /**
-     * Sets plugin ID.
+     * Sets identifier of the {@link Plugin} this dependency is pointing at.
      *
-     * @param pluginId plugin ID
+     * @param pluginId new identifier of the {@link Plugin} this dependency is pointing at
      */
-    public void setPluginId ( final String pluginId )
+    public void setPluginId ( @NotNull final String pluginId )
     {
         this.pluginId = pluginId;
     }
 
     /**
-     * Returns minimum plugin version.
+     * Returns minimum {@link Plugin} version.
      *
-     * @return minimum plugin version
+     * @return minimum {@link Plugin} version
      */
+    @Nullable
     public PluginVersion getMinVersion ()
     {
         return minVersion;
     }
 
     /**
-     * Sets minimum plugin version.
+     * Sets minimum {@link Plugin} version.
      *
-     * @param minVersion minimum plugin version
+     * @param minVersion minimum {@link Plugin} version
      */
-    public void setMinVersion ( final PluginVersion minVersion )
+    public void setMinVersion ( @Nullable final PluginVersion minVersion )
     {
         this.minVersion = minVersion;
     }
 
     /**
-     * Returns maximum plugin version.
+     * Returns maximum {@link Plugin} version.
      *
-     * @return maximum plugin version
+     * @return maximum {@link Plugin} version
      */
+    @Nullable
     public PluginVersion getMaxVersion ()
     {
         return maxVersion;
     }
 
     /**
-     * Sets maximum plugin version.
+     * Sets maximum {@link Plugin} version.
      *
-     * @param maxVersion maximum plugin version
+     * @param maxVersion maximum {@link Plugin} version
      */
-    public void setMaxVersion ( final PluginVersion maxVersion )
+    public void setMaxVersion ( @Nullable final PluginVersion maxVersion )
     {
         this.maxVersion = maxVersion;
     }
 
     /**
-     * Returns whether this dependency is mandatory or not.
+     * Returns whether or not this dependency is mandatory.
      *
-     * @return true or null if this dependency is mandatory, false otherwise
+     * @return {@code true} or {@code null} if this dependency is mandatory, {@code false} otherwise
      */
+    @Nullable
     public Boolean getOptional ()
     {
         return optional;
@@ -201,7 +204,7 @@ public class PluginDependency implements Serializable
     /**
      * Returns whether this dependency is mandatory or not.
      *
-     * @return true if this dependency is mandatory, false otherwise
+     * @return {@code true} if this dependency is mandatory, {@code false} otherwise
      */
     public boolean isOptional ()
     {
@@ -209,36 +212,42 @@ public class PluginDependency implements Serializable
     }
 
     /**
-     * Sets whether this dependency is mandatory or not.
+     * Sets whether or not this dependency is mandatory.
      *
-     * @param optional whether this dependency is mandatory or not
+     * @param optional whether or not this dependency is mandatory
      */
-    public void setOptional ( final Boolean optional )
+    public void setOptional ( @Nullable final Boolean optional )
     {
         this.optional = optional;
     }
 
     /**
-     * Returns whether plugin with the specified information is accepted by this dependency or not.
+     * Returns whether or not {@link Plugin} with the specified information is accepted by this dependency.
      *
-     * @param plugin plugin information to check
-     * @return {@code true} if plugin with the specified information is accepted by this dependency, {@code false} otherwise
+     * @param plugin {@link PluginInformation} to check
+     * @return {@code true} if {@link Plugin} with the specified information is accepted by this dependency, {@code false} otherwise
      */
-    public boolean accept ( final PluginInformation plugin )
+    public boolean accept ( @Nullable final PluginInformation plugin )
     {
+        boolean accept = false;
         if ( plugin != null && plugin.getId ().equals ( pluginId ) )
         {
             final PluginVersion pv = plugin.getVersion ();
-            return ( minVersion == null || pv.isNewerOrSame ( minVersion ) ) && ( maxVersion == null || pv.isOlderOrSame ( maxVersion ) );
+            accept = ( minVersion == null || pv.isNewerOrSame ( minVersion ) )
+                    && ( maxVersion == null || pv.isOlderOrSame ( maxVersion ) );
         }
-        return false;
+        return accept;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
-        return pluginId + ( minVersion != null || maxVersion != null ? " " : "" ) + getVersionString ( "min", minVersion ) +
-                ( minVersion != null ? " " : "" ) + getVersionString ( "max", maxVersion );
+        return pluginId
+                + ( minVersion != null || maxVersion != null ? " " : "" )
+                + getVersionString ( "min", minVersion )
+                + ( minVersion != null ? " " : "" )
+                + getVersionString ( "max", maxVersion );
     }
 
     /**
@@ -248,7 +257,8 @@ public class PluginDependency implements Serializable
      * @param pluginVersion plugin version
      * @return version string
      */
-    public String getVersionString ( final String prefix, final PluginVersion pluginVersion )
+    @NotNull
+    public String getVersionString ( @NotNull final String prefix, @Nullable final PluginVersion pluginVersion )
     {
         return pluginVersion != null ? "[ " + prefix + ": " + pluginVersion + " ]" : "";
     }

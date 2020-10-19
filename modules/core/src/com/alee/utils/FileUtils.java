@@ -528,7 +528,7 @@ public final class FileUtils
         return listFiles ( directory, fileFilter != null ? new FileFilter ()
         {
             @Override
-            public boolean accept ( final File file )
+            public boolean accept ( @NotNull final File file )
             {
                 return fileFilter.accept ( file );
             }
@@ -915,7 +915,7 @@ public final class FileUtils
      * @return file canonical path if its possible or absolute path otherwise
      */
     @NotNull
-    public static String canonicalPath ( final File file )
+    public static String canonicalPath ( @NotNull final File file )
     {
         try
         {
@@ -1511,6 +1511,7 @@ public final class FileUtils
      * @param size size of the file
      * @return file size to display
      */
+    @NotNull
     public static String getFileSizeString ( final long size )
     {
         return getFileSizeString ( size, 2 );
@@ -2297,7 +2298,7 @@ public final class FileUtils
         return findFilesRecursively ( dir, new FileFilter ()
         {
             @Override
-            public boolean accept ( final File file )
+            public boolean accept ( @NotNull final File file )
             {
                 return file.isFile () && extension.contains ( getFileExtPart ( file.getName (), withDot ) );
             }

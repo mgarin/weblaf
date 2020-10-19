@@ -17,6 +17,7 @@
 
 package com.alee.managers.plugin;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.plugin.data.DetectedPlugin;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public interface PluginsListener<P extends Plugin>
      * @param directory checked plugins directory path
      * @param recursive whether plugins directory subfolders are checked recursively or not
      */
-    public void pluginsCheckStarted ( String directory, boolean recursive );
+    public void pluginsCheckStarted ( @NotNull String directory, boolean recursive );
 
     /**
      * Called when plugins check finishes.
@@ -45,7 +46,7 @@ public interface PluginsListener<P extends Plugin>
      * @param directory checked plugins directory path
      * @param recursive whether plugins directory subfolders are checked recursively or not
      */
-    public void pluginsCheckEnded ( String directory, boolean recursive );
+    public void pluginsCheckEnded ( @NotNull String directory, boolean recursive );
 
     /**
      * Called when new portion of plugins have been detected.
@@ -53,7 +54,7 @@ public interface PluginsListener<P extends Plugin>
      *
      * @param plugins recently detected plugins
      */
-    public void pluginsDetected ( List<DetectedPlugin<P>> plugins );
+    public void pluginsDetected ( @NotNull List<DetectedPlugin<P>> plugins );
 
     /**
      * Called when new portion of plugins have been successfully initialized.
@@ -62,5 +63,5 @@ public interface PluginsListener<P extends Plugin>
      *
      * @param plugins recently initialized plugins
      */
-    public void pluginsInitialized ( List<P> plugins );
+    public void pluginsInitialized ( @NotNull List<P> plugins );
 }

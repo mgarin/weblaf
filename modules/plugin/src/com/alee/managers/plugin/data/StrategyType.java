@@ -17,6 +17,7 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.utils.swing.EnumLazyIconProvider;
 
 import javax.swing.*;
@@ -51,6 +52,7 @@ public enum StrategyType
      *
      * @return plugin strategy type icon
      */
+    @NotNull
     public ImageIcon getIcon ()
     {
         return EnumLazyIconProvider.getIcon ( this, "icons/strategy/" );
@@ -61,21 +63,25 @@ public enum StrategyType
      *
      * @return plugin strategy type description
      */
+    @NotNull
     public String getDescription ()
     {
+        final String description;
         switch ( this )
         {
+            default:
             case any:
-                return "Plugin doesn't define any specific strategy";
+                description = "Plugin doesn't define any specific strategy";
+                break;
 
             case before:
-                return "Plugin must be initialized strictly before some other plugin";
+                description = "Plugin must be initialized strictly before some other plugin";
+                break;
 
             case after:
-                return "Plugin must be initialized strictly after some other plugin";
-
-            default:
-                return null;
+                description = "Plugin must be initialized strictly after some other plugin";
+                break;
         }
+        return description;
     }
 }

@@ -181,7 +181,6 @@ public class PluginInformation implements Serializable
                                final String title, final String description, final PluginVersion version,
                                final List<PluginLibrary> libraries, final List<PluginDependency> dependencies )
     {
-        super ();
         this.id = id;
         this.type = type;
         this.types = types;

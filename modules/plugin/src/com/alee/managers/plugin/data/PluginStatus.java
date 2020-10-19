@@ -17,6 +17,8 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.utils.swing.EnumLazyIconProvider;
 
 import javax.swing.*;
@@ -52,35 +54,43 @@ public enum PluginStatus
     failed;
 
     /**
-     * Returns plugin status icon.
+     * Returns {@link PluginStatus} icon.
      *
-     * @return plugin status icon
+     * @return {@link PluginStatus} icon
      */
+    @NotNull
     public ImageIcon getIcon ()
     {
         return EnumLazyIconProvider.getIcon ( this, "icons/status/" );
     }
 
     /**
-     * Returns plugin status text.
+     * Returns {@link PluginStatus} text.
      *
-     * @return plugin status text
+     * @return {@link PluginStatus} text
      */
+    @Nullable
     public String getText ()
     {
+        final String text;
         switch ( this )
         {
             case loading:
-                return "Loading...";
+                text = "Loading...";
+                break;
 
             case loaded:
-                return "Loaded successfully";
+                text = "Loaded successfully";
+                break;
 
             case failed:
-                return "Failed to load";
+                text = "Failed to load";
+                break;
 
             default:
-                return null;
+                text = null;
+                break;
         }
+        return text;
     }
 }

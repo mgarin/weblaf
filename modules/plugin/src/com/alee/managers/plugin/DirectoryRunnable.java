@@ -17,6 +17,8 @@
 
 package com.alee.managers.plugin;
 
+import com.alee.api.annotations.NotNull;
+
 /**
  * Custom functional interface for {@link PluginManager} methods.
  *
@@ -30,5 +32,5 @@ public interface DirectoryRunnable
      * @param directory plugins directory path
      * @param recursive plugins directory subfolders are checked recursively or not
      */
-    public void run ( String directory, boolean recursive );
+    public void run ( @NotNull String directory, boolean recursive );
 }

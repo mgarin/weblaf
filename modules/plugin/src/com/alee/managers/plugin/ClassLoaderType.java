@@ -31,31 +31,31 @@ public enum ClassLoaderType
     /**
      * Class loader acquired from {@link java.lang.ClassLoader#getSystemClassLoader()}.
      * Commonly it is assumed to be {@link java.net.URLClassLoader} but in case it is something else a child
-     * {@link com.alee.managers.plugin.PluginClassLoader} will be created to load classes properly.
+     * {@link PluginClassLoader} will be created to load classes properly.
      */
     system,
 
     /**
      * Context class loader acquired from {@link Thread#getContextClassLoader()} or manager class loader.
      * Commonly it is assumed to be {@link java.net.URLClassLoader} but in case it is something else a child
-     * {@link com.alee.managers.plugin.PluginClassLoader} will be created to load classes properly.
+     * {@link PluginClassLoader} will be created to load classes properly.
      */
     context,
 
     /**
-     * Child {@link com.alee.managers.plugin.PluginClassLoader} for {@link #context} class loader.
+     * Child {@link PluginClassLoader} for {@link #context} class loader.
      * Same instance will be used to load all plugins within all plugin managers using this class loader type.
      */
     global,
 
     /**
-     * Child {@link com.alee.managers.plugin.PluginClassLoader} for {@link #context} class loader.
+     * Child {@link PluginClassLoader} for {@link #context} class loader.
      * Same instance will be used to load all plugins within single plugin manager, but different managers will use different instances.
      */
     local,
 
     /**
-     * Child {@link com.alee.managers.plugin.PluginClassLoader} for {@link #context} class loader.
+     * Child {@link PluginClassLoader} for {@link #context} class loader.
      * Separate instances will be used to load each plugin of each manager using this class loader type.
      */
     separate

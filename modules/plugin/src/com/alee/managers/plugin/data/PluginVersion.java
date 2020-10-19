@@ -17,6 +17,8 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.Objects;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -58,6 +60,7 @@ public class PluginVersion implements Serializable
      * Plugin patch version.
      * Version when you make backwards-compatible bug fixes.
      */
+    @Nullable
     @XStreamAsAttribute
     private Integer patch;
 
@@ -65,6 +68,7 @@ public class PluginVersion implements Serializable
      * Plugin build version.
      * Additional labels for pre-release and build metadata.
      */
+    @Nullable
     @XStreamAsAttribute
     private String build;
 
@@ -94,7 +98,7 @@ public class PluginVersion implements Serializable
      * @param minor minor version number
      * @param patch patch version number
      */
-    public PluginVersion ( final int major, final int minor, final Integer patch )
+    public PluginVersion ( final int major, final int minor, @Nullable final Integer patch )
     {
         this ( major, minor, patch, null );
     }
@@ -107,9 +111,8 @@ public class PluginVersion implements Serializable
      * @param patch patch version number
      * @param build build
      */
-    public PluginVersion ( final int major, final int minor, final Integer patch, final String build )
+    public PluginVersion ( final int major, final int minor, @Nullable final Integer patch, @Nullable final String build )
     {
-        super ();
         this.major = major;
         this.minor = minor;
         this.patch = patch;
@@ -161,6 +164,7 @@ public class PluginVersion implements Serializable
      *
      * @return plugin patch version
      */
+    @Nullable
     public Integer getPatch ()
     {
         return patch;
@@ -171,7 +175,7 @@ public class PluginVersion implements Serializable
      *
      * @param patch plugin patch version
      */
-    public void setPatch ( final Integer patch )
+    public void setPatch ( @Nullable final Integer patch )
     {
         this.patch = patch;
     }
@@ -182,6 +186,7 @@ public class PluginVersion implements Serializable
      *
      * @return plugin build version
      */
+    @Nullable
     public String getBuild ()
     {
         return build;
@@ -193,7 +198,7 @@ public class PluginVersion implements Serializable
      *
      * @param build plugin build version
      */
-    public void setBuild ( final String build )
+    public void setBuild ( @Nullable final String build )
     {
         this.build = build;
     }
@@ -202,23 +207,23 @@ public class PluginVersion implements Serializable
      * Returns whether this plugin version is newer than the specified one or not.
      *
      * @param ov other plugin version
-     * @return true if this plugin version is newer than the specified one, false otherwise
+     * @return {@code true} if this plugin version is newer than the specified one, {@code false} otherwise
      */
-    public boolean isNewerThan ( final PluginVersion ov )
+    public boolean isNewerThan ( @NotNull final PluginVersion ov )
     {
-        return this.major > ov.major ||
-                this.major == ov.major && this.minor > ov.minor ||
-                this.major == ov.major && this.minor == ov.minor && this.patch != null && ov.patch == null ||
-                this.major == ov.major && this.minor == ov.minor && this.patch == null && ov.patch != null && this.patch > ov.patch;
+        return this.major > ov.major
+                || this.major == ov.major && this.minor > ov.minor
+                || this.major == ov.major && this.minor == ov.minor && this.patch != null && ov.patch == null
+                || this.major == ov.major && this.minor == ov.minor && this.patch != null && this.patch > ov.patch;
     }
 
     /**
      * Returns whether this plugin version is newer or the same as the specified one or not.
      *
      * @param ov other plugin version
-     * @return true if this plugin version is newer or the same as the specified one, false otherwise
+     * @return {@code true} if this plugin version is newer or the same as the specified one, {@code false} otherwise
      */
-    public boolean isNewerOrSame ( final PluginVersion ov )
+    public boolean isNewerOrSame ( @NotNull final PluginVersion ov )
     {
         return isSame ( ov ) || isNewerThan ( ov );
     }
@@ -227,23 +232,23 @@ public class PluginVersion implements Serializable
      * Returns whether this plugin version is older than the specified one or not.
      *
      * @param ov other plugin version
-     * @return true if this plugin version is older than the specified one, false otherwise
+     * @return {@code true} if this plugin version is older than the specified one, {@code false} otherwise
      */
-    public boolean isOlderThan ( final PluginVersion ov )
+    public boolean isOlderThan ( @NotNull final PluginVersion ov )
     {
-        return ov.major > this.major ||
-                ov.major == this.major && ov.minor > this.minor ||
-                ov.major == this.major && ov.minor == this.minor && ov.patch != null && this.patch == null ||
-                ov.major == this.major && ov.minor == this.minor && ov.patch != null && this.patch != null && ov.patch > this.patch;
+        return ov.major > this.major
+                || ov.major == this.major && ov.minor > this.minor
+                || ov.major == this.major && ov.minor == this.minor && ov.patch != null && this.patch == null
+                || ov.major == this.major && ov.minor == this.minor && ov.patch != null && ov.patch > this.patch;
     }
 
     /**
      * Returns whether this plugin version is older or the same as the specified one or not.
      *
      * @param ov other plugin version
-     * @return true if this plugin version is older or the same as the specified one, false otherwise
+     * @return {@code true} if this plugin version is older or the same as the specified one, {@code false} otherwise
      */
-    public boolean isOlderOrSame ( final PluginVersion ov )
+    public boolean isOlderOrSame ( @NotNull final PluginVersion ov )
     {
         return isSame ( ov ) || isOlderThan ( ov );
     }
@@ -252,23 +257,31 @@ public class PluginVersion implements Serializable
      * Returns whether this plugin version is the same as the specified one or not.
      *
      * @param ov other plugin version
-     * @return true if this plugin version is the same as the specified one, false otherwise
+     * @return {@code true} if this plugin version is the same as the specified one, {@code false} otherwise
      */
-    public boolean isSame ( final PluginVersion ov )
+    public boolean isSame ( @NotNull final PluginVersion ov )
     {
-        return ov.major == this.major && ov.minor == this.minor && Objects.equals ( ov.patch, this.patch );
+        return ov.major == this.major
+                && ov.minor == this.minor
+                && Objects.equals ( ov.patch, this.patch );
     }
 
     @Override
-    public boolean equals ( final Object obj )
+    public boolean equals ( @Nullable final Object obj )
     {
-        return obj != null && obj instanceof PluginVersion && isSame ( ( PluginVersion ) obj ) &&
-                Objects.equals ( ( ( PluginVersion ) obj ).build, this.patch );
+        return obj != null
+                && obj instanceof PluginVersion
+                && isSame ( ( PluginVersion ) obj )
+                && Objects.equals ( ( ( PluginVersion ) obj ).build, this.patch );
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
-        return "v" + major + "." + minor + ( patch != null ? "." + patch : "" ) + ( build != null ? build : "" );
+        return "v" + major
+                + "." + minor
+                + ( patch != null ? "." + patch : "" )
+                + ( build != null ? "." + build : "" );
     }
 }

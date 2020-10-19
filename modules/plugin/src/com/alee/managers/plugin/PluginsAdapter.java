@@ -17,6 +17,7 @@
 
 package com.alee.managers.plugin;
 
+import com.alee.api.annotations.NotNull;
 import com.alee.managers.plugin.data.DetectedPlugin;
 
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.List;
 public abstract class PluginsAdapter<P extends Plugin> implements PluginsListener<P>
 {
     @Override
-    public void pluginsCheckStarted ( final String directory, final boolean recursive )
+    public void pluginsCheckStarted ( @NotNull final String directory, final boolean recursive )
     {
         /**
          * Do nothing by default.
@@ -40,7 +41,7 @@ public abstract class PluginsAdapter<P extends Plugin> implements PluginsListene
     }
 
     @Override
-    public void pluginsCheckEnded ( final String directory, final boolean recursive )
+    public void pluginsCheckEnded ( @NotNull final String directory, final boolean recursive )
     {
         /**
          * Do nothing by default.
@@ -48,7 +49,7 @@ public abstract class PluginsAdapter<P extends Plugin> implements PluginsListene
     }
 
     @Override
-    public void pluginsDetected ( final List<DetectedPlugin<P>> plugins )
+    public void pluginsDetected ( @NotNull final List<DetectedPlugin<P>> plugins )
     {
         /**
          * Do nothing by default.
@@ -56,7 +57,7 @@ public abstract class PluginsAdapter<P extends Plugin> implements PluginsListene
     }
 
     @Override
-    public void pluginsInitialized ( final List<P> plugins )
+    public void pluginsInitialized ( @NotNull final List<P> plugins )
     {
         /**
          * Do nothing by default.

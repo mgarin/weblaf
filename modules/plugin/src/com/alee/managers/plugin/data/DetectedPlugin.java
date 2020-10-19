@@ -17,7 +17,10 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.api.annotations.Nullable;
 import com.alee.managers.plugin.Plugin;
+import com.alee.managers.plugin.PluginManager;
 import com.alee.utils.SystemUtils;
 
 import javax.swing.*;
@@ -29,64 +32,80 @@ import java.io.File;
  * @param <P> {@link Plugin} type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
- * @see com.alee.managers.plugin.PluginManager
+ * @see PluginManager
  */
 public class DetectedPlugin<P extends Plugin>
 {
     /**
-     * Path to plugin folder.
+     * Path to {@link Plugin} folder.
+     * Will be {@code null} if the {@link Plugin} was not loaded via {@link PluginManager}.
      */
+    @Nullable
     private final String pluginFolder;
 
     /**
-     * Plugin file name.
+     * {@link Plugin} file name.
+     * Will be {@code null} if the {@link Plugin} was not loaded via {@link PluginManager}.
      */
+    @Nullable
     private final String pluginFileName;
 
     /**
-     * Plugin class.
+     * {@link PluginInformation}.
      */
+    @NotNull
     private final PluginInformation information;
 
     /**
-     * Plugin logo.
+     * {@link Plugin} logo.
+     * Will be {@code null} if not specified.
      */
+    @Nullable
     private final Icon logo;
 
     /**
      * Plugin load status.
      */
+    @NotNull
     private PluginStatus status;
 
     /**
-     * Possible load failure cause.
+     * {@link Plugin} initialization failure cause.
+     * Will be {@code null} if {@link Plugin} wasn't initialized yet or initialized successfully.
      */
+    @Nullable
     private String failureCause;
 
     /**
-     * Plugin load exception.
+     * {@link Throwable} that occurred during {@link Plugin} initialization.
+     * Will be {@code null} if {@link Plugin} wasn't initialized yet or initialized successfully.
      */
+    @Nullable
     private Throwable exception;
 
     /**
-     * Custom load exception message.
+     * Message of the exception that occurred during plug{@link Plugin}tialization.
+     * Will be {@code null} if {@link Plugin} wasn't initialized yet or initialized successfully.
      */
+    @Nullable
     private String exceptionMessage;
 
     /**
-     * Loaded plugin.
+     * Initialized {@link Plugin} instance.
      */
+    @Nullable
     private P plugin;
 
     /**
-     * Constructs new information object about existing plugin.
+     * Constructs new {@link DetectedPlugin}.
      *
-     * @param pluginFolder   path to plugin file folder
-     * @param pluginFileName plugin file name
-     * @param information    plugin information
-     * @param logo           plugin logo
+     * @param pluginFolder   path to {@link Plugin} folder
+     * @param pluginFileName {@link Plugin} file name
+     * @param information    {@link PluginInformation}
+     * @param logo           {@link Plugin} logo
      */
-    public DetectedPlugin ( final String pluginFolder, final String pluginFileName, final PluginInformation information, final Icon logo )
+    public DetectedPlugin ( @Nullable final String pluginFolder, @Nullable final String pluginFileName,
+                            @NotNull final PluginInformation information, @Nullable final Icon logo )
     {
         this.pluginFolder = pluginFolder;
         this.pluginFileName = pluginFileName;
@@ -96,169 +115,199 @@ public class DetectedPlugin<P extends Plugin>
     }
 
     /**
-     * Returns plugin folder path.
+     * Returns path to {@link Plugin} folder.
+     * Will be {@code null} if the {@link Plugin} was not loaded via {@link PluginManager}.
      *
-     * @return plugin folder path
+     * @return path to {@link Plugin} folder
      */
+    @Nullable
     public String getPluginFolder ()
     {
         return pluginFolder;
     }
 
     /**
-     * Returns plugin file name.
+     * Returns {@link Plugin} file name.
+     * Will be {@code null} if the {@link Plugin} was not loaded via {@link PluginManager}.
      *
-     * @return plugin file name
+     * @return {@link Plugin} file name
      */
+    @Nullable
     public String getPluginFileName ()
     {
         return pluginFileName;
     }
 
     /**
-     * Returns plugin file.
+     * Returns {@link Plugin} {@link File}.
+     * Will be {@code null} if the {@link Plugin} was not loaded via {@link PluginManager}.
      *
-     * @return plugin file
+     * @return {@link Plugin} {@link File}.
      */
+    @Nullable
     public File getFile ()
     {
-        return new File ( pluginFolder, pluginFileName );
+        final String pluginFolder = getPluginFolder ();
+        final String pluginFileName = getPluginFileName ();
+        return pluginFolder != null && pluginFileName != null
+                ? new File ( pluginFolder, pluginFileName )
+                : null;
     }
 
     /**
-     * Returns plugin information.
+     * Returns {@link PluginInformation}.
      *
-     * @return plugin information
+     * @return {@link PluginInformation}
      */
+    @NotNull
     public PluginInformation getInformation ()
     {
         return information;
     }
 
     /**
-     * Returns plugin logo.
+     * Returns {@link Plugin} logo {@link Icon}.
+     * Will be {@code null} if not specified or application is running in headless mode.
      *
-     * @return plugin logo
+     * @return {@link Plugin} logo {@link Icon}
      */
+    @Nullable
     public Icon getLogo ()
     {
         return !SystemUtils.isHeadlessEnvironment () ? logo : null;
     }
 
     /**
-     * Returns plugin status.
+     * Returns {@link PluginStatus}.
      *
-     * @return plugin status
+     * @return {@link PluginStatus}
      */
+    @NotNull
     public PluginStatus getStatus ()
     {
         return status;
     }
 
     /**
-     * Sets plugin status.
+     * Sets {@link PluginStatus}.
      *
-     * @param status new plugin status
+     * @param status new {@link PluginStatus}
      */
-    public void setStatus ( final PluginStatus status )
+    public void setStatus ( @NotNull final PluginStatus status )
     {
         this.status = status;
     }
 
     /**
-     * Returns load failure cause.
+     * Returns {@link Plugin} initialization failure cause.
+     * Will be {@code null} if {@link Plugin} wasn't initialized yet or initialized successfully.
      *
-     * @return load failure cause
+     * @return {@link Plugin} initialization failure cause
      */
+    @Nullable
     public String getFailureCause ()
     {
         return failureCause;
     }
 
     /**
-     * Sets load failure cause.
+     * Sets {@link Plugin} initialization failure cause.
      *
-     * @param failureCause new load failure cause
+     * @param failureCause new {@link Plugin} initialization failure cause
      */
-    public void setFailureCause ( final String failureCause )
+    public void setFailureCause ( @Nullable final String failureCause )
     {
         this.failureCause = failureCause;
     }
 
     /**
-     * Returns load exception.
+     * Returns {@link Throwable} that occurred during {@link Plugin} initialization.
+     * Will be {@code null} if {@link Plugin} wasn't initialized yet or initialized successfully.
      *
-     * @return load exception
+     * @return {@link Throwable} that occurred during {@link Plugin} initialization
      */
+    @Nullable
     public Throwable getException ()
     {
         return exception;
     }
 
     /**
-     * Sets load exception.
+     * Sets {@link Throwable} that occurred during {@link Plugin} initialization.
      *
-     * @param exception new load exception
+     * @param exception new {@link Throwable} that occurred during {@link Plugin} initialization
      */
-    public void setException ( final Throwable exception )
+    public void setException ( @Nullable final Throwable exception )
     {
         this.exception = exception;
     }
 
     /**
-     * Returns load exception message.
+     * Returns message of the exception that occurred during {@link Plugin} initialization.
+     * Will be {@code null} if {@link Plugin} wasn't initialized yet or initialized successfully.
      *
-     * @return load exception message
+     * @return message of the exception that occurred during {@link Plugin} initialization
      */
+    @Nullable
     public String getExceptionMessage ()
     {
         return exceptionMessage;
     }
 
     /**
-     * Sets load exception message.
+     * Sets message of the exception that occurred during {@link Plugin} initialization.
      *
-     * @param exceptionMessage new load exception message
+     * @param exceptionMessage new message of the exception that occurred during {@link Plugin} initialization
      */
-    public void setExceptionMessage ( final String exceptionMessage )
+    public void setExceptionMessage ( @Nullable final String exceptionMessage )
     {
         this.exceptionMessage = exceptionMessage;
     }
 
     /**
-     * Returns load failure HTML description.
+     * Returns initialized {@link Plugin} instance.
      *
-     * @return load failure HTML description
+     * @return initialized {@link Plugin} instance
      */
-    public String getFailureHtmlText ()
-    {
-        return "<html><b>" + failureCause + "</b>" + ( exceptionMessage != null || exception != null ?
-                "<br>" + ( exceptionMessage != null ? exceptionMessage : exception.toString () ) : "" ) + "</html>";
-    }
-
-    /**
-     * Returns loaded plugin instance.
-     *
-     * @return loaded plugin instance
-     */
+    @Nullable
     public P getPlugin ()
     {
         return plugin;
     }
 
     /**
-     * Sets loaded plugin instance.
+     * Sets initialized {@link Plugin} instance.
      *
-     * @param plugin new loaded plugin instance
+     * @param plugin new initialized {@link Plugin} instance
      */
-    public void setPlugin ( final P plugin )
+    public void setPlugin ( @Nullable final P plugin )
     {
         this.plugin = plugin;
     }
 
+    @NotNull
     @Override
     public String toString ()
     {
-        return information + ", Status: " + status + ( status == PluginStatus.failed ? ", Cause: " + failureCause : "" );
+        final PluginStatus status = getStatus ();
+        final String text;
+        if ( status == PluginStatus.failed )
+        {
+            text = String.format (
+                    "%s, Status: %s, Cause: %s",
+                    getInformation (),
+                    status,
+                    getFailureCause ()
+            );
+        }
+        else
+        {
+            text = String.format (
+                    "%s, Status: %s",
+                    getInformation (),
+                    status
+            );
+        }
+        return text;
     }
 }

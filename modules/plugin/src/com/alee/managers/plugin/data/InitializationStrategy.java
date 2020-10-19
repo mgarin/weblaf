@@ -17,6 +17,9 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.api.annotations.NotNull;
+import com.alee.managers.plugin.Plugin;
+
 /**
  * Plugin initialization strategy.
  * Used to determine plugins initialization sequence.
@@ -25,104 +28,116 @@ package com.alee.managers.plugin.data;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
  */
-public class InitializationStrategy
+public final class InitializationStrategy
 {
     /**
-     * Custom ID for "all" plugins.
+     * todo 1. This is a pretty bad implementation of the plugin loading order, it has many restrictions and should be reworked
+     */
+
+    /**
+     * Custom identifier for "all" plugins.
      */
     public static final String ALL_ID = "all";
 
     /**
-     * Strategy type.
+     * {@link StrategyType}.
      */
+    @NotNull
     private final StrategyType type;
 
     /**
-     * Plugin ID.
+     * {@link Plugin} identifier or {@link #ALL_ID}.
      */
-    private final String id;
+    @NotNull
+    private final String pluginId;
 
     /**
-     * Constructs new initialization strategy.
+     * Constructs new {@link InitializationStrategy}.
      *
-     * @param type strategy type
-     * @param id   plugin ID
+     * @param type     {@link StrategyType}
+     * @param pluginId {@link Plugin} identifier
      */
-    private InitializationStrategy ( final StrategyType type, final String id )
+    private InitializationStrategy ( @NotNull final StrategyType type, @NotNull final String pluginId )
     {
-        super ();
         this.type = type;
-        this.id = id;
+        this.pluginId = pluginId;
     }
 
     /**
-     * Returns plugin initialization strategy type.
+     * Returns {@link StrategyType}.
      *
-     * @return plugin initialization strategy type
+     * @return {@link StrategyType}
      */
+    @NotNull
     public StrategyType getType ()
     {
         return type;
     }
 
     /**
-     * Returns strategy plugin ID.
+     * Returns {@link Plugin} identifier or {@link #ALL_ID}.
      *
-     * @return strategy plugin ID
+     * @return {@link Plugin} identifier or {@link #ALL_ID}
      */
-    public String getId ()
+    @NotNull
+    public String getPluginId ()
     {
-        return id;
+        return pluginId;
     }
 
     /**
-     * Returns default initialization strategy.
+     * Returns default {@link InitializationStrategy}.
      *
-     * @return default initialization strategy
+     * @return default {@link InitializationStrategy}
      */
+    @NotNull
     public static InitializationStrategy any ()
     {
         return new InitializationStrategy ( StrategyType.any, ALL_ID );
     }
 
     /**
-     * Plugin must be initialized strictly after all other plugins.
+     * Returns {@link InitializationStrategy} under which {@link Plugin} must be initialized strictly after all other {@link Plugin}s.
      *
-     * @return "after all" initialization strategy
+     * @return {@link InitializationStrategy} under which {@link Plugin} must be initialized strictly after all other {@link Plugin}s
      */
+    @NotNull
     public static InitializationStrategy afterAll ()
     {
         return after ( ALL_ID );
     }
 
     /**
-     * Plugin must be initialized strictly before all other plugins.
+     * Returns {@link InitializationStrategy} under which {@link Plugin} must be initialized strictly before all other {@link Plugin}s.
      *
-     * @return "before all" initialization strategy
+     * @return {@link InitializationStrategy} under which {@link Plugin} must be initialized strictly before all other {@link Plugin}s
      */
+    @NotNull
     public static InitializationStrategy beforeAll ()
     {
         return before ( ALL_ID );
     }
 
     /**
-     * Plugin must be initialized strictly after specified plugin.
+     * Returns {@link InitializationStrategy} under which plugin must be initialized strictly after other specified {@link Plugin}.
      *
-     * @param pluginId plugin ID
-     * @return "after plugin" initialization strategy
+     * @param pluginId identifier of the other {@link Plugin} to initialize {@link Plugin} using the strategy after
+     * @return {@link InitializationStrategy} under which plugin must be initialized strictly after other specified {@link Plugin}
      */
-    public static InitializationStrategy after ( final String pluginId )
+    @NotNull
+    public static InitializationStrategy after ( @NotNull final String pluginId )
     {
         return new InitializationStrategy ( StrategyType.after, pluginId );
     }
 
     /**
-     * Plugin must be initialized strictly before specified plugin.
+     * Returns {@link InitializationStrategy} under which {@link Plugin} must be initialized strictly before other specified {@link Plugin}.
      *
-     * @param pluginId plugin ID
-     * @return "before plugin" initialization strategy
+     * @param pluginId identifier of the other {@link Plugin} to initialize {@link Plugin} using the strategy before
+     * @return {@link InitializationStrategy} under which {@link Plugin} must be initialized strictly before other specified {@link Plugin}
      */
-    public static InitializationStrategy before ( final String pluginId )
+    @NotNull
+    public static InitializationStrategy before ( @NotNull final String pluginId )
     {
         return new InitializationStrategy ( StrategyType.before, pluginId );
     }

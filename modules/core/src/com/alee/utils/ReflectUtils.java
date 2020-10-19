@@ -26,6 +26,8 @@ import com.alee.utils.reflection.ReflectionException;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 /**
@@ -57,6 +59,12 @@ public final class ReflectUtils
      * Methods lookup cache.
      */
     private static final Map<Class, Map<String, Method>> methodsLookupCache = new HashMap<Class, Map<String, Method>> ();
+
+    /**
+     * {@code jdk.internal.loader.BuiltinClassLoader} class available starting from Java 9.
+     * It's {@code jdk.internal.loader.ClassLoaders.AppClassLoader} extension is used as default application {@link ClassLoader}.
+     */
+    private static final String JAVA9_BUILT_IN_CLASS_LOADER = "jdk.internal.loader.BuiltinClassLoader";
 
     /**
      * Private constructor to avoid instantiation.
@@ -1932,21 +1940,22 @@ public final class ReflectUtils
     /**
      * Returns text representation for array of argument types.
      *
-     * @param argTypes argument types
+     * @param types argument types array
      * @return text representation for array of argument types
      */
-    private static String argumentTypesToString ( final Class[] argTypes )
+    @NotNull
+    private static String argumentTypesToString ( @Nullable final Class[] types )
     {
         final StringBuilder buf = new StringBuilder ( "(" );
-        if ( argTypes != null )
+        if ( types != null )
         {
-            for ( int i = 0; i < argTypes.length; i++ )
+            for ( int i = 0; i < types.length; i++ )
             {
                 if ( i > 0 )
                 {
                     buf.append ( ", " );
                 }
-                final Class c = argTypes[ i ];
+                final Class c = types[ i ];
                 buf.append ( c == null ? "null" : c.getCanonicalName () );
             }
         }
@@ -1963,7 +1972,8 @@ public final class ReflectUtils
      * @throws InvocationTargetException if method throws an exception
      * @throws IllegalAccessException    if method is inaccessible
      */
-    public static <T extends Cloneable> T clone ( final T object )
+    @Nullable
+    public static <T extends Cloneable> T clone ( @Nullable final T object )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         return object != null ? ( T ) ReflectUtils.callMethod ( object, "clone" ) : null;
@@ -1976,7 +1986,8 @@ public final class ReflectUtils
      * @param <T>    cloned object type
      * @return cloned object
      */
-    public static <T extends Cloneable> T cloneSafely ( final T object )
+    @Nullable
+    public static <T extends Cloneable> T cloneSafely ( @Nullable final T object )
     {
         return object != null ? ( T ) ReflectUtils.callMethodSafely ( object, "clone" ) : null;
     }
@@ -1988,7 +1999,8 @@ public final class ReflectUtils
      * @return class loaded for the specified canonical class name
      * @throws ClassNotFoundException if class was not found
      */
-    public static Class loadClass ( final String canonicalClassName ) throws ClassNotFoundException
+    @NotNull
+    public static Class loadClass ( @NotNull final String canonicalClassName ) throws ClassNotFoundException
     {
         return ReflectUtils.class.getClassLoader ().loadClass ( canonicalClassName );
     }
@@ -1999,6 +2011,7 @@ public final class ReflectUtils
      * @param arguments arguments to process
      * @return an array of argument class types
      */
+    @NotNull
     public static Class[] getClassTypes ( @NotNull final Object[] arguments )
     {
         final Class[] parameterTypes = new Class[ arguments.length ];
@@ -2010,62 +2023,64 @@ public final class ReflectUtils
     }
 
     /**
-     * Returns whether first type is assignable from second one or not.
+     * Returns whether specified {@link Class} type is assignable from another one or not.
      *
-     * @param type checked whether is assignable, always not null
-     * @param from checked type, might be null
-     * @return {@code true} if first type is assignable from second one, {@code false} otherwise
+     * @param type    {@link Class} type to check against
+     * @param another {@link Class} to check check
+     * @return {@code true} if specified {@link Class} type is assignable from another one, {@code false} otherwise
      */
-    public static boolean isAssignable ( final Class type, final Class from )
+    @SuppressWarnings ( "ConstantConditions" )
+    public static boolean isAssignable ( @NotNull final Class type, @Nullable final Class another )
     {
-        if ( from == null )
+        boolean assignable = false;
+        if ( another == null )
         {
-            return !type.isPrimitive ();
+            assignable = !type.isPrimitive ();
         }
-        else if ( type.isAssignableFrom ( from ) )
+        else if ( type.isAssignableFrom ( another ) )
         {
-            return true;
+            assignable = true;
         }
         else if ( type.isPrimitive () )
         {
             if ( type == boolean.class )
             {
-                return Boolean.class.isAssignableFrom ( from );
+                assignable = Boolean.class.isAssignableFrom ( another );
             }
             else if ( type == int.class )
             {
-                return Integer.class.isAssignableFrom ( from );
+                assignable = Integer.class.isAssignableFrom ( another );
             }
             else if ( type == char.class )
             {
-                return Character.class.isAssignableFrom ( from );
+                assignable = Character.class.isAssignableFrom ( another );
             }
             else if ( type == byte.class )
             {
-                return Byte.class.isAssignableFrom ( from );
+                assignable = Byte.class.isAssignableFrom ( another );
             }
             else if ( type == short.class )
             {
-                return Short.class.isAssignableFrom ( from );
+                assignable = Short.class.isAssignableFrom ( another );
             }
             else if ( type == long.class )
             {
-                return Long.class.isAssignableFrom ( from );
+                assignable = Long.class.isAssignableFrom ( another );
             }
             else if ( type == float.class )
             {
-                return Float.class.isAssignableFrom ( from );
+                assignable = Float.class.isAssignableFrom ( another );
             }
             else if ( type == double.class )
             {
-                return Double.class.isAssignableFrom ( from );
+                assignable = Double.class.isAssignableFrom ( another );
             }
             else if ( type == void.class )
             {
-                return Void.class.isAssignableFrom ( from );
+                assignable = Void.class.isAssignableFrom ( another );
             }
         }
-        return false;
+        return assignable;
     }
 
     /**
@@ -2075,7 +2090,7 @@ public final class ReflectUtils
      * @param object object to check
      * @return {@code true} if specified object has primitive type, {@code false} otherwise
      */
-    public static boolean isPrimitive ( final Object object )
+    public static boolean isPrimitive ( @NotNull final Object object )
     {
         return isPrimitive ( object.getClass () );
     }
@@ -2087,7 +2102,8 @@ public final class ReflectUtils
      * @param type class type to check
      * @return {@code true} if specified class type is primitive, {@code false} otherwise
      */
-    public static boolean isPrimitive ( final Class<?> type )
+    @SuppressWarnings ( "ConstantConditions" )
+    public static boolean isPrimitive ( @NotNull final Class<?> type )
     {
         return type.isPrimitive () ||
                 Boolean.class.isAssignableFrom ( type ) ||
@@ -2107,41 +2123,43 @@ public final class ReflectUtils
      * @param type primitive class type
      * @return default primitive type value
      */
-    public static Object getDefaultPrimitiveValue ( final Class<?> type )
+    @NotNull
+    public static Object getDefaultPrimitiveValue ( @NotNull final Class<?> type )
     {
+        final Object value;
         if ( type.isPrimitive () )
         {
             if ( type == boolean.class )
             {
-                return false;
+                value = false;
             }
             else if ( type == int.class )
             {
-                return 0;
+                value = 0;
             }
             else if ( type == char.class )
             {
-                return '\u0000';
+                value = '\u0000';
             }
             else if ( type == byte.class )
             {
-                return ( byte ) 0;
+                value = ( byte ) 0;
             }
             else if ( type == short.class )
             {
-                return ( short ) 0;
+                value = ( short ) 0;
             }
             else if ( type == long.class )
             {
-                return 0L;
+                value = 0L;
             }
             else if ( type == float.class )
             {
-                return 0.0f;
+                value = 0.0f;
             }
             else if ( type == double.class )
             {
-                return 0.0d;
+                value = 0.0d;
             }
             else
             {
@@ -2152,30 +2170,32 @@ public final class ReflectUtils
         {
             throw new IllegalArgumentException ( "Type is not primitive: " + type );
         }
+        return value;
     }
 
     /**
-     * Returns whether one of superclasses contains specified text in its name or not.
+     * Returns whether {@link Class} or one of it's superclasses contains specified text in their name or not.
      *
-     * @param theClass class to process
-     * @param text     text to search for
-     * @return {@code true} if one of superclasses contains specified text in its name, {@code false} otherwise
+     * @param theClass {@link Class} to check
+     * @param text     text to look for
+     * @return {@code true} if {@link Class} or one of it's superclasses contains specified text in their name, {@code false} otherwise
      */
-    public static boolean containsInClassOrSuperclassName ( final Class theClass, final String text )
+    public static boolean containsInClassOrSuperclassName ( @Nullable final Class theClass, @NotNull final String text )
     {
-        if ( theClass == null )
+        boolean contains = false;
+        if ( theClass != null )
         {
-            return false;
+            final String name = theClass.getCanonicalName ();
+            if ( name != null )
+            {
+                contains = name.contains ( text ) || containsInClassOrSuperclassName ( theClass.getSuperclass (), text );
+            }
+            else
+            {
+                contains = containsInClassOrSuperclassName ( theClass.getSuperclass (), text );
+            }
         }
-        final String name = theClass.getCanonicalName ();
-        if ( name != null )
-        {
-            return name.contains ( text ) || containsInClassOrSuperclassName ( theClass.getSuperclass (), text );
-        }
-        else
-        {
-            return containsInClassOrSuperclassName ( theClass.getSuperclass (), text );
-        }
+        return contains;
     }
 
     /**
@@ -2185,7 +2205,8 @@ public final class ReflectUtils
      * @param object2 second object to retrieve {@link Class} of
      * @return closest superclass for both of the specified classes
      */
-    public static Class getClosestSuperclass ( final Object object1, final Object object2 )
+    @NotNull
+    public static Class getClosestSuperclass ( @NotNull final Object object1, @NotNull final Object object2 )
     {
         return getClosestSuperclass ( object1.getClass (), object2.getClass () );
     }
@@ -2197,21 +2218,97 @@ public final class ReflectUtils
      * @param class2 second {@link Class}
      * @return closest super {@link Class} for both of the specified {@link Class}es
      */
-    public static Class getClosestSuperclass ( final Class class1, final Class class2 )
+    @NotNull
+    public static Class getClosestSuperclass ( @NotNull final Class class1, @NotNull final Class class2 )
     {
+        final Class closestSuperClass;
         if ( class1.isAssignableFrom ( class2 ) )
         {
-            return class1;
+            closestSuperClass = class1;
         }
         else if ( class2.isAssignableFrom ( class1 ) )
         {
-            return class2;
+            closestSuperClass = class2;
         }
         else
         {
             final Class super1 = class1.getSuperclass ();
             final Class super2 = class2.getSuperclass ();
-            return getClosestSuperclass ( super1, super2 );
+            closestSuperClass = getClosestSuperclass ( super1, super2 );
+        }
+        return closestSuperClass;
+    }
+
+    /**
+     * Adds {@link List} of specified {@link URL}s into {@link ClassLoader}'s class path.
+     *
+     * @param classLoader {@link ClassLoader} to modify class path for
+     * @param classPath   {@link List} of {@link URL}s to add into {@link ClassLoader}'s class path
+     */
+    public static void addToClasspath ( @NotNull final ClassLoader classLoader, @NotNull final List<URL> classPath )
+    {
+        if ( classLoader instanceof URLClassLoader )
+        {
+            try
+            {
+                // Workaround for class path modification via URLClassLoader
+                for ( final URL url : classPath )
+                {
+                    ReflectUtils.callMethod ( classLoader, "addURL", url );
+                }
+            }
+            catch ( final Exception e )
+            {
+                throw new ReflectionException ( String.format (
+                        "Unable to add classpath URLs into class loader %s",
+                        classLoader.getClass ().getCanonicalName ()
+                ), e );
+            }
+        }
+        else if ( SystemUtils.isJava9orAbove () )
+        {
+            try
+            {
+                // Workaround for class path modification via BuiltinClassLoader
+                final Class<?> builtInClassLoaderClass = Class.forName ( JAVA9_BUILT_IN_CLASS_LOADER );
+                if ( builtInClassLoaderClass.isAssignableFrom ( classLoader.getClass () ) )
+                {
+                    // jdk.internal.loader.URLClassPath
+                    final Object urlClassPath = ReflectUtils.getFieldValue ( classLoader, "ucp" );
+                    for ( final URL url : classPath )
+                    {
+                        ReflectUtils.callMethod ( urlClassPath, "addURL", url );
+                    }
+                }
+                else
+                {
+                    throw new ReflectionException ( String.format (
+                            "Plugin loading is not supported for class loader: %s",
+                            classLoader.getClass ().getCanonicalName ()
+                    ) );
+                }
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                throw new ReflectionException ( String.format (
+                        "Unable to find %s class",
+                        JAVA9_BUILT_IN_CLASS_LOADER
+                ), e );
+            }
+            catch ( final Exception e )
+            {
+                throw new ReflectionException ( String.format (
+                        "Unable to add classpath URLs into class loader %s",
+                        classLoader.getClass ().getCanonicalName ()
+                ), e );
+            }
+        }
+        else
+        {
+            throw new ReflectionException ( String.format (
+                    "Plugin loading is not supported for class loader: %s",
+                    classLoader.getClass ().getCanonicalName ()
+            ) );
         }
     }
 }
