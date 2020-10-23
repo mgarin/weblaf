@@ -1100,7 +1100,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         AnimationManager.initialize ();
         UIProxyManager.initialize ();
         DragManager.initialize ();
-        TaskManager.initialize();
+        TaskManager.initialize ();
     }
 
     /**

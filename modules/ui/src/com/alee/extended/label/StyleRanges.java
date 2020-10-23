@@ -70,6 +70,13 @@ public class StyleRanges implements IStyleRanges
 
     @Nullable
     @Override
+    public String getStyledText ()
+    {
+        return styledText;
+    }
+
+    @Nullable
+    @Override
     public String getPlainText ()
     {
         return parseStyledText ().plainText;
@@ -131,8 +138,8 @@ public class StyleRanges implements IStyleRanges
                                 }
                                 else
                                 {
-                                    // Adding plain text
-                                    plainText += trimmedText.substring ( 0, begin ) + statement;
+                                    // Adding plain text, including braces
+                                    plainText += trimmedText.substring ( 0, end + 1 );
                                 }
                             }
 
@@ -142,7 +149,7 @@ public class StyleRanges implements IStyleRanges
                         }
                         else
                         {
-                            // Something wrong with the syntax
+                            // Something wrong with the syntax or it's simply a plain text
                             // Abort parsing and add the rest as plain text
                             break;
                         }

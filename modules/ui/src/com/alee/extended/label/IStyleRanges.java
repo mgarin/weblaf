@@ -31,6 +31,14 @@ import java.util.List;
 public interface IStyleRanges
 {
     /**
+     * Returns styled text.
+     *
+     * @return styled text
+     */
+    @Nullable
+    public String getStyledText ();
+
+    /**
      * Returns plain text.
      *
      * @return plain text
