@@ -749,30 +749,7 @@ public final class TextUtils
     public static <T> String listToString ( @Nullable final List<T> list, @NotNull final String separator,
                                             @NotNull final Function<T, String> textProvider, @Nullable final Filter<T> filter )
     {
-        final String result;
-        if ( CollectionUtils.notEmpty ( list ) )
-        {
-            final StringBuilder stringBuilder = new StringBuilder ();
-            boolean hasPreviouslyAccepted = false;
-            for ( final T object : list )
-            {
-                if ( filter == null || filter.accept ( object ) )
-                {
-                    if ( hasPreviouslyAccepted )
-                    {
-                        stringBuilder.append ( separator );
-                    }
-                    stringBuilder.append ( textProvider.apply ( object ) );
-                    hasPreviouslyAccepted = true;
-                }
-            }
-            result = stringBuilder.toString ();
-        }
-        else
-        {
-            result = null;
-        }
-        return result;
+        return collectionToString ( list, separator, textProvider, filter );
     }
 
     /**
