@@ -23,26 +23,25 @@ import com.alee.api.jdk.BiPredicate;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 
 /**
- * Extension over {@link WeakComponentData} that provides convenience methods for {@link List}-type data usage.
- * Note that {@link List}s kept within the {@link JComponent} would never have {@code null} values.
+ * Extension over {@link WeakComponentData} that provides convenience methods for {@link LinkedHashSet}-type data usage.
+ * Note that {@link LinkedHashSet}s kept within the {@link JComponent} would never have {@code null} values.
  *
  * @param <C> {@link JComponent} type
- * @param <E> {@link List} data type
+ * @param <E> {@link LinkedHashSet} data type
  * @author Mikle Garin
  */
-public class WeakComponentDataList<C extends JComponent, E> extends WeakComponentData<C, List<E>>
+public class WeakComponentDataOrderedSet<C extends JComponent, E> extends WeakComponentData<C, LinkedHashSet<E>>
 {
     /**
-     * Constructs new {@link WeakComponentDataList}.
+     * Constructs new {@link WeakComponentDataOrderedSet}.
      *
      * @param key             key used to place data list within {@link JComponent}
      * @param initialCapacity initial capacity for the {@link java.util.Set} of {@link JComponent}s
      */
-    public WeakComponentDataList ( @NotNull final String key, final int initialCapacity )
+    public WeakComponentDataOrderedSet ( @NotNull final String key, final int initialCapacity )
     {
         super ( key, initialCapacity );
     }
@@ -55,8 +54,8 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      */
     public synchronized int size ( @NotNull final C component )
     {
-        final List<E> list = get ( component );
-        return list != null ? list.size () : 0;
+        final LinkedHashSet<E> set = get ( component );
+        return set != null ? set.size () : 0;
     }
 
     /**
@@ -79,8 +78,8 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      */
     public synchronized boolean containsData ( @NotNull final C component, @NotNull final E data )
     {
-        final List<E> list = get ( component );
-        return list != null && list.contains ( data );
+        final LinkedHashSet<E> set = get ( component );
+        return set != null && set.contains ( data );
     }
 
     /**
@@ -91,13 +90,13 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      */
     public synchronized void add ( @NotNull final C component, @NotNull final E data )
     {
-        List<E> list = get ( component );
-        if ( list == null )
+        LinkedHashSet<E> set = get ( component );
+        if ( set == null )
         {
-            list = new ArrayList<E> ( 1 );
-            set ( component, list );
+            set = new LinkedHashSet<E> ( 1 );
+            set ( component, set );
         }
-        list.add ( data );
+        set.add ( data );
     }
 
     /**
@@ -108,10 +107,10 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      */
     public synchronized void remove ( @NotNull final C component, @NotNull final E data )
     {
-        final List<E> list = get ( component );
-        if ( list != null && list.remove ( data ) )
+        final LinkedHashSet<E> set = get ( component );
+        if ( set != null && set.remove ( data ) )
         {
-            if ( list.size () == 0 )
+            if ( set.size () == 0 )
             {
                 clear ( component );
             }
@@ -128,11 +127,11 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
     public synchronized void remove ( @NotNull final C component, @NotNull final E data,
                                       @NotNull final BiConsumer<C, E> removedDataConsumer )
     {
-        final List<E> list = get ( component );
-        if ( list != null && list.remove ( data ) )
+        final LinkedHashSet<E> set = get ( component );
+        if ( set != null && set.remove ( data ) )
         {
             removedDataConsumer.accept ( component, data );
-            if ( list.size () == 0 )
+            if ( set.size () == 0 )
             {
                 clear ( component );
             }
@@ -160,10 +159,10 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
      */
     public synchronized void forEachData ( @NotNull final C component, @NotNull final BiConsumer<C, E> consumer )
     {
-        final List<E> list = get ( component );
-        if ( list != null )
+        final LinkedHashSet<E> set = get ( component );
+        if ( set != null )
         {
-            for ( final E data : list )
+            for ( final E data : set )
             {
                 consumer.accept ( component, data );
             }
@@ -200,10 +199,10 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
     public synchronized boolean anyDataMatch ( @NotNull final C component, @NotNull final BiPredicate<C, E> predicate )
     {
         boolean anyDataMatch = false;
-        final List<E> list = get ( component );
-        if ( list != null )
+        final LinkedHashSet<E> set = get ( component );
+        if ( set != null )
         {
-            for ( final E data : list )
+            for ( final E data : set )
             {
                 if ( predicate.test ( component, data ) )
                 {
@@ -245,10 +244,10 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
     public synchronized boolean allDataMatch ( @NotNull final C component, @NotNull final BiPredicate<C, E> predicate )
     {
         boolean allDataMatch = true;
-        final List<E> list = get ( component );
-        if ( list != null )
+        final LinkedHashSet<E> set = get ( component );
+        if ( set != null )
         {
-            for ( final E data : list )
+            for ( final E data : set )
             {
                 if ( !predicate.test ( component, data ) )
                 {
@@ -290,10 +289,10 @@ public class WeakComponentDataList<C extends JComponent, E> extends WeakComponen
     public synchronized boolean noneDataMatch ( @NotNull final C component, @NotNull final BiPredicate<C, E> predicate )
     {
         boolean noneDataMatch = true;
-        final List<E> list = get ( component );
-        if ( list != null )
+        final LinkedHashSet<E> set = get ( component );
+        if ( set != null )
         {
-            for ( final E data : list )
+            for ( final E data : set )
             {
                 if ( predicate.test ( component, data ) )
                 {

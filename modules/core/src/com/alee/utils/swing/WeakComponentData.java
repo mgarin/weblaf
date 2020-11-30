@@ -67,7 +67,6 @@ public class WeakComponentData<C extends JComponent, D>
      */
     public WeakComponentData ( @NotNull final String key, final int initialCapacity )
     {
-        super ();
         this.key = key;
         this.components = new WeakHashSet<C> ( initialCapacity );
     }

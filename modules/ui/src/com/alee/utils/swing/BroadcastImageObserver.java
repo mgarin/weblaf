@@ -42,8 +42,8 @@ public class BroadcastImageObserver implements ImageObserver
      * {@link ImageObserver}s to broadcast update events to.
      * These {@link ImageObserver}s are tied to specific component and will be disposed whenever component is destroyed.
      */
-    protected final WeakComponentDataList<JComponent, ImageObserver> componentObservers =
-            new WeakComponentDataList<JComponent, ImageObserver> ( "BroadcastImageObserver.ImageObserver", 50 );
+    protected final WeakComponentDataOrderedSet<JComponent, ImageObserver> componentObservers =
+            new WeakComponentDataOrderedSet<JComponent, ImageObserver> ( "BroadcastImageObserver.ImageObserver", 50 );
 
     /**
      * Adds {@link ImageObserver} to broadcast update events to.

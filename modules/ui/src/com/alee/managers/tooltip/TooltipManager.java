@@ -505,7 +505,7 @@ public final class TooltipManager
             public void accept ( final JComponent component, final WebCustomTooltip webCustomTooltip )
             {
                 // Removing all listeners in case its last component tooltip
-                if ( webTooltips.size ( component ) <= 1 )
+                if ( webTooltips.size ( component ) == 0 )
                 {
                     // Removing mouse listeners
                     adapters.clear ( component, new BiConsumer<JComponent, MouseAdapter> ()

@@ -242,11 +242,11 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
 
         // Proceed only if icon actually exists
         final Icon icon = getLoadIcon ( new TreeNodeParameters<N, WebAsyncTree<N>> ( tree, ( N ) this ) );
-        if ( icon != null && icon instanceof ImageIcon )
+        if ( icon instanceof ImageIcon )
         {
             final ImageIcon imageIcon = ( ImageIcon ) icon;
 
-            // Make sure we have broadcas observer in the image icon
+            // Make sure we have broadcast observer in the image icon
             // This is necessary to ensure all updates are properly preserved
             final BroadcastImageObserver broadcast;
             final ImageObserver existing = imageIcon.getImageObserver ();
@@ -292,7 +292,7 @@ public abstract class AsyncUniqueNode<N extends AsyncUniqueNode<N, T>, T>
 
         // Proceed only if icon actually exists
         final Icon icon = getLoadIcon ( new TreeNodeParameters<N, WebAsyncTree<N>> ( tree, ( N ) this ) );
-        if ( icon != null && icon instanceof ImageIcon )
+        if ( icon instanceof ImageIcon )
         {
             final ImageIcon imageIcon = ( ImageIcon ) icon;
 
