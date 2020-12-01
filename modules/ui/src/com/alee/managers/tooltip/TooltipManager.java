@@ -28,7 +28,7 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.swing.WeakComponentData;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -36,6 +36,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This manager allows you to set extended tooltips for any Swing component with any possible content (would it be simple text or some
@@ -61,8 +62,8 @@ public final class TooltipManager
     private static boolean showHotkeysInOneTimeTooltips = false;
 
     // Standart tooltips
-    private static final WeakComponentDataList<JComponent, WebCustomTooltip> webTooltips =
-            new WeakComponentDataList<JComponent, WebCustomTooltip> ( "TooltipManager.WebCustomTooltip", 50 );
+    private static final WeakComponentDataOrderedSet<JComponent, WebCustomTooltip> webTooltips =
+            new WeakComponentDataOrderedSet<JComponent, WebCustomTooltip> ( "TooltipManager.WebCustomTooltip", 50 );
     private static final WeakComponentData<JComponent, MouseAdapter> adapters =
             new WeakComponentData<JComponent, MouseAdapter> ( "TooltipManager.MouseAdapter", 50 );
     private static final WeakComponentData<JComponent, WebTimer> timers =
@@ -344,10 +345,11 @@ public final class TooltipManager
 
     private static void hideTooltips ( final JComponent component )
     {
-        if ( webTooltips.get ( component ) != null )
+        final Set<WebCustomTooltip> tips = webTooltips.get ( component );
+        if ( tips != null )
         {
             final List<WebCustomTooltip> tooltips = new ArrayList<WebCustomTooltip> ();
-            tooltips.addAll ( webTooltips.get ( component ) );
+            tooltips.addAll ( tips );
             for ( final WebCustomTooltip tooltip : tooltips )
             {
                 tooltip.closeTooltip ();
@@ -472,9 +474,10 @@ public final class TooltipManager
 
     public static void removeTooltips ( final JComponent component )
     {
-        if ( webTooltips.get ( component ) != null )
+        final Set<WebCustomTooltip> tips = webTooltips.get ( component );
+        if ( tips != null )
         {
-            for ( final WebCustomTooltip tooltip : CollectionUtils.copy ( webTooltips.get ( component ) ) )
+            for ( final WebCustomTooltip tooltip : CollectionUtils.copy ( tips ) )
             {
                 removeTooltip ( component, tooltip );
             }

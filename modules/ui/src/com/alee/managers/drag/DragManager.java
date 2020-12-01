@@ -23,7 +23,7 @@ import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.CoreSwingUtils;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -56,8 +56,8 @@ public final class DragManager
      *
      * @see DragListener
      */
-    private static final WeakComponentDataList<JComponent, DragListener> dragListeners =
-            new WeakComponentDataList<JComponent, DragListener> ( "DragManager.DragListener", 50 );
+    private static final WeakComponentDataOrderedSet<JComponent, DragListener> dragListeners =
+            new WeakComponentDataOrderedSet<JComponent, DragListener> ( "DragManager.DragListener", 50 );
 
     /**
      * Drag view handlers map.

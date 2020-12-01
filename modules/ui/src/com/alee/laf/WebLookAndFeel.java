@@ -50,7 +50,7 @@ import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.reflection.LazyInstance;
 import com.alee.utils.swing.SwingLazyValue;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -223,8 +223,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @see #removeVisibleWindowListener(JComponent, VisibleWindowListener)
      */
     @NotNull
-    protected static final WeakComponentDataList<JComponent, VisibleWindowListener> visibleWindowListeners =
-            new WeakComponentDataList<JComponent, VisibleWindowListener> ( "WebLookAndFeel.VisibleWindowListener", 50 );
+    protected static final WeakComponentDataOrderedSet<JComponent, VisibleWindowListener> visibleWindowListeners =
+            new WeakComponentDataOrderedSet<JComponent, VisibleWindowListener> ( "WebLookAndFeel.VisibleWindowListener", 50 );
 
     /**
      * Previously installed {@link LookAndFeel}.

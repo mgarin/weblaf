@@ -39,7 +39,7 @@ import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.tooltip.CustomToolTipLanguage;
 import com.alee.utils.ArrayUtils;
 import com.alee.utils.swing.WeakComponentData;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -160,8 +160,8 @@ public final class UILanguageManager
      * @see #removeLanguageListeners(JComponent)
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, LanguageListener> componentLanguageListeners =
-            new WeakComponentDataList<JComponent, LanguageListener> ( "WebLanguageManager.LanguageListener", 50 );
+    private static final WeakComponentDataOrderedSet<JComponent, LanguageListener> componentLanguageListeners =
+            new WeakComponentDataOrderedSet<JComponent, LanguageListener> ( "WebLanguageManager.LanguageListener", 50 );
 
     /**
      * {@link DictionaryListener}s registered for specified {@link JComponent}s.
@@ -172,8 +172,8 @@ public final class UILanguageManager
      * @see #removeDictionaryListeners(JComponent)
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, DictionaryListener> componentDictionaryListeners =
-            new WeakComponentDataList<JComponent, DictionaryListener> ( "WebLanguageManager.DictionaryListener", 5 );
+    private static final WeakComponentDataOrderedSet<JComponent, DictionaryListener> componentDictionaryListeners =
+            new WeakComponentDataOrderedSet<JComponent, DictionaryListener> ( "WebLanguageManager.DictionaryListener", 5 );
 
     /**
      * Manager initialization mark.

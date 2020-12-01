@@ -25,7 +25,7 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,8 +95,8 @@ public final class HotkeyManager
     /**
      * Added hotkeys.
      */
-    private static final WeakComponentDataList<JComponent, HotkeyInfo> hotkeys =
-            new WeakComponentDataList<JComponent, HotkeyInfo> ( "HotkeyManager.HotkeyInfo", 20 );
+    private static final WeakComponentDataOrderedSet<JComponent, HotkeyInfo> hotkeys =
+            new WeakComponentDataOrderedSet<JComponent, HotkeyInfo> ( "HotkeyManager.HotkeyInfo", 20 );
 
     /**
      * Global hotkeys list.
@@ -108,8 +108,8 @@ public final class HotkeyManager
      * todo Get rid of this and make hotkeys use Swing mapping instead of global listening
      */
     @Deprecated
-    private static final WeakComponentDataList<JComponent, HotkeyCondition> containerConditions =
-            new WeakComponentDataList<JComponent, HotkeyCondition> ( "HotkeyManager.HotkeyCondition", 5 );
+    private static final WeakComponentDataOrderedSet<JComponent, HotkeyCondition> containerConditions =
+            new WeakComponentDataOrderedSet<JComponent, HotkeyCondition> ( "HotkeyManager.HotkeyCondition", 5 );
 
     /**
      * Initialization mark.
@@ -418,7 +418,7 @@ public final class HotkeyManager
 
     public static List<HotkeyCondition> getContainerHotkeyConditions ( final JComponent container )
     {
-        final List<HotkeyCondition> list = containerConditions.get ( container );
+        final LinkedHashSet<HotkeyCondition> list = containerConditions.get ( container );
         return list != null ? CollectionUtils.copy ( list ) : new ArrayList<HotkeyCondition> ();
     }
 
@@ -483,7 +483,7 @@ public final class HotkeyManager
 
     public static List<HotkeyInfo> getComponentHotkeys ( final JComponent component )
     {
-        final List<HotkeyInfo> list = hotkeys.get ( component );
+        final LinkedHashSet<HotkeyInfo> list = hotkeys.get ( component );
         return list != null ? CollectionUtils.copy ( list ) : new ArrayList<HotkeyInfo> ();
     }
 
@@ -563,8 +563,8 @@ public final class HotkeyManager
 
     public static String getComponentHotkeysString ( final JComponent component )
     {
-        final List<HotkeyInfo> keys = hotkeys.get ( component );
-        return TextUtils.listToString ( keys, HOTKEYS_SEPARATOR, HOTKEY_TEXT_PROVIDER, HOTKEY_DISPLAY_FILTER );
+        final LinkedHashSet<HotkeyInfo> keys = hotkeys.get ( component );
+        return TextUtils.collectionToString ( keys, HOTKEYS_SEPARATOR, HOTKEY_TEXT_PROVIDER, HOTKEY_DISPLAY_FILTER );
     }
 
     /**

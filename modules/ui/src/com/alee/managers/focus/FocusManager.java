@@ -21,7 +21,7 @@ import com.alee.api.annotations.NotNull;
 import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.utils.collection.ImmutableList;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,15 +51,15 @@ public final class FocusManager
      * {@link GlobalFocusListener}s registered for specific {@link JComponent}s.
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, GlobalFocusListener> globalComponentFocusListeners =
-            new WeakComponentDataList<JComponent, GlobalFocusListener> ( "FocusManager.GlobalFocusListener", 5 );
+    private static final WeakComponentDataOrderedSet<JComponent, GlobalFocusListener> globalComponentFocusListeners =
+            new WeakComponentDataOrderedSet<JComponent, GlobalFocusListener> ( "FocusManager.GlobalFocusListener", 5 );
 
     /**
      * {@link FocusTracker}s registered for specific {@link JComponent}s.
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, FocusTracker> trackers =
-            new WeakComponentDataList<JComponent, FocusTracker> ( "FocusManager.FocusTracker", 200 );
+    private static final WeakComponentDataOrderedSet<JComponent, FocusTracker> trackers =
+            new WeakComponentDataOrderedSet<JComponent, FocusTracker> ( "FocusManager.FocusTracker", 200 );
 
     /**
      * Reference to previously focused component.

@@ -22,7 +22,7 @@ import com.alee.api.annotations.Nullable;
 import com.alee.api.jdk.BiConsumer;
 import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.collection.ImmutableList;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,15 +54,15 @@ public final class HoverManager
      * {@link GlobalHoverListener}s registered for specific {@link JComponent}s.
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, GlobalHoverListener> globalComponentHoverListeners =
-            new WeakComponentDataList<JComponent, GlobalHoverListener> ( "HoverManager.GlobalHoverListener", 5 );
+    private static final WeakComponentDataOrderedSet<JComponent, GlobalHoverListener> globalComponentHoverListeners =
+            new WeakComponentDataOrderedSet<JComponent, GlobalHoverListener> ( "HoverManager.GlobalHoverListener", 5 );
 
     /**
      * {@link HoverTracker}s registered for specific {@link JComponent}s.
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, HoverTracker> trackers =
-            new WeakComponentDataList<JComponent, HoverTracker> ( "HoverManager.HoverTracker", 200 );
+    private static final WeakComponentDataOrderedSet<JComponent, HoverTracker> trackers =
+            new WeakComponentDataOrderedSet<JComponent, HoverTracker> ( "HoverManager.HoverTracker", 200 );
 
     /**
      * Reference to previously hovered {@link Component}.

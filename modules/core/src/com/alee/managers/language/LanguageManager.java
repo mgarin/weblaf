@@ -26,7 +26,7 @@ import com.alee.managers.language.data.*;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.WeakComponentDataList;
+import com.alee.utils.swing.WeakComponentDataOrderedSet;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -92,8 +92,8 @@ public final class LanguageManager
      * @see #removeLanguageListener(JComponent, LanguageListener)
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, LanguageListener> componentLanguageListeners =
-            new WeakComponentDataList<JComponent, LanguageListener> ( "LanguageManager.LanguageListener", 5 );
+    private static final WeakComponentDataOrderedSet<JComponent, LanguageListener> componentLanguageListeners =
+            new WeakComponentDataOrderedSet<JComponent, LanguageListener> ( "LanguageManager.LanguageListener", 5 );
 
     /**
      * {@link Dictionary} changes listeners.
@@ -113,8 +113,8 @@ public final class LanguageManager
      * @see #removeDictionaryListener(JComponent, DictionaryListener)
      */
     @NotNull
-    private static final WeakComponentDataList<JComponent, DictionaryListener> componentDictionaryListeners =
-            new WeakComponentDataList<JComponent, DictionaryListener> ( "LanguageManager.DictionaryListener", 5 );
+    private static final WeakComponentDataOrderedSet<JComponent, DictionaryListener> componentDictionaryListeners =
+            new WeakComponentDataOrderedSet<JComponent, DictionaryListener> ( "LanguageManager.DictionaryListener", 5 );
 
     /**
      * Manager initialization mark.
