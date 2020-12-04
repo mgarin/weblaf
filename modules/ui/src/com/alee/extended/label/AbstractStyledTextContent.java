@@ -415,8 +415,17 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
                     if ( ( maximumRows <= 0 || rowCount < maximumRows ) && y + maxRowHeight + Math.max ( 0, rowGap ) <= endY )
                     {
                         int firstWordOffset = Math.max ( 0, TextUtils.findFirstWordFromIndex ( s, 0 ) );
-                        int availLength =
-                                ( int ) ( ( long ) s.length () * widthLeft / strWidth ) + firstWordOffset + 1; // Optimistic prognoses
+
+                        // Optimistic prediction
+                        int availLength = ( int ) ( ( long ) s.length () * widthLeft / strWidth ) + firstWordOffset + 1;
+
+                        // Workaround for insufficient overshoot for optimistic prediction
+                        while ( availLength < s.length () &&
+                                cfm.stringWidth ( s.substring ( 0, Math.max ( 0, Math.min ( availLength, s.length () ) ) ) ) <= widthLeft )
+                        {
+                            availLength += 1;
+                        }
+
                         int nextRowStartInSubString = 0;
 
                         do
@@ -802,6 +811,17 @@ public abstract class AbstractStyledTextContent<C extends JComponent, D extends 
     @Override
     protected Dimension getPreferredTextSize ( @NotNull final C c, @NotNull final D d, @NotNull final Dimension available )
     {
+        /*final int maximumTextWidth = getMaximumTextWidth ( c, d );
+
+        // Preferred size for maximum possible space
+        final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( maximumTextWidth, Short.MAX_VALUE ) );
+
+        // Preferred size for available space
+        available.width = Math.min ( available.width, maximumTextWidth );
+        final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
+
+        return SwingUtils.maxNonNull ( vSize, hSize );*/
+
         final int maximumTextWidth = getMaximumTextWidth ( c, d );
 
         // Preferred size for maximum possible space
