@@ -112,7 +112,7 @@ public class WebDateField extends WebComponent<WebDateField, WDateFieldUI>
      * @param id   {@link StyleId}
      * @param date selected date
      */
-    public WebDateField ( @NotNull final StyleId id,@Nullable  final Date date )
+    public WebDateField ( @NotNull final StyleId id, @Nullable final Date date )
     {
         super ();
         this.date = null;

@@ -372,17 +372,20 @@ public class TableHeaderPainter<C extends JTableHeader, U extends WTableHeaderUI
             // Paint the dragged column if we are dragging.
             if ( draggedColumn != null )
             {
-                // Calculating dragged cell rect
                 final int draggedColumnIndex = getViewIndexForColumn ( draggedColumn );
-                final Rectangle draggedCellRect = component.getHeaderRect ( draggedColumnIndex );
-                draggedCellRect.x += component.getDraggedDistance ();
+                if ( draggedColumnIndex != -1 )
+                {
+                    // Calculating dragged cell rect
+                    final Rectangle draggedCellRect = component.getHeaderRect ( draggedColumnIndex );
+                    draggedCellRect.x += component.getDraggedDistance ();
 
-                // Background
-                g2d.setPaint ( bgPaint );
-                g2d.fillRect ( draggedCellRect.x - 1, draggedCellRect.y, draggedCellRect.width, draggedCellRect.height - 1 );
+                    // Background
+                    g2d.setPaint ( bgPaint );
+                    g2d.fillRect ( draggedCellRect.x - 1, draggedCellRect.y, draggedCellRect.width, draggedCellRect.height - 1 );
 
-                // Header cell
-                paintCell ( g2d, c, draggedCellRect, draggedColumnIndex, draggedColumn, draggedColumn, cm );
+                    // Header cell
+                    paintCell ( g2d, c, draggedCellRect, draggedColumnIndex, draggedColumn, draggedColumn, cm );
+                }
             }
 
             // Remove all components in the rendererPane

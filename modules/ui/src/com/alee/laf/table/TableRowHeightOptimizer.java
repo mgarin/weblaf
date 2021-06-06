@@ -109,6 +109,9 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
             {
                 newModel.addTableModelListener ( this );
             }
+
+            // Update row height
+            optimizeRowHeight ();
         }
         else if ( Objects.equals ( propertyName, WebTable.ROW_HEIGHT_PROPERTY ) && !adjusting )
         {
@@ -163,8 +166,7 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
                     {
                         for ( int col = cMin; col < cMax; col++ )
                         {
-                            final TableCellRenderer cellRenderer = component.getCellRenderer ( row, col );
-                            final Component renderer = component.prepareRenderer ( cellRenderer, row, col );
+                            final Component renderer = prepareRenderer ( model, row, col );
                             final Dimension ps = renderer.getPreferredSize ();
                             maxHeight = Math.max ( maxHeight, ps.height );
                         }
@@ -174,8 +176,7 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
                 {
                     for ( int col = 0; col < component.getColumnCount (); col++ )
                     {
-                        final TableCellRenderer cellRenderer = component.getCellRenderer ( 0, col );
-                        final Component renderer = component.prepareRenderer ( cellRenderer, 0, col );
+                        final Component renderer = prepareRenderer ( model, col, 0 );
                         final Dimension ps = renderer.getPreferredSize ();
                         maxHeight = Math.max ( maxHeight, ps.height );
                     }
@@ -188,6 +189,35 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
             component.setRowHeight ( maxHeight );
             adjusting = false;
         }
+    }
+
+    /**
+     * Returns table renderer {@link Component} prepared for the specified column and row.
+     *
+     * @param model {@link TableModel}
+     * @param col   table column index
+     * @param row   table row index
+     * @return table renderer {@link Component} prepared for the specified column and row
+     */
+    @NotNull
+    protected Component prepareRenderer ( @NotNull final TableModel model, final int col, final int row )
+    {
+        final Component renderer;
+        final TableCellRenderer cellRenderer = component.getCellRenderer ( row, col );
+        if ( component.getRowCount () > 0 )
+        {
+            renderer = component.prepareRenderer ( cellRenderer, row, col );
+        }
+        else
+        {
+            renderer = cellRenderer.getTableCellRendererComponent (
+                    component,
+                    model.getValueAt ( row, col ),
+                    false, false,
+                    row, col
+            );
+        }
+        return renderer;
     }
 
     /**
