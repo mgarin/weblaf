@@ -325,7 +325,7 @@ public class WebListModel<T> extends AbstractListModel
         if ( elements.size () > 0 )
         {
             delegate.addAll ( index, elements );
-            fireIntervalAdded ( this, index, delegate.size () - 1 );
+            fireIntervalAdded ( this, index, elements.size () - 1 );
         }
     }
 
