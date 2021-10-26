@@ -317,6 +317,8 @@ public final class LanguageManagerTest
     @Test
     public void runtimeLocaleChange ()
     {
+        final Locale originalLocale = LanguageManager.getLocale ();
+
         final String simpleKey = "weblaf.test.record";
         final String countryKey = "weblaf.test.country.record";
         final String multiKey = "weblaf.test.multi.record";
@@ -385,6 +387,8 @@ public final class LanguageManagerTest
         checkTranslationAbsense ( "en", "US", multiKey );
         checkTranslationAbsense ( "en", "GB", multiKey );
         checkTranslationAbsense ( "ru", "", multiKey );
+
+        LanguageManager.setLocale ( originalLocale );
     }
 
     /**
@@ -396,7 +400,7 @@ public final class LanguageManagerTest
         final String simpleKey = "weblaf.test.record";
         final String first = "First dictionary";
         final String second = "Second dictionary";
-        final String third = "Second dictionary";
+        final String third = "Third dictionary";
 
         // Ensuring our records don't exist yet
         checkTranslationAbsense ( "en", "", simpleKey );
