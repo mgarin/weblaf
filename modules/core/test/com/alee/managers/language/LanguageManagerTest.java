@@ -389,9 +389,8 @@ public final class LanguageManagerTest
 
     /**
      * Tests {@link Record}s retrieval with different {@link Dictionary}s order.
-     * todo Right now there is no fixed order for the translations retrieval [ #570 ]
      */
-    /*@Test
+    @Test
     public void dictionaryOrder ()
     {
         final String simpleKey = "weblaf.test.record";
@@ -439,7 +438,7 @@ public final class LanguageManagerTest
 
         // Checking that even after our retrieval attempt records are considered absent
         checkTranslationAbsense ( "en", "", simpleKey );
-    }*/
+    }
 
     /**
      * Asserts translation existence.

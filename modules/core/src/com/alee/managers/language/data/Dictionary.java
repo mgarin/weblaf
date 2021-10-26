@@ -333,8 +333,10 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
                     // Resolving most fitting record within this dictionary and all sub-dictionaries
                     if ( CollectionUtils.notEmpty ( dictionaries ) )
                     {
-                        for ( final Dictionary dictionary : dictionaries )
+                        for ( int i = dictionaries.size () - 1; i >= 0; i-- )
                         {
+                            final Dictionary dictionary = dictionaries.get ( i );
+
                             // Resolving most fitting one from sub-dictionary
                             final Record subRecord = dictionary.getRecord ( subKey, locale );
 
@@ -827,7 +829,7 @@ public final class Dictionary implements Identifiable, Mergeable, Cloneable, Ser
 
     /**
      * Colects supported {@link Locale}s into provided {@link List}.
-     *
+     * <p>
      * {@link Locale}s will be taken from the first {@link Record} that has {@link Value}s. This works on assumption every or at least first
      * {@link Record} in dictionary supports all {@link Locale}s used across all other {@link Record}s.
      *
