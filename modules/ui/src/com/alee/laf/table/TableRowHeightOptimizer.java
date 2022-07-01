@@ -176,7 +176,7 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
                 {
                     for ( int col = 0; col < component.getColumnCount (); col++ )
                     {
-                        final Component renderer = prepareRenderer ( model, col, 0 );
+                        final Component renderer = prepareRenderer ( model, 0, col );
                         final Dimension ps = renderer.getPreferredSize ();
                         maxHeight = Math.max ( maxHeight, ps.height );
                     }
@@ -195,12 +195,12 @@ public class TableRowHeightOptimizer extends AbstractComponentBehavior<JTable> i
      * Returns table renderer {@link Component} prepared for the specified column and row.
      *
      * @param model {@link TableModel}
-     * @param col   table column index
      * @param row   table row index
+     * @param col   table column index
      * @return table renderer {@link Component} prepared for the specified column and row
      */
     @NotNull
-    protected Component prepareRenderer ( @NotNull final TableModel model, final int col, final int row )
+    protected Component prepareRenderer ( @NotNull final TableModel model, final int row, final int col )
     {
         final Component renderer;
         final TableCellRenderer cellRenderer = component.getCellRenderer ( row, col );
