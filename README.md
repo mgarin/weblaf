@@ -49,7 +49,7 @@ If you are working with a Maven project you can simply add dependency for `webla
 <dependency>
   <groupId>com.weblookandfeel</groupId>
   <artifactId>weblaf-ui</artifactId>
-  <version>1.2.13</version>
+  <version>1.2.14</version>
 </dependency>
 ```
 You can also use `RELEASE` or `LATEST` version instead of specific one.

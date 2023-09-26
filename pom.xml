@@ -4,7 +4,7 @@
 
     <groupId>com.weblookandfeel</groupId>
     <artifactId>weblaf-parent</artifactId>
-    <version>1.2.14-SNAPSHOT</version>
+    <version>1.2.14</version>
     <packaging>pom</packaging>
 
     <name>WebLaF</name>
