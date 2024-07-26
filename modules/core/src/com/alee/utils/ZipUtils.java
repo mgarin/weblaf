@@ -23,6 +23,7 @@ import com.alee.utils.zip.UnzipListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -115,8 +116,12 @@ public final class ZipUtils
                 }
                 else
                 {
+                    final File zipEntryFile = new File ( dst, entry.getName () );
+                    if (!zipEntryFile.toPath ().normalize ().startsWith (dst.toPath ().normalize ())) {
+                        throw new IOException ("Bad zip entry");
+                    }
                     // Ensures that destination file and its folders exist
-                    extractToFile = new File ( dst, entry.getName () );
+                    extractToFile = zipEntryFile;
                     final File parent = FileUtils.getParent ( extractToFile );
                     if ( parent != null && parent.mkdirs () )
                     {
